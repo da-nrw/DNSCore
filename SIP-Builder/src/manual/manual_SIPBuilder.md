@@ -1,7 +1,7 @@
 Anleitung SIP-Builder
 =====================
 
-Bitte verwenden Sie eine Version des SIP-Builders, die mindestens die Build-Nr. 1497 hat!
+Bitte verwenden Sie eine Version des SIP-Builders, die mindestens die Build-Nr. __1512__ hat!
 
 ## Überblick
 
@@ -21,14 +21,14 @@ Starten Sie den SIP-Builder, indem Sie je nach Betriebssystem eine der folgenden
 * SipBuilder-Unix.sh (Unix/Mac OS)
 
 ### Start
-
+![Bild](https://raw.githubusercontent.com/da-nrw/DNSCore/master/SIP-Builder/src/manual/Start.jpg)
  
 
 __Quellordner__  
 Geben Sie hier den Pfad zum Verzeichnis an, das die Quelldaten enthält, aus denen das SIP generiert werden soll.
 
 __Zielordner__  
-Im hier angegebenen Verzeichnis wird das fertige SIP am Ende des Generierungsprozesses in Form einer tgz- oder tar-Archivdatei hinterlegt. Das gewählte Verzeichnis darf kein Unterverzeichnis des Quellordners sein. 
+Geben Sie hier den Pfad zum Verzeichnis an, in dem das fertige SIP am Ende des Generierungsprozesses in Form einer tgz- oder tar-Archivdatei hinterlegt wird. Das gewählte Verzeichnis darf kein Unterverzeichnis des Quellordners sein. 
 
 __Generierungsmodus__  
 Sie haben die Wahl zwischen verschiedenen Modi der SIP-Generierung:
@@ -46,6 +46,8 @@ __WICHTIG!__
 
 ### Laden der Rechteeinstellungen  
 
+![Bild](https://raw.githubusercontent.com/da-nrw/DNSCore/master/SIP-Builder/src/manual/Laden_Standard.jpg)
+
 __Laden__  
 Wenn Sie die Rechteeinstellungen bei einem früheren SIP-Generierungsvorgang schon einmal festgelegt und gespeichert haben (siehe __Einstellungen speichern__), können Sie die dabei erstellte Datei mit dieser Option laden. Die geladenen Einstellungen können in den nachfolgenden Schritten überprüft und gegebenenfalls angepasst werden.
 
@@ -61,14 +63,22 @@ Bei Betätigung des Buttons __Standard__ werden die zuvor gewählten Einstellung
 
 Die Publikationseinstellungen können festgelegt werden für:  
 __Öffentlichkeit__  
+
+![Bild](https://raw.githubusercontent.com/da-nrw/DNSCore/master/SIP-Builder/src/manual/Publikation_Oeffentlichkeit.jpg)
+
 Erstellung von Publikationsderivaten zur Anzeige in öffentlichen Portalen  
 __Eigene Institution__  
+
+![Bild](https://raw.githubusercontent.com/da-nrw/DNSCore/master/SIP-Builder/src/manual/Publikation_Eigene_Institution.jpg)
+
 Erstellung von Publikationsderivaten, die nur der eigenen Institution über die Schnittstellen des Presentation Repository zugänglich sind
 
 Sie können  wählen, ob die Erstellung der Publikationsdaten grundsätzlich stattfinden soll und ob in diesem Fall zusätzliche Restriktionen in Kraft treten sollen. Diese Restriktionen können für die Öffentlichkeit und die eigene Institution jeweils separat festgelegt werden.  
 Daten, die für die Anzeige in öffentlichen Portalen erstellt wurden, werden automatisch auch der Deutschen Digitalen Bibliothek zur Verfügung gestellt. Möchten Sie diesen Vorgang vermeiden, können Sie die Checkbox __DDB-Harvesting erlauben__ deaktivieren. In diesem Fall werden der Deutschen Digitalen Bibliothek keine Daten zugänglich gemacht.
 
 #### Startzeitpunkt der Publikation
+
+![Bild](https://raw.githubusercontent.com/da-nrw/DNSCore/master/SIP-Builder/src/manual/Publikation_Startzeitpunkt.jpg)
 
 __Publikation zeitlich begrenzen__  
 Wählen Sie diese Option, um ein Datum zu bestimmen, ab dem die Publikation stattfinden soll. Vor diesem Datum findet keine Publikation statt. Das Datum muss dazu in der Form [Tag].[Monat]. [Jahr] angegeben werden.
@@ -88,6 +98,9 @@ Zur Zeit ist diese Funktion noch ohne Auswirkungen.
 In diesem Schritt lassen sich Restriktionen wählen, die in den Rechteeinstellungen hinterlegt und während der Erstellung der Publikationsdaten angewendet werden.
 
 __Text__  
+
+![Bild](https://raw.githubusercontent.com/da-nrw/DNSCore/master/SIP-Builder/src/manual/Vorschau_Text.jpg)
+
 _Einsehbare Seiten festlegen_:  
 Wenn Sie möchten, dass nur bestimmte Seiten eines PDF-Dokuments für den Benutzer einsehbar sind, können Sie die entsprechenden Seitenzahlen bei Aktivierung dieser Option in einem Textfeld angeben.
 Reihen Sie die gewünschten Seitenzahlen dazu durch Kommas voneinander getrennt aneinander. Um mehrere aufeinander folgende Seiten festzulegen, genügt es, die erste und letzte Seitenzahl mit einem dazwischen liegenden Bindestrich anzugeben.
@@ -101,6 +114,9 @@ Angezeigt werden die Seiten 1, 2, 3, 4 und 5.
 Angezeigt werden die Seiten 1, 14, 15, 16, 17, 24 und 30.
 
 __Bild__  
+
+![Bild](https://raw.githubusercontent.com/da-nrw/DNSCore/master/SIP-Builder/src/manual/Vorschau_Bild.jpg)
+
 _Bildqualität begrenzen_:  
 Bei Aktivierung dieser Option haben Sie die Möglichkeit, die Anzeigequalität von Bilddateien zu begrenzen, indem Sie die gewünschte Auflösung der Bilder angeben. Sie können dabei zwischen zwei Möglichkeiten wählen:
 * Bestimmung der maximalen Auflösung durch absolute Werte in drei Abstufungen (niedrig, mittel, hoch)
@@ -122,40 +138,50 @@ _Sichtbarkeit (nur bei Wasserzeichen)_:
 Wasserzeichen können auf Wunsch transparent angezeigt werden. Zur Auswahl stehen Werte zwischen 5% (kaum sichtbar) und 100% (vollständig sichtbar).  
 
 _Schriftgröße (nur bei Wasserzeichen)_:  
-Wählen Sie die gewünschte Schriftgröße, in der der Text angezeigt wird. Bitte beachten Sie, dass um-fangreiche Texte in höheren Schriftgrößen auf kleineren Bildern möglicherweise nicht mehr vollständig angezeigt werden können.
+Wählen Sie die gewünschte Schriftgröße, in der der Text angezeigt wird. Bitte beachten Sie, dass umfangreiche Texte in höheren Schriftgrößen auf kleineren Bildern möglicherweise nicht mehr vollständig angezeigt werden können.
 Bitte beachten Sie, dass die Länge der Texte beschränkt ist: Fußzeilen dürfen höchstens 65 Zeichen lang sein, bei Wasserzeichen beträgt die maximale Länge 20 Zeichen.  
 
 __Audio__  
+
+![Bild](https://raw.githubusercontent.com/da-nrw/DNSCore/master/SIP-Builder/src/manual/Vorschau_Audio.jpg)
+
 _Länge von Audio-Dateien begrenzen_:   
 Um dem Benutzer lediglich den Beginn einer Audio-Datei zugänglich zu machen, können Sie die maximale Abspieldauer von Audio-Dateien begrenzen; es werden dann z.B. nur die ersten fünfzehn Sekunden abgespielt. Die genaue Sekundenanzahl können Sie hier festlegen.  
 
 __Video__  
+
+![Bild](https://raw.githubusercontent.com/da-nrw/DNSCore/master/SIP-Builder/src/manual/Vorschau_Video.jpg)
+
 _Bildqualität von Videos begrenzen_:  
 Bei Aktivierung dieser Option haben Sie die Möglichkeit, die Anzeigequalität von Videodateien zu begrenzen. Die Höhe der Auflösung kann dabei aus drei möglichen Einstellungen (niedrig, mittel, hoch) gewählt werden.  
 
 _Länge von Videos begrenzen_:  
 Neben Audio-Dateien lassen sich auch Videos in ihrer Länge begrenzen. Legen Sie hier fest, wie viele Sekunden eines Videos abgespielt werden können.
+
 ### Konversions- und Migrationseinstellungen
 
- 
+![Bild](https://raw.githubusercontent.com/da-nrw/DNSCore/master/SIP-Builder/src/manual/Konversion_Migration.jpg)
 
 Bei der Einlieferung Ihrer Daten findet im Regelfall eine Erstkonversion in Dateiformate statt, die für die Langzeitarchivierung geeignet sind. Darüber hinaus können spätere Konversionen folgen, um die dauerhafte Lesbarkeit der Daten zu gewährleisten (Migration). Sie können die Durchführung der Migration dabei auf Wunsch an eine Bedingung knüpfen.
 Mögliche Einstellungen sind:
-* _Keine Migrationsbedingung:_ Migrationen werden automatisch ohne Ihre Beteiligung durchgeführt (Standardeinstellung).
-* _Über Migration informieren:_ Im Falle einer Migration erhalten Sie eine Benachrichtigung per Mail.
-* _Zustimmung für Migration einholen:_ Sie werden vor einer anstehenden Migration benachrichtigt und haben die Möglichkeit, der Migration zu widersprechen. Dies gilt für die Erstmigration und alle folgenden Migrationen. Nach einer Zeitfrist verfällt die Rückfrage, in diesem Fall wird Ihr Objekt nicht migriert. 
+* _Keine Migrationsbedingung:_  Migrationen werden automatisch ohne Ihre Beteiligung durchgeführt (Standardeinstellung).
+* _Über Migration informieren:_  Im Falle einer Migration erhalten Sie eine Benachrichtigung per Mail.
+* _Zustimmung für Migration einholen:_  Sie werden vor einer anstehenden Migration benachrichtigt und haben die Möglichkeit, der Migration zu widersprechen. Dies gilt für die Erstmigration und alle folgenden Migrationen. Nach einer Zeitfrist verfällt die Rückfrage, in diesem Fall wird Ihr Objekt nicht migriert. 
 
 ###  Speichern der Einstellungen
 
+![Bild](https://raw.githubusercontent.com/da-nrw/DNSCore/master/SIP-Builder/src/manual/Speichern.jpg)
+
 In diesem Schritt werden die zuvor getroffenen Rechteeinstellungen übersichtlich zusammengefasst, sodass Sie sie vor der SIP-Erstellung noch einmal überprüfen können.
 
-Wenn Sie die Einstellungen bei einer späteren Verwendung des SIP-Builders noch einmal anwenden möchten, können Sie diese sichern, indem Sie den Button „Speichern“ betätigen. Die dabei erstellte Datei können Sie später jederzeit im Schritt „Rechteeinstellungen laden“ wieder einlesen, sodass Sie die Einstellungen nicht erneut vornehmen müssen.
+Wenn Sie die Einstellungen bei einer späteren Verwendung des SIP-Builders noch einmal anwenden möchten, können Sie diese sichern, indem Sie den Button __Speichern__ betätigen. Die dabei erstellte Datei können Sie später jederzeit im Schritt __Rechteeinstellungen laden__ wieder einlesen, sodass Sie die Einstellungen nicht erneut vornehmen müssen.
 
 
 ### SIP erstellen
 
+![Bild](https://raw.githubusercontent.com/da-nrw/DNSCore/master/SIP-Builder/src/manual/SIP_erstellen.jpg)
 
-Starten Sie den Prozess, indem Sie den Button „Erstellen“ betätigen. Je nach Menge der zu verarbeitenden Daten und der Leistungsfähigkeit Ihres Systems kann der Vorgang zwischen wenigen Sekunden und mehreren Stunden in Anspruch nehmen. Um den Prozess zu beschleunigen, können Sie die Option “SIP-Datei komprimieren” deaktivieren. In diesem Fall wird statt einer komprimierten tgz-Datei eine entsprechend größere, unkomprimierte tar-Datei erstellt.
+Starten Sie den Prozess, indem Sie den Button __Erstellen__ betätigen. Je nach Menge der zu verarbeitenden Daten und der Leistungsfähigkeit Ihres Systems kann der Vorgang zwischen wenigen Sekunden und mehreren Stunden in Anspruch nehmen. Um den Prozess zu beschleunigen, können Sie die Option __SIP-Datei komprimieren__ deaktivieren. In diesem Fall wird statt einer komprimierten tgz-Datei eine entsprechend größere, unkomprimierte tar-Datei erstellt.
 ## CLI-Modus
 ### Ausführen des SIP-Builders im CLI-Modus
 
@@ -163,7 +189,7 @@ Um den SIP-Builder im CLI-Modus zu starten, sind folgende Schritte notwendig:
 * Rufen Sie die Kommandozeile auf und wechseln Sie in das Verzeichnis, in dem sich der SIP-Builder befindet.
 * Starten Sie den SIP-Builder mit dem Kommando „java -jar SipBuilder.jar“; unter Unix können Sie alternativ auch das Kommando „./SipBuilder.sh“ verwenden.
 * Geben Sie beim Aufruf zusätzlich eine Reihe von Parametern an, um den CLI-Modus zu aktivieren.
-* Obligatorisch ist die Angabe von jeweils einem Parameter der Kategorien „Quelle“ und „Ziel“ (siehe unten). Darüber hinaus können Sie optional weitere Parameter angeben, um die gewünschten Einstellungen der SIP-Erstellung festzulegen.
+* Obligatorisch ist die Angabe von jeweils einem Parameter der Kategorien __Quelle__ und __Ziel__ (siehe Start). Darüber hinaus können Sie optional weitere Parameter angeben, um die gewünschten Einstellungen der SIP-Erstellung festzulegen.
 
 
 ### Start
@@ -172,13 +198,13 @@ Um den SIP-Builder im CLI-Modus zu starten, sind folgende Schritte notwendig:
 __-source="[Pfad]"__  
 Geben Sie den Pfad zum Verzeichnis an, in dem sich die Quelldaten befinden. Aus diesem Quellordner werden anschließend die SIPs erstellt.
 
-Beispiele:  
+Beispiel:  
 -source="C:\Eigene Dateien\SIP-Source"
 -source="/home/user/sipData"
 
 __-filelist="[Pfad]"__
 Nur im CLI-Modus haben Sie die Möglichkeit, ein einzelnes SIP aus Dateien zu erstellen, die sich in unterschiedlichen Verzeichnissen befinden. Erstellen Sie dazu eine Textdatei und listen Sie darin die Pfade zu den Dateien und/oder Verzeichnissen auf, aus denen das SIP erstellt werden soll. In jeder Zeile der Textdatei muss dabei genau eine Pfadangabe stehen. Geben Sie den Pfad eines Verzeichnisses an, wird der gesamte Inhalt des Verzeichnisses inklusive aller Unterordner in das SIP aufgenommen.
-Bei Verwendung dieser Option muss gleichzeitig mit dem Parameter -single= "[Name]" ein Name für das SIP angegeben werden.
+Bei Verwendung dieser Option muss gleichzeitig mit dem Parameter __-single= "[Name]"__ ein Name für das SIP angegeben werden.
 
 Beispiel:  
 -filelist="C:\Eigene Dateien\SIP-Source\filelist_sip1.txt"
@@ -191,7 +217,7 @@ D:\Audio\audio_15_03_2012.wav
 C:\Dokumente\dokument.pdf   
 
 __-siplist="[Pfad]"__  
-Diese Option ermöglicht es, die Inhalte eines oder mehrerer SIPs in einer XML-Datei festzulegen. Erstellen Sie dazu eine XML-Datei mit dem Wurzelknoten „sipList“, dem Sie für jedes zu erzeugende SIP ein Element „sip“ hinzufügen. An jedes SIP müssen Sie über das Attribut „name“ einen Namen vergeben. Die einzelnen Dateien und/oder Verzeichnisse, aus denen das SIP erstellt werden soll, geben Sie dabei durch jeweils ein „file“-Element an.
+Diese Option ermöglicht es, die Inhalte eines oder mehrerer SIPs in einer XML-Datei festzulegen. Erstellen Sie dazu eine XML-Datei mit dem Wurzelknoten __sipList__, dem Sie für jedes zu erzeugende SIP ein Element __sip__ hinzufügen. An jedes SIP müssen Sie über das Attribut __name__ einen Namen vergeben. Die einzelnen Dateien und/oder Verzeichnisse, aus denen das SIP erstellt werden soll, geben Sie dabei durch jeweils ein __file__-Element an.
 
 Beispiel:  
 -siplist="C:\Eigene Dateien\SIP-Source\siplist.xml"
@@ -217,7 +243,7 @@ Beispielinhalt einer SIP-Liste:
 </sipList>
 ```
 
-#### Zielordner
+#### Ziel
 
 __-destination="[Pfad]"__  
 Im hier angegebenen Verzeichnis wird das fertige SIP am Ende des Generierungsprozesses in Form einer tgz- oder tar-Archivdatei hinterlegt. Bitte beachten Sie bei gleichzeitiger Verwendung der Option -source, dass das gewählte Verzeichnis kein Unterverzeichnis des Quellordners sein darf.
@@ -228,17 +254,17 @@ Beispiel:
 #### Generierungsmodus
 
 __-multiple (Standardoption)__  
-Bei Anwendung dieser Option werden mehrere SIPs auf einmal generiert. Bei gleichzeitiger Angabe eines Quellordners mit dem Parameter -source werden die SIPs aus den Unterordnern dieses Quellordners erstellt, wobei aus jedem Unterordner jeweils ein SIP entsteht.
-Die Option muss bei gleichzeitiger Verwendung von -siplist gewählt werden und kann nicht gleichzeitig mit -filelist benutzt werden.
+Bei Anwendung dieser Option werden mehrere SIPs auf einmal generiert. Bei gleichzeitiger Angabe eines Quellordners mit dem Parameter __-source__ werden die SIPs aus den Unterordnern dieses Quellordners erstellt, wobei aus jedem Unterordner jeweils ein SIP entsteht.
+Die Option muss bei gleichzeitiger Verwendung von __-siplist__ gewählt werden und kann nicht gleichzeitig mit __-filelist__ benutzt werden.
 
 __-single__  
-Bei Anwendung dieser Option wird ein einzelnes SIP generiert. Bei gleichzeitiger Angabe eines Quellordners mit -source wird das SIP aus dem gesamten Inhalt dieses Quellordners (inklusive möglicher Unterverzeichnisse) erstellt.
-Die Option kann nicht gleichzeitig mit -siplist benutzt werden.
+Bei Anwendung dieser Option wird ein einzelnes SIP generiert. Bei gleichzeitiger Angabe eines Quellordners mit __-source__ wird das SIP aus dem gesamten Inhalt dieses Quellordners (inklusive möglicher Unterverzeichnisse) erstellt.
+Die Option kann nicht gleichzeitig mit __-siplist__ benutzt werden.
 
 
 __-single="[Name]"__  
 Bei Anwendung dieser Option wird ebenfalls ein einzelnes SIP generiert. Zusätzlich wird der angegebene Text als Name des erstellten SIPs verwendet.
-Die Option muss bei gleichzeitiger Verwendung von -filelist gewählt werden und kann nicht gleichzeitig mit -siplist benutzt werden.
+Die Option muss bei gleichzeitiger Verwendung von __-filelist__ gewählt werden und kann nicht gleichzeitig mit __-siplist__ benutzt werden.
 
 Beispiel:  
 -single="Foto_SIP_2013"
@@ -284,6 +310,8 @@ SIPs werden nicht erstellt, wenn sich im Zielordner bereits ein SIP gleichen Nam
 
 __-alwaysOverwrite__  
 Wenn sich bereits existierende SIPs gleichen Namens im Zielordner befinden, werden sie ohne weitere Nachfrage überschrieben, d. h. durch die neu erstellten Pakete ersetzt.
+
+#### Fehlerhafte Referenzen bei Delta-Lieferungen ignorieren
 
 __-alwaysIgnoreWrongReferencesInMetadata__   
 Bei der Valiedierung der Paketstruktur können ggf. Fehler in den Metadaten augedeckt werden. 
@@ -361,4 +389,4 @@ __-help__
 Zeigt eine Übersicht der möglichen Optionen an.
 
 
-![Bild](https://raw.githubusercontent.com/da-nrw/DNSCore/master/SIP-Builder/src/manual/Start.jpg)
+

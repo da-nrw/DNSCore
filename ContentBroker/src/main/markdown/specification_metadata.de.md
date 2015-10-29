@@ -12,7 +12,7 @@ Unabhängig vom jeweiligen Metadatenformat werden inhaltlich gesehen folgende Ar
 ## Akzeptierte Metadatenformate
 Im Rahmen des DA-NRW werden derzeit vier Metadatenformate akzeptiert:
 
-* EAD
+* EAD + METS/MODS
 * METS
 * LIDO
 * XMP
@@ -25,9 +25,20 @@ Abhängig von der Verarbeitung der Primärdaten ändern sich mit diesen auch die
 
 Für die Metadaten gilt im DNSCore dasselbe Prinzip wie für die Primärobjekte: Jede einzelne Datei wird zunächst auf Byte-Ebene gesichert. Darüber hinaus wird der strukturelle sowie der technische Teil der Metadaten ggf. an die Veränderungen der beschriebenen Primärdatei bzw. Primärdateien angepasst.  Mit anderen Worten: Bei Migration der Primärdatei in ein langzeitsicheres Format wird in der entsprechenden Metadatendatei der Referenzpfand sowie die Angabe des Formats aktualisiert, sodass  die Metadatendatei stets eine gültige Beschreibung der Primärdatei bleibt.
 
-### Präsentation
+### Presentation Repository
 
 Für die Präsentation im Portal werden die Primärdaten aus dem langzeitsicheren Dateiformat in das dafür jeweils festgelegte Präsentationsformat konvertiert. Sowohl die Primärdateien als auch die entsprechenden Metadaten erhalten eine DA-NRW interne URL. Daher ist eine erneute Anpassung der Metadaten unerlässlich. Im strukturellen Teil der Metadatendateien wird also der relative Pfad auf dem Dateisystem durch die generierte URL ersetzt. Dabei enthält die URL selbstverständlich die aktualisierte – dem Zielformat für die Repräsentation entsprechende – Dateiendung. 
+
+### Schnittstelle Portal
+
+Für die Präsentation der Daten im (HBZ-)Portal werden die aus spartenspezifischen Metadaten extrahierten Informationen in eine einheitliche Form gebracht. In DNSCore werden die Informationen in eine EDM.xml exportiert, die man sich neben den Originaldaten im PIP ansehen kann. Anschließend werden alle Felder der EDM mittels eines von uns definierten [Mappings](../conf/es_mapping.json) in ein ElasticSearch-Index, der die eigentliche Schnittstelle zum Portal darstellt, eingetragen. Von da aus können die Daten in beliebiger Form im Portal gezeigt werden.
+
+Die Informationen darüber, Welche Metadatenfelder genau ihren Weg zum Portal finden, können Sie folgenden spartenspezifischen Tabellen entnehmen:
+
+1. [EAD](https://wiki1.hbz-nrw.de/display/DANOPEN/EAD+zu+EDM)
+1. [METS](https://wiki1.hbz-nrw.de/display/DANOPEN/METSMods+zu+EDM) 
+1. [LIDO](https://wiki1.hbz-nrw.de/display/DANOPEN/LIDO+to+EDM)
+1. [XMP](https://wiki1.hbz-nrw.de/display/DANOPEN/XMP+zu+EDM)
 
 ## Anforderungen an die Metadaten im DNSCore
 
@@ -80,7 +91,7 @@ Die in das DNSCore eingelieferten METS-Pakete werden auch als METS/MODS-Pakete b
 
 #### Verarbeitung in DNSCore
 
-Bei der Verarbeitung eines METS/MODS-Pakets wird bei jeder Migration der Primärdaten die METS-Datei aktualisiert. Dabei wird lediglich der  <fileSec>-Knoten angepasst. Dieser Knoten besitzt den Kindknoten <fileGrp>, der die Auflistung aller Referenzen auf Primärfiles enthält. Jedes dieser Files wird mit jeweils einem <file>-Knoten beschrieben. Der <file>-Knoten enthält eine Reihe verschiedener Informationen. Aktuell werden in DNSCore insgesamt drei Felder aktualisiert: MIMETYPE, LOCTYPE und href.
+Bei der Verarbeitung eines METS/MODS-Pakets wird bei jeder Migration der Primärdaten die METS-Datei aktualisiert. Dabei wird lediglich das fileSec-Element angepasst. Dieser Knoten besitzt den Kindknoten <fileGrp>, der die Auflistung aller Referenzen auf Primärfiles enthält. Jedes dieser Files wird mit jeweils einem file-Knoten beschrieben. Der file-Knoten enthält eine Reihe verschiedener Informationen. Aktuell werden in DNSCore insgesamt drei Felder aktualisiert: MIMETYPE, LOCTYPE und href.
 Der Mimetype gibt den Typ der referenzierten Datei an. Hier erfährt man, ob es sich um ein Bild-, Audio- oder Videoformat handelt und welches genau das ist.
 Der Loctype gibt den Typ der Referenz an: der Attributwert „OTHER“ steht für eine Referenz auf dem Dateisystem, der Wert „URL“ verrät, dass es sich bei der Referenz um eine URL handelt.
 Schließlich enthält das Attribut „href“ die Referenz auf die Primärdatei. 
@@ -169,7 +180,7 @@ data/mets/mets.xml
 data/mets/bild.bmp
 ```
 
-Die Referenz auf die METS-Dateien werden im EAD im Knoten <daogrp> angegeben. Dieser sieht in der EAD-Datei aus dem Beispiel-Paket sowohl im SIP als auch im AIP wie folgt aus:
+Die Referenz auf die METS-Dateien werden im EAD im Knoten daogrp angegeben. Dieser sieht in der EAD-Datei aus dem Beispiel-Paket sowohl im SIP als auch im AIP wie folgt aus:
 
 ```
 <daogrp>
@@ -191,12 +202,12 @@ Für die Präsentation muss der Knoten aktualisiert werden:
 #### Allgemeine Informationen
 
 Lightweight Information Describing Objects (LIDO) ist ein XML-Dateiformat zur Beschreibung von digitalen Sammlungen von Primärobjekten. 
-Die Eignung von LIDO als Metadatenstandard für Museumsdaten ist nicht unumstritten, da LIDO im Gegensatz zu allen anderen unterstützten Metadatenstandards absolute URLs zu Inhaltsdaten mitführt. Die Verwendung von URLs zur Referenzierung von Primärdaten ist in der LIDO-Spezifikation  ( http://www.lido-schema.org/schema/v1.0/lido-v1.0-specification.pdf ) fest vorgegeben. Das für die Referenzierung vorgesehene Element <linkResource> wird in der Spezifikation als „A url reference in the worldwide web environment“ bezeichnet.
-Aus den im vorliegenden Dokument bereits genannten Gründen kann eine solche Art der Referenzierung von Primärdaten nicht für die Langzeitarchivierung verwendet werden. Aus diesem Grund werden alle Einlieferer, die ihre Daten im DA-NRW langzeitarchivieren möchten, gebeten, alle Elemente <linkResource> jeweils mit einem relativen Pfad auf die mitgelieferte Primärdatei zu befüllen. Anderenfalls wird das gebildete SIP als inkonsistentes Paket von DNSCore abgelehnt.
+Die Eignung von LIDO als Metadatenstandard für Museumsdaten ist nicht unumstritten, da LIDO im Gegensatz zu allen anderen unterstützten Metadatenstandards absolute URLs zu Inhaltsdaten mitführt. Die Verwendung von URLs zur Referenzierung von Primärdaten ist in der LIDO-Spezifikation  (http://www.lido-schema.org/schema/v1.0/lido-v1.0-specification.pdf) fest vorgegeben. Das für die Referenzierung vorgesehene Element <linkResource> wird in der Spezifikation als „A url reference in the worldwide web environment“ bezeichnet.
+Aus den im vorliegenden Dokument bereits genannten Gründen kann eine solche Art der Referenzierung von Primärdaten nicht für die Langzeitarchivierung verwendet werden. Aus diesem Grund werden alle Einlieferer, die ihre Daten im DA-NRW langzeitarchivieren möchten, gebeten, alle Elemente linkResource jeweils mit einem relativen Pfad auf die mitgelieferte Primärdatei zu befüllen. Anderenfalls wird das gebildete SIP als inkonsistentes Paket von DNSCore abgelehnt.
 
 ##### Verarbeitung in DNSCore
 
-Bei der Migration von Primärdaten für die Langzeitarchivierung und die Präsentation wird in der eingelieferten LIDO.xml pro Primärdatei ein <linkResource>-Element aktualisiert. 
+Bei der Migration von Primärdaten für die Langzeitarchivierung und die Präsentation wird in der eingelieferten LIDO.xml pro Primärdatei ein linkResource-Element aktualisiert. 
 Im Folgenden wird anhand eines Beispiels die im LIDO vorgenommenen Ersetzungen aufgezeigt:
 
 **Beispiel:**
@@ -210,7 +221,7 @@ data/lido.xml
 data/Bilder/bild.bmp
 ```
 
-Die Referenz auf die Primärdatei wird im Element < linkResource > angegeben:
+Die Referenz auf die Primärdatei wird im Element linkResource angegeben:
 
 ```xml
 <lido:linkResource>Bilder/bild.bmp</lido:linkResource>
@@ -227,7 +238,7 @@ data/Bilder/bild.tif
 <lido:linkResource>Bilder/bild.tif</lido:linkResource>
 ```
 
-**Präsentation:** Für die Präsentation wird aus dem TIFF eine JPG-Datei erzeugt. Da die beiden Dateien im WWW abrufbar sein sollen, muss die relative Referenz durch die Angabe einer absoluten URL ersetzt werden. Das Element <linkResource> sieht in der LIDO-Datei im PIP sieht wie folgt aus:
+**Präsentation:** Für die Präsentation wird aus dem TIFF eine JPG-Datei erzeugt. Da die beiden Dateien im WWW abrufbar sein sollen, muss die relative Referenz durch die Angabe einer absoluten URL ersetzt werden. Das Element linkResource sieht in der LIDO-Datei im PIP sieht wie folgt aus:
 
 ```
 <lido:linkResource> http://data.da-nrw.de/[...] /[new Filename].jpg </lido:linkResource>
