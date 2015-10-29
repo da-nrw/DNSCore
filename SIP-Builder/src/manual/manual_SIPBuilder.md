@@ -314,12 +314,12 @@ Wenn sich bereits existierende SIPs gleichen Namens im Zielordner befinden, werd
 #### Fehlerhafte Referenzen bei Delta-Lieferungen ignorieren
 
 __-alwaysIgnoreWrongReferencesInMetadata__   
-Bei der Valiedierung der Paketstruktur können ggf. Fehler in den Metadaten augedeckt werden. 
+Bei der Validierung der Paketstruktur können ggf. Fehler in den Metadaten aufgedeckt werden. 
 
-Es gibt Fehler, die zwangsläufig zum Abbruch der Verarbeitung im ContentBroker führen werden. Solche Fehler werden im SIP-Builder erkannt und dem User mitgeteilt. Anschließend wird die SIP-Erstellung abgebrochen.
+Es gibt Fehler, die zwangsläufig zum Abbruch der Verarbeitung im ContentBroker führen werden. Z. B. fehlerhafte Referenzen innerhalb der Metadaten werden im SIP-Builder erkannt und dem User mitgeteilt. Anschließend wird die SIP-Erstellung abgebrochen.
 
 Es gibt aber auch Fehler, die im Fall einer [Delta](../../../ContentBroker/src/main/markdown/the_delta_feature.md)-Einlieferung nicht umbedingt zu einem Verarbeitungsstopp im Contentbroker führen müssen. Diese Fehler werden dem User während der SIP-Erstellung ebenfalls mitgeteilt. Anschließend kann sich der User im GUI-Modus entscheiden, ob er die Verarbeitung abbrechen oder fortsetzen möchte.
-Für den CLI-Modus gibt es den Flag -alwaysIgnoreWrongReferencesInMetadata. Wenn dieser gesetzt ist, werden die ggf. unkritischen Fehlermeldungen zwar angezeigt, führen jedoch nicht zum Abbruch der SIP-Erstellung.
+Für den CLI-Modus gibt es den Flag __-alwaysIgnoreWrongReferencesInMetadata__. Wenn dieser gesetzt ist, werden die ggf. unkritischen Fehlermeldungen zwar angezeigt, führen jedoch nicht zum Abbruch der SIP-Erstellung.
 Dieser Flag sollte nur dann gesetzt werden, wenn der Nutzer Delta-SIPs bilden möchte und die Struktur des Gesamtpakets sehr gut kennt. Standardmäßig ist dieser Flag auf false gesetzt.
 
 #### Ausschluss bestimmter Dateiendungen
@@ -332,7 +332,7 @@ Beispiel:
 
 ### Beispielaufrufe
 
-_java -jar SipBuilder.jar -source="D:\sipsource" -destination="D:\sips\" -single_  
+__*java -jar SipBuilder.jar -source="D:\sipsource" -destination="D:\sips\" -single*__ 
 Erstellt ein einziges SIP aus dem Ordner __D:\sipsource__ im Verzeichnis __D:\sips\__. Es werden die Standardrechte angewendet.
 
 _java -jar SipBuilder.jar -filelist="C:\Eigene Dateien\SIP-Source\filelist.txt"  -destination="D:\sips\" -single="ExampleSIP" -rights="D:\sipRights\contractRights_001.xml"  -alwaysOverwrite_  
