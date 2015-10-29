@@ -503,8 +503,11 @@ public class MetsParser{
 	public List<String> getReferences() {
 		List<String> references = new ArrayList<String>();
 		for(Element fileElement : fileElements) {
-			references.add(getHref(fileElement));
+			String ref = getHref(fileElement);
+			references.add(ref);
+			logger.debug("Found reference "+ref);
 		}
+		logger.debug("number of existing references "+references.size());
 		return references;
 	}
 	

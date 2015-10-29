@@ -166,7 +166,11 @@ public class MetsMetadataStructure extends MetadataStructure {
 
 	private boolean checkReferencedFiles() {
 		Boolean valid = true;
-		if(metsParser.getReferences().size()!=getReferencedFiles(metsFile, metsParser.getReferences(), currentDocuments).size()) {
+		int numReferences = metsParser.getReferences().size();
+		logger.debug("Number of references "+numReferences);
+		int numReferencesFiles = getReferencedFiles(metsFile, metsParser.getReferences(), currentDocuments).size();
+		logger.debug("Number of referenced files: "+numReferencesFiles);
+		if(numReferences!=numReferencesFiles) {
 			valid = false;
 		}
 		return valid;

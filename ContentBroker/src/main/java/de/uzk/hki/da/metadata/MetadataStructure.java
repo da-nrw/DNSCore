@@ -213,7 +213,9 @@ public abstract class MetadataStructure {
 	}
 	
 	private DAFile getReferencedDAFileFromDocument(de.uzk.hki.da.model.Document doc, File refFile) {
+		logger.debug("Get dafile from document "+doc.getName());
 		DAFile lastDAFile = doc.getLasttDAFile();
+		logger.debug("Last dafile "+lastDAFile);
 		DAFile referencedFile = null;
 		if(refFile.getAbsolutePath().endsWith(lastDAFile.getRelative_path())) {
 			referencedFile = lastDAFile;
@@ -232,13 +234,19 @@ public abstract class MetadataStructure {
 	}
 	
 	public DAFile getReferencedDafile(File metadataFile, String ref, List<de.uzk.hki.da.model.Document> documents) {
+		logger.debug("Get referenced file with the reference "+ref);
 		DAFile dafile = null;
 		try {
 			File refFile = XMLUtils.getRelativeFileFromReference(ref, Path.makeFile(workPath,metadataFile.getPath()));
+			logger.debug("Referenced file "+refFile);
+			String fileNameWithoutExt = FilenameUtils.removeExtension(refFile.getAbsolutePath());
+			logger.debug("Referenced file without extension "+fileNameWithoutExt);
 			for(de.uzk.hki.da.model.Document doc : documents) {
 				logger.debug("Check document "+doc.getName());
-				if(FilenameUtils.removeExtension(refFile.getAbsolutePath()).endsWith(doc.getName())) {
+				if(fileNameWithoutExt.endsWith(File.separator+doc.getName())) {
+					logger.debug("Found matching document "+doc.getName());
 					dafile = getReferencedDAFileFromDocument(doc, refFile);
+					logger.debug("return dafile "+dafile);
 					break;
 				}
 			}
@@ -257,14 +265,16 @@ public abstract class MetadataStructure {
 			if(dafile==null){
 				missingFiles.add(ref);
 			} else {
-				existingFiles.add(dafile.getPath().toFile()        );
+				existingFiles.add(dafile.getPath().toFile());
+				logger.debug("Found new referenced file "+dafile.getPath().toFile());
 			}
 		}
 		if(!missingFiles.isEmpty()) {
 			for(String missingFile : missingFiles) {
-				logger.error("Missing reference in metadata file"+metadataFile.getName()+": "+missingFile);
+				logger.error("Missing referenced file[s] in metadata file "+metadataFile.getName()+": "+missingFile);
 			}
 		}
+		logger.debug("number of existing referenced files "+existingFiles.size());
 		return existingFiles;
 	}
 }
