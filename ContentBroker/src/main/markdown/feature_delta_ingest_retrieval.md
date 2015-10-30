@@ -6,8 +6,8 @@ Dieser Test fokussiert die für den User offensichtlichsten Aspekte des Delta-Me
 #### Kontext:
 
 * [SIP-Spezifikation](specification_sip.de.md)
-* [DIP-Spezifikation:](specification_dip.md)
-* [Delta:](the_delta_feature.md)
+* [DIP-Spezifikation](specification_dip.md)
+* [Delta](the_delta_feature.md)
 
 ## Hintergrund:
 
