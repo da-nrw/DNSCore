@@ -7,7 +7,7 @@ Dieser Test fokussiert die für den User offensichtlichsten Aspekte des Delta-Me
 
 * [SIP-Spezifikation](specification_sip.de.md)
 * [DIP-Spezifikation:](specification_dip.md)
-* Delta:&nbsp;[https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/the_delta_feature.md]
+* [Delta:](the_delta_feature.md)
 
 ## Hintergrund:
 
