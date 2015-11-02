@@ -45,9 +45,7 @@ Dabei wird das Gesamtpaket ([Object](object_model.md#object)), d.h. Original mir
 
 Das [Object](object_model.md#object) behält auch nach Delta-Einlieferungen seine ursprünglieche Object-ID sowie die URN.
 
-
-
-Whenever a [SIP](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/sip_specification.md) is ingested into the DA-NRW, the resulting [AIP](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/aip_specification.md) is considered the first [package](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#package) of a newly created [object](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#object). It is possible to add more packages to the object, e. g. packages containing additional files, newer versions of files already ingested or an updated version of the contract rights. These packages are called *delta* packages. Delta packages can be built exactly like other SIPs and are processed by the ContentBroker like any other SIP (in terms of conversion, publication etc.), with one exception: No new identifier or URN will be created for the package; instead, the package is assigned to the already existing object it belongs to and inherits the corresponding identifier and URN.
+Die ausführliche Beschreibung der Nutzungsszenarien [Delta-Einlieferung](feature_delta_ingest_retrieval.md## Szenario: AT-DIR-1 Ingest und Retrieval) sowie der einfachen und versionierten [Entnahme](feature_delta_ingest_retrieval.md) finden Sie [hier](feature_delta_ingest_retrieval.md).
 
 ## Ingest of delta packages
 
