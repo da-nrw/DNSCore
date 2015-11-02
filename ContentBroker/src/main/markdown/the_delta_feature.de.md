@@ -39,7 +39,7 @@ Bitte beachten Sie unsere Richtlinien für Delta-Einlieferungen, um mögliche Ab
 
 ## Funktionsweise
 
-Bei einlieferung eines Deltas werden alle vorherigen Pakete des Objekts 
+Bei einlieferung eines Deltas werden alle vorherigen Pakete des Objekts aus dem Langzeitspeicher kopiert und zusammen mit den neu eingelieferten Daten zu einem neuen AIP zusammengefasst. 
 
 
 
