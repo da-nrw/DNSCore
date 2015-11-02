@@ -57,7 +57,7 @@ Daraus ergibt sich, dass
 Eine Delta-Einlieferung wird im System anhand von zwei Kriterien erkannt. Entweder hat das SIP denselben Originalnamen wie das SIP der Ersteinlieferung, oder der Name entspricht der OPbject-ID der Ersteinlieferung.
 
 ## Beschreibung der einzelnen Nutzungsszenarien
-### Ergänzung eines Objekts um neue Digitalisate sowie ein Update der vorhandenen Premis
+### Ergänzung eines Objekts um neue Digitalisate
 
 Beispiel: Object-ID = 1-2014031047417
 
