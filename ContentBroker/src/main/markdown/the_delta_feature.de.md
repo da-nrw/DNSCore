@@ -24,18 +24,24 @@
 Zum besseren Verständis des Delta-Mechanismus empfehlen wir zunächst die Auseinanderesetzung mit den DNS-Konzepten [Object](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#object) 
 und [Package](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#package). 
 
-## Gründe für Delta-Einlieferung
+## Nutzungsszenarien
 
 Das Delta-Feature dient der nachträglichen Ergänzung von bereits eingelieferten SIPs. Nutzen Sie das Feature, um 
 
 1. neue Primärdaten hinzuzufügen,   
 1. bereits eingelieferte Primärdaten in anderer Auflösung oder einem neuen Format einzuliefern,   
 1. Ihre Metadaten mit neuen oder geänderten Informationen anzureichen oder   
-1. die bereits vorgenommennen Einstellungen wie etwa die Zustimmung über Migration oder auch Angaben zu Publikation zu aktualisieren.   
+1. die bereits vorgenommennen Einstellungen wie etwa die Zustimmung über Migration oder auch Angaben zu Publikation zu aktualisieren.  
+
+Es ist möglich, beliebig viele Deltas nacheinander einzuliefern. 
 
 Bitte beachten Sie unsere Richtlinien für Delta-Einlieferungen, um mögliche Ablehnungen wegen Nicht-Validität zu vermeiden.
 
-## Deltas
+## Funktionsweise
+
+Bei einlieferung eines Deltas werden alle vorherigen Pakete des Objekts 
+
+
 
 Whenever a [SIP](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/sip_specification.md) is ingested into the DA-NRW, the resulting [AIP](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/aip_specification.md) is considered the first [package](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#package) of a newly created [object](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#object). It is possible to add more packages to the object, e. g. packages containing additional files, newer versions of files already ingested or an updated version of the contract rights. These packages are called *delta* packages. Delta packages can be built exactly like other SIPs and are processed by the ContentBroker like any other SIP (in terms of conversion, publication etc.), with one exception: No new identifier or URN will be created for the package; instead, the package is assigned to the already existing object it belongs to and inherits the corresponding identifier and URN.
 
