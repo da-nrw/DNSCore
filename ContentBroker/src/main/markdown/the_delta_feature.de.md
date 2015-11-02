@@ -17,12 +17,10 @@
 	  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/
 	
-# The delta mechanism
+# Der Delta-Mechanismus
 
-Users who want to use the delta mechanism should be accustomed how the concepts
-of [objects](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#object) 
-and [packages](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#package) 
-relate to each other in the context of the DNSCore software.
+Zum besseren Verständis des Delta-Mechanismus empfehlen wir zunächst die Auseinanderesetzung mit den DNS-Konzepten [Objekt](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#object) 
+und [Paket](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#package). 
 
 ## Deltas
 
