@@ -33,7 +33,7 @@ Das Delta-Feature dient der nachträglichen Ergänzung von bereits eingelieferte
 1. Ihre Metadaten mit neuen oder geänderten Informationen anzureichen oder   
 1. die bereits vorgenommennen Einstellungen wie etwa die Zustimmung über Migration oder auch Angaben zu Publikation zu aktualisieren.  
 
-Es ist möglich, beliebig viele Deltas nacheinander einzuliefern. 
+Es ist möglich, beliebig viele Deltas nacheinander einzuliefern. Zu beachten ist, dass die Verarbeitung eines vorangegangen Pakets abgeschlossen sein muss, bevor eine Delta-Einlieferung vorgenommen werden kann.
 
 Bitte beachten Sie unsere Richtlinien für Delta-Einlieferungen, um mögliche Ablehnungen wegen Nicht-Validität zu vermeiden.
 
@@ -47,23 +47,21 @@ Das [Object](object_model.md#object) behält auch nach Delta-Einlieferungen sein
 
 Die ausführliche Beschreibung der Nutzungsszenarien Delta-Einlieferung sowie der einfachen und versionierten Entnahme finden Sie [hier](feature_delta_ingest_retrieval.md).
 
-## Ingest of delta packages
+## Richtilinien für Delta-SIPs
 
-Delta packages doesn't differ from other SIPs in structure and can also be created via the [SIP-Builder](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/sip_specification.md#sip-builder). A package is recognized as a delta package by its filename. There a two possible naming conventions suitable for creating delta packages:
+Das Metadatenset muss in jedem einzelnen SIP komplett sein und alle Primärdateien des Objekts (Original-SIP mit allen dazugehörigen Deltas) referenzieren. Im Einzelnen bedeutet es, dass
+Daraus ergibt sich, dass 
+1. die Referenzen in der Metadaten der Ersteinlieferung immer auf die im SIP tatsächlich vorhandenen Primärdateien zeigen müssen.    
+2. Die Delta-SIPs durchaus Referenzen in den Metadaten enthalten können, die auf keine Primärdateien des konkreten SIP zeigen, jedoch auf die in den vorhergegangenen Paketen des Objekts.   
 
-1. The package file has the same name as the first delivered package of the object.
-2. The package file is named after the identifier of the object it belongs to.
+Eine Delta-Einlieferung wird im System anhand von zwei Kriterien erkannt. Entweder hat das SIP denselben Originalnamen wie das SIP der Ersteinlieferung, oder der Name entspricht der OPbject-ID der Ersteinlieferung.
 
-A delta package should not be ingested before a previously delivered package of the same object is processed successfully by the ContentBroker.
+## Beschreibung der einzelnen Nutzungsszenarien
+### Ergänzung eines Objekts um neue Digitalisate sowie ein Update der vorhandenen Premis
 
-## Use cases
-### Adding files
+Beispiel: Object-ID = 1-2014031047417
 
-You can add files to an object by simply delivering a delta package which contains the new files.
-
-Example:
-
-	myPackage.zip (First package)
+	myPackage.zip (Ersteinlieferung)
 		myPackage/
 			bag-info.txt
 			bagit.txt
@@ -74,7 +72,7 @@ Example:
 				picture2.png
 				premis.xml
 				
-	myPackage.zip (Second package, named like the first one)
+	myPackage.zip (Delta)
 		myPackage/
 			bag-info.txt
 			bagit.txt
@@ -95,6 +93,8 @@ Example:
 				picture2.tif
 				picture3.tif
 				premis.xml
+
+
 
 The three PNG files are converted to TIF files during ingest. The resulting DIP contains the newest (i. e. converted) versions of the files included in package 1 (picture1.tif, picture2.tif) and the newest version of the file included in package 2 (picture3.tif). It also contains the newest PREMIS file available: in this case, the newest PREMIS file is the premis.xml included in the second package.
 
