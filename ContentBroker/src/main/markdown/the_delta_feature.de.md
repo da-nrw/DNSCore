@@ -28,10 +28,10 @@ und [Package](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/ma
 
 Das Delta-Feature dient der nachträglichen Ergänzung von bereits eingelieferten SIPs. Nutzen Sie das Feature, um 
 
-a) neue Primärdaten hinzuzufügen,   
-b) bereits eingelieferte Primärdaten in anderer Auflösung oder einem neuen Format einzuliefern,   
-c) Ihre Metadaten mit neuen oder geänderten Informationen anzureichen oder   
-d) die bereits vorgenommennen Einstellungen wie etwa die Zustimmung über Migration oder auch Angaben zu Publikation zu aktualisieren.   
+1. neue Primärdaten hinzuzufügen,   
+1. bereits eingelieferte Primärdaten in anderer Auflösung oder einem neuen Format einzuliefern,   
+1. Ihre Metadaten mit neuen oder geänderten Informationen anzureichen oder   
+1. die bereits vorgenommennen Einstellungen wie etwa die Zustimmung über Migration oder auch Angaben zu Publikation zu aktualisieren.   
 
 Bitte beachten Sie unsere Richtlinien für Delta-Einlieferungen, um mögliche Ablehnungen wegen Nicht-Validität zu vermeiden.
 
