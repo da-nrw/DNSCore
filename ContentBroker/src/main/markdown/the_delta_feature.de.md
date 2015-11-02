@@ -39,7 +39,11 @@ Bitte beachten Sie unsere Richtlinien für Delta-Einlieferungen, um mögliche Ab
 
 ## Funktionsweise
 
-Bei einlieferung eines Deltas werden alle vorherigen Pakete des Objekts aus dem Langzeitspeicher kopiert und zusammen mit den neu eingelieferten Daten zu einem neuen AIP zusammengefasst. 
+Bei einlieferung eines Delta-[SIP](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/sip_specification.md) werden alle vorherigen Pakete des Objekts aus dem Langzeitspeicher kopiert und zusammen mit den neu eingelieferten Daten zu einem neuen [AIP](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/aip_specification.md) zusammengefasst. 
+
+Dabei wird das Gesamtpaket ([Object](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#object)), d.h. Original mir n Deltas, auf seine Validität geprüft. 
+
+Das [Object](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#object) behält auch nach Delta-Einlieferungen seine ursprünglieche Object-ID sowie die URN.
 
 
 
