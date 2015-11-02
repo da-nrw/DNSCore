@@ -45,7 +45,7 @@ Dabei wird das Gesamtpaket ([Object](object_model.md#object)), d.h. Original mir
 
 Das [Object](object_model.md#object) behält auch nach Delta-Einlieferungen seine ursprünglieche Object-ID sowie die URN.
 
-Die ausführliche Beschreibung der Nutzungsszenarien [Delta-Einlieferung](feature_delta_ingest_retrieval.md## Szenario: AT-DIR-1 Ingest und Retrieval) sowie der einfachen und versionierten [Entnahme](feature_delta_ingest_retrieval.md) finden Sie [hier](feature_delta_ingest_retrieval.md).
+Die ausführliche Beschreibung der Nutzungsszenarien [Delta-Einlieferung](feature_delta_ingest_retrieval.md##Szenario: AT-DIR-1 Ingest und Retrieval) sowie der einfachen und versionierten [Entnahme](feature_delta_ingest_retrieval.md) finden Sie [hier](feature_delta_ingest_retrieval.md).
 
 ## Ingest of delta packages
 
