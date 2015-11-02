@@ -21,8 +21,8 @@
 
 ## Vorkenntnisse
 
-Zum besseren Verständis des Delta-Mechanismus empfehlen wir zunächst die Auseinanderesetzung mit den DNS-Konzepten [Object](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#object) 
-und [Package](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#package). 
+Zum besseren Verständis des Delta-Mechanismus empfehlen wir zunächst die Auseinanderesetzung mit den DNS-Konzepten [Object](object_model.md#object) 
+und [Package](object_model.md#package). 
 
 ## Nutzungsszenarien
 
@@ -39,11 +39,11 @@ Bitte beachten Sie unsere Richtlinien für Delta-Einlieferungen, um mögliche Ab
 
 ## Funktionsweise
 
-Bei einlieferung eines Delta-[SIP](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/sip_specification.md) werden alle vorherigen Pakete des Objekts aus dem Langzeitspeicher kopiert und zusammen mit den neu eingelieferten Daten zu einem neuen [AIP](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/aip_specification.md) zusammengefasst. 
+Bei Einlieferung eines Delta-[SIP](specification_sip.de.md) werden alle vorherigen Pakete des [Objekts](object_model.md#object) aus dem Langzeitspeicher kopiert und zusammen mit den neu eingelieferten Daten zu einem neuen [AIP](aip_specification.md) zusammengefasst. 
 
-Dabei wird das Gesamtpaket ([Object](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#object)), d.h. Original mir n Deltas, auf seine Validität geprüft. 
+Dabei wird das Gesamtpaket ([Object](object_model.md#object)), d.h. Original mir n Deltas, auf seine Validität geprüft. 
 
-Das [Object](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#object) behält auch nach Delta-Einlieferungen seine ursprünglieche Object-ID sowie die URN.
+Das [Object](object_model.md#object) behält auch nach Delta-Einlieferungen seine ursprünglieche Object-ID sowie die URN.
 
 
 
