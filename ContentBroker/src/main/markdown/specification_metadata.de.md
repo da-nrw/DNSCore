@@ -2,7 +2,7 @@
 
 ## Allgemeine Definition
 
-„Metadaten sind strukturierte Daten zur einheitlichen Beschreibung von Ressourcen jeglicher Art (z. B. Daten, Dokumente, Personen, Gemälde, Orte, Gebäude, Konzepte)“ .  Sie unterstützen die Recherche der beschriebenen Daten auf dem Dateisystem, in Datenbanken sowie im World Wide Web. Aufgrund der Heterogenität der Primärdaten an sich sowie der Vielfältigkeit der verschiedenen Kontexte, in denen diese Daten verwendet werden, existieren unterschiedliche Arten, Formate und Standards der Metadaten.
+„Metadaten sind strukturierte Daten zur einheitlichen Beschreibung von Ressourcen jeglicher Art (z. B. Daten, Dokumente, Personen, Gemälde, Orte, Gebäude, Konzepte)“.  Sie unterstützen die Recherche der beschriebenen Daten auf dem Dateisystem, in Datenbanken sowie im World Wide Web. Aufgrund der Heterogenität der Primärdaten an sich sowie der Vielfältigkeit der verschiedenen Kontexte, in denen diese Daten verwendet werden, existieren unterschiedliche Arten, Formate und Standards der Metadaten.
 Unabhängig vom jeweiligen Metadatenformat werden inhaltlich gesehen folgende Arten von Metadaten unterschieden:
 * Deskriptive Metadaten dienen der Beschreibung von allen für die Recherche relevanten Informationen wie beispielsweise Titel, Autor und Format einer Ressource.
 * Strukturelle Metadaten bilden die Dokumentenstruktur ab und zeigen Beziehungen zwischen Ressourcen auf.
@@ -19,7 +19,7 @@ Im Rahmen des DA-NRW werden derzeit vier Metadatenformate akzeptiert:
 
 Die genannten Formate enthalten jeweils alle vier Arten von Metadaten. 
 Lebensweg der Metadaten im DNSCore
-Abhängig von der Verarbeitung der Primärdaten ändern sich mit diesen auch die entsprechenden Metadaten. Dabei werden in DNS der strukturelle sowie der technische Teil der jeweiligen Metadaten aktualisiert. Der von den Archivaren, Bibliothekaren etc. erfasste deskriptive Teil der Metadaten bleibt unverändert. Die Administrativen Metadaten werden für das gesamte Paket in der PREMIS.xml zusammengetragen.
+Abhängig von der Verarbeitung der Primärdaten ändern sich mit diesen auch die entsprechenden Metadaten. Dabei werden in DNS der strukturelle sowie der technische Teil der jeweiligen Metadaten aktualisiert. Der von den Archivaren, Bibliothekaren und anderen Nutzern erfasste deskriptive Teil der Metadaten bleibt unverändert. Die administrativen Metadaten werden für das gesamte Paket in der PREMIS.xml zusammengetragen.
 
 ### Langzeitarchivierung
 
