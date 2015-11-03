@@ -51,8 +51,8 @@ Die ausführliche Beschreibung der Nutzungsszenarien Delta-Einlieferung sowie de
 
 Das Metadatenset muss in jedem einzelnen SIP komplett sein und alle Primärdateien des Objekts (Original-SIP mit allen dazugehörigen Deltas) referenzieren. Im Einzelnen bedeutet es, dass
 Daraus ergibt sich, dass    
-1. die Referenzen in der Metadaten der Ersteinlieferung immer auf die im SIP tatsächlich vorhandenen Primärdateien zeigen müssen.       
-2. Die Delta-SIPs durchaus Referenzen in den Metadaten enthalten können, die auf keine Primärdateien des konkreten SIP zeigen, jedoch auf die in den vorhergegangenen Paketen des Objekts.   
+1. die Referenzen in der Metadaten der Ersteinlieferung immer auf die im SIP tatsächlich vorhandenen Primärdateien zeigen müssen &       
+2. die Delta-SIPs durchaus Referenzen in den Metadaten enthalten können, die auf keine Primärdateien des konkreten SIP zeigen, jedoch auf die in den vorhergegangenen Paketen des Objekts.   
 
 Eine Delta-Einlieferung wird im System anhand von zwei Kriterien erkannt. Entweder hat das SIP denselben Originalnamen wie das SIP der Ersteinlieferung, oder der Name entspricht der OPbject-ID der Ersteinlieferung.
 
@@ -95,19 +95,19 @@ Beispiel: Object-ID = 1-2014031047417
 				premis.xml
 
 
-Die PNG-Files wurden für im Zuge der Langzeitarchivierung nach TIF konvertiert. Das resultierende DIP enthält alle neusten Filerepräsentationen, nämlich picture1.tif, picture2.tif aus der Ersteinlieferung und picture3.tif aus dem Delta.
+Die PNG-Files wurden für im Zuge der Langzeitarchivierung nach TIFF konvertiert. Das resultierende DIP enthält alle neusten Filerepräsentationen, nämlich picture1.tif, picture2.tif aus der Ersteinlieferung und picture3.tif aus dem Delta.
 
 Darüber hinaus enthält das DIP die neuste Repräsentation der PREMIS.xml. Die PREMIS.xml aus der Ersteinlieferung wurde mit der aus dem Delta überschrieben. 
 
 Das [Versionierte Retrieval](feature_delta_ingest_retrieval.md#szenario-at-dir-2-versioniertes-retrieval-alle-packages) erlaubt jedoch die Entnahme der älteren Datenbestände. 
 
-### Replacing files
+### Ersetzung von Dateien
 
-It is also possible to replace existing files with updated versions of these files. As already ingested files should never be deleted in a long term preservation system, the older file is not deleted from the storage device, but replaced *logically* by the newer file: DIPs will only contain the newer file, and only the newer file will be published.
+Es ist möglich, durch Delta-Einlieferung die ursprünglichen Dateien durch neue zu ersetzen. Voraussetzung ist, dass diese denselben Dateinamen tragen. Ältere Datenbestände werden in DNS niemals gelöscht und sind stets über [Versionierte Retrieval](feature_delta_ingest_retrieval.md#szenario-at-dir-2-versioniertes-retrieval-alle-packages) verfügbar. Über das [einfache Retrieval](feature_delta_ingest_retrieval.md#szenario-at-dir-1-ingest-und-retrieval) bekommt man im DIP stets die Summe der neusten Versionen aller Dateien:
 
-Example:
+Beispiel:
 
-	myPackage.zip (First package)
+	myPackage.zip (Ersteinlieferung)
 		myPackage/
 			bag-info.txt
 			bagit.txt
@@ -118,7 +118,7 @@ Example:
 				picture2.png
 				premis.xml
 				
-	myPackage.zip (Second package, named like the first one)
+	myPackage.zip (Delta mit demselben Namen wie die Ersteinlieferung)
 		myPackage/
 			bag-info.txt
 			bagit.txt
@@ -135,8 +135,8 @@ Example:
 			manifest-md5.txt
 			tagmanifest-md5.txt
 			data/
-				picture1.tif	(Package 1 version)
-				picture2.tif	(Package 2 version)
+				picture1.tif	(Package 1 Version)
+				picture2.tif	(Package 2 Version)
 				premis.xml
 
 If a delta package contains a file named like a file already existing in a previously delivered package, the older file is replaced logically by the newer file. Please note that the file extension is not considered part of the file name in this case: If two files have different file extensions while sharing the same base name (e. g. "document.pdf" and "document.doc"), these files are considered homonymous. Before planning to replace files using the delta feature, please read the paragraph about [substitution rules](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/dip_specification.md#substitution-rules-and-surface-view-of-an-object) carefully.
