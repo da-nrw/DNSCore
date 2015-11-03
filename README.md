@@ -59,7 +59,7 @@ For Documentation see:
 
 Prerequisites:
 
-    JAVA 1.6
+    JAVA 1.6+
     MAVEN
     GIT 
     Grails 2.3.8
