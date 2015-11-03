@@ -4,9 +4,9 @@ Für Informationen zu der Verarbeitung von Paketen steht im Normalfall dem Anwen
 
 Da es für massenhafte Abfragen (durch Drittsysteme, durch den Anwender zur Überwachung einer eingelieferten Charge) auch möglich sein soll generisch Abfragen an die DNS zu stellen, stehen zwei Wege zur Verfügung: 
 
-Es gibt eine technische Webschnittstelle, die Anfragen im JSON Format via HTTP verarbeiten kann. Die Antworten des Systems erfolgen als maschinenlesbarer JSON Code. Dieses Teilfeature eignet sich für Drittsysteme und arbeitet mit einer technischen Anmeldung am System. Direkter Internetzugriff zwischen DNS und dem Drittsystem sind erforderlich.
+a) Es gibt eine technische Webschnittstelle, die Anfragen im JSON Format via HTTP verarbeiten kann. Die Antworten des Systems erfolgen als maschinenlesbarer JSON Code. Dieses Teilfeature eignet sich für Drittsysteme und arbeitet mit einer technischen Anmeldung am System. Direkter Internetzugriff zwischen DNS und dem Drittsystem sind erforderlich.
 
-Oftmals gibt es den Wunsch, den Status einer gesamten (vorgefertigten) Liste an Ablieferungsnamen zu untersuchen. Dazu gibt es gibt es die Möglichkeit Abfragen mittels einer vorbereiteten Datei durchzuführen. Diese Datei kann als CSV (comma separated values) Datei in die DA-Web Schnittstelle geladen werden. Die Auswertung erfolgt dann durch den ContentBroker und die Datei steht danach im outgoing Ordner der Anwendung zur Verfügung. 
+b) Oftmals gibt es den Wunsch, den Status einer gesamten (vorgefertigten) Liste an Ablieferungsnamen zu untersuchen. Dazu gibt es gibt es die Möglichkeit Abfragen mittels einer vorbereiteten Datei durchzuführen. Diese Datei kann als CSV (comma separated values) Datei in die DA-Web Schnittstelle geladen werden. Die Auswertung erfolgt dann durch den ContentBroker und die Datei steht danach im outgoing Ordner der Anwendung zur Verfügung. 
 
 Beide technischen Abfragen arbeiten jeweils im Use Case der reinen Statusabfrage:
 Bsp.:
