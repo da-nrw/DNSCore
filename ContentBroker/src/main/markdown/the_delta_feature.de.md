@@ -35,7 +35,7 @@ Das Delta-Feature dient der nachträglichen Ergänzung von bereits eingelieferte
 
 Es ist möglich, beliebig viele Deltas nacheinander einzuliefern. Zu beachten ist, dass die Verarbeitung eines vorangegangen Pakets abgeschlossen sein muss, bevor eine Delta-Einlieferung vorgenommen werden kann.
 
-Bitte beachten Sie unsere Richtlinien für Delta-Einlieferungen, um mögliche Ablehnungen wegen Nicht-Validität zu vermeiden.
+Bitte beachten Sie unsere [Richtlinien für Delta-Einlieferungen](the_delta_feature.de.md#richtilinien-für-delta-sips), um mögliche Ablehnungen wegen Nicht-Validität zu vermeiden.
 
 ## Funktionsweise
 
