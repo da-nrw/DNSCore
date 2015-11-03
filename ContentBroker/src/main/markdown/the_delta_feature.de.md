@@ -95,8 +95,11 @@ Beispiel: Object-ID = 1-2014031047417
 				premis.xml
 
 
+Die PNG-Files wurden für im Zuge der Langzeitarchivierung nach TIF konvertiert. Das resultierende DIP enthält alle neusten Filerepräsentationen, nämlich picture1.tif, picture2.tif aus der Ersteinlieferung und picture3.tif aus dem Delta.
 
-The three PNG files are converted to TIF files during ingest. The resulting DIP contains the newest (i. e. converted) versions of the files included in package 1 (picture1.tif, picture2.tif) and the newest version of the file included in package 2 (picture3.tif). It also contains the newest PREMIS file available: in this case, the newest PREMIS file is the premis.xml included in the second package.
+Darüber hinaus enthält das DIP die neuste Repräsentation der PREMIS.xml. Die PREMIS.xml aus der Ersteinlieferung wurde mit der aus dem Delta überschrieben. 
+
+Das [Versionierte Retrieval](feature_delta_ingest_retrieval.md#szenario-at-dir-2-versioniertes-retrieval-alle-packages) erlaubt jedoch die Entnahme der älteren Datenbestände. 
 
 ### Replacing files
 
