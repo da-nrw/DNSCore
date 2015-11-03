@@ -86,7 +86,7 @@ Gilt für alle Szenarien!
 1. Er entnimmt und entpackt das Package.
 1. Er überprüft die Inhalte.
 
-#### Akkzeptanzkriterien:
+#### Akzeptanzkriterien:
 
 * Das über das versionierte Retrieval zurückgeholte Paket weist unterhalb des Ordners identifier/data, abgesehen von den premis.xml-Dateien,&nbsp;*exakt*&nbsp;folgende Inhalte auf
 
