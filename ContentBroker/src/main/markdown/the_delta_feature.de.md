@@ -35,13 +35,13 @@ Das Delta-Feature dient der nachträglichen Ergänzung von bereits eingelieferte
 
 Es ist möglich, beliebig viele Deltas nacheinander einzuliefern. Zu beachten ist, dass die Verarbeitung eines vorangegangen Pakets abgeschlossen sein muss, bevor eine Delta-Einlieferung vorgenommen werden kann.
 
-Bitte beachten Sie unsere Richtlinien für Delta-Einlieferungen, um mögliche Ablehnungen wegen Nicht-Validität zu vermeiden.
+Bitte beachten Sie unsere [Richtlinien für Delta-Einlieferungen](the_delta_feature.de.md#richtilinien-für-delta-sips), um mögliche Ablehnungen wegen Nicht-Validität zu vermeiden.
 
 ## Funktionsweise
 
 Bei Einlieferung eines Delta-[SIP](specification_sip.de.md) werden alle vorherigen Pakete des [Objekts](object_model.md#object) aus dem Langzeitspeicher kopiert und zusammen mit den neu eingelieferten Daten zu einem neuen [AIP](aip_specification.md) zusammengefasst. 
 
-Dabei wird das Gesamtpaket ([Object](object_model.md#object)), d.h. Original mir n Deltas, auf seine Validität geprüft. 
+Dabei wird das Gesamtpaket ([Object](object_model.md#object)), d.h. Original mit n Deltas, auf seine Validität geprüft. 
 
 Das [Object](object_model.md#object) behält auch nach Delta-Einlieferungen seine ursprünglieche Object-ID sowie die URN.
 
@@ -103,7 +103,7 @@ Das [Versionierte Retrieval](feature_delta_ingest_retrieval.md#szenario-at-dir-2
 
 ### Ersetzung von Dateien
 
-Es ist möglich, durch Delta-Einlieferung die ursprünglichen Dateien durch neue zu ersetzen. Voraussetzung ist, dass diese denselben Dateinamen tragen. Ältere Datenbestände werden in DNS niemals gelöscht und sind stets über [Versionierte Retrieval](feature_delta_ingest_retrieval.md#szenario-at-dir-2-versioniertes-retrieval-alle-packages) verfügbar. Über das [einfache Retrieval](feature_delta_ingest_retrieval.md#szenario-at-dir-1-ingest-und-retrieval) bekommt man im DIP stets die Summe der neusten Versionen aller Dateien:
+Es ist möglich, durch Delta-Einlieferung die ursprünglichen Dateien durch neue zu ersetzen. Voraussetzung ist, dass diese denselben Dateinamen tragen. Ältere Datenbestände werden in DNS niemals gelöscht und sind stets über das [Versionierte Retrieval](feature_delta_ingest_retrieval.md#szenario-at-dir-2-versioniertes-retrieval-alle-packages) verfügbar. Über das [einfache Retrieval](feature_delta_ingest_retrieval.md#szenario-at-dir-1-ingest-und-retrieval) bekommt man im DIP stets die Summe der neusten Versionen aller Dateien:
 
 Beispiel:
 
@@ -139,20 +139,23 @@ Beispiel:
 				picture2.tif	(Package 2 Version)
 				premis.xml
 
-If a delta package contains a file named like a file already existing in a previously delivered package, the older file is replaced logically by the newer file. Please note that the file extension is not considered part of the file name in this case: If two files have different file extensions while sharing the same base name (e. g. "document.pdf" and "document.doc"), these files are considered homonymous. Before planning to replace files using the delta feature, please read the paragraph about [substitution rules](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/dip_specification.md#substitution-rules-and-surface-view-of-an-object) carefully.
+Bitte beachten Sie, dass die Dateiendung bei der Ersetzung keine Rolle spielt. Es zählt lediglich der Dateiname. Das bedeutet, dass bei Einlieferung einer Datei "document.pdf" im Delta die zuvor eingelieferte Datei "document.doc" ersetzt wird. Für die korrekte Erzeugung der Delta-Pakete lesen Sie bitte unsere [Richtlinien](specification_dip.md#substitution-rules-and-surface-view-of-an-object).
 
-### Replacing the contract
+### Ersetzung der Einstellungen
 
-When building delta packages, it is important to know that only the premis.xml delivered in the newest package is used for determining the contract rights of an object.  
-Just like every other SIP, each delta package needs to contain a valid PREMIS file. If you want to keep the settings of the originally delivered package, just copy the rights section from the original premis.xml, or choose the same rights settings again when building the SIP via the SIP-Builder. Alternatively, you can include a PREMIS file with different settings in order to change the contract rights (e. g. add a footer text or allow publication). Please note that the new settings will be valid for the contents of the whole object and not just for the contents of the delta package!  
-It is not necessary to add data files to a delta package if you just want to change the contract. A SIP containing just a single premis.xml is a valid SIP (while a SIP containing just other data and no premis.xml is not).
+Jedes SIP, ob Delta oder nicht, muss eine Premis.xml enthalten, in der alle Einstellungen für das Paket, sei es Rechte-, Migrations- oder Publikaitionseinstellungen, festgehalten sind.
 
-## Deltas and metadata
+Bitte beachten Sie, dass im Fall einer Delta-Lieferung die Einstellungen aus der zuletzt eingelieferten Premis für das Gesamtobjekt gelten. Wenn Sie diese also durch eine Deltaleiferung nicht verändern wollen, müssen Sie daran denken, beim Delta-SIP dieselben Einstellungen vorzunehmen wie bei der Ersteinlieferung. 
 
-If the originally delivered package contains a metadata file, an updated version of the file needs to be contained in the delta package. Just like the premis.xml, the new metadata file has to apply to the whole object and not just the contents of the delta package (e. g. the *fileSec* element of a mets.xml file needs to reference the files of the original package *and* the delta package(s)).  
-However, this is not true for sidecar files (like [XMP files](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/sip_specification.md#xmp)): You only have to include sidecar files if the corresponding base files are also included in the delta package.
+## Deltas und Metadaten
 
-## Deltas and long term preservation
+Die [Metadaten](specification_metadata.de.md) dienen der Beschreibung und Referenzierung von Primärdaten. Im Fall der Einlieferung von Metadaten des Typs EAD, METS oder LIDO werden die entsprechenden SIPs auf ihr Konsistenz hin überprüft. 
+Im Fall Delta gilt, ähnlich wie bei Premis.xml, die zuletzt eingelieferte Metadatendatei für das gesamte Objekt. Das bedeutet, dass sie nicht nur die aktuell mitgelieferten Dateien referenzieren und beschreiben soll, sondern auch alle vorangegangenen. Das bedeutet, dass jeder Dateiname genau ein Mal als Referenz angegeben werden muss.
 
-As mentioned above, already ingested data is only deleted under exceptional circumstances. To ensure that delta files never overwrite existing files, each package of an object is stored as a separate AIP. They are combined inside the working directory at certain occasions (e. g. retrieval, transfer to presentation repository), but are kept at different locations on the storage device.  
-However, there is one downside to this approach: In case of a fatal database damage, the objects may need to be reconstructed manually out of the different package files. Therefore it is planned to merge the packages of an object to a single AIP at regular intervals (without deleting the original packages). The feature will be implemented in a future version of the ContentBroker.
+Für das Metadatenformat XMP gilt, für jedes Digitalisat muss das SIP eine Metadatendatei enthalten, s. [unsere Dokumentation](specification_publication_metadata.md#xmp---sidecar). 
+
+## Deltas und Langzeitarchivierung
+
+Das DNS ist ein System zur Langzeitarchivierung und sieht daher keine Löschung der bereits archivierten Daten vor. Aus diesem Grund werden Delta-AIPs an einem anderen Ort gespeichert als die Ersteinlieferung. Im Katastrophenfall müssen die AIPs eines Objekts händisch zusammengeführt werden. 
+
+Es ist geplant, einen automatisierten Mechanismus zu implementieren, der nach jeder Delta-Lieferung das Gesamtobjekt zusammenführt und neu speichert, ohne die einzelnen vorher gespeicherten AIPs zu löschen. 
