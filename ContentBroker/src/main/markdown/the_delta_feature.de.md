@@ -103,7 +103,7 @@ Das [Versionierte Retrieval](feature_delta_ingest_retrieval.md#szenario-at-dir-2
 
 ### Ersetzung von Dateien
 
-Es ist möglich, durch Delta-Einlieferung die ursprünglichen Dateien durch neue zu ersetzen. Voraussetzung ist, dass diese denselben Dateinamen tragen. Ältere Datenbestände werden in DNS niemals gelöscht und sind stets über [Versionierte Retrieval](feature_delta_ingest_retrieval.md#szenario-at-dir-2-versioniertes-retrieval-alle-packages) verfügbar. Über das [einfache Retrieval](feature_delta_ingest_retrieval.md#szenario-at-dir-1-ingest-und-retrieval) bekommt man im DIP stets die Summe der neusten Versionen aller Dateien:
+Es ist möglich, durch Delta-Einlieferung die ursprünglichen Dateien durch neue zu ersetzen. Voraussetzung ist, dass diese denselben Dateinamen tragen. Ältere Datenbestände werden in DNS niemals gelöscht und sind stets über das [Versionierte Retrieval](feature_delta_ingest_retrieval.md#szenario-at-dir-2-versioniertes-retrieval-alle-packages) verfügbar. Über das [einfache Retrieval](feature_delta_ingest_retrieval.md#szenario-at-dir-1-ingest-und-retrieval) bekommt man im DIP stets die Summe der neusten Versionen aller Dateien:
 
 Beispiel:
 
