@@ -139,7 +139,7 @@ Beispiel:
 				picture2.tif	(Package 2 Version)
 				premis.xml
 
-Bitte beachten Sie, dass die Dateiendung bei der Ersetzung keine Rolle spielt. Es zählt lediglich der Dateiname. Das bedeutet, dass bei Einlieferung einer Datei "document.pdf" im Delta die zuvor eingelieferte Datei "document.doc" ersetzt wird. Für die korrekte Erzeugung der Delta-Pakete lesen Sie bitte unsere [Richtlinien](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/dip_specification.md#substitution-rules-and-surface-view-of-an-object).
+Bitte beachten Sie, dass die Dateiendung bei der Ersetzung keine Rolle spielt. Es zählt lediglich der Dateiname. Das bedeutet, dass bei Einlieferung einer Datei "document.pdf" im Delta die zuvor eingelieferte Datei "document.doc" ersetzt wird. Für die korrekte Erzeugung der Delta-Pakete lesen Sie bitte unsere [Richtlinien](specification_dip.md#substitution-rules-and-surface-view-of-an-object).
 
 ### Replacing the contract
 
