@@ -19,7 +19,7 @@ The **"dev" mode** somewhat lightweight compared to the "ci" mode. The internal 
 
 Wheter in the dev or ci environment, to build DNS Core successfully you'll need a machine with
 
-* JAVA 1.6
+* JAVA 1.6+
 * MAVEN
 * GIT
 * Grails 2.3.8
