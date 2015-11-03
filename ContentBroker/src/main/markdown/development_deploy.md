@@ -23,7 +23,7 @@ Wheter in the dev or ci environment, to build DNS Core successfully you'll need 
 * MAVEN
 * GIT
 * Grails 2.3.8
-* Imagemagick 6.7.8 (with jasper, to use jpg2000, with tiff)
+* Imagemagick 6.7.8-10 (with jasper, to use jpg2000, with tiff)
 
 Please ensure, the shells (bash and sh) of your workstation run in UTF-8 mode:
     
