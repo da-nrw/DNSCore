@@ -141,16 +141,18 @@ Beispiel:
 
 Bitte beachten Sie, dass die Dateiendung bei der Ersetzung keine Rolle spielt. Es zählt lediglich der Dateiname. Das bedeutet, dass bei Einlieferung einer Datei "document.pdf" im Delta die zuvor eingelieferte Datei "document.doc" ersetzt wird. Für die korrekte Erzeugung der Delta-Pakete lesen Sie bitte unsere [Richtlinien](specification_dip.md#substitution-rules-and-surface-view-of-an-object).
 
-### Replacing the contract
+### Ersetzung der Einstellungen
 
-When building delta packages, it is important to know that only the premis.xml delivered in the newest package is used for determining the contract rights of an object.  
-Just like every other SIP, each delta package needs to contain a valid PREMIS file. If you want to keep the settings of the originally delivered package, just copy the rights section from the original premis.xml, or choose the same rights settings again when building the SIP via the SIP-Builder. Alternatively, you can include a PREMIS file with different settings in order to change the contract rights (e. g. add a footer text or allow publication). Please note that the new settings will be valid for the contents of the whole object and not just for the contents of the delta package!  
-It is not necessary to add data files to a delta package if you just want to change the contract. A SIP containing just a single premis.xml is a valid SIP (while a SIP containing just other data and no premis.xml is not).
+Jedes SIP, ob Delta oder nicht, muss eine Premis.xml enthalten, in der alle Einstellungen für das Paket, sei es Rechte-, Migrations- oder Publikaitionseinstellungen, festgehalten sind.
 
-## Deltas and metadata
+Bitte beachten Sie, dass im Fall einer Delta-Lieferung die Einstellungen aus der zuletzt eingelieferten Premis für das Gesamtobjekt gelten. Wenn Sie diese also durch eine Deltaleiferung nicht verändern wollen, müssen Sie daran denken, beim Delta-SIP dieselben Einstellungen vorzunehmen wie bei der Ersteinlieferung. 
 
-If the originally delivered package contains a metadata file, an updated version of the file needs to be contained in the delta package. Just like the premis.xml, the new metadata file has to apply to the whole object and not just the contents of the delta package (e. g. the *fileSec* element of a mets.xml file needs to reference the files of the original package *and* the delta package(s)).  
-However, this is not true for sidecar files (like [XMP files](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/sip_specification.md#xmp)): You only have to include sidecar files if the corresponding base files are also included in the delta package.
+## Deltas und Metadaten
+
+Die [Metadaten](specification_metadata.de.md) dienen der Beschreibung und Referenzierung von Primärdaten. Im Fall der Einlieferung von Metadaten des Typs EAD, METS oder LIDO werden die entsprechenden SIPs auf ihr Konsistenz hin überprüft. 
+Im Fall Delta gilt, ähnlich wie bei Premis.xml, die zuletzt eingelieferte Metadatendatei für das gesamte Objekt. Das bedeutet, dass sie nicht nur die aktuell mitgelieferten Dateien referenzieren und beschreiben soll, sondern auch alle vorangegangenen. Das bedeutet, dass jeder Dateiname genau ein Mal als Referenz angegeben werden muss.
+
+Für das Metadatenformat XMP gilt, für jedes Digitalisat muss das SIP eine Metadatendatei enthalten, s. [SIP-Spezifikation für XMP}(sip_specification.md#xmp). 
 
 ## Deltas and long term preservation
 
