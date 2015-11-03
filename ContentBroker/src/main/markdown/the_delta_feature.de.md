@@ -154,7 +154,8 @@ Im Fall Delta gilt, ähnlich wie bei Premis.xml, die zuletzt eingelieferte Metad
 
 Für das Metadatenformat XMP gilt, für jedes Digitalisat muss das SIP eine Metadatendatei enthalten, s. [unsere Dokumentation](specification_publication_metadata.md#xmp---sidecar). 
 
-## Deltas and long term preservation
+## Deltas und Langzeitarchivierung
 
-As mentioned above, already ingested data is only deleted under exceptional circumstances. To ensure that delta files never overwrite existing files, each package of an object is stored as a separate AIP. They are combined inside the working directory at certain occasions (e. g. retrieval, transfer to presentation repository), but are kept at different locations on the storage device.  
-However, there is one downside to this approach: In case of a fatal database damage, the objects may need to be reconstructed manually out of the different package files. Therefore it is planned to merge the packages of an object to a single AIP at regular intervals (without deleting the original packages). The feature will be implemented in a future version of the ContentBroker.
+Das DNS ist ein System zur Langzeitarchivierung und sieht daher keine Löschung der bereits archivierten Daten vor. Aus diesem Grund werden Delta-AIPs an einem anderen Ort gespeichert als die Ersteinlieferung. Im Katastrophenfall müssen die AIPs eines Objekts händisch zusammengeführt werden. 
+
+Es ist geplant, einen automatisierten Mechanismus zu implementieren, der nach jeder Delta-Lieferung das Gesamtobjekt zusammenführt und neu speichert, ohne die einzelnen vorher gespeicherten AIPs zu löschen. 
