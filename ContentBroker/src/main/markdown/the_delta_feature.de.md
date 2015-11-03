@@ -152,7 +152,7 @@ Bitte beachten Sie, dass im Fall einer Delta-Lieferung die Einstellungen aus der
 Die [Metadaten](specification_metadata.de.md) dienen der Beschreibung und Referenzierung von Primärdaten. Im Fall der Einlieferung von Metadaten des Typs EAD, METS oder LIDO werden die entsprechenden SIPs auf ihr Konsistenz hin überprüft. 
 Im Fall Delta gilt, ähnlich wie bei Premis.xml, die zuletzt eingelieferte Metadatendatei für das gesamte Objekt. Das bedeutet, dass sie nicht nur die aktuell mitgelieferten Dateien referenzieren und beschreiben soll, sondern auch alle vorangegangenen. Das bedeutet, dass jeder Dateiname genau ein Mal als Referenz angegeben werden muss.
 
-Für das Metadatenformat XMP gilt, für jedes Digitalisat muss das SIP eine Metadatendatei enthalten, s. [SIP-Spezifikation für XMP](specification_sip.md#xmp). 
+Für das Metadatenformat XMP gilt, für jedes Digitalisat muss das SIP eine Metadatendatei enthalten, s. [unsere Dokumentation](specification_publication_metadata.md#xmp---sidecar). 
 
 ## Deltas and long term preservation
 
