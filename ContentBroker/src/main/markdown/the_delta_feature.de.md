@@ -139,7 +139,7 @@ Beispiel:
 				picture2.tif	(Package 2 Version)
 				premis.xml
 
-If a delta package contains a file named like a file already existing in a previously delivered package, the older file is replaced logically by the newer file. Please note that the file extension is not considered part of the file name in this case: If two files have different file extensions while sharing the same base name (e. g. "document.pdf" and "document.doc"), these files are considered homonymous. Before planning to replace files using the delta feature, please read the paragraph about [substitution rules](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/dip_specification.md#substitution-rules-and-surface-view-of-an-object) carefully.
+Bitte beachten Sie, dass die Dateiendung bei der Ersetzung keine Rolle spielt. Es zählt lediglich der Dateiname. Das bedeutet, dass bei Einlieferung einer Datei "document.pdf" im Delta die zuvor eingelieferte Datei "document.doc" ersetzt wird. Für die korrekte Erzeugung der Delta-Pakete lesen Sie bitte unsere [Richtlinien](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/dip_specification.md#substitution-rules-and-surface-view-of-an-object).
 
 ### Replacing the contract
 
