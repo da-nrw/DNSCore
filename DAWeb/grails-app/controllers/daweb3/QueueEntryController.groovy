@@ -318,7 +318,7 @@ class QueueEntryController {
 				 [csn: user.shortName])
 			} else {
 				admin = true;
-				queueEntries = QueueEntry.findAll("from QueueEntry as q where and q.question is not null and (q.status like '%5' OR q.status like '%4')")
+				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.question is not null and (q.status like '%5' OR q.status like '%4')")
 				
 			}
 			[queueEntryInstanceList: queueEntries,
