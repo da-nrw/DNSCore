@@ -45,7 +45,7 @@ Dabei wird das Gesamtpaket ([Object](object_model.md#object)), d.h. Original mir
 
 Das [Object](object_model.md#object) behält auch nach Delta-Einlieferungen seine ursprünglieche Object-ID sowie die URN.
 
-Die ausführliche Beschreibung der Nutzungsszenarien Delta-Einlieferung sowie der einfachen und versionierten Entnahme finden Sie [hier](feature_delta_ingest_retrieval.md).
+Die ausführliche Beschreibung der Nutzungsszenarien Delta-Einlieferung sowie der [einfachen](feature_delta_ingest_retrieval.md#szenario-at-dir-1-ingest-und-retrieval) und [versionierten](feature_delta_ingest_retrieval.md#szenario-at-dir-2-versioniertes-retrieval-alle-packages) Entnahme finden Sie [hier](feature_delta_ingest_retrieval.md).
 
 ## Richtilinien für Delta-SIPs
 
