@@ -195,7 +195,9 @@ wie vor
 
 #### Durchführung:
 
-wie vor, nun aber mit der URL
+Testszenario ist analog wie AT-ST-JSON-1, hier nur als Szenario "Abfrage URN"
+
+wie vor, nun aber mit der URL: 
 
 * Die URL 
 ** [https://|https://**]**<QSERVERNAME>**/daweb3/status/index?origName=<DER ORIGNAME> wird mit dem für*&nbsp;*ATUseCaseIngest1.tgz vergebenen&nbsp;*{*}Originalnamen abgefragt*
