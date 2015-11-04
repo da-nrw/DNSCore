@@ -179,7 +179,7 @@ public class MetadataStructureGetIndexInfoTests {
 	
 	@Test
 	public void testNewDdbEad() throws JDOMException, IOException, ParserConfigurationException, SAXException {
-		File eadFile = Path.make("EAD_Export.XML").toFile();
+		File eadFile = Path.make("new_ddb_ead.xml").toFile();
 		
 		List<Document> docs = new ArrayList<Document>();
 		MetadataStructure ems = new EadMetsMetadataStructure(Path.make(basePath),eadFile, docs);
@@ -212,7 +212,7 @@ public class MetadataStructureGetIndexInfoTests {
 
 		}
 		assertTrue(parentID1_Bestandsname.equals(parentID2_Bestandsname) && parentID2_Bestandsname.equals(parentID3_Bestandsname));
-		ems.toEDM(indexInfo, Path.makeFile(basePath, "target", "TEST.xml"), pSystem, objectID, urn);
+		ems.toEDM(indexInfo, Path.makeFile(basePath, "target", "new_ddb_ead_to_edm.xml"), pSystem, objectID, urn);
 	}
 	
 	@AfterClass 
@@ -221,6 +221,7 @@ public class MetadataStructureGetIndexInfoTests {
 		Path.makeFile(basePath, "target","lidoToEdm.xml").delete();
 		Path.makeFile(basePath, "target", "metsToEdm.xml").delete();
 		Path.makeFile(basePath, "target", "multilevelMetsToEdm.xml").delete();
+		Path.makeFile(basePath, "target", "new_ddb_ead_to_edm.xml").delete();
 		Path.makeFile(basePath, "target").delete();
 	}
 }
