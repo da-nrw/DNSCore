@@ -43,7 +43,7 @@ public class MetadataStructureGetIndexInfoTests {
 		pSystem.setUrisAggr("http://data.danrw.de/aggregation");
 	}
 	
-	@Test
+//	@Test
 	public void testLIDO() throws FileNotFoundException, JDOMException, IOException {
 		
 		File lidoFile = Path.make("MetadataStructureGetIndexInfoTestsLIDO.xml").toFile();
@@ -175,6 +175,44 @@ public class MetadataStructureGetIndexInfoTests {
 		assertTrue(indexInfo.get(parent).get(C.EDM_TITLE).contains("14. Verschiedenes"));
 		
 		ems.toEDM(indexInfo, Path.makeFile(basePath, "target", "eadToEdm.xml"), pSystem, objectID, urn);
+	}
+	
+	@Test
+	public void testNewDdbEad() throws JDOMException, IOException, ParserConfigurationException, SAXException {
+		File eadFile = Path.make("EAD_Export.XML").toFile();
+		
+		List<Document> docs = new ArrayList<Document>();
+		MetadataStructure ems = new EadMetsMetadataStructure(Path.make(basePath),eadFile, docs);
+		
+		indexInfo = ems.getIndexInfo(objectID);
+		
+		String parentID1_Bestandsname = "1";
+		String parentID2_Bestandsname = "2";
+		String parentID3_Bestandsname = "3";
+		
+		for(String id : indexInfo.keySet()) {
+			HashMap<String, List<String>> content = indexInfo.get(id);
+			
+			if(content.get(C.EDM_TITLE)!=null && content.get(C.EDM_TITLE).contains("_Bestandsname")) {
+				assertTrue(content.get(C.EDM_HAS_PART).size()==3);
+			}
+			
+			if(content.get(C.EDM_TITLE)!=null && content.get(C.EDM_IDENTIFIER).contains("4 Rheinländer in aller Welt, Adressen")) {
+				parentID1_Bestandsname = content.get(C.EDM_IS_PART_OF).get(0);
+			}
+			
+			if(content.get(C.EDM_TITLE)!=null && content.get(C.EDM_IDENTIFIER).contains("Klassifikationsgruppe 1")) {
+				parentID2_Bestandsname = content.get(C.EDM_IS_PART_OF).get(0);
+				assertTrue(content.get(C.EDM_HAS_PART).size()==1);
+			}
+			
+			if(content.get(C.EDM_TITLE)!=null && content.get(C.EDM_IDENTIFIER).contains("Systematikgruppe 1")) {
+				parentID3_Bestandsname = content.get(C.EDM_IS_PART_OF).get(0);
+			}
+
+		}
+		assertTrue(parentID1_Bestandsname.equals(parentID2_Bestandsname) && parentID2_Bestandsname.equals(parentID3_Bestandsname));
+		ems.toEDM(indexInfo, Path.makeFile(basePath, "target", "TEST.xml"), pSystem, objectID, urn);
 	}
 	
 	@AfterClass 
