@@ -10,6 +10,7 @@ import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.jdom.Namespace;
 import org.jdom.xpath.XPath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,17 +18,21 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.utils.C;
 
 public class EadParser {
-	
+
 	/** The logger. */
 	public Logger logger = LoggerFactory
 			.getLogger(EadParser.class);
 	
 	private Document eadDoc = new Document();
 	
+	private Namespace EAD_NS;
+	
 	public EadParser(Document doc) throws JDOMException {
 		this.eadDoc = doc;
+		EAD_NS = eadDoc.getRootElement().getNamespace();
+		logger.debug("Setting namespace "+EAD_NS);
 	}
-	
+
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -54,15 +59,18 @@ public class EadParser {
 		HashMap<String, HashMap<String, List<String>>> indexInfo = new HashMap<String, HashMap<String,List<String>>>();
 		
 //		Root
-		Element archdesc = eadDoc.getRootElement().getChild("archdesc");
-		
-		Element archdescDid = archdesc.getChild("did");
+		Element archdesc = eadDoc.getRootElement().getChild("archdesc", EAD_NS);
+
+		Element archdescDid = archdesc.getChild("did", EAD_NS);
 		HashMap<String, List<String>> rootInfo = new HashMap<String, List<String>>();
 		setNodeInfoAndChildeElements(archdescDid, rootInfo, null, null, null);
 		indexInfo.put(objectId, rootInfo);
 
-		Element dsc = archdesc.getChild("dsc");
-		List<Element> c01 = dsc.getChildren("c01");
+		Element dsc = archdesc.getChild("dsc", EAD_NS);
+		List<Element> c01 = dsc.getChildren("c01", EAD_NS);
+		if(c01.isEmpty()) {
+			c01 = dsc.getChildren("c", EAD_NS);
+		}
 
 //		Element: childElement
 //		String: isPartOf parentID
@@ -133,16 +141,16 @@ public class EadParser {
 			} else if(getHref(child).size()>1) {
 				nodeInfo.put(C.EDM_HAS_VIEW, getHref(child));
 			}
-		} else if(uniqueID!=null && child.getName().equals(nextLevel)) {
+		} else if(uniqueID!=null && (child.getName().equals(nextLevel) || child.getName().equals("c"))) {
 			childElements.put(child, uniqueID);
-		}
+		} 
 	}
 	
 	private List<String> getTitle(Element element) {
 		List<String> title = new ArrayList<String>();
 		String t = "";
 		try {
-			t = element.getChild("unittitle").getValue();
+			t = element.getChild("unittitle", EAD_NS).getValue();
 		} catch (Exception e) {
 			logger.error("No unittitle element found");
 		}
@@ -154,9 +162,9 @@ public class EadParser {
 		List<String> date = new ArrayList<String>();
 		String d = "";
 		try {
-			d = element.getChild("unitdate").getAttribute("normal").getValue();
+			d = element.getChild("unitdate", EAD_NS).getAttribute("normal").getValue();
 			if(d.equals("")) {
-				d = element.getChild("unitdate").getValue();
+				d = element.getChild("unitdate", EAD_NS).getValue();
 			}
 		} catch (Exception e) {
 			logger.debug("No unitdate element found");
@@ -168,18 +176,25 @@ public class EadParser {
 	private List<String> getUnitIDs(Element did) {
 		List<String> unitIDs = new ArrayList<String>();
 		@SuppressWarnings("unchecked")
-		List<Element> children = did.getChildren("unitid");
+		List<Element> children = did.getChildren("unitid", EAD_NS);
 		
 		for(Element child : children) {
 			String unitID = "";
 			String type = "";
 			try {
-				type = child.getAttribute("type").getValue();
-				if(!type.equals("")) {
-					unitID = type+": "+child.getValue();
+				if(child.getAttribute("type")!=null) {
+					type = child.getAttribute("type").getValue();
+					if(!type.equals("")) {
+						unitID = type+": "+child.getValue();
+					}
+				} else {
+					unitID = child.getValue();
+				}
+				if(!unitID.equals("")) {
 					unitIDs.add(unitID);
-				} else unitID = child.getValue();
+				}
 			} catch (Exception e) {
+				logger.debug("No unitid element found");
 			}
 		}
 		return unitIDs;
@@ -189,7 +204,7 @@ public class EadParser {
 		List<String> hrefs = new ArrayList<String>();
 		String href = "";
 		try {
-			href = daogrp.getChild("daoloc").getAttributeValue("href");
+			href = daogrp.getChild("daoloc", EAD_NS).getAttributeValue("href");
 		} catch (Exception e) {
 			logger.debug("No unitdate element found");
 		}

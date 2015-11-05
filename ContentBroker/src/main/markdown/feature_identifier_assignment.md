@@ -104,6 +104,8 @@ Das oberste Objekt im METS-Baum wird durch eine dmdSec mit der entsprechenden ID
 
 #### Testpaket(e): 
 
+[ATReadUrnFromMets.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATReadUrnFromMets.tgz) 
+
 ``` 
 (GitHub) ATReadUrnFromMets.tgz enthält
   data/mets.xml
@@ -152,6 +154,8 @@ Eine PREMIS-URN wird der METS-URN vorgezogen.
  [ATReadUrnFromMets](../../test/java/de/uzk/hki/da/at/ATReadUrnFromMets.java).ignoreUrnInMetsReadPremisUrn()
 
 #### Testpaket(e):
+
+[ATReadUrnFromPremisIgnoreMets.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATReadUrnFromPremisIgnoreMets.tgz) 
 
 ```
 (GitHub) ATReadUrnFromPremisIgnoreMets.tgz enhält
