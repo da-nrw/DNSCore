@@ -104,6 +104,8 @@ Das oberste Objekt im METS-Baum wird durch eine dmdSec mit der entsprechenden ID
 
 #### Testpaket(e): 
 
+[ATReadUrnFromMets.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATReadUrnFromMets.tgz) 
+
 ``` 
 (GitHub) ATReadUrnFromMets.tgz enthält
   data/mets.xml
