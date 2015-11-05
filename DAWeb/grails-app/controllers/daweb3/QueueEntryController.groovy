@@ -314,11 +314,11 @@ class QueueEntryController {
 		}
 		if (params.search==null){
 			if (admin != 1) {
-				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn and q.question is not null and (q.status like '%5' OR q.status like '%4')",
+				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn and q.question is not null and q.question !='' and (q.status like '%5' OR q.status like '%4')",
 				 [csn: user.shortName])
 			} else {
 				admin = true;
-				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.question is not null and (q.status like '%5' OR q.status like '%4')")
+				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.question is not null and q.question !='' and (q.status like '%5' OR q.status like '%4')")
 				
 			}
 			[queueEntryInstanceList: queueEntries,
