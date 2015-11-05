@@ -155,6 +155,8 @@ Eine PREMIS-URN wird der METS-URN vorgezogen.
 
 #### Testpaket(e):
 
+[ATReadUrnFromPremisIgnoreMets.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATReadUrnFromPremisIgnoreMets.tgz) 
+
 ```
 (GitHub) ATReadUrnFromPremisIgnoreMets.tgz enhält
   data/mets.xml
