@@ -246,13 +246,20 @@ Example:
 
 {"urn":"urn:nbn:de:danrw-131614-2013111519609","origName":"testPackage_docx99","identifier":"131614-2013111519609"}
 
-#### Testpaket(e):
-
 #### Vorbedingungen:
+
+1. Login an der DAWEB
+2. Ein fertig archiviertes PAket, welches in keinem Workflow sein darf
 
 #### Durchführung:
 
+1. In der DA-Web auf dem Punkt "Hinweise zur Ansteuerung durch autom. Systeme" gehen
+2. Dort auf den Punkt "Erstellung vo Retrievalanfragen" 
+3. Eintragen des Identifiers
+
 #### Akzeptanzkriterien:
+
+1. Das Paket steht zur Entnahme bereit.
 
 #### Status und offene Punkte:
 
