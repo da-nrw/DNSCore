@@ -96,7 +96,7 @@ public class TimeBasedPublicationWorker extends Worker {
 
 			obbi.setObject_state(Object.ObjectStatus.InWorkflow);
 			obbi.setLastPublicationTry(new Date());
-			obbi.setDate_modified(String.valueOf(new Date().getTime()/1000L));
+			obbi.setDate_modified(String.valueOf(new Date().getTime()));
 			Job job = new Job();
 			job.setObject(obbi);
 
