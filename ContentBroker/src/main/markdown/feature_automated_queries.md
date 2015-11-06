@@ -254,14 +254,12 @@ Example:
 #### Durchführung:
 
 1. In der DA-Web auf dem Punkt "Hinweise zur Ansteuerung durch autom. Systeme" gehen
-2. Dort auf den Punkt "Erstellung vo Retrievalanfragen" 
-3. Eintragen des Identifiers
+2. Dort auf den Punkt "Erstellung von Retrievalanfragen" klicken 
+3. Eintragen des Identifiers in die Maske. Im Hintergrund wird ein JSON Post ausgelöst. 
 
 #### Akzeptanzkriterien:
 
 1. Das Paket steht zur Entnahme bereit.
-
-#### Status und offene Punkte:
 
 ## Szenario: AT-R-CSV-1
 
