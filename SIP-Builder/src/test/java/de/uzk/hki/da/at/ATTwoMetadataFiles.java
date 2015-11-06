@@ -58,7 +58,7 @@ public class ATTwoMetadataFiles {
 	         if(s.contains("Im Verzeichnis ATTwoMetadataFiles wurde mehr als eine Metadatendatei gefunden.")) {
 	        	 manyMetadataFiles = true;
 	         }
-	         if(s.startsWith("[") && s.contains("export_mets1.xml,") && s.contains("export_mets2.xml") && s.endsWith("]")) {
+	         if(s.startsWith("[") && s.contains("export_mets1.xml") && s.contains("export_mets2.xml") && s.endsWith("]")) {
 	        	 existingMetsFiles = true;
 	         }
 	    }
