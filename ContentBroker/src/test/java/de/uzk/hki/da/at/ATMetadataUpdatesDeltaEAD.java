@@ -18,6 +18,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.uzk.hki.da.metadata.EadParser;
 import de.uzk.hki.da.metadata.MetadataHelper;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.WorkArea;
@@ -181,8 +182,9 @@ public class ATMetadataUpdatesDeltaEAD extends AcceptanceTest{
 		FileReader fr = new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), EAD_XML).toFile());
 		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document eadDoc = eadSaxBuilder.build(fr);
+		EadParser ep = new EadParser(eadDoc);
 		
-		List<String> metsReferences = mh.getMetsRefsInEad(eadDoc);
+		List<String> metsReferences = ep.getReferences();
 		assertTrue(metsReferences.size()==5);
 		for(String metsRef : metsReferences) {
 			if(metsRef.contains("mets_2_32044.xml")) {

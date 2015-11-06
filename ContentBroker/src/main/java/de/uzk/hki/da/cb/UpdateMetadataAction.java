@@ -226,7 +226,7 @@ public class UpdateMetadataAction extends AbstractAction {
 				DAFile sourceFile = e.getSource_file();
 				for(String href : eadRefs) {
 					File file = XMLUtils.getRelativeFileFromReference(href, emms.getMetadataFile());					
-					if(file.getAbsolutePath().contains(sourceFile.getRelative_path())) {
+					if(file.getAbsolutePath().contains(File.separator+sourceFile.getRelative_path())) {
 						DAFile targetDAFile = e.getTarget_file();
 						File targetFile = wa.toFile(targetDAFile);
 						String targetPath = href.replace(file.getName(), targetFile.getName());
@@ -273,7 +273,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			while (it.hasNext()) {
 				Map.Entry entry = (Map.Entry)it.next();
 				DAFile sourceFile = (DAFile)entry.getKey();
-				if(file.getAbsolutePath().contains(sourceFile.getRelative_path())) {
+				if(file.getAbsolutePath().contains(File.separator+sourceFile.getRelative_path())) {
 					fileExists = true;
 					targetDAFile = (DAFile)entry.getValue();
 					logger.info("DAFile "+sourceFile+" has been converted to "+targetDAFile+"! Rewrite the reference ...");
@@ -326,7 +326,7 @@ public class UpdateMetadataAction extends AbstractAction {
 			while (it.hasNext()) {
 				Map.Entry entry = (Map.Entry)it.next();
 		        DAFile sourceFile = (DAFile)entry.getKey();
-				if(file.getAbsolutePath().contains(sourceFile.getRelative_path())) {
+				if(file.getAbsolutePath().contains(File.separator+sourceFile.getRelative_path())) {
 					fileExists = true;
 					targetDAFile = (DAFile)entry.getValue();
 					logger.info("DAFile "+sourceFile+" has been converted to "+targetDAFile+"! Rewrite the reference ...");

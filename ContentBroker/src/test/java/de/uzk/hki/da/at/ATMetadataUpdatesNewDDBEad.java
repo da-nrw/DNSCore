@@ -12,6 +12,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -23,58 +24,62 @@ import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
-public class ATUseCaseIngestArchivDuisburg extends AcceptanceTest{
-	private static final String URL = "URL";
+public class ATMetadataUpdatesNewDDBEad extends AcceptanceTest{
+	
+	private static final String origName = "NewDDBEad";
+	private static Object o;
 	private static Path contractorsPipsPublic;
-	private static String origName = "Archiv_Duisburg_mini";
-	private static Object object;
-	private static final String EAD_XML = "EAD.xml";
 	private MetadataHelper mh = new MetadataHelper();
+	private static final String URL = "URL";
+	private static final String EAD_XML = "EAD.xml";
 	
 	@BeforeClass
 	public static void setUp() throws IOException, InterruptedException {
 		ath.putSIPtoIngestArea(origName, "tgz", origName);
 		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForDefinedPublishedState(origName);
-		object=ath.getObject(origName);
+		o=ath.getObject(origName);
+		ath.waitForObjectToBeIndexed(metadataIndex,o.getIdentifier());
 		
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	
+	@AfterClass
+	public static void tearDownAfterClass() throws IOException{
+	}
 	
 	@Test
-	public void testFileIdGenInPres() throws FileNotFoundException, JDOMException, IOException {
+	public void testPres() throws FileNotFoundException, JDOMException, IOException {
 		
+		FileReader frMets = new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), "mets_1_280920.xml").toFile());
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		Document doc = builder.build
-				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "1175", "mets_1175.xml").toFile()));
+		Document doc = builder.build(frMets);
 		List<Element> metsFileElements = mh.getMetsFileElements(doc);
-		
 		Element fileElement = metsFileElements.get(0);
-		
 		String metsURL = mh.getMetsHref(fileElement);
-		assertTrue(metsURL.startsWith("http://data.danrw.de/file/"+object.getIdentifier()) && metsURL.endsWith(".jpg"));
+		assertTrue(metsURL.startsWith("http://data.danrw.de/file/"+o.getIdentifier()) && metsURL.endsWith(".jpg"));
 		assertEquals(URL, mh.getMetsLoctype(fileElement));
 		assertEquals(C.MIMETYPE_IMAGE_JPEG, mh.getMimetypeInMets(fileElement));
+		frMets.close();
 		
+		FileReader frEad = new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), EAD_XML).toFile());
 		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
-		Document eadDoc = eadSaxBuilder.build(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), EAD_XML).toFile()));
+		Document eadDoc = eadSaxBuilder.build(frEad);
 		EadParser ep = new EadParser(eadDoc);
 		
 		List<String> metsReferences = ep.getReferences();
 		assertTrue(metsReferences.size()==2);
+		boolean mets1refExists = false;
+		boolean mets2refExists = false;
 		for(String metsRef : metsReferences) {
-			if(metsRef.contains("mets_1175.xml")) {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ object.getIdentifier() +"/_1175-mets_1175.xml"));
-			} else {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ object.getIdentifier() +"/_1176-mets_1176.xml"));
+			if(metsRef.contains("mets_1_280920.xml")) {
+				mets1refExists = true;
+				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ o.getIdentifier() +"/mets_1_280920.xml"));
+			} else if(metsRef.contains("mets_2_32042.xml")) {
+				mets2refExists = true;
+				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ o.getIdentifier() +"/mets_2_32042.xml"));
 			}
 		}
-	}
-	
-	@Test
-	public void testPipFileList() {
-		assertTrue(Path.makeFile(contractorsPipsPublic, object.getIdentifier(), EAD_XML).exists());
-		assertTrue(!Path.makeFile(contractorsPipsPublic, object.getIdentifier(), "EAD_FB_Standesamt.xml").exists());
+		assertTrue(mets1refExists&&mets2refExists);
 	}
 }

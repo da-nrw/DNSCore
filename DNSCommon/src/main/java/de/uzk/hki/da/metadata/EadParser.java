@@ -38,8 +38,15 @@ public class EadParser {
 
 	public List<String> getReferences() throws JDOMException, IOException {	
 		List<String> metsReferences = new ArrayList<String>();
-	
+		
+		String namespaceUri = eadDoc.getRootElement().getNamespace().getURI();
 		XPath xPath = XPath.newInstance(C.EAD_XPATH_EXPRESSION);
+		
+//		Case of new DDB EAD with namespace xmlns="urn:isbn:1-931666-22-9"
+		if(!namespaceUri.equals("")) {
+			xPath = XPath.newInstance("//isbn:daoloc/@href");
+			xPath.addNamespace("isbn", eadDoc.getRootElement().getNamespace().getURI());
+		} 
 		
 		@SuppressWarnings("rawtypes")
 		List allNodes = xPath.selectNodes(eadDoc);

@@ -129,7 +129,14 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		is.setEncoding("UTF-8");
 		Document currentEadDoc = builder.build(is);
 				
+		String namespaceUri = eadDoc.getRootElement().getNamespace().getURI();
 		XPath xPath = XPath.newInstance(C.EAD_XPATH_EXPRESSION);
+		
+//		Case of new DDB EAD with namespace xmlns="urn:isbn:1-931666-22-9"
+		if(!namespaceUri.equals("")) {
+			xPath = XPath.newInstance("//isbn:daoloc/@href");
+			xPath.addNamespace("isbn", eadDoc.getRootElement().getNamespace().getURI());
+		} 
 		
 		@SuppressWarnings("rawtypes")
 		List allNodes = xPath.selectNodes(currentEadDoc);
@@ -194,12 +201,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 			Boolean fileExists = false;
 			try {
 				refFile = XMLUtils.getRelativeFileFromReference(ref, metadataFile);
-				System.out.println("canonical file : "+refFile);
-				
-				// relpath reffile.getPath
-				
 				logger.debug("Check referenced file: "+Path.makeFile(workPath,refFile.getPath()).getCanonicalFile());
-				
 				if(Path.makeFile(workPath,refFile.getPath()).exists()) {
 					fileExists = true; 
 				} else {

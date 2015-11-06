@@ -77,25 +77,4 @@ public class MetadataHelper {
 				.getChild("mdWrap", C.METS_NS)
 				.getChild("xmlData", C.METS_NS);
 	}
-	
-//	EAD
-	
-	private String EAD_XPATH_EXPRESSION = "//daoloc/@href";
-	
-	public List<String> getMetsRefsInEad(Document eadDoc) throws JDOMException, IOException {
-		
-		List<String> metsReferences = new ArrayList<String>();
-	
-		XPath xPath = XPath.newInstance(EAD_XPATH_EXPRESSION);
-		
-		@SuppressWarnings("rawtypes")
-		List allNodes = xPath.selectNodes(eadDoc);
-		
-		for (java.lang.Object node : allNodes) {
-			Attribute attr = (Attribute) node;
-			String href = attr.getValue();
-			metsReferences.add(href);
-		}
-		return metsReferences;
-	}	
 }
