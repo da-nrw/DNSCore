@@ -406,6 +406,21 @@ public class MetsParser{
 		return namePartValue;
 	}
 	
+	private List<String> getIdentifier(Element dmdSec) {
+		List<String> identifier = new ArrayList<String>();
+		Element modsXmlData = getModsXmlData(dmdSec);
+		List<Element>  elements = modsXmlData.getChildren();
+		for(Element e : elements) {
+			if(e.getName().equals("identifier")) {
+				identifier.add(e.getAttributeValue("type")+": "+e.getValue());
+			}
+		}
+		
+		
+		
+		return identifier;
+	}
+	
 	private List<String> getTitle(Element dmdSec) {
 		List<String> title = new ArrayList<String>();
 		Element modsXmlData = getModsXmlData(dmdSec);
@@ -536,6 +551,9 @@ public class MetsParser{
 //			Title
 			dmdSecInfo.put(C.EDM_TITLE, getTitle(e));
 			
+//			identifier
+			dmdSecInfo.put(C.EDM_IDENTIFIER, getIdentifier(e));
+			
 //			Names
 			List<String> creators = new ArrayList<String>();
 			List<String> contributors = new ArrayList<String>();
@@ -571,6 +589,12 @@ public class MetsParser{
 //			TitlePage
 			List<String> titlePageRefs = getTitlePageReferencesFromDmdId(id, ObjectId);
 			List<String> allReferences = getReferencesFromDmdId(id, ObjectId);
+			
+//			LAV
+			if(allReferences==null || allReferences.isEmpty()) {
+				allReferences = getReferences();
+			}
+			
 			if(titlePageRefs!=null & !titlePageRefs.isEmpty()) {
 				List<String> references = new ArrayList<String>();
 				references.add(titlePageRefs.get(0));
@@ -585,11 +609,10 @@ public class MetsParser{
 				dmdSecInfo.put(C.EDM_IS_SHOWN_BY, firstReference);
 				dmdSecInfo.put(C.EDM_OBJECT, firstReference);
 			}
-			
 //			hasView
 			if(allReferences.size()>1) {
 				dmdSecInfo.put(C.EDM_HAS_VIEW, allReferences);
-			}
+			} 
 			
 //			dataProvider
 			dmdSecInfo.put(C.EDM_DATA_PROVIDER, getDataProvider());
@@ -605,6 +628,7 @@ public class MetsParser{
 			if(parentsDmdIds!=null && !parentsDmdIds.isEmpty()) {
 				dmdSecInfo.put(C.EDM_IS_PART_OF, parentsDmdIds);
 			}
+			
 			indexInfo.put(id, dmdSecInfo);
 		}
 		return indexInfo;

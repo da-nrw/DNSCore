@@ -95,6 +95,7 @@ public abstract class MetadataStructure {
 			addXmlNsToEDM(edmDoc, rootElement);
 			
 			for(String id : indexInfo.keySet()) {
+				logger.debug("Index information about "+id+": "+indexInfo.get(id));
 				Element providedCHO = addEdmProvidedCHOtoEdm(preservationSystem, id, edmDoc, rootElement);
 				Element aggregation = addOreAggregationToEdm(preservationSystem, id, edmDoc, rootElement);
 				

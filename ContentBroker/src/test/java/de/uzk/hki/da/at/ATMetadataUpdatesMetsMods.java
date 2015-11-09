@@ -142,6 +142,7 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 			Boolean objIdExists = false;
 			Boolean urnExists = false;
 			for(Element id : identifier) {
+				System.out.println("ID "+id.getValue());
 				if(id.getValue().equals(object.getUrn())) {
 					urnExists = true;
 				} else if(id.getValue().equals(object.getIdentifier())) {
@@ -156,6 +157,8 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 				.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_bee84f142bba34a1036ecc4667b54615.jpg"));
 		assertTrue(doc.getRootElement().getChild("Aggregation", C.ORE_NS).getChild("object", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
 				.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_bee84f142bba34a1036ecc4667b54615.jpg"));
+//		assertTrue(doc.getRootElement().getChild("Aggregation", C.ORE_NS).getChild("object", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
+//				.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_bee84f142bba34a1036ecc4667b54615.jpg"));
 		
 //		testIndex
 		assertTrue(metadataIndex.getIndexedMetadata(PORTAL_CI_TEST, object.getIdentifier()+"-md801613").contains("Text Text// mahels///Titel"));
