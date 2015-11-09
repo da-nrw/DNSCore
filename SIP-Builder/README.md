@@ -1,7 +1,7 @@
 SIP-Builder
 ===========
 
-Ein grafisches Werkzeug zur Anlage von SIP für die DA-NRW Software Suite (DNS). Enthält auch ein CLI (command line interface) zur Einbettung in automatische Prozesse. [Anleitung](https://github.com/da-nrw/DNSCore/tree/master/SIP-Builder/src/manual/manual_SIPBuilder.md).
+Ein grafisches Werkzeug zur Anlage von SIP für die DA-NRW Software Suite (DNS). Enthält auch ein CLI (command line interface) zur Einbettung in automatische Prozesse. [Hier finden Sie Anwenderdokumentation des SIP-Builders](https://github.com/da-nrw/DNSCore/tree/master/SIP-Builder/src/manual/manual_SIPBuilder.md).
 
 ----
 
