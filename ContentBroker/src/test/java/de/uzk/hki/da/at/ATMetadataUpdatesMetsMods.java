@@ -141,15 +141,21 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 			List<Element> identifier = pcho.getChildren("identifier", C.DC_NS);
 			Boolean objIdExists = false;
 			Boolean urnExists = false;
+			Boolean hbzIdnExists = false;
+			Boolean metsUrnExists = false;
 			for(Element id : identifier) {
 				System.out.println("ID "+id.getValue());
 				if(id.getValue().equals(object.getUrn())) {
 					urnExists = true;
 				} else if(id.getValue().equals(object.getIdentifier())) {
 					objIdExists = true;
+				} else if(id.getValue().equals("hbz-idn: id42")) {
+					hbzIdnExists = true;
+				} else if (id.getValue().equals("urn: urn:nbn:de:hbz:42")) {
+					metsUrnExists = true;
 				}
 			}
-			assertTrue(objIdExists && urnExists);
+			assertTrue(objIdExists && urnExists && hbzIdnExists && metsUrnExists);
 		}
 		
 		assertTrue(testProvidetChoExists);
