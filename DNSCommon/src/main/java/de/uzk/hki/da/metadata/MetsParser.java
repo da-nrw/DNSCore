@@ -409,15 +409,13 @@ public class MetsParser{
 	private List<String> getIdentifier(Element dmdSec) {
 		List<String> identifier = new ArrayList<String>();
 		Element modsXmlData = getModsXmlData(dmdSec);
+		@SuppressWarnings("unchecked")
 		List<Element>  elements = modsXmlData.getChildren();
 		for(Element e : elements) {
 			if(e.getName().equals("identifier")) {
-				identifier.add(e.getAttributeValue("type")+": "+e.getValue());
+				identifier.add(e.getValue());
 			}
 		}
-		
-		
-		
 		return identifier;
 	}
 	

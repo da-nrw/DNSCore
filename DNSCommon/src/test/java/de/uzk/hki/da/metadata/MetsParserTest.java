@@ -3,12 +3,10 @@ package de.uzk.hki.da.metadata;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 
 import org.jaxen.JaxenException;
 import org.jdom.Document;
@@ -54,8 +52,8 @@ public class MetsParserTest {
 		assertTrue(elements.get(C.EDM_TITLE).size()==1 
 				&& elements.get(C.EDM_TITLE).get(0).equals("Nr. 1111"));
 		
-		assertTrue(elements.get(C.EDM_IDENTIFIER).contains("VERA dockey: 1111") 
-				&& elements.get(C.EDM_IDENTIFIER).contains("urn: urn:nbn:de:danrw:de111-11111-1111-11111-1111-1111"));
+		assertTrue(elements.get(C.EDM_IDENTIFIER).contains("1111") 
+				&& elements.get(C.EDM_IDENTIFIER).contains("urn:nbn:de:danrw:de111-11111-1111-11111-1111-1111"));
 		
 		assertTrue(elements.get(C.EDM_DATA_PROVIDER).size()==1 
 				&& (elements.get(C.EDM_DATA_PROVIDER).get(0).equals("Landesarchiv NRW")));
@@ -72,6 +70,7 @@ public class MetsParserTest {
 	
 	@Test
 	public void testGetIndexInfoFromUlbMets() throws JDOMException, IOException {
+		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		FileReader fr1 = new FileReader(ulbMetsFile);
 		Document lavMets = builder.build(fr1);
@@ -81,14 +80,21 @@ public class MetsParserTest {
 		assertTrue(indexInfo.entrySet().size()==1);
 		HashMap<String, List<String>> elements = indexInfo.get("danrw801613-md801613");
 		
-		System.out.println("yay "+indexInfo.get("danrw801613-md801613").get(C.EDM_IDENTIFIER));
+		assertTrue(elements.get(C.EDM_TITLE).contains("Text Text// mahels///Titel"));
 		
-		for(String e : elements.keySet()) {
-			System.out.println(e+": "+elements.get(e));
-//			if(e.equals(C.EDM_IDENTIFIER)) {
-//				indexInfo.get("danrw801613-md801613").get(C.EDM_IDENTIFIER);
-//			}
-		}
-
+		assertTrue(elements.get(C.EDM_PUBLISHER).size()==2);
+		assertTrue(elements.get(C.EDM_PUBLISHER).contains("Grimm] ([Augsburg)")
+				&& elements.get(C.EDM_PUBLISHER).contains("ULB (Stadt)"));
+		
+		assertTrue(elements.get(C.EDM_IDENTIFIER).contains("id42")
+				&& elements.get(C.EDM_IDENTIFIER).contains("urn:nbn:de:hbz:42"));
+		
+		assertTrue(elements.get(C.EDM_CREATOR).contains("Nachname, Vorname"));
+		
+		assertTrue(elements.get(C.EDM_DATA_PROVIDER).contains("ULB"));
+		
+		assertTrue(elements.get(C.EDM_OBJECT).contains("image/801622.bmp"));
+		
+		System.out.println();
 	}
 }

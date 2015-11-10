@@ -80,8 +80,7 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 	
 	@Test
 	public void testLZA() throws Exception{
-		ath.retrieveAIP(object,retrievalFolder,"1");
-		System.out.println("object identifier: "+object.getIdentifier());		
+		ath.retrieveAIP(object,retrievalFolder,"1");	
 		
 		Path tmpObjectDirPath = Path.make(retrievalFolder.getAbsolutePath(), "data");	
 		File[] tmpObjectSubDirs = new File (tmpObjectDirPath.toString()).listFiles();
@@ -143,19 +142,24 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 			Boolean urnExists = false;
 			Boolean hbzIdnExists = false;
 			Boolean metsUrnExists = false;
+			int urnCount = 0;
 			for(Element id : identifier) {
-				System.out.println("ID "+id.getValue());
 				if(id.getValue().equals(object.getUrn())) {
 					urnExists = true;
+					urnCount++;
 				} else if(id.getValue().equals(object.getIdentifier())) {
 					objIdExists = true;
-				} else if(id.getValue().equals("hbz-idn: id42")) {
+				} else if(id.getValue().equals("id42")) {
 					hbzIdnExists = true;
-				} else if (id.getValue().equals("urn: urn:nbn:de:hbz:42")) {
-					metsUrnExists = true;
-				}
+				} 
 			}
-			assertTrue(objIdExists && urnExists && hbzIdnExists && metsUrnExists);
+			if(urnCount==2) {
+				metsUrnExists = true;
+			}
+			assertTrue(objIdExists);
+			assertTrue(urnExists);
+			assertTrue(hbzIdnExists);
+			assertTrue(metsUrnExists);
 		}
 		
 		assertTrue(testProvidetChoExists);
@@ -163,8 +167,6 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 				.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_bee84f142bba34a1036ecc4667b54615.jpg"));
 		assertTrue(doc.getRootElement().getChild("Aggregation", C.ORE_NS).getChild("object", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
 				.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_bee84f142bba34a1036ecc4667b54615.jpg"));
-//		assertTrue(doc.getRootElement().getChild("Aggregation", C.ORE_NS).getChild("object", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
-//				.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_bee84f142bba34a1036ecc4667b54615.jpg"));
 		
 //		testIndex
 		assertTrue(metadataIndex.getIndexedMetadata(PORTAL_CI_TEST, object.getIdentifier()+"-md801613").contains("Text Text// mahels///Titel"));

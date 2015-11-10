@@ -187,16 +187,8 @@ public class EadParser {
 		
 		for(Element child : children) {
 			String unitID = "";
-			String type = "";
 			try {
-				if(child.getAttribute("type")!=null) {
-					type = child.getAttribute("type").getValue();
-					if(!type.equals("")) {
-						unitID = type+": "+child.getValue();
-					}
-				} else {
-					unitID = child.getValue();
-				}
+				unitID = child.getValue();
 				if(!unitID.equals("")) {
 					unitIDs.add(unitID);
 				}
