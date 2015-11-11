@@ -13,7 +13,7 @@ Unabhängig vom jeweiligen Metadatenformat werden inhaltlich gesehen folgende Ar
 Im Rahmen des DA-NRW werden derzeit vier Metadatenformate akzeptiert:
 
 * EAD + METS/MODS (s. [offizielle EAD Spezifikation](http://www.loc.gov/ead/index.html), oder spezielle [DDB-EAD-Spezifikation](http://www.dlib.indiana.edu/services/metadata/activities/EADManual.pdf))
-* METS
+* METS (s. [offizielle METS / MODS Spezifikation](http://www.loc.gov/standards/mets/))
 * LIDO ([Schema v1.0](http://lido-schema.org/schema/v1.0/lido-v1.0-schema-listing.html))
 * XMP
 
