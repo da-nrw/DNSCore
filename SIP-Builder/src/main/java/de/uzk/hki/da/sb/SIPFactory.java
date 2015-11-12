@@ -747,7 +747,7 @@ public class SIPFactory {
 				} 
 			} catch (Exception e) {
 				messageWriter.showLongErrorMessage("Das SIP konnte nicht erstellt werden.\n\n" +
-						"Ihre Daten sind möglicherweise nicht valide: \n\n"+e.getMessage());
+						"Ihre Daten sind möglicherweise nicht valide. \n\n"+e.getMessage());
 				returnCode = Feedback.INVALID_METADATA;
 				abortSipBuilding();
 				return;

@@ -117,7 +117,7 @@ public class NestedContentStructure {
 		} catch (IOException e1) {
 			throw new IOException(e1);
 		} catch (JDOMException e2) {
-			throw new IOException(e2);
+			throw new JDOMException("Invalid metadata file "+metsFile+": \n\n"+e2);
 		}
 		return urn;
 	}
