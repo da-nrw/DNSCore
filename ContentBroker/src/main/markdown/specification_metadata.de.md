@@ -12,9 +12,9 @@ Unabhängig vom jeweiligen Metadatenformat werden inhaltlich gesehen folgende Ar
 ## Akzeptierte Metadatenformate
 Im Rahmen des DA-NRW werden derzeit vier Metadatenformate akzeptiert:
 
-* EAD + METS/MODS
-* METS
-* LIDO
+* EAD + METS/MODS (s. [offizielle EAD Spezifikation](http://www.loc.gov/ead/index.html), oder spezielle [DDB-EAD-Spezifikation](http://www.dlib.indiana.edu/services/metadata/activities/EADManual.pdf))
+* METS (s. [offizielle METS Spezifikation](http://www.loc.gov/standards/mets/))
+* LIDO ([Schema v1.0](http://lido-schema.org/schema/v1.0/lido-v1.0-schema-listing.html))
 * XMP
 
 Die genannten Formate enthalten jeweils alle vier Arten von Metadaten. 
@@ -31,7 +31,7 @@ Für die Präsentation im Portal werden die Primärdaten aus dem langzeitsichere
 
 ### Schnittstelle Portal
 
-Für die Präsentation der Daten im (HBZ-)Portal werden die aus spartenspezifischen Metadaten extrahierten Informationen in eine einheitliche Form gebracht. In DNSCore werden die Informationen in eine EDM.xml exportiert, die man sich neben den Originaldaten im PIP ansehen kann. Anschließend werden alle Felder der EDM mittels eines von uns definierten [Mappings](../conf/es_mapping.json) in ein ElasticSearch-Index, der die eigentliche Schnittstelle zum Portal darstellt, eingetragen. Von da aus können die Daten in beliebiger Form im Portal gezeigt werden.
+Für die Präsentation der Daten im (HBZ-)Portal werden die aus spartenspezifischen Metadaten extrahierten Informationen in eine einheitliche Form gebracht. In DNSCore werden die Informationen in eine EDM.xml (s. [EDM-Spezifikation](http://pro.europeana.eu/files/Europeana_Professional/Share_your_data/Technical_requirements/EDM_Documentation/EDM_Mapping_Guidelines_v2.2.pdf)) exportiert, die man sich neben den Originaldaten im PIP ansehen kann. Anschließend werden alle Felder der EDM mittels eines von uns definierten [Mappings](../conf/es_mapping.json) in ein ElasticSearch-Index, der die eigentliche Schnittstelle zum Portal darstellt, eingetragen. Von da aus können die Daten in beliebiger Form im Portal gezeigt werden.
 
 Die Informationen darüber, Welche Metadatenfelder genau ihren Weg zum Portal finden, können Sie folgenden spartenspezifischen Tabellen entnehmen:
 
