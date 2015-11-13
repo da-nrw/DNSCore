@@ -10,7 +10,7 @@ Unabhängig vom jeweiligen Metadatenformat werden inhaltlich gesehen folgende Ar
 * Technische Metadaten enthalten Informationen über die technischen Parameter der Ressource wie etwa Dateityp, Dateigröße und Auflösung.
 
 ## Akzeptierte Metadatenformate
-Im Rahmen des DA-NRW werden derzeit vier Metadatenformate akzeptiert:
+Im Rahmen des DNS werden derzeit vier Metadatenformate akzeptiert:
 
 * EAD + METS/MODS (s. [offizielle EAD Spezifikation](http://www.loc.gov/ead/index.html), oder spezielle [DDB-EAD-Spezifikation](http://www.dlib.indiana.edu/services/metadata/activities/EADManual.pdf))
 * METS (s. [offizielle METS Spezifikation](http://www.loc.gov/standards/mets/))
