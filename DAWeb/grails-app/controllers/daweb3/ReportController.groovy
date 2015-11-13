@@ -119,8 +119,10 @@ class ReportController {
 				msgN = "Benutzerordner nicht gefunden"
 				log.error(msgN);
 		}
-		baseDir.eachFileMatch(~/^(?!\.).*?\.csv/) { file -> currentFileOutgoing.add(file)}
-		if (currentFileOutgoing.empty) msgN ="Keine Dateien im Ausgangsordner gefunden";
+		CsvFileFilter filter = new CsvFileFilter();
+		currentFileOutgoing = baseDir.listFiles(filter)?.sort{a, b -> a.lastModified() <=> b.lastModified() - (a.name <=> b.name)}.reverse()
+			
+		if (currentFileOutgoing.length==0) msgN ="Keine Dateien im Ausgangsordner gefunden";
 		} catch (e) {
 		msgN = "Benutzerordner " + baseDir + " existiert nicht!"
 		log.error(msgN);
@@ -144,11 +146,13 @@ class ReportController {
 				msgN = "Benutzerordner nicht gefunden"
 				log.error(msgN);
 		}
-		baseDir.eachFileMatch(~/^(?!\.).*?\.csv/) { file -> currentFileIncoming.add(file)}
-		if (currentFileIncoming.empty) msgN ="Keine Dateien im Ausgangsordner gefunden";
+		CsvFileFilter filter = new CsvFileFilter();
+		currentFileIncoming = baseDir.listFiles(filter)?.sort{a, b -> a.lastModified() <=> b.lastModified() - (a.name <=> b.name)}.reverse()
+		
+		if (currentFileIncoming.length==0) msgN ="Keine Dateien im Eingangsordner gefunden";
 		} catch (e) {
 		msgN = "Benutzerordner " + baseDir + " existiert nicht!"
-		log.error(msgN);
+		log.error(msgN, e);
 		}
 		[currentFileIncoming:currentFileIncoming]
 		

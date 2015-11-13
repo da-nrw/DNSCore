@@ -28,7 +28,7 @@ import org.supercsv.cellprocessor.ift.CellProcessor;
 
 public class CSVFormat {
 	
-	public static final String[] header = new String[] { "identifier", "origName",
+	public static final String[] header = new String[] { "identifier", "origName","createddate","updateddate",
 			"statuscode","erfolg","bemerkung" };
 	
 	public static final CellProcessor[] getProcessors() {
@@ -36,6 +36,8 @@ public class CSVFormat {
 		final CellProcessor[] processors = new CellProcessor[] {
 				new Optional(), // identifier
 				new NotNull(), // origName
+				new Optional(), // createddate
+				new Optional(), // updateddate
 				new Optional(), // statuscode
 				new Optional(), // erfolg
 				new Optional(), // bemerkung	

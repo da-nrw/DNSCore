@@ -25,6 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +63,7 @@ public class CSVQueryHandler {
 		this.userId = userId;
 	}
 	
-	@SuppressWarnings("serial")
+	@SuppressWarnings({ "serial", "unchecked" })
 	public void generateRetrievalRequests(File csvFile, File outCsvFile){
 		try {
 			csvFileHandler.parseFile(csvFile);
@@ -191,6 +192,14 @@ private synchronized Object fetchObject(String origName) {
 		throw new RuntimeException(e.getMessage(), e);
 	}
 }
+
+	private String formatDate(String ts,long factor) {
+		String sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date(Long.valueOf(ts).longValue()*factor) );
+		return sdf.toString();
+	}
+
+
+	@SuppressWarnings("unchecked")
 	private void evalStates() {
 		Object o = null;
 		String identifier = null;
@@ -223,7 +232,11 @@ private synchronized Object fetchObject(String origName) {
 							erfolg = false;
 						} else erfolg = true;
 						csvEntry.put("statuscode", (java.lang.Object) job.getStatus());
-						;
+						csvEntry.put("createddate", formatDate(job.getDate_created(),1000L));
+						csvEntry.put("updateddate", formatDate(job.getDate_created(),1000L));	
+					} else {
+						csvEntry.put("createddate", formatDate(o.getDate_created(),1L));
+						csvEntry.put("updateddate", formatDate(o.getDate_created(),1L));	
 					}
 				}
 				csvEntry.put("erfolg", (java.lang.Object) String.valueOf(erfolg));
