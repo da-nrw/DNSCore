@@ -22,7 +22,8 @@ import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
-public class ATIngestLav extends AcceptanceTest{
+public class ATIngestLav extends AcceptanceTest {
+	
 	private static final String urn1 = "urn+nbn+de+danrw+de2189-48c69c71-b98e-4229-a1c1-69a5930d44103";
 	private static final String urn2 = "urn+nbn+de+danrw+de2189-89532c28-d082-4c38-8783-21b9019225988";
 	private static final String urn3 = "urn+nbn+de+danrw+de2189-0c6ab310-f2f6-4f66-80e2-a138bd4db6938";
