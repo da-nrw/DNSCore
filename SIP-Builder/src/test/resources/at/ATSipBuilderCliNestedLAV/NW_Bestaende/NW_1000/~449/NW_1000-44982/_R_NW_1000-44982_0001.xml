@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Object>
+   <!--Es werden jeweils nur von der ersten Bilddatei in einem Verzeichniss 
+Metadaten erzeugt (*001.tif oder *001.jpg). Die Informationen dieser Datei dienen 
+aufgrund der gegebenen Gleichfoermigkeit bei der Erstellung aller 
+weiteren Dateien als Provenienznachweis fuer alle folgenden Bilddateien.-->
+   <Name>R_NW_1000-44982_0001</Name>
+   <ID>1</ID>
+   <ReferenceNumber/>
+   <GroupIdentifier/>
+   <PersistentIdentifier/>
+   <MasterCreationDate locale="MESZ">
+      <Date format="yyyyMMdd">20150706</Date>
+      <Time format="HHmmssSSS">094842400</Time>
+   </MasterCreationDate>
+   <ObjectComposition>simple</ObjectComposition>
+   <StructuralType>
+      <Name/>
+      <Extension/>
+   </StructuralType>
+   <HardwareEnvironment>amd64</HardwareEnvironment>
+   <SoftwareEnvironment>OS: Windows 7 6.1, JVM:Sun Microsystems Inc. 1.6.0_20</SoftwareEnvironment>
+   <InstallationRequirements/>
+   <AccessInhibitors/>
+   <AccessFacilitators/>
+   <Quirks/>
+   <MetadataRecordCreator>Server MSC-SRV190 (HP Proliant DL120 G6, Intel Xeon X3430 2,4 Ghz-Prozessor, Windows 7 x64)</MetadataRecordCreator>
+   <MetadataCreationDate locale="MESZ">
+      <Date format="yyyyMMdd">20150706</Date>
+      <Time format="HHmmssSSS">094842421</Time>
+   </MetadataCreationDate>
+   <Comments/>
+   <Files>
+      <JobInfo>
+         <!--Name des Projektes-->
+         <ProjektName>Abt. Rheinland, Entnazifizierungsakten (Charge 20)</ProjektName>
+         <!--Anzahl der Dateien, welche von diesem Job verarbeitet wurden-->
+         <ImageCount>8</ImageCount>
+         <!--Digitalisat-Typ: 1=Aufsichtscan, 2=Gross-Digitalisat, 3=Mikrofilmscan, 4=Fremd-Digitalisat, 5=Foto-Digitalisat, 6=Negativ-Digitalisat-->
+         <DigitalisatTyp>4</DigitalisatTyp>
+         <!--Erzeuger der Digitalisate-->
+         <DigitalisatProducer>Fa. GSK, Pulheim/Brauweiler</DigitalisatProducer>
+         <!--Host-Name des Scanner-PC-->
+         <ScannerPC>unbenkannt</ScannerPC>
+         <!--Name / Typ des Scanners-->
+         <ScannerName>BancTec IntelliScan XDS</ScannerName>
+         <!--Seriennummer des Scanners-->
+         <ScannerSN>unbenkannt</ScannerSN>
+         <!--Datum, an dem das **letzte Image** erstellt wurde-->
+         <Created>2012-07-12T16:41:26</Created>
+         <!--Name des Jobs-->
+         <JobName>Pseudo-Job-Datei, erzeugt durch CreaMetaXml.ps1</JobName>
+      </JobInfo>
+      <File xmlns:nz_govt_natlib_xsl_XSLTFunctions="nz.govt.natlib.xsl.XSLTFunctions">
+<FileIdentifier/>
+<Path>L:\work\Abt_Rheinland\NW_1000\~449\NW_1000-44982\NW_1000-44982_0001.tif</Path>
+<Filename>
+<Name>NW_1000-44982_0001.tif</Name>
+<Extension>tif</Extension>
+</Filename>
+<Size>34678500</Size>
+<FileDateTime>
+<Date format="yyyyMMdd">20120712</Date>
+<Time format="HHmmssSSS">164114000</Time>
+</FileDateTime>
+<Mimetype>image/tiff</Mimetype>
+<FileFormat>
+<Format>Tagged Information File Format</Format>
+<Version>6.0</Version>
+</FileFormat>
+<Image>
+<ImageResolution>
+<SamplingFrequencyUnit>dpi</SamplingFrequencyUnit>
+<XSamplingFrequency>300.0</XSamplingFrequency>
+<YSamplingFrequency>300.0</YSamplingFrequency>
+</ImageResolution>
+<ImageDimension>
+<Width>5333</Width>
+<Length>3758</Length>
+</ImageDimension>
+<BitsPerSample>8, 8, 8</BitsPerSample>
+<Software/>
+<DateTime/>
+<Artist/>
+<HostComputer/>
+<PhotometricInterpretation>
+<ColourSpace>RGB</ColourSpace>
+<!-- Wurde in die Original-TIF-Datei (versehentlich) nicht das Scanner- sondern das sRGB-Profil
+ (sRGB IEC61966-2.1) eingebettet, dann wurde das im Rahmen der Erstellung der temp. TIF-Datei korrigiert.
+ Alle Ausgabedateien koennen somit als farbtreu angesehen werden. -->
+<ICCProfileName>XDS_F_V06</ICCProfileName>
+</PhotometricInterpretation>
+<ColourMap/>
+<Orientation>0degrees</Orientation>
+<Compression>
+<Scheme>LZW</Scheme>
+<Level/>
+</Compression>
+</Image>
+</File>
+   </Files>
+   <Processes>
+      <!--Verwendete Schemavorlage: http://www.natlib.govt.nz/files/nlnz_presmet.xsd - Version: 1.2
+
+Hier finden sich die Eintraege fuer die "Entity 2": Process describes a process by which the object was created.
+
+Das "National Library of New Zealand Metadata Extraction Tool"
+(http://www.natlib.govt.nz/en/whatsnew/4initiatives.html#extraction) stellt keine 
+Schnittstelle fuer die Prozessinformationen zur Verfuegung, weshalb diese ueber 
+ein XSL-Skript in die Zieldatei mit den Metadaten eingefuegt werden.-->
+      <Process>
+	<Type>Creation of new Object from file(s) within this Object</Type>
+
+	<Process>TIF-Master-Images</Process>
+	
+	<Purpose>TIF-Dateien werden als Ausgangsmaterial fuer Konversion in in digitale Master- und Arbeitsdateien verwendet</Purpose>
+
+	<ProcessCreator>Landesarchiv NRW IT-Zentrum, Christian Wortmann</ProcessCreator>
+
+	<Permission>Landesarchiv NRW IT-Zentrum, Christian Wortmann</Permission>
+
+	<PermissionDate>2015-03-17T17-00-00</PermissionDate>
+
+	<HardwareUsed>Hardware unabhaengiger Prozess</HardwareUsed>
+
+	<SoftwareUsed>img_conv_TIF-Master_Typ_#.cmd, nutzt GraphicsMagick (gm.exe convert), Kakadu (kdu_compress.exe), XNview (Nconvert.exe)</SoftwareUsed>
+
+	<Steps>
+		<Step number="1">Das Batch-Skript erzeugt die notwendigen Zielverzeichnisstrukturen aus den Quellverzeichnisstrukturen</Step>
+		<Step number="2">Das Batch-Skript laedt rekursiv aus der Ordnerstruktur "work\..."  jede TIF-Quelldatei und erzeugt aus dem Datei- und Verzeichnisnamen den Text fuer das Label</Step>
+		<Step number="3">GraphicsMagick erzeugt unter Beruecksichtung eingebetteter Farbprofilinformationen eine nach sRGB konvertierte temporaere Bilddatei, der zusaetzlich ein Textlabel am oberen Bildrand eingeblendet wird</Step>
+		<Step number="4">Kakadu erzeugt aus dieser temp. Datei die Master-Datei im JPEG2000-Format (300 DPI, verlustfrei komprimiert)</Step>
+		<Step number="5">Nconvert im Batchmodus erzeugt aus der temp. Datei die Arbeitsdatei im JPEG-Format (150 DPI, 75%-Qualitaet)</Step>
+		<Step number="6">Nconvert im Batchmodus erzeugt aus der temp. Datei die Thumbnaildatei im JPEG-Format (78 DPI, 250x250 Pixel, 75%-Qualitaet)</Step>
+		<Step number="7">Die Quelldatei wird in die Ordnerstruktur "ready\..." verschoben</Step>
+	</Steps>
+
+	<Result>Eine JPEG2000-Datei als Master, eine JPEG-Datei als Praesentationsform sowie ein JPEG-Thumbnail</Result>
+
+	<Guidelines/>
+	<CompletionDate/>
+
+	<Comments>Batch-Prozess-Informationen - Version 1.b (27.07.2007)</Comments>
+</Process>
+   </Processes>
+   <MetadataModification>
+      <MetadataRecordModifier>C.Wortmann, LAV NRW</MetadataRecordModifier>
+      <DateTime>2012-04-09T17:00:00</DateTime>
+      <FieldModified>Files</FieldModified>
+      <DataModified>Files wurde um Element JobInfo mit mehreren Unterelementen ergaenzt</DataModified>
+   </MetadataModification>
+</Object>
