@@ -42,7 +42,7 @@
 		<task:scheduled ref="userDecisionTimeoutWorker" method="scheduleTask" fixed-delay="20000" />
 		<task:scheduled ref="systemEventWorker" method="scheduleTask" fixed-delay="20000" />
 		<task:scheduled ref="timeBasedPublicationWorker" method="scheduleTask" fixed-delay="2000" />
-		<task:scheduled ref="mailWorker" method="scheduleTask" fixed-delay="60000" />
+	 	<task:scheduled ref="mailWorker" method="scheduleTask" fixed-delay="60000" />
 	</task:scheduled-tasks>
 	<task:scheduler id="taskScheduler" pool-size="20" />
 
