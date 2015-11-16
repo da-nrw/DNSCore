@@ -46,4 +46,3 @@ checksumWorker.endTime=3
 
 timeBasedPublicationWorker.pollForCi=true
 mailWorker.smtpHost=mail.lvrintern.lvr.de
-
