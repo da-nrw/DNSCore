@@ -12,6 +12,8 @@ public class StoragePolicy {
 	private String forbiddenNodes;
 	
 	private String adminEmail;
+
+	private Boolean mailsPooled;
 	
 	private String gridCacheAreaRootPath;
 	
@@ -35,6 +37,14 @@ public class StoragePolicy {
 
 	public void setAdminEmail(String adminEmail) {
 		this.adminEmail = adminEmail;
+	}
+
+	public Boolean isMailsPooled() {
+		return mailsPooled;
+	}
+
+	public void setMailsPooled(Boolean mailsPooled) {
+		this.mailsPooled = mailsPooled;
 	}
 
 	public String getGridCacheAreaRootPath() {

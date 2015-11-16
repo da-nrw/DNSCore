@@ -86,7 +86,8 @@ public class IntegrityWorker extends Worker{
 			}
 						
 			if (!is.checkObject(object, getPSystem().getMinRepls())) {
-				is.sendEmail(object,getPSystem().getAdmin().getEmailAddress(),node.getAdmin().getEmailAddress());
+				is.sendEmail(node.getName(), object,getPSystem().getAdmin().getEmailAddress(),
+						node.getAdmin().getEmailAddress(), node.getAdmin().isMailsPooled());
 			} else logger.info("checked OK : " + object.getIdentifier());
 		
 			

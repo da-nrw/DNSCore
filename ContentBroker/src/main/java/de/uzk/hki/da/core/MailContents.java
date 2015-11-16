@@ -33,6 +33,7 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.service.Mail;
 import de.uzk.hki.da.utils.StringUtilities;
 
@@ -41,6 +42,7 @@ import de.uzk.hki.da.utils.StringUtilities;
  * @author Daniel M. de Oliveira
  * @author Jens Peters
  * @author Thomas Kleinke
+ * @author Josef Hammer
  */
 public class MailContents {
 
@@ -74,7 +76,6 @@ public class MailContents {
 		if (object.getContractor().getEmailAddress()==null||object.getContractor().getEmailAddress().isEmpty()) throw new IllegalArgumentException("objs contractor has no email adress");
 	}
 	
-	
 	public void informUserAboutPendingDecision(Object obj,String message){
 		checkObject(obj);
 		
@@ -84,7 +85,7 @@ public class MailContents {
 			msg += "\n" + message ;
 		}
 		try {
-			Mail.sendAMail(preservationSystem.getAdmin().getEmailAddress(), obj.getContractor().getEmailAddress(), subject, msg);
+			this.queueMail(preservationSystem.getAdmin(), obj.getContractor(), subject, msg);
 		} catch (MessagingException e) {
 			logger.error("Sending email problem report for " +  obj.getIdentifier() + " failed");
 		}
@@ -97,7 +98,7 @@ public class MailContents {
 		String msg = "Bitte treffen Sie eine Entscheidung in der DAWeb-Maske \"Entscheidungsübersicht\"" + obj.getIdentifier();
 		
 		try {
-			Mail.sendAMail(preservationSystem.getAdmin().getEmailAddress(), obj.getContractor().getEmailAddress(), subject, msg);
+			this.queueMail(preservationSystem.getAdmin(), obj.getContractor(), subject, msg);
 		} catch (MessagingException e) {
 			logger.error("Sending email problem report for " +  obj.getIdentifier() + " failed");
 		}
@@ -117,7 +118,7 @@ public class MailContents {
 
 		String subject = "[" + PRESERVATION_SYSTEM_NAME + "] Problem Report für " + obj.getIdentifier();
 		try {
-			Mail.sendAMail(preservationSystem.getAdmin().getEmailAddress(), localNode.getAdmin().getEmailAddress(), subject, msg);
+			this.queueMail(preservationSystem.getAdmin(), localNode.getAdmin(), subject, msg);
 		} catch (MessagingException e) {
 			logger.error("Sending email problem report for " +  obj.getIdentifier() + " failed");
 		}
@@ -138,7 +139,7 @@ public class MailContents {
 				+ object.getContractor().getShort_name() + "/outgoing/"+ object.getIdentifier() +".tar abgelegt und steht jetzt"
 				+ " zum Retrieval bereit!\n\n";
 		try {
-			Mail.sendAMail(preservationSystem.getAdmin().getEmailAddress(),object.getContractor().getEmailAddress(), subject, msg);
+			this.queueMail(preservationSystem.getAdmin(),object.getContractor(), subject, msg);
 		} catch (MessagingException e) {
 			logger.error("Sending email retrieval reciept for " + object.getIdentifier() + "failed", e);
 		}
@@ -159,7 +160,7 @@ public class MailContents {
 				"entfernt. Die Datei kann so nicht vom DNS verarbeitet werden. Korrigieren Sie ggfs. das Paket und bitte versuchen "
 						+ "Sie eine erneute Ablieferung. Das Paket wurde nicht archiviert. ";
 		try {
-			Mail.sendAMail(preservationSystem.getAdmin().getEmailAddress(),object.getContractor().getEmailAddress(), subject, msg);
+			this.queueMail(preservationSystem.getAdmin(),object.getContractor(), subject, msg);
 		} catch (MessagingException e) {
 			logger.error("Sending email retrieval reciept for " + object.getIdentifier() + "failed", e);
 		}
@@ -195,7 +196,7 @@ public class MailContents {
 		logger.debug(msg);
 		
 		try {
-			Mail.sendAMail(preservationSystem.getAdmin().getEmailAddress(), obj.getContractor().getEmailAddress(), subject, msg);
+			this.queueMail(preservationSystem.getAdmin(), obj.getContractor(), subject, msg);
 		} catch (MessagingException e) {
 			logger.error("Sending email reciept for " + obj.getIdentifier() + " failed",e);
 			return false;
@@ -221,7 +222,7 @@ public class MailContents {
 		logger.info(msg);
 		
 		try {
-			Mail.sendAMail(preservationSystem.getAdmin().getEmailAddress(), obj.getContractor().getEmailAddress(), subject, msg);
+			this.queueMail(preservationSystem.getAdmin(), obj.getContractor(), subject, msg);
 		} catch (MessagingException e) {
 			logger.error("Sending email reciept for " + obj.getIdentifier() + " failed",e);
 			return false;
@@ -248,7 +249,7 @@ public class MailContents {
 		
 		if (email!=null && !email.equals("")) {
 		try {
-			Mail.sendAMail(preservationSystem.getAdmin().getEmailAddress(), email, subject, msg);
+			this.queueMail(preservationSystem.getAdmin(), localNode.getAdmin(), subject, msg);
 		} catch (MessagingException ex) {
 			logger.error("Sending email reciept for " + object.getIdentifier() + " failed",ex);
 		}
@@ -281,9 +282,17 @@ public class MailContents {
 			return;
 		}
 		try {
-			Mail.sendAMail(preservationSystem.getAdmin().getEmailAddress(),email, subject, message);
+			this.queueMail(preservationSystem.getAdmin(), object.getContractor(), subject, message);
 		} catch (MessagingException ex) {
 			logger.error("Sending email reciept for " + object.getIdentifier() + " failed", ex);
 		}
 	}	
+
+	protected void queueMail(User fromUser, User toUser, String subject, String message) throws MessagingException{
+		String fromAddress = fromUser.getEmailAddress();
+		String toAddress = toUser.getEmailAddress();
+		Boolean isReport = toUser.isMailsPooled();
+		
+		Mail.queueMail(localNode.getName(), fromAddress, toAddress, subject, message, isReport);
+	}
 }
