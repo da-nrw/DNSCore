@@ -82,4 +82,67 @@ public class ATMetadataUpdatesNewDDBEad extends AcceptanceTest{
 		}
 		assertTrue(mets1refExists&&mets2refExists);
 	}
+	
+	@Test
+	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
+		
+		FileReader frEdm = new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), "EDM.xml").toFile());
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		Document doc = builder.build(frEdm);
+		@SuppressWarnings("unchecked")
+		List<Element> providetCho = doc.getRootElement().getChildren("ProvidedCHO", C.EDM_NS);
+		String firstID = "";
+		String secondID = "";
+		for(Element pcho : providetCho) {
+			Element title = pcho.getChild("title", C.DC_NS);
+			if(title!=null) {
+				if(pcho.getChild("title", C.DC_NS).getValue().equals("Titel 1. Ebene")) {
+					assertTrue(pcho.getChild("date", C.DC_NS).getValue().equals("2000-01-01/2005-12-31"));
+					firstID = pcho.getAttributeValue("about", C.RDF_NS);
+					assertTrue(pcho.getChildren("hasPart", C.DCTERMS_NS).size()==1);
+				} else if(pcho.getChild("title", C.DC_NS).getValue().equals("Titel 2. Ebene")) {
+					assertTrue(pcho.getChild("date", C.DC_NS).getValue().equals("2000-01-01/2005-12-31"));
+					secondID = pcho.getAttributeValue("about", C.RDF_NS);
+				}
+			}
+		}
+		
+		int referencedImages = 0;
+		@SuppressWarnings("unchecked")
+		List<Element> aggregationElements = doc.getRootElement().getChildren("Aggregation", C.ORE_NS);
+		boolean mets1Ref1 = false;
+		boolean mets1Ref2 = false;
+		boolean mets1Ref3 = false;
+		for(Element a : aggregationElements) {
+			if(a.getAttributeValue("about", C.RDF_NS).replace("aggregation", "cho").equals(firstID)) {
+				assertTrue(a.getChild("isShownBy", C.EDM_NS).getAttributeValue("resource", C.RDF_NS).endsWith(".jpg"));
+				@SuppressWarnings("unchecked")
+				List<Element> hasViewList = a.getChildren("hasView", C.EDM_NS);
+				assertTrue(hasViewList.size()==3);
+				referencedImages = referencedImages+3;
+				for(Element e : hasViewList) {
+					String ref = e.getAttributeValue("resource", C.RDF_NS);
+					if(ref.endsWith("_05c3fc64901b048dded574aa3accf104.jpg")) {
+						mets1Ref1 = true;
+					} else if(ref.endsWith("_8f911ff6c422c2bf8564d98228b364d5.jpg")) {
+						mets1Ref2 = true;
+					} else if(ref.endsWith("_c5b1707b33c7191cd87b6f5fba37c0b8.jpg")) {
+						mets1Ref3 = true;
+					}
+				}
+			} else if(a.getAttributeValue("about", C.RDF_NS).replace("aggregation", "cho").equals(secondID)) {
+				assertTrue(a.getChild("isShownBy", C.EDM_NS).getAttributeValue("resource", C.RDF_NS).endsWith("_4c3932a266662288a30c0f078f973837.jpg"));
+				referencedImages++;
+			} 
+		}
+		assertTrue(referencedImages==4);
+		assertTrue(mets1Ref1 && mets1Ref2 && mets1Ref3);
+				
+//			testIndex
+		String cho = "/cho/";
+		String ID = firstID.substring(firstID.lastIndexOf(cho)+cho.length());
+		assertTrue(metadataIndex.getIndexedMetadata("portal_ci_test", ID).contains("\"dc:date\":[\"2000-01-01/2005-12-31\"]"));
+		
+		frEdm.close();
+	}
 }

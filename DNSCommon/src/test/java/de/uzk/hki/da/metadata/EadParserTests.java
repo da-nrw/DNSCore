@@ -1,6 +1,6 @@
 package de.uzk.hki.da.metadata;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileReader;
@@ -50,4 +50,17 @@ public class EadParserTests {
 		}
 		assertTrue(metsReference1exists&&metsReference2exists);
 	}	
+	
+//	@Test
+//	public void testReferences() throws JDOMException, IOException {
+//		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+//		FileReader fr1 = new FileReader(ddbEadFile);
+//		Document ddbEadDoc = builder.build(fr1);
+//		EadParser ep = new EadParser(ddbEadDoc);
+//		List<String> references = ep.getReferences();
+//		for(String ref : references) {
+//			ep.getMetsFileFromPIPHref(ref);
+//		}
+//		
+//	}
 }

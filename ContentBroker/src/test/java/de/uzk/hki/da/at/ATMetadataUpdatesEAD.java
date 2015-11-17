@@ -171,8 +171,26 @@ public class ATMetadataUpdatesEAD extends AcceptanceTest{
 			}
 		}
 		
+		String abeckID = "";
+		String hansAbelID = "";
+		String paulAbelID = "";
+		String abrathID = "";
+		String achenbachID = "";
+		
 		Boolean rootElementExists = false;
 		for(Element pcho : providetCho) {
+			
+			if(pcho.getChild("title", C.DC_NS).getValue().equals("Karl-Georg Abeck")) {
+				abeckID = pcho.getAttributeValue("about", C.RDF_NS);
+			} else if(pcho.getChild("title", C.DC_NS).getValue().equals("Hans Abel")) {
+				hansAbelID = pcho.getAttributeValue("about", C.RDF_NS);;
+			} else if(pcho.getChild("title", C.DC_NS).getValue().equals("Paul Abel")) {
+				paulAbelID = pcho.getAttributeValue("about", C.RDF_NS);;
+			} else if(pcho.getChild("title", C.DC_NS).getValue().equals("Gerhard Abrath")) {
+				abrathID = pcho.getAttributeValue("about", C.RDF_NS);;
+			} else if(pcho.getChild("title", C.DC_NS).getValue().equals("Riccarda Achenbach")) {
+				achenbachID = pcho.getAttributeValue("about", C.RDF_NS);;
+			} 
 			
 			if(pcho.getAttributeValue("about", C.RDF_NS).equals("http://data.danrw.de/cho/"+o.getIdentifier())) {
 				assertTrue(pcho.getChild("title", C.DC_NS).getValue()
@@ -216,6 +234,30 @@ public class ATMetadataUpdatesEAD extends AcceptanceTest{
 		assertTrue(rootElementExists);
 		assertTrue(testProvidetChoExists);
 		assertTrue(bundesleitungUndBezirksverbaendeExists);
+		
+		@SuppressWarnings("unchecked")
+		List<Element> aggregationElements = doc.getRootElement().getChildren("Aggregation", C.ORE_NS);
+		int existingReferences = 0;
+		for(Element a : aggregationElements) {
+			
+			if(a.getAttributeValue("about", C.RDF_NS).replace("aggregation", "cho").equals(abeckID)) {
+				existingReferences++;
+				assertTrue(a.getChild("isShownBy", C.EDM_NS).getAttributeValue("resource", C.RDF_NS).endsWith("_c3836acf068a9b227834e0adda226ac2.jpg"));
+			} else if(a.getAttributeValue("about", C.RDF_NS).replace("aggregation", "cho").equals(hansAbelID)) {
+				existingReferences++;
+				assertTrue(a.getChild("isShownBy", C.EDM_NS).getAttributeValue("resource", C.RDF_NS).endsWith("_c8079103e5eecf45d2978a396e1839a9.jpg"));
+			} else if(a.getAttributeValue("about", C.RDF_NS).replace("aggregation", "cho").equals(paulAbelID)) {
+				existingReferences++;
+				assertTrue(a.getChild("isShownBy", C.EDM_NS).getAttributeValue("resource", C.RDF_NS).endsWith("_fa55eb875c9ad7ceedb0f61868daf0e4.jpg"));
+			} else if(a.getAttributeValue("about", C.RDF_NS).replace("aggregation", "cho").equals(abrathID)) {
+				existingReferences++;
+				assertTrue(a.getChild("isShownBy", C.EDM_NS).getAttributeValue("resource", C.RDF_NS).endsWith("_a66c85bf5ddf7683f7999cb4a20bfd61.jpg"));
+			} else if(a.getAttributeValue("about", C.RDF_NS).replace("aggregation", "cho").equals(achenbachID)) {
+				existingReferences++;
+				assertTrue(a.getChild("isShownBy", C.EDM_NS).getAttributeValue("resource", C.RDF_NS).endsWith("_12b1c1ce98f2726c6d9c91d0e589979d.jpg"));
+			}
+		}
+		assertTrue(existingReferences==5);
 		
 //			testIndex
 		String cho = "/cho/";

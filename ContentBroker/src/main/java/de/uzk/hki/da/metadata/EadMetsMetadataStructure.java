@@ -28,13 +28,16 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.input.BOMInputStream;
 import org.jdom.Attribute;
 import org.jdom.Document;
+import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
@@ -65,13 +68,14 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 	private List<String> missingMetsFiles;
 	private Document eadDoc;
 	private EadParser eadParser;
+	private Namespace EAD_NS;
 	
 	HashMap<String, Document> metsPathToDocument = new HashMap<String, Document>();
 	
 	public EadMetsMetadataStructure(Path workPath,File metadataFile, List<de.uzk.hki.da.model.Document> documents) throws JDOMException, 
 		IOException, ParserConfigurationException, SAXException {
 		super(workPath,metadataFile, documents);
-	
+		
 		eadFile = metadataFile;
 
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
@@ -81,6 +85,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		InputSource is = new InputSource(reader);
 		is.setEncoding("UTF-8");
 		eadDoc = builder.build(is);
+		EAD_NS = eadDoc.getRootElement().getNamespace();
 		eadParser = new EadParser(eadDoc);
 
 		metsReferencesInEAD = eadParser.getReferences();
@@ -98,9 +103,164 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  GETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-	@Override
+	@SuppressWarnings("unchecked")
 	public HashMap<String, HashMap<String, List<String>>> getIndexInfo(String objectId) {
-		return eadParser.getIndexInfo(objectId);
+		
+//		<ID<Attribut, Value>>
+		HashMap<String, HashMap<String, List<String>>> indexInfo = new HashMap<String, HashMap<String,List<String>>>();
+		
+//		Root
+		Element archdesc = eadDoc.getRootElement().getChild("archdesc", EAD_NS);
+
+		Element archdescDid = archdesc.getChild("did", EAD_NS);
+		HashMap<String, List<String>> rootInfo = new HashMap<String, List<String>>();
+		setNodeInfoAndChildeElements(archdescDid, rootInfo, null, null, null);
+		indexInfo.put(objectId, rootInfo);
+
+		Element dsc = archdesc.getChild("dsc", EAD_NS);
+		List<Element> c01 = dsc.getChildren("c01", EAD_NS);
+		if(c01.isEmpty()) {
+			c01 = dsc.getChildren("c", EAD_NS);
+		}
+
+//		Element: childElement
+//		String: isPartOf parentID
+		HashMap<Element, String> childElements = new HashMap<Element, String>();
+		for(Element e : c01) {
+			childElements.put(e, objectId);
+		}
+		
+//		String ID 
+//		ArrayList<String> partIDs
+		HashMap<String, ArrayList<String>> parentHasParts = new HashMap<String, ArrayList<String>>();
+		
+		for(int i=1; i<13; i++) {
+			
+			String nextLevel = (Integer.toString(i+1));
+			if(i<9) {
+				nextLevel = "c0"+nextLevel;
+			} else nextLevel = "c"+nextLevel;
+			
+			HashMap<Element, String> currentElements = new HashMap<Element, String>();
+			currentElements = childElements;
+			childElements = new HashMap<Element, String>();
+			
+			String isPartOf = "";
+			for(Element element : currentElements.keySet()) {
+				HashMap<String, List<String>> nodeInfo = new HashMap<String, List<String>>();
+				String uniqueID = UUID.randomUUID().toString();
+				uniqueID = uniqueID.replace("-", "");
+				String id = objectId+"-"+uniqueID;
+				
+				String parentId = currentElements.get(element);
+				isPartOf = parentId;
+				
+				if(parentHasParts.get(parentId)==null) {
+					ArrayList<String> hasPart = new ArrayList<String>();
+					parentHasParts.put(parentId, hasPart);
+				}
+				parentHasParts.get(parentId).add(id);
+				
+				ArrayList<String> partOf = new ArrayList<String>();
+				partOf.add(isPartOf);
+				nodeInfo.put(C.EDM_IS_PART_OF, partOf);
+				
+				List<Element> children = element.getChildren();
+				for(Element child : children) {
+					setNodeInfoAndChildeElements(child, nodeInfo, nextLevel, childElements, id);
+				}
+				indexInfo.put(id, nodeInfo);
+			}
+			for(String parentId : parentHasParts.keySet()) {
+				indexInfo.get(parentId).put(C.EDM_HAS_PART, parentHasParts.get(parentId));
+			}
+		}
+		return indexInfo;
+	}
+	
+	void setNodeInfoAndChildeElements(Element child, HashMap<String, List<String>> nodeInfo, String nextLevel, HashMap<Element, String> childElements, String uniqueID) {
+		if(child.getName().equals("did")) {
+			nodeInfo.put(C.EDM_TITLE, eadParser.getTitle(child));
+			nodeInfo.put(C.EDM_DATE, eadParser.getDate(child));
+			nodeInfo.put(C.EDM_IDENTIFIER, eadParser.getUnitIDs(child));
+		} else if(child.getName().equals("daogrp")) {
+			List<String> references = eadParser.getHref(child);
+			
+//			Replace mets references by file references
+			references = updateReferences(references);
+
+			if(references!=null & references.size()!=0) {
+				List<String> shownBy = new ArrayList<String>();
+				shownBy.add(references.get(0));
+				nodeInfo.put(C.EDM_IS_SHOWN_BY, shownBy);
+				nodeInfo.put(C.EDM_OBJECT, shownBy);
+			} 
+			if(references.size()>1) {
+				nodeInfo.put(C.EDM_HAS_VIEW, references);
+			}
+			
+		} else if(uniqueID!=null && (child.getName().equals(nextLevel) || child.getName().equals("c"))) {
+			childElements.put(child, uniqueID);
+		} 
+	}
+	
+	public List<String> updateReferences(List<String> referencesInEad) {
+		List<String> referencesInMetsFiles = new ArrayList<String>();
+		for(String r : referencesInEad) {
+			logger.debug("Search for references in references mets file "+r);
+			try {
+				List<String> metsRefs = getMetsReferences(r);
+				if(metsRefs!=null && !metsRefs.isEmpty()) {
+					for(String metsRef : metsRefs) {
+						referencesInMetsFiles.add(metsRef);
+					}
+				}
+			} catch (JDOMException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if(!referencesInMetsFiles.isEmpty()) {
+			referencesInEad = referencesInMetsFiles;
+		}
+		return referencesInEad;
+	}
+
+	public File getMetsFileFromPIPHref(String href) {
+		File metsFile = null;
+		try {
+			metsFile = Path.makeFile(workPath, new File(href).getCanonicalFile().getName());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return metsFile;
+	}
+	
+	public List<String> getMetsReferences(String metsRefInEad) throws JDOMException, IOException {
+		logger.debug("Search for references in mets: "+metsRefInEad);
+		List<String> fileReferencesInMets = null;
+		File metsFile = getMetsFileFromPIPHref(metsRefInEad);
+		if(metsFile.exists()) {
+			Document metsDoc = getMetsDocument(metsFile);
+			MetsParser mp = new MetsParser(metsDoc);
+			fileReferencesInMets = mp.getReferences();
+		} else {
+			logger.debug("Mets file "+metsFile+" does not exist.");
+		}
+		return fileReferencesInMets;
+	}
+	
+	private Document getMetsDocument(File metsFile) throws JDOMException, IOException {
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
+		FileInputStream fileInputStream = new FileInputStream(metsFile);
+		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
+		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
+		InputSource is = new InputSource(reader);
+		is.setEncoding("UTF-8");
+		eadDoc = builder.build(is);
+		return eadDoc;
 	}
 	
 	public File getMetadataFile() {
