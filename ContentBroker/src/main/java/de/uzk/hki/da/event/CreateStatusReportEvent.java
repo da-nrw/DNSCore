@@ -55,8 +55,7 @@ public class CreateStatusReportEvent extends AbstractSystemEvent {
 	FilenameFilter csvFilter = new FilenameFilter() {
 
 	public boolean accept(File dir, String name) {
-		return (name.endsWith(".csv")
-				||name.endsWith(".CSV"));
+		return (name.toLowerCase().endsWith(".csv"));
 	}
 	};
 
@@ -68,9 +67,13 @@ public class CreateStatusReportEvent extends AbstractSystemEvent {
 		for (int i=0;i<files.length;i++){
 			if (Path.makeFile(pathToReportIncoming(),files[i].getName()).isDirectory())
 				continue;
+			try {
 			CSVQueryHandler sr = new CSVQueryHandler(node.getName(),owner.getId());
 			logger.debug("working on " + Path.makeFile(pathToReportIncoming(),files[i].getName()));
 			sr.generateReportBasedOnFile(Path.makeFile(pathToReportIncoming(),files[i].getName()),Path.makeFile(pathToReportOutgoing(),files[i].getName()));
+			} catch (org.supercsv.exception.SuperCsvException ex) {
+				logger.error("Found parsing exception in "+ files[i].getName() + " " + ex.getMessage());
+			}
 		}
 	
 		return true;

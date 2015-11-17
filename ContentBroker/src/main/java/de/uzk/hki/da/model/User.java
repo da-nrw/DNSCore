@@ -70,7 +70,9 @@ public class User{
 	/** The email_contact. */
 	@Column(name="email_contact", columnDefinition="varchar(200)")
 	private String emailAddress;
-	
+	@Column(name="mails_pooled", columnDefinition="boolean")
+	private Boolean mailsPooled;
+
 	private String username;
 	private String password;
 	private String description;
@@ -181,6 +183,14 @@ public class User{
 		return emailAddress;
 	}
 	
+	public Boolean isMailsPooled() {
+		return mailsPooled;
+	}
+
+	public void setMailsPooled(Boolean mailsPooled) {
+		this.mailsPooled = mailsPooled;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */

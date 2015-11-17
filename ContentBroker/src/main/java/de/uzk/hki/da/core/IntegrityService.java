@@ -125,13 +125,15 @@ public class IntegrityService {
 	 *
 	 * @param obj the obj
 	 */
-	public void sendEmail(Object obj, String from, String to) {
+	public void sendEmail(String nodeName, Object obj, String from, String to, boolean mailsPooled) {
 		// send Mail to Admin with Package in Error
 		logger.debug("Trying to send email");
 		String subject = "[" + "da-nrw".toUpperCase() +  "] Problem Report für " + obj.getIdentifier();
 		if (to!= null && !to.equals("")) {
 			try {
-				Mail.sendAMail( from , to, subject, "Es gibt ein Problem mit dem Objekt an Ihrem Knoten " + obj.getContractor().getShort_name()+ "/" + obj.getIdentifier());
+				Mail.queueMail(nodeName ,from , to, subject, 
+						"Es gibt ein Problem mit dem Objekt an Ihrem Knoten " + obj.getContractor().getShort_name()+ "/" + obj.getIdentifier(),
+						mailsPooled);
 			} catch (MessagingException e) {
 				logger.error("Sending email problem report for " + obj.getIdentifier() + "failed");
 			}

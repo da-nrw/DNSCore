@@ -122,7 +122,7 @@ public class FederationExecutor extends Thread {
 			String err = "Failed to federate :" + data_name + " giving up on node " + sp.getNodeName() + " , cooperateing servers offline?"; 
 			if (sp.getAdminEmail()!=null && !sp.getAdminEmail().equals("")) {
 				try {
-					Mail.sendAMail(sp.getAdminEmail(), sp.getAdminEmail(), err , err);
+					Mail.queueMail(sp.getNodeName(), sp.getAdminEmail(), sp.getAdminEmail(), err , err, sp.isMailsPooled());
 				} catch (MessagingException ex) {
 					logger.error("Sending Email failed " + ex.toString());
 				}

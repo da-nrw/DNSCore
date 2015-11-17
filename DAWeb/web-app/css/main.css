@@ -221,7 +221,7 @@ img {
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
 }
 
-#items div {  width: 200px;} 
+#items div {  } 
 #items ul {  list-style-type: none;  margin: 0;  padding: 0;}  
 #items li a {  text-decoration: none;
 				margin-top: 15px; 

@@ -74,6 +74,10 @@
     <bean id="userDecisionTimeoutWorker" class="de.uzk.hki.da.core.UserDecisionTimeoutWorker" init-method="init">
         <property name="localNode" ref="localNode" />
     </bean>
+    <bean id="mailWorker" class="de.uzk.hki.da.core.MailWorker" init-method="init">
+        <property name="localNode" ref="localNode" />
+        <property name="smtpHost" value="${mailWorker.smtpHost:#{null}}"/>
+    </bean>
     <bean id="timeBasedPublicationWorker" class="de.uzk.hki.da.core.TimeBasedPublicationWorker" init-method="init">
         <property name="pauseForDays" value="30" />
         <property name="localNode" ref="localNode" />
