@@ -43,7 +43,8 @@ class ObjectController {
 		def contractorList = User.list()
 		def admin = 0;
 		def relativeDir = user.getShortName() + "/outgoing"
-
+		def filterOn = params.filterOn;
+		if (filterOn==null) filterOn=0
 
 		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
 		params.max = Math.min(params.max ? params.int('max') : 50, 200)
@@ -53,12 +54,20 @@ class ObjectController {
 				params.remove("searchContractorName")
 			}
 		}
-
+		def c1 = Object.createCriteria()
+		def objtsTotalForCont = c1.list() {
+			eq("user.id", user.id)
+			between("object_state", 50,200)
+		}
+		def totalObjs = objtsTotalForCont.size();
+		
+		
 		def c = Object.createCriteria()
 		log.debug(params.toString())
 		def objects = c.list(max: params.max, offset: params.offset ?: 0) {
 
 			if (params.search) params.search.each { key, value ->
+				if (value!="") filterOn=1
 				like(key, "%" + value + "%")
 			}
 
@@ -74,15 +83,17 @@ class ObjectController {
 			log.debug("Search in Field " + params.searchDateType)
 
 			if (ds!=null && de!=null) {
-
+				filterOn=1
 				log.debug("Objects between " + ds + " and " + de)
 				between(st, ds, de)
 			}
 			if (ds!=null && de==null) {
+				filterOn=1
 				log.debug("Objects greater than " + ds)
 				gt(st,ds)
 			}
 			if (ds==null && de!=null) {
+				filterOn=1
 				log.debug("Objects lower than " + de)
 				lt(st,de)
 			}
@@ -92,11 +103,12 @@ class ObjectController {
 				admin = 1;
 			}
 			if (admin==0) {
-
+				
 				eq("user.id", user.id)
 			}
 			if (admin==1) {
 				if (params.searchContractorName!=null) {
+					filterOn=1
 					createAlias( "user", "c" )
 					eq("c.shortName", params.searchContractorName)
 				}
@@ -104,7 +116,7 @@ class ObjectController {
 			between("object_state", 50,200)
 			order(params.sort ?: "id", params.order ?: "desc")
 		}
-		log.debug(params.search)
+		log.debug("Search " + params.search)
 
 		// workaround: make ALL params accessible for following http-requests
 		def paramsList = params.search?.collectEntries { key, value -> ['search.'+key, value]}
@@ -116,6 +128,7 @@ class ObjectController {
 			render(view:"adminList", model:[	objectInstanceList: objects,
 				objectInstanceTotal: objects.getTotalCount(),
 				searchParams: params.search,
+				filterOn: filterOn,
 				paramsList: paramsList,
 				paginate: true,
 				admin: admin,
@@ -125,9 +138,11 @@ class ObjectController {
 		} else render(view:"list", model:[	objectInstanceList: objects,
 				objectInstanceTotal: objects.getTotalCount(),
 				searchParams: params.search,
+				filterOn: filterOn,
 				paramsList: paramsList,
 				paginate: true,
-				admin: admin,
+				admin: 0,
+				totalObjs: totalObjs,
 				baseFolder: baseFolder,
 				contractorList: contractorList
 			]);
