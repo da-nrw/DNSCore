@@ -5,21 +5,9 @@
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'object.label', default: 'Object')}" />
 		<title>DA-NRW Objekte</title>
+		
 		<r:require module="messagebox"/>
-		<r:script>
-			$(function() {
-				$("#filter").accordion({ collapsible: true, active: false });
-			});
-			function queuedFor(result) {
-				var type = "error";
-				if (result.success) type = "info";
-				var messageBox = $("<div class='message-box'></div>");
-				$("#page-body").prepend(messageBox);
-				messageBox.message({
-					type: type, message: result.msg
-				});
-			}
-		</r:script>
+		
 	</head>
 	<body>
 		<a href="#list-object" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
@@ -28,9 +16,18 @@
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
 			</ul>
 		</div>
+		<script type="text/javascript">
+		 $(document).ready(function(){
+				$("#filter").accordion({ collapsible: true, active: false });
+				<g:if test="${filterOn==1}">
+				$( "#filter" ).accordion( "option", "active", 0 );
+				</g:if>
+		 });
+		</script>
 		<div id="filter" style="margin: 0.8em 0 0.3em">
 			<h1><a href="#">Filter</a></h1> 
             <g:form name="searchForm" action="list">
+            <g:hiddenField name="filterOn" value="${filterOn}" />
             	<table>
             		<tr>
             			<td>Original Name:</td>
@@ -70,13 +67,31 @@
             		</tr>
             		<tr>
             			<td></td>
-            			<td><g:submitButton name="submit" value="Filter anwenden"/></td>
+            			<td><g:submitButton name="submit" value="Filter anwenden"/><g:submitButton name="loeschen" type="submit" value="Filter löschen"/></td>
+            			<script type="text/javascript">
+            			$(document).ready(function(){
+            				 	$("#loeschen").click(function() {                				 
+			            			$('#searchForm').find(':input').each(function() {
+			            	            switch(this.type) {
+			                            case 'text':
+			                            	$(this).val('');
+			                                break;                      
+			                            case 'textarea':
+			                                $(this).val('');
+			                                break;
+			            			 	case 'hidden':
+			                                $(this).val('0');
+			                                break;
+			                            }
+			            			});
+            				    });
+            			});</script>
             		</tr>
             	</table>     
             </g:form>
         </div>
 		<div id="list-object" class="content scaffold-list" role="main">
-			<h1>Ihre DA-NRW Objekte</h1>
+			<h1>Ihre DA-NRW Objekte (${objectInstanceList.size()} Treffer von ${totalObjs} insgesamt)</h1>
 			<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 			</g:if>

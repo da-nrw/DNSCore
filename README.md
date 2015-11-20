@@ -1,5 +1,5 @@
 DNSCore           
-========       
+========     
 
 (Eine Liste der Features in deutsch finden sie [hier](ContentBroker/src/main/markdown/features.de.md))
 

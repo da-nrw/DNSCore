@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -118,6 +119,10 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 			assertTrue(mh.getMetsHref(e).contains("http://data.danrw.de/"));
 			assertTrue(mh.getMimetypeInMets(e).equals(C.MIMETYPE_IMAGE_JPEG));
 			assertTrue(mh.getMetsLoctype(e).equals("URL"));
+			assertTrue(Path.make(contractorsPipsPublic, 
+					object.getIdentifier(), FilenameUtils.getName(mh.getMetsHref(e))).toFile().exists());
+			
+		
 		}
 	}
 	
