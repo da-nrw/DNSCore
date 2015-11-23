@@ -23,6 +23,7 @@ sqls=(
 	"DELETE FROM copies;"
 	"DELETE FROM packages;"
 	"DELETE FROM objects;"
+	"DELETE FROM pending_mail;"
 )
 
 for i in "${sqls[@]}"
