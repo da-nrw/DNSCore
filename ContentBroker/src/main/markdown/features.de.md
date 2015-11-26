@@ -8,7 +8,7 @@
 * Codec identification - Erkennung von Codecs auf Basis der installierten Module.
 * Automatic format conversion - Konvertierung verstandener Formate durch hinterlegte Routinen. 
 * PREMIS Logging - Alle Aktionen werden in der PREMIS hinterlegt.
-* PIP (Presentation Information Package) creation - Anlage eines Präsentationsderivats für öffentlcihe und institutionelle Portale. 
+* PIP (Presentation Information Package) creation - Anlage eines Präsentationsderivats für öffentliche und institutionelle Portale. 
 
 <b>Genauere Beschreibungen der einzelnen Leistungsmerkmale:</b>
 
