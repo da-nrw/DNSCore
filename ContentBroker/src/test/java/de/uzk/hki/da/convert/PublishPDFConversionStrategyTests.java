@@ -37,6 +37,7 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
+import de.uzk.hki.da.model.MigrationRight;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PublicationRight;
@@ -129,5 +130,5 @@ public class PublishPDFConversionStrategyTests {
 		assertEquals(227, targetDoc.getDocumentCatalog().getAllPages().size());
 		
 	}
-
+		
 }

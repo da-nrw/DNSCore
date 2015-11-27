@@ -88,20 +88,19 @@ public class PublishPDFConversionStrategy extends PublishConversionStrategyBase 
 								certainPagesText += " ";
 							certainPagesText+=getPublicationRightForAudience(audience).getTextRestriction().getCertainPages()[i];
 						}
-				logger.debug("reduce to certain pages: " + certainPagesText);
-				
 			}
-					
+			
 			// copy whole file if no restrictions are found
-			if (numberOfPagesText == null && certainPagesText == null) {
+			if (StringUtilities.isNotSet(numberOfPagesText) && StringUtilities.isNotSet(certainPagesText)) {
 				try {
+					logger.debug("AUDIENCE " + audience + ": COPY "+ input + " to " + target);
 					FileUtils.copyFileToDirectory(new File(input),
 							wa.toFile(target).getParentFile());
 					Event e = new Event();
 					e.setDetail("Copied PDF");
 					e.setSource_file(ci.getSource_file());
 					e.setTarget_file(target);
-					e.setType("CONVERT");
+					e.setType("COPY");
 					e.setDate(new Date());
 					results.add(e);
 				} catch (IOException e) {
@@ -109,6 +108,7 @@ public class PublishPDFConversionStrategy extends PublishConversionStrategyBase 
 				}
 				continue;
 			}
+			logger.debug("AUDIENCE " + audience + ": Converted with PDFBox, only certain pages wanted: NumberOfPagesMax:(" + numberOfPagesText + "), CertainPages:(" + certainPagesText+ ")");
 			PdfService pdf = new PdfService(new File(input),wa.toFile(target));
 		    pdf.reduceToCertainPages(numberOfPagesText, certainPagesText);
 			Event e = new Event();
@@ -118,9 +118,7 @@ public class PublishPDFConversionStrategy extends PublishConversionStrategyBase 
 			e.setType("CONVERT");
 			e.setDate(new Date());
 			results.add(e);
-		
 		}
-		
 		return results;
 		
 	}
