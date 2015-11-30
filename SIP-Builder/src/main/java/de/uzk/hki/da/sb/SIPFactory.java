@@ -671,6 +671,8 @@ public class SIPFactory {
 			alwaysOverwrite = false;
 			skippedFiles = false;				 
 			messageWriter.resetZeroByteFiles();
+			progressManager.reset();
+			
 
 			if (createCollection) {
 				collectionFolder = new File(new File(destinationPath), collectionName);
