@@ -57,7 +57,7 @@ Gilt für alle Szenarien!
 1. Der User entnimmt das Paket dem User-Entnahmeordner.
 1. Der User entpackt das Paket und überprüft den Inhalt.
 
-#### Akkzeptanzkriterien:
+#### Akzeptanzkriterien:
 
 * Der Einlieferungsbeleg enthält einen klaren Hinweis darauf, dass es sich um eine Delta-Lieferung zu einem bekannten Objekt handelt.
 * Der in der Mail erwähnte technische Identifier entspricht dem in Test AT-1a erhaltenen.

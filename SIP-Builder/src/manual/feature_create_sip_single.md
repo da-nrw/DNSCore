@@ -10,7 +10,7 @@ Der SIP-Builder überprüft vor der Bildung des SIP die Struktur des Pakets sowi
 
 Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 * Abweichungen, die zwangsläufig zu Problemen im ContentBroker führen werden.
-* Abweichungen, die unter bestimmten Bedingungen zu einer fehlerfreien Verarbeitung im ContentBroker führen werden.
+* Abweichungen, die unter bestimmten Bedingungen zu einem Fehler im ContentBroker führen werden. Der Fehler wird dem Kunden per Email mitgeteilt und ist in der DAWEB ebenfalls vermerkt.
 
 #### Vorbedingung:
 

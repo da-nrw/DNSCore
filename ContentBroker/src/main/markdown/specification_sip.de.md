@@ -132,7 +132,7 @@ werden, quittiert mit einer Email an den Nutzer.
 
 Weitere Anforderungen bestehen, sofern der Nutzer von erweiterten 
 Leistungsmerkmalen bezüglich der Metadatenverarbeitung und Publikation profitieren möchte.
-Dann müssen die in [diesem](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/2015-01-14_Metadaten_in_DA-NRW.pdf?raw=true) Dokument beschriebenen Regeln befolgt werden.
+Dann müssen die in [diesem](specification_metadata.de.md) Dokument beschriebenen Regeln befolgt werden.
 
 #### Dateinamen
 
