@@ -46,7 +46,7 @@ public class ATBuildMultipleMetsSips {
 	}
 	
 	@Test
-	public void testNestedStructureIgnoreWrongReferences() throws IOException {
+	public void test() throws IOException {
 		
 		String cmd = "./SipBuilder-Unix.sh -source=\""+sourceDir.getAbsolutePath()+"/\" -destination=\""+targetDir.getAbsolutePath()+"/\" -multiple";
 		
