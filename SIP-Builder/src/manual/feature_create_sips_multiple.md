@@ -41,7 +41,7 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 
 #### Akzeptanzkriterien:
 
-1. Der ausgewählte Zielordner enthält insgesamt drei SIPs Datei ATBuildSingleEadSip.tgz mit folgendem Inhalt
+1. Der ausgewählte Zielordner enthält insgesamt drei SIPs:
 ```
   ATBuildMultipleMetsSip1.tgz,
   ATBuildMultipleMetsSip2.tgz,
