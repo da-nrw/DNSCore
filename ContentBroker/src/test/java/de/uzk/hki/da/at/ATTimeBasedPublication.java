@@ -23,13 +23,11 @@ import static de.uzk.hki.da.utils.C.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
 
 import org.jdom.Document;
@@ -79,14 +77,11 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		
 		assertNotNull(object);
 		
-		InputStream is1 = repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getOpenCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg");
-		InputStream is2 = repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getClosedCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg");
+		boolean exi1 = repositoryFacade.fileExists(object.getIdentifier(), preservationSystem.getOpenCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg");
+		boolean exi2 = repositoryFacade.fileExists(object.getIdentifier(), preservationSystem.getClosedCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg");
 		
-		assertNotNull(is1);
-		assertNotNull(is2);
-		
-		is1.close();
-		is2.close();
+		assertTrue(exi1);
+		assertTrue(exi2);
 		
 		File publFile = Path.makeFile(localNode.getWorkAreaRootPath(),
 				WorkArea.PIPS,WorkArea.PUBLIC,object.getContractor().getShort_name(),
@@ -132,11 +127,10 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		Object object = ath.getObject(ORIG_NAME_PREFIX+name);
 		
 		assertNotNull(object);
-		InputStream is1 = repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getOpenCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg");
-		InputStream is2 = repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getClosedCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg");	
-		assertNull(is1);
-		assertNotNull(is2);
-		is2.close();
+		boolean exPubl = repositoryFacade.fileExists(object.getIdentifier(), preservationSystem.getOpenCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg");
+		boolean exInst = repositoryFacade.fileExists(object.getIdentifier(), preservationSystem.getClosedCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg");	
+		assertFalse(exPubl);
+		assertTrue(exInst);
 		assertEquals(PUBLISHEDFLAG_INSTITUTION,object.getPublished_flag());
 	}
 	

@@ -20,16 +20,12 @@
 package de.uzk.hki.da.at;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Test;
 
@@ -62,45 +58,37 @@ public class ATContractIngestDelta extends AcceptanceTest{
 		ath.waitForDefinedPublishedState(ORIG_NAME);
 		Object o=ath.getObject(ORIG_NAME);
 		
-		InputStream is = repositoryFacade.retrieveFile(o.getIdentifier(), preservationSystem.getOpenCollectionName(), 
-				JPG_STREAM_ID);
-		assertNotNull(is);
-		IOUtils.copy(is,new FileOutputStream(OUTPUT_JPG_1));
-		is.close();
+		FileOutputStream outi;
+		
+		outi = new FileOutputStream(OUTPUT_JPG_1);
+		String collName =  preservationSystem.getOpenCollectionName();
+		repositoryFacade.retrieveTo(outi, o.getIdentifier(), collName,	JPG_STREAM_ID);
+		outi.close();
 		
 		ath.waitForObjectToBeIndexed(metadataIndex, o.getIdentifier());
 		assertTrue(metadataIndex.getIndexedMetadata("portal_ci_test", o.getIdentifier()).contains("Nudelmaschine in Originalverpackung"));
-		
-		
 		
 		ath.putSIPtoIngestArea(ORIG_NAME+"2", DEFAULT_CONTAINER_EXTENSION, ORIG_NAME);
 		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.InWorkflow);
 		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForDefinedPublishedState(ORIG_NAME);
 		o=ath.getObject(ORIG_NAME);
-		InputStream is2 = repositoryFacade.retrieveFile(o.getIdentifier(), preservationSystem.getOpenCollectionName(), 
-				JPG_STREAM_ID);
-		assertNotNull(is2);
-		IOUtils.copy(is2,new FileOutputStream(OUTPUT_JPG_2));
-		is2.close();
+
+		outi = new FileOutputStream(OUTPUT_JPG_2);
+		repositoryFacade.retrieveTo(outi, o.getIdentifier(), collName, JPG_STREAM_ID);
+		outi.close();
 		
 		Thread.sleep(3000);
 		assertTrue(metadataIndex.getIndexedMetadata("portal_ci_test", o.getIdentifier()).contains("Nudelmaschine in Originalverpackung"));
 
-		
-		
-		
-		
-		
 		ath.putSIPtoIngestArea(ORIG_NAME+"3", DEFAULT_CONTAINER_EXTENSION, ORIG_NAME);
 		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.InWorkflow);
 		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForObjectPublishedState(ORIG_NAME,0);
 		o=ath.getObject(ORIG_NAME);
 
-		InputStream is3 = repositoryFacade.retrieveFile(o.getIdentifier(), preservationSystem.getOpenCollectionName(), 
-				JPG_STREAM_ID);
-		assertNull(is3);
+		boolean exi3 = repositoryFacade.fileExists(o.getIdentifier(), collName, JPG_STREAM_ID);
+		assertFalse(exi3);
 		
 		Thread.sleep(3000);
 		assertFalse(metadataIndex.getIndexedMetadata("portal_ci_test", o.getIdentifier()).contains("Nudelmaschine in Originalverpackung"));

@@ -22,6 +22,7 @@ package de.uzk.hki.da.repository;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 
 import org.apache.commons.io.FileUtils;
@@ -130,21 +131,53 @@ public class Fedora3RepositoryFacade implements RepositoryFacade {
 	}
 
 	@Override
-	public InputStream retrieveFile(String objectId, String collection, String fileId)
-			throws RepositoryException {
+	public boolean fileExists(String objectId, String collection, String fileId) throws RepositoryException {
 		String pid = generatePid(objectId, collection);
 		FedoraResponse r = null;
 		InputStream is = null;
+		boolean ret = false;
+		try {
+			r = new GetDatastreamDissemination(pid, fileId).execute(fedora);
+			is = r.getEntityInputStream();
+			if (is != null) {
+				ret = true;
+				try {
+					is.close();
+				} catch (IOException e) {
+				}
+			}
+
+			r.close();
+		} catch (FedoraClientException e) {
+			if (e.getStatus() == 404) {
+				logger.error("Failed to recieve Datastream, due to not found reason: " + objectId + " " + fileId);
+			} else {
+				throw new RepositoryException("Failed to retrieve datastream: " + fileId, e);
+			}
+		}
+		return ret;
+	}
+
+	@Override
+	public void retrieveTo(OutputStream outputStream, String objectId, String collection, String fileId)
+			throws RepositoryException {
+		String pid = generatePid(objectId, collection);
+		FedoraResponse r = null;
+		InputStream inputStream = null;
 		try {
 			r=new GetDatastreamDissemination(pid, fileId)
 				.execute(fedora);
-			is = r.getEntityInputStream();
+			inputStream = r.getEntityInputStream();
+
+			try {
+				org.apache.commons.io.IOUtils.copy(inputStream, outputStream);
+			} catch (Exception exc) {
+				throw new RepositoryException("Failed to copy datastream: " + fileId, exc);
+			}
 			r.close();
-			return is;
 		} catch (FedoraClientException e) {
 			if (e.getStatus() == 404) { 
-				logger.error("Failed to recieve Datastream, due to not found reason: " + objectId + " " + fileId);
-				return null;
+				throw new RepositoryException("Failed to recieve Datastream, due to not found reason: " + objectId + " " + fileId);
 			} else {
 				throw new RepositoryException("Failed to retrieve datastream: " + fileId, e);
 			}
