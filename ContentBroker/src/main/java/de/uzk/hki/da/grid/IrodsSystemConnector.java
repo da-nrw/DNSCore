@@ -1,5 +1,5 @@
 /*
-  DA-NRW Software Suite | ContentBroker
+l  DA-NRW Software Suite | ContentBroker
   Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
   Universität zu Köln
 
@@ -30,9 +30,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.irods.jargon.core.connection.AbstractIRODSMidLevelProtocol;
 import org.irods.jargon.core.connection.IRODSAccount;
-import org.irods.jargon.core.connection.IRODSAccount.AuthScheme;
-import org.irods.jargon.core.connection.IRODSCommands;
+import org.irods.jargon.core.connection.AuthScheme;
 import org.irods.jargon.core.connection.SettableJargonProperties;
 import org.irods.jargon.core.connection.auth.AuthResponse;
 import org.irods.jargon.core.exception.DataNotFoundException;
@@ -49,6 +49,7 @@ import org.irods.jargon.core.pub.IRODSAccessObjectFactory;
 import org.irods.jargon.core.pub.IRODSAccessObjectFactoryImpl;
 import org.irods.jargon.core.pub.IRODSFileSystem;
 import org.irods.jargon.core.pub.IRODSFileSystemAO;
+import org.irods.jargon.core.pub.IRODSFileSystemSingletonWrapper;
 import org.irods.jargon.core.pub.IRODSGenQueryExecutor;
 import org.irods.jargon.core.pub.ResourceAO;
 import org.irods.jargon.core.pub.RuleProcessingAO;
@@ -101,10 +102,6 @@ public class IrodsSystemConnector {
 	
 	/** The irods file system. */
 	private static IRODSFileSystem irodsFileSystem;
-	
-	/** The irods commands. */
-	private IRODSCommands irodsCommands;
-	
 	
 	/** The host. */
 	private String host;
@@ -261,8 +258,16 @@ public class IrodsSystemConnector {
 	 * @author Jens Peters
 	 */
 	public boolean isConnected() {
-		if (irodsCommands==null) return false;
-		return irodsCommands.isConnected();
+		boolean ret = false;
+		if (irodsFileSystem!=null) {
+		try {
+	
+			ret = irodsFileSystem.getIrodsSession().currentConnection(irodsAccount).isConnected();
+		} catch (JargonException e) {
+			logger.error("caught exeption from irods " + e.getMessage() + " " + e.getUnderlyingIRODSExceptionCode());
+		} 
+		}
+		return ret;
 	
 	}
 	
@@ -272,9 +277,7 @@ public class IrodsSystemConnector {
  * @author Jens Peters
  */
 	public void establishConnect(){
-	if (irodsCommands==null || !irodsCommands.isConnected()){
 				connect();
-	}
 	} 
 
 	
@@ -288,10 +291,10 @@ public class IrodsSystemConnector {
 			logger.debug("Establishing connection to the iRODS DataGrid now!");
 			try {
 				//TODO change to appropriate jargon version to implement Singleton
-				//irodsFileSystem = IRODSFileSystemSingletonWrapper.instance();
+				irodsFileSystem = IRODSFileSystemSingletonWrapper.instance();
 				// until this we use our own Wrapper 
-				//irodsFileSystem = IRODSFileSystem.instance();
-				irodsFileSystem = IrodsFileSystemConnector.getInstance(); 
+	//			irodsFileSystem = IRODSFileSystem.instance();
+				//irodsFileSystem = IrodsFileSystemConnector.getInstance(); 
 
 				if (setPamMode) {
 					System.setProperty("javax.net.ssl.keyStore", keyStore);
@@ -317,8 +320,8 @@ public class IrodsSystemConnector {
 							.getAuthResponse();
 				irodsAccount = authResponse.getAuthenticatedIRODSAccount();
 
-				irodsCommands = irodsFileSystem.getIrodsSession().currentConnection(irodsAccount);
-				boolean ret = irodsCommands.isConnected();
+				AbstractIRODSMidLevelProtocol amp = irodsFileSystem.getIrodsSession().currentConnection(irodsAccount);
+				boolean ret = amp.isConnected();
 				
 				logger.debug("Connection claimed state is: " + ret);
 				
@@ -327,7 +330,7 @@ public class IrodsSystemConnector {
 				
 				return ret;
 			} catch (Exception e) {
-				logger.error("Could not connect to the iRODS Data Grid server called: " + irodsAccount.getHost() +" caused by " +e.getCause());
+				logger.error("Could not connect to the iRODS Data Grid server called: " + irodsAccount.getHost() +" caused by " +e.getCause() + " " + e.getMessage());
 				logger.debug("Going to sleep for a while ...");
 				try {
 					Thread.sleep(sleepFor);
@@ -677,73 +680,7 @@ public class IrodsSystemConnector {
 
 	}
 	
-	/**
-	 * Gets the Vault Path for logical file on a Resource named rname.
-	 *
-	 * @param rname the rname
-	 * @return The resource vault path for the given rname
-	 * @author Jens Peters
-	 */
-	public String getVaultPathForRescName(String rname) {
-		if (!isConnected()) {
-			connect();
-		}
-		List<Resource> o = null;
-		StringBuilder sb = new StringBuilder();
-		sb.append(RodsGenQueryEnum.COL_R_RESC_NAME.getName());
-		sb.append(" = '");
-		sb.append(rname);
-		sb.append("'");
-		
-		try {
-			o = getResourceAO().findWhere(sb.toString());
-			if (o.isEmpty()) {
-				logger.warn("Could not determine vault path for resc name " + rname);
-				logger.debug("used query: " + sb);
-				return null;
-			}
-			
-			return o.get(0).getVaultPath();
-		} catch (Exception e) {
-			throw new RuntimeException("Could not determine vault path for resc name " + rname, e);
-		}
-		
-	}
 	
-	/**
-	 * Gets the Resource Location for Resource named rname.
-	 *
-	 * @param rname the rname
-	 * @return The resource location (server name) for the given rname
-	 * @author Jens Peters
-	 */
-	public String getRescLocForRescName(String rname) {
-		if (!isConnected()) {
-			connect();
-		}
-		
-		
-		List<Resource> o = null;
-		StringBuilder sb = new StringBuilder();
-		sb.append(RodsGenQueryEnum.COL_R_RESC_NAME.getName());
-		sb.append(" = '");
-		sb.append(rname);
-		sb.append("'");
-		
-		try {
-			o = getResourceAO().findWhere(sb.toString());
-			if (o.isEmpty()) {
-				logger.warn("Could not determine RescLoc path for resc name " + rname);
-				logger.debug("used query: " + sb);
-				return null;
-			}
-			
-			return o.get(0).getLocation();
-		} catch (Exception e) {
-			throw new RuntimeException("Could not determine RescLoc for resc name " + rname, e);
-		}
-		
-	}
 
 	
 	/**
@@ -981,30 +918,7 @@ public class IrodsSystemConnector {
 	
 	
 	
-	/**
-	 * Gets the resources from group.
-	 *
-	 * @param resGroupName the res group name
-	 * @return the resources from group
-	 * @author Jens Peters
-	 */
-	public List<Resource> getAllRessourcesFromGroup(String resGroupName) {
-		List<Resource> res = null;
-		try {
-			ResourceAO rao = getResourceAO();
-			StringBuilder sb = new StringBuilder();
-			sb.append(RodsGenQueryEnum.COL_RESC_GROUP_NAME.getName());
-			sb.append(" = '");
-			sb.append(resGroupName);
-			sb.append("' ");
-			res = rao.findWhere(sb.toString());
-		} catch (JargonException e) {
-					logger.error("IrodsSystemConnector getRessourcesFromGroup: Error in getting Ressources from  "
-					+ resGroupName);
-		}
-		return res;
 
-	}
 	
 	/**
 	 * checks if DAO is on given resource.
@@ -1022,29 +936,7 @@ public class IrodsSystemConnector {
 
 	}
 	
-	/**
-	 * Gets the resources from group.
-	 *
-	 * @param resGroupName the res group name
-	 * @return the resources from group
-	 * @author Jens Peters
-	 */
-	public List<Resource> getRessourcesFromGroup( String resGroupName) {
-		List<Resource> lzares = null;
-		try {
-			StringBuilder sb = new StringBuilder();
-			sb.append(RodsGenQueryEnum.COL_RESC_GROUP_NAME.getName());
-			sb.append(" = '");
-			sb.append(resGroupName);
-			sb.append("' ");	
-			lzares = getResourceAO().findWhere(sb.toString());
-		} catch (JargonException e) {
-			
-			logger.error("IrodsSystemConnector getRessourcesFromGroup: Error in getting Ressources from  "
-					+ resGroupName + " " + e.getMessage());
-		}
-		return lzares;
-	}
+
 	
 /**
  * adds AVU MEtadata to DAO
@@ -1268,15 +1160,7 @@ public class IrodsSystemConnector {
 		}return ret;
 	}
 	
-	/**
-	 * Trim ressource group.
-	 * Trims (deletes) all Replications of DataObj in the given resGroup.
-	 * if less then 2 Copies in total exist, the trim does nothing
-	 *
-	 * @param dataobj the dataobj
-	 * @param resGroup the res group
-	 * @author Jens Peters
-	 */
+	
 	public void trimResources(String dataobj, List<Resource> resGroup) {
 		if (resGroup != null) {
 			Iterator<Resource> iterator = resGroup.iterator();
@@ -1622,8 +1506,6 @@ public class IrodsSystemConnector {
 			else return dao.getChecksum();
 		} catch (JargonException e) {
 			throw new IrodsRuntimeException("Get Checksum error on " + data_name,e);
-		} catch (java.io.FileNotFoundException e) {
-			throw new IrodsRuntimeException("Get Checksum file not found" + data_name,e);
 		} 
 		
 	}
