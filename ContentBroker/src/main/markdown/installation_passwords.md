@@ -18,3 +18,11 @@
 	*/
 	
 # Password Encryption / Decryption in DNSCore
+
+For encryption of Passwords in Contentbroker you should use the Tool PasswordEnryptor which can be found as project called passwordEncryptor which is part of DNSCore:
+
+    java de.uzk.hki.da.passwordEncryptor.passwordEncryptor -cb <your_password>
+
+For For encryption of Passwords in in DAweb:
+
+    groovy grails-app/utils/de/uzk/hki/da/utils/DESCodec.groovy <your password>
