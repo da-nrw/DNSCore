@@ -1,12 +1,11 @@
 # Leistungsmerkmal: Validierung der Einlieferung
 
-Die vom Vertragspartner eingelieferten, zur Übernahme durch das System vorgesehenen, SIPs
-werden zu Beginn ihrer Umwandlung in für die Langzeitarchivierung geeignete AIPs, in mehrerer Hinsicht
+Die vom Vertragspartner eingelieferten, zur Übernahme durch das System vorgesehenen SIPs
+werden zu Beginn ihrer Umwandlung in für die Langzeitarchivierung geeignete AIPs in mehrerer Hinsicht
 geprüft. 
 
 Dazu gehört vor allem eine Prüfung hinsichtlich der Verwendung von eindeutigen Dokumentennamen. Die Eindeutigkeit von
-Dokumentennamen ist eine wichtige Voraussetzung für die Tauglichkeit von SIPs für die Aufbereitung zur Langzeitarchivierung
-ihrer Inhalte.
+Dokumentennamen innerhalb eines SIPs ist eine wichtige Voraussetzung für die Tauglichkeit für die Aufbereitung zur Langzeitarchivierung ihrer Inhalte.
 
 #### Kontext
 

@@ -3,6 +3,7 @@
 	<name>SIP-Builder</name>
 	<comment></comment>
 	<projects>
+		<project>DNSCommon</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -48,7 +48,7 @@ Im Contract eines SIP ist eine mögliche Migrationsbedinung zu hinterlegen. Dies
 1. Entnahme des DIP-Paketes aus dem Entnahmeordner des einliefernden Users.
 1. Entpacken des DIP und Überprüfen der Inhalte.
 
-#### Akkzeptanzkriterien:
+#### Akzeptanzkriterien:
 
 1. Das DIP enthält die Bilddatei vom migrierten Typ TIFF: image42.jp2
 1. Es enhält nicht die originale Bilddatei: image42.jpg.
@@ -193,7 +193,7 @@ Die Tests AT-MB-2 und AT-MB3 gehen davon aus, dass der User die Rückfrage ableh
 1. Entnahme des DIP-Paketes aus dem Entnahmeordner des einliefernden Users.
 1. Entpacken des DIP und Überprüfen der Inhalte.
 
-#### Akkzeptanzkriterien:
+#### Akzeptanzkriterien:
 
 * Das DIP enthält die Bilddatei vom originalen Typ JPEG: image42.jpg.
 * Es enhält nicht die migrierte Version der originalen Bilddatei Bilddatei: image42.jp2.
