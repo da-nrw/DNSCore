@@ -52,7 +52,7 @@ public class AcceptanceTest {
 	
 	private static final String CONF_BEANS_XML = "conf/beans.xml";
 	private static final String CI_WORKING_RESOURCE = "ciWorkingResource";
-	private static final String CI_ARCHIVE_RESOURCE = "ciArchiveResource";
+	private static final String CI_ARCHIVE_RESOURCE = "ciArchiveRescGroup";
 	private static final String BEAN_NAME_FAKE_REPOSITORY_FACADE = "fakeRepositoryFacade";
 	private static final String BEAN_NAME_FAKE_METADATA_INDEX = "fakeMetadataIndex";
 	protected static Node localNode;

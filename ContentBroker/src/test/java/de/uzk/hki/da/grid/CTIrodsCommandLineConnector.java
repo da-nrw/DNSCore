@@ -50,7 +50,7 @@ public class CTIrodsCommandLineConnector {
 	File file;
 	String md5sum;
 	String testCollPhysicalPathOnLTA = "/ci/archiveStorage/aip/connector";
-	String archiveStorage = "ciArchiveResource";
+	String archiveStorage = "ciArchiveRescGroup";
 	
 	String workingResc = "ciWorkingResource";
 	static String workingRescPhysicalPath = "/ci/storage/WorkArea";
@@ -131,6 +131,7 @@ public class CTIrodsCommandLineConnector {
 	
 	@Test
 	public void destroyedFile() throws IOException {
+	
 		destroyTestFileOnLongTermStorage();
 		assertFalse(iclc.isValid(dao));
 		assertTrue(iclc.existsWithChecksum(dao, md5sum));
@@ -148,7 +149,7 @@ public class CTIrodsCommandLineConnector {
 	@Test
 	public void testIrule() throws IOException {
 		String out = iclc.executeIrule(testiRule());
-		assertTrue(out.contains("numberOfCopies = 1"));
+		assertTrue(out.contains("5"));
 	}
 	
 	@Test
@@ -220,13 +221,14 @@ public class CTIrodsCommandLineConnector {
 	private File testiRule() throws IOException {
 		File testFile = new File(tmpDir + "test.r");
 		FileWriter writer = new FileWriter(testFile ,false);
-		writer.write("checkNumberTest { \n " +
-		"*numberOfCopies=0;\n" +
-		"acGetNumberOfCopies(*dao,*numberOfCopies);\n"
+		writer.write("checkiRule { \n " +
+		"*len=0;\n" +
+		"msiStrlen(\"hallo\",*len);\n"
 		+"}\n"
-		+"INPUT *dao=\""+dao+"\"\n"
-		+"OUTPUT *numberOfCopies");
+		+"INPUT null\n"
+		+"OUTPUT *len");
 		writer.close(); 
+		
 		return testFile;
 	}
 	

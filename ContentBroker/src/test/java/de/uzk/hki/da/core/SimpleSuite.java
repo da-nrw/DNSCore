@@ -75,7 +75,7 @@ import de.uzk.hki.da.format.JhoveMetadataExtractorTests;
 import de.uzk.hki.da.format.SubformatScanServiceTests;
 import de.uzk.hki.da.format.XMLSubformatIdentifierTests;
 import de.uzk.hki.da.grid.FederationExecutorTest;
-import de.uzk.hki.da.grid.IrodsGridFacadeTest;
+//import de.uzk.hki.da.grid.IrodsGridFacadeTest;
 import de.uzk.hki.da.grid.ReplicationExecutorTest;
 import de.uzk.hki.da.metadata.MetadataStructureGetIndexInfoTests;
 import de.uzk.hki.da.metadata.MetsRightsSectionXmlReaderTest;
@@ -129,7 +129,7 @@ import de.uzk.hki.da.service.XPathUtilsTests;
 	GetNewestFilesFromAllRepresentationsTests.class,
 	RetrievalActionTests.class,
 	PremisXmlWriterTest.class,
-	IrodsGridFacadeTest.class,
+//	IrodsGridFacadeTest.class,
 	PublishImageConversionStrategyTest.class,
 //	PublishVideoConversionStrategyTests.class, XXX should not be dependent on handbrake installation
 	PublishXsltConversionStrategyTests.class,

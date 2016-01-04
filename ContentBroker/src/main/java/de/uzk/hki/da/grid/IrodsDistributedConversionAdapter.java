@@ -21,6 +21,7 @@ package de.uzk.hki.da.grid;
 
 import java.io.File;
 
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.utils.Path;
 
@@ -58,7 +59,7 @@ public class IrodsDistributedConversionAdapter implements DistributedConversionA
 	}
 
 	@Override
-	public void replicateToLocalNode(String relativePath) {
+	public void replicateToLocalNode(String relativePath, Node node) {
 		
 		irodsSystemConnector.establishConnect();
 		

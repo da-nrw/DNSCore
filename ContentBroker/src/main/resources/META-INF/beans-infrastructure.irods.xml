@@ -27,11 +27,5 @@
         <property name="keyStore" value="${irods.keyStorePath}" />
         <property name="trustStore" value="${irods.trustStorePath}" />
     </bean>
-	 
-	<bean id="irodsController" class="de.uzk.hki.da.grid.IrodsController" init-method="init">
-        <property name="irodsSystemConnector" ref="irodsSystemConnector" />
-        <property name="systemRuleFolder" value="${localNode.systemRuleFolder:systemRules}" />
-        <property name="mqConnectionFactory" ref="mqConnectionFactory" />
-     </bean>
      
 </beans>

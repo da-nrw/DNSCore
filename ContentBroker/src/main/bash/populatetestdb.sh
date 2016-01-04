@@ -42,7 +42,7 @@ then
 		"INSERT INTO user_role (user_id,role_id) values (5,4);"
 		"INSERT INTO user_role (user_id,role_id) values (6,4);"
 		"INSERT INTO preservation_system (id,urn_name_space,sidecar_extensions,pres_server,open_collection_name,closed_collection_name,uris_aggr,uris_cho,uris_file,min_repls,uris_local,admin_id) VALUES (1,'urn:nbn:de:danrw','xmp;txt;xml','localnode','collection-open','collection-closed','http://data.danrw.de/aggregation','http://data.danrw.de/cho','http://data.danrw.de/file',1,'info:',5);"
-		"INSERT INTO nodes (id,urn_index,name,identifier,admin_id,psystem_id) values (1,0,'localnode','LN',5,1);"
+		"INSERT INTO nodes (id,urn_index,name,identifier,admin_id,psystem_id) values (1,0,'localnode','c-i',5,1);"
 		"INSERT INTO nodes (id,urn_index,name,identifier,admin_id,psystem_id) values (2,0,'cooperatingnode','CN',6,1);"	
 		"INSERT INTO cooperating_nodes (node_id,cooperating_node_id) values (1,2);"		
 		"INSERT INTO nodes_contractors (node_id,contractor_user_id) VALUES (1,1);"
