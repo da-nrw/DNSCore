@@ -105,6 +105,7 @@ public class SIPFactoryTest {
 		
 		sipFactory.setSourcePath(pathToResourcesFolder + "singleFolder");
 		sipFactory.setDestinationPath(pathToResourcesFolder + "destination");
+		sipFactory.setWorkingPath(pathToResourcesFolder + "destination");
 		sipFactory.setKindofSIPBuilding(SIPFactory.KindOfSIPBuilding.SINGLE_FOLDER);
 		sipFactory.setCompress(true);
 		sipFactory.setContractRights(rights);
@@ -146,6 +147,7 @@ public class SIPFactoryTest {
 		
 		sipFactory.setSourcePath(pathToResourcesFolder + "singleFolder");
 		sipFactory.setDestinationPath(pathToResourcesFolder + "destination");
+		sipFactory.setWorkingPath(pathToResourcesFolder + "destination");
 		sipFactory.setKindofSIPBuilding(SIPFactory.KindOfSIPBuilding.SINGLE_FOLDER);
 		sipFactory.setCompress(false);
 		sipFactory.setContractRights(rights);
@@ -187,6 +189,7 @@ public class SIPFactoryTest {
 		
 		sipFactory.setSourcePath(pathToResourcesFolder + "multipleFolders");
 		sipFactory.setDestinationPath(pathToResourcesFolder + "destination");
+		sipFactory.setWorkingPath(pathToResourcesFolder + "destination");
 		sipFactory.setKindofSIPBuilding(SIPFactory.KindOfSIPBuilding.MULTIPLE_FOLDERS);
 		sipFactory.setCompress(true);
 		sipFactory.setContractRights(rights);
@@ -258,6 +261,7 @@ public class SIPFactoryTest {
 		
 		sipFactory.setSourcePath(pathToResourcesFolder + "nestedFolders");
 		sipFactory.setDestinationPath(pathToResourcesFolder + "destination");
+		sipFactory.setWorkingPath(pathToResourcesFolder + "destination");
 		sipFactory.setKindofSIPBuilding(SIPFactory.KindOfSIPBuilding.NESTED_FOLDERS);
 		sipFactory.setCompress(true);
 		sipFactory.setContractRights(rights);
@@ -320,6 +324,7 @@ public class SIPFactoryTest {
 		
 		sipFactory.setSourcePath(pathToResourcesFolder + "multipleFolders");
 		sipFactory.setDestinationPath(pathToResourcesFolder + "destination");
+		sipFactory.setWorkingPath(pathToResourcesFolder + "destination");
 		sipFactory.setKindofSIPBuilding(SIPFactory.KindOfSIPBuilding.MULTIPLE_FOLDERS);
 		sipFactory.setCompress(true);
 		sipFactory.setContractRights(rights);

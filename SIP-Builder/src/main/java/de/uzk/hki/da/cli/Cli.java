@@ -165,7 +165,10 @@ public class Cli {
     			sipFactory.setDestinationPath(extractParameter(arg));
     			continue;
     		}
-    		
+    		if (arg.startsWith("-workspace")) {
+    			sipFactory.setWorkingPath(extractParameter(arg));
+    			continue;
+    		}
     		if (arg.startsWith("-premis")) {
     			File premisFile = new File(extractParameter(arg));
     			if (!premisFile.exists()) {
@@ -277,6 +280,10 @@ public class Cli {
 		if (sipFactory.getDestinationPath() == null || sipFactory.getDestinationPath().equals("")) {
     		System.out.println("Bitte geben Sie einen Zielordner an.");
     		return Feedback.NO_DESTINATION_FOLDER;
+		}
+		
+		if (sipFactory.getWorkingPath() == null || sipFactory.getWorkingPath().equals("")) {
+			sipFactory.setWorkingPath(sipFactory.getDestinationPath());
 		}
     		
     	UserInputValidator.Feedback feedback;

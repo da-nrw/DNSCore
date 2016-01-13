@@ -3259,6 +3259,7 @@ public class Gui extends JFrame{
 		sipFactory.setKindofSIPBuilding((String) kindOfSIPBuildingDropDown.getSelectedItem());
 		sipFactory.setSourcePath(sourcePathTextField.getText());
 		sipFactory.setDestinationPath(destinationPathTextField.getText());
+		sipFactory.setWorkingPath(destinationPathTextField.getText());
 		sipFactory.setCreateCollection(collectionCheckBox.isSelected());
 		sipFactory.setCollectionName(collectionNameTextField.getText());
 		institutionRights.setAllowPublication(institutionAllowRadioButton.isSelected());
