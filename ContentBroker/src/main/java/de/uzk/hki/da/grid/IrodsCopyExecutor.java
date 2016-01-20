@@ -61,8 +61,8 @@ public class IrodsCopyExecutor implements JobExecutor {
 				logger.info("Creating " + targetDir + " now");
 				iclc.mkCollection(targetDir);
 			}
-			logger.debug("iRSYNC "+cj.getSource()+" & "+targetDir+" with params "+cj.getParams());
-			String out = iclc.rsync(cj.getSource(), targetDir, cj.getParams());
+			logger.debug("iRSYNC WITHOUT DEST RESC "+cj.getSource()+" & "+targetDir);
+			String out = iclc.rsync(cj.getSource(), targetDir,"");
 			logger.debug(out);
 			if (out.contains("ERROR")) {
 				return false;

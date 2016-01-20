@@ -22,7 +22,7 @@ public class IrodsFederatedDistributedConversionAdapter extends
 			String src 	= "/"+fn.getIdentifier() + relativePath;
 			String dest = "/"+node.getIdentifier()+ relativePath;
 			logger.debug("sync " + src + " to " + dest );
-			iclc.rsync(src ,dest , node.getWorkingResource());
+			iclc.rsyncDir(src ,dest , node.getWorkingResource());
 			iclc.remove(src);
 		}
 	}
