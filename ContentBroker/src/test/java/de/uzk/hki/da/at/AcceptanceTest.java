@@ -32,6 +32,7 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.GridFacade;
+import de.uzk.hki.da.grid.IrodsCommandLineConnector;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.StoragePolicy;
@@ -212,8 +213,18 @@ public class AcceptanceTest {
 		FileUtils.deleteQuietly(Path.makeFile(localNode.getUserAreaRootPath(),C.TEST_USER_SHORT_NAME,"outgoing"));
 		
 	
+		IrodsCommandLineConnector icl = new IrodsCommandLineConnector();
+		icl.remove("/"+localNode.getIdentifier() + "/work/TEST");
+		icl.remove("/"+localNode.getIdentifier() + "/aip/TEST");
+		icl.remove("/"+localNode.getIdentifier() + "/pips/institution/TEST");
+		icl.remove("/"+localNode.getIdentifier() + "/pips/public/TEST");
 		
-		distributedConversionAdapter.remove("work/TEST");
+		icl.mkCollection("/"+localNode.getIdentifier() + "/work/TEST");
+		icl.mkCollection("/"+localNode.getIdentifier() + "/aip/TEST");
+		icl.mkCollection("/"+localNode.getIdentifier() + "/pips/institution/TEST");
+		icl.mkCollection("/"+localNode.getIdentifier() + "/pips/public/TEST");
+		
+		/**distributedConversionAdapter.remove("work/TEST");
 		distributedConversionAdapter.remove("aip/TEST");
 		distributedConversionAdapter.remove("pips/institution/TEST");
 		distributedConversionAdapter.remove("pips/public/TEST");
@@ -222,7 +233,7 @@ public class AcceptanceTest {
 		distributedConversionAdapter.create("aip/TEST");
 		distributedConversionAdapter.create("pips/institution/TEST");
 		distributedConversionAdapter.create("pips/public/TEST");
-		
+		*/
 		Path.makeFile(localNode.getUserAreaRootPath(),C.TEST_USER_SHORT_NAME,"outgoing").mkdirs();
 		Path.makeFile(localNode.getGridCacheAreaRootPath(),"aip",C.TEST_USER_SHORT_NAME).mkdirs();
 		Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME).mkdirs();
