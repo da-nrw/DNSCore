@@ -77,7 +77,7 @@ outgoing read, write für irods user, read für tomcat user
 
 
 ```
-identifier;origName;statuscode;erfolg;bemerkung
+identifier;origName;statuscode;createddate;updateddate;erfolg;bemerkung
 ```
 Zeichensatz ist CP1252 (Windows-Standard). Es wird angenommen, dass die Datei mittels EXCEL erstellt wurde. 
 [Beispiel, bitte die RAW Filedarstellung sichern](../../../src/test/resources/at/ATCSVQueries.csv) 
