@@ -178,7 +178,9 @@ Akteur: **PS-ADMIN**
 
 Sollen diese Objekte auch von den Medien gelöscht werden, müssen diese auch aus dem Grid gelöscht werden. In der iRODS-Zonen Architektur kann ein Objekt gelöscht werden mittels
 
-    rm -rf /zone/aip/csn/oid
+    irm -rf /zone/aip/csn/oid
+    irm -rf /zone/federated/<CN>/aip/csn/oid
+
     
 
 
