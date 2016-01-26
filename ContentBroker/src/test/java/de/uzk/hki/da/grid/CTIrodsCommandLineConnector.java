@@ -56,7 +56,7 @@ public class CTIrodsCommandLineConnector {
 	static String workingRescPhysicalPath = "/ci/storage/WorkArea";
 	
 	@Before
-	public void before() throws IOException {
+	public void before() throws IOException, RuntimeException {
 		iclc = new IrodsCommandLineConnector();
 		file = createTestFile();
 		String destColl = 
@@ -109,8 +109,8 @@ public class CTIrodsCommandLineConnector {
 	}
 	
 	@AfterClass
-	public static void cleanup () {
-		FileUtils.deleteQuietly(new File(tmpDir));
+	public static void cleanup () throws IOException {
+		FileUtils.deleteDirectory(new File(tmpDir));
 		FileUtils.deleteQuietly(new File(workingRescPhysicalPath + "/aip/connector/urn3.tar"));
 	}
 
@@ -193,8 +193,12 @@ public class CTIrodsCommandLineConnector {
 	
 	@Test
 	public void testIReg() throws IOException {
+		String destColl = new File(dao3).getParentFile().getAbsolutePath();
+		iclc.unregColl(destColl);
+		assertFalse(iclc.exists(destColl));
 		new File(workingRescPhysicalPath + "/aip/connector/urn3.tar").createNewFile();
-		iclc.ireg(new File(workingRescPhysicalPath + "/aip/connector/urn3.tar"), workingResc, dao3, true);
+		iclc.ireg(new File(workingRescPhysicalPath + "/aip/connector/"), workingResc, destColl, true);
+		assertTrue(iclc.exists(destColl));;
 		assertTrue(iclc.exists(dao3));
 		assertTrue(new File(workingRescPhysicalPath + "/aip/connector/urn3.tar").exists());
 	}
