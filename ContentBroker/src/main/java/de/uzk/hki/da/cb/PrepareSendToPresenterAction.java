@@ -28,7 +28,6 @@ import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
-import de.uzk.hki.da.grid.IrodsCommandLineConnector;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectPremisXmlReader;
 import de.uzk.hki.da.model.PublicationRight.Audience;
@@ -137,9 +136,9 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 		if (!wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile().exists())
 			distributedConversionAdapter.create(wa.pipSourceFolderRelativePath(WorkArea.WA_INSTITUTION).toString());
 		else {
-			//distributedConversionAdapter.register(wa.pipSourceFolderRelativePath(WorkArea.WA_INSTITUTION).toString(),
-			//	wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile().getAbsolutePath()
-			//	);
+			distributedConversionAdapter.register(wa.pipSourceFolderRelativePath(WorkArea.WA_INSTITUTION).toString(),
+			wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile().getAbsolutePath()
+			);
 		}
 	}
 
