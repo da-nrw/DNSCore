@@ -90,6 +90,7 @@ public class Gui extends JFrame{
 
 	JFileChooser sourcePathChooser = new JFileChooser(new File("."));
 	JFileChooser destinationPathChooser = new JFileChooser(new File("."));
+	JFileChooser workingPathChooser = new JFileChooser(new File("."));
 	JFileChooser contractFileLoadPathChooser = new JFileChooser(new File("."));
 	JFileChooser contractFileSavePathChooser = new JFileChooser(new File("."));
 
@@ -148,6 +149,7 @@ public class Gui extends JFrame{
 	JLabel welcomeLabel;
 	JLabel sourceLabel;
 	JLabel destinationLabel;
+	JLabel workingLabel;
 	JLabel rightsLabel;
 	JLabel institutionLabel;
 	JLabel institutionStartLabel;
@@ -207,6 +209,7 @@ public class Gui extends JFrame{
 	JButton helpIconButton;
 	JButton sourceChooserButton;
 	JButton destinationChooserButton;
+	JButton workingChooserButton;
 	JButton goToLoadStandardButton;
 	JButton loadContractButton;
 	JButton standardContractButton;
@@ -298,6 +301,7 @@ public class Gui extends JFrame{
 	// Textfields     
 	JTextField sourcePathTextField;
 	JTextField destinationPathTextField;
+	JTextField workingPathTextField;
 	JTextField collectionNameTextField;
 	JTextField institutionTempStartDateTextField;
 	JTextField institutionRestrictionTextPagesTextField;
@@ -495,6 +499,8 @@ public class Gui extends JFrame{
 		sourceLabel.setFont(standardFont.deriveFont(10.0f));
 		destinationLabel = new JLabel("Zielordner:");
 		destinationLabel.setFont(standardFont.deriveFont(10.0f));
+		workingLabel = new JLabel("Arbeitsordner:");
+		workingLabel.setFont(standardFont.deriveFont(10.0f));
 		rightsLabel = new JLabel("Rechteeinstellungen");
 		rightsLabel.setFont(boldFont.deriveFont(12.0f));
 		institutionLabel = new JLabel("Publikation für die eigene Institution");
@@ -610,6 +616,11 @@ public class Gui extends JFrame{
 		destinationChooserButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		destinationChooserButton.setBackground(new Color(0,0,0,0));
 		destinationChooserButton.setContentAreaFilled(false);
+		workingChooserButton = new JButton(new ImageIcon(dotsButtonImage));
+		workingChooserButton.setBorder(null);
+		workingChooserButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		workingChooserButton.setBackground(new Color(0,0,0,0));
+		workingChooserButton.setContentAreaFilled(false);
 		goToLoadStandardButton = new JButton(new ImageIcon(goToButtonImage));
 		goToLoadStandardButton.setBorder(null);
 		goToLoadStandardButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -881,8 +892,12 @@ public class Gui extends JFrame{
 		welcomeArea.setFocusable(false);
 		welcomeArea.setFont(standardFont.deriveFont(12.0f));
 		welcomeArea.setText("Wählen Sie zunächst aus, wo die Daten aufzufinden sind, die Sie " +
-				"einliefern wollen.\n\n" + "Geben Sie dann den Pfad zum Zielordner " +
-				"an, in dem die SIPs gespeichert werden sollen.");
+				"einliefern wollen.\n\n" 
+				+ "Geben Sie dann den Pfad zum Zielordner " +
+				"an, in dem die SIPs gespeichert werden sollen.\n\n"
+				+ "Optional können Sie ein zur Zwischenspeicherung benutztes "
+				+ "Arbeitsverzeichnis angeben."
+				);
 
 		rightsAreaOne = new JTextArea();
 		rightsAreaOne.setEditable(false);
@@ -1206,9 +1221,15 @@ public class Gui extends JFrame{
 		sourcePathTextField = new JTextField();
 		sourcePathTextField.setEditable(true);
 		sourcePathTextField.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.gray));
+
 		destinationPathTextField = new JTextField();
 		destinationPathTextField.setEditable(true);
 		destinationPathTextField.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.gray));
+
+		workingPathTextField = new JTextField();
+		workingPathTextField.setEditable(true);
+		workingPathTextField.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.gray));
+
 		collectionNameTextField = new JTextField();
 		collectionNameTextField.setEditable(false);
 		collectionNameTextField.setEnabled(false);
@@ -1421,17 +1442,22 @@ public class Gui extends JFrame{
 		// startPanel
 		startPanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 		backgroundStartImageLabel.setBounds(0, 0, 750, 526);
-		welcomeLabel.setBounds(255, 70, 300, 20);
-		welcomeArea.setBounds(255, 100, 420, 80);
-		sourceLabel.setBounds(255, 195, 70, 20);
-		sourcePathTextField.setBounds(335, 195, 260, 20);
-		sourceChooserButton.setBounds(600, 195, 45, 20);
-		destinationLabel.setBounds(255, 220, 70, 20);
-		destinationPathTextField.setBounds(335, 220, 260, 20);
-		destinationChooserButton.setBounds(600, 220, 45, 20);
-		kindOfSIPBuildingDropDown.setBounds(255, 255, 410, 20);
-		
-		
+		welcomeLabel.setBounds(255, 70, 300, 40);
+		welcomeArea.setBounds(255, 100, 420, 120);
+
+		sourceLabel.setBounds(255, 245, 70, 20);
+		sourcePathTextField.setBounds(335, 245, 260, 20);
+		sourceChooserButton.setBounds(600, 245, 45, 20);
+
+		destinationLabel.setBounds(255, 270, 70, 20);
+		destinationPathTextField.setBounds(335, 270, 260, 20);
+		destinationChooserButton.setBounds(600, 270, 45, 20);
+
+		workingLabel.setBounds(255, 295, 70, 20);
+		workingPathTextField.setBounds(335, 295, 260, 20);
+		workingChooserButton.setBounds(600, 295, 45, 20);
+
+		kindOfSIPBuildingDropDown.setBounds(255, 320, 390, 20);
 		
 		goToLoadStandardButton.setBounds(575, 445, 90, 20);
 
@@ -1652,10 +1678,17 @@ public class Gui extends JFrame{
 		startPanel.add(welcomeArea);
 		startPanel.add(sourceLabel);
 		startPanel.add(sourcePathTextField);
+
 		startPanel.add(sourceChooserButton);
 		startPanel.add(destinationLabel);
 		startPanel.add(destinationPathTextField);
 		startPanel.add(destinationChooserButton);
+
+		startPanel.add(workingLabel);
+		startPanel.add(workingPathTextField);
+		startPanel.add(workingPathTextField);
+		startPanel.add(workingChooserButton);
+
 		startPanel.add(kindOfSIPBuildingDropDown);
 		startPanel.add(collectionNameTextField);
 		startPanel.add(goToLoadStandardButton);
@@ -1886,6 +1919,22 @@ public class Gui extends JFrame{
 						Utilities.writeFile(new File(dataFolderPath + File.separator + "destPath.sav"), destinationPath);
 					} catch (Exception ex) {
 						logger.warn("Failed to create file " + new File(dataFolderPath + File.separator + "destPath.sav").getAbsolutePath(), ex);
+					}
+				}
+			}
+
+		});
+
+		workingChooserButton.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent e){
+				String workingPath = searchFolder(workingPathChooser);
+				if (workingPath != null) {
+					 workingPathTextField.setText(workingPath);
+					try {
+						Utilities.writeFile(new File(dataFolderPath + File.separator + "workPath.sav"), workingPath);
+					} catch (Exception ex) {
+						logger.warn("Failed to create file " + new File(dataFolderPath + File.separator + "workPath.sav").getAbsolutePath(), ex);
 					}
 				}
 			}
@@ -2714,6 +2763,7 @@ public class Gui extends JFrame{
 	private void loadLastSessionSettings() {
 		File sourceFolderFile = new File(dataFolderPath + File.separator + "srcPath.sav");
 		File destinationFolderFile = new File(dataFolderPath + File.separator + "destPath.sav");
+		File workingFolderFile = new File(dataFolderPath + File.separator + "workPath.sav");
 		File contractRightsLoadFolderFile = new File(dataFolderPath + File.separator + "crloadPath.sav");
 		File contractRightsSaveFolderFile = new File(dataFolderPath + File.separator + "crsavePath.sav");
 		File compressionSettingFile = new File(dataFolderPath + File.separator + "compSetting.sav");
@@ -2733,6 +2783,15 @@ public class Gui extends JFrame{
 				destinationPathChooser.setCurrentDirectory(new File(destinationFolderPath));				
 			} catch (Exception e) {
 				logger.warn("Failed to read file " + destinationFolderFile.getAbsolutePath(), e);
+			}
+		}
+
+		if (workingFolderFile.exists()) {
+			try {
+				String workingFolderPath = StringUtilities.readFile(workingFolderFile);
+				workingPathChooser.setCurrentDirectory(new File(workingFolderPath));				
+			} catch (Exception e) {
+				logger.warn("Failed to read file " + workingFolderFile.getAbsolutePath(), e);
 			}
 		}
 
@@ -3259,7 +3318,12 @@ public class Gui extends JFrame{
 		sipFactory.setKindofSIPBuilding((String) kindOfSIPBuildingDropDown.getSelectedItem());
 		sipFactory.setSourcePath(sourcePathTextField.getText());
 		sipFactory.setDestinationPath(destinationPathTextField.getText());
-		sipFactory.setWorkingPath(destinationPathTextField.getText());
+		String workDir = workingPathTextField.getText();
+		if (workDir == null || workDir.isEmpty() ){
+			workDir = destinationPathTextField.getText();
+		}
+		
+		sipFactory.setWorkingPath(workDir);
 		sipFactory.setCreateCollection(collectionCheckBox.isSelected());
 		sipFactory.setCollectionName(collectionNameTextField.getText());
 		institutionRights.setAllowPublication(institutionAllowRadioButton.isSelected());

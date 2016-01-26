@@ -34,6 +34,7 @@ import java.util.TreeMap;
 
 import javax.swing.JOptionPane;
 
+import org.apache.commons.io.FileExistsException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
@@ -275,7 +276,12 @@ public class SIPFactory {
 
 	private Feedback moveFile(File tmpArchiveFile, File archiveFile) {
 		try {
+			try {
 			FileUtils.moveFile(tmpArchiveFile, archiveFile);
+			} catch (FileExistsException e) {
+				archiveFile.delete();
+				FileUtils.moveFile(tmpArchiveFile, archiveFile);
+			}
 		} catch (IOException e) {
 			logger.error("Failed to copy " + tmpArchiveFile + " to " + archiveFile);
 			return Feedback.ARCHIVE_ERROR;

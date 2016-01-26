@@ -99,4 +99,100 @@ public class ATWorkingDirectory {
 		}
 		assertTrue(new File (unpackedSip1, "data/image").listFiles().length==29);
 	}
+
+	@Test
+	public void testNeverOverwrite() throws IOException {
+		String cmd = "./SipBuilder-Unix.sh -source=\""+sourceDir.getAbsolutePath()+"/\" -destination=\""+targetDir.getAbsolutePath()+"/\" -workspace=\""+workDir.getAbsolutePath()+"/\" -single";
+		new File("target/atTargetDir/").mkdirs();
+		File targetSip = new File("target/atTargetDir/"+sip1); 
+		targetSip.createNewFile();
+		
+		p=Runtime.getRuntime().exec(cmd,
+		        null, new File("target/installation"));
+		
+		BufferedReader stdInput = new BufferedReader(new
+        InputStreamReader(p.getInputStream()));
+
+		BufferedReader stdError = new BufferedReader(new
+        InputStreamReader(p.getErrorStream()));
+		 
+		String s = "";
+		// read the output from the command
+	    System.out.println("Here is the standard output of the command:\n");
+	    boolean alwaysOverFound = false;
+	    while ((s = stdInput.readLine()) != null) {
+	         System.out.println(s);
+	         if (s.contains(
+	        		"Bereits existierende SIPs wurden nicht neu erstellt." + 
+	        		" Starten Sie den SIP-Builder mit der Option -alwaysOverwrite")){
+	        	 alwaysOverFound = true;
+	         }
+	    }
+
+	    // read any errors from the attempted command
+	    System.out.println("Here is the standard error of the command (if any):\n");
+	    while ((s = stdError.readLine()) != null) {
+	        System.out.println(s);
+	    }
+	    		
+	    assertTrue(alwaysOverFound);
+	    assertTrue(targetSip.length() == 0);
+	}
+
+	@Test
+	public void testAlwaysOverwrite() throws IOException {
+		String cmd = "./SipBuilder-Unix.sh -source=\""+sourceDir.getAbsolutePath()+"/\" -destination=\""+targetDir.getAbsolutePath()+"/\" -workspace=\""+workDir.getAbsolutePath()
+				+"/\" -single -alwaysOverwrite";
+		new File("target/atTargetDir/").mkdirs();
+		File targetSip = new File("target/atTargetDir/"+sip1); 
+		targetSip.createNewFile();
+		
+		p=Runtime.getRuntime().exec(cmd,
+		        null, new File("target/installation"));
+		
+		BufferedReader stdInput = new BufferedReader(new
+        InputStreamReader(p.getInputStream()));
+
+		BufferedReader stdError = new BufferedReader(new
+        InputStreamReader(p.getErrorStream()));
+		 
+		String s = "";
+		// read the output from the command
+	    System.out.println("Here is the standard output of the command:\n");
+	    while ((s = stdInput.readLine()) != null) {
+	         System.out.println(s);
+	    }
+
+	    // read any errors from the attempted command
+	    System.out.println("Here is the standard error of the command (if any):\n");
+	    while ((s = stdError.readLine()) != null) {
+	        System.out.println(s);
+	    }
+	    		
+	    assertTrue(new File("target/atTargetDir/"+sip1).exists());
+	    
+	    assertFalse(new File(workDir +sip1).exists());
+	    
+//	    Tests content of the first SIP
+	    ArchiveBuilder builder = ArchiveBuilderFactory.getArchiveBuilderForFile(s1); 
+	    
+	    try {
+			builder.unarchiveFolder(s1, targetDir);
+		} catch (Exception e) {
+			throw new RuntimeException("couldn't unpack archive", e);
+		}
+
+	    assertTrue(new File(unpackedSip1, "bag-info.txt").exists());
+		assertTrue(new File(unpackedSip1, "bagit.txt").exists());
+		assertTrue(new File(unpackedSip1, "manifest-md5.txt").exists());
+		assertTrue(new File(unpackedSip1, "tagmanifest-md5.txt").exists());
+		assertTrue(new File(unpackedSip1, "data/export_mets.xml").exists());
+		assertTrue(new File(unpackedSip1, "data/image").exists() && new File(unpackedSip1, "data/image").isDirectory());
+		assertTrue(new File(unpackedSip1, "data/premis.xml").exists());
+	    
+		for(File f : new File (unpackedSip1, "data/image").listFiles()) {
+			assertTrue(f.getName().endsWith(".bmp"));
+		}
+		assertTrue(new File (unpackedSip1, "data/image").listFiles().length==29);
+	}
 }
