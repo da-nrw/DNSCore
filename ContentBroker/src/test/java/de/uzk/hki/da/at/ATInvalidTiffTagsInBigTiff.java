@@ -37,9 +37,13 @@ import org.junit.AfterClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Job;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.SystemEvent;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
 
@@ -97,6 +101,47 @@ public class ATInvalidTiffTagsInBigTiff extends PREMISBase{
 			if (f.contains("+b")) repBName = f;
 		}
 		verifyPREMISContainsSpecifiedElements(unpackedObjectPath,retrievedObject,repAName,repBName);
+	}
+	
+	
+	@Test 
+	public void testInvalidTiffTagsPermanentlyPruned() throws IOException, InterruptedException {
+		String destName = "InvalidTiffTagsPermanentlyPrunedByUser";
+	    ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", destName);
+		ath.waitForJobToBeInErrorStatus(destName, "4");
+		Job job = ath.getJob(destName);
+		SystemEvent se = createSystemEventPrune(job);
+		Thread.sleep(30000);
+		ath.awaitObjectState(destName, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+		Object obj = ath.getObject(destName);
+		assertSame(obj.getObject_state(),Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+		deleteSystemEvent(se);
+	}
+	
+	
+	
+	
+	//-------------------------------------------------------------------------------------
+	
+	private SystemEvent createSystemEventPrune(Job job) {
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		SystemEvent se = new SystemEvent();
+		se.setOwner(job.getObject().getContractor());
+		se.setNode(localNode);
+		se.setType("AutomaticCheckIPTCErrorEvent");
+		session.save(se);
+		session.getTransaction().commit();
+		session.close();
+		return se;
+	}
+	
+	private void deleteSystemEvent(SystemEvent se) {
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		session.delete(se);
+		session.getTransaction().commit();
+		session.close();
 	}
 	
 	@SuppressWarnings("unchecked")
