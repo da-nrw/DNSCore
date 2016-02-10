@@ -27,7 +27,8 @@ public class ATSipKeepModDates {
 	private static File targetDir = new File("target/atTargetDir/");
 	private static File workDir = new File("target/atTargetDirWorking/");
 	
-	private static File sourceDir = new File("src/test/resources/at/ATKeepModDates");
+	private static String sourceName = "src/test/resources/at/ATKeepModDates";
+	private static File sourceDir = new File(sourceName);
 	
 	private static Process p;
 	
@@ -35,6 +36,7 @@ public class ATSipKeepModDates {
 	public void setUp() throws IOException{	
 		FileUtils.deleteDirectory(targetDir);
 		FileUtils.deleteDirectory(workDir);
+		FileUtils.deleteDirectory(sourceDir);
 	}
 	
 	@After
@@ -42,20 +44,25 @@ public class ATSipKeepModDates {
 		FileUtils.deleteQuietly(new File("target/atTargetDir/"+sip));
 		FileUtils.deleteDirectory(targetDir);
 		FileUtils.deleteDirectory(workDir);
+		FileUtils.deleteDirectory(sourceDir);
 		p.destroy();
 	}
 
 	@Test
-	public void testTar() throws IOException {
+	public void testTar() throws Exception {
 		doTest(false);
 	}
 
 	@Test
-	public void testTgz() throws IOException {
+	public void testTgz() throws Exception {
 		doTest(true);
 	}
 
-	public void doTest(boolean withCompression) throws IOException {
+	public void doTest(boolean withCompression) throws Exception {
+		File tarArchive = new File(sourceName+".tar");
+	    ArchiveBuilder builder = ArchiveBuilderFactory.getArchiveBuilderForFile(tarArchive); 
+		builder.unarchiveFolder(tarArchive, sourceDir);
+
 		File s1;
 		if (withCompression){
 			s1 = new File("target/atTargetDir/" +sip + ".tgz");
@@ -101,7 +108,7 @@ public class ATSipKeepModDates {
 	    assertFalse(new File(workDir +sip).exists());
 	    
 //	    Tests content of the first SIP
-	    ArchiveBuilder builder = ArchiveBuilderFactory.getArchiveBuilderForFile(s1); 
+	    builder = ArchiveBuilderFactory.getArchiveBuilderForFile(s1); 
 	    
 	    try {
 			builder.unarchiveFolder(s1, targetDir);
