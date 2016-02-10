@@ -115,23 +115,17 @@ public class ATSipKeepModDates {
 		SimpleDateFormat dateForm = new SimpleDateFormat("dd.MM.yyyy");
 		dateForm.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-		File file = new File(unpackedSip, "data/unter1");
+		File file = new File(unpackedSip, "data/unter1/unter2/M00000.jpg");
         System.out.println("File:" + file.getAbsolutePath() + " exists:" + file.exists());
 		
-		moddi = new File(unpackedSip, "data/unter1").lastModified();
+		moddi = file.lastModified();
 		modDate = new Date(moddi);
 		tagStr = dateForm.format(modDate);
-		if (!tagStr.equals("23.12.1978")){
-	        System.out.println("Unexpected Date: >" + tagStr + "< Expected: >23.12.1978<");
+		if (!tagStr.equals("21.10.2015")){
+	        System.out.println("Unexpected Date: >" + tagStr + "< Expected: >21.10.2015<");
 		}
+		assertTrue(tagStr.equals("21.10.2015"));
 		
-		assertTrue(tagStr.equals("23.12.1978"));
-
-		moddi = new File(unpackedSip, "data/unter1/unter2").lastModified();
-		modDate = new Date(moddi);
-		tagStr = dateForm.format(modDate);
-		assertTrue(tagStr.equals("27.01.2009"));
-
 		moddi = new File(unpackedSip, "data/West_mets.xml").lastModified();
 		modDate = new Date(moddi);
 		tagStr = dateForm.format(modDate);
@@ -141,10 +135,5 @@ public class ATSipKeepModDates {
 		modDate = new Date(moddi);
 		tagStr = dateForm.format(modDate);
 		assertTrue(tagStr.equals("25.10.2012"));
-
-		moddi = new File(unpackedSip, "data/unter1/unter2/M00000.jpg").lastModified();
-		modDate = new Date(moddi);
-		tagStr = dateForm.format(modDate);
-		assertTrue(tagStr.equals("21.10.2015"));
 	}
 }
