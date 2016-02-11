@@ -22,12 +22,12 @@ import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 
 
 public class ATSipKeepModDates {
-	private static String sip = "ATKeepModDates";
+	private static String sip = "KeepModDates";
 	
 	private static File targetDir = new File("target/atTargetDir/");
 	private static File workDir = new File("target/atTargetDirWorking/");
 	
-	private static String sourceName = "src/test/resources/at/ATKeepModDates";
+	private static String sourceName = "src/test/resources/at/KeepModDates";
 	private static File sourceDir = new File(sourceName);
 	
 	private static Process p;
@@ -59,7 +59,7 @@ public class ATSipKeepModDates {
 	}
 
 	public void doTest(boolean withCompression) throws Exception {
-		File tarArchive = new File(sourceName+".tar");
+		File tarArchive = new File(sourceName+".tgz");
 	    ArchiveBuilder builder = ArchiveBuilderFactory.getArchiveBuilderForFile(tarArchive); 
 		builder.unarchiveFolder(tarArchive, sourceDir);
 
