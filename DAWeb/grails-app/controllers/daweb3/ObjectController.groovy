@@ -272,7 +272,10 @@ class ObjectController {
 		if ( object == null ) result.msg += "Das Objekt ${object.urn} konnte nicht gefunden werden!"
 		else {
 			try {
-				qu.createJob( object, "700", grailsApplication.config.cb.presServer )
+				String lnid = grailsApplication.config.localNode.id
+				log.debug("Create Rebuild PIP job on node id: " + lnid)
+				CbNode cbn = CbNode.get(Integer.parseInt(lnid))
+				qu.createJob( object ,"700", cbn.getName())
 				result.msg = "Auftrag zur Erstellung neuer Präsentationsformate erstellt ${object.urn}."
 				result.success = true
 			} catch ( Exception e ) {
@@ -295,7 +298,12 @@ class ObjectController {
 		if ( object == null ) result.msg += "Das Objekt ${object.urn} konnte nicht gefunden werden!"
 		else {
 			try {
-				qu.createJob( object, "570" ,grailsApplication.config.cb.presServer)
+				PreservationSystem ps = PreservationSystem.get(1);
+				String pserver  = ps.getPresServer();
+				log.debug("Create Rebuild ES job on node" + pserver)
+				if (pserver!=null && pserver!= "") {
+					qu.createJob( object, "560" ,pserver)
+				}
 				result.msg = "Auftrag zur Indizierung erstellt ${object.urn}."
 				result.success = true
 			} catch ( Exception e ) {
