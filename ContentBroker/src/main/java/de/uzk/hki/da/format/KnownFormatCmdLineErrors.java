@@ -21,8 +21,6 @@ package de.uzk.hki.da.format;
  * @author jens Peters
  * Known IPTC Tag Error which is being found in BigTiff Pictures by some customers.
  */
-package de.uzk.hki.da.format;
-
 import java.util.List;
 
 import org.hibernate.Session;
