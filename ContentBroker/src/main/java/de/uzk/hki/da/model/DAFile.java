@@ -19,7 +19,12 @@
 
 package de.uzk.hki.da.model;
 
-import javax.persistence.CascadeType;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,15 +32,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
@@ -59,15 +66,18 @@ import de.uzk.hki.da.utils.RelativePath;
 @Entity
 @Table(name="dafiles")
 public class DAFile implements FileWithFileFormat{
-
+	
+	
+	/** The id. */
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int id;
+	
 	/** The Constant logger. */
 	static final Logger logger = LoggerFactory.getLogger(DAFile.class);
 	
 	/** The conversion_instruction_id. */
 	private int conversion_instruction_id;
-	
-	/** The id. */
-	private int id;
 	
 	/** The relative_path. */
 	@Column(columnDefinition="varchar(600)")
@@ -95,13 +105,21 @@ public class DAFile implements FileWithFileFormat{
 	private String size;
 	
 	/** The previous dafile. */
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "previousDAFile_ID")
+	@Cascade(CascadeType.ALL)
 	private DAFile previousDAFile;
 
-	/** The document */
-	@OneToMany(cascade=CascadeType.ALL)
-	private Document document;
-	
-	private UserExceptionId userExceptionId; 
+    @ManyToMany(cascade={javax.persistence.CascadeType.DETACH,
+    			javax.persistence.CascadeType.MERGE,
+    			javax.persistence.CascadeType.REFRESH,
+    			javax.persistence.CascadeType.PERSIST},
+    			fetch= FetchType.EAGER)  
+    @JoinTable(name="dafile_knownerror",  
+    joinColumns={@JoinColumn(name="dafile_id", referencedColumnName="id")},  
+    inverseJoinColumns={@JoinColumn(name="knownerror_id", referencedColumnName="id")})
+	private List<KnownError> knownErrors = new ArrayList<KnownError>();
+
 	/**
 	 * Instantiates a new dA file.
 	 */
@@ -125,15 +143,12 @@ public class DAFile implements FileWithFileFormat{
 	 *
 	 * @return the id
 	 */
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	public int getId() {
 		return id;
 	}
 	
 	
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "previousDAFile_ID")
+	
 	public DAFile getPreviousDAFile() {
 		return previousDAFile;
 	}
@@ -322,15 +337,13 @@ public class DAFile implements FileWithFileFormat{
 		this.subformatIdentifier = subformatIdentifier;
 	}
 
-	@Override
-	public void setUserExceptionId(UserExceptionId e) {
-		userExceptionId = e;
-		
+	public List<KnownError> getKnownErrors() {
+		return knownErrors;
 	}
-
-	@Override
-	public UserExceptionId getUserExceptionId() {
-		return userExceptionId;
+	
+	public void setKnownErrors(List<KnownError> knownErrors) {
+		this.knownErrors = knownErrors;
+		
 	}
 
 }

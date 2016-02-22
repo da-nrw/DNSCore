@@ -8,6 +8,7 @@ if [ "$1" = "populate" ]
 then
 	sqls=(
 		"DELETE FROM subformat_identification_strategy_puid_mappings;"
+		"DELETE FROM dafile_knownerrors;"
 		"DELETE FROM queue;"
 		"DELETE FROM events;"
 		"DELETE FROM documents;"
@@ -26,6 +27,7 @@ then
 		"DELETE FROM users;"
 		"DELETE FROM Role;"
 		"DELETE FROM pending_mail;"
+		"DELETE	FROM systemevents;"
 		"INSERT INTO users (id,short_name,username,password,accountlocked,accountexpired,passwordexpired,enabled,email_contact) values (1,'TEST','TEST','\$2a\$10\$CcMH2fhJrHTKzgpGRusvEulQZZPRdBR3l8zSG5QoNmH1HPEvQZM9G',FALSE,FALSE,FALSE,TRUE,'Heino');"
         "INSERT INTO users (id,short_name,username,password,accountlocked,accountexpired,passwordexpired,enabled,email_contact) values (4,'rods','rods','\$2a\$10\$0A8khxeN56JY6WkUXCNG/uUU7cZsdLHiz616TpLajiLskW/Vr8u8q',FALSE,FALSE,FALSE,TRUE,'Heino');"
         "INSERT INTO users (id,short_name,username,password,accountlocked,accountexpired,passwordexpired,enabled,email_contact) values (5,'CI_ADMIN','CI_ADMIN','\$2a\$10\$EblZqNptyYvcLm/VwDCVAuBjzZOI7khzdyGPBr08PpIi0na624b8.',FALSE,FALSE,FALSE,TRUE,'Heino');"
@@ -68,6 +70,7 @@ then
         "INSERT INTO subformat_identification_strategy_puid_mappings (id,format_puid,subformat_identification_strategy_name) VALUES (3,'fmt/200','de.uzk.hki.da.format.FFmpegSubformatIdentifier');"
         "INSERT INTO subformat_identification_strategy_puid_mappings (id,format_puid,subformat_identification_strategy_name) VALUES (4,'fmt/5','de.uzk.hki.da.format.FFmpegSubformatIdentifier');"
  	"INSERT INTO subformat_identification_strategy_puid_mappings (id,format_puid,subformat_identification_strategy_name) VALUES (5,'fmt/353','de.uzk.hki.da.format.ImageMagickSubformatIdentifier');"
+	"INSERT INTO known_errors (id,error_name,std_err_contains_regex,description,question) VALUES (1,'WRONG_DATA_TYPE_IPTC','(?s).*RichTIFFIPTC.*TIFFErrors.*','Probleme mit IPTC Tag im IFD bei BigTiff','IPTC_ERROR_STORE_ALLOWED?');"
 	)
 fi
 

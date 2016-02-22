@@ -111,7 +111,7 @@ public class ATInvalidTiffTagsInBigTiff extends PREMISBase{
 		ath.waitForJobToBeInErrorStatus(destName, "4");
 		Job job = ath.getJob(destName);
 		SystemEvent se = createSystemEventPrune(job);
-		Thread.sleep(30000);
+		Thread.sleep(50000);
 		ath.awaitObjectState(destName, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		Object obj = ath.getObject(destName);
 		assertSame(obj.getObject_state(),Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
