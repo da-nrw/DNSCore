@@ -1,5 +1,6 @@
 package de.uzk.hki.da.at;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -100,26 +101,26 @@ public class ATKeepModDates extends AcceptanceTest {
 		moddi = new File(testDir + "West_mets.xml").lastModified();
 		modDate = new Date(moddi);
 		dayStr = dateForm.format(modDate);
-		assertTrue(dayStr.equals("23.12.1978"));
+		assertEquals("23.12.1978",dayStr);
 
 		moddi = new File(testDir + "unter1/Pest16.txt").lastModified();
 		modDate = new Date(moddi);
 		dayStr = dateForm.format(modDate);
-		assertTrue(dayStr.equals("04.08.2015"));
+		assertEquals("04.08.2015",dayStr);
 
 		moddi = new File(testDir + "unter1/Pest17.bmp").lastModified();
 		modDate = new Date(moddi);
 		dayStr = dateForm.format(modDate);
-		assertTrue(dayStr.equals("25.10.2012"));
+		assertEquals("25.10.2012",dayStr);
 
 		moddi = new File(testDir + "unter1/unter2/U.tif").lastModified();
 		modDate = new Date(moddi);
 		dayStr = dateForm.format(modDate);
-		assertTrue(dayStr.equals("25.11.2014"));
+		assertEquals("25.11.2014",dayStr);
 
 		moddi = new File(testDir + "unter1/unter2/M00000.jpg").lastModified();
 		modDate = new Date(moddi);
 		dayStr = dateForm.format(modDate);
-		assertTrue(dayStr.equals("21.10.2015"));
+		assertEquals("21.10.2015",dayStr);
 	}
 }
