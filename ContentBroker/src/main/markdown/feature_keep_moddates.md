@@ -6,13 +6,13 @@ Dies gilt nur für die nicht konvertierten Originaldatein.
 
 #### Kontext:
 
-* Komletter Verarbeitungs-Workflow vom Packen des SIPs bis zum Retrieval aus dem Archiv.
+* Kompletter Verarbeitungs-Workflow vom Packen des SIPs bis zum Retrieval aus dem Archiv.
 
 ## Hintergrund:
 
 #### Vorbedingungen:
 
-* Der Nutzer verfügt über den SIPBuilder in einer Version ab 1608
+* Der Nutzer verfügt über den SIPBuilder ab Version 1606
 * Der Nutzer kann Pakete ins Archiv einliefern und anfordern.
 
 #### Durchführung:
@@ -20,9 +20,9 @@ Dies gilt nur für die nicht konvertierten Originaldatein.
 1. Das Testpaket wird ausgpackt.
 1. Die ausgepackte Verzeichnisstruktur wird mittels SIP-Builder in ein SIP gepackt.
 1. Das SIP wird ins DNS eingeliefert.
-1. Das Paket wird aus dem DNS angefordert (in Objektdetail "Versioniertes Retrieval starten").
+1. Das Paket wird aus dem DNS angefordert (in der Maske Objektdetail "Versioniertes Retrieval starten").
 1. Das angeforderte Paket wird entpackt.
-1. Die Modifizierungszeitpunkte der ein- und Ausgangsdateien werden verglichen (a-Representation).
+1. Die Modifizierungszeitpunkte der Ein- und Ausgangsdateien werden verglichen (a-Representation).
 
 
 #### Kontext
