@@ -36,6 +36,7 @@ import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.format.FormatCmdLineExecutor;
 import de.uzk.hki.da.format.KnownFormatCmdLineErrors;
+import de.uzk.hki.da.format.UserFileFormatException;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
@@ -103,15 +104,18 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 			logger.debug(commandAsList.toString());
 			String[] commandAsArray = new String[commandAsList.size()];
 			commandAsArray = commandAsList.toArray(commandAsArray);
+			
 			FormatCmdLineExecutor cle = new FormatCmdLineExecutor(cliConnector,knownErrors);
 			cle.setPruneExceptions(prune);
-			
-			
-			cle.execute(commandAsArray);	
-			
 			String prunedError = "";
-			if (cle.getError()!=null && prune){
-				prunedError = " " + cle.getError().getUserExceptionId().toString()  + " ISSUED WAS PRUNED BY USER!";
+			try {
+			cle.execute(commandAsArray);	
+			} 
+			catch (UserFileFormatException ufe) {
+				if (!prune) {
+					throw ufe;
+				}
+				prunedError = " " + ufe.getKnownError().getError_name()  + " ISSUED WAS PRUNED BY USER!";
 			}
 			// In order to support multipage tiffs, we check for files by wildcard expression
 			String extension = FilenameUtils.getExtension(wa.toFile(target).getAbsolutePath());
@@ -171,7 +175,13 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 				absolutePath};
 		FormatCmdLineExecutor cle = new FormatCmdLineExecutor(cliConnector, knownErrors);
 		cle.setPruneExceptions(prune);
+		try {
 		cle.execute(cmd);
+		} catch (UserFileFormatException ufe) {
+		if (!prune) {
+			throw ufe;
+		}
+		}
 		return cle.getStdOut();
 	}
 

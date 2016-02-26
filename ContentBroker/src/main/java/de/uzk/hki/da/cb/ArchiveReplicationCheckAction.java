@@ -143,6 +143,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		for (Package pkg : o.getPackages()){
 			pkg.getEvents().clear();
 			pkg.getFiles().clear();
+	
 		}
 	}
 

@@ -21,7 +21,7 @@
 <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
  
 <!-- Display and format all executed SQL to stdout -->
-<!--<property name="show_sql">false</property>-->
+<!--<property name="show_sql">true</property>-->
 <property name="format_sql">true</property>
 <property name="hbm2ddl.auto">create-drop</property>
  
@@ -44,5 +44,6 @@
 <mapping class="de.uzk.hki.da.model.CopyJob"/>
 <mapping class="de.uzk.hki.da.model.SystemEvent"/>
 <mapping class="de.uzk.hki.da.model.PendingMail"/>
+<mapping class="de.uzk.hki.da.model.KnownError"/>
 </session-factory>
 </hibernate-configuration>

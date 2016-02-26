@@ -61,13 +61,13 @@ public class ScanForPresentationAction extends AbstractAction{
 	@Override
 	public void checkPreconditions() {
 	}
-	
+
 	@Override
 	public boolean implementation() throws SubsystemNotAvailableException{
 		
 		List<? extends FileWithFileFormat> fffl=null;
 		try {
-			fffl = fileFormatFacade.identify(wa.dataPath(),o.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()),false);
+			fffl = fileFormatFacade.identify(wa.dataPath(),o.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()),o.getLatestPackage().isPruneExceptions());
 		} catch (FileFormatException e) {
 			throw new RuntimeException(C.ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION,e);
 		} catch (IOException e) {

@@ -19,7 +19,9 @@
 
 package de.uzk.hki.da.format;
 
-import de.uzk.hki.da.core.UserException.UserExceptionId;
+import java.util.List;
+
+import de.uzk.hki.da.model.KnownError;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -34,10 +36,10 @@ public interface FileWithFileFormat {
 	public String getSubformatIdentifier();
 
 	public void setSubformatIdentifier(String formatSecondaryAttribute);
-	
-	public UserExceptionId getUserExceptionId();
-	
-	public void setUserExceptionId(UserExceptionId e);
-	
+
 	Path getPath();
+	
+	public List<KnownError> getKnownErrors();
+	
+	public void setKnownErrors(List<KnownError> knownError);
 }
