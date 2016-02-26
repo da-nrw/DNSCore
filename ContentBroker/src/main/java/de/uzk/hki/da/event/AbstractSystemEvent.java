@@ -70,6 +70,14 @@ public abstract class AbstractSystemEvent implements Runnable {
 			logger.error(e.getMessage(),e);
 		}
 	}
+	public boolean iskILLATEXIT() {
+		return kILLATEXIT;
+	}
+
+	public void setkILLATEXIT(boolean kILLATEXIT) {
+		this.kILLATEXIT = kILLATEXIT;
+	}
+
 	public Node getNode() {
 		return node;
 	}

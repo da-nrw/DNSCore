@@ -140,7 +140,7 @@ werden. Je nach Fehlerquelle sollte der ContentBroker dafür heruntergefahren we
 wieder gestartet werden.
 
 
-## Manuelles Löschen von bereits archiveirten Objekten unter speziellen Voraussetzungen
+## Manuelles Löschen von bereits archivierten Objekten unter speziellen Voraussetzungen
 
 Das Löschen eines bereits archivierten Objektes ist, so wie LZA aus DNSCore-Sicht konzeptioniert ist, nicht vorgesehen. Sollte es dennoch (Stichwort "Deletion under exceptional circumstances"), z.B. in Testsystemen erforderlich sein, muss dies manuell erfolgen. Im folgenden sind die notwendigen Schritte zusammengefasst.
 
@@ -178,7 +178,9 @@ Akteur: **PS-ADMIN**
 
 Sollen diese Objekte auch von den Medien gelöscht werden, müssen diese auch aus dem Grid gelöscht werden. In der iRODS-Zonen Architektur kann ein Objekt gelöscht werden mittels
 
-    rm -rf /zone/aip/csn/oid
+    irm -rf /zone/aip/csn/oid
+    irm -rf /zone/federated/<CN>/aip/csn/oid
+
     
 
 

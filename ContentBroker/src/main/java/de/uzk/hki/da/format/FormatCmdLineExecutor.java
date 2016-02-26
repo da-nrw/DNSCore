@@ -30,7 +30,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.model.KnownError;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
 
@@ -41,11 +41,11 @@ public class FormatCmdLineExecutor {
 	private String stdErr = "";
 	
 	private int exitValue;
-	private List<FormatCmdLineError> knownErrors;
+	private List<KnownError> knownErrors;
 	
 	private boolean pruneExceptions = false;
 	
-	private FormatCmdLineError error;
+	private KnownError error;
 	
 	private static final Logger logger = LoggerFactory.getLogger(FormatCmdLineExecutor.class);
 	
@@ -75,12 +75,9 @@ public class FormatCmdLineExecutor {
 		exitValue = pi.getExitValue();
 		if (exitValue != 0) {
 			if (knownErrors!=null) 
-			for (FormatCmdLineError ke : knownErrors) {
-				if (stdErr.matches(ke.getErrOutContainsRegex())) {
-					if (pruneExceptions) {
-						error = ke;
-						return true;
-					} else throwCorrespondingExceptionIfNotPruned(ke);
+			for (KnownError ke : knownErrors) {
+				if (stdErr.matches(ke.getStd_err_contains_regex())) {
+					throwCorrespondingException(ke);
 				} 
 			}
 			
@@ -88,18 +85,22 @@ public class FormatCmdLineExecutor {
 		} else return true;
 	}
 	
-	public List<FormatCmdLineError> getKnownErrors() {
+	public List<KnownError> getKnownErrors() {
 		return knownErrors;
 	}
 
-	public void setKnownErrors(List<FormatCmdLineError> knownErrors) {
+	public void setKnownErrors(List<KnownError> knownErrors) {
 		this.knownErrors = knownErrors;
 	}
 
-	private void throwCorrespondingExceptionIfNotPruned(FormatCmdLineError ke) {
+	private void throwCorrespondingException(KnownError ke) {
 		if (!pruneExceptions) {
-			throw new UserException(ke.getUserExceptionId(), ke.getErrorText());
-		} else logger.error(ke.getUserExceptionId() + " " + ke.getErrorText() + " recieved, was pruned!");
+			logger.error(ke.getError_name() + " " + ke.getDescription() + " recieved, was NOT pruned!");
+		} else {
+			logger.info(ke.getError_name() + " " + ke.getDescription() + " recieved, was marked to be pruned!");
+		}
+		throw new UserFileFormatException(ke,pruneExceptions);
+
 	}
 
 	public String getStdOut() {
@@ -120,10 +121,6 @@ public class FormatCmdLineExecutor {
 
 	public int getExitValue() {
 		return exitValue;
-	}
-
-	public FormatCmdLineError getError() {
-		return error;
 	}
 
 }

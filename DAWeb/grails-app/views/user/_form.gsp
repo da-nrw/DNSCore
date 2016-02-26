@@ -74,6 +74,14 @@
 	<g:checkBox name="enabled" value="${userInstance?.enabled}" />
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'mailsPooled', 'error')} ">
+	<label for="mailsPooled">
+		<g:message code="user.mails_pooled.label" default="Emails täglich als gesammelten Report" />
+		
+	</label>
+	<g:checkBox name="enabled" value="${userInstance?.enabled}" />
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'passwordExpired', 'error')} ">
 	<label for="passwordExpired">
 		<g:message code="user.passwordExpired.label" default="Password Expired" />

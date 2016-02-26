@@ -30,6 +30,7 @@
 				<li class="controller"><g:link controller="conversionPolicies">Konfigurierte Konversionen</g:link></li>
 				<li class="controller"><g:link controller="report">Abfragen verarbeiten</g:link></li>
 				<li class="controller"><g:link controller="ownUser">Eigenen User bearbeiten</g:link></li>
+				<li class="controller"><g:link controller="systemEvent">System-Eventsteuerung</g:link></li>
 				<g:if test="${ admin==1}">
 				<li class="controller"><g:link controller="cbtalk">Adminfunktionen</g:link></li>
 				</g:if>

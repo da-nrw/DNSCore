@@ -19,8 +19,10 @@
 package de.uzk.hki.da.format;
 
 import java.io.File;
+import java.util.List;
+import java.util.Set;
 
-import de.uzk.hki.da.core.UserException.UserExceptionId;
+import de.uzk.hki.da.model.KnownError;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 
@@ -34,7 +36,6 @@ public class SimpleFileWithFileFormat implements FileWithFileFormat {
 	File file;
 	String formatPUID;
 	String secondary;
-	UserExceptionId userExceptionId;
 
 	public SimpleFileWithFileFormat(File f){
 		this.file=f;
@@ -66,13 +67,17 @@ public class SimpleFileWithFileFormat implements FileWithFileFormat {
 	}
 
 	@Override
-	public UserExceptionId getUserExceptionId() {
-		return userExceptionId;
+	public List<KnownError> getKnownErrors() {
+		return this.getKnownErrors();
 	}
 
 	@Override
-	public void setUserExceptionId(UserExceptionId e) {
-		userExceptionId =e;
+	public void setKnownErrors(List<KnownError> knownError) {
+		this.setKnownErrors(knownError);
 		
 	}
+
+
+
+
 }

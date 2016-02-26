@@ -125,17 +125,21 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 		
 		if (!wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile().exists())
 			distributedConversionAdapter.create(wa.pipSourceFolderRelativePath(WorkArea.PUBLIC).toString());
-		else
+		else {
+		
 			distributedConversionAdapter.register(wa.pipSourceFolderRelativePath(WorkArea.PUBLIC).toString(),
-				wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile().getAbsolutePath()
-				);
+			wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile().getAbsolutePath()
+			);
+			
+		}
 		
 		if (!wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile().exists())
 			distributedConversionAdapter.create(wa.pipSourceFolderRelativePath(WorkArea.WA_INSTITUTION).toString());
-		else
+		else {
 			distributedConversionAdapter.register(wa.pipSourceFolderRelativePath(WorkArea.WA_INSTITUTION).toString(),
-				wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile().getAbsolutePath()
-				);
+			wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile().getAbsolutePath()
+			);
+		}
 	}
 
 

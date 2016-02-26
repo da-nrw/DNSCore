@@ -36,7 +36,7 @@ import de.uzk.hki.da.core.MailContents;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserExceptionManager;
-import de.uzk.hki.da.core.UserException.UserExceptionId;
+import de.uzk.hki.da.format.UserFileFormatException;
 import de.uzk.hki.da.model.Copy;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
@@ -174,16 +174,20 @@ public abstract class AbstractAction implements Runnable {
 				return;
 			}
 			
-		} catch (UserException e) {
-			if (e.getUserExceptionId().equals(UserExceptionId.WRONG_DATA_TYPE_IPTC)) {
-				j.setQuestion(C.QUESTION_STORE_ALLOWED_IPTC_ERROR);
-			}
+		} catch (UserFileFormatException e) {
+			j.setQuestion(e.getKnownError().getQuestion());
+			new MailContents(preservationSystem,n).informUserAboutPendingDecision(o,e.getMessage());
+			
+			updateStatus(C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
+			resetModifiers();
+			return;	
+		 } catch (UserException e) {
 			reportUserError(e);
 			updateStatus(C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
 			resetModifiers();
 			return;
 			
-		} catch (SubsystemNotAvailableException e) {
+		}catch (SubsystemNotAvailableException e) {
 			
 			actionFactory.setOnHalt(true,e.getMessage());
 			reportTechnicalError(e);

@@ -37,6 +37,7 @@ import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
+import de.uzk.hki.da.utils.StringUtilities;
 
 /**
  * Checks if the minimum number of replications of an AIP, as specified by minNodes, is available on any
@@ -84,7 +85,12 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 				aipPath().toString(), 
 				sp, o.getLatestPackage().getChecksum(), n.getCooperatingNodes()));
 		
-		toCreate=createPublicationJob(j,o,preservationSystem.getPresServer());
+		if (StringUtilities.isSet(preservationSystem.getPresServer())) {
+				toCreate=createPublicationJob(j,o,preservationSystem.getPresServer());
+		} else {
+			gridRoot.remove("/" + n.getIdentifier()+"/pips/public/");
+			gridRoot.remove("/" + n.getIdentifier()+"/pips/institution/");
+		}
 		setObjectArchived();
 
 		logger.debug("Delete object "+wa.objectPath().toFile()+" from WorkArea.");
@@ -137,6 +143,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		for (Package pkg : o.getPackages()){
 			pkg.getEvents().clear();
 			pkg.getFiles().clear();
+	
 		}
 	}
 
