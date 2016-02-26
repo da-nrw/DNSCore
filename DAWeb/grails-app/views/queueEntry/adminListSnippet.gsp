@@ -49,7 +49,7 @@ function subForm(text, action) {
 			</th>
 			
 			<th class="sortable field-origName">
-				<a href="#" onClick="return sortQueue('origName');">${message(code: 'queueEntry.obj.origName.label', default: 'Orig. Name')}</a>
+				<a href="#" onClick="return sortQueue('obj.origName');">${message(code: 'queueEntry.obj.origName.label', default: 'Orig. Name')}</a>
 			</th>
 			
 			<th class="sortable field-initialNode">
