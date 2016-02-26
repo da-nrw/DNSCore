@@ -1,22 +1,3 @@
-/*
-  DA-NRW Software Suite | ContentBroker
-  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
-  Universität zu Köln
-
-  This program is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 package de.uzk.hki.da.model;
 
 import java.util.Date;
@@ -32,19 +13,10 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 
-
-
-/**
- * The Class Event.
- *
- * @author scuy
- * @author Daniel M. de Oliveira
- */
-
 @Entity
-@Table(name="events")
-public class Event {
-	
+@Table(name="premis_events")
+public class PremisEvent {
+
 	/** The id. */
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -55,7 +27,7 @@ public class Event {
 	private IdType idType;
 
 	/** The identifier. */
-	@Transient
+	
 	private String identifier;
 	
 	/** The agent_type. */
@@ -66,9 +38,6 @@ public class Event {
 	@Column(columnDefinition="varchar(50)")
 	private String agent_name;
 	
-	/** The agent_long_name. */
-	@Transient
-	private String agent_long_name;
 	
 	/** The type. */
 	@Column(columnDefinition="varchar(30)")
@@ -96,6 +65,16 @@ public class Event {
 	/** The outcome. */
 	@Transient
 	private String outcome;
+	
+	private String test;
+	
+	public String getTest() {
+		return test;
+	}
+
+	public void setTest(String test) {
+		this.test = test;
+	}
 	
 	/**
 	 * The Enum IdType.
@@ -314,23 +293,6 @@ public class Event {
 		this.agent_name = agentName;
 	}
 	
-	/**
-	 * Gets the agent_long_name.
-	 *
-	 * @return the agent_long_name
-	 */
-	public String getAgent_long_name() {
-		return agent_long_name;
-	}
-
-	/**
-	 * Sets the agent_long_name.
-	 *
-	 * @param agentLongName the new agent_long_name
-	 */
-	public void setAgent_long_name(String agentLongName) {
-		this.agent_long_name = agentLongName;
-	}
 
 	/**
 	 * Gets the agent_type.
@@ -349,4 +311,6 @@ public class Event {
 	public void setAgent_type(String agentType) {
 		this.agent_type = agentType;
 	}
+
+	
 }

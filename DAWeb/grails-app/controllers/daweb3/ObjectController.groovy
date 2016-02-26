@@ -25,6 +25,7 @@ import org.springframework.dao.DataIntegrityViolationException
 import grails.converters.*
 import java.security.InvalidParameterException
 
+import groovy.util.XmlSlurper
 
 class ObjectController {
 
@@ -339,5 +340,34 @@ class ObjectController {
 		paramsList.putAt("searchContractorName", params?.searchContractorName)
 		return
 		[paramsList:paramsList]
+	}
+	
+	
+	def collectData = {
+		def result = []
+		def res = [:]
+		User user = springSecurityService.currentUser
+		def c1 = Object.createCriteria()
+		def objtsTotalForCont = c1.list() {
+			eq("user.id", user.id)
+			between("object_state", 50,200)
+		}
+		def totalObjs = objtsTotalForCont.size();
+		res.sum = 79
+		res.typ = "Archiviert"
+		result +=res
+		res = [:]
+		res.sum = 21
+		res.typ = "In progress"
+		result +=res
+		
+		render result as JSON
+	}
+	
+	def premis() {
+		def xmldocument = "/ci/DNSCore/ContentBroker/src/test/resources/metadata/premistest.xml"
+		def premis = new XmlSlurper().parse(new File(xmldocument))
+		def events = premis.event
+		render(view:"premis", model:[id: "123", events: events, size: events.size()])
 	}
 }

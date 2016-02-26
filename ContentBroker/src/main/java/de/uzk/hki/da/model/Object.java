@@ -21,6 +21,9 @@
 
 package de.uzk.hki.da.model;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -327,6 +330,19 @@ public class Object {
 	 */
 	public void setUrn(String urn) {
 		this.urn = urn;
+		/*ObjectPremisXmlReader premis = new ObjectPremisXmlReader();
+		try {
+			Object o = premis.deserialize(new File("src/test/resources/metadata/premistest.xml"));
+		} catch (NullPointerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
 	}
 	
 	/**

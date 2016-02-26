@@ -118,9 +118,10 @@
 								</g:if>
 							</th>
 							<th style="text-align: center">Entnahme			
-							</th>			
+							</th>	
+							<th style="text-align: center">Premis
+							</th>		
 							
-
 						</tr>
 					</thead>
 					<tbody>
@@ -162,6 +163,13 @@
 								<g:if test="${new File(baseFolder+ "/"+ objectInstance.identifier +".tar").exists()}">
 									 <g:link controller="outgoing" action="download" params="['filename':objectInstance.identifier +'.tar']">
 										<g:img style="width:16px; height:16px" uri="/images/icons/delivery.png"/>
+									</g:link>
+								</g:if>
+							</td>
+							<td style="text-align: center">
+								<g:if test="${!objectInstance.isInWorkflowButton()}">
+									 <g:link action="premis" params="['objectIdentifier':objectInstance.identifier, 'pkg':objectInstance.packages[0].id]">
+										<g:img style="width:16px; height:16px" uri="/images/icons/inspect_icon.png"/>
 									</g:link>
 								</g:if>
 							</td>
