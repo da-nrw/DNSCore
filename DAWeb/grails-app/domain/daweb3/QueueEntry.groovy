@@ -158,17 +158,17 @@ class QueueEntry {
 	}
 	
 	/**
-	 * @author jpeters shows retry button after some time (48 hours)
+	 * @author jpeters shows recover button after some time (48 hours) and state < 401
 	 * 
 	 */
 	
-	boolean showRetryButtonAfterSomeTime(){
+	boolean showRecoverButtonAfterSomeTime(){
 		def checkfor = [WORKFLOW_STATUS_DIGIT_WORKING]
 		def ch = status[-1]
 		if (checkfor.contains(ch)) {
 			if (modified!=null && modified!="" && modified!="NULL" && modified.length()>5) {
 				long diff = new Date().getTime()-Long.valueOf(modified).longValue()*1000L;
-				if (diff > 2 * 24 * 60 * 60 * 1000) {
+				if (diff > 2 * 24 * 60 * 60 * 1000 && getStatusAsInteger()<=400) {
 					return true;
 				}
 			}

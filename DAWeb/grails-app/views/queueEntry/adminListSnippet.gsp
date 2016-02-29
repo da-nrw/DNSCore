@@ -86,15 +86,7 @@ function subForm(text, action) {
 									<g:img style="width:16px; height:16px" uri="/images/icons/exchange32.png" title="Workflow für Paket neu starten" alt="Workflow für Objekt neu starten"/>
 								</g:link>
 					</g:if>
-					
-					<g:if test="${ queueEntryInstance.showRetryButtonAfterSomeTime()}">
-						<g:link action="queueRetry" id="${queueEntryInstance.id}">
-							<g:img style="width:16px; height:16px" uri="/images/icons/exchange32.png" 
-							title="${message(code: 'default.workflow.icon.retry', default: 'Workflow für Paket neu starten')}" 
-							alt="${message(code: 'default.workflow.icon.retry', default: 'Workflow für Paket neu starten')}"/>
-						</g:link>
-					</g:if>
-					<g:if test="${queueEntryInstance.showRecoverButton() }">
+					<g:if test="${queueEntryInstance.showRecoverButton() || queueEntryInstance.showRecoverButtonAfterSomeTime() }">
 						<g:set var="showRecoverAll" value="true" />
 						<g:link action="queueRecover" id="${queueEntryInstance.id}">
 							<g:img style="width:16px; height:16px" uri="/images/icons/back-icon.png"
