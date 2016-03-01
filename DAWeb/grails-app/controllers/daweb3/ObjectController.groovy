@@ -376,6 +376,10 @@ class ObjectController {
 		def xmldocument = "/ci/DNSCore/ContentBroker/src/test/resources/metadata/premistest.xml"
 		def premis = new XmlSlurper().parse(new File(xmldocument))
 		def events = premis.event
-		render(view:"premis", model:[id: "123", events: events, size: events.size()])
+		def c = Event.createCriteria()
+		def eventList = c.list() {
+			eq("identifier", params.objectIdentifier)
+		}
+		render(view:"premis", model:[events: events, size: events.size(), eventList: eventList])
 	}
 }

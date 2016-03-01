@@ -7,7 +7,7 @@ class Event {
     }
 	
 	static mapping = {
-		table 'events'
+		table 'premis_events'
 		version false
 		id column:'id'
 		agentName column: 'agent_name'
@@ -19,6 +19,7 @@ class Event {
 	int id
 	String agentName
 	String agentType
+	String identifier
 	Date date
 	String detail
 	String type

@@ -36,6 +36,7 @@
  <mapping class="de.uzk.hki.da.model.DAFile"/>
  <mapping class="de.uzk.hki.da.model.Package"/>
  <mapping class="de.uzk.hki.da.model.Event"/>
+ <mapping class="de.uzk.hki.da.model.PremisEvent"/>
  <mapping class="de.uzk.hki.da.model.PreservationSystem"/>
  <mapping class="de.uzk.hki.da.model.SubformatIdentificationStrategyPuidMapping"/>
  <mapping class="de.uzk.hki.da.model.Role"/>

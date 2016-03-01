@@ -333,16 +333,12 @@ public class Object {
 		/*ObjectPremisXmlReader premis = new ObjectPremisXmlReader();
 		try {
 			Object o = premis.deserialize(new File("src/test/resources/metadata/premistest.xml"));
-		} catch (NullPointerException e) {
+			System.out.println("--- setUrn // deserialisiere xml ---");
+			//Thread.sleep(5000);
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
+		} */
 	}
 	
 	/**

@@ -211,15 +211,15 @@ public class ObjectPremisXmlReader{
 	 * @author Thomas Kleinke
 	 * Maps an event from premis to native data model.
 	 */
-	private Event buildEvent(Element el, Object object) throws NullPointerException {
+	private PremisEvent buildEvent(Element el, Object object) throws NullPointerException {
 		if (object.getPackages().isEmpty()) 
 			throw new InvalidParameterException("Error: Object is not consistent. Has no package.");
 		
 		
-		Event event = new Event();
+		PremisEvent event = new PremisEvent();
 		
 		event.setIdType(enumValue(el.getFirstChildElement("eventIdentifier", PREMIS_NS)
-				.getFirstChildElement("eventIdentifierType", PREMIS_NS), Event.IdType.class));
+				.getFirstChildElement("eventIdentifierType", PREMIS_NS), PremisEvent.IdType.class));
 		
 		event.setIdentifier(el.getFirstChildElement("eventIdentifier", PREMIS_NS)
 				.getFirstChildElement("eventIdentifierValue", PREMIS_NS).getValue());
@@ -273,7 +273,7 @@ public class ObjectPremisXmlReader{
 					if (sourceFile.equals("") && outcomeFile.equals("")
 							&& nonConvertEventIdentifier.equals(f.getRep_name() + "/" + f.getRelative_path())) {
 						event.setSource_file(f);
-						pkg.getEvents().add(event);
+						//pkg.getEvents().add(event);
 						eventAdded = true;
 						break;
 					}
@@ -281,7 +281,7 @@ public class ObjectPremisXmlReader{
 					if (sourceFile.equals(f.getRep_name() + "/" + f.getRelative_path())) {
 						event.setSource_file(f);
 						if (event.getTarget_file() != null) {
-							pkg.getEvents().add(event);
+							//pkg.getEvents().add(event);
 							eventAdded = true;
 							break;
 						}
@@ -290,7 +290,7 @@ public class ObjectPremisXmlReader{
 					if (outcomeFile.equals(f.getRep_name() + "/" + f.getRelative_path())) {
 						event.setTarget_file(f);
 						if (eventType.toUpperCase().equals("CREATE") || event.getSource_file() != null) {
-							pkg.getEvents().add(event);
+							//pkg.getEvents().add(event);
 							eventAdded = true;
 							break;
 						}
@@ -303,7 +303,7 @@ public class ObjectPremisXmlReader{
 				if (object.getIdentifier() != null)
 					logger.debug("package name: " + object.getIdentifier() + ".pack_" + pkg.getName() + ".tar");
 				if (nonConvertEventIdentifier.equals(object.getIdentifier() + ".pack_" + pkg.getName() + ".tar")) {
-					pkg.getEvents().add(event);
+					//pkg.getEvents().add(event);
 					eventAdded = true;
 					break;
 				}
@@ -312,7 +312,7 @@ public class ObjectPremisXmlReader{
 		
 		if (!eventAdded) {
 			if (eventType.toUpperCase().equals("SIP_CREATION"))
-				object.getPackages().get(0).getEvents().add(event);
+			{}//object.getPackages().get(0).getEvents().add(event);
 			else
 				throw new RuntimeException("Premis file is not consistent: couldn't find object(s) referenced by event "
 											+ event.getIdentifier());						

@@ -125,6 +125,7 @@ public class PremisEvent {
 	 */
 	public void setType(String type) {
 		this.type = type;
+		System.out.println("--- in setType von PremisEvent ---");
 	}
 	
 	/**

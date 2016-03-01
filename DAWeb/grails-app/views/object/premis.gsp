@@ -31,8 +31,7 @@
 				<thead>
 					<tr>
 						<th>eventType</th>
-						<th>eventIdentifierType</th>
-						<th>eventIdentifierValue</th>
+
 						<th>eventDateTime</th>
 						<th>eventDetail</th>
 						<th>linkingAgentIdentifierType</th>
@@ -45,12 +44,23 @@
 						<th>linkingObjectRole</th>
 					</tr>
 				</thead>
+				
+				<!-- 
+				
+					<th>eventIdentifierType</th>
+					<th>eventIdentifierValue</th>
+				
+					print "<td>"+it.eventIdentifier.eventIdentifierType+"</td>"
+					print "<td>"+it.eventIdentifier.eventIdentifierValue+"</td>"
+				
+					
+				 -->
+				
 				<tbody>
 				<% events.each{ 
 					print "<tr>"
 					print "<td>"+it.eventType+"</td>"
-					print "<td>"+it.eventIdentifier.eventIdentifierType+"</td>"
-					print "<td>"+it.eventIdentifier.eventIdentifierValue+"</td>"
+
 					print "<td>"+it.eventDateTime+"</td>"
 					print "<td>"+it.eventDetail+"</td>"
 					print "<td>"+it.linkingAgentIdentifier.linkingAgentIdentifierType+"</td>"
@@ -68,8 +78,64 @@
 			
 			${params}
 			
+			<table>
+				<thead>
+					<tr>
+						<th>eventType</th>
+						
+						<th>eventDateTime</th>
+						<th>eventDetail</th>
+						<th>linkingAgentIdentifierType</th>
+						<th>linkingAgentIdentifierValue</th>
+						
+						<th>linkingObjectIdentifierValue / Source</th>
+
+						<th>linkingObjectIdentifierValue / Target</th>
+
+					</tr>
+				</thead>
+				<tbody>
+				<!-- 
+					
+					<th>eventIdentifierType</th>
+					<th>eventIdentifierValue</th>
+					
+					<th>linkingObjectIdentifierType</th>
+					
+					<th>linkingObjectRole</th>
+					<th>linkingObjectIdentifierType</th>
+				
+					<th>linkingObjectRole</th>
+				
+				
+					print "<td>"+it.eventIdentifier.eventIdentifierType+"</td>"
+					print "<td>"+it.eventIdentifier.eventIdentifierValue+"</td>"
+					
+					print "<td>"+it.linkingObjectIdentifier[0]?.linkingObjectIdentifierValue+"</td>"
+					print "<td>"+it.linkingObjectIdentifier[0]?.linkingObjectRole+"</td>"
+					
+					print "<td>"+it.linkingObjectIdentifier[1]?.linkingObjectIdentifierValue+"</td>"
+					print "<td>"+it.linkingObjectIdentifier[1]?.linkingObjectRole+"</td>"
+				 -->
+				<% eventList.each{ 
+					print "<tr>"
+					print "<td>"+it.type+"</td>"
+				
+					print "<td>"+it.date+"</td>"
+					print "<td>"+it.detail+"</td>"
+					print "<td>"+it.agentType+"</td>"
+					print "<td>"+it.agentName+"</td>"
+					print "<td>"+it.sourceFile?.rep_name+"</td>"
+
+					print "<td>"+it.targetFile?.rep_name+"</td>"
+
+					print "</tr>"
+				} %>
+				</tbody>
+			</table>
+			
 		</div>
-		Test Premis <br/>
+		<br/> Test Premis <br/>
 
 	</body>
 </html>
