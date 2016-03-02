@@ -30,7 +30,7 @@ Geben Sie hier den Pfad zum Verzeichnis an, das die Quelldaten enthält, aus den
 __Zielordner__  
 Geben Sie hier den Pfad zum Verzeichnis an, in dem das fertige SIP am Ende des Generierungsprozesses in Form einer tgz- oder tar-Archivdatei hinterlegt wird. Das gewählte Verzeichnis darf kein Unterverzeichnis des Quellordners sein. 
 
-__Arbeitsordner__
+__Arbeitsordner__  
 Die Angabe eines Arbeitsverzeichnisses ist dann sinnvoll, falls schnellere Laufwerke als Quelle und / oder Ziel verfügbar sind. Damit kann die Verarbeitungszeit ggf. wesentlich verkürzt werden.
 
 __Generierungsmodus__  
