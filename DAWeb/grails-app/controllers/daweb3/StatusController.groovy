@@ -57,7 +57,7 @@ class StatusController {
 				def packages = []
 				result.packages = packages
 				inst.packages.each() {pack ->
-						result.packages.add(pack.name)
+						result.packages.add(pack.container_name)
 				}
 				result = [:]
 				results.result.add(result)
@@ -95,6 +95,18 @@ class StatusController {
 			if (instance.status.endsWith("4")) {
 				queueResult = "package in progress error : (" + instance.status + ")"
 			}
+			if (instance.status.endsWith("5")) {
+				queueResult = "package in progress error : (" + instance.status + ")"
+			}
+			if (instance.status.endsWith("6")) {
+				queueResult = "package in progress error : (" + instance.status + ")"
+			}
+			if (instance.status.endsWith("7")) {
+				queueResult = "package in progress error : (" + instance.status + ")"
+			}
+			if (instance.status.endsWith("8")) {
+				queueResult = "package in progress error : (" + instance.status + ")"
+			}
 			if (instance.status.endsWith("0")) {
 				queueResult = "package in progress waiting : (" + instance.status + ")"
 			}
@@ -130,7 +142,7 @@ class StatusController {
 				def packages = []
 				result.packages = packages;
 				instance.packages.each() {pack ->
-						result.packages.add(pack.name)
+						result.packages.add(pack.container_name)
 				} 
 				results.result.add(result)
 				result = [:]
