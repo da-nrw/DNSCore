@@ -704,6 +704,7 @@ public class Cli {
 		System.out.println("   -source=\"[Pfad]\"          Angabe eines Quellordners, aus dem die SIPs erstellt werden sollen");
 		System.out.println("   -filelist=\"[Pfad]\"        Angabe einer Textdatei, die die Pfade zu den Dateien enthält, aus denen das SIP erstellt werden soll");
 		System.out.println("   -siplist=\"[Pfad]\"         Angabe einer XML-Datei, die die Pfade zu den Dateien enthält, aus denen SIPs erstellt werden sollen");
+		System.out.println("   -workspace=\"[Pfad]\"       Angabe eines Arbeitsverzeichnis, das zur Zwischenspeicherung genutzt werden soll");
 		System.out.println("");
 		System.out.println("   -destination=\"[Pfad]\"     Angabe des Zielordners, in dem die SIPs erstellt werden sollen");
 		System.out.println("");
