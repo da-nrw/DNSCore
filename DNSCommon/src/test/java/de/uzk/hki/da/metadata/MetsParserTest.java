@@ -20,6 +20,11 @@ import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.XMLUtils;
 
+/**
+ * 
+ * @author Eugen Trebunski
+ *
+ */
 public class MetsParserTest {
 		
 	private static final Path WORK_AREA_ROOT_PATH = new RelativePath("src/test/resources/metadata/");

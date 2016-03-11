@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.utils.C;
 
 /**
+ * @author Eugen Trebunski
  * @author Polina Gubaidullina
  */
 
@@ -32,7 +33,7 @@ public class MetsParser{
 	private final Namespace XLINK_NS = 	Namespace.getNamespace("http://www.w3.org/1999/xlink");
 	private final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 	private final List<Element> fileElements;
-	public final String titleSparator=" : ";
+	public static final String titleSparator=" : ";
 
 	public MetsParser(Document doc) throws JDOMException {
 		this.metsDoc = doc;
