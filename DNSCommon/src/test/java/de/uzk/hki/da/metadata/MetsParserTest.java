@@ -1,5 +1,6 @@
 package de.uzk.hki.da.metadata;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -80,7 +81,7 @@ public class MetsParserTest {
 		assertTrue(indexInfo.entrySet().size()==1);
 		HashMap<String, List<String>> elements = indexInfo.get("danrw801613-md801613");
 		
-		assertTrue(elements.get(C.EDM_TITLE).contains("Text Text// mahels///Titel"));
+		assertEquals(elements.get(C.EDM_TITLE).get(0), "nonSortText"+" "+"Text// mahels///Titel"+" : "+"Untertitel");
 		
 		assertTrue(elements.get(C.EDM_PUBLISHER).size()==2);
 		assertTrue(elements.get(C.EDM_PUBLISHER).contains("Grimm] ([Augsburg)")
