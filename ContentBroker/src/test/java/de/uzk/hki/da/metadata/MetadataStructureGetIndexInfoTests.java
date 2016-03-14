@@ -1,5 +1,6 @@
 package de.uzk.hki.da.metadata;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -23,6 +24,12 @@ import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 
+/**
+ * 
+ * @author Eugen Trebunski
+ * @author Daniel M. de Oliveira
+ *
+ */
 public class MetadataStructureGetIndexInfoTests {
 	
 	private static final Path basePath = new RelativePath("src/test/resources/metadata/MetadataStructureGetIndexInfoTests/");
@@ -90,8 +97,8 @@ public class MetadataStructureGetIndexInfoTests {
 		
 		content = indexInfo.get(objectID+"-md258094");
 		
-		assertTrue(content.get(C.EDM_TITLE).contains("Chronik der Stadt Hoerde")
-				&&content.get(C.EDM_TITLE).contains("und der größeren evangelischen Gemeinde in derselben"));
+
+		assertEquals(content.get(C.EDM_TITLE).get(0), "Chronik der Stadt Hoerde"+" : "+"und der größeren evangelischen Gemeinde in derselben");
 			
 		
 		assertTrue(content.get(C.EDM_DATE).contains("1836")
