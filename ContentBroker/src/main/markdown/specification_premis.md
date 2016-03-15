@@ -45,11 +45,12 @@
             <rightsGranted xmlns="http://www.danrw.de/contract/v1" xmlns:xsi="http://www.danrw.de/contract/v1 http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd">
     ```
   * Migrationsbedingung: NONE | NOTIFY | CONFIRM 
-     ```xml
+
+    ```xml
                 <migrationRight>
                     <condition>NONE</condition>
                 </migrationRight>
-     ```
+    ```
   * DDB-Harvesting nicht erlauben (falls das Element fehlt, gilt es als erlaubt)
     ```xml
                 <DDBexclusion/>
