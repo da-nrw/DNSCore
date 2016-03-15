@@ -56,36 +56,43 @@
                 </migrationRight>
     ```
   * DDB-Harvesting nicht erlauben (falls das Element fehlt, gilt es als erlaubt)
+
     ```xml
                 <DDBexclusion/>
     ```
   * publicationRight-Block je für PUBLIC | INSTITUTION
+
     ```xml 
                 <publicationRight>
                     <audience>PUBLIC</audience>
                     <startDate>2016-03-10T00:00:00.000+01:00</startDate>
     ```
   * Begrenzung der Publikation durch Sperrgesetz: EPFLICHT, URHG_DE, PUBLICDOMAIN_DE
+
     ```xml
                     <lawID>URHG_DE</lawID>
     ```
   * Block für Vorschaurestriktionen für die Öffentlichkeit
+
     ```xml
                     <restrictions>
     ```
     * Audio-Restriktionen
+
      ```xml
                         <restrictAudio>
                             <duration>60</duration>
                         </restrictAudio>
      ```
     * Text-Restriktionen
+
      ```xml
                         <restrictText>
                             <certainPages>1 2 3 4 5 6 7 8 9 10</certainPages>
                         </restrictText>
      ```
     * Video-Restriktionen
+
      ```xml
                         <restrictVideo>
                             <height>720</height>
@@ -93,6 +100,7 @@
                         </restrictVideo>
      ```
     * Bild-Restriktionen
+
      ```xml
                         <restrictImage>
                             <width>25%</width>
