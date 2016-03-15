@@ -41,7 +41,7 @@
 * Ein Rights-Extention Element für genauere Spezifikation der Publikationsrechte
   * ```xml
         <rightsExtension>
-            <rightsGranted xmlns="http://www.danrw.de/contract/v1" xmlns:xsi="http://www.danrw.de/contract/v1 file:///C:/Users/Z1334005/Downloads/danrw-contract-1-20160310RestrictCase.xsd">
+            <rightsGranted xmlns="http://www.danrw.de/contract/v1" xmlns:xsi="http://www.danrw.de/contract/v1 http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd">
       ```
   * Migrationsbedingung: NONE | NOTIFY | CONFIRM 
     ```xml
@@ -68,26 +68,26 @@
                     <restrictions>
     ```
     * Audio-Restriktionen
-      ```xml
+     ```xml
                         <restrictAudio>
                             <duration>60</duration>
                         </restrictAudio>
-      ```
+     ```
     * Text-Restriktionen
-      ```xml
+     ```xml
                         <restrictText>
                             <certainPages>1 2 3 4 5 6 7 8 9 10</certainPages>
                         </restrictText>
-      ```
+     ```
     * Video-Restriktionen
-      ```xml
+     ```xml
                         <restrictVideo>
                             <height>720</height>
                             <duration>120</duration>
                         </restrictVideo>
-      ```
+     ```
     * Bild-Restriktionen
-      ```xml
+     ```xml
                         <restrictImage>
                             <width>25%</width>
                             <height>25%</height>
@@ -98,7 +98,7 @@
                                 <opacity>25</opacity>
                             </watermark>
                         </restrictImage>
-      ```
+     ```
     ```xml
                     </restrictions>                 
     ```
@@ -106,13 +106,13 @@
     ```xml
                 </publicationRight>            
     ```
-   ```xml
+    ```xml
             </rightsGranted>
         </rightsExtension>
     ```
-    ```xml
+   ```xml
     </rights>
-    ```
+   ```
 
 
 ### Vom System erwartete Eigenschaften einer eingehenden PREMIS-Datei
