@@ -25,6 +25,7 @@
                 <rightsStatementIdentifierValue></rightsStatementIdentifierValue>
             </rightsStatementIdentifier>
             <rightsBasis>license</rightsBasis>
+    ```
   * rightsGranted-Block je identischer Aufbau für PUBLICATION_PUBLIC | PUBLICATION_INSTITUTION | MIGRATION
     ```xml
             <rightsGranted>
