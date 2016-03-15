@@ -17,6 +17,7 @@
   * agentIdentifierValue: DA NRW SIP-Builder \[DAN:Version\]
   * agentType: APPLICATION
 * Ein Rights-Element für die festgelegten Contract Rights
+
     ```xml
     <rights>
         <rightsStatement>
@@ -27,6 +28,7 @@
             <rightsBasis>license</rightsBasis>
     ```
   * rightsGranted-Block je identischer Aufbau für PUBLICATION_PUBLIC | PUBLICATION_INSTITUTION | MIGRATION
+
     ```xml
             <rightsGranted>
                 <act>PUBLICATION_PUBLIC</act>
@@ -36,10 +38,12 @@
                 </termOfGrant>
             </rightsGranted>
     ```
+
     ```xml
         </rightsStatement>
     ```
 * Ein Rights-Extention Element für genauere Spezifikation der Publikationsrechte
+
     ```xml
         <rightsExtension>
             <rightsGranted xmlns="http://www.danrw.de/contract/v1" xmlns:xsi="http://www.danrw.de/contract/v1 http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd">
