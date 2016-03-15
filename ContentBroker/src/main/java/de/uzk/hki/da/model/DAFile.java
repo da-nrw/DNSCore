@@ -87,7 +87,7 @@ public class DAFile implements FileWithFileFormat{
 	private String rep_name = "";
 	
 	/** The format puid. */
-	@Column(name="`formatpuid`", columnDefinition="varchar(14)")
+	@Column(name="`format_puid`", columnDefinition="varchar(14)")
 	private String formatPUID; // encoded as PRONOM-PUID
 	
 	/** The format secondary attribute. */
