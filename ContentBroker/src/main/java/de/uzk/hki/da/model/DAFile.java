@@ -67,7 +67,6 @@ import de.uzk.hki.da.utils.RelativePath;
 @Table(name="dafiles")
 public class DAFile implements FileWithFileFormat{
 	
-	
 	/** The id. */
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -92,13 +91,14 @@ public class DAFile implements FileWithFileFormat{
 	private String formatPUID; // encoded as PRONOM-PUID
 	
 	/** The format secondary attribute. */
-	@Column(columnDefinition="varchar(50)")
+	@Column(name="subformat_identifier", columnDefinition="varchar(50)")
 	private String subformatIdentifier = ""; // used to store compression or codec information
 	
 	/** The chksum. */
 	private String chksum;
 	
 	/** The mimetype. */
+	@Column(name="`mimetype`")
 	private String mimeType;
 	
 	/** The size. */
@@ -106,7 +106,7 @@ public class DAFile implements FileWithFileFormat{
 	
 	/** The previous dafile. */
 	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "previousDAFile_ID")
+	@JoinColumn(name = "`previousdafile_id`")
 	@Cascade(CascadeType.ALL)
 	private DAFile previousDAFile;
 
