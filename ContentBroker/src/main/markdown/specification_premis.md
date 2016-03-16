@@ -42,7 +42,7 @@
     ```xml
         </rightsStatement>
     ```
-* Ein Rights-Extention Element für genauere Spezifikation der Publikationsrechte
+* Ein Rights-Extension Element für genauere Spezifikation der Publikationsrechte
 
     ```xml
         <rightsExtension>
@@ -67,7 +67,7 @@
                     <audience>PUBLIC</audience>
                     <startDate>2016-03-10T00:00:00.000+01:00</startDate>
     ```
-  * Begrenzung der Publikation durch Sperrgesetz: EPFLICHT, URHG_DE, PUBLICDOMAIN_DE
+  * Begrenzung der Publikation durch Sperrgesetz: EPFLICHT, URHG_DE
 
     ```xml
                     <lawID>URHG_DE</lawID>
