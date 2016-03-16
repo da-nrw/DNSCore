@@ -42,7 +42,7 @@
     ```xml
         </rightsStatement>
     ```
-* Ein Rights-Extention Element für genauere Spezifikation der Publikationsrechte
+* Ein Rights-Extension Element für genauere Spezifikation der Publikationsrechte
 
     ```xml
         <rightsExtension>
