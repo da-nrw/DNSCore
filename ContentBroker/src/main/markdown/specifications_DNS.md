@@ -7,16 +7,16 @@
 
 ## Delta SIP
 
-[Delta Spezifikation](./the_delta_feature.de.md) Version.
+* [Delta Spezifikation](./the_delta_feature.de.md) Version.
 
 ## AIP 
 
-[AIP Spezifikation](./specification_aip.md) 
+* [AIP Spezifikation](./specification_aip.md) 
 
 
 ## DIP 
 
-[DIP Spezifikation](./specification_dip.md) 
+* [DIP Spezifikation](./specification_dip.md) 
 
 
 ## PIP 
