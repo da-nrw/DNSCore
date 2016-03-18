@@ -52,7 +52,8 @@ Die ausführliche Beschreibung der Nutzungsszenarien Delta-Einlieferung sowie de
 Das Metadatenset muss in jedem einzelnen SIP komplett sein und alle Primärdateien des Objekts (Original-SIP mit allen dazugehörigen Deltas) referenzieren. Im Einzelnen bedeutet es, dass
 Daraus ergibt sich, dass    
 1. die Referenzen in der Metadaten der Ersteinlieferung immer auf die im SIP tatsächlich vorhandenen Primärdateien zeigen müssen &       
-2. die Delta-SIPs durchaus Referenzen in den Metadaten enthalten können, die auf keine Primärdateien des konkreten SIP zeigen, jedoch auf die in den vorhergegangenen Paketen des Objekts.   
+1. die Delta-SIPs durchaus Referenzen in den Metadaten enthalten können, die auf keine Primärdateien des konkreten SIP zeigen, jedoch auf die in den vorhergegangenen Paketen des Objekts.   
+1. der Name der Metadatei der Delta-SIPs gleich dem Namen der Metadatei der Ersteinlieferung sein muss (gilt für METS, LIDO und EAD).
 
 Eine Delta-Einlieferung wird im System anhand von zwei Kriterien erkannt. Entweder hat das SIP denselben Originalnamen wie das SIP der Ersteinlieferung, oder der Name entspricht der OPbject-ID der Ersteinlieferung.
 
