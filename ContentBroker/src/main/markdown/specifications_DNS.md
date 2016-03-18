@@ -30,3 +30,4 @@ Rücklieferung Dissemination Information Package
 ## Rückmeldungen 
 
 * [Rückmeldungen des Systems](./feature_automated_queries.md)
+* [Fehlertypen und Status](./administration-troubleshooting.de.md)
