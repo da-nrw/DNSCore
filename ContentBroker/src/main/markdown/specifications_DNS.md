@@ -2,8 +2,8 @@
 
 ## SIP 
 
-[SIP Spezifikation](./specification_sip.de.md)
-[PREMIS Spezifikation](./specification_premis.md)
+* [SIP Spezifikation](./specification_sip.de.md)
+* [PREMIS Spezifikation](./specification_premis.md)
 
 ## Delta SIP
 
