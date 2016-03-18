@@ -184,7 +184,7 @@ Sollen diese Objekte auch von den Medien gelöscht werden, müssen diese auch au
 
 #### Genaue Beschreibung aller Job-Status:
 
-*110	IngestUnpackAction	Auspacken & Vollständigkeitstests
+* 110	IngestUnpackAction	Auspacken & Vollständigkeitstests
 *120	IngestRestructureObjectAction	Objekt- oder Deltaerkennung, Typerkennung
 *130	IngestValidateMetadataAction	Validierung der Metadaten
 *140	IngestScanAction	Formaterkennung
