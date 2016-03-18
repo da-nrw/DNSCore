@@ -11,7 +11,7 @@ Spezifikationen zum Storage Information Package und den darin enthaltenen Dateie
 
 ### Delta SIP
 
-Spezifikationen zum s.g. Delta Feature (der Ergänzung von AIP mittels eines Delta - Storage Information Package)
+Spezifikationen zum s.g. "Delta Feature" (der Ergänzung von AIP mittels eines Delta - Storage Information Package)
 
 * [Delta Spezifikation](./the_delta_feature.de.md) Version.
 
@@ -25,6 +25,6 @@ Archival Information Package
 
 * [DIP Spezifikation](./specification_dip.md) 
 
-## Rückmeldungen
+## Rückmeldungen 
 
 * [Rückmeldungen des Systems](./feature_automated_queries.md)
