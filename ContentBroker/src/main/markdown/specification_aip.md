@@ -73,8 +73,8 @@ ready, a conversion is not necessary.
 
 But this leads to an important point when speaking of representations. A representation has not necessarily to be complete
 in the sense that every file has a successor in the b-rep. To understand the effects of this fact see dip_specification 
-[DIP Specification](./specification_dip.md)
-For the effects this might have on your already existing metadata, see [Metadata Specification](./specification_metadata.de.md)
+* [DIP Specification](./specification_dip.md)
+For the effects this might have on your already existing metadata, see *[Metadata Specification](./specification_metadata.de.md)
 
 
 #### premis.xml
