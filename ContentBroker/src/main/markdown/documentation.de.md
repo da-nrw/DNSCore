@@ -11,7 +11,7 @@ Der Großteil der Dokumentation befindet sich unter
 
 [DNSCore/ContentBroker/src/main/markdown/](../markdown),
 
-[Übersicht der verschiedenen Spezifikationen](./specifications_DNS.md)
+[Übersicht der verschiedenen Spezifikationen SIP/AIP/DIP](./specifications_DNS.md)
 
 wobei sich auch noch weitere Dokumention unter folgendem Link findet:
 
