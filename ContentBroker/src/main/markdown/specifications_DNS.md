@@ -23,6 +23,8 @@ Archival Information Package
 
 ## DIP 
 
+Rücklieferung Dissemination Information Package
+
 * [DIP Spezifikation](./specification_dip.md) 
 
 ## Rückmeldungen 
