@@ -1,5 +1,10 @@
 # PREMIS Spezifikationen
 
+Basierend auf:
+* http://www.loc.gov/standards/premis/v2/premis-v2-2.xsd
+* http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd 
+
+
 ### Inhalt einer vom SIP-Builder gebauten Premis-Datei
 
 * Ein Object-Element für das gebaute Paket
