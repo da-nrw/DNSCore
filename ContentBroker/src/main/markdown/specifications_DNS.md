@@ -6,6 +6,8 @@ Spezifikationen zum Storage Information Package und den darin enthaltenen Dateie
 
 * [SIP Spezifikation](./specification_sip.de.md)
 * [PREMIS Spezifikation](./specification_premis.md)
+* [Metadaten Spezifikation](./specification_metadata.de.md)
+* [Vergabe von Identifiern](./feature_identifier_assignment.md)
 
 ### Delta SIP
 
@@ -19,10 +21,10 @@ Archival Information Package
 
 * [AIP Spezifikation](./specification_aip.md) 
 
-
 ## DIP 
 
 * [DIP Spezifikation](./specification_dip.md) 
 
+## Rückmeldungen
 
-## PIP 
+* [Rückmeldungen des Systems](./feature_automated_queries.md)
