@@ -6,7 +6,7 @@ class DAFile {
     }
 	
 	static mapping = {
-		table 'dafiles'
+		table 'premis_dafiles'
 		version false
 		id column:'id'
 	}

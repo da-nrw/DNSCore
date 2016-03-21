@@ -14,7 +14,7 @@ import javax.persistence.Persistence;
 
 import org.junit.*;
 
-import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.PremisDAFile;
 import de.uzk.hki.da.model.ObjectPremisXmlReader;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
@@ -40,12 +40,12 @@ public class PremisTest {
 		pe.setDate(d);
 		pe.setAgent_name("localnode");
 		pe.setAgent_type("NODE_NAME");
-		DAFile source = new DAFile("2016_02_29+11_39_44+a", "CCITT_2.TIF");
-		DAFile target = new DAFile("2016_02_29+11_39_44+b", "CCITT_2.TIF");
-		source.setConversion_instruction_id(1);
-		target.setConversion_instruction_id(2);
-		pe.setSource_file(source);
-		pe.setTarget_file(target);
+		PremisDAFile source = new PremisDAFile("2016_02_29+11_39_44+a", "CCITT_2.TIF");
+		PremisDAFile target = new PremisDAFile("2016_02_29+11_39_44+b", "CCITT_2.TIF");
+		//source.setConversion_instruction_id(1);
+		//target.setConversion_instruction_id(2);
+		//pe.setSource_file(source);
+		//pe.setTarget_file(target);
 		
 		
 		try {

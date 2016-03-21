@@ -20,6 +20,7 @@
 package de.uzk.hki.da.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -62,32 +63,32 @@ import de.uzk.hki.da.utils.C;
 public class ObjectPremisXmlReader{
 
 	/** The Constant DATE_FORMAT_WITH_TIMEZONE. */
-	private static final SimpleDateFormat DATE_FORMAT_WITH_TIMEZONE = 
+	protected static final SimpleDateFormat DATE_FORMAT_WITH_TIMEZONE = 
 			new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 	
 	/** The Constant DATE_FORMAT_WITH_TIMEZONE. */
-	private static final SimpleDateFormat DATE_FORMAT_WITH_TIMEZONE_WITHOUT_MILLISECONDS = 
+	protected static final SimpleDateFormat DATE_FORMAT_WITH_TIMEZONE_WITHOUT_MILLISECONDS = 
 			new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 	
 	/** The Constant DATE_FORMAT_WITHOUT_TIMEZONE. */
-	private static final SimpleDateFormat DATE_FORMAT_WITHOUT_TIMEZONE = 
+	protected static final SimpleDateFormat DATE_FORMAT_WITHOUT_TIMEZONE = 
 			new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 	
 	/** The Constant DATE_FORMAT_WITHOUT_DATE_AND_TIMEZONE. */
-	private static final SimpleDateFormat DATE_FORMAT_WITHOUT_DATE_AND_TIMEZONE = 
+	protected static final SimpleDateFormat DATE_FORMAT_WITHOUT_DATE_AND_TIMEZONE = 
 			new SimpleDateFormat("yyyy-MM-dd");
 	
 	/** The Constant XSI_NS. */
-	private static final String XSI_NS = "http://www.w3.org/2001/XMLSchema-instance";
+	protected static final String XSI_NS = "http://www.w3.org/2001/XMLSchema-instance";
 	
 	/** The Constant PREMIS_NS. */
-	private static final String PREMIS_NS = "info:lc/xmlns/premis-v2";
+	protected static final String PREMIS_NS = "info:lc/xmlns/premis-v2";
 	
 	/** The logger. */
-	private static Logger logger = LoggerFactory.getLogger(ObjectPremisXmlReader.class);
+	protected static Logger logger = LoggerFactory.getLogger(ObjectPremisXmlReader.class);
 	
 	/** The err. */
-	private static ErrorHandler err = new ErrorHandler(){
+	protected static ErrorHandler err = new ErrorHandler(){
 
 		@Override
 		public void error(SAXParseException e) throws SAXException {
@@ -105,6 +106,12 @@ public class ObjectPremisXmlReader{
 		}
 	};
 	
+	protected Reader reader;
+	protected XMLReader xmlReader;
+	protected SAXParserFactory spf;
+	protected NodeFactory nodeFactory;
+	protected Builder parser;
+	
 	/**
 	 * Deserialize.
 	 *
@@ -115,21 +122,8 @@ public class ObjectPremisXmlReader{
 	 * @author Daniel M. de Oliveira
 	 */
 	public Object deserialize(File file) throws IOException, ParseException, NullPointerException {
-
-		Reader reader = new FileReader(file);
 		
-		XMLReader xmlReader = null;
-		SAXParserFactory spf = SAXParserFactory.newInstance();
-		try {
-			xmlReader = spf.newSAXParser().getXMLReader();
-		} catch (Exception e) {
-			reader.close();
-			throw new IOException("Error creating SAX parser", e);
-		}
-		xmlReader.setErrorHandler(err);
-		NodeFactory nodeFactory = new PremisXmlReaderNodeFactory();
-		Builder parser = new Builder(xmlReader, false, nodeFactory);
-		logger.trace("Successfully built builder and XML reader");
+		readFile(file);
 		
 		Object object = null;
 		
@@ -200,6 +194,23 @@ public class ObjectPremisXmlReader{
 		return object;
 	}
 	
+	protected void readFile(File file) throws IOException {
+		reader = new FileReader(file);
+		
+		xmlReader = null;
+		spf = SAXParserFactory.newInstance();
+		try {
+			xmlReader = spf.newSAXParser().getXMLReader();
+		} catch (Exception e) {
+			reader.close();
+			throw new IOException("Error creating SAX parser", e);
+		}
+		xmlReader.setErrorHandler(err);
+		nodeFactory = new PremisXmlReaderNodeFactory();
+		parser = new Builder(xmlReader, false, nodeFactory);
+		logger.trace("Successfully built builder and XML reader");
+	}
+	
 	/**
 	 * Builds the event.
 	 *
@@ -211,15 +222,15 @@ public class ObjectPremisXmlReader{
 	 * @author Thomas Kleinke
 	 * Maps an event from premis to native data model.
 	 */
-	private PremisEvent buildEvent(Element el, Object object) throws NullPointerException {
+	private Event buildEvent(Element el, Object object) throws NullPointerException {
 		if (object.getPackages().isEmpty()) 
 			throw new InvalidParameterException("Error: Object is not consistent. Has no package.");
 		
 		
-		PremisEvent event = new PremisEvent();
+		Event event = new Event();
 		
 		event.setIdType(enumValue(el.getFirstChildElement("eventIdentifier", PREMIS_NS)
-				.getFirstChildElement("eventIdentifierType", PREMIS_NS), PremisEvent.IdType.class));
+				.getFirstChildElement("eventIdentifierType", PREMIS_NS), Event.IdType.class));
 		
 		event.setIdentifier(el.getFirstChildElement("eventIdentifier", PREMIS_NS)
 				.getFirstChildElement("eventIdentifierValue", PREMIS_NS).getValue());
@@ -273,7 +284,7 @@ public class ObjectPremisXmlReader{
 					if (sourceFile.equals("") && outcomeFile.equals("")
 							&& nonConvertEventIdentifier.equals(f.getRep_name() + "/" + f.getRelative_path())) {
 						event.setSource_file(f);
-						//pkg.getEvents().add(event);
+						pkg.getEvents().add(event);
 						eventAdded = true;
 						break;
 					}
@@ -281,7 +292,7 @@ public class ObjectPremisXmlReader{
 					if (sourceFile.equals(f.getRep_name() + "/" + f.getRelative_path())) {
 						event.setSource_file(f);
 						if (event.getTarget_file() != null) {
-							//pkg.getEvents().add(event);
+							pkg.getEvents().add(event);
 							eventAdded = true;
 							break;
 						}
@@ -290,7 +301,7 @@ public class ObjectPremisXmlReader{
 					if (outcomeFile.equals(f.getRep_name() + "/" + f.getRelative_path())) {
 						event.setTarget_file(f);
 						if (eventType.toUpperCase().equals("CREATE") || event.getSource_file() != null) {
-							//pkg.getEvents().add(event);
+							pkg.getEvents().add(event);
 							eventAdded = true;
 							break;
 						}
@@ -303,7 +314,7 @@ public class ObjectPremisXmlReader{
 				if (object.getIdentifier() != null)
 					logger.debug("package name: " + object.getIdentifier() + ".pack_" + pkg.getName() + ".tar");
 				if (nonConvertEventIdentifier.equals(object.getIdentifier() + ".pack_" + pkg.getName() + ".tar")) {
-					//pkg.getEvents().add(event);
+					pkg.getEvents().add(event);
 					eventAdded = true;
 					break;
 				}
@@ -312,7 +323,7 @@ public class ObjectPremisXmlReader{
 		
 		if (!eventAdded) {
 			if (eventType.toUpperCase().equals("SIP_CREATION"))
-			{}//object.getPackages().get(0).getEvents().add(event);
+				object.getPackages().get(0).getEvents().add(event);
 			else
 				throw new RuntimeException("Premis file is not consistent: couldn't find object(s) referenced by event "
 											+ event.getIdentifier());						
@@ -650,7 +661,7 @@ public class ObjectPremisXmlReader{
 		return f;
 	}
 	
-	private Date readDate(String dateElementValue) throws NullPointerException {
+	protected Date readDate(String dateElementValue) throws NullPointerException {
 		
 		try {
 			String dateString = dateElementValue;
@@ -689,7 +700,7 @@ public class ObjectPremisXmlReader{
 	 * @param enumType the enum type
 	 * @return the t
 	 */
-	private <T extends Enum<T>> T enumValue(Node node, Class<T> enumType) {
+	protected <T extends Enum<T>> T enumValue(Node node, Class<T> enumType) {
 		try {
 			if (node != null && !node.getValue().isEmpty())
 				return Enum.valueOf(enumType, node.getValue().toUpperCase());

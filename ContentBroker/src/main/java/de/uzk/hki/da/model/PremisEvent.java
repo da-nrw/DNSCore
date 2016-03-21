@@ -22,6 +22,8 @@ public class PremisEvent {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	
+	private String objectIdentifier;
+	
 	/** The id type. */
 	@Transient
 	private IdType idType;
@@ -47,13 +49,13 @@ public class PremisEvent {
 	@ManyToOne
     @PrimaryKeyJoinColumn(
         name="source_file_id")
-	private DAFile source_file;
+	private PremisDAFile source_file;
 	
 	/** The target_file. */
 	@ManyToOne
     @PrimaryKeyJoinColumn(
         name="target_file_id")
-	private DAFile target_file;
+	private PremisDAFile target_file;
 	
 	/** The date. */
 	private Date date;
@@ -65,16 +67,6 @@ public class PremisEvent {
 	/** The outcome. */
 	@Transient
 	private String outcome;
-	
-	private String test;
-	
-	public String getTest() {
-		return test;
-	}
-
-	public void setTest(String test) {
-		this.test = test;
-	}
 	
 	/**
 	 * The Enum IdType.
@@ -236,10 +228,10 @@ public class PremisEvent {
 	 * @return the source_file
 	 * @author Daniel M. de Oliveira
 	 */
-	public DAFile getSource_file() {
-		if ((getType()==null)||getType().equals("")) throw new IllegalStateException("Type for Event not set");
+	public PremisDAFile getSource_file() {
+		/*if ((getType()==null)||getType().equals("")) throw new IllegalStateException("Type for Event not set");
 		if (!getType().equals("CONVERT") && !getType().equals("COPY")) throw new RuntimeException("Operation not allowed for non CONVERT/COPY events");
-		
+		*/
 		return source_file;
 	}
 
@@ -248,7 +240,7 @@ public class PremisEvent {
 	 *
 	 * @param source_file the new source_file
 	 */
-	public void setSource_file(DAFile source_file) {
+	public void setSource_file(PremisDAFile source_file) {
 		this.source_file = source_file;
 	}
 
@@ -260,10 +252,10 @@ public class PremisEvent {
 	 * @throws IllegalStateException if called and event type not set 
 	 * @throws IllegalStateException if called and event is not of type CONVERT or COPY
 	 */
-	public DAFile getTarget_file() {
-		if ((getType()==null)||getType().equals("")) throw new IllegalStateException("Type for Event not set");
+	public PremisDAFile getTarget_file() {
+		/*if ((getType()==null)||getType().equals("")) throw new IllegalStateException("Type for Event not set");
 		if (!getType().equals("CONVERT") && !getType().equals("COPY") && !getType().equals("CREATE")) throw new IllegalStateException("Operation not allowed for non CONVERT/COPY/CREATE events");
-		
+		*/
 		return target_file;
 	}
 
@@ -272,7 +264,7 @@ public class PremisEvent {
 	 *
 	 * @param target_file the new target_file
 	 */
-	public void setTarget_file(DAFile target_file) {
+	public void setTarget_file(PremisDAFile target_file) {
 		this.target_file = target_file;
 	}
 
@@ -311,6 +303,14 @@ public class PremisEvent {
 	 */
 	public void setAgent_type(String agentType) {
 		this.agent_type = agentType;
+	}
+
+	public String getObjectIdentifier() {
+		return objectIdentifier;
+	}
+
+	public void setObjectIdentifier(String objectIdentifier) {
+		this.objectIdentifier = objectIdentifier;
 	}
 
 	

@@ -39,6 +39,7 @@
  <mapping class="de.uzk.hki.da.model.Document"/>
  <mapping class="de.uzk.hki.da.model.KnownError"/>
  <mapping class="de.uzk.hki.da.model.DAFile"/>
+ <mapping class="de.uzk.hki.da.model.PremisDAFile"/>
  <mapping class="de.uzk.hki.da.model.Package"/>
  <mapping class="de.uzk.hki.da.model.Event"/>
  <mapping class="de.uzk.hki.da.model.PremisEvent"/>
