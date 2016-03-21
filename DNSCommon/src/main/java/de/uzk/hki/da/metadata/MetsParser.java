@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.utils.C;
 
 /**
+ * @author Eugen Trebunski
  * @author Polina Gubaidullina
  */
 
@@ -32,6 +33,7 @@ public class MetsParser{
 	private final Namespace XLINK_NS = 	Namespace.getNamespace("http://www.w3.org/1999/xlink");
 	private final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 	private final List<Element> fileElements;
+	public static final String titleSparator=" : ";
 
 	public MetsParser(Document doc) throws JDOMException {
 		this.metsDoc = doc;
@@ -467,9 +469,11 @@ public class MetsParser{
 		} catch(Exception e) {
 			logger.error("Element titleInfo does not exist!!!");
 		}
-		title.add(MainTitleValue);
+		
 		if(!subTitleValue.equals("")) {
-			title.add(subTitleValue);
+			title.add(MainTitleValue+titleSparator+ subTitleValue);
+		}else{
+			title.add(MainTitleValue);
 		}
 		return title;
 	}

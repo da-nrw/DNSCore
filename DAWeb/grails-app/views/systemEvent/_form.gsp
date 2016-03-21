@@ -1,3 +1,4 @@
+
 <%@ page import="daweb3.SystemEvent" %>
 
 <div class="fieldcontain ${hasErrors(bean: systemEventInstance, field: 'type', 'error')} ">

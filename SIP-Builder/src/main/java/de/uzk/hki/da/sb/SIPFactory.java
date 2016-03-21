@@ -51,6 +51,7 @@ import de.uzk.hki.da.utils.formatDetectionService;
 /**
  * The central SIP production class
  * 
+ * @author Trebunski Eugen
  * @author Thomas Kleinke
  */
 
@@ -904,7 +905,13 @@ public class SIPFactory {
 			for(File f : folder.listFiles()) {
 				logger.debug("Check file "+f);
 				if(f.isDirectory()) {
-					getFilesWithDuplicateFileNames(f);
+					HashMap<String, List<File>> rekursivResult=getFilesWithDuplicateFileNames(f);
+					for(String rekf:rekursivResult.keySet())
+						if(duplicateFilenamesWithFiles.containsKey(rekf))
+							duplicateFilenamesWithFiles.get(rekf).addAll(rekursivResult.get(rekf));
+						else
+							duplicateFilenamesWithFiles.put(rekf, rekursivResult.get(rekf));
+							
 				} else {
 					
 					File file = new File(f.getAbsolutePath());

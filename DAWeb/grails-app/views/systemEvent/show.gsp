@@ -1,4 +1,4 @@
-
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="daweb3.SystemEvent" %>
 <!DOCTYPE html>
 <html>
