@@ -50,8 +50,8 @@ function toggle(source) {
 				<g:form controller="package" action="retrievePackages">
 				<g:hiddenField name="oid" value="${objectInstance?.id}" />
 				<span class="property-value" ><input type="checkbox"  onClick="toggle(this)"/>Alle an-/abwählen</span><br>
-				<g:if test="${objectInstance?.packages}">
-							<g:each in="${objectInstance.packages}" var="p">
+				<g:if test="${sortedPackages}">
+							<g:each in="${sortedPackages}" var="p">
 							<span class="property-value" ><g:if test="${!objectInstance.isInWorkflowButton()}"><g:checkBox name="currentPackages" value="${p.getId()}" checked="false" /></g:if>${p?.encodeAsHTML()}</span>
 						</g:each>	
 				<span class="property-value" ><g:if test="${!objectInstance.isInWorkflowButton()}"><g:actionSubmit value="Versioniertes Retrieval starten" controller="package" action="retrievePackages"/></span></g:if>
