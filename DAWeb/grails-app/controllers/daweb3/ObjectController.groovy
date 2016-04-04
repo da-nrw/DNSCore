@@ -173,9 +173,10 @@ class ObjectController {
 		}
 		def urn = objectInstance.urn
 		urn = urn.replaceAll(~"\\+",":")
+		def sortedPackages = objectInstance.packages.sort{it.id}
 		def preslink = grailsApplication.config.fedora.urlPrefix +urn.replaceAll(~"urn:nbn:de:danrw-", "")
 		[objectInstance: objectInstance,
-			urn:urn,preslink:preslink]
+			urn:urn,preslink:preslink,sortedPackages:sortedPackages]
 	}
 
 
