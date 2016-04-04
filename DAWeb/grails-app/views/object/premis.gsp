@@ -120,15 +120,15 @@
 				 -->
 				<% eventList.each{ 
 					print "<tr>"
-					print "<td>"+it.type+"</td>"
+					print "<td>"+(it.type==null?"":it.type)+"</td>"
 				
-					print "<td>"+it.date+"</td>"
-					print "<td>"+it.detail+"</td>"
-					print "<td>"+it.agentType+"</td>"
-					print "<td>"+it.agentName+"</td>"
-					print "<td>"+it.sourceFile?.rep_name+"</td>"
+					print "<td>"+(it.date==null?"":it.date)+"</td>"
+					print "<td>"+(it.detail==null?"":it.detail)+"</td>"
+					print "<td>"+(it.agentType==null?"":it.agentType)+"</td>"
+					print "<td>"+(it.agentName==null?"":it.agentName)+"</td>"
+					print "<td>"+(it.sourceFile?.rep_name==null?"":it.sourceFile.rep_name)+"</td>"
 
-					print "<td>"+it.targetFile?.rep_name+"</td>"
+					print "<td>"+(it.targetFile?.rep_name==null?"":it.targetFile.rep_name)+"</td>"
 
 					print "</tr>"
 				} %>
