@@ -378,7 +378,7 @@ class ObjectController {
 		def events = premis.event
 		def c = Event.createCriteria()
 		def eventList = c.list() {
-			eq("identifier", params.objectIdentifier)
+			eq("objectIdentifier", params.objectIdentifier) //"1-2016032334")
 		}
 		render(view:"premis", model:[events: events, size: events.size(), eventList: eventList])
 	}

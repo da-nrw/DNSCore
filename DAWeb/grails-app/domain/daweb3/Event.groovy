@@ -14,12 +14,14 @@ class Event {
 		agentType column: 'agent_type'
 		sourceFile column: 'source_file_id'
 		targetFile column: 'target_file_id'
+		objectIdentifier column: 'objectidentifier'
 	}
 	
 	int id
 	String agentName
 	String agentType
 	String identifier
+	String objectIdentifier
 	Date date
 	String detail
 	String type

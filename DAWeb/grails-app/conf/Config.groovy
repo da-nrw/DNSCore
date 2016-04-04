@@ -142,6 +142,8 @@ grails.plugin.springsecurity.interceptUrlMap = [
 	'/queueEntry/**':     ['ROLE_CONTRACTOR'],
 	'/automatedRetrieval/**':     ['ROLE_CONTRACTOR'],
 	'/object/**':    	  ['ROLE_CONTRACTOR'],
+	'/events/**':		['ROLE_CONTRACTOR'],
+	'/dafiles/**':		['ROLE_CONTRACTOR'],
 	'/incoming/**':       ['ROLE_CONTRACTOR'],
 	'/outgoing/**':       ['ROLE_CONTRACTOR'],
 	'/status/**':       ['ROLE_CONTRACTOR'],

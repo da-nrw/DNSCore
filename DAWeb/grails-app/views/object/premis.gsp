@@ -1,4 +1,6 @@
 <%@ page import="daweb3.User" %>
+<%@page import="daweb3.Object" %>
+<%@ page import="daweb3.Event" %>
 
 <!doctype html>
 <html>
@@ -76,7 +78,6 @@
 				</tbody>
 			</table>
 			
-			${params}
 			
 			<table>
 				<thead>
@@ -133,9 +134,8 @@
 				} %>
 				</tbody>
 			</table>
-			
 		</div>
 		<br/> Test Premis <br/>
-
+	${params}
 	</body>
 </html>

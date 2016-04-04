@@ -150,7 +150,10 @@ public class CreatePremisAction extends AbstractAction {
 		
 		determineDisclosureLimits(newPREMISObject);
 		deleteJhoveTempFiles();
-		
+		/*
+		WritePremisDBAction pdb = new WritePremisDBAction();
+		pdb.implementation();
+		*/
 		return true;
 	}
 	
