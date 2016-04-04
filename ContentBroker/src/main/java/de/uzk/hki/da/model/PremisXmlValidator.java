@@ -59,6 +59,8 @@ import de.uzk.hki.da.utils.C;
 
 /**
  * The Class PremisXmlValidator.
+ * 
+ * @author <a href="mailto:eugen.trebunski@lvr.de">Eugen Trebunski</a>
  */
 public class PremisXmlValidator {
 
@@ -141,9 +143,11 @@ public class PremisXmlValidator {
 
 			logger.trace("validatePremisFileMinContent(): Read root element");
 			// search rights part
-			if (root.getChildElements("rights", "info:lc/xmlns/premis-v2")
-					.size() == 1)
+			if (root.getChildElements("rights", "info:lc/xmlns/premis-v2").size() == 1)
 				rightsPartExists = true;
+			else{
+				return false;
+			}
 
 			// search for sip-creation event
 			Elements events = root.getChildElements("event",

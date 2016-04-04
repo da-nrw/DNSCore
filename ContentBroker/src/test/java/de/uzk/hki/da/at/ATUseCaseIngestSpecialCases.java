@@ -31,6 +31,7 @@ import de.uzk.hki.da.utils.Path;
 /**
  * Relates to AK-T/02 Ingest - Sunny Day Szenario (mit besonderen Bedingungen).
  * @author Daniel M. de Oliveira
+ * @author Trebunski Eugen
  */
 public class ATUseCaseIngestSpecialCases extends AcceptanceTest{
 
