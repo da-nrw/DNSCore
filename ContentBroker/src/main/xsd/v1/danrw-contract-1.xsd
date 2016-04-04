@@ -5,6 +5,9 @@
 		<xs:choice maxOccurs="unbounded">
 			<xs:element name="publicationRight" type="PublicationRightType" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="migrationRight" type="MigrationRightType" minOccurs="0"/>
+			<xs:element name="DDBexclusion">
+			    <xs:complexType/>
+			</xs:element>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="PublicationRightType">
