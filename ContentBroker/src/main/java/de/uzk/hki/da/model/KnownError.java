@@ -29,6 +29,17 @@ public class KnownError {
 	@Column(columnDefinition="varchar(255)")
 	private String question;
 	
+	@Column(columnDefinition="varchar(1000)")
+	private String advice;
+	
+	public String getAdvice() {
+		return advice;
+	}
+
+	public void setAdvice(String advice) {
+		this.advice = advice;
+	}
+
 	public int getId() {
 		return id;
 	}
