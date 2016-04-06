@@ -49,6 +49,7 @@ import de.uzk.hki.da.service.JmsMessage;
 import de.uzk.hki.da.service.JmsMessageServiceHandler;
 import de.uzk.hki.da.util.TimeStampLogging;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.StringUtilities;
 
 
 /**
@@ -415,10 +416,12 @@ public abstract class AbstractAction implements Runnable {
 	 */
 	private void sendJMSException(Exception e) {
 	
-		String txt =  e.getMessage(); 	
-		if  (e.getMessage().equals("null")) txt = "-keine weiteren Details- (NPE)"; 	
-		JmsMessage jms = new JmsMessage(C.QUEUE_TO_CLIENT,C.QUEUE_TO_SERVER,o.getIdentifier() +" : "+ txt);
-		jmsMessageServiceHandler.sendJMSMessage(jms);
+		String txt =  e.getMessage(); 
+		if (StringUtilities.isSet(txt)) {
+			if  (e.getMessage().equals("null")) txt = "-keine weiteren Details- (NPE)"; 	
+			JmsMessage jms = new JmsMessage(C.QUEUE_TO_CLIENT,C.QUEUE_TO_SERVER,o.getIdentifier() +" : "+ txt);
+			jmsMessageServiceHandler.sendJMSMessage(jms);
+		}
 	}
 
 	public void synchronizeObjectDatabaseAndFileSystemState() {
