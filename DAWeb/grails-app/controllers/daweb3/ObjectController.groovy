@@ -37,6 +37,21 @@ class ObjectController {
 		redirect(action: "list", params: params)
 	}
 
+	/**
+	 * Selection of objects request
+	 *
+	 * @return
+	 */
+	def listObjects () {
+		User user = springSecurityService.currentUser
+		def objectList
+		def admin = 0
+		
+		log.debug("################## Format: " + most_recent_formats);
+		Object.findAll("from Object as o where o.most_recent_formats like ('%:most_recent_formats%')" +
+			" or o.most_recent_secondary_attributes like ('%:most_recent_secondary_attributes%')")
+		
+	}
 	def list() {
 		User user = springSecurityService.currentUser
 
@@ -304,7 +319,7 @@ class ObjectController {
 				if (pserver!=null && pserver!= "") {
 					qu.createJob( object, "560" ,pserver)
 				}
-				result.msg = "Auftrag zur Indizierung erstellt ${object.urn}."
+				result.msg = "Auftrag zur Indizierung 3 ${object.urn}."
 				result.success = true
 			} catch ( Exception e ) {
 				result.msg = "Auftrag zur Indizierung für ${object.urn} konnte nicht angelegt werden."
@@ -316,7 +331,7 @@ class ObjectController {
 
 
 
-	def queueForInspect = {
+	def c = {
 
 		def result = [success:false]
 
@@ -347,5 +362,6 @@ class ObjectController {
 		paramsList.putAt("searchContractorName", params?.searchContractorName)
 		return
 		[paramsList:paramsList]
-	}
+	}	
+	
 }
