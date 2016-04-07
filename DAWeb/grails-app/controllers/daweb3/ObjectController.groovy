@@ -37,21 +37,32 @@ class ObjectController {
 		redirect(action: "list", params: params)
 	}
 
+	
 	/**
 	 * Selection of objects request
 	 *
 	 * @return
 	 */
 	def listObjects () {
-		User user = springSecurityService.currentUser
-		def objectList
-		def admin = 0
+		Object object = new Object(params)
+		def objects = null;
+				
+		log.debug("##################  Format: " + object.most_recent_formats  + " ### Metadaten: " + object.most_recent_secondary_attributes);
 		
-		log.debug("################## Format: " + most_recent_formats);
-		Object.findAll("from Object as o where o.most_recent_formats like ('%:most_recent_formats%')" +
-			" or o.most_recent_secondary_attributes like ('%:most_recent_secondary_attributes%')")
+		// Zugriff auf Tabelle objects 
+		objects = Object.findAll("from Object as o where o.most_recent_formats =:formats " + 
+			" or o.most_recent_secondary_attributes =:attributes)", 
+			[formats:object.most_recent_formats, attributes:object.most_recent_secondary_attributes])  
+		
+ 			 
+		// Ergebnisliste
+		[ objects:objects ]
+		
+		log.debug(" OriName 7 " + objects.origName);
+		render (view:'listObjects', model:[objects:objects] );
 		
 	}
+		
 	def list() {
 		User user = springSecurityService.currentUser
 
