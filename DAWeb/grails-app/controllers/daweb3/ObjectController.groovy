@@ -21,8 +21,11 @@ package daweb3
  */
 
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.dao.DataIntegrityViolationException
+
 import grails.converters.*
+
 import java.security.InvalidParameterException
 
 
@@ -37,32 +40,48 @@ class ObjectController {
 		redirect(action: "list", params: params)
 	}
 
-	
 	/**
-	 * Selection of objects request
+	 * Suchkriterien prüfen und auswerten
+	 * @return
+	 */
+	def listObjectsSearch () {
+	   Object object = new Object(params)
+	   def objects = null;
+	   
+	   log.debug("most_recent_formats 1 : " + object.most_recent_formats + "   most_recent_secondary_attributes 1 : "+ object.most_recent_secondary_attributes);
+	   if (object.most_recent_formats == null   && object.most_recent_secondary_attributes == null)  {
+		   render (view:'listObjects', model:[suLeer:"Bitte Suchkriterien eingeben!"]);
+	   }  else {
+	   	 log.debug("most_recent_formats: " + object.most_recent_formats + "   most_recent_secondary_attributes: "+ object.most_recent_secondary_attributes);
+		 listObjects();
+	   }
+	}
+	   
+	/**
+	 * Wenn Suchkriterien eingegeben wurden, so kann die Suche beginnen
 	 *
 	 * @return
 	 */
-	def listObjects () {
-		Object object = new Object(params)
-		def objects = null;
-				
-		log.debug("##################  Format: " + object.most_recent_formats  + " ### Metadaten: " + object.most_recent_secondary_attributes);
+ 	def listObjects () {
+		 Object object = new Object(params)
+		 def objects = null;
 		
-		// Zugriff auf Tabelle objects 
-		objects = Object.findAll("from Object as o where o.most_recent_formats =:formats " + 
-			" or o.most_recent_secondary_attributes =:attributes)", 
-			[formats:object.most_recent_formats, attributes:object.most_recent_secondary_attributes])  
-		
- 			 
-		// Ergebnisliste
-		[ objects:objects ]
-		
-		log.debug(" OriName 7 " + objects.origName);
-		render (view:'listObjects', model:[objects:objects] );
-		
-	}
-		
+			 // Zugriff auf Tabelle objects
+			 objects = Object.findAll("from Object as o where o.most_recent_formats like :formats " +
+				 " or o.most_recent_secondary_attributes like :attributes)"   ,
+				  [formats:'%'+object.most_recent_formats+'%',
+				  attributes:"%"+object.most_recent_secondary_attributes+"%"])
+			 
+			 // Ergebnisliste
+			 [ objects:objects ]
+			 
+			 if (objects == [] && (object.most_recent_formats != null  ||  object.most_recent_secondary_attributes != null)) {
+				 render (view:'listObjects', model:[sqlLeer:"Keine Datensätze gefunden!"]);
+			 } else {
+				  render (view:'listObjects', model:[objects:objects] );
+			 }
+ 	} 
+	
 	def list() {
 		User user = springSecurityService.currentUser
 

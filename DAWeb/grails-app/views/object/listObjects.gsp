@@ -22,27 +22,38 @@
             			<td style="width:10%">Metadatenformat:</td>
             			<td style="width:30%"><g:textField name="most_recent_secondary_attributes"  size="15"/></td>
             		<tr>
-            			<td><g:actionSubmit value="suchen" action="listObjects"/></td>
+            			<td><g:actionSubmit value="suchen" action="listObjectsSearch" /> </td>
+            			<td> ${suLeer}</td>
             		</tr>
             	</g:form>
              </table> 
 		</div>
 		<div id="list-object" class="content scaffold-list" role="main" >
-		<g:formRemote name="myForm" on404="alert('not found!')" url="[controller: 'object', action:'listObjects']" 
-              onLoaded="queuedFor(data)">
-           <table>
-				 <thead>
+		   <g:formRemote name="myForm" on404="alert('not found!')" url="[controller: 'object', action:'listObjects']"  onLoaded="queuedFor(data)">
+             <table>
+				 <thead>						
 					<tr>
-					   <g:sortableColumn property="origName" title="${message(code: 'object.origName.label', default: 'Orig Name 1')}" />
+  					   <g:sortableColumn property="identifier" title="${message(code: 'object.identifier', default: 'Identifier')}" />
+					   <g:sortableColumn property="urn" title="${message(code: 'object.urn.label', default: 'Urn')}"  />	
+					   <g:sortableColumn property="origName" title="${message(code: 'object.origName.label', default: 'Orig Name')}" />
+					   <g:sortableColumn property="most_recent_formats" title="${message(code: 'object.most_recent_formats.label', default: 'Format')}"  />
+					   <g:sortableColumn property="most_recent_secondary_attributes" title="${message(code: 'object.most_recent_secondary_attributes.label', default: 'Meta-Format')}"  />
 					</tr>
 				 </thead>
 				 <tbody>
-        		    <g:each in="${objects}" var="object" status="i" >
-        		    	 <td> ${objects.origName}</td>
+        		    <g:each in="${objects}" var="object" status="i">
+        		       <tr class="${ ((i % 2) == 0 ? 'odd' : 'even') }">
+        		        	<td>${object.identifier}</td>
+							<td>${object.getFormattedUrn()}</td>
+        		    	    <td>${object.origName}</td>
+        		    	    <td>${object.most_recent_formats}</td>
+        		    	    <td>${object.most_recent_secondary_attributes}</td>
+        		      </tr>
         		    </g:each>
+        		    <tr><td>${sqlLeer}</td></tr>
              	</tbody>
              </table>
-		</g:formRemote>
+		   </g:formRemote>
 		</div>
 	</body>
 </html>
