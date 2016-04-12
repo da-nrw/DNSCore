@@ -18,7 +18,7 @@
 			</th>
 			
 			<th class="sortable field-urn">
-				<a href="#" onClick="return sortQueue('urn');">${message(code: 'queueEntry.obj.urn', default: 'URN')}</a>
+				<a href="#" onClick="return sortQueue('obj.urn');">${message(code: 'queueEntry.obj.urn', default: 'URN')}</a>
 			</th>
 			
 			<th class="sortable field-created">
@@ -30,7 +30,7 @@
 			</th>
 			
 			<th class="sortable field-origName">
-				<a href="#" onClick="return sortQueue('origName');">${message(code: 'queueEntry.obj.origName.label', default: 'Orig. Name')}</a>
+				<a href="#" onClick="return sortQueue('obj.origName');">${message(code: 'queueEntry.obj.origName.label', default: 'Orig. Name')}</a>
 			</th>
 
 		</tr>

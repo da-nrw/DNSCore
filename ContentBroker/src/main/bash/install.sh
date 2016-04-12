@@ -122,7 +122,7 @@ cp -f ContentBroker_start.sh.template $INSTALLATION_TARGET/ # overwrite existing
 if  [ ! -e $INSTALLATION_TARGET/ContentBroker_start.sh ]
 then
 	echo "INSTALL - No ContentBroker_start.sh present in $INSTALLATION_TARGET."
-	echo "INSTALL - Installer will use ContentBroker_stop.sh.template to create a ContentBroker_start.sh file." 
+	echo "INSTALL - Installer will use ContentBroker_start.sh.template to create a ContentBroker_start.sh file." 
 	cp -f $INSTALLATION_TARGET/ContentBroker_start.sh.template $INSTALLATION_TARGET/ContentBroker_start.sh
 fi
 #############################

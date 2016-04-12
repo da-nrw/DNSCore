@@ -7,6 +7,20 @@
 		<title>DA-NRW Objekte</title>
 		
 		<r:require module="messagebox"/>
+	<r:script>
+			$(function() {
+				$("#filter").accordion({ collapsible: true, active: false });
+			});
+			function queuedFor(result) {
+				var type = "error";
+				if (result.success) type = "info";
+				var messageBox = $("<div class='message-box'></div>");
+				$("#page-body").prepend(messageBox);
+				messageBox.message({
+					type: type, message: result.msg
+				});
+			}
+		</r:script>
 		
 	</head>
 	<body>

@@ -48,6 +48,7 @@ import de.uzk.hki.da.utils.XMLUtils;
 
 
 /**
+ * @author Eugen Trebunski
  * @author Polina Gubaidullina
  * @author Daniel M. de Oliveira
  */
@@ -136,7 +137,7 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 		List<Element> providetCho = doc.getRootElement().getChildren("ProvidedCHO", C.EDM_NS);
 		Boolean testProvidetChoExists = false;
 		for(Element pcho : providetCho) {
-			if(pcho.getChild("title", C.DC_NS).getValue().equals("Text Text// mahels///Titel")) {
+			if(pcho.getChild("title", C.DC_NS).getValue().equals("nonSortText"+" "+"Text// mahels///Titel"+" : "+"Untertitel")) {
 				testProvidetChoExists = true;
 				assertTrue(pcho.getChild("date", C.DC_NS).getValue().equals("1523"));
 				assertTrue(pcho.getChild("hasType", C.EDM_NS).getValue().equals("is root element"));
@@ -174,7 +175,7 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 				.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_bee84f142bba34a1036ecc4667b54615.jpg"));
 		
 //		testIndex
-		assertTrue(metadataIndex.getIndexedMetadata(PORTAL_CI_TEST, object.getIdentifier()+"-md801613").contains("Text Text// mahels///Titel"));
+		assertTrue(metadataIndex.getIndexedMetadata(PORTAL_CI_TEST, object.getIdentifier()+"-md801613").contains("nonSortText Text// mahels///Titel : Untertitel"));
 	}
 	
 	@Test

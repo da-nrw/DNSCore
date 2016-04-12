@@ -111,7 +111,6 @@ public class ActionFactory implements ApplicationContextAware {
 		// it does not work with hibernate or jpa annotations
 		Hibernate.initialize(getPreservationSystem().getConversion_policies());
 		Hibernate.initialize(localNode.getCooperatingNodes());
-
 		try {
 			for (Node cn:localNode.getCooperatingNodes()) cn.getId();
 //			for (Copy cp:localNode.getCopies());

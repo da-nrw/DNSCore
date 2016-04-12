@@ -26,7 +26,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import de.uzk.hki.da.core.UserException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import de.uzk.hki.da.model.KnownError;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -36,6 +39,8 @@ public class SubformatScanService implements FormatScanService, Connector {
 
 	private Map<String,Set<String>> subformatIdentificationPolicies = new HashMap<String,Set<String>>();
 
+	private static final Logger logger = LoggerFactory.getLogger(SubformatScanService.class);
+	
 	KnownFormatCmdLineErrors knownFormatCmdLineErrors;
 	/**
 	 * @throws IOException 
@@ -46,17 +51,19 @@ public class SubformatScanService implements FormatScanService, Connector {
 	 * @throws 
 	 */
 	public List<FileWithFileFormat> identify(Path workPath,List<FileWithFileFormat> files,boolean pruneExceptions) throws IOException{
-		
+	
 		for (FileWithFileFormat f:files){
 			if (f.getFormatPUID()==null||f.getFormatPUID().isEmpty())
 				throw new IllegalArgumentException(f+" has no puid");
 			String sf ="";
 			try {
 				sf = identifySubformat(Path.makeFile(workPath,f.getPath()),f.getFormatPUID(),pruneExceptions);
-			} catch (UserException ex) {
-				f.setUserExceptionId(ex.getUserExceptionId());
+				f.setSubformatIdentifier(sf);
+			} catch (UserFileFormatException ufe){
+				List <KnownError> ke = f.getKnownErrors();
+				ke.add(ufe.getKnownError());
+				f.setKnownErrors(ke);
 			}
-			f.setSubformatIdentifier(sf);
 		}
 		return files;
 	}

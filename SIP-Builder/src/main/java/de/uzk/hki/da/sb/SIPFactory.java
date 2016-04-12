@@ -34,6 +34,7 @@ import java.util.TreeMap;
 
 import javax.swing.JOptionPane;
 
+import org.apache.commons.io.FileExistsException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
@@ -50,6 +51,7 @@ import de.uzk.hki.da.utils.formatDetectionService;
 /**
  * The central SIP production class
  * 
+ * @author Trebunski Eugen
  * @author Thomas Kleinke
  */
 
@@ -59,6 +61,7 @@ public class SIPFactory {
 
 	private String sourcePath = null;
 	private String destinationPath = null;
+	private String workingPath = null; 
 	private KindOfSIPBuilding kindofSIPBuilding = null;
 	private String name = null;
 	private boolean createCollection;
@@ -175,6 +178,13 @@ public class SIPFactory {
 		return Feedback.SUCCESS;
 	}
 
+	private String getTempFolderPath() {
+		if (workingPath==null || workingPath.length()==0) {
+			return destinationPath + File.separator + getTempFolderName();
+		} else return workingPath + File.separator + getTempFolderName();
+	}
+	
+	
 	/**
 	 * Creates a SIP out of the given source folder 
 	 * 
@@ -184,6 +194,7 @@ public class SIPFactory {
 	 */
 	private Feedback buildSIP(int jobId, File sourceFolder, String newPackageName) {
 
+	
 		progressManager.startJob(jobId);
 		Feedback feedback;
 		
@@ -201,13 +212,16 @@ public class SIPFactory {
 			archiveFileName += ".tar";
 		
 		File archiveFile = new File(destinationPath + File.separator + archiveFileName);
-
+		
 		if (!checkForExistingSip(archiveFile)) {
 			progressManager.skipJob(jobId);
 			skippedFiles = true;
 			return Feedback.SUCCESS;
 		}
-
+		File tmpArchiveFile = null;
+		tmpArchiveFile = new File(workingPath + File.separator + archiveFileName);
+		if (tmpArchiveFile.exists()) tmpArchiveFile.delete();
+	
 		if (Utilities.checkForZeroByteFiles(sourceFolder, packageName, messageWriter)) {
 			if (!ignoreZeroByteFiles) {
 				String message = "WARNING: Found zero byte files in folder " + sourceFolder + ":\n";
@@ -220,7 +234,8 @@ public class SIPFactory {
 			}
 		}
 
-		File tempFolder = new File(destinationPath + File.separator + getTempFolderName());
+		File tempFolder = new File(getTempFolderPath());
+		
 		File packageFolder = new File(tempFolder, packageName);
 
 		if ((feedback = copyFolder(jobId, sourceFolder, packageFolder)) != Feedback.SUCCESS) {
@@ -237,12 +252,18 @@ public class SIPFactory {
 			rollback(tempFolder);
 			return feedback;
 		}
-
-		if ((feedback = buildArchive(jobId, packageFolder, archiveFile)) != Feedback.SUCCESS) {
-			rollback(tempFolder, archiveFile);
+		
+		if ((feedback = buildArchive(jobId, packageFolder, tmpArchiveFile)) != Feedback.SUCCESS) {
+			rollback(tempFolder, tmpArchiveFile);
 			return feedback;
 		}
-
+		if (!getWorkingPath().equals(getDestinationPath())) {
+		if ((feedback = moveFile(tmpArchiveFile,archiveFile)) != Feedback.SUCCESS) {
+			rollback(tmpArchiveFile);
+			rollback(archiveFile);
+			return feedback;
+		}
+		}
 		if ((feedback = deleteTempFolder(jobId, tempFolder)) != Feedback.SUCCESS)
 			return feedback;
 
@@ -251,6 +272,21 @@ public class SIPFactory {
 				return feedback;
 		}
 
+		return Feedback.SUCCESS;
+	}
+
+	private Feedback moveFile(File tmpArchiveFile, File archiveFile) {
+		try {
+			try {
+			FileUtils.moveFile(tmpArchiveFile, archiveFile);
+			} catch (FileExistsException e) {
+				archiveFile.delete();
+				FileUtils.moveFile(tmpArchiveFile, archiveFile);
+			}
+		} catch (IOException e) {
+			logger.error("Failed to copy " + tmpArchiveFile + " to " + archiveFile);
+			return Feedback.ARCHIVE_ERROR;
+		}
 		return Feedback.SUCCESS;
 	}
 
@@ -654,6 +690,15 @@ public class SIPFactory {
 	}
 
 
+	public String getWorkingPath() {
+		return workingPath;
+	}
+
+	public void setWorkingPath(String workingPath) {
+		this.workingPath = workingPath;
+	}
+
+
 	/**
 	 * The SIP building procedure is run in its own thread to prevent GUI freezing
 	 * 
@@ -860,7 +905,13 @@ public class SIPFactory {
 			for(File f : folder.listFiles()) {
 				logger.debug("Check file "+f);
 				if(f.isDirectory()) {
-					getFilesWithDuplicateFileNames(f);
+					HashMap<String, List<File>> rekursivResult=getFilesWithDuplicateFileNames(f);
+					for(String rekf:rekursivResult.keySet())
+						if(duplicateFilenamesWithFiles.containsKey(rekf))
+							duplicateFilenamesWithFiles.get(rekf).addAll(rekursivResult.get(rekf));
+						else
+							duplicateFilenamesWithFiles.put(rekf, rekursivResult.get(rekf));
+							
 				} else {
 					
 					File file = new File(f.getAbsolutePath());

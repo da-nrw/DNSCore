@@ -32,6 +32,8 @@ class Object {
 		dynamic_nondisclosure_limit nullable : true
 		static_nondisclosure_limit nullable: true
     }
+	
+	static hasMany = [packages: Package]
     
     static mapping = {
 		table 'objects'
@@ -41,10 +43,7 @@ class Object {
 		packages joinTable: [key: 'objects_data_pk', column: 'packages_id']
 		created column: 'date_created'
 		modified column: 'date_modified'
-    }
-	
-	static hasMany = [ packages:Package ]
-	
+    }	
 	int id
 	String urn
 	String identifier

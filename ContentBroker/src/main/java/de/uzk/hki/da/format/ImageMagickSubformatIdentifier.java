@@ -31,7 +31,13 @@ public class ImageMagickSubformatIdentifier implements FormatIdentifier, Connect
 					"identify","-format","'%C'",input};
 		FormatCmdLineExecutor cle = new FormatCmdLineExecutor( getCliConnector(), knownErrors);
 		cle.setPruneExceptions(pruneExceptions);
+		try {
 		cle.execute(cmd);
+		} catch (UserFileFormatException ufe) {
+			if (!ufe.isWasPruned()) {
+				throw ufe;
+			}
+		}
 		String compression = cle.getStdOut();
 		if (compression.length()>0) 
 		compression = compression.substring( 1, compression.length() - 1 );

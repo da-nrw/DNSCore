@@ -23,6 +23,7 @@
 * Oracle Java > 1.6 (1.7 prooved for DA-WEB)
 * Tomcat6 or Tomcat7 
 * Grails 2.3.8
+* phantomJS for functional testing
 	
 ## Configure Runtime Settings of DA-Web
 
@@ -44,6 +45,7 @@ applications share the same model.
 The command 
 <pre>mvn install</pre>
 war will build the target file for you. 
+Pay attention to config files! After the frist checkout some "magic" Script of maven grails plugin may alter them. Please consider a git reset hard after first checkout!
 
 ### Deploy and Running DAWeb locally
 

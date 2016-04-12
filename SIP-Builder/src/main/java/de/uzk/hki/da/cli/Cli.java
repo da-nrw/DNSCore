@@ -165,7 +165,10 @@ public class Cli {
     			sipFactory.setDestinationPath(extractParameter(arg));
     			continue;
     		}
-    		
+    		if (arg.startsWith("-workspace")) {
+    			sipFactory.setWorkingPath(extractParameter(arg));
+    			continue;
+    		}
     		if (arg.startsWith("-premis")) {
     			File premisFile = new File(extractParameter(arg));
     			if (!premisFile.exists()) {
@@ -277,6 +280,10 @@ public class Cli {
 		if (sipFactory.getDestinationPath() == null || sipFactory.getDestinationPath().equals("")) {
     		System.out.println("Bitte geben Sie einen Zielordner an.");
     		return Feedback.NO_DESTINATION_FOLDER;
+		}
+		
+		if (sipFactory.getWorkingPath() == null || sipFactory.getWorkingPath().equals("")) {
+			sipFactory.setWorkingPath(sipFactory.getDestinationPath());
 		}
     		
     	UserInputValidator.Feedback feedback;
@@ -697,6 +704,7 @@ public class Cli {
 		System.out.println("   -source=\"[Pfad]\"          Angabe eines Quellordners, aus dem die SIPs erstellt werden sollen");
 		System.out.println("   -filelist=\"[Pfad]\"        Angabe einer Textdatei, die die Pfade zu den Dateien enthält, aus denen das SIP erstellt werden soll");
 		System.out.println("   -siplist=\"[Pfad]\"         Angabe einer XML-Datei, die die Pfade zu den Dateien enthält, aus denen SIPs erstellt werden sollen");
+		System.out.println("   -workspace=\"[Pfad]\"       Angabe eines Arbeitsverzeichnis, das zur Zwischenspeicherung genutzt werden soll");
 		System.out.println("");
 		System.out.println("   -destination=\"[Pfad]\"     Angabe des Zielordners, in dem die SIPs erstellt werden sollen");
 		System.out.println("");

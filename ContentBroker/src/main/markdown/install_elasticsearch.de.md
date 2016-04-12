@@ -12,12 +12,14 @@ Die Installationsmethode hängt vom eingesetzten Betriebssystem ab. Empfohlen wi
 
 Füge folgenden Text ein
 
+```
 [elasticsearch-0.9]
 name=Elasticsearch repository for 0.90.3 packages
 baseurl=http://packages.elasticsearch.org/elasticsearch/0.90/centos
 gpgcheck=1
 gpgkey=http://packages.elasticsearch.org/GPG-KEY-elasticsearch
 enabled=1
+```
 
     yum install elasticsearch
 

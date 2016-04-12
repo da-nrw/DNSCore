@@ -1,5 +1,10 @@
 # PREMIS Spezifikationen
 
+Basierend auf:
+* http://www.loc.gov/standards/premis/v2/premis-v2-2.xsd
+* http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd 
+
+
 ### Inhalt einer vom SIP-Builder gebauten Premis-Datei
 
 * Ein Object-Element für das gebaute Paket
@@ -17,6 +22,117 @@
   * agentIdentifierValue: DA NRW SIP-Builder \[DAN:Version\]
   * agentType: APPLICATION
 * Ein Rights-Element für die festgelegten Contract Rights
+
+    ```xml
+    <rights>
+        <rightsStatement>
+            <rightsStatementIdentifier>
+                <rightsStatementIdentifierType>rightsid</rightsStatementIdentifierType>
+                <rightsStatementIdentifierValue></rightsStatementIdentifierValue>
+            </rightsStatementIdentifier>
+            <rightsBasis>license</rightsBasis>
+    ```
+  * rightsGranted-Block je identischer Aufbau für PUBLICATION_PUBLIC | PUBLICATION_INSTITUTION | MIGRATION
+
+    ```xml
+            <rightsGranted>
+                <act>PUBLICATION_PUBLIC</act>
+                <restriction>see rightsExtension</restriction>
+                <termOfGrant>
+                    <startDate>2016-03-14T00:00:00.000+01:00</startDate>
+                </termOfGrant>
+            </rightsGranted>
+    ```
+
+    ```xml
+        </rightsStatement>
+    ```
+* Ein Rights-Extension Element für genauere Spezifikation der Publikationsrechte
+
+    ```xml
+        <rightsExtension>
+            <rightsGranted xmlns="http://www.danrw.de/contract/v1" xmlns:xsi="http://www.danrw.de/contract/v1 http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd">
+    ```
+  * Migrationsbedingung: NONE | NOTIFY | CONFIRM 
+
+    ```xml
+                <migrationRight>
+                    <condition>NONE</condition>
+                </migrationRight>
+    ```
+  * DDB-Harvesting nicht erlauben (falls das Element fehlt, gilt es als erlaubt)
+
+    ```xml
+                <DDBexclusion/>
+    ```
+  * publicationRight-Block je für PUBLIC | INSTITUTION
+
+    ```xml 
+                <publicationRight>
+                    <audience>PUBLIC</audience>
+                    <startDate>2016-03-10T00:00:00.000+01:00</startDate>
+    ```
+  * Begrenzung der Publikation durch Sperrgesetz: EPFLICHT, URHG_DE
+
+    ```xml
+                    <lawID>URHG_DE</lawID>
+    ```
+  * Block für Vorschaurestriktionen für die Öffentlichkeit
+
+    ```xml
+                    <restrictions>
+    ```
+    * Audio-Restriktionen
+
+     ```xml
+                        <restrictAudio>
+                            <duration>60</duration>
+                        </restrictAudio>
+     ```
+    * Text-Restriktionen
+
+     ```xml
+                        <restrictText>
+                            <certainPages>1 2 3 4 5 6 7 8 9 10</certainPages>
+                        </restrictText>
+     ```
+    * Video-Restriktionen
+
+     ```xml
+                        <restrictVideo>
+                            <height>720</height>
+                            <duration>120</duration>
+                        </restrictVideo>
+     ```
+    * Bild-Restriktionen
+
+     ```xml
+                        <restrictImage>
+                            <width>25%</width>
+                            <height>25%</height>
+                            <watermark>
+                                <watermarkString>WasserzeichenText</watermarkString>
+                                <pointSize>20</pointSize>
+                                <position>south</position>
+                                <opacity>25</opacity>
+                            </watermark>
+                        </restrictImage>
+     ```
+    ```xml
+                    </restrictions>                 
+    ```
+  
+    ```xml
+                </publicationRight>            
+    ```
+    ```xml
+            </rightsGranted>
+        </rightsExtension>
+    ```
+   ```xml
+    </rights>
+   ```
+
 
 ### Vom System erwartete Eigenschaften einer eingehenden PREMIS-Datei
 

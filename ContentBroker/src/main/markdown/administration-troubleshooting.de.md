@@ -140,7 +140,7 @@ werden. Je nach Fehlerquelle sollte der ContentBroker dafür heruntergefahren we
 wieder gestartet werden.
 
 
-## Manuelles Löschen von bereits archiveirten Objekten unter speziellen Voraussetzungen
+## Manuelles Löschen von bereits archivierten Objekten unter speziellen Voraussetzungen
 
 Das Löschen eines bereits archivierten Objektes ist, so wie LZA aus DNSCore-Sicht konzeptioniert ist, nicht vorgesehen. Sollte es dennoch (Stichwort "Deletion under exceptional circumstances"), z.B. in Testsystemen erforderlich sein, muss dies manuell erfolgen. Im folgenden sind die notwendigen Schritte zusammengefasst.
 
@@ -178,8 +178,52 @@ Akteur: **PS-ADMIN**
 
 Sollen diese Objekte auch von den Medien gelöscht werden, müssen diese auch aus dem Grid gelöscht werden. In der iRODS-Zonen Architektur kann ein Objekt gelöscht werden mittels
 
-    rm -rf /zone/aip/csn/oid
-    
+    irm -rf /zone/aip/csn/oid
+    irm -rf /zone/federated/<CN>/aip/csn/oid
+
+
+#### Genaue Beschreibung aller Job-Status
+
+* 110	IngestUnpackAction	Auspacken & Vollständigkeitstests
+* 120	IngestRestructureObjectAction	Objekt- oder Deltaerkennung, Typerkennung
+* 130	IngestValidateMetadataAction	Validierung der Metadaten
+* 140	IngestScanAction	Formaterkennung
+* 150	RegisterURNAction	
+* 230	IngestConvertAction	LZA Konvertierung
+* 250	IngestMetadataUpdateAction	Update der Metadaten
+* 260	IngestCheckFormatAction	Überprüfung der LZA Konvertierung
+* 270	IngestCreatePremisAction	Bearbeitung der PREMIS-Datei
+* 310	IngestScanForPresentationAction	Formaterkennung für Präsentation auf Basis der LZA Formate
+* 320	IngestConvertForPresentationAction	Bildung der PIPs (Präsentationsderivate)
+* 330	IngestPreProcessForPresentationAction	Verschieben der PIPs
+* 340	IngestShortenFilenamesAction	Kürzung der PIP Dateinamen
+* 350	IngestPreUpdateMetadataAction	Update der Metadaten nach PIP Erstellung
+* 360	IngestPrepareSendToPresenterAction	Anmeldung der PIP zur Übertragung ans Pres. Repository
+* 370	IngestBuildAIPAction	AIP Erstellung
+* 380	IngestTarAction	AIP Erstellung als TAR-Archiv
+* 400	ArchiveReplicationAction	Ablage auf LZA Medien und Replikation
+* 440	ArchiveReplicationCheckAction	Prüfung der Replikationen
+* 540	FetchPIPsAction	Replikation der PIP an den Presentation Repository Knoten
+* 550	SendToPresenterAction	Einspielung der PIP in das Presentation Repository
+* 560	CreateEDMAction	EDM Metadaten-Erstellung
+* 570	IndexESAction	Indizierung im Elasticsearch Suchindex
+* 580	FriendshipConversionAction	Konvertierung auf anderem Knoten
+* 600	RestartIngestWorkflowAction	Zurücksetzung des Ingestworkflows
+* 700	PIPGenObjectToWorkareaAction	Übertragung von AIP an das Knotenarbeitsverzeichnis
+* 710	PIPGenScanForPresentationAction	Scannen der Präsentationsformate
+* 720	PIPGenConvertForPrestationAction	Bildung der PIPs (Präsentationsderivate)
+* 730	PIPGenPreProcessForPresentationAction	Verschieben der PIPs
+* 740	PIPGenShortenFilenamesAction	Kürzung der PIP Dateinamen
+* 750	PIPGenPreUpdateMetadataAction	Update der Metadaten nach PIP Erstellung
+* 760	PIPGenPrepareSendToPresenterAction	Anmeldung der PIP zur Übertragung ans Pres. Repository
+* 770	PIPGenCleanWorkareaAction	Säuberung des Arbeitsverzeichnisses
+* 800	DeleteSIPPackageAction	Löschung des SIP vom Arbeitsverzeichnis
+* 900	RetrievalObjectToWorkAreaAction	Auslesen eines AIP von den LZA Medien
+* 910	RetrievalAction	Bildung des DIP, Übertragung an das Ausgabeverzeichnis des Contractor
+* 950	RetrievalDeliveredDIPAction	Warten auf Abholung durch Contractor
+* 960	PostRetrievaAction	Wurde abgeholt, vorbereiten auf Löschung DIP
+* 5000	AuditAction	Überprüfung des AIP
+
 
 
 
