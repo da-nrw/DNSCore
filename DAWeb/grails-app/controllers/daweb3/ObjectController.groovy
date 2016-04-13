@@ -45,15 +45,13 @@ class ObjectController {
 	 * @return
 	 */
 	def listObjectsSearch () {
-	   Object object = new Object(params)
-	   def objects = null;
-	   
-	   log.debug("most_recent_formats 1 : " + object.most_recent_formats + "   most_recent_secondary_attributes 1 : "+ object.most_recent_secondary_attributes);
+		Object object = new Object(params);
+	   log.debug("most_recent_formats 1: " + object.most_recent_formats + "   most_recent_secondary_attributes 1 : "+ object.most_recent_secondary_attributes);
 	   if (object.most_recent_formats == null   && object.most_recent_secondary_attributes == null)  {
 		   render (view:'listObjects', model:[suLeer:"Bitte Suchkriterien eingeben!"]);
 	   }  else {
 	   	 log.debug("most_recent_formats: " + object.most_recent_formats + "   most_recent_secondary_attributes: "+ object.most_recent_secondary_attributes);
-		 listObjects();
+		 listObjects( );
 	   }
 	}
 	   
@@ -62,25 +60,31 @@ class ObjectController {
 	 *
 	 * @return
 	 */
- 	def listObjects () {
+ 	def listObjects ( ) {
 		 Object object = new Object(params)
-		 def objects = null;
+		 def objects = null
+		 def admin = 0
 		
-			 // Zugriff auf Tabelle objects
-			 objects = Object.findAll("from Object as o where o.most_recent_formats like :formats " +
-				 " or o.most_recent_secondary_attributes like :attributes)"   ,
-				  [formats:'%'+object.most_recent_formats+'%',
-				  attributes:"%"+object.most_recent_secondary_attributes+"%"])
-			 
-			 // Ergebnisliste
-			 [ objects:objects ]
-			 
-			 if (objects == [] && (object.most_recent_formats != null  ||  object.most_recent_secondary_attributes != null)) {
-				 render (view:'listObjects', model:[sqlLeer:"Keine Datensätze gefunden!"]);
-			 } else {
-				  render (view:'listObjects', model:[objects:objects] );
-			 }
+		 log.debug("object: " + object.most_recent_formats);
+		 // Zugriff auf Tabelle objects
+		 objects = Object.findAll("from Object as o where o.most_recent_formats like :formats " +
+			 " or o.most_recent_secondary_attributes like :attributes)"   ,
+			  [formats:'%'+object.most_recent_formats+'%',
+			  attributes:"%"+object.most_recent_secondary_attributes+"%"])
+		 
+		 // Ergebnisliste
+		 [ objects:objects ]
+		 
+		 if (objects == [] && (object.most_recent_formats != null  ||  object.most_recent_secondary_attributes != null)) {
+			 render (view:'listObjects', model:[sqlLeer:"Keine Datensätze gefunden!"]);
+		 } else {
+			  render (view:'listObjects', model:[objects:objects] );
+		 }
  	} 
+	 
+	 def scanAndConvert(){
+		 
+	 }
 	
 	def list() {
 		User user = springSecurityService.currentUser
