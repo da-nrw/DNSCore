@@ -21,12 +21,12 @@ package daweb3
  */
 
 
-import org.apache.commons.lang.StringUtils;
-import org.springframework.dao.DataIntegrityViolationException
+import org.apache.commons.lang.StringUtils; 
+import org.springframework.dao.DataIntegrityViolationException;
 
-import grails.converters.*
+import grails.converters.*;
 
-import java.security.InvalidParameterException
+import java.security.InvalidParameterException;
 
 
 class ObjectController {
@@ -41,51 +41,80 @@ class ObjectController {
 	}
 
 	/**
-	 * Suchkriterien prüfen und auswerten
-	 * @return
+	 * proof and evaluate the search key
 	 */
 	def listObjectsSearch () {
 		Object object = new Object(params);
-	   log.debug("most_recent_formats 1: " + object.most_recent_formats + "   most_recent_secondary_attributes 1 : "+ object.most_recent_secondary_attributes);
 	   if (object.most_recent_formats == null   && object.most_recent_secondary_attributes == null)  {
 		   render (view:'listObjects', model:[suLeer:"Bitte Suchkriterien eingeben!"]);
 	   }  else {
-	   	 log.debug("most_recent_formats: " + object.most_recent_formats + "   most_recent_secondary_attributes: "+ object.most_recent_secondary_attributes);
 		 listObjects( );
 	   }
 	}
 	   
 	/**
-	 * Wenn Suchkriterien eingegeben wurden, so kann die Suche beginnen
-	 *
-	 * @return
+	 * If there id a search key, search can start
 	 */
  	def listObjects ( ) {
 		 Object object = new Object(params)
 		 def objects = null
 		 def admin = 0
+ 		 def String extension = ""
+		 def List<String> extList = new ArrayList<String>();
 		
-		 log.debug("object: " + object.most_recent_formats);
-		 // Zugriff auf Tabelle objects
+		 // access table objects
 		 objects = Object.findAll("from Object as o where o.most_recent_formats like :formats " +
 			 " or o.most_recent_secondary_attributes like :attributes)"   ,
 			  [formats:'%'+object.most_recent_formats+'%',
 			  attributes:"%"+object.most_recent_secondary_attributes+"%"])
-		 
-		 // Ergebnisliste
+		
+		 // list of results
 		 [ objects:objects ]
 		 
 		 if (objects == [] && (object.most_recent_formats != null  ||  object.most_recent_secondary_attributes != null)) {
 			 render (view:'listObjects', model:[sqlLeer:"Keine Datensätze gefunden!"]);
 		 } else {
-			  render (view:'listObjects', model:[objects:objects] );
+		 	// the xml-File has to be imported only once
+		 	def pronomXml = new XmlSlurper().parse("/home/gbender/pronom/DROID_SignatureFile_V84.xml");
+			 /*
+			  * To get the right format for the mapping, there must be a splitting of
+			  * each fetched row to access the XML-File or the new designed table
+			  */
+			 for (item in objects){
+				 def formatArray = (String[]) item.most_recent_formats.split(",")
+				 	 extension = "";
+					 
+				 int i = formatArray.size(); 
+				 
+				 while (i > 0 ) {
+					 def format = formatArray[i-1];
+					 /*
+					  * now you can read the table or the xml-File with the located format 
+					  */
+					
+					 /*
+					  * just to try something, I will read the XML-File for the mapping
+					  */
+  					 pronomXml.FileFormatCollection.FileFormat.each {  
+						 if (it.@PUID.toString() == format) {
+							 if (extension.isEmpty()) {
+								 extension = it.Extension.getAt(0);
+							 } else {
+								 extension = extension + ", " + it.Extension.getAt(0);
+							 }
+						 }
+					 }
+					 // and at last increment the counter
+					 i = i - 1;
+				 } // Ende Liste der Formate eines Objektes
+				 
+				 extList.add(extension);
+			 } // Ende Liste der Objekte
+			 
+			 render (view:'listObjects', model:[objects:objects, extension:extList]);
 		 }
  	} 
-	 
-	 def scanAndConvert(){
-		 
-	 }
-	
+	 	
 	def list() {
 		User user = springSecurityService.currentUser
 

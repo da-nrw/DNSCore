@@ -6,14 +6,14 @@
 		<g:set var="entityName" value="${message(code: 'object.label', default: 'Object')}" />
 		<title>Liste der Objekte</title>
 	</head>
-	<r:script>
-		function toggle(source) {
-		  checkboxes = document.getElementsByName('konvertieren');
-		  for(var i in checkboxes) {
-		    checkboxes[i].checked = source.checked;
-			}
-		}
-	</r:script>
+<%--	<r:script>--%>
+<%--		function toggle(source) {--%>
+<%--		  checkboxes = document.getElementsByName('konvertieren');--%>
+<%--		  for(var i in checkboxes) {--%>
+<%--		    checkboxes[i].checked = source.checked;--%>
+<%--			}--%>
+<%--		}--%>
+<%--	</r:script>--%>
 	<body>
 		<a href="#listFormat-queueEntry" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div class="nav" role="navigation">
@@ -41,37 +41,29 @@
              <table>
 				 <thead>							
 					<tr>
-					   <td><input type="checkbox"  onClick="toggle(this)"/>  Alle an-/abwählen</span><br></td>
+<%--					   <td><input type="checkbox"  onClick="toggle(this)"/>  Alle an-/abwählen</span><br></td>--%>
   					   <g:sortableColumn property="identifier" title="${message(code: 'object.identifier', default: 'Identifier')}" />
 					   <g:sortableColumn property="urn" title="${message(code: 'object.urn.label', default: 'Urn')}"  />	
 					   <g:sortableColumn property="origName" title="${message(code: 'object.origName.label', default: 'Orig Name')}" />
 					   <g:sortableColumn property="most_recent_formats" title="${message(code: 'object.most_recent_formats.label', default: 'Format')}"  />
+					   <g:sortableColumn property="mapping-format" title="${message(code: 'object.most_recent_formats.label', default: 'Mapping')}"  />
 					   <g:sortableColumn property="most_recent_secondary_attributes" title="${message(code: 'object.most_recent_secondary_attributes.label', default: 'Meta-Format')}"  />
 					</tr>
 				 </thead>
 				 <tbody>
         		    <g:each in="${objects}" var="object" status="i">
         		       <tr class="${ ((i % 2) == 0 ? 'odd' : 'even') }">
-        		            <td><g:checkBox name="konvertieren"/></td>
+<%--        		            <td><g:checkBox name="konvertieren"/></td>--%>
         		        	<td>${object.identifier}</td>
 							<td>${object.getFormattedUrn()}</td>
         		    	    <td>${object.origName}</td>
-        		    	    <td> 
-	        		    	   <g:each in="${object.most_recent_formats?.split(",")}">
-							  	   <g:if test="${!it.startsWith("danrw")}">
-								  	   <g:link url="http://www.nationalarchives.gov.uk/PRONOM/${it}" target="pronom">
-								  	       <span class="property-value" aria-labelledby="urn-label">${it}</span>
-								  	   </g:link><br>
-							    	</g:if><g:else>
-							    		<span class="property-value" aria-labelledby="origName-label">${it}</span>
-							    	</g:else>
-							    </g:each>
-        		    	    </td>
+        		    	    <td>${object.most_recent_formats}</td>
+	        		    	 <td>${extension[i]}</td>
         		    	    <td>${object.most_recent_secondary_attributes}</td>
         		      </tr>
         		    </g:each>
         		    <tr><td>${sqlLeer}</td></tr>
-        		    <tr><td><g:actionSubmit value="scannen und konvertieren" action="scanAndConvert" /></td></tr>
+<%--        		    <tr><td><g:actionSubmit value="scannen und konvertieren" action="scanAndConvert" /></td></tr>--%>
              	</tbody>
              </table>
 		   </g:formRemote>
