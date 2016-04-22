@@ -46,7 +46,8 @@
 					   <g:sortableColumn property="urn" title="${message(code: 'object.urn.label', default: 'Urn')}"  />	
 					   <g:sortableColumn property="origName" title="${message(code: 'object.origName.label', default: 'Orig Name')}" />
 					   <g:sortableColumn property="most_recent_formats" title="${message(code: 'object.most_recent_formats.label', default: 'Format')}"  />
-					   <g:sortableColumn property="mapping-format" title="${message(code: 'object.most_recent_formats.label', default: 'Mapping')}"  />
+					   <g:sortableColumn property="mapping-format" title="${message(code: 'formatMapping.extension.label', default: 'Mapping')}"  />
+					   <g:sortableColumn property="mapping-name" title="${message(code: 'formatMapping.name.label', default: 'Name')}"  />
 					   <g:sortableColumn property="most_recent_secondary_attributes" title="${message(code: 'object.most_recent_secondary_attributes.label', default: 'Meta-Format')}"  />
 					</tr>
 				 </thead>
@@ -58,7 +59,8 @@
 							<td>${object.getFormattedUrn()}</td>
         		    	    <td>${object.origName}</td>
         		    	    <td>${object.most_recent_formats}</td>
-	        		    	 <td>${extension[i]}</td>
+	        		    	<td>${extension[i].toString().replace('[', ' ').replace(']','')}</td>
+			        		<td>${name[i].toString().replace('[', ' ').replace(']','')}</td>
         		    	    <td>${object.most_recent_secondary_attributes}</td>
         		      </tr>
         		    </g:each>

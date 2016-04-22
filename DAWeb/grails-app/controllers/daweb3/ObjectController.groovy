@@ -60,7 +60,9 @@ class ObjectController {
 		 def objects = null
 		 def admin = 0
  		 def String extension = ""
-		 def List<String> extList = new ArrayList<String>();
+		 def List<String> extList = new ArrayList<String>()
+		 def String name = ""
+		 def List<String> nameList = new ArrayList<String>();
 		
 		 // access table objects
 		 objects = Object.findAll("from Object as o where o.most_recent_formats like :formats " +
@@ -74,47 +76,48 @@ class ObjectController {
 		 if (objects == [] && (object.most_recent_formats != null  ||  object.most_recent_secondary_attributes != null)) {
 			 render (view:'listObjects', model:[sqlLeer:"Keine Datensätze gefunden!"]);
 		 } else {
-		 	// the xml-File has to be imported only once
-		 	def pronomXml = new XmlSlurper().parse("/home/gbender/pronom/DROID_SignatureFile_V84.xml");
+		 	def FormatMapping = new FormatMapping()
+			def mappings = null;
+			
 			 /*
 			  * To get the right format for the mapping, there must be a splitting of
-			  * each fetched row to access the XML-File or the new designed table
+			  * each fetched row to access the table format_mapping
 			  */
 			 for (item in objects){
 				 def formatArray = (String[]) item.most_recent_formats.split(",")
-				 	 extension = "";
+				 extension = ""
+				 name = "";
+				 
+				 int counter = 0;
+				 
+				 while (formatArray.size() > counter ) {
+					 def format = formatArray[counter];
 					 
-				 int i = formatArray.size(); 
-				 
-				 while (i > 0 ) {
-					 def format = formatArray[i-1];
 					 /*
-					  * now you can read the table or the xml-File with the located format 
+					  * now you can read the table format_mapping 
 					  */
-					
-					 /*
-					  * just to try something, I will read the XML-File for the mapping
-					  */
-  					 pronomXml.FileFormatCollection.FileFormat.each {  
-						 if (it.@PUID.toString() == format) {
-							 if (extension.isEmpty()) {
-								 extension = it.Extension.getAt(0);
-							 } else {
-								 extension = extension + ", " + it.Extension.getAt(0);
-							 }
-						 }
-					 }
+					 
+					 mappings = FormatMapping.findAll("from FormatMapping where puid = :puid", [puid : format])
+					 
+					 if (extension.isEmpty()) {
+						 extension = mappings.extension
+						 name = mappings.formatName
+					 } else {
+					 	 extension = extension + ", " + mappings.extension
+						 name = name + "," + mappings.formatName
+					 }		
 					 // and at last increment the counter
-					 i = i - 1;
-				 } // Ende Liste der Formate eines Objektes
+					 counter = counter + 1;
+				 } // end of format - list
 				 
-				 extList.add(extension);
-			 } // Ende Liste der Objekte
-			 
-			 render (view:'listObjects', model:[objects:objects, extension:extList]);
+				 extList.add(extension)  
+				 nameList.add(name)
+				 
+			 } // end of object - list
+			 render (view:'listObjects', model:[objects:objects, extension:extList, name:nameList]);
 		 }
  	} 
-	 	
+	 
 	def list() {
 		User user = springSecurityService.currentUser
 
