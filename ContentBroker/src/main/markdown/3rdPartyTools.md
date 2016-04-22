@@ -1,4 +1,4 @@
-The DNSCore uses 3rd party libraries in various forms.
+## The DNSCore uses 3rd party libraries in various forms.
 
 1. Third party libraries in binary form, automatically pulled from the net via maven. You'll find all the used libraries used in 
 the maven configuration file at DNSCore/pom.xml
