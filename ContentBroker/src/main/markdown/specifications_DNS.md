@@ -31,3 +31,8 @@ Rücklieferung Dissemination Information Package
 
 * [Rückmeldungen des Systems](./feature_automated_queries.md)
 * [Fehlertypen und Status](./administration-troubleshooting.de.md)
+
+## Software von Drittanbietern
+
+* [externe Programme/Plugins](./3rdPartyTools.md)
+
