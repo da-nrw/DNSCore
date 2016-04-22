@@ -8,9 +8,9 @@ the maven configuration file at DNSCore/pom.xml
 
 ### @2:
 
-1. hsqldb - DNSCore/3rdParty/hsqldb
-2. JHOVE  - DNSCore/3rdParty/jhove
-3. FIDO   - DNSCore/3rdParty/fido
+1. hsqldb - DNSCore/3rdParty/hsqldb 2.3.1
+2. JHOVE  - DNSCore/3rdParty/jhove  Rev. 1.9b3, 2012-12-08
+3. FIDO   - DNSCore/3rdParty/fido   FIDO v1.3.1 
 
 The reason for putting these libraries directly under revision control is twofold. hsqlb is used for testing a slightly stripped down 
 (e.g. making use of some fake connectors) version of the DNSCore locally. hsqldb is a lightweight database an can run directly from 
@@ -26,4 +26,9 @@ In previous version the same files were recognized as fmt/10 while in newer vers
 In the root directory of each of these redistributed libraries one can find a text file called LICENSE.TXT which contains 
 ... ehm, yeah right, ... the appropriate licence.
 
- 
+### @3:
+
+- FFmpeg version 0.6.5 
+- ImageMagick 6.7.8-10
+- SoX v14.3.2
+- GPL Ghostscript 9.04
