@@ -132,7 +132,13 @@ public class WorkArea {
 	}
 	
 	public Path objectPath() {
-		return Path.make(n.getWorkAreaRootPath(),WorkArea.WORK,o.getContractor().getShort_name(),o.getIdentifier());
+		return this.objectPathFor(o);
+	}
+	
+	public Path objectPathFor(Object object) {
+		String contracorName = object.getContractor().getShort_name();
+		String identifier = object.getIdentifier();
+		return Path.make(n.getWorkAreaRootPath(), WorkArea.WORK, contracorName, identifier);
 	}
 	
 	public Path replPath() {

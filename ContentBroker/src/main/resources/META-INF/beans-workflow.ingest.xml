@@ -16,10 +16,17 @@
 		<property name="name" value="IngestUnpackAction" />
 		<property name="ingestGate" ref="ingestGate" />
 	</bean>
-	<bean id="IngestRestructureAction" class="de.uzk.hki.da.cb.RestructureAction"
+	<bean id="IngestDeltaOnURNAction" class="de.uzk.hki.da.cb.DeltaOnURNAction"
 		scope="prototype">
 		<property name="startStatus" value="120" />
 		<property name="endStatus" value="130" />
+		<property name="name" value="IngestDeltaOnURNAction" />
+		<property name="fileFormatFacade" ref="fileFormatFacade" />
+	</bean>
+	<bean id="IngestRestructureAction" class="de.uzk.hki.da.cb.RestructureAction"
+		scope="prototype">
+		<property name="startStatus" value="130" />
+		<property name="endStatus" value="140" />
 		<property name="name" value="IngestRestructureAction" />
 		<property name="ingestGate" ref="ingestGate" />
 		<property name="gridRoot" ref="${cb.implementation.grid:fakeGridFacade}"/>
@@ -27,19 +34,19 @@
 	</bean>
 	<bean id="IngestValidateMetadataAction" class="de.uzk.hki.da.cb.ValidateMetadataAction"
 		scope="prototype">
-		<property name="startStatus" value="130" />
-		<property name="endStatus" value="140" />
+		<property name="startStatus" value="140" />
+		<property name="endStatus" value="150" />
 		<property name="name" value="IngestValidateMetadataAction" />
 	</bean>	
 	<bean id="IngestScanAction" class="de.uzk.hki.da.cb.ScanAction" scope="prototype">
-		<property name="startStatus" value="140" />
-		<property name="endStatus" value="150" />
+		<property name="startStatus" value="150" />
+		<property name="endStatus" value="160" />
 		<property name="name" value="IngestScanAction" />
 		<property name="description" value="Format Scan Service" /> <!-- WTF?? -->
 		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" />
 	</bean>
 	<bean id="IngestRegisterURNAction" class="de.uzk.hki.da.cb.RegisterURNAction" scope="prototype">
-		<property name="startStatus" value="150" />
+		<property name="startStatus" value="160" />
 		<property name="endStatus" value="230" />
 		<property name="name" value="IngestRegisterURNAction" />
 	</bean>

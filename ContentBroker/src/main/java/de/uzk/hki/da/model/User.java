@@ -72,7 +72,9 @@ public class User{
 	private String emailAddress;
 	@Column(name="mails_pooled", columnDefinition="boolean")
 	private Boolean mailsPooled;
-
+	@Column(name="delta_on_urn", columnDefinition="boolean")
+	private Boolean deltaOnUrn;
+	
 	private String username;
 	private String password;
 	private String description;
@@ -87,7 +89,6 @@ public class User{
 	private Boolean accountexpired;
 	private Boolean accountlocked;
 	private Boolean passwordexpired;
-	
 	
 	/** The events. */
 	@OneToMany(orphanRemoval=true)
@@ -189,6 +190,14 @@ public class User{
 
 	public void setMailsPooled(Boolean mailsPooled) {
 		this.mailsPooled = mailsPooled;
+	}
+
+	public Boolean isDeltaOnUrn() {
+		return deltaOnUrn;
+	}
+
+	public void setDeltaOnUrn(Boolean deltaOnUrn) {
+		this.deltaOnUrn = deltaOnUrn;
 	}
 
 	/* (non-Javadoc)
