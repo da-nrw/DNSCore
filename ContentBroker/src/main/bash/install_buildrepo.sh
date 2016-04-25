@@ -16,9 +16,7 @@ mkdir $TARGET/SipBuilder/oumentation
 cd /ci/DNSCore/ContentBroker
 cp -r target/installation $TARGET/ContentBroker
 
-cp /ci/DNSCore/LICENSE $TARGET/DAWeb
-cp /ci/DNSCore/LICENSE $TARGET/ContentBroker
-cp /ci/DNSCore/LICENSE $TARGET/SipBuilder
+cp /ci/DNSCore/LICENSE $TARGET/DAWeb/installation
 
 cd /ci/DNSCore/DAWeb
 cp target/daweb3-SNAPSHOT.war $TARGET/DAWeb/daweb3.war
