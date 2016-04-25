@@ -38,5 +38,5 @@ sed "s@BUILD_NUMBER@$BUILD_NUMBER@" src/main/rules/irodsFederatedGridFacade/dns.
 mkdir $1/log
 touch $1/log/contentbroker.log
 touch $1/log/time_stamp_actions.csv
-echo -e "ContentBroker Version $2\nWritten by\n Daniel M. de Oliveira\n Jens Peters\n Sebastian Cuy\n Thomas Kleinke\n Polina Gubaidullina \n Josef Hammer" > $1/README.txt
+echo -e "ContentBroker Version $2\nWritten by\n Daniel M. de Oliveira\n Jens Peters\n Sebastian Cuy\n Thomas Kleinke\n Polina Gubaidullina \n Josef Hammer \n Eugen Trebunski \n Gaby Bender \n Documentation on this version is found on https://github.com/da-nrw . A Copy could be found in the documentation folder." > $1/README.txt
 
