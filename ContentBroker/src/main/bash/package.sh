@@ -50,6 +50,7 @@ cp src/main/xml/logback.xml $INSTALLER/logback.xml.template
 cp src/main/bash/ContentBroker_stop.sh $INSTALLER/ContentBroker_stop.sh.template
 cp src/main/bash/ContentBroker_start.sh $INSTALLER/ContentBroker_start.sh.template
 
+cp -pr src/main/markdown $INSTALLER/documentation
 
 	
 cp src/main/xml/hibernateCentralDB.cfg.xml.$1 $INSTALLER/hibernateCentralDB.cfg.xml

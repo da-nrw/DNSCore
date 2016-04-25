@@ -96,6 +96,13 @@ echo "INSTALL - Copying beans.xml.$BEANS_TYPE to $INSTALLATION_TARGET/conf/beans
 cp -f beans.xml.$BEANS_TYPE $INSTALLATION_TARGET/conf/beans.xml
 fi
 
+echo "deliver documentation copy"
+if  [ -e $INSTALLATION_TARGET/documentation ]
+then
+	echo "deleting old docs"
+	rm -rf $INSTALLATION_TARGET/documentation
+fi
+cp -fr documentation $INSTALLATION_TARGET/documentation
 
 ##### deliver template files and copy them to the regular names if they do not exist #######
 ##### logback.xml #######
