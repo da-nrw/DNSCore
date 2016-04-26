@@ -36,12 +36,9 @@
 				<li><a class="listl" href="${createLink(uri: '/cbtalk/index')}"><g:message message="zurück zur Administrationsseite"/></a></li>
 			</ul>
 		</div>
-		
-		<div class="list" id="entry-list"> <br>
-			<g:formRemote name="myForm" url="[controller: 'formatMapping', action:'deleteAndFill']"  update="refreshView" >
-					<g:actionSubmit value="Tabelle leeren und neu laden" action="deleteAndFill"  onclick="return confirm('Tabelle wirklich aktualisieren?')"/>
-			</g:formRemote>
+		<!-- This div is updated through the periodical updater -->
+		<div class="list" id="entry-list">
+			<g:include action="mapSnippet" />
 		</div>
-		<br>
 	</body>
 </html>

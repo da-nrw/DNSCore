@@ -38,13 +38,31 @@ class FormatMappingController {
 		def formatMappings = null
 	   
 		// access table format_mapping
-		formatMappings = FormatMapping.findAll("from FormatMapping)")
+		formatMappings = formatMapping.findAll("from FormatMapping  order by puid")
 		
 		// list of results
 		[formatMappings : formatMappings]
 		
-		render (view:'map', model:[formatMappings:formatMappings]);
+		render (view: 'mapList', model: [formatMappings : formatMappings]);
 		
+	}
+	
+	/**
+	 * mapSnippet: refresh the list
+	 * @return
+	 */
+	def mapSnippet() {
+		FormatMapping formatMappingSn = new FormatMapping()
+		def formatMappingSnFind = null
+		def periodical = true;
+	   
+		// access table format_mapping
+		formatMappingSnFind = formatMappingSn.findAll("from FormatMapping order by puid")
+		
+		// list of results
+		[formatMappingSnFind : formatMappingSnFind, periodical:periodical]
+		
+		render (view: 'mapSnippet', model: [formatMappingSnFind : formatMappingSnFind]);
 	}
 	
 	/**
@@ -52,7 +70,6 @@ class FormatMappingController {
 	 * @return
 	 */
 	def deleteAndFill() {
-		
 		def user = springSecurityService.currentUser
 		def relativeDir = user.getShortName() + "/incoming"
 		
@@ -76,7 +93,6 @@ class FormatMappingController {
 			
 			incomingXmlFile = "DROID_SignatureFile_" + datum + ".xml"
 			fileToParse = baseDir.toString() + "/" + incomingXmlFile
-			log.debug("## baseDir : " + baseDir+  " -- xmlFile : " + incomingXmlFile + "   --- fileToParse: " + fileToParse)
 			
 			def pronomXml = new XmlSlurper().parse(fileToParse)
 			def String mapExt = "";  
@@ -109,6 +125,7 @@ class FormatMappingController {
 				mapping.creationDate = new Date() 
 				
 				mapping.save();
+				
 			}
 		} catch (e) {
 			msg = "Benutzerordner " + baseFolder + " oder Datei " + fileToParse + " existiert nicht!"
