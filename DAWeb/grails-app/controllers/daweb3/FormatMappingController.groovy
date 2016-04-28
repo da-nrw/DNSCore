@@ -30,20 +30,24 @@ import org.springframework.dao.DataIntegrityViolationException
 class FormatMappingController {
 	
 	def springSecurityService
-	
+	 
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 	
-    def map() {
+	
+    def map(){
 		FormatMapping formatMapping = new FormatMapping()
 		def formatMappings = null
+		def msg = null;
 	   
 		// access table format_mapping
 		formatMappings = formatMapping.findAll("from FormatMapping  order by puid")
 		
+		msg  = params.get("msg");
+
 		// list of results
-		[formatMappings : formatMappings]
-		
-		render (view: 'mapList', model: [formatMappings : formatMappings]);
+		[formatMappings : formatMappings, msg:msg]
+				
+		render (view: 'map', model: [formatMappings : formatMappings, msg:msg]);
 		
 	}
 	
@@ -51,18 +55,16 @@ class FormatMappingController {
 	 * mapSnippet: refresh the list
 	 * @return
 	 */
-	def mapSnippet() {
+	def mapSnippet(){
 		FormatMapping formatMappingSn = new FormatMapping()
 		def formatMappingSnFind = null
-		def periodical = true;
 	   
 		// access table format_mapping
 		formatMappingSnFind = formatMappingSn.findAll("from FormatMapping order by puid")
 		
 		// list of results
-		[formatMappingSnFind : formatMappingSnFind, periodical:periodical]
+		[formatMappingSnFind : formatMappingSnFind]
 		
-		render (view: 'mapSnippet', model: [formatMappingSnFind : formatMappingSnFind]);
 	}
 	
 	/**
@@ -75,7 +77,7 @@ class FormatMappingController {
 		
 		def baseFolder = grailsApplication.config.localNode.ingestAreaRootPath + "/" + relativeDir
 		
-		def msg = ""
+		def msg
 		def baseDir
 		def incomingXmlFile
 		def fileToParse
@@ -124,13 +126,14 @@ class FormatMappingController {
 				mapping.formatName = it.@Name.toString()
 				mapping.creationDate = new Date() 
 				
-				mapping.save();
-				
+				mapping.save()
 			}
+			
 		} catch (e) {
 			msg = "Benutzerordner " + baseFolder + " oder Datei " + fileToParse + " existiert nicht!"
-			log.error(msg) 
-			e.printStackTrace()
+			log.error(msg, e) 
+			
+			return redirect( action : "map" , params:[msg:msg])
 		}
 	}
 	
