@@ -301,7 +301,10 @@ public class IngestAreaScannerWorker extends Worker{
 				BagitConsistencyChecker gcc = new BagitConsistencyChecker(Path.make(ingestAreaRootPath,contractorShortName,children[i]).toString());
 				if (gcc.checkPackage()) {
 						childrenWhichAreReady = addToList(children[i], contractorShortName, currentTimeStamp,childrenWhichAreReady);
-				} logger.info(children[i] +  " not yet ready or not being recognized as valid bagit Structure! " );
+				} else {
+					// what to do, if broken bagits remain in ingest path?
+					logger.debug(children[i] +  " not yet ready in transmission or not being recognized as valid bagit Structure! " );
+				}
 				} 
 			}
 		}
