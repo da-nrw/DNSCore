@@ -124,7 +124,9 @@ public class WorkArea {
 	 */
 	public void ingestSIP(File sip) throws IOException {
 		if (!sip.exists()) throw new IllegalArgumentException("Missing file: "+sip);
+		if (sip.isFile())
 		FileUtils.copyFile(sip, sipFile());
+		else FileUtils.copyDirectory(sip, sipFile());
 	}
 	
 	public File sipFile() {

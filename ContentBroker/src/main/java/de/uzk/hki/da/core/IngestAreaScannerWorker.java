@@ -37,6 +37,7 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.User;
+import de.uzk.hki.da.pkg.BagitConsistencyChecker;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
@@ -81,6 +82,16 @@ public class IngestAreaScannerWorker extends Worker{
 		}
 	}
 	
+	private class BagitScanner implements FilenameFilter {
+
+		/* (non-Javadoc)
+		 * @see java.io.FilenameFilter#accept(java.io.File, java.lang.String)
+		 */
+		@Override
+		public boolean accept(File dir, String name) {
+			return (name.indexOf("bagit")>=0 && name.endsWith(".txt"));
+		}
+	}
 	/** The min age. */
 	private int minAge; // required minimum age in milliseconds
 	
@@ -93,7 +104,7 @@ public class IngestAreaScannerWorker extends Worker{
 	private RegisterObjectService registerObjectService;
 	
 	/** The files. */
-	private Map<String,Long> files = new HashMap<String,Long>();
+	private Map<String,Long> sips = new HashMap<String,Long>();
 	
 	/** The contractor short names. */
 	private List<User> contractors = new ArrayList<User>();
@@ -120,10 +131,10 @@ public class IngestAreaScannerWorker extends Worker{
 			User contractor = getContractor(session, children[i]);
 			session.close();
 			if (contractor==null) {
-				logger.warn("Cannot find in ObjectDB: "+children[i]+" -  will not scan files for contractor");
+				logger.warn("Cannot find in ObjectDB: "+children[i]+" -  will not scan sips for contractor");
 				continue;
 			}else
-				logger.info("Will scan files for contractor: "+children[i]);
+				logger.info("Will scan sips for contractor: "+children[i]);
 			
 			contractors.add(contractor);
 		}
@@ -148,7 +159,7 @@ public class IngestAreaScannerWorker extends Worker{
 			
 			for (User contractor:contractors){
 
-				for (String child:scanContractorFolderForReadyFiles(contractor.getShort_name(), currentTimeStamp)){
+				for (String child:scanContractorFolderForReadySips(contractor.getShort_name(), currentTimeStamp)){
 					
 					logger.info("Found file \""+child+"\" in ingest Area. Creating job for \""+contractor.getShort_name()+"\"");
 					
@@ -178,6 +189,20 @@ public class IngestAreaScannerWorker extends Worker{
 	
 	
 	
+	private List<String> scanContractorFolderForReadySips(String short_name,
+			long currentTimeStamp) {
+		List<String> childrenWhichAreReadyFiles = new ArrayList<String>();
+		List<String> childrenWhichAreReadyDirs = new ArrayList<String>();
+		List<String> childrenWhichAreReadySips = new ArrayList<String>();		
+		childrenWhichAreReadyFiles = scanContractorFolderForReadyFiles(short_name, currentTimeStamp);
+		childrenWhichAreReadyDirs = scanContractorFolderForReadyDirs(short_name, currentTimeStamp);
+		if (childrenWhichAreReadyFiles!=null)
+		childrenWhichAreReadySips.addAll(childrenWhichAreReadyFiles);
+		if (childrenWhichAreReadyDirs!=null)
+		childrenWhichAreReadySips.addAll(childrenWhichAreReadyDirs);
+		return childrenWhichAreReadySips;
+	}
+
 	/**
 	 * Insert job into queue.
 	 *
@@ -250,38 +275,63 @@ public class IngestAreaScannerWorker extends Worker{
 		
 		String children[] = Path.makeFile(ingestAreaRootPath,contractorShortName).list(new AcceptedContainerFormatsFilter());
 		List<String> childrenWhichAreReady = new ArrayList<String>();
+		if (children!=null){
+			for (int i=0;i<children.length;i++){
+				if (Path.makeFile(ingestAreaRootPath,contractorShortName,children[i]).isFile())
+					childrenWhichAreReady = addToList(children[i],contractorShortName,currentTimeStamp,childrenWhichAreReady);
+			} 
+		}
+		return childrenWhichAreReady;
+	} 
+	
+	/** Allowing uncompressed Bagits
+	 * @author jens peters, 2016
+	 */
+	private List<String> scanContractorFolderForReadyDirs(String contractorShortName,long currentTimeStamp){
+		
+		String children[] = Path.makeFile(ingestAreaRootPath,contractorShortName).list();
+		List<String> childrenWhichAreReady = new ArrayList<String>();
 		if (children!=null) {
-		for (int i=0;i<children.length;i++){
-			
-			if (!files.containsKey(children[i])){
-
+			for (int i=0;i<children.length;i++){
 				
-				Job job = getJob( convertMaskedSlashes(FilenameUtils.removeExtension(children[i])),
-						contractorShortName);
+				if (!Path.makeFile(ingestAreaRootPath,contractorShortName,children[i]).isDirectory()) continue;
+				String bags[] = Path.makeFile(ingestAreaRootPath,contractorShortName,children[i]).list(new BagitScanner());
+				if (bags.length>0) {
+				logger.debug("found directory " + children[i] + " which may contain unpacked bagit");	
+				BagitConsistencyChecker gcc = new BagitConsistencyChecker(Path.make(ingestAreaRootPath,contractorShortName,children[i]).toString());
+				if (gcc.checkPackage()) {
+						childrenWhichAreReady = addToList(children[i], contractorShortName, currentTimeStamp,childrenWhichAreReady);
+				} logger.info(children[i] +  " not yet ready or not being recognized as valid bagit Structure! " );
+				} 
+			}
+		}
+		return childrenWhichAreReady;
+	} 
+	
+		private List<String> addToList(String sipname,  String csn, long currentTimeStamp,List<String> childrenWhichAreReady) {
+			if (!sips.containsKey(sipname)){
+				Job job = getJob( convertMaskedSlashes(FilenameUtils.removeExtension(sipname)),
+						csn);
 				if ( job == null) { // consider only containers for which there is not already a job in queue since it is possible that the CB has stopped and now resumes work.
-					logger.debug("New file found, making timestamp for: "+children[i]);
-					files.put(children[i], currentTimeStamp);
+					logger.debug("New file found, making timestamp for: "+sipname);
+					sips.put(sipname, currentTimeStamp);
 				} else {
 //					USER EMAIL 
 				}
 			}
 			else
 			{
-				long diff = currentTimeStamp - files.get(children[i]);
-				logger.debug("Old file found, lets look how their timestamps differ: "+children[i]+" diff: "+diff);
+				long diff = currentTimeStamp - sips.get(sipname);
+				logger.debug("Old file found, lets look how their timestamps differ: "+ sipname+" diff: "+diff);
 				
 				if (diff>minAge){
-					logger.debug("File "+children[i]+" which has lasted "+minAge+" miliseconds is ready.");
-					files.remove(children[i]);
-					childrenWhichAreReady.add(children[i]);
+					logger.debug("File "+sipname+" which has lasted "+minAge+" miliseconds is ready.");
+					sips.remove(sipname);
+					childrenWhichAreReady.add(sipname);
 				}
-			}
-		} 
-		} else logger.error("Error scaning contractor folder " + Path.makeFile(ingestAreaRootPath,contractorShortName));
-		return childrenWhichAreReady;
-	} 
-	
-	
+				}
+			return childrenWhichAreReady;
+		}
 	/**
 	 * Gets the job.
 	 *
