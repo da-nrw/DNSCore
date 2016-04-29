@@ -37,7 +37,6 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.User;
-import de.uzk.hki.da.pkg.BagitConsistencyChecker;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
@@ -297,14 +296,10 @@ public class IngestAreaScannerWorker extends Worker{
 				if (!Path.makeFile(ingestAreaRootPath,contractorShortName,children[i]).isDirectory()) continue;
 				String bags[] = Path.makeFile(ingestAreaRootPath,contractorShortName,children[i]).list(new BagitScanner());
 				if (bags.length>0) {
-				logger.debug("found directory " + children[i] + " which may contain unpacked bagit");	
-				BagitConsistencyChecker gcc = new BagitConsistencyChecker(Path.make(ingestAreaRootPath,contractorShortName,children[i]).toString());
-				if (gcc.checkPackage()) {
-						childrenWhichAreReady = addToList(children[i], contractorShortName, currentTimeStamp,childrenWhichAreReady);
-				} else {
-					// what to do, if broken bagits remain in ingest path?
-					logger.debug(children[i] +  " not yet ready in transmission or not being recognized as valid bagit Structure! " );
-				}
+					// we don't check for bagit consistency while UnpackAction does this and we'll get those 
+					// packs by move operation
+					logger.debug("found directory " + children[i] + " which may contain unpacked bagit");	
+					childrenWhichAreReady = addToList(children[i], contractorShortName, currentTimeStamp,childrenWhichAreReady);
 				} 
 			}
 		}
