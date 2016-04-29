@@ -29,4 +29,4 @@ sondern nur über die Moveoperation an die interne Ingestschnittstelle des Ordne
 
 #### Akzeptanzkriterien:
 
-Das Objekt wird wie gewohnt verabreitet und taucht in eingelieferte Objekte auf.
+Das Objekt wird wie gewohnt verabreitet und taucht in "eingelieferte Objekte" auf.
