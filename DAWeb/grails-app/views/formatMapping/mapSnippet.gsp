@@ -1,5 +1,5 @@
 <div class="list" id="entry-list"> <br>
-	<g:form  name="myForm" url="[controller: 'formatMapping', action:'deleteAndFill']"  update="refreshView" >
+	<g:form  name="mapSnippet" url="[controller: 'formatMapping', action:'deleteAndFill']"  update="refreshView" >
 			<g:actionSubmit value="Tabelle leeren und neu laden" action="deleteAndFill"  
 							onclick="return confirm('Tabelle wirklich aktualisieren?')"/>
 				<g:if test="${msg}">
