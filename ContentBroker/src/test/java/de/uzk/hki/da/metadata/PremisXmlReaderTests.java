@@ -156,15 +156,25 @@ public class PremisXmlReaderTests {
 	@Test(expected = SAXParseException.class)
 	public void testXSDValidationFailWrongAttributeType() throws IOException,
 			ParseException, SAXException {
-		assertFalse(PremisXmlValidator.validatePremisFile(new File("src/test/resources/metadata/sipbuilder201603_premisWrongTextRestrictionValue.xml")));
+		assertTrue(PremisXmlValidator.validatePremisFile(new File("src/test/resources/metadata/sipbuilder201603_premisWrongTextRestrictionValue.xml")));
 	}
 
 	@Test(expected = SAXParseException.class)
 	public void testXSDValidationFailAdditionlAttribute() throws IOException,
 			ParseException, SAXException {
-		assertFalse(PremisXmlValidator.validatePremisFile(new File("src/test/resources/metadata/sipbuilder201603_premisFailRestrictAudioAdditionalAttribute.xml")));
+		assertTrue(PremisXmlValidator.validatePremisFile(new File("src/test/resources/metadata/sipbuilder201603_premisFailRestrictAudioAdditionalAttribute.xml")));
 	}
 
-	// TODO:test without mincontent -> fails
+	@Test
+	public void testXSDValidationFailWithoutSipCreationEvent() throws IOException,
+			ParseException, SAXException {
+		assertFalse(PremisXmlValidator.validatePremisFile(new File("src/test/resources/metadata/sipbuilder201603_premisFailWithoutSipCreationEvent.xml")));
+	}
+	
+	@Test
+	public void testXSDValidationFailWithoutRightsSection() throws IOException,
+			ParseException, SAXException {
+		assertFalse(PremisXmlValidator.validatePremisFile(new File("src/test/resources/metadata/sipbuilder201603_premisFailWithoutRightsSection.xml")));
+	}
 
 }

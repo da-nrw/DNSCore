@@ -146,6 +146,7 @@ public class PremisXmlValidator {
 			if (root.getChildElements("rights", "info:lc/xmlns/premis-v2").size() == 1)
 				rightsPartExists = true;
 			else{
+				logger.error(premisFile+"doesn't contain rights-bloc");
 				return false;
 			}
 
@@ -174,6 +175,9 @@ public class PremisXmlValidator {
 		finally {
 			reader.close();
 		}
+		if(!sipCreationEventExists)
+			logger.error(premisFile+"doesn't contain SIP_CREATION-event");
+		
 		return rightsPartExists & sipCreationEventExists;
 	}
 

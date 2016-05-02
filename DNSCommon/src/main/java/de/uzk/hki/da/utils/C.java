@@ -97,7 +97,7 @@ public class C {
 	public static final File HIBERNATE_CFG = new RelativePath(CONF,"hibernateCentralDB.cfg.xml").toFile();
 	public static final File XLINK_XSD = new File("src/main/xsd/xlink.xsd");
 	public static final File PREMIS_XSD = new File("src/main/xsd/premis.xsd");
-	public static final File CONTRACT_XSD = new File("src/main/xsd/danrw-contract-1.xsd");
+	public static final File CONTRACT_XSD = new File("src/main/xsd/v1/danrw-contract-1.xsd");
 	public static final String XLINK_XSD_PATH = "conf/xlink.xsd";
 	public static final String FIDO_GLUE_SCRIPT = "fido.sh";
 	public static final Path FIDO_INSTALLATION = new RelativePath("fido");
