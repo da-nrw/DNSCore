@@ -28,37 +28,17 @@
 		</r:script>
 	</head>
 	<body>
-       <h1 class="page-header">Format-Mapping</h1> 
+		<h1 class="page-header">Format-Mapping</h1> 
 		<a href="#list-formatMapping" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div class="nav" role="navigation">
 			<ul>
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><a class="listl" href="${createLink(uri: '/cbtalk/index')}"><g:message message="zurück zur Administrationsseite"/></a></li>
+		<li><a class="listl" href="${createLink(uri: '/cbtalk/index')}"><g:message message="zurück zur Administrationsseite"/></a></li>
 			</ul>
 		</div><br>
-	<table>
-	 <thead>							
-			<tr>
-				<g:sortableColumn property="puid" title="${message(code: 'formatMapping.puid', default: 'PUID')}" />
-				<g:sortableColumn property="extension" title="${message(code: 'formatMapping.extension', default: 'Erweiterung')}" />
-				<g:sortableColumn property="mimeType" title="${message(code: 'formatMapping.mimeType', default: 'MIME-Type')}" />
-				<g:sortableColumn property="formatName" title="${message(code: 'formatMapping.formatName', default: 'Bezeichnung')}" />
-			</tr>
-	</thead>
-	<tbody>
-		<g:each in="${formatMappings}" var="formatMappingSn" status="i">
-       		<tr class="${ ((i % 2) == 0 ? 'odd' : 'even') }">
-       			<td>${formatMappingSn.puid}</td>
-       			<td>${formatMappingSn.extension}</td>
-       			<td>${formatMappingSn.mimeType}</td>
-       			<td>${formatMappingSn.formatName}</td>
-			</tr>
-		</g:each>
-	</tbody>
-	<!-- This div is updated through the periodical updater -->
-	<div class="list" id="entry-list">
-		<g:include action="mapSnippet" />
-	</div>
-	</table>
+		<!-- This div is updated through the periodical updater -->
+		<div class="list" id="entry-list">
+			<g:include action="mapSnippet" />
+		</div>
   </body>
 </html>
