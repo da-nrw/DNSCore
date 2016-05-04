@@ -158,7 +158,7 @@ public class C {
 	public static final String WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET = "6";
 	public static final String WORKFLOW_STATUS_DIGIT_ERROR_BAD_CONFIGURATION = "7";
 	public static final String WORKFLOW_STATUS_DIGIT_UP_TO_ROLLBACK= "8";
-	public static final String WORKFLOW_STATUS_START___INGEST_REGISTER_URN_ACTION = "150";
+	public static final String WORKFLOW_STATUS_START___INGEST_REGISTER_URN_ACTION = "160";
 	public static final String WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION = "700";
 	public static final String WORKFLOW_STATUS_START___INGEST_UNPACK_ACTION = "110";
 	public static final String WORKFLOW_STATUS_START___FETCH_PIPS_ACTION = "540";
