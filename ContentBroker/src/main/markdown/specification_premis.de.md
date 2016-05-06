@@ -1,42 +1,38 @@
-Specification of the DNS specific premis.xml
-===
+# PREMIS Spezifikationen
 
-# PREMIS specification
-DNS uses a derivative premis.xml for all processing information required for the Information Package's long term preservation life cycle.  
-
-Any premis.xml submitted as part of the DNS SIP-specification therefore has to apply both of the following Schema-Definitions:
+Basierend auf:
 * http://www.loc.gov/standards/premis/v2/premis-v2-2.xsd
 * http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd 
 
-## Mandatory Elements for SIP submission
 
-* one or more object elements with child elements:
-  * one objectIdentifierType: PACKAGE_NAME
-  * one objectIdentifierValue: \[DAN:Filename without suffix\]
-* one event element with child elements:
-  * one eventIdentifierType: SIP_CREATION_ID
-  * one eventIdentifierValue: Sip_Creation_\[DAN:Date of Premis generation\]
+### Inhalt einer vom SIP-Builder gebauten Premis-Datei
+
+* Ein Object-Element für das gebaute Paket
+  * objectIdentifierType: PACKAGE_NAME
+  * objectIdentifierValue: \[DAN:Name des SIPs, d.h. Name der tgz-Datei ohne Dateiendung\]
+* Ein Event-Element für die SIP-Erstellung
+  * eventIdentifierType: SIP_CREATION_ID
+  * eventIdentifierValue: Sip_Creation_\[DAN:Datum der Premis-Erstellung\]
   * EventType: SIP_CREATION
-  * eventDateTime: \[DAN:Date of Premis generation\]
-  * Link to SIP-Builder-Agent
+  * eventDateTime: \[DAN:Datum der Premis-Erstellung\]
+  * Link auf den SIP-Builder-Agent
   * Link auf das Paket-Object
-* one agent element describing the application in use for generating the SIP
+* Ein Agent-Element für den SIP-Builder, mit dem das SIP erstellt wurde
   * agentIdentifierType: APPLICATION_NAME
-  * agentIdentifierValue: APPLICATION-IDENTIFIER \[DAN:Version\]
+  * agentIdentifierValue: DA NRW SIP-Builder \[DAN:Version\]
   * agentType: APPLICATION
-* one rights element holding the contract information from danrw-contract-1.xsd (see below)
+* Ein Rights-Element für die festgelegten Contract Rights
 
-
-## Optional Elements for SIP submission
-
-* ...
-    * ...
-
-
-## Explaining the contract rights 
-The DA NRW contract is an extension to the PREMIS rights element. DNS needs to know the types of processing the contractor complies with for each Information Package. For that DA NRW uses the rightsGranted element to point to the information provided by rightsExtension element. Within the rigthsExtension you will find the specific contract information for different stages of processing:  
-
-  * rightsGranted element: one element for each processing scenario: PUBLICATION_PUBLIC | PUBLICATION_INSTITUTION | MIGRATION
+    ```xml
+    <rights>
+        <rightsStatement>
+            <rightsStatementIdentifier>
+                <rightsStatementIdentifierType>rightsid</rightsStatementIdentifierType>
+                <rightsStatementIdentifierValue></rightsStatementIdentifierValue>
+            </rightsStatementIdentifier>
+            <rightsBasis>license</rightsBasis>
+    ```
+  * rightsGranted-Block je identischer Aufbau für PUBLICATION_PUBLIC | PUBLICATION_INSTITUTION | MIGRATION
 
     ```xml
             <rightsGranted>
@@ -51,15 +47,12 @@ The DA NRW contract is an extension to the PREMIS rights element. DNS needs to k
     ```xml
         </rightsStatement>
     ```
-* rightsExtension element: one for each processing scenario
+* Ein Rights-Extension Element für genauere Spezifikation der Publikationsrechte
 
     ```xml
         <rightsExtension>
             <rightsGranted xmlns="http://www.danrw.de/contract/v1" xmlns:xsi="http://www.danrw.de/contract/v1 http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd">
     ```
-
-  * PUBLICATION_PUBLIC: 
-
   * Migrationsbedingung: NONE | NOTIFY | CONFIRM 
 
     ```xml
