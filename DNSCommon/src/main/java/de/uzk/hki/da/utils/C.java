@@ -94,11 +94,12 @@ public class C {
 	public static final String PREMIS_XSD_PATH = "conf/premis.xsd";
 	public static final String CONTRACT_XSD_PATH = "conf/danrw-contract-1.xsd";
 	public static final String CONFIG_PROPS = "conf/config.properties";
-	public static final File HIBERNATE_CFG = new RelativePath(CONF,"hibernateCentralDB.cfg.xml").toFile();
-	public static final File XLINK_XSD = new File("src/main/xsd/xlink.xsd");
-	public static final File PREMIS_XSD = new File("src/main/xsd/premis.xsd");
-	public static final File CONTRACT_XSD = new File("src/main/xsd/v1/danrw-contract-1.xsd");
 	public static final String XLINK_XSD_PATH = "conf/xlink.xsd";
+	public static final File HIBERNATE_CFG = new RelativePath(CONF,"hibernateCentralDB.cfg.xml").toFile();
+	// The availability of the flowing *_TEST resources is only important for JUnit-Test step
+	public static final File XLINK_XSD_TEST = new File("src/main/xsd/xlink.xsd");
+	public static final File PREMIS_XSD_TEST = new File("src/main/xsd/premis.xsd");
+	public static final File CONTRACT_XSD_TEST = new File("src/main/xsd/v1/danrw-contract-1.xsd");
 	public static final String FIDO_GLUE_SCRIPT = "fido.sh";
 	public static final Path FIDO_INSTALLATION = new RelativePath("fido");
 	public static final String CONFIGURE_SCRIPT = "configure.sh"; 

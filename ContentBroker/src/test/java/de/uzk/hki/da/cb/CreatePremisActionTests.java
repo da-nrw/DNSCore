@@ -95,9 +95,9 @@ public class CreatePremisActionTests {
 	 */
 	@Before
 	public void setUp() throws IOException {
-		FileUtils.copyFileToDirectory(C.PREMIS_XSD, new File("conf/"));
-		FileUtils.copyFileToDirectory(C.XLINK_XSD, new File("conf/"));
-		FileUtils.copyFileToDirectory(C.CONTRACT_XSD, new File("conf/"));
+		FileUtils.copyFileToDirectory(C.PREMIS_XSD_TEST, new File("conf/"));
+		FileUtils.copyFileToDirectory(C.XLINK_XSD_TEST, new File("conf/"));
+		FileUtils.copyFileToDirectory(C.CONTRACT_XSD_TEST, new File("conf/"));
 		
 		Node node = new Node();
 		node.setWorkAreaRootPath(workAreaRootPath);
