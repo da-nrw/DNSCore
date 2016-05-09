@@ -78,6 +78,7 @@ public class SIPFactory {
 
 	// DANRW-1416: Extension for disable tar - function
 	private boolean tar = true;
+	private String destDir = null;
 
 	private List<String> forbiddenFileExtensions = null;
 
@@ -223,11 +224,8 @@ public class SIPFactory {
 		} else {
 			packageName = getPackageName(sourceFolder);
 		}
-
 		File tempFolder = new File(getTempFolderPath());
-
 		File packageFolder = new File(tempFolder, packageName);
-
 		if ((feedback = copyFolder(jobId, sourceFolder, packageFolder)) != Feedback.SUCCESS) {
 			rollback(tempFolder);
 			return feedback;
@@ -242,11 +240,10 @@ public class SIPFactory {
 			rollback(tempFolder);
 			return feedback;
 		}
-		
-		String archiveFileName = packageName;
 
 		// DANRW-1416
 		if (tar) {
+			String archiveFileName = packageName;
 			if (compress)
 				archiveFileName += ".tgz";
 			else
@@ -280,24 +277,6 @@ public class SIPFactory {
 					return Feedback.ZERO_BYTES_ERROR;
 				}
 			}
-//		File tempFolder = new File(getTempFolderPath());
-//
-//		File packageFolder = new File(tempFolder, packageName);
-//
-//		if ((feedback = copyFolder(jobId, sourceFolder, packageFolder)) != Feedback.SUCCESS) {
-//			rollback(tempFolder);
-//			return feedback;
-//		}
-//
-//		if ((feedback = createPremisFile(jobId, packageFolder, packageName)) != Feedback.SUCCESS) {
-//			rollback(tempFolder);
-//			return feedback;
-//		}
-//
-//		if ((feedback = createBag(jobId, packageFolder)) != Feedback.SUCCESS) {
-//			rollback(tempFolder);
-//			return feedback;
-//		}
 
 			if ((feedback = buildArchive(jobId, packageFolder, tmpArchiveFile)) != Feedback.SUCCESS) {
 				rollback(tempFolder, tmpArchiveFile);
@@ -361,10 +340,14 @@ public class SIPFactory {
 	private Feedback copyFolder(int jobId, File sourceFolder, File tempFolder) {
 
 		progressManager.copyProgress(jobId, 0);
-
-		File dataFolder = new File(tempFolder, "data");
-		dataFolder.mkdirs();
-
+		File dataFolder = null;
+//		if (tar) {
+			dataFolder = new File(tempFolder, "data");
+			dataFolder.mkdirs();
+//		} else {
+//			dataFolder = new File(tempFolder, "output"); // TODO check
+//			dataFolder.mkdirs();
+//		}
 		CopyUtility copyUtility = new CopyUtility();
 		copyUtility.setProgressManager(progressManager);
 		copyUtility.setJobId(jobId);
@@ -398,10 +381,16 @@ public class SIPFactory {
 	private Feedback createPremisFile(int jobId, File folder, String packageName) {
 
 		progressManager.premisProgress(jobId, 0.0);
-
-		File premisFile = new File(folder, "data" + File.separator
+		File premisFile = null;
+		// DANRW-1416
+		if (tar) {
+		premisFile = new File(folder, "data" + File.separator
 				+ "premis.xml");
-
+		} else {
+			premisFile = new File(folder,"data" + File.separator + "premis.xml");
+		}
+		// ENDE DANRW-1416
+		
 		PremisXmlWriter premisWriter = new PremisXmlWriter();
 		try {
 			if (rightsSourcePremisFile != null)
@@ -793,6 +782,14 @@ public class SIPFactory {
 
 	public void setTar(boolean tar) {
 		this.tar = tar;
+	}
+
+	public String getDestDir() {
+		return destDir;
+	}
+
+	public void setDestDir(String destDir) {
+		this.destDir = destDir;
 	}
 
 	/**
