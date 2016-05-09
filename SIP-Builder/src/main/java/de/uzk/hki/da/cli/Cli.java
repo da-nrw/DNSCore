@@ -240,6 +240,12 @@ public class Cli {
     			continue;
     		}
     		
+    		// DANRW-1416: Extension for disable tar - function
+    		if (arg.equals("-noTar")) {
+    			sipFactory.setTar(false);
+    			continue;
+    		}
+    		
     		if (arg.equals("-default") || arg.equals("-multiple") || arg.equals("-neverOverwrite") || arg.equals("-compression") || arg.equals("-nested"))
     			continue;
     		
