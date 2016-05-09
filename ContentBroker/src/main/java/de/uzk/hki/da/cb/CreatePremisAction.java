@@ -38,6 +38,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.commons.io.FileUtils;
+import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.format.FileFormatFacade;
@@ -139,8 +140,13 @@ public class CreatePremisAction extends AbstractAction {
 		logger.trace("trying to write new Premis file at " + newPREMISXml.getAbsolutePath());
 		new ObjectPremisXmlWriter().serialize(newPREMISObject, newPREMISXml,Path.make(wa.dataPath(),"jhove_temp"));
 		
-		if (!PremisXmlValidator.validatePremisFile(newPREMISXml))
-			throw new RuntimeException("PREMIS that has recently been created is not valid");
+		try {
+			if (!PremisXmlValidator.validatePremisFile(newPREMISXml))
+				throw new RuntimeException("PREMIS that has recently been created is not valid");
+		} catch (SAXException e) {
+			logger.error(e.getMessage());
+			throw new RuntimeException("PREMIS that has recently been created is not valid: "+e.getMessage());
+		}
 		logger.trace("Successfully created premis file");
 		o.getLatestPackage().getFiles().add(new DAFile(j.getRep_name()+"b",PREMIS));
 		

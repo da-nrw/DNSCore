@@ -28,7 +28,9 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
@@ -47,6 +49,7 @@ import de.uzk.hki.da.model.TextRestriction;
 import de.uzk.hki.da.model.VideoRestriction;
 import de.uzk.hki.da.model.MigrationRight.Condition;
 import de.uzk.hki.da.model.PublicationRight.Audience;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 
 
@@ -56,12 +59,26 @@ import de.uzk.hki.da.utils.Path;
 public class PremisXmlWriterTest {
 	
 	/**
+	 * Sets the up.
+	 * @throws IOException 
+	 */
+	@Before
+	public void setUp() throws IOException {
+		FileUtils.copyFileToDirectory(C.PREMIS_XSD_TEST, new File("conf/"));
+		FileUtils.copyFileToDirectory(C.XLINK_XSD_TEST, new File("conf/"));
+		FileUtils.copyFileToDirectory(C.CONTRACT_XSD_TEST, new File("conf/"));
+	}
+	
+	/**
 	 * Clean up.
 	 */
 	@After
 	public void cleanUp() {
 		if (new File("src/test/resources/metadata/premis_test_xml_metadata_stream_writer_out.xml").exists())
 			new File("src/test/resources/metadata/premis_test_xml_metadata_stream_writer_out.xml").delete();
+		new File("conf/premis.xsd").delete();
+		new File("conf/xlink.xsd").delete();
+		new File("conf/danrw-contract-1.xsd").delete();
 	}
 	
 	/**
@@ -109,7 +126,8 @@ public class PremisXmlWriterTest {
 		publicationRight.setImageRestriction(new ImageRestriction("640","480","asdf"));
 		publicationRight.setVideoRestriction(new VideoRestriction("640","480",30));
 		publicationRight.setAudioRestriction(new AudioRestriction(30));
-		publicationRight.setTextRestriction(new TextRestriction(15,new int[]{23,42}));
+		publicationRight.setTextRestriction(new TextRestriction());
+		publicationRight.getTextRestriction().setCertainPages(new int[]{23,42});
 		publicationRights.add(publicationRight);
 		
 		PublicationRight publicationRight2 = new PublicationRight();
@@ -119,7 +137,8 @@ public class PremisXmlWriterTest {
 		publicationRight2.setImageRestriction(new ImageRestriction("640","480","fdsa"));
 		publicationRight2.setVideoRestriction(new VideoRestriction("640","480",30));
 		publicationRight2.setAudioRestriction(new AudioRestriction(30));
-		publicationRight2.setTextRestriction(new TextRestriction(15));
+		publicationRight2.setTextRestriction(new TextRestriction());
+		publicationRight2.getTextRestriction().setCertainPages(new int[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15});
 		publicationRights.add(publicationRight2);
 		
 		rightsStatement.setPublicationRights(publicationRights);
@@ -132,7 +151,6 @@ public class PremisXmlWriterTest {
 		object.setRights(rightsStatement);
 		
 		ObjectPremisXmlWriter writer = new ObjectPremisXmlWriter();
-
 		writer.serialize(object, new File("src/test/resources/metadata/premis_test_xml_metadata_stream_writer_out.xml"),Path.make("tmp"));
 		
 		PremisXmlValidator.validatePremisFile(new File("src/test/resources/metadata/premis_test_xml_metadata_stream_writer_out.xml"));		
