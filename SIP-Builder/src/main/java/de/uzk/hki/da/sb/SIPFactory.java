@@ -202,7 +202,7 @@ public class SIPFactory {
 		} else
 			return workingPath + File.separator + getTempFolderName();
 	}
-
+	
 	/**
 	 * Creates a SIP out of the given source folder
 	 * 
@@ -224,8 +224,9 @@ public class SIPFactory {
 		} else {
 			packageName = getPackageName(sourceFolder);
 		}
-		File tempFolder = new File(getTempFolderPath());
+		File tempFolder  = new File(getTempFolderPath());
 		File packageFolder = new File(tempFolder, packageName);
+	 
 		if ((feedback = copyFolder(jobId, sourceFolder, packageFolder)) != Feedback.SUCCESS) {
 			rollback(tempFolder);
 			return feedback;
@@ -340,14 +341,9 @@ public class SIPFactory {
 	private Feedback copyFolder(int jobId, File sourceFolder, File tempFolder) {
 
 		progressManager.copyProgress(jobId, 0);
-		File dataFolder = null;
-//		if (tar) {
-			dataFolder = new File(tempFolder, "data");
-			dataFolder.mkdirs();
-//		} else {
-//			dataFolder = new File(tempFolder, "output"); // TODO check
-//			dataFolder.mkdirs();
-//		}
+		File dataFolder =  new File(tempFolder, "data");
+		dataFolder.mkdirs();
+		
 		CopyUtility copyUtility = new CopyUtility();
 		copyUtility.setProgressManager(progressManager);
 		copyUtility.setJobId(jobId);
