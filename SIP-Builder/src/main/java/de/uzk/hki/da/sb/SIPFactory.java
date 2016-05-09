@@ -77,7 +77,7 @@ public class SIPFactory {
 	private boolean compress;
 
 	// DANRW-1416: Extension for disable tar - function
-	private boolean tar;
+	private boolean tar = true;
 
 	private List<String> forbiddenFileExtensions = null;
 
@@ -224,41 +224,6 @@ public class SIPFactory {
 			packageName = getPackageName(sourceFolder);
 		}
 
-		String archiveFileName = packageName;
-		if (compress)
-			archiveFileName += ".tgz";
-		else
-			archiveFileName += ".tar";
-
-		File archiveFile = new File(destinationPath + File.separator
-				+ archiveFileName);
-		
-		if (!checkForExistingSip(archiveFile)) {
-			progressManager.skipJob(jobId);
-			skippedFiles = true;
-			return Feedback.SUCCESS;
-		}
-		File tmpArchiveFile = null;
-		tmpArchiveFile = new File(workingPath + File.separator
-				+ archiveFileName);
-		
-		if (tmpArchiveFile.exists())
-			tmpArchiveFile.delete();
-		
-		if (Utilities.checkForZeroByteFiles(sourceFolder, packageName,
-				messageWriter)) {
-			if (!ignoreZeroByteFiles) {
-				String message = "WARNING: Found zero byte files in folder "
-						+ sourceFolder + ":\n";
-				for (String s : messageWriter.getZeroByteFiles()) {
-					message += s;
-					message += "\n";
-				}
-				logger.info(message);
-				return Feedback.ZERO_BYTES_ERROR;
-			}
-		}
-
 		File tempFolder = new File(getTempFolderPath());
 
 		File packageFolder = new File(tempFolder, packageName);
@@ -277,9 +242,63 @@ public class SIPFactory {
 			rollback(tempFolder);
 			return feedback;
 		}
+		
+		String archiveFileName = packageName;
 
 		// DANRW-1416
 		if (tar) {
+			if (compress)
+				archiveFileName += ".tgz";
+			else
+				archiveFileName += ".tar";
+		
+			File archiveFile = new File(destinationPath + File.separator
+					+ archiveFileName);
+			
+			if (!checkForExistingSip(archiveFile)) {
+				progressManager.skipJob(jobId);
+				skippedFiles = true;
+				return Feedback.SUCCESS;
+			}
+			File tmpArchiveFile = null;
+			tmpArchiveFile = new File(workingPath + File.separator
+					+ archiveFileName);
+			
+			if (tmpArchiveFile.exists())
+				tmpArchiveFile.delete();
+			
+			if (Utilities.checkForZeroByteFiles(sourceFolder, packageName,
+					messageWriter)) {
+				if (!ignoreZeroByteFiles) {
+					String message = "WARNING: Found zero byte files in folder "
+							+ sourceFolder + ":\n";
+					for (String s : messageWriter.getZeroByteFiles()) {
+						message += s;
+						message += "\n";
+					}
+					logger.info(message);
+					return Feedback.ZERO_BYTES_ERROR;
+				}
+			}
+//		File tempFolder = new File(getTempFolderPath());
+//
+//		File packageFolder = new File(tempFolder, packageName);
+//
+//		if ((feedback = copyFolder(jobId, sourceFolder, packageFolder)) != Feedback.SUCCESS) {
+//			rollback(tempFolder);
+//			return feedback;
+//		}
+//
+//		if ((feedback = createPremisFile(jobId, packageFolder, packageName)) != Feedback.SUCCESS) {
+//			rollback(tempFolder);
+//			return feedback;
+//		}
+//
+//		if ((feedback = createBag(jobId, packageFolder)) != Feedback.SUCCESS) {
+//			rollback(tempFolder);
+//			return feedback;
+//		}
+
 			if ((feedback = buildArchive(jobId, packageFolder, tmpArchiveFile)) != Feedback.SUCCESS) {
 				rollback(tempFolder, tmpArchiveFile);
 				return feedback;

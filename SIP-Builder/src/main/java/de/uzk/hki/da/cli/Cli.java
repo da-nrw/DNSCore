@@ -244,7 +244,7 @@ public class Cli {
     		if (arg.equals("-noTar")) {
     			sipFactory.setTar(false);
     			continue;
-    		}
+    		} 
     		
     		if (arg.equals("-default") || arg.equals("-multiple") || arg.equals("-neverOverwrite") || arg.equals("-compression") || arg.equals("-nested"))
     			continue;
