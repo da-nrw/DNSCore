@@ -76,11 +76,22 @@ class StatusController {
 			rList = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn and q.obj.identifier=:idn",
 			 [idn: params.identifier, 
 				 csn: springSecurityService.currentUser.toString()]);
+		} else if (params.containerName) {
+			def criteria = QueueEntry.createCriteria ()
+			rList = criteria.listDistinct {
+				obj {
+					and {
+						user { eq 'shortName', springSecurityService.currentUser.toString() }
+						packages { eq 'container_name', params.containerName  }
+					}
+				}
+			}
 		}
 		boolean hasAQueueEntry = false
 		def queueResult = "package in progress";
 		// found a QueueEntry
-		rList.each()  { instance ->	
+			rList.each()  { instance ->
+			
 			result.type = "QueueEntry"
 			result.urn = instance.obj.urn
 			result.contractor = instance.obj.user.shortName;
@@ -118,7 +129,6 @@ class StatusController {
 			hasAQueueEntry = true;
 			results.result.add(result)
 			result = [:]
-			
 		}  
 		
 		if (params.urn) {
@@ -129,6 +139,17 @@ class StatusController {
 		} 
 		if (params.identifier) {
 				rList = Object.findAllByUserAndIdentifierAndObject_stateBetween(contractor, params.identifier,50,100)	
+		}
+		if (params.containerName) {
+			def criteria = Object.createCriteria ()
+			rList = criteria.listDistinct {
+				and {
+					eq 'user', contractor
+				}
+				packages{
+					eq 'container_name', params.containerName 
+				}
+			}
 		}
 		// Found Object, must be true if we found anything (Queue or Object only)
 		boolean foundObject = false;

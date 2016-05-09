@@ -22,6 +22,7 @@
 						<b>https://Servername/<g:createLink controller="status" action="index" params="[urn: 'IhreURN']"/></b><br>
 						<b>https://Servername/<g:createLink controller="status" action="index" params="[origName: 'IhrAblieferungsname']"/></b><br> 
 						<b>https://Servername/<g:createLink controller="status" action="index" params="[identifier: 'IhrIdentifier']"/></b> <br>
+						<b>https://Servername/<g:createLink controller="status" action="index" params="[containerName: 'IhrContainername']"/></b> <br>
 						
 						</span></li>
 						<span class="property-value"><li>Als Antwort erhalten Sie ein maschinenlesbares Ergebnis (JSON)<br></li>
