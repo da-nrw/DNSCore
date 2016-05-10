@@ -40,7 +40,7 @@ The JSON returned includes all types of information about the SIP submitted or t
 
 ### Example-Request
 
-    curl -v -H "Accept: application/json" X GET -u username --url "https://server/daweb3/status/index?urn=urn:nbn:de:hbz:6:1-31323"
+    curl -v -H "Accept: application/json" X GET -u username --url "https://server/daweb3/status/index?urn=urn%3Anbn%3Ade%3Ahbz%3A6%3A1-31323"
 
 ### Example Response    
 
@@ -64,7 +64,7 @@ The JSON POST Data must at least contain one of the following fields: urn, ident
 
 ### Example-Request
 
-    curl -v -H "Accept: application/json" X POST -u username --url "https://server/daweb3/status/index?urn=urn:nbn:de:hbz:6:1-31323"
+    curl -v -H "Accept: application/json" X POST -u username --url "https://server/daweb3/status/index?urn=urn%3Anbn%3Ade%3Ahbz%3A6%3A1-31323"
 
 ### Example Response    
 
