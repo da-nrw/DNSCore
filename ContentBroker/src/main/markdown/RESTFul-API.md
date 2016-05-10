@@ -70,7 +70,13 @@ The JSON POST Data must at least contain one of the following fields: urn, ident
 
 The request should create a retrieval job. The response is: 
 
-    {"result":"success"}
+    {"success":"true"}
+    
+Otherwise 
+
+    {"success":"false"}
+
+The response indicates the creation of retrieval request only. It does *not* indicate sucessfully retrieved DIP.   
     
 # Version
 
