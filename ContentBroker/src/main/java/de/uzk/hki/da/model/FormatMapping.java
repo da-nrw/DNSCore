@@ -43,7 +43,7 @@ public class FormatMapping {
 	@Column(columnDefinition="varchar(255)")
 	private String format_name;
 		
-	private Date modifiedDate;
+	private Date modified_date;
 
 	public int getFm_id() {
 		return fm_id;
@@ -85,13 +85,13 @@ public class FormatMapping {
 		this.format_name = format_name;
 	}
 
-	public Date getModifiedDate() {
-		return modifiedDate;
+	public Date getModified_date() {
+		return modified_date;
 	}
 
-	public void setModifiedDate(Date modifiedDate) {
-		this.modifiedDate = modifiedDate;
+	public void setModified_date(Date modified_date) {
+		this.modified_date = modified_date;
 	}
-	
+
 
 }
