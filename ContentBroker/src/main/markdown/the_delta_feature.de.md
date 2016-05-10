@@ -30,7 +30,7 @@ Das Delta-Feature dient der nachträglichen Ergänzung von bereits eingelieferte
 
 1. neue Primärdaten hinzuzufügen,   
 1. bereits eingelieferte Primärdaten in anderer Auflösung oder einem neuen Format einzuliefern,   
-1. Ihre Metadaten mit neuen oder geänderten Informationen anzureichen oder   
+1. Ihre Metadaten mit neuen oder geänderten Informationen anzureichern oder   
 1. die bereits vorgenommennen Einstellungen wie etwa die Zustimmung über Migration oder auch Angaben zu Publikation zu aktualisieren.  
 
 Es ist möglich, beliebig viele Deltas nacheinander einzuliefern. Zu beachten ist, dass die Verarbeitung eines vorangegangen Pakets abgeschlossen sein muss, bevor eine Delta-Einlieferung vorgenommen werden kann.

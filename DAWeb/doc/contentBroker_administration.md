@@ -76,6 +76,12 @@ ROLE_NODEADMIN The Admin of a node in the preservational system's domain.
 #### Edit ConversionRoutines
 
 Users in Role ROLE_PSADMIN are able to adminster ConversionPolicies related to the system.
+
+#### Format Mapping
+
+On this page the user will have the possibility to load a new format mapping file from Pronom.
+To start the action there have to be done some preparations. First the new Pronom file must be downloaded. The downloaded file must be in folder /ci/storage/IngestArea/rods/incoming and the filename must end with the current date, for example DROID_SignatureFile_20160503.xml  
+If this preparations are done, the user can update the mapping information while pressing the button 'Tabelle leeren und neu laden'. If there is no file, there will be an error message, otherwise the information will be refreshed.
  
 #### Reload PIP
 

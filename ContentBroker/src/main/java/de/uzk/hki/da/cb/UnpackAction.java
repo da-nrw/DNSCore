@@ -31,6 +31,7 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
+import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.IngestGate;
@@ -169,8 +170,12 @@ public class UnpackAction extends AbstractAction {
 				throw new UserException(UserExceptionId.INVALID_SIP_PREMIS, "PREMIS Datei nicht valide.");
 		} catch (FileNotFoundException e1) {
 			throw new UserException(UserExceptionId.SIP_PREMIS_NOT_FOUND, "PREMIS Datei nicht gefunden.", e1);
-		}
+		} catch (SAXException e) {
+			logger.error(e.getMessage());
+			throw new UserException(UserExceptionId.INVALID_SIP_PREMIS, "PREMIS Datei nicht valide.: "+e.getMessage());
+		}		
 		try {
+			//just test: parse values and do xml to object mapping
 			new ObjectPremisXmlReader().deserialize(Path.makeFile(wa.dataPath(),PREMIS_XML));
 		} catch (Exception e) {
 			throw new UserException(UserExceptionId.READ_SIP_PREMIS_ERROR,
