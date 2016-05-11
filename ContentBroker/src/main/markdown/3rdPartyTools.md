@@ -15,6 +15,8 @@ tar | | unpacking/packing | GNU General Public License v3 or later |
 ImageMagick |  6.7.8-10 | Picture Manipulation | ImageMagick License http://www.imagemagick.org/script/license.php |
 SoX | v14.3.2 | Audio Codecs and conversion  | GNU Lesser General Public License |
 Ghostscript |9.04|PDF conversion| GNU Affero General Public License  |
+elasticSearch |0.90.3|Indexed Search|Apache 2 license|
+Fedora Commons |3.5|PIP Repository |  Apache License, Version 2.0 |
 
 
 
