@@ -43,7 +43,7 @@ Bei Einlieferung eines Delta-[SIP](specification_sip.de.md) werden alle vorherig
 
 Dabei wird das Gesamtpaket ([Object](object_model.md#object)), d.h. Original mit n Deltas, auf seine Validität geprüft. 
 
-Das [Object](object_model.md#object) behält auch nach Delta-Einlieferungen seine ursprünglieche Object-ID sowie die URN.
+Das [Object](object_model.md#object) behält auch nach Delta-Einlieferungen seine ursprüngliche Object-ID sowie die URN.
 
 Die ausführliche Beschreibung der Nutzungsszenarien Delta-Einlieferung sowie der [einfachen](feature_delta_ingest_retrieval.md#szenario-at-dir-1-ingest-und-retrieval) und [versionierten](feature_delta_ingest_retrieval.md#szenario-at-dir-2-versioniertes-retrieval-alle-packages) Entnahme finden Sie [hier](feature_delta_ingest_retrieval.md).
 
@@ -55,7 +55,7 @@ Daraus ergibt sich, dass
 2. die Delta-SIPs durchaus Referenzen in den Metadaten enthalten können, die auf keine Primärdateien des konkreten SIP zeigen, jedoch auf die in den vorhergegangenen Paketen des Objekts.   
 3. der Name der Metadatei der Delta-SIPs gleich dem Namen der Metadatei der Ersteinlieferung sein muss (gilt für METS, LIDO und EAD).
 
-Eine Delta-Einlieferung wird im System anhand von zwei Kriterien erkannt. Entweder hat das SIP denselben Originalnamen wie das SIP der Ersteinlieferung, oder der Name entspricht der Object-ID der Ersteinlieferung.
+Eine Delta-Einlieferung wird im System anhand von zwei Kriterien erkannt. Entweder hat das SIP denselben Originalnamen wie das SIP der Ersteinlieferung, oder die mitgeschickte URN entspricht der URN der Ersteinlieferung.
 
 ## Beschreibung der einzelnen Nutzungsszenarien
 ### Ergänzung eines Objekts um neue Digitalisate
