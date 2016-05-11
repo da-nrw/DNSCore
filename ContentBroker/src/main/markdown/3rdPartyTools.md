@@ -1,17 +1,17 @@
 ## The DNSCore uses 3rd party libraries in various forms.
 
 
-| Tool | Version | Description | License
-|---|---|---|
-jar | JAVA 1.6 |zip extraction tool |
-JHOVE | Rev. 1.9b3 | Format Validation|
-FIDO | v1.3.1 | Format identification |
-FFmpeg| 0.6.5 | Video codec extracion |
-tar | | unpacking/packing |
-ImageMagick |  6.7.8-10 | |
-SoX | v14.3.2 | |
-Ghostscript |9.04|PDF conversion|
-pdfbox |||
+    | Tool | Version | Description | License
+    |---|---|---|
+    jar | JAVA 1.6 |zip extraction tool |
+    JHOVE | Rev. 1.9b3 | Format Validation|
+    FIDO | v1.3.1 | Format identification |
+    FFmpeg| 0.6.5 | Video codec extracion |
+    tar | | unpacking/packing |
+    ImageMagick |  6.7.8-10 | |
+    SoX | v14.3.2 | |
+    Ghostscript |9.04|PDF conversion|
+    pdfbox |||
 
 
 
