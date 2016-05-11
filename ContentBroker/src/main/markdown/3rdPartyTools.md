@@ -1,4 +1,4 @@
-## The DNSCore uses 3rd party libraries in various forms.
+## The DNSCore 3rd party libraries and tools
 
 
 | Tool | Version | Description | License|
