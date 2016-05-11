@@ -9,14 +9,13 @@ The tools used in 2./3. are listed in the following table:
 
 | Tool | Version | Description | License|
 |---|---|---|---|
-jar | JAVA 1.6 |zip extraction tool | |
-JHOVE | Rev. 1.9b3 | Format Validation| |
-FIDO | v1.3.1 | Format identification | |
-FFmpeg| 0.6.5 | Video codec extracion | |
-tar | | unpacking/packing | |
-ImageMagick |  6.7.8-10 | | |
-SoX | v14.3.2 | | |
-Ghostscript |9.04|PDF conversion| |
+JHOVE | Rev. 1.9b3 | Format Validation| GNU Lesser General Public License (LGPL). |
+FIDO | v1.3.1 | Format identification | Apache License Version 2.0, January 2004 |
+FFmpeg| 0.6.5 | Video codec extracion | GNU Lesser General Public License (LGPL) version 2.1 |
+tar | | unpacking/packing | GNU General Public License v3 or later |
+ImageMagick |  6.7.8-10 | | ImageMagick License http://www.imagemagick.org/script/license.php |
+SoX | v14.3.2 | Audio Codecs and conversion  | GNU Lesser General Public License |
+Ghostscript |9.04|PDF conversion| GNU Affero General Public License  |
 
 
 
