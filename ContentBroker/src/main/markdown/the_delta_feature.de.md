@@ -47,7 +47,7 @@ Das [Object](object_model.md#object) behält auch nach Delta-Einlieferungen sein
 
 Die ausführliche Beschreibung der Nutzungsszenarien Delta-Einlieferung sowie der [einfachen](feature_delta_ingest_retrieval.md#szenario-at-dir-1-ingest-und-retrieval) und [versionierten](feature_delta_ingest_retrieval.md#szenario-at-dir-2-versioniertes-retrieval-alle-packages) Entnahme finden Sie [hier](feature_delta_ingest_retrieval.md).
 
-## Richtilinien für Delta-SIPs
+## Richtlinien für Delta-SIPs
 
 Das Metadatenset muss in jedem einzelnen SIP komplett sein und alle Primärdateien des Objekts (Original-SIP mit allen dazugehörigen Deltas) referenzieren. Im Einzelnen bedeutet es, dass
 Daraus ergibt sich, dass    
@@ -55,7 +55,7 @@ Daraus ergibt sich, dass
 2. die Delta-SIPs durchaus Referenzen in den Metadaten enthalten können, die auf keine Primärdateien des konkreten SIP zeigen, jedoch auf die in den vorhergegangenen Paketen des Objekts.   
 3. der Name der Metadatei der Delta-SIPs gleich dem Namen der Metadatei der Ersteinlieferung sein muss (gilt für METS, LIDO und EAD).
 
-Eine Delta-Einlieferung wird im System anhand von zwei Kriterien erkannt. Entweder hat das SIP denselben Originalnamen wie das SIP der Ersteinlieferung, oder der Name entspricht der OPbject-ID der Ersteinlieferung.
+Eine Delta-Einlieferung wird im System anhand von zwei Kriterien erkannt. Entweder hat das SIP denselben Originalnamen wie das SIP der Ersteinlieferung, oder der Name entspricht der Object-ID der Ersteinlieferung.
 
 ## Beschreibung der einzelnen Nutzungsszenarien
 ### Ergänzung eines Objekts um neue Digitalisate
