@@ -16,6 +16,6 @@ pdfbox ||||
 
 
 1. Third party libraries in binary form, automatically pulled from the net via maven. You'll find all the used libraries used in 
-the maven configuration file at [pom.xml](../../../../pom.xml), at [DNSCommon/pom.xml](../../../../DNSCommon/pom.xml), at [DAweb/pom.xml](DAWeb/pom.xml) and at   [SIPBuilder/pom.xml](SIPBuilder/pom.xml)
+the maven configuration file at [pom.xml](../../../../pom.xml), at [DNSCommon/pom.xml](../../../../DNSCommon/pom.xml), at [DAWeb/pom.xml](../../../../DAWeb/pom.xml) and at   [SIPBuilder/pom.xml](../../../../SIPBuilder/pom.xml)
 2. Third party tools in modified and unmodified version which are delivered as part of this git source code repository
 3. Third party tools which are not delivered as part of this git source code repository and are considered optional. With help of these 
