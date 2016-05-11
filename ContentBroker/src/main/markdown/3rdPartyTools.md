@@ -13,6 +13,8 @@ SoX | v14.3.2 | | |
 Ghostscript |9.04|PDF conversion| |
 pdfbox ||||
 bagit |4.8|||
+grails |2.3.8|||
+groovy |2.3|||
 
 
 
