@@ -75,8 +75,7 @@ class FormatMappingController {
 		def user = springSecurityService.currentUser
 		def relativeDir = user.getShortName() + "/incoming"
 		
-		def baseFolder = grailsApplication.config.localNode.ingestAreaRootPath + "/" + relativeDir
-		
+		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
 		def msg
 		def baseDir
 		def incomingXmlFile
