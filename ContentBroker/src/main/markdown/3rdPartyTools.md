@@ -8,7 +8,7 @@ The tools used in 2./3. are listed in the following table:
 
 | Tool | Version | Description | License|
 |---|---|---|---|
-JHOVE | Rev. 1.9b3 | Format Validation| GNU Lesser General Public License (LGPL). |
+JHOVE | Rev. 1.9b3 | Format Extraction and Validation| GNU Lesser General Public License (LGPL). |
 FIDO | v1.3.1 | Format identification | Apache License Version 2.0, January 2004 |
 FFmpeg| 0.6.5 | Video codec extracion | GNU Lesser General Public License (LGPL) version 2.1 |
 tar | | unpacking/packing | GNU General Public License v3 or later |
