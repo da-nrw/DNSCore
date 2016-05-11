@@ -12,6 +12,7 @@ ImageMagick |  6.7.8-10 | | |
 SoX | v14.3.2 | | |
 Ghostscript |9.04|PDF conversion| |
 pdfbox ||||
+bagit |4.8|||
 
 
 
