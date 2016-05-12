@@ -26,6 +26,7 @@ Die Dokumentation ist Teil des Git-Repository der DNSCore und wird gemeinsam mit
 * Retrieval ([deutsch](usage_retrieval.de.md))
 * RESTful-API ([english](RESTFul-API.md))
 * Konfigurierte Konversionen([deutsch](operations_format_conversion_current_configuration.de.md))
+* Metadatenverarbeitung ([deutsch](specification_metadata.de.md)
 
 ##Für Administratoren
 
