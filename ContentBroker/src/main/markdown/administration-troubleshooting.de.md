@@ -102,6 +102,10 @@ manuell mit einer abschließenden 8 versehen werden, um dem System zu signalisie
 falls dieser erfolgreich ist, die Action automatisch zurück in der 0er Status gesetzt. D.h. dass sie sich in der Warteschlange zur Bearbeitung 
 befindet.
 
+# Aufräumen
+
+Die DA-Web zeigt immer dort, wo eine entsprechende Aktion zulässig und möglich ist, dem Knoteadmin die möglichen Optionen an. 
+
 ### Der "Objekt Löschen"-Button. Automatisiertes Löschen von Paketen.
 
 ![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/Delete_button.PNG)
@@ -223,10 +227,3 @@ Sollen diese Objekte auch von den Medien gelöscht werden, müssen diese auch au
 * 950	RetrievalDeliveredDIPAction	Warten auf Abholung durch Contractor
 * 960	PostRetrievaAction	Wurde abgeholt, vorbereiten auf Löschung DIP
 * 5000	AuditAction	Überprüfung des AIP
-
-
-
-
-
-
-
