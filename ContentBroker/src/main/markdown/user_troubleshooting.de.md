@@ -52,3 +52,6 @@ Relevant für den Abgebenden ist der Fehler xx4 (Userfehler), welcher auf ein Pr
 
 Die anderen Fehlercodes sind eher seltener und sind Bereinigungsaufgaben des Knotenbetriebers. 
 
+# Fehlerbehandlung als Administrator
+
+Handlungsanweisungen für [Admins](./administration-troubleshooting.de.md)
