@@ -19,13 +19,14 @@ Die gesamte Dokumentation (auch hier nicht explizit verlinkte Texte) findet sich
 Die Dokumentation ist Teil des Git-Repository der DNSCore und wird gemeinsam mit der Codebasis versioniert. Auf diese Weise wird der Stand der Dokumentation synchron zum Stand der Codebasis gehalten. Die Links sind, soweit es möglich ist, relativ, damit ein Checkout einer beliebigen Version selbstreferentiell und konsistent ist. Im Falle der Grafiken ist diese Vorgehensweise hinsichtlich der Darstellung in GitHub nicht möglich (wegen der Referenzen auf raw-Dateien). Hier finden sich die Quellen der Grafiken aber immer im ContentBroker/src/main/markdown Verzeichnis wieder.
 
 ##Dokumentation für Anwender der Software##
+
 * Ingest ([deutsch](usage_ingest.de.md))
 * Retrieval ([deutsch](usage_retrieval.de.md))
 * RESTful-API ([english](RESTFul-API.md))
 
-### Administration  
+## Administration  
 
-####Langzeitarchivierung mit DNSCore verstehen
+###Langzeitarchivierung mit DNSCore verstehen
 
 Hier befinden sich alle Dokus, die Grundkonzepte der Langzeitarchivierung im Kontext des Einsatzes von DNSCore beschreiben.
 
@@ -35,7 +36,7 @@ Hier befinden sich alle Dokus, die Grundkonzepte der Langzeitarchivierung im Kon
 * Dokumentation der Metadaten-Verarbeitung ([deutsch](specification_metadata.de.md) | [englisch](specification_publication_metadata.md))
 * Delta Feature - Beschreibung ([deutsch](the_delta_feature.de.md) | [english](the_delta_feature.md))
 
-#### Bereitstellungen von Dienstleistungen an Endnutzer
+### Bereitstellungen von Dienstleistungen an Endnutzer
 
 Dieser Bereich umfasst Dokumentationen, die sich damit beschäftigen, wie mithilfe eines Verbundes von Knoten, auf denen DNSCore läuft, Langzeitarchivierungsfunktionalität für Endkunden bereitgestellt werden kann.
 
@@ -45,7 +46,7 @@ Dieser Bereich umfasst Dokumentationen, die sich damit beschäftigen, wie mithil
 * Formatkonversion mit DNSCore ([deutsch](operations_format_conversion.de.md))
 * Formatmodul ([englisch](format_module.md))
 
-#### Basiskonfiguration
+### Basiskonfiguration
 
 Die hier untergebrachten Dokumentationen gelten generell für den Einsatz von DNSCore.
 
@@ -54,7 +55,7 @@ Die hier untergebrachten Dokumentationen gelten generell für den Einsatz von DN
 * Speicherbereiche - Referenzdokumentation ([english](processing_stages.md))
 * Der DNSCore Installer ([deutsch](administration-the-installer.de.md) | [english](administration-the-installer.md))
 
-#### Erweiterte Konfiguration
+### Erweiterte Konfiguration
 
 Die hier untergebrachten Dokumentationen setzen den Einsatz von DNSCore unter bestimmten Bedingungen voraus. Etwa die Anbindung an bestimmte externe Systeme, deren Bedingungen der Anbindung hier genauer beschrieben sind.
 
@@ -63,9 +64,9 @@ Die hier untergebrachten Dokumentationen setzen den Einsatz von DNSCore unter be
 * Installation von PrOAI für DNSCore ([deutsch](install_proai.md))
 * Installing iRODS for DNSCore ([englisch](installation_irods.md))
 
-### Dokumentation für Entwickler
+## Dokumentation für Entwickler
 
-#### Funktionalitäten der DNSCore erweitern
+### Funktionalitäten der DNSCore erweitern
 
 Um DNSCore effektiv bauen, testen und ausliefern zu können, sollten die folgenden Dokus gelesen werden:
 
@@ -76,5 +77,3 @@ Um DNSCore effektiv bauen, testen und ausliefern zu können, sollten die folgend
 * Systemkomponenten im Überblick ([english](components_connectors.md))
 * 3rd Party Module ([english](3rdPartyTools.md))
 * Metadata Workflow - Übersicht ([english](metadata_workflow.md))
-
-
