@@ -1,9 +1,12 @@
 # Fehlerhandling durch Verwender der Software
 
 Durch Klick auf die Bearbeitungsübersicht können Informationen zu der Verarbeitung der SIP gewonnen werden. 
-Die Rückmeldung geschieht durch eine Textangabe in der DA-Web GUI und durch einen Fehlercode, der in der Regel eine dreistellige Ziffer ist. die gleiche Information liefert die RESTFul API. 
+Die Rückmeldung geschieht durch eine Textangabe in der DA-Web GUI und durch einen Fehlercode, der in der Regel eine dreistellige Ziffer ist. Die gleiche Information liefert die RESTFul API. 
 
 xx0 bedeutet "wartend", xx2: bezeichnet "arbeitend" - hingegen bezeichnen xx1,xx3,xx4,xx5,xx6,xx7,xx8 einen Fehler. 
+
+Alle Fehler werden in der Adminoberfläche mit entsprechenden Handlungsoptionen für den Knotenadmin hinterlegt. Dort wo diese Optionen nicht angezeigt werden, ist ggfs. eine genaue Fehleranalyse durch den Knotenadmin nötig. Bei einem XX4er Fehler ist eine Aktion durch den Einleifernden erforderlich. Eine Rücksetzung wird ncht zum Erfolg führen. 
+
 
 #### xx0 - WARTEND
 
