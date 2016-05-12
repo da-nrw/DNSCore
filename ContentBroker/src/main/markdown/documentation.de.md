@@ -12,7 +12,8 @@ Willkommen auf der Startseite der Dokumentation des DNSCore Softwarepakets! Dies
 
 Die gesamte Dokumentation (auch hier nicht explizit verlinkte Texte) findet sich unter 
 
-[DNSCore/ContentBroker/src/main/markdown/](../markdown),
+[DNSCore/ContentBroker/src/main/markdown/](../markdown)
+
 [DNSCore/DAWeb/doc](../../../../DAWeb/doc).
 
 **Vorbemerkung zur Dokumentation**
