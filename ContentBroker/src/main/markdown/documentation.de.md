@@ -6,8 +6,8 @@ Willkommen auf der Startseite der Dokumentation des DNSCore Softwarepakets! Dies
 
 **Überblick:**
 
-*[Zusammenfassung der verschiedenen Spezifikationen zu SIP/AIP/DIP/Delta-SIP](./specifications_DNS.md)*
-*[Zusammenfassung Leistungsmerkmale (Features) der Software](features.de.md)*
+**[Zusammenfassung der verschiedenen Spezifikationen zu SIP/AIP/DIP/Delta-SIP](./specifications_DNS.md)**
+**[Zusammenfassung Leistungsmerkmale (Features) der Software](features.de.md)**
 
 Die gesamte Dokumentation (auch hier nicht explizit verlinkte Texte) findet sich unter 
 [DNSCore/ContentBroker/src/main/markdown/](../markdown),
