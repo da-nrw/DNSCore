@@ -29,11 +29,11 @@ Rücklieferung Dissemination Information Package
 
 ## Rückmeldungen 
 
+* [RESTFul API](./RESTFul-API.md)
 * [Rückmeldungen des Systems](./feature_automated_queries.md)
 * [Fehlertypen und Status](./administration-troubleshooting.de.md)
-* [RESTFul API](./RESTFul-API.md)
 
-## Software von Drittanbietern
+## Software von Drittanbietern / verwendete Plugins
 
 * [externe Programme/Plugins](./3rdPartyTools.md)
 
