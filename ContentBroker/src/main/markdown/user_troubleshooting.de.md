@@ -30,7 +30,7 @@ Es wird kein Rollback durchgeführt.
 Daher muss der Knotenadministrator
 anschließend das Objekt löschen. Dazu gibt es den "SIP löschen"-Button.
 
-Genaue Angaben zu den Fehlercodes & Handlungsanweisungen, die ([hier nicht gelistet wurden](./administration-troubleshooting.de.md)
+Genaue Angaben zu den Fehlercodes & Handlungsanweisungen, die [hier nicht gelistet wurden](./administration-troubleshooting.de.md)
 
 # Antworten der Schnittstelle
 
