@@ -19,13 +19,13 @@ Die gesamte Dokumentation (auch hier nicht explizit verlinkte Texte) findet sich
 
 Die Dokumentation ist Teil des Git-Repository der DNSCore und wird gemeinsam mit der Codebasis versioniert. Auf diese Weise wird der Stand der Dokumentation synchron zum Stand der Codebasis gehalten. Die Links sind, soweit es möglich ist, relativ, damit ein Checkout einer beliebigen Version selbstreferentiell und konsistent ist. Im Falle der Grafiken ist diese Vorgehensweise hinsichtlich der Darstellung in GitHub nicht möglich (wegen der Referenzen auf raw-Dateien). Hier finden sich die Quellen der Grafiken aber immer im ContentBroker/src/main/markdown Verzeichnis wieder.
 
-##Dokumentation für Anwender der Software##
+##Für Anwender##
 
 * Ingest ([deutsch](usage_ingest.de.md))
 * Retrieval ([deutsch](usage_retrieval.de.md))
 * RESTful-API ([english](RESTFul-API.md))
 
-## Administration  
+##Für Administratoren
 
 ###Langzeitarchivierung mit DNSCore verstehen
 
