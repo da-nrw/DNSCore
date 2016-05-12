@@ -8,6 +8,7 @@ Spezifikationen zum Storage Information Package und den darin enthaltenen Dateie
 * [PREMIS Spezifikation](./specification_premis.md)
 * [Metadaten Spezifikation](./specification_metadata.de.md)
 * [Vergabe von Identifiern](./feature_identifier_assignment.md)
+* [Umgang mit Fehlern](./user_troubleshooting.de.md)
 
 ### Delta SIP
 
