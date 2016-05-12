@@ -1,7 +1,7 @@
 # Fehlerhandling durch Verwender der Software
 
 Durch Klick auf die Bearbeitungsübersicht können Informationen zu der Verarbeitung der SIP gewonnen werden. 
-Die Rückmeldung geschieht durch eine Textangabe in der DA-Web GUI und durch einen Fehlercode, der in der Regel eine dreistellige Ziffer ist. 
+Die Rückmeldung geschieht durch eine Textangabe in der DA-Web GUI und durch einen Fehlercode, der in der Regel eine dreistellige Ziffer ist. die gleiche Information liefert die RESTFul API. 
 
 xx0 bedeutet "wartend", xx2: bezeichnet "arbeitend" - hingegen bezeichnen xx1,xx3,xx4,xx5,xx6,xx7,xx8 einen Fehler. 
 
@@ -22,7 +22,7 @@ Die Zwei am Ende bedeutet, dass das Objekt gerade von der aktuell aktiven Action
 Je nach Größe und Komplexität des Pakets kann dieser Prozess einige Zeit dauern. Ob die Action tatsächlich arbeitet,
 kann anhand fortlaufender Logmeldungen im Objekt-Log-File nachgesehen werden. 
 
-#### xx4 - IHR PAKET WIRD NICHT AKTZEPTIERT, NEUEINLIEFERUNG NACH LÖSCHUNG MÖGLICH
+#### xx4 - IHR PAKET WIRD NICHT AKTZEPTIERT
 
 Die Vier am Ende des Staus bedeutet einen Userfehler. Zumeist aktzeptiert das DNS Ihre Daten zunächst nicht.  Sie bekommen in diesem Fall eine Email mit der entsprechenden Exception aus dem Object-Logfile. 
 Da dies bedeutet, dass die Eingangsdaten fehlerhaft sind. und berichtigt und neu eingespielt werden müssen. 
@@ -30,8 +30,7 @@ Es wird kein Rollback durchgeführt.
 Daher muss der Knotenadministrator
 anschließend das Objekt löschen. Dazu gibt es den "SIP löschen"-Button.
 
-Genaue Angaben zu den Fehlercodes, die hier nicht gelistet wurden:
-https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/administration-troubleshooting.de.md
+Genaue Angaben zu den Fehlercodes, die (hier nicht gelistet wurden [administration-troubleshooting.de.md])
 
 # Antworten der Schnittstelle
 
