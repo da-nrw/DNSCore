@@ -25,7 +25,7 @@ Die Zwei am Ende bedeutet, dass das Objekt gerade von der aktuell aktiven Action
 Je nach Größe und Komplexität des Pakets kann dieser Prozess einige Zeit dauern. Ob die Action tatsächlich arbeitet,
 kann anhand fortlaufender Logmeldungen im Objekt-Log-File nachgesehen werden. 
 
-#### xx4 - IHR PAKET WIRD NICHT AKTZEPTIERT
+#### xx4 - IHR PAKET WIRD NICHT AKZEPTIERT
 
 Die Vier am Ende des Staus bedeutet einen Userfehler. Zumeist aktzeptiert das DNS Ihre Daten zunächst nicht.  Sie bekommen in diesem Fall eine Email mit der entsprechenden Exception aus dem Object-Logfile. 
 Da dies bedeutet, dass die Eingangsdaten fehlerhaft sind. und berichtigt und neu eingespielt werden müssen. 
