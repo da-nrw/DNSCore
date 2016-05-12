@@ -104,7 +104,8 @@ befindet.
 
 # Aufräumen
 
-Die DA-Web zeigt immer dort, wo eine entsprechende Aktion zulässig und möglich ist, dem Knoteadmin die möglichen Optionen an. 
+Die DA-Web zeigt immer dort, wo eine entsprechende Aktion zulässig und möglich ist, dem Knotenadmin die möglichen Optionen an. 
+Grundsätzlich sind Status <=400 immer im Gesamten Rücksetzbar. Bei Status >440 nur in den vorherigen 0 er Status. Eine Gesamtrücksetzung ist dabei verboten, weil die Objekte schon archiviert sind. 
 
 ### Der "Objekt Löschen"-Button. Automatisiertes Löschen von Paketen.
 
