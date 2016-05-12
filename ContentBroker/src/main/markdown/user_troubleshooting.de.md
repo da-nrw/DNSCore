@@ -37,14 +37,14 @@ https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/ad
 
 Analog reagiert die RESTFul Schnittstelle
 
-xx0: „package in progress waiting : (<code>)“ 
-xx2: „package in progress working : (<code>)“
-xx3: „package in progress error : (<code>)“
-xx4: „package in progress error : (<code>)“
-xx5: „package in progress error : (<code>)“
-xx6: „package in progress error : (<code>)“
-xx7: „package in progress error : (<code>)“
-xx8: „package in progress error : (<code>)“
+    xx0: „package in progress waiting : (<code>)“ 
+    xx2: „package in progress working : (<code>)“
+    xx3: „package in progress error : (<code>)“
+    xx4: „package in progress error : (<code>)“
+    xx5: „package in progress error : (<code>)“
+    xx6: „package in progress error : (<code>)“
+    xx7: „package in progress error : (<code>)“
+    xx8: „package in progress error : (<code>)“
 
 Relevant für den Abgebenden ist der Fehler xx4 (Userfehler), welcher auf ein Problem mit den abgegebenen Daten hinweist. In diesem Falle ist eine Herausnahme aus dem Worflow durch den zuständigen Knotenadmin zu veranlassen und die Datei (je nach vorliegendem Fehler) zu berichtigen und dann erneut zu senden.
 
