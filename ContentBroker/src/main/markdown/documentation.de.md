@@ -27,6 +27,7 @@ Die Dokumentation ist Teil des Git-Repository der DNSCore und wird gemeinsam mit
 * Anbindung von Fachverfahren (RESTful) ([english](RESTFul-API.md))
 * Konfigurierte Konversionen([deutsch](operations_format_conversion_current_configuration.de.md))
 * Metadatenverarbeitung ([deutsch](specification_metadata.de.md))
+* Fehlerbehebung ([deutsch](user_troubleshooting.de.md)
 
 ##Für Administratoren
 
