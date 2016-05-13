@@ -68,8 +68,6 @@ Die hier untergebrachten Dokumentationen setzen den Einsatz von DNSCore unter be
 
 ## Dokumentation für Entwickler
 
-### Funktionalitäten der DNSCore erweitern
-
 Um DNSCore effektiv bauen, testen und ausliefern zu können, sollten die folgenden Dokus gelesen werden:
 
 * Bauen und Testen der DNSCore ([englisch](development_deploy.md))
