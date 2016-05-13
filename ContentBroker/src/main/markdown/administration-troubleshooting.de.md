@@ -11,6 +11,15 @@ Starten Sie in diesem Zusammenhang nicht einfach "neu" - bitte analysieren Sie z
 
 ## Das ganze System "hängt"
 
+Bitte untersuchen Sie, ob die folgenden Bedingungen zutreffen
+
+1. Zuviele 2er Actions: Das System hat eine Konfiguration, nicht zu viele Actions des gleichen Typs zu verarbeiten. Üblicherweise sind dies max. drei des gleichen Typs.
+2. Der CB läuft grundsätzlich. Prüfen Sie ob der CB noch Logmeldungen schreibt.
+3. Noch genügend Speicherplatz auf WorkingArea? Üblicherweise stoppt der CB seine Verabreitung wenn nicht ausreichend Speicherplatz frei ist. Den Wert dafür legt der Knotenadmin fest siehe beans.xml.
+4. Diagnostics läuft?
+
+### Diagnostics
+
 Diagnostics Modus in ContentBroker - Smoke test ist auszühren
 Bei Auftreten von massenhaften Fehlern oder gar keiner erkennbaren Verabreitung in der Paketverarbeitung sollte immer zuerst der sogenannte Smoke Test durchgeführt werden.
 
@@ -22,13 +31,6 @@ java -jar ContentBroker.jar diagnostics
 Der Test überprüft eine Reihe von Verbindungen, z.b. Datenbank-Verbindung, iRODS, Fedora usw.
 
 Erst wenn der Test positiv ausfällt und der Fehlerstatus in der Paketverarbeitung immer noch bestehen bleibt , macht es Sinn, die Fehlersuche fortzusetzen. 
-
-Bitte untersuchen Sie, ob die folgenden Bedingungen zutreffen
-
-1. Zuviele 2er Actions: Das System hat eine Konfiguration, nicht zu viele Actions des gleichen Typs zu verarbeiten. Üblicherweise sind dies max. drei des gleichen Typs.
-2. Der CB läuft grundsätzlich. Prüfen Sie ob der CB noch Logmeldungen schreibt.
-3. Noch genügend Speicherplatz auf WorkingArea? Üblicherweise stoppt der CB seine Verabreitung wenn nicht ausreichend Speicherplatz frei ist. Den Wert dafür legt der Knotenadmin fest siehe beans.xml.
-4. Diagnostics läuft?
 
 ## Einzelne Pakete hängen
 
@@ -113,21 +115,22 @@ Grundsätzlich sind Status <=400 immer im Gesamten rücksetzbar. Bei Status >440
 
 
 
-## Der "Objekt Löschen"-Button. Automatisiertes Löschen von Paketen.
+## Der "Objekt Löschen"-Button. Automatisiertes Löschen von Paketen. (Status 800)
 
 ![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/Delete_button.PNG)
 
 Das Betätigen des Buttons vom Admin führt zur Löschung des Objekts sowohl aus der Datenbank als auch vom Speicher. 
 Der Orig_name kann somit wieder verwendet werden.
 Sollte es sich beim eingelieferten Paket um ein Delta handeln, wird nur das neuste Paket gelöscht. Das Originalobjekt bleibt erhalten.
+Der Contractor bekommt eine EMail vom System
 
-## Der "Gesamte Workflow zurücksetzen"-Button - Rollback
+## Der "Gesamter Workflow zurücksetzen"-Button - Rollback (Status 600)
 
-TODO screenshot
+Der gesamte Workflow für das Objekt wird wiederholt. Nur gültig für Status <= 400.
 
 ## Der "Zurücksetzen Button - Retry
 
-TODO screenshot
+Bestimmte Actions können isoliert zurückgesetzt werden auf den vorherigen 0er Status. 
 
 # Automatisches Anhalten der ActionFactory
 
