@@ -6,7 +6,7 @@ Starten Sie in diesem Zusammenhang nicht einfach "neu" - bitte analysieren Sie z
 
 **Überlick gewinnen**
 
-1. Einsicht in die Adminoberfläche, Anmeldung als Knotenadmin. Dort laufen Systemmeldungen auf
+1. Einsicht in die [DA-Web Adminoberfläche](../../../../DAWeb/doc/contentBroker_administration.md), Anmeldung als Knotenadmin. Dort laufen Systemmeldungen auf
 2. Logfileanalyse
 
 ## Das ganze System "hängt"
