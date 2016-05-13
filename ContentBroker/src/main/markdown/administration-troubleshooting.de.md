@@ -14,11 +14,11 @@ Dabei ist die Reihenfolge der genannten Schritte entscheidend. Es macht keinen S
 Bei Auftreten von Fehlern in der Paketverarbeitung sollte immer zuerst der sogenannte Smoke Test durchgeführt werden.
 
 ```bash
-cd DSNCore/Contentbroker
+cd Contentbroker
 java -jar ContentBroker.jar diagnostics
 ```
 
-Der Test Überprüft eine Reihe von Verbindungen, z.b. Datenbank-Verbindung, iRODS, Fedora usw.
+Der Test überprüft eine Reihe von Verbindungen, z.b. Datenbank-Verbindung, iRODS, Fedora usw.
 
 Erst wenn der Test positiv ausfällt und der Fehlerstatus in der Paketverarbeitung immer noch bestehen bleibt , macht es Sinn, die Fehlersuche fortzusetzen. 
 
