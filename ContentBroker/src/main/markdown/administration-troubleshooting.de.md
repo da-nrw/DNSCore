@@ -57,7 +57,7 @@ Die DA-Web zeigt immer dort, wo eine entsprechende Aktion zulässig und möglich
 Grundsätzlich sind Status <=400 immer im Gesamten rücksetzbar. Bei Status >440 nur in den vorherigen 0 er Status. Eine Gesamtrücksetzung ist dabei verboten, weil die Objekte schon archiviert sind. 
 
 |Status| Aktion | Beschreibung |Fehlerbehandlung|
-|---|---|---|
+|---|---|---|---|
 110 |IngestUnpackAction | Auspacken & Vollständigkeitstests | ingest.log / object.log prüfen, unkritisch Rücksetzung auf 110 |
 120 |IngestRestructureObjectAction |Objekt- oder Deltaerkennung, Typerkennung | object.log unkritisch Rücksetzung auf 120 |
 130 |IngestValidateMetadataAction |	Validierung der Metadaten | object. log, unkritisch Rücksetzung auf 600 |
