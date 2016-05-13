@@ -1,9 +1,12 @@
 DNSCore             
 ========      
 
-Documentation in german [Dokumentation](ContentBroker/src/main/markdown/documentation.de.md)
+[Dokumentation](ContentBroker/src/main/markdown/documentation.de.md)
 
 (Eine Liste der Features in deutsch finden sie [hier](ContentBroker/src/main/markdown/features.de.md))
+
+-----
+
 
 The Core System of the DA-NRW Software Suite.      
   
