@@ -31,6 +31,7 @@ Die Dokumentation ist Teil des Git-Repository der DNSCore und wird gemeinsam mit
 
 ##Für Administratoren
 
+* Fehleranalyse und Fehlerbehebung ([deutsch](administration-troubleshooting.de.md))
 * Formatidentifikation mit DNSCore ([deutsch](operations_format_identification.de.md))
 * Formatkonversion mit DNSCore ([deutsch](operations_format_conversion.de.md))
 * Formatmodul ([englisch](format_module.md))
