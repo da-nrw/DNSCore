@@ -4,7 +4,7 @@ In bestimmten Fällen kann es zu einzelnen Paketfehlern kommen, die sich durch e
 In besonderen Ausahmesituationen kann es passieren, dass das System scheinbar "hängt" und nicht den erwarteten Durchsatz zeigt.
 Starten Sie in diesem Zusammenhang nicht einfach "neu" - bitte analysieren Sie zunächst das Fehlerbild. 
 
-**Überlick gewinnen**
+**Überlick gewinnen:**
 
 Einsicht in die [DA-Web Adminoberfläche](../../../../DAWeb/doc/contentBroker_administration.md), Anmeldung als Knotenadmin. Dort laufen alle Systemmeldungen auf.
 
