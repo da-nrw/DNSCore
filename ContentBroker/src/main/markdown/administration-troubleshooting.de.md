@@ -6,10 +6,10 @@ Starten Sie in diesem Zusammenhang nicht einfach "neu" - bitte analysieren Sie z
 
 **Überlick gewinnen**
 
-1. Einsicht in die Adminoberfläche, Anmeldung als Knotenadmin. Dort laufen Systemmeldungen auf,
+1. Einsicht in die Adminoberfläche, Anmeldung als Knotenadmin. Dort laufen Systemmeldungen auf
 2. Logfileanalyse
 
-## Das ganze System hängt
+## Das ganze System "hängt"
 
 Diagnostics Modus in ContentBroker - Smoke test ist auszühren
 Bei Auftreten von massenhaften Fehlern oder gar keiner erkennbaren Verabreitung in der Paketverarbeitung sollte immer zuerst der sogenannte Smoke Test durchgeführt werden.
@@ -56,7 +56,7 @@ Die Zuordnung der Status zu den Actions kann jederzeit anhand der ersten beiden 
 Die DA-Web zeigt immer dort, wo eine entsprechende Aktion zulässig und möglich ist, dem Knotenadmin die möglichen Optionen an. 
 Grundsätzlich sind Status <=400 immer im Gesamten rücksetzbar. Bei Status >440 nur in den vorherigen 0 er Status. Eine Gesamtrücksetzung ist dabei verboten, weil die Objekte schon archiviert sind. 
 
-|Üblicher Status| Aktion | Fehlerbehandlung|
+|Status| Aktion | Beschreibung |Fehlerbehandlung|
 |---|---|---|
 110 |IngestUnpackAction | Auspacken & Vollständigkeitstests | ingest.log / object.log prüfen, unkritisch Rücksetzung auf 110 |
 120 |IngestRestructureObjectAction |Objekt- oder Deltaerkennung, Typerkennung | object.log unkritisch Rücksetzung auf 120 |
