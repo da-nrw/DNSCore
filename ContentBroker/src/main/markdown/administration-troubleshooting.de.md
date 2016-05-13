@@ -4,7 +4,7 @@ In bestimmten Fällen kann es zu einzelnen Paketfehlern kommen, die sich durch e
 In besonderen Ausahmesituationen kann es passieren, dass das System scheinbar "hängt" und nicht den erwarteten Durchsatz zeigt.
 Starten Sie in diesem Zusammenhang nicht einfach "neu" - bitte analysieren Sie zunächst das Fehlerbild. 
 
-**Überlick gewinnen
+**Überlick gewinnen**
 
 1. Einsicht in die Adminoberfläche, Anmeldung als Knotenadmin. Dort laufen Systemmeldungen auf,
 2. Logfileanalyse
@@ -39,70 +39,39 @@ Der Status ist definiert als eine dreistellige dezimale Zahl. Dabei kodieren die
 
 Die Zuordnung der Status zu den Actions kann jederzeit anhand der ersten beiden Ziffern sowie der oben angeführten beans nachvollzogen werden. Die Interpretation der letzten Ziffer des Status wird im folgenden erläutert.
 
-|Code|Kurztext| Beschreibung|
-|---|---|---|
-|xx0|WAITING| Die Null am Ende des Status bedeutet, dass das Objekt sich in einem konsistenten, gemäß der DNS-Spezifikation wohlgeformten Zustand befindet und aktuell von keiner Action verarbeitet wird. Das Objekt wartet darauf, von einer passenden Action (Status = Anfangsstatus der Action) abgeholt zu werden.|
-
-
-#### xx1 - ERROR_PROPERLY_HANDLED
-
-Jeder Status, der mit einer Eins endet, kennzeichnet einen Fehler in der Verarbeitung. 
+|Code|Kurztext| Beschreibung|Aktion
+|---|---|---|---|
+|xx0|WAITING| Die Null am Ende des Status bedeutet, dass das Objekt sich in einem konsistenten, gemäß der DNS-Spezifikation wohlgeformten Zustand befindet und aktuell von keiner Action verarbeitet wird. Das Objekt wartet darauf, von einer passenden Action (Status = Anfangsstatus der Action) abgeholt zu werden.| |
+|xx1|ERROR_PROPERLY_HANDLED| Jeder Status, der mit einer Eins endet, kennzeichnet einen Fehler in der Verarbeitung. 
 Desweiteren bedeutet die Eins, dass das Objekt in einen konsistenten Zustand (xx1-1) zurückgeführt werden konnte. 
-Demnach korrspondieren beispielsweise die Status 120 und 121 zu ein und demselben physischen File auf dem Dateisystem sowie in der Datenbank.  
-Der Administrator kann das Objekt zurücksetzen mittels Klick auf den Button "Zurücksetzen"
-
-### xx2 - WORKING
-
-Die Zwei am Ende bedeutet, dass das Objekt gerade von der aktuell aktiven Action bearbeitet wird. 
+Demnach korrspondieren beispielsweise die Status 120 und 121 zu ein und demselben physischen File auf dem Dateisystem sowie in der Datenbank. |
+Der Administrator kann das Objekt zurücksetzen mittels Klick auf den Button "Zurücksetzen" |
+|xx2 | WORKING| Die Zwei am Ende bedeutet, dass das Objekt gerade von der aktuell aktiven Action bearbeitet wird. 
 Je nach Größe und Komplexität des Pakets kann dieser Prozess einige Zeit dauern. Ob die Action tatsächlich arbeitet,
-kann anhand fortlaufender Logmeldungen im Objekt-Log-File nachgesehen werden.
-
-### xx3 - ERROR_BAD_ROLLBACK
-
-Die drei am Ende bedeutet, dass ein Rollback nicht durchgeführt werden konnte, entweder, weil er nicht implementiert ist, oder
-weil ein Fehler während der Durchführung des Rollbacks aufgetreten ist. 
-Zwischen 123 und 323 kann der Administrator das Objekt per Button "Gesamten Workflow zurücksetzen". 
-
-### xx4 - USER_ERROR
-
-Die Vier am Ende des Staus bedeutet einen Userfehler. Der User bekommt in diesem Fall eine Email mit der entsprechenden Exception aus dem Object-Logfile. 
-Darüber hinaus erscheint in der DAWeb neben dem Fehlerstatus ein neuer Button. 
-
-Da dies bedeutet, dass die Eingangsdaten fehlerhaft sind. und berichtigt und neu eingespielt werden müssen. 
-Es wird kein Rollback durchgeführt.
+kann anhand fortlaufender Logmeldungen im Objekt-Log-File nachgesehen werden.| |
+| xx3 | ERROR_BAD_ROLLBACK | Die drei am Ende bedeutet, dass ein Rollback nicht durchgeführt werden konnte, entweder, weil er nicht implementiert ist, oder
+weil ein Fehler während der Durchführung des Rollbacks aufgetreten ist. | Zwischen 123 und 323 kann der Administrator das Objekt per Button "Gesamten Workflow zurücksetzen"|
+| xx4 | USER_ERROR | Die Vier am Ende des Staus bedeutet einen Userfehler. Der User bekommt in diesem Fall eine Email mit der entsprechenden Exception aus dem Object-Logfile.
+Da dies bedeutet, dass die Eingangsdaten fehlerhaft sind und vom Einliefernden berichtigt und neu eingespielt werden müssen. 
+Es wird kein Rollback durchgeführt. |
 Daher muss der Administrator
-anschließen das Objekt löschen. Dazu gibt es den "Objekt löschen"-Button.
-
-### xx5 - ERROR_MODEL_INCONSISTENT
-
-Eine fünf am Ende bedeutet, dass ein kritischer Fehler bezüglich des Datenmodells aufgetreten ist. Dies kann mit der Verknüpfung zwischen Actions, 
+anschließend das Objekt löschen. Dazu gibt es den "Objekt löschen"-Button.|
+|xx5 | ERROR_MODEL_INCONSISTENT | Eine fünf am Ende bedeutet, dass ein kritischer Fehler bezüglich des Datenmodells aufgetreten ist. Dies kann mit der Verknüpfung zwischen Actions, 
 Jobs, Usern und Objekten bzw. deren Eigenschaften zusammenhängen. Im Falle solcher Fehler bitten wir Nutzer der Software, 
 sich direkt an die Entwickler zu wenden, da diese Kategorie von Fehlern vergleichsweise selten auftritt und genauster Analyse bedarf.
-Im Normalfall kann die Inkonsistenz datenbankseitig bereinigt werden und per "Zurücksetzen"- bzw. "Gesamten Workflow zurücksetzen"- 
-Button zurückgesetzt werden.
-
-### xx6 - ERROR_PRECONDITIONS_NOT_MET
-
-Eine sechs am Ende bedeutet, dass die Eingangsbedingungen für die Bearbeitung eines Paketes in einem bestimmten Status nicht gegeben sind. 
-Dass heisst, dass die dem Status entsprechende Action das Paket nicht so vorfindet, wie sie es benötigt, um es ordnungsgemäß verarbeiten zu können. 
-Das Paket kann in  solch einem Fall lediglich gelöscht werden durch Klick auf den "Objekt Löschen"-Button bzw. zurückgerollt durch den 
+|Im Normalfall kann die Inkonsistenz datenbankseitig bereinigt werden und per "Zurücksetzen"- bzw. "Gesamten Workflow zurücksetzen"- 
+Button zurückgesetzt werden.|
+|xx6 | ERROR_PRECONDITIONS_NOT_MET | Eine sechs am Ende bedeutet, dass die Eingangsbedingungen für die Bearbeitung eines Paketes in einem bestimmten Status nicht gegeben sind. 
+Dass heisst, dass die dem Status entsprechende Action das Paket nicht so vorfindet, wie sie es benötigt, um es ordnungsgemäß verarbeiten zu können. | Das Paket kann in  solch einem Fall lediglich gelöscht werden durch Klick auf den "Objekt Löschen"-Button bzw. zurückgerollt durch den 
 Button "Gesamten Workflow zurücksetzen." 
 Solcherlei Fehler können z.B. durch fehlerhaft implementierte Rollbacks entstehen.
-Im Falle eines solchen Fehlers sollten die Entwickler kontaktiert werden.
-
-### xx7 - ERROR_BAD_CONFIGURATION
-
-Konfigurationsfehler. Sollte nur während der Entwicklung oder Einrichtungsphase eines Systems auftreten. Ein End-To-End Test eines Paketes
-auf einem Knoten während der Einrichtungsphase wird alle potentiellen 7er Status aufdecken. Nach Behebung des Zurücksetzen Buttons kann der Administrator
-das Paket wie gewohnt per "Zurücksetzen"-Button zurücksetzen.
-
-
-### xx8 - UP_TO_ROLLBACK
-
-Actions, welche sich durch einen jähen Abruch des ContentBroker in undefinierten Zuständen befinden, können vom Gesamtsystem-Administrator
+Im Falle eines solchen Fehlers sollten die Entwickler kontaktiert werden.|
+|xx7 | ERROR_BAD_CONFIGURATION | Konfigurationsfehler. Sollte nur während der Entwicklung oder Einrichtungsphase eines Systems auftreten. Ein End-To-End Test eines Paketes
+auf einem Knoten während der Einrichtungsphase wird alle potentiellen 7er Status aufdecken.| Nach Behebung des Fehlers kann mittels des Zurücksetzen Buttons das Paket wieder aufnehmen.
+|xx8| UP_TO_ROLLBACK | Actions, welche sich durch einen jähen Abruch des ContentBroker in undefinierten Zuständen befinden, können vom Gesamtsystem-Administrator
 manuell mit einer abschließenden 8 versehen werden, um dem System zu signalisieren, dass der Rollback nachgeholt werden muss. Nach dem Rollback wird, 
 falls dieser erfolgreich ist, die Action automatisch zurück in der 0er Status gesetzt. D.h. dass sie sich in der Warteschlange zur Bearbeitung 
-befindet.
+befindet.||
 
 ## Genaue Beschreibung aller Job-Status
 
