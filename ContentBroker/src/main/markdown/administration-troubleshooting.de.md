@@ -39,9 +39,9 @@ Der Status ist definiert als eine dreistellige dezimale Zahl. Dabei kodieren die
 
 Die Zuordnung der Status zu den Actions kann jederzeit anhand der ersten beiden Ziffern sowie der oben angeführten beans nachvollzogen werden. Die Interpretation der letzten Ziffer des Status wird im folgenden erläutert.
 
-|Code|Kurztext| Beschreibung|Aktion
+|Code|Kurztext|Beschreibung|Aktion
 |---|---|---|---|
-|xx0|WAITING| Die Null am Ende des Status bedeutet, dass das Objekt sich in einem konsistenten, gemäß der DNS-Spezifikation wohlgeformten Zustand befindet und aktuell von keiner Action verarbeitet wird. Das Objekt wartet darauf, von einer passenden Action (Status = Anfangsstatus der Action) abgeholt zu werden.| |
+|xx0|WAITING| Die Null am Ende des Status bedeutet, dass das Objekt sich in einem konsistenten, gemäß der DNS-Spezifikation wohlgeformten Zustand befindet und aktuell von keiner Action verarbeitet wird. Das Objekt wartet darauf, von einer passenden Action (Status = Anfangsstatus der Action) abgeholt zu werden.| bla |
 |xx1|ERROR_PROPERLY_HANDLED| Jeder Status, der mit einer Eins endet, kennzeichnet einen Fehler in der Verarbeitung. 
 Desweiteren bedeutet die Eins, dass das Objekt in einen konsistenten Zustand (xx1-1) zurückgeführt werden konnte. 
 Demnach korrspondieren beispielsweise die Status 120 und 121 zu ein und demselben physischen File auf dem Dateisystem sowie in der Datenbank. | Der Administrator kann das Objekt zurücksetzen mittels Klick auf den Button "Zurücksetzen" |
