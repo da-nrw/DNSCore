@@ -23,6 +23,13 @@ Der Test überprüft eine Reihe von Verbindungen, z.b. Datenbank-Verbindung, iRO
 
 Erst wenn der Test positiv ausfällt und der Fehlerstatus in der Paketverarbeitung immer noch bestehen bleibt , macht es Sinn, die Fehlersuche fortzusetzen. 
 
+Bitte untersuchen Sie, ob die folgenden Bedingungen zutreffen
+
+1. Zuviele 2er Actions: Das System hat eine Konfiguration, nicht zu viele Actions des gleichen Typs zu verarbeiten. Üblicherweise sind dies max. drei des gleichen Typs.
+2. Der CB läuft grundsätzlich. Prüfen Sie ob der CB noch Logmeldungen schreibt.
+3. Noch genügend Speicherplatz auf WorkingArea? Üblicherweise stoppt der CB seine Verabreitung wenn nicht ausreichend Speicherplatz frei ist. Den Wert dafür legt der Knotenadmin fest siehe beans.xml.
+4. Diagnostics läuft?
+
 ## Einzelne Pakete hängen
 
 Die Datenverarbeitung in DNSCore ist in kleine logische in sich abgeschlossene Einheiten – Actions – unterteilt. Jeder Workflow, ob Einlieferung ([ingest] (https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/resources/META-INF/beans-workflow.ingest.xml)), das Wiederabrufen ([retrieval] (https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/resources/META-INF/beans-workflow.retrieval.xml)) oder Präsentation ([presentation] (https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/resources/META-INF/beans-workflow.presentation.xml)) besteht aus einer festgelegten Abfolge verschiedener Actions.
