@@ -54,35 +54,40 @@ Die Zuordnung der Status zu den Actions kann jederzeit anhand der ersten beiden 
 ## Genaue Beschreibung aller Job-Status
 
 Die DA-Web zeigt immer dort, wo eine entsprechende Aktion zulässig und möglich ist, dem Knotenadmin die möglichen Optionen an. 
-Grundsätzlich sind Status <=400 immer im Gesamten rücksetzbar. Bei Status >440 nur in den vorherigen 0 er Status. Eine Gesamtrücksetzung ist dabei verboten, weil die Objekte schon archiviert sind. 
+
+**Die DA-Web Adminmaske ist einer Rücksetzung über die Queue-Tabelle vorzuziehen!**
+
+Grundsätzlich sind Status <=400 immer im Gesamten rücksetzbar. Bei Status >440 nur in den vorherigen 0 er Status. Eine Gesamtrücksetzung ist bei >=400 verboten, weil die Objekte schon archiviert sind. 
+
+**Jede andere Arbeitsweise gefährdet die Archivierung**
 
 |Status| Aktion | Beschreibung |Fehlerbehandlung|
 |---|---|---|---|
-110 |IngestUnpackAction | Auspacken & Vollständigkeitstests | ingest.log / object.log prüfen, unkritisch Rücksetzung auf 110 |
-120 |IngestRestructureObjectAction |Objekt- oder Deltaerkennung, Typerkennung | object.log unkritisch Rücksetzung auf 120 |
-130 |IngestValidateMetadataAction |	Validierung der Metadaten | object. log, unkritisch Rücksetzung auf 600 |
-140 |IngestScanAction | Formaterkennung | object. log, unkritisch Rücksetzung auf 600
-150 |RegisterURNAction | Register URN in DNS |	object. log, unkritisch Rücksetzung auf 600
-230 |IngestConvertAction | LZA Konvertierung | 	object. log, unkritisch Rücksetzung auf 600
-250 |IngestMetadataUpdateAction | Update der Metadaten in B Repräsentation für LZA | 	object. log, unkritisch Rücksetzung auf 600|
-260 |IngestCheckFormatAction|	Überprüfung der LZA Konvertierung| 	object. log, unkritisch Rücksetzung auf 600|
-270 |IngestCreatePremisAction|	Bearbeitung der PREMIS-Datei|	object. log, unkritisch Rücksetzung auf 600 |
-310 |IngestScanForPresentationAction | Formaterkennung für Präsentation auf Basis der LZA Formate| 	object. log, unkritisch Rücksetzung auf 600
-320 |IngestConvertForPresentationAction| Bildung der PIPs (Präsentationsderivate) | 	object. log, unkritisch Rücksetzung auf 600 |
-330 |IngestPreProcessForPresentationAction | Verschieben der PIPs | 	object. log, unkritisch Rücksetzung auf 600
-340 |IngestShortenFilenamesAction | Kürzung der PIP Dateinamen | 	object. log, unkritisch Rücksetzung auf 600
-350 |IngestPreUpdateMetadataAction | Update der Metadaten nach PIP Erstellung| 	object. log, unkritisch Rücksetzung auf 600
-360 |IngestPrepareSendToPresenterAction |Anmeldung der PIP bei IRODS zur Übertragung ans Pres. Repository | 	object. log, unkritisch Rücksetzung auf 600
-370 |IngestBuildAIPAction |AIP Erstellung| 	object. log, unkritisch Rücksetzung auf 370 oder 600
-380 |IngestTarAction|	AIP Erstellung als TAR-Archiv| 	object. log, unkritisch Rücksetzung auf 380 oder 600
-400 |ArchiveReplicationAction |	Ablage auf LZA Medien und Replikation | Grid.log, object.log prüfen, ggfs. rodsLog **NICHT zurückstellen!**
- 440|ArchiveReplicationCheckAction | Prüfung der Replikationen |  Grid.log, object.log prüfen, ggfs. rodsLog Gefahrlos auf 440 zurückstellbar ,**nicht 600!**
-540|FetchPIPsAction|Replikation der PIP an den Presentation Repository Knoten| Bitte auf 540 zurückstellen
-550|SendToPresenterAction|	Einspielung der PIP in das Presentation Repository | Bitte auf 550 zurückstellen
-560|CreateEDMAction| EDM Metadaten-Erstellung| Bitte auf 550 zurückstellen
-570|IndexESAction|Indizierung im Elasticsearch Suchindex | Bitte auf 550 zurückstellen
-580|FriendshipConversionAction|	Konvertierung auf anderem Knoten | Bitte auf 580 zurückstellen |
-600|RestartIngestWorkflowAction| Zurücksetzung des Ingestworkflows | Bitte auf 600 zurückstellen | 
+110 |IngestUnpackAction | Auspacken & Vollständigkeitstests | Rücksetzung auf 110 |
+120 |IngestRestructureObjectAction |Objekt- oder Deltaerkennung, Typerkennung | Rücksetzung auf 120 |
+130 |IngestValidateMetadataAction |	Validierung der Metadaten | Rücksetzung auf 600, Löschung 800 |
+140 |IngestScanAction | Formaterkennung |  Rücksetzung auf 600, Löschung auf 800
+150 |RegisterURNAction | Register URN in DNS |	Rücksetzung auf 600, Löschung auf 800
+230 |IngestConvertAction | LZA Konvertierung | 	Rücksetzung auf 600, Löschung auf 800
+250 |IngestMetadataUpdateAction | Update der Metadaten in B Repräsentation für LZA | Rücksetzung auf 600, Löschung auf 800|
+260 |IngestCheckFormatAction|	Überprüfung der LZA Konvertierung| Rücksetzung auf 600, Löschung auf 800 |
+270 |IngestCreatePremisAction|	Bearbeitung der PREMIS-Datei| Rücksetzung auf 600, Löschung auf 800 |
+310 |IngestScanForPresentationAction | Formaterkennung für Präsentation auf Basis der LZA Formate| Rücksetzung auf 600, Löschung auf 800
+320 |IngestConvertForPresentationAction| Bildung der PIPs (Präsentationsderivate) |  Rücksetzung auf 600, Löschung auf 800 |
+330 |IngestPreProcessForPresentationAction | Verschieben der PIPs | Rücksetzung auf 600, Löschung auf 800
+340 |IngestShortenFilenamesAction | Kürzung der PIP Dateinamen | Rücksetzung auf 600, Löschung auf 800
+350 |IngestPreUpdateMetadataAction | Update der Metadaten nach PIP Erstellung| Rücksetzung auf 600, Löschung auf 800
+360 |IngestPrepareSendToPresenterAction |Anmeldung der PIP bei IRODS zur Übertragung ans Pres. Repository | Rücksetzung auf 600, Löschung auf 800
+370 |IngestBuildAIPAction |AIP Erstellung| Rücksetzung auf 370 oder 600 oder 800 (Löschung)
+380 |IngestTarAction|	AIP Erstellung als TAR-Archiv| Rücksetzung auf 380 oder 600 oder 800 (Löschung)
+400 |ArchiveReplicationAction |	Ablage auf LZA Medien und Replikation | Grid.log  object.log prüfen, iRODS/server/log/rodsLog **NICHT zurückstellen!** **NICHT löSCHEN**
+ 440|ArchiveReplicationCheckAction | Prüfung der Replikationen |  Grid.log, object.log prüfen, ggfs. rodsLog Gefahrlos auf 440 zurückstellbar ,**NICHT zurückstellen!** **NICHT löSCHEN**
+540|FetchPIPsAction|Replikation der PIP an den Presentation Repository Knoten| Bitte auf 540 zurückstellen **NICHT 600!** **NICHT löSCHEN**
+550|SendToPresenterAction|	Einspielung der PIP in das Presentation Repository | Bitte auf 550 zurückstellen **NICHT 600!** **NICHT löSCHEN**
+560|CreateEDMAction| EDM Metadaten-Erstellung| Bitte auf 550 zurückstellen **NICHT 600!** **NICHT löSCHEN**
+570|IndexESAction|Indizierung im Elasticsearch Suchindex | Bitte auf 550 zurückstellen **NICHT 600!** **NICHT löSCHEN**
+580|FriendshipConversionAction|	Konvertierung auf anderem Knoten | Bitte auf 580 zurückstellen **NICHT 600!** **NICHT löSCHEN**|
+600|RestartIngestWorkflowAction| Zurücksetzung des Ingestworkflows | Bitte auf 600 zurückstellen **NICHT 600!** **NICHT löSCHEN**| 
 700|PIPGenObjectToWorkareaAction| Übertragung von AIP an das Knotenarbeitsverzeichnis| Bitte auf 700 zurückstellen|
 710|PIPGenScanForPresentationAction | Scannen der Präsentationsformate| Bitte auf 710 zurückstellen  |
 720|PIPGenConvertForPrestationAction| Bildung der PIPs (Präsentationsderivate)| Bitte auf 720 zurückstellen |
