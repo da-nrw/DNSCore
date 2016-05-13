@@ -44,8 +44,7 @@ Die Zuordnung der Status zu den Actions kann jederzeit anhand der ersten beiden 
 |xx0|WAITING| Die Null am Ende des Status bedeutet, dass das Objekt sich in einem konsistenten, gemäß der DNS-Spezifikation wohlgeformten Zustand befindet und aktuell von keiner Action verarbeitet wird. Das Objekt wartet darauf, von einer passenden Action (Status = Anfangsstatus der Action) abgeholt zu werden.| |
 |xx1|ERROR_PROPERLY_HANDLED| Jeder Status, der mit einer Eins endet, kennzeichnet einen Fehler in der Verarbeitung. 
 Desweiteren bedeutet die Eins, dass das Objekt in einen konsistenten Zustand (xx1-1) zurückgeführt werden konnte. 
-Demnach korrspondieren beispielsweise die Status 120 und 121 zu ein und demselben physischen File auf dem Dateisystem sowie in der Datenbank. |
-Der Administrator kann das Objekt zurücksetzen mittels Klick auf den Button "Zurücksetzen" |
+Demnach korrspondieren beispielsweise die Status 120 und 121 zu ein und demselben physischen File auf dem Dateisystem sowie in der Datenbank. | Der Administrator kann das Objekt zurücksetzen mittels Klick auf den Button "Zurücksetzen" |
 |xx2 | WORKING| Die Zwei am Ende bedeutet, dass das Objekt gerade von der aktuell aktiven Action bearbeitet wird. 
 Je nach Größe und Komplexität des Pakets kann dieser Prozess einige Zeit dauern. Ob die Action tatsächlich arbeitet,
 kann anhand fortlaufender Logmeldungen im Objekt-Log-File nachgesehen werden.| |
