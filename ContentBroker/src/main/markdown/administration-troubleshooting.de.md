@@ -187,7 +187,7 @@ Sollen diese Objekte auch von den Medien gelöscht werden, müssen diese auch au
     irm -rf /zone/federated/<CN>/aip/csn/oid
 
 
-#### Genaue Beschreibung aller Job-Status
+## Genaue Beschreibung aller Job-Status
 
 * 110	IngestUnpackAction	Auspacken & Vollständigkeitstests
 * 120	IngestRestructureObjectAction	Objekt- oder Deltaerkennung, Typerkennung
@@ -228,3 +228,21 @@ Sollen diese Objekte auch von den Medien gelöscht werden, müssen diese auch au
 * 950	RetrievalDeliveredDIPAction	Warten auf Abholung durch Contractor
 * 960	PostRetrievaAction	Wurde abgeholt, vorbereiten auf Löschung DIP
 * 5000	AuditAction	Überprüfung des AIP
+
+## Logfiles
+
+Die konfigurierten Logger sind in der logback.xml unterhalb des Ordners ContentBroker/conf einsehbar. Üblicherweise sind die folgenden Logger konfiguriert :
+
+     log/grid.log (Alle Meldungen betreffend der Gridfunktionalitäten iRODS)
+     log/time_stamp_actions.csv (Optional Ausführungsdauer jeder einzelnen Action zur Perf. Analyse)
+     log/contentbroker.log (Alle Meldungen des CB)
+     log/stout.log (Ausgaben des Diagnostics Tools)
+     log/stderr.log (Fehlerausgaben der Datenbankverbindung)
+     log/object-logs/ID.log (Fehlerausgaben pro Paket)
+     log/ingest.log (Ingest Scanner Worker, zuständig für die Beobachtung der Eingabeschnittstelle)
+     log/events.log (Worker der Systemevents)
+     log/timbebasedpublication.log (Worker zur zeitgesteuerten Veröffentlichung)
+     log/mailworker.log (Versendung von Emails)
+     log/decisiontimeout.log (Worker zum Ablauf der einer Kundennachfrage)
+
+Zur Analyse sind je nach Fehlerbild alle oder ausgewählte Logfiles zu sichten.
