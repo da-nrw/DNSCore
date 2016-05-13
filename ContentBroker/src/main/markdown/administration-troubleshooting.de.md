@@ -87,7 +87,7 @@ Grundsätzlich sind Status <=400 immer im Gesamten rücksetzbar. Bei Status >440
 560|CreateEDMAction| EDM Metadaten-Erstellung| Bitte auf 550 zurückstellen **NICHT 600!** **NICHT löSCHEN**
 570|IndexESAction|Indizierung im Elasticsearch Suchindex | Bitte auf 550 zurückstellen **NICHT 600!** **NICHT löSCHEN**
 580|FriendshipConversionAction|	Konvertierung auf anderem Knoten | Bitte auf 580 zurückstellen **NICHT 600!** **NICHT löSCHEN**|
-600|RestartIngestWorkflowAction| Zurücksetzung des Ingestworkflows | Bitte auf 600 zurückstellen **NICHT 600!** **NICHT löSCHEN**| 
+600|RestartIngestWorkflowAction| Zurücksetzung des Ingestworkflows | Bitte auf 600 zurückstellen| 
 700|PIPGenObjectToWorkareaAction| Übertragung von AIP an das Knotenarbeitsverzeichnis| Bitte auf 700 zurückstellen|
 710|PIPGenScanForPresentationAction | Scannen der Präsentationsformate| Bitte auf 710 zurückstellen  |
 720|PIPGenConvertForPrestationAction| Bildung der PIPs (Präsentationsderivate)| Bitte auf 720 zurückstellen |
