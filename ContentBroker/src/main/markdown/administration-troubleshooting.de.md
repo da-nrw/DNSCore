@@ -18,7 +18,7 @@ Bitte untersuchen Sie, ob die folgenden Bedingungen zutreffen
 3. Noch genügend Speicherplatz auf WorkingArea? Üblicherweise stoppt der CB seine Verabreitung wenn nicht ausreichend Speicherplatz frei ist. Den Wert dafür legt der Knotenadmin fest siehe beans.xml.
 4. Diagnostics läuft?
 
-### Diagnostics
+### Diagnostics durchführen
 
 Diagnostics Modus in ContentBroker - Smoke test ist auszühren
 Bei Auftreten von massenhaften Fehlern oder gar keiner erkennbaren Verabreitung in der Paketverarbeitung sollte immer zuerst der sogenannte Smoke Test durchgeführt werden.
@@ -30,7 +30,7 @@ java -jar ContentBroker.jar diagnostics
 
 Der Test überprüft eine Reihe von Verbindungen, z.b. Datenbank-Verbindung, iRODS, Fedora usw.
 
-Erst wenn der Test positiv ausfällt und der Fehlerstatus in der Paketverarbeitung immer noch bestehen bleibt , macht es Sinn, die Fehlersuche fortzusetzen. 
+Erst wenn der Test positiv ausfällt und der Fehlerstatus in der Paketverarbeitung immer noch bestehen bleibt , macht es Sinn, die Fehlersuche bei einzelnen Paketen fortzusetzen.
 
 ## Einzelne Pakete hängen
 
