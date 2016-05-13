@@ -1,9 +1,9 @@
 DNSCore             
 ========      
 
-[Dokumentation](ContentBroker/src/main/markdown/documentation.de.md)
 
-(Eine Liste der Features in deutsch finden sie [hier](ContentBroker/src/main/markdown/features.de.md))
+[Dokumentation des Softwaresystems](ContentBroker/src/main/markdown/documentation.de.md)
+[Liste der Features](ContentBroker/src/main/markdown/features.de.md)
 
 -----
 
