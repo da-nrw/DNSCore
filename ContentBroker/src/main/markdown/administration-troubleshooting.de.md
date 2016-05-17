@@ -8,11 +8,13 @@ Starten Sie in diesem Zusammenhang nicht einfach "neu" - bitte analysieren Sie z
 
 Einsicht in die [DA-Web Adminoberfläche](../../../../DAWeb/doc/contentBroker_administration.md), Anmeldung als Knotenadmin. Dort laufen alle Systemmeldungen auf.
 
-## Das ganze System "hängt"
+## Das ganze System "hängt" scheinbar
 
-Bitte untersuchen Sie, ob die folgenden Bedingungen zutreffen
+Der CB hat eine ganze Reihe an Sicherungsfunktionalitäten, die seine Arbeit automatisch stoppen. 
 
-1. Zuviele 2er Actions: Das System hat eine Konfiguration, nicht zu viele Actions des gleichen Typs zu verarbeiten. Üblicherweise sind dies max. drei des gleichen Typs.
+Bitte untersuchen Sie, ob die folgenden Bedingungen zutreffen:
+
+1. Zuviele 2er Actions: Das System hat eine Konfiguration (s. Ihre beans.xml!), nicht zu viele Actions des gleichen Typs zu verarbeiten. Üblicherweise sind dies max. drei des gleichen Typs.
 2. Der CB läuft grundsätzlich. Prüfen Sie ob der CB noch Logmeldungen schreibt.
 3. Noch genügend Speicherplatz auf WorkingArea? Üblicherweise stoppt der CB seine Verabreitung wenn nicht ausreichend Speicherplatz frei ist. Den Wert dafür legt der Knotenadmin fest siehe beans.xml.
 4. Diagnostics läuft?
@@ -31,7 +33,7 @@ Der Test überprüft eine Reihe von Verbindungen, z.b. Datenbank-Verbindung, iRO
 
 Erst wenn der Test positiv ausfällt und der Fehlerstatus in der Paketverarbeitung immer noch bestehen bleibt , macht es Sinn, die Fehlersuche bei einzelnen Paketen fortzusetzen.
 
-## Einzelne Pakete hängen
+## Einzelne Pakete hängen / Generelle Fehlerbeseitigung
 
 Die Datenverarbeitung in DNSCore ist in kleine logische in sich abgeschlossene Einheiten – Actions – unterteilt. Jeder Workflow, ob Einlieferung ([ingest] (https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/resources/META-INF/beans-workflow.ingest.xml)), das Wiederabrufen ([retrieval] (https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/resources/META-INF/beans-workflow.retrieval.xml)) oder Präsentation ([presentation] (https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/resources/META-INF/beans-workflow.presentation.xml)) besteht aus einer festgelegten Abfolge verschiedener Actions.
 
@@ -89,7 +91,7 @@ Grundsätzlich sind Status <=400 immer im Gesamten rücksetzbar. Bei Status >440
 370 |IngestBuildAIPAction |AIP Erstellung| Rücksetzung auf 370 oder 600 oder 800 (Löschung)
 380 |IngestTarAction|	AIP Erstellung als TAR-Archiv| Rücksetzung auf 380 oder 600 oder 800 (Löschung)
 400 |ArchiveReplicationAction |	Ablage auf LZA Medien und Replikation | Grid.log  object.log prüfen, iRODS/server/log/rodsLog **NICHT zurückstellen!** **NICHT löSCHEN**
- 440|ArchiveReplicationCheckAction | Prüfung der Replikationen |  Grid.log, object.log prüfen, ggfs. rodsLog Gefahrlos auf 440 zurückstellbar ,**NICHT zurückstellen!** **NICHT löSCHEN**
+ 440|ArchiveReplicationCheckAction | Prüfung der Replikationen |  Grid.log, object.log prüfen, ggfs. rodsLog Gefahrlos auf 440 zurückstellbar ,**NICHT auf 600 zurückstellen!** **NICHT löSCHEN**
 540|FetchPIPsAction|Replikation der PIP an den Presentation Repository Knoten| Bitte auf 540 zurückstellen **NICHT 600!** **NICHT löSCHEN**
 550|SendToPresenterAction|	Einspielung der PIP in das Presentation Repository | Bitte auf 550 zurückstellen **NICHT 600!** **NICHT löSCHEN**
 560|CreateEDMAction| EDM Metadaten-Erstellung| Bitte auf 550 zurückstellen **NICHT 600!** **NICHT löSCHEN**
