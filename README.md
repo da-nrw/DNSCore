@@ -1,5 +1,3 @@
-
-
 DNSCore j8i4 branch           
 =======
 
