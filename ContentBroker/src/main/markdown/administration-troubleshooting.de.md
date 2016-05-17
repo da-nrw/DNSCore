@@ -8,7 +8,7 @@ Starten Sie in diesem Zusammenhang nicht einfach "neu" - bitte analysieren Sie z
 
 Einsicht in die [DA-Web Adminoberfläche](../../../../DAWeb/doc/contentBroker_administration.md), Anmeldung als Knotenadmin. Dort laufen alle Systemmeldungen auf.
 
-## Das ganze System "hängt"
+## Das ganze System "hängt" scheinbar
 
 Bitte untersuchen Sie, ob die folgenden Bedingungen zutreffen
 
