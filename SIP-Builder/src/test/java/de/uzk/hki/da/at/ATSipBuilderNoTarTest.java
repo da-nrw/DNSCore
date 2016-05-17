@@ -25,7 +25,6 @@ import org.junit.Test;
 public class ATSipBuilderNoTarTest {
 	
 	private static File targetDir = new File("target/atTargetDir/");
-//	private static File workDir = new File("target/atTargetDirWorking/");
 	private static File sourceDir = new File("src/test/resources/at/");
 	private static Process p;
 	
@@ -36,7 +35,7 @@ public class ATSipBuilderNoTarTest {
 	
 	@After
 	public void tearDown() throws IOException{
-//		FileUtils.deleteDirectory(targetDir);
+		FileUtils.deleteDirectory(targetDir);
 		p.destroy();
 	}
 	
@@ -49,7 +48,7 @@ public class ATSipBuilderNoTarTest {
 
 		File source = new File(sourceDir, "ATSipBuilderNoTar/ATSipBuilderNoTarSingle");
 		
- 		String cmd = "./SipBuilder-Unix.sh -source=\""+source.getAbsolutePath()+"/\" -destination=\""+
+ 		String cmd = "./SipBuilder-Unix.sh -source=\""+source.getAbsolutePath()+ "/\" -destination=\""+
  						targetDir.getAbsolutePath()+"/\" -noTar";
  		
  		p=Runtime.getRuntime().exec(cmd, null, new File("target/installation"));
