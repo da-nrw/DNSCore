@@ -20,11 +20,11 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 
 #### Kontext:
 
-* [ATSipBuilderNoTarTest](../test/java/de/uzk/hki/da/at/ATSipBuilderNoTarTest.java).testOneFile()
+* [ATSipBuilderNoTar](../test/java/de/uzk/hki/da/at/ATSipBuilderNoTar.java).testOneFile()
 
 #### Testpaket:   
 
-* [ATSipBuilderNoTarTest](../test/resources/at/ATSipBuilderNoTar/ATSipBuilderNoTarSingle)
+* [ATSipBuilderNoTar](../test/resources/at/ATSipBuilderNoTar/ATSipBuilderNoTarSingle)
 
 #### Vorbedingungen
 
@@ -56,11 +56,11 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 
 #### Kontext:
 
-*[ATSipBuilderNoTarTest](../test/java/de/uzk/hki/da/at/ATSipBuilderNoTarTest.java).testMultipleFiles()
+*[ATSipBuilderNoTar](../test/java/de/uzk/hki/da/at/ATSipBuilderNoTar.java).testMultipleFiles()
 
 #### Testpaket:   
 
-* [ATSipBuilderNoTarTest](../test/resources/at/ATSipBuilderNoTar/ATSipBuilderNoTarMultiple)
+* [ATSipBuilderNoTar](../test/resources/at/ATSipBuilderNoTar/ATSipBuilderNoTarMultiple)
 
 #### Vorbedingungen
 
@@ -100,11 +100,11 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 
 #### Kontext:
 
-* [ATSipBuilderNoTarTest](../test/java/de/uzk/hki/da/at/ATSipBuilderNoTarTest.java).testDestDir()
+* [ATSipBuilderNoTar](../test/java/de/uzk/hki/da/at/ATSipBuilderNoTar.java).testDestDir()
 
 #### Testpaket:   
 
-* [ATSipBuilderNoTarTest](../test/resources/at/ATSipBuilderNoTar/ATSipBuilderNoTarDestDir)
+* [ATSipBuilderNoTar](../test/resources/at/ATSipBuilderNoTar/ATSipBuilderNoTarDestDir)
 
 #### Vorbedingungen
 
