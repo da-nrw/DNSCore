@@ -10,9 +10,11 @@ Einsicht in die [DA-Web Adminoberfläche](../../../../DAWeb/doc/contentBroker_ad
 
 ## Das ganze System "hängt" scheinbar
 
-Bitte untersuchen Sie, ob die folgenden Bedingungen zutreffen
+Der CB hat eine ganze Reihe an Sicherungsfunktionalitäten, die seine Arbeit automatisch stoppen. 
 
-1. Zuviele 2er Actions: Das System hat eine Konfiguration, nicht zu viele Actions des gleichen Typs zu verarbeiten. Üblicherweise sind dies max. drei des gleichen Typs.
+Bitte untersuchen Sie, ob die folgenden Bedingungen zutreffen:
+
+1. Zuviele 2er Actions: Das System hat eine Konfiguration (s. Ihre beans.xml!), nicht zu viele Actions des gleichen Typs zu verarbeiten. Üblicherweise sind dies max. drei des gleichen Typs.
 2. Der CB läuft grundsätzlich. Prüfen Sie ob der CB noch Logmeldungen schreibt.
 3. Noch genügend Speicherplatz auf WorkingArea? Üblicherweise stoppt der CB seine Verabreitung wenn nicht ausreichend Speicherplatz frei ist. Den Wert dafür legt der Knotenadmin fest siehe beans.xml.
 4. Diagnostics läuft?
