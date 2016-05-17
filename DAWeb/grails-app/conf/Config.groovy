@@ -153,6 +153,7 @@ grails.plugin.springsecurity.interceptUrlMap = [
 	'/userRole/**':         ['ROLE_PSADMIN'],
 	'/role/**':         ['ROLE_PSADMIN'],
 	'/preservationSystem/**':         ['ROLE_PSADMIN'],
+	'/formatMapping/**': ['ROLE_PSADMIN'],
 	'/cbNode/**':         ['ROLE_PSADMIN'],
 	'/report/**':         ['ROLE_CONTRACTOR'],
 	'/systemEvent/**':         ['ROLE_CONTRACTOR']

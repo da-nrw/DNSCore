@@ -8,6 +8,7 @@ Spezifikationen zum Storage Information Package und den darin enthaltenen Dateie
 * [PREMIS Spezifikation](./specification_premis.md)
 * [Metadaten Spezifikation](./specification_metadata.de.md)
 * [Vergabe von Identifiern](./feature_identifier_assignment.md)
+* [Umgang mit Fehlern](./user_troubleshooting.de.md)
 
 ### Delta SIP
 
@@ -29,5 +30,10 @@ Rücklieferung Dissemination Information Package
 
 ## Rückmeldungen 
 
-* [Rückmeldungen des Systems](./feature_automated_queries.md)
+* [RESTFul API](./RESTFul-API.md)
 * [Fehlertypen und Status](./administration-troubleshooting.de.md)
+
+## Software von Drittanbietern / verwendete Plugins
+
+* [externe Programme/Plugins](./3rdPartyTools.md)
+

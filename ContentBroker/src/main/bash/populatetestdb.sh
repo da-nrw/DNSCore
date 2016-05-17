@@ -8,7 +8,7 @@ if [ "$1" = "populate" ]
 then
 	sqls=(
 		"DELETE FROM subformat_identification_strategy_puid_mappings;"
-		"DELETE FROM dafile_knownerrors;"
+		"DELETE FROM dafile_knownerror;"
 		"DELETE FROM queue;"
 		"DELETE FROM events;"
 		"DELETE FROM documents;"
@@ -27,7 +27,7 @@ then
 		"DELETE FROM users;"
 		"DELETE FROM Role;"
 		"DELETE FROM pending_mail;"
-		"DELETE	FROM systemevents;"
+		"DELETE	FROM systemevent;"
 		"INSERT INTO users (id,short_name,username,password,accountlocked,accountexpired,passwordexpired,enabled,mails_pooled,email_contact) values (1,'TEST','TEST','\$2a\$10\$CcMH2fhJrHTKzgpGRusvEulQZZPRdBR3l8zSG5QoNmH1HPEvQZM9G',FALSE,FALSE,FALSE,TRUE,TRUE,'Heino');"
         "INSERT INTO users (id,short_name,username,password,accountlocked,accountexpired,passwordexpired,enabled,mails_pooled,email_contact) values (4,'rods','rods','\$2a\$10\$0A8khxeN56JY6WkUXCNG/uUU7cZsdLHiz616TpLajiLskW/Vr8u8q',FALSE,FALSE,FALSE,TRUE,FALSE,'Heino');"
         "INSERT INTO users (id,short_name,username,password,accountlocked,accountexpired,passwordexpired,enabled,mails_pooled,email_contact) values (5,'CI_ADMIN','CI_ADMIN','\$2a\$10\$EblZqNptyYvcLm/VwDCVAuBjzZOI7khzdyGPBr08PpIi0na624b8.',FALSE,FALSE,FALSE,TRUE,FALSE,'Heino');"
@@ -70,7 +70,7 @@ then
         "INSERT INTO subformat_identification_strategy_puid_mappings (id,format_puid,subformat_identification_strategy_name) VALUES (3,'fmt/200','de.uzk.hki.da.format.FFmpegSubformatIdentifier');"
         "INSERT INTO subformat_identification_strategy_puid_mappings (id,format_puid,subformat_identification_strategy_name) VALUES (4,'fmt/5','de.uzk.hki.da.format.FFmpegSubformatIdentifier');"
  	"INSERT INTO subformat_identification_strategy_puid_mappings (id,format_puid,subformat_identification_strategy_name) VALUES (5,'fmt/353','de.uzk.hki.da.format.ImageMagickSubformatIdentifier');"
-	"INSERT INTO known_errors (id,error_name,std_err_contains_regex,description,question) VALUES (1,'WRONG_DATA_TYPE_IPTC','(?s).*RichTIFFIPTC.*TIFFErrors.*','Probleme mit IPTC Tag im IFD bei BigTiff','IPTC_ERROR_STORE_ALLOWED?');"
+	"INSERT INTO known_errors (id,error_name,std_err_contains_regex,description,question,advice) VALUES (1,'WRONG_DATA_TYPE_IPTC','(?s).*RichTIFFIPTC.*TIFFErrors.*','Probleme mit IPTC Tag im IFD bei BigTiff','IPTC_ERROR_STORE_ALLOWED?','Der weitere Ingest des betroffenen Pakets kann fortgesetzt werden, wird aber nicht empfohlen: Es sind Probleme mit der zukünftigen Bestandserhaltung möglich. Eine Übersteuerung dieses Fehlers wird für eine spätere Nachvollziehbarkeit gespeichert.');"
 	)
 fi
 

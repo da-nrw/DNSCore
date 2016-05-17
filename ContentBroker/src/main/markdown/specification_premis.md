@@ -1,11 +1,12 @@
-# PREMIS Spezifikationen
+#  Spezifikationen der im DNS verwendeten PREMIS (premis.xml)
 
-Basierend auf:
+
+Jede premis.xml die innerhalb des DNS verwendet wird, unterliegt den folgenden Schema-Definitionen:
 * http://www.loc.gov/standards/premis/v2/premis-v2-2.xsd
 * http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd 
 
 
-### Inhalt einer vom SIP-Builder gebauten Premis-Datei
+### Inhalt einer vom SIP-Builder gebauten Premis-Datei für ein einzulieferndes SIP-Paket
 
 * Ein Object-Element für das gebaute Paket
   * objectIdentifierType: PACKAGE_NAME
@@ -21,7 +22,7 @@ Basierend auf:
   * agentIdentifierType: APPLICATION_NAME
   * agentIdentifierValue: DA NRW SIP-Builder \[DAN:Version\]
   * agentType: APPLICATION
-* Ein Rights-Element für die festgelegten Contract Rights
+* Ein rights-Block für die festgelegten Contract Rights
 
     ```xml
     <rights>
@@ -32,7 +33,7 @@ Basierend auf:
             </rightsStatementIdentifier>
             <rightsBasis>license</rightsBasis>
     ```
-  * rightsGranted-Block je identischer Aufbau für PUBLICATION_PUBLIC | PUBLICATION_INSTITUTION | MIGRATION
+  * rightsGranted-Block je identischer Aufbau für unterschiedliche Veröffentlichungsszenarien: **PUBLICATION_PUBLIC | PUBLICATION_INSTITUTION | MIGRATION**. Die genauere Spezifikation der Rechte folgt im darauffolgendem rightsExtention-Block. Die **PUBLICATION_PUBLIC | PUBLICATION_INSTITUTION** sind **Optional**, beim fehlen gibt es auch keine dazugehörigen publicationRight-Blöcke innerhalb des rightsExtention-Blocks.
 
     ```xml
             <rightsGranted>
@@ -47,56 +48,56 @@ Basierend auf:
     ```xml
         </rightsStatement>
     ```
-* Ein Rights-Extension Element für genauere Spezifikation der Publikationsrechte
+* Ein Rights-Extension Block für genauere Spezifikation der Publikationsrechte. Darin sind Restriktionen und Verarbeitungsangaben untergebracht, wie die Inhalte zur Veröffentlichung aufzubereiten sind.
 
     ```xml
         <rightsExtension>
             <rightsGranted xmlns="http://www.danrw.de/contract/v1" xmlns:xsi="http://www.danrw.de/contract/v1 http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd">
     ```
-  * Migrationsbedingung: NONE | NOTIFY | CONFIRM 
+  * Migrationsbedingung: **NONE | NOTIFY | CONFIRM**
 
     ```xml
                 <migrationRight>
                     <condition>NONE</condition>
                 </migrationRight>
     ```
-  * DDB-Harvesting nicht erlauben (falls das Element fehlt, gilt es als erlaubt)
+  * **(Optional)** DDB-Harvesting nicht erlauben (falls das Element fehlt, gilt es als erlaubt)
 
     ```xml
                 <DDBexclusion/>
     ```
-  * publicationRight-Block je für PUBLIC | INSTITUTION
+  * **(Optional)** publicationRight-Block je für **PUBLIC | INSTITUTION** 
 
     ```xml 
                 <publicationRight>
                     <audience>PUBLIC</audience>
                     <startDate>2016-03-10T00:00:00.000+01:00</startDate>
     ```
-  * Begrenzung der Publikation durch Sperrgesetz: EPFLICHT, URHG_DE
+  * **(Optional)** Begrenzung der Publikation durch Sperrgesetz: EPFLICHT, URHG_DE
 
     ```xml
                     <lawID>URHG_DE</lawID>
     ```
-  * Block für Vorschaurestriktionen für die Öffentlichkeit
+  * **(Optional)** Block für Vorschaurestriktionen für die Öffentlichkeit
 
     ```xml
                     <restrictions>
     ```
-    * Audio-Restriktionen
+    * **(Optional)** Audio-Restriktionen
 
      ```xml
                         <restrictAudio>
                             <duration>60</duration>
                         </restrictAudio>
      ```
-    * Text-Restriktionen
+    * **(Optional)** Text-Restriktionen
 
      ```xml
                         <restrictText>
                             <certainPages>1 2 3 4 5 6 7 8 9 10</certainPages>
                         </restrictText>
      ```
-    * Video-Restriktionen
+    * **(Optional)** Video-Restriktionen
 
      ```xml
                         <restrictVideo>
@@ -104,7 +105,7 @@ Basierend auf:
                             <duration>120</duration>
                         </restrictVideo>
      ```
-    * Bild-Restriktionen
+    * **(Optional)** Bild-Restriktionen
 
      ```xml
                         <restrictImage>
@@ -133,13 +134,28 @@ Basierend auf:
     </rights>
    ```
 
+### Zusätzliche Schnittstellendefinitionen einer Premis-Datei für ein einzulieferndes SIP-Paket
+Dieser Abschitt enthält weitere Schnittstellenelemente die in der premis.xml eines einzuliefernden SIP-Paketes enthalten werden können. Der SIP-Builder verwendet diese nicht, da sie für primäre Anwendungsfälle irrelevant sind.
+
+* Das Object-Element kann statt dem **PACKAGE_NAME** auch **URN** oder **OBJECT_BUSINESS_KEY** als **objectIdentifierType** enthalten. Das **objectIdentifierValue** hat entsprechend dem Typ entweder eine URN oder einen systemweit eindeutigen technischen-Identifier (genauere Details: [Identifiern](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/feature_identifier_assignment.md#leistungsmerkmal-vergabe-von-identifiern),[URN-Vergabe](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_sip.de.md#urn-vergabe)).
+
+
 
 ### Vom System erwartete Eigenschaften einer eingehenden PREMIS-Datei
 
-* Ein Event der SIP-Erstellung
-* Rechte
+* Die zwingenden Elemente:
+	* Object-Element für das gebaute Paket
+	* Ein Event der SIP-Erstellung
+	* rights-Block
 
-### Im Falle von Erstanlieferungen werden folgende PREMIS-Elemente angelegt:
+* Die optionalen Elemente dürfen fehlen:
+	* restrictions-Block oder einzelne Bestandteile davon sind optional
+	* lawID-Element
+	* DDBexclusion-Element
+	* rightsGranted-Block für PUBLICATION_INSTITUTION-act und PUBLICATION_PUBLIC-act (dementsprechend auch der zugehörige publicationRight-Block innerhalb des Rights-Extension Blocks)
+	
+
+### Im Falle von Erstanlieferungen werden folgende PREMIS-Elemente in der initialen premis.xml angelegt.
 
 ###### einmalig ein PREMIS-Object
 
@@ -153,20 +169,20 @@ Basierend auf:
 
 ###### für alle Files, die direkt im SIP mitangeliefert werden jeweils ein Premis-Object
 
-* File-Object
+* siehe [File-Object](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_premis.md#fileobject)
 
 ###### für jedes konvertierte File jeweils ein PREMIS-Object
 
-* siehe&nbsp;File-Object
+* siehe [File-Object](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_premis.md#fileobject)
 
 
 ###### für jedes konvertierte File jeweils ein PREMIS-Event
 
-* siehe Konversionsevent
+* siehe [Konversionsevent](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_premis.md#konversionsevent)
 
 ###### einmalig ein PREMIS-Event zur Repräsention des Ingest des jeweiligen Paketes
 
-* siehe IngestEvent
+* siehe [IngestEvent](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_premis.md#ingestevent)
 
 ###### für jeden an der Verarbeitung des Paketes beteiligten Knoten ein PREMIS-Agent
 
@@ -174,7 +190,7 @@ Basierend auf:
 
 ###### je Paket eine SIP-Erstellungs-Event
 
-* siehe SIPCreationEvent
+* siehe [SIPCreationEvent](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_premis.md#sipcreationevent)
 
 ###### für den Contractor ein PREMIS-Agent
 

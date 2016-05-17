@@ -31,6 +31,7 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
+import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.IngestGate;
@@ -91,8 +92,12 @@ public class UnpackAction extends AbstractAction {
 
 	@Override
 	public boolean implementation() throws IOException{
+		long size = 0L;
+		if (sipContainerOnIngestAreaIsDir())
+		 size = FileUtils.sizeOfDirectory(sipContainerOnIngestArea());
+		else size = sipContainerOnIngestArea().length();
 		
-		if (!ingestGate.canHandle(sipContainerOnIngestArea().length())){
+		if (!ingestGate.canHandle(size)){
 //			JmsMessage jms = new JmsMessage(C.QUEUE_TO_CLIENT,C.QUEUE_TO_SERVER,o.getIdentifier() + " - Please check WorkArea space limitations: " + ingestGate.getFreeDiskSpacePercent() +" % free needed " );
 //			super.getJmsMessageServiceHandler().sendJMSMessage(jms);	
 			logger.warn("ResourceMonitor prevents further processing of package due to space limitations. Setting job back to start state.");
@@ -101,11 +106,14 @@ public class UnpackAction extends AbstractAction {
 		
 		
 		wa.ingestSIP(sipContainerOnIngestArea());
-		unpack(wa.sipFile());
-		wa.sipFile().delete();
-
-		
-
+		if (!sipContainerOnIngestAreaIsDir()) {
+			unpack(wa.sipFile());
+			expandDirInto();
+			wa.sipFile().delete();
+		} else {
+			moveSipDir();
+			expandDirInto();
+		}
 		
 		throwUserExceptionIfNotBagitConsistent();
 		throwUserExceptionIfDuplicatesExist();
@@ -113,14 +121,24 @@ public class UnpackAction extends AbstractAction {
 		
 		// Is the last step of action because it should only happen after validity has been proven. 
 		logger.info("Removing SIP from IngestArea");
+		if (!sipContainerOnIngestAreaIsDir()) {
 		sipContainerOnIngestArea().delete();
+		} else FileUtils.deleteDirectory(sipContainerOnIngestArea());
 		return true;
 	}	
 	
+	private void moveSipDir() throws IOException {
+		FileUtils.moveDirectoryToDirectory(wa.sipFile(), wa.objectPath().toFile(), true);
+	}
 	
 	private File sipContainerOnIngestArea() {
 		return sipContainerInIngestAreaPath().toFile();
 	}
+	
+	private boolean sipContainerOnIngestAreaIsDir() {
+		return sipContainerInIngestAreaPath().toFile().isDirectory();
+	}
+	
 	
 	private Path sipContainerInIngestAreaPath() {
 		return Path.make(
@@ -135,6 +153,7 @@ public class UnpackAction extends AbstractAction {
 	public void rollback() throws IOException {
 		
 		FileUtils.deleteDirectory(wa.objectPath().toFile());
+		if (!sipContainerOnIngestAreaIsDir())
 		wa.sipFile().delete();
 		
 		o.getLatestPackage().getFiles().clear();
@@ -151,8 +170,12 @@ public class UnpackAction extends AbstractAction {
 				throw new UserException(UserExceptionId.INVALID_SIP_PREMIS, "PREMIS Datei nicht valide.");
 		} catch (FileNotFoundException e1) {
 			throw new UserException(UserExceptionId.SIP_PREMIS_NOT_FOUND, "PREMIS Datei nicht gefunden.", e1);
-		}
+		} catch (SAXException e) {
+			logger.error(e.getMessage());
+			throw new UserException(UserExceptionId.INVALID_SIP_PREMIS, "PREMIS Datei nicht valide.: "+e.getMessage());
+		}		
 		try {
+			//just test: parse values and do xml to object mapping
 			new ObjectPremisXmlReader().deserialize(Path.makeFile(wa.dataPath(),PREMIS_XML));
 		} catch (Exception e) {
 			throw new UserException(UserExceptionId.READ_SIP_PREMIS_ERROR,
@@ -249,40 +272,7 @@ public class UnpackAction extends AbstractAction {
 		return documentsToFiles;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/**
-	 * Creates a folder at targetFolderPath and expands the contents of sourceFilePath into it.
-	 * @param sourceFilePath
-	 * @param targetFolderPath
-	 * @throws RuntimeException if the folder at targetFolderPath already exists or the file at 
-	 * sourceFilePath doesn't exist or the archive couldn't be unpacked.
-	 */
-	private void unpack(File sourceFile){
-		
-		wa.objectPath().toFile().mkdir();
-		
-		
-		if (!sourceFile.exists())
-			throw new RuntimeException("container at "+ sourceFile + " doesn't exist");
-		
-		ArchiveBuilder builder = ArchiveBuilderFactory.getArchiveBuilderForFile(sourceFile);
-		try {
-			builder.unarchiveFolder(sourceFile, wa.objectPath().toFile());
-		} catch (Exception e) {
-			throw new RuntimeException("couldn't unpack archive", e);
-		}
+	private void expandDirInto() {
 
 		File[] files = wa.objectPath().toFile().listFiles();
 		if (files.length == 1) {
@@ -313,6 +303,29 @@ public class UnpackAction extends AbstractAction {
 				throw new RuntimeException("couldn't delete folder " + files[0].getAbsolutePath());
 			}
 		}		
+
+	}
+	/**
+	 * Creates a folder at targetFolderPath and expands the contents of sourceFilePath into it.
+	 * @param sourceFilePath
+	 * @param targetFolderPath
+	 * @throws RuntimeException if the folder at targetFolderPath already exists or the file at 
+	 * sourceFilePath doesn't exist or the archive couldn't be unpacked.
+	 */
+	private void unpack(File sourceFile){
+		
+		wa.objectPath().toFile().mkdir();
+		
+		
+		if (!sourceFile.exists())
+			throw new RuntimeException("container at "+ sourceFile + " doesn't exist");
+		
+		ArchiveBuilder builder = ArchiveBuilderFactory.getArchiveBuilderForFile(sourceFile);
+		try {
+			builder.unarchiveFolder(sourceFile, wa.objectPath().toFile());
+		} catch (Exception e) {
+			throw new RuntimeException("couldn't unpack archive", e);
+		}
 	}
 
 	

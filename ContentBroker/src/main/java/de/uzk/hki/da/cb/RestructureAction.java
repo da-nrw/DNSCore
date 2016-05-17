@@ -217,7 +217,10 @@ public class RestructureAction extends AbstractAction{
 			logger.info(line + err);
 		}
 		if (last!=null && !o.getLatestPackage().isPruneExceptions()) {
-		throw new UserFileFormatException(last,message.toString(), o.getLatestPackage().isPruneExceptions());
+			if (last.getAdvice()!=null) {
+				message.append(last.getAdvice() + "\n");
+			}
+			throw new UserFileFormatException(last,message.toString(), o.getLatestPackage().isPruneExceptions());
 		}
 	}
 	

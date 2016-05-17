@@ -46,6 +46,7 @@ import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.MD5Checksum;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
+import de.uzk.hki.da.utils.StringUtilities;
 
 /**
  * @author Daniel M. de Oliveira
@@ -416,11 +417,18 @@ public class AcceptanceTestHelper {
 		
 		if (localNode==null) throw new IllegalStateException();
 		if (localNode.getIngestAreaRootPath()==null) throw new IllegalStateException();
-		
-		File sourceFile = Path.makeFile(TEST_DATA_ROOT_PATH,sourcePackageName+"."+ext);
-		File targetFile = Path.makeFile(localNode.getIngestAreaRootPath(),testContractor.getShort_name(),originalName+"."+ext);
-		
-		FileUtils.copyFile( sourceFile, targetFile );
+		File source;
+		File target;
+		if (StringUtilities.isSet(ext)){
+		source = Path.makeFile(TEST_DATA_ROOT_PATH,sourcePackageName+"."+ext);
+		target = Path.makeFile(localNode.getIngestAreaRootPath(),testContractor.getShort_name(),originalName+"."+ext);
+		FileUtils.copyFile( source, target );
+		} else {
+			source = Path.makeFile(TEST_DATA_ROOT_PATH,sourcePackageName);
+			target = Path.makeFile(localNode.getIngestAreaRootPath(),testContractor.getShort_name(),originalName);
+			if (target.exists()) FileUtils.deleteDirectory(target);
+			FileUtils.copyDirectory(source, target, false);
+			}	
 	}
 	
 	

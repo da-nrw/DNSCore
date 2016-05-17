@@ -22,6 +22,9 @@
 			<h2>Funktionen:</h2>
 			<ul>
 				<li class="controller"><g:link controller="queueEntry">Bearbeitungsübersicht</g:link></li>
+				<g:if test="${ admin==1}">
+					<li class="controller"><g:link controller="object" action="listObjects">Selektion Objekte nach Formaten</g:link></li>
+				</g:if>
 				<li class="controller"><g:link controller="queueEntry" action="listRequests">Entscheidungsübersicht</g:link></li>
 				<li class="controller"><g:link controller="object">Eingelieferte Objekte (AIP)</g:link></li>
 				<li class="controller"><g:link controller="incoming">Verarbeitung für abgelieferte SIP starten</g:link></li>
