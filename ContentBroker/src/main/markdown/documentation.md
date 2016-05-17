@@ -20,7 +20,6 @@ The documentation will be restructured to match the several users need. Please s
 
 * Ingest ([german](usage_ingest.de.md))
 * Retrieval ([german](usage_retrieval.de.md))
-* DA-Web User Interface refer to DAWeb/doc
 * RESTful-API ([english](RESTFul-API.md))
 
 

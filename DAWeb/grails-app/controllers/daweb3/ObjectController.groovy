@@ -21,9 +21,12 @@ package daweb3
  */
 
 
-import org.springframework.dao.DataIntegrityViolationException
-import grails.converters.*
-import java.security.InvalidParameterException
+import org.apache.commons.lang.StringUtils; 
+import org.springframework.dao.DataIntegrityViolationException;
+
+import grails.converters.*;
+
+import java.security.InvalidParameterException;
 
 
 class ObjectController {
@@ -37,6 +40,84 @@ class ObjectController {
 		redirect(action: "list", params: params)
 	}
 
+	/**
+	 * proof and evaluate the search key
+	 */
+	def listObjectsSearch () {
+		Object object = new Object(params);
+	   if (object.most_recent_formats == null   && object.most_recent_secondary_attributes == null)  {
+		   render (view:'listObjects', model:[suLeer:"Bitte Suchkriterien eingeben!"]);
+	   }  else {
+		 listObjects( );
+	   }
+	}
+	   
+	/**
+	 * If there id a search key, search can start
+	 */
+ 	def listObjects ( ) {
+		 Object object = new Object(params)
+		 def objects = null
+		 def admin = 0
+ 		 def String extension = ""
+		 def List<String> extList = new ArrayList<String>()
+		 def String name = ""
+		 def List<String> nameList = new ArrayList<String>();
+		
+		 // access table objects
+		 objects = Object.findAll("from Object as o where o.most_recent_formats like :formats " +
+			 " or o.most_recent_secondary_attributes like :attributes)"   ,
+			  [formats:'%'+object.most_recent_formats+'%',
+			  attributes:"%"+object.most_recent_secondary_attributes+"%"])
+		
+		 // list of results
+		 [ objects:objects ]
+		 
+		 if (objects == [] && (object.most_recent_formats != null  ||  object.most_recent_secondary_attributes != null)) {
+			 render (view:'listObjects', model:[sqlLeer:"Keine Datensätze gefunden!"]);
+		 } else {
+		 	def FormatMapping = new FormatMapping()
+			def mappings = null;
+			
+			 /*
+			  * To get the right format for the mapping, there must be a splitting of
+			  * each fetched row to access the table format_mapping
+			  */
+			 for (item in objects){
+				 def formatArray = (String[]) item.most_recent_formats.split(",")
+				 extension = ""
+				 name = "";
+				 
+				 int counter = 0;
+				 
+				 while (formatArray.size() > counter ) {
+					 def format = formatArray[counter];
+					 
+					 /*
+					  * now you can read the table format_mapping 
+					  */
+					 
+					 mappings = FormatMapping.findAll("from FormatMapping where puid = :puid", [puid : format])
+					 
+					 if (extension.isEmpty()) {
+						 extension = mappings.extension
+						 name = mappings.formatName
+					 } else {
+					 	 extension = extension + ", " + mappings.extension
+						 name = name + "," + mappings.formatName
+					 }		
+					 // and at last increment the counter
+					 counter = counter + 1;
+				 } // end of format - list
+				 
+				 extList.add(extension)  
+				 nameList.add(name)
+				 
+			 } // end of object - list
+			 render (view:'listObjects', model:[objects:objects, extension:extList, name:nameList]);
+		 }
+ 	} 
+	 
 	def list() {
 		User user = springSecurityService.currentUser
 
@@ -305,7 +386,7 @@ class ObjectController {
 				if (pserver!=null && pserver!= "") {
 					qu.createJob( object, "560" ,pserver)
 				}
-				result.msg = "Auftrag zur Indizierung erstellt ${object.urn}."
+				result.msg = "Auftrag zur Indizierung 3 ${object.urn}."
 				result.success = true
 			} catch ( Exception e ) {
 				result.msg = "Auftrag zur Indizierung für ${object.urn} konnte nicht angelegt werden."
@@ -317,7 +398,7 @@ class ObjectController {
 
 
 
-	def queueForInspect = {
+	def c = {
 
 		def result = [success:false]
 
@@ -348,5 +429,6 @@ class ObjectController {
 		paramsList.putAt("searchContractorName", params?.searchContractorName)
 		return
 		[paramsList:paramsList]
-	}
+	}	
+	
 }

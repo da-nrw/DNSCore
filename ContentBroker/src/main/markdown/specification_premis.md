@@ -134,6 +134,11 @@ Jede premis.xml die innerhalb des DNS verwendet wird, unterliegt den folgenden S
     </rights>
    ```
 
+### Zusätzliche Schnittstellendefinitionen einer Premis-Datei für ein einzulieferndes SIP-Paket
+Dieser Abschitt enthält weitere Schnittstellenelemente die in der premis.xml eines einzuliefernden SIP-Paketes enthalten werden können. Der SIP-Builder verwendet diese nicht, da sie für primäre Anwendungsfälle irrelevant sind.
+
+* Das Object-Element kann statt dem **PACKAGE_NAME** auch **URN** oder **OBJECT_BUSINESS_KEY** als **objectIdentifierType** enthalten. Das **objectIdentifierValue** hat entsprechend dem Typ entweder eine URN oder einen systemweit eindeutigen technischen-Identifier (genauere Details: [Identifiern](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/feature_identifier_assignment.md#leistungsmerkmal-vergabe-von-identifiern),[URN-Vergabe](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_sip.de.md#urn-vergabe)).
+
 
 
 ### Vom System erwartete Eigenschaften einer eingehenden PREMIS-Datei
