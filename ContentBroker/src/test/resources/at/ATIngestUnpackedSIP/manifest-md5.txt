@@ -1,0 +1,2 @@
+5a1af3de4ad37c442cbec74e36f22073  data/premis.xml
+d8e8fca2dc0f896fd7cb4cb0031ba249  data/someData.txt

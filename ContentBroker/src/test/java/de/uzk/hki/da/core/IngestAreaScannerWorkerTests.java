@@ -47,6 +47,7 @@ public class IngestAreaScannerWorkerTests {
 
 	private static User user1;
 	private static User user2;
+	private static User user4;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws IOException{
@@ -56,6 +57,7 @@ public class IngestAreaScannerWorkerTests {
 		session.getTransaction().begin();
 		user1 = new User(); user1.setShort_name("USER1"); session.save(user1);
 		user2 = new User(); user2.setShort_name("USER2"); session.save(user2);
+		user4 = new User(); user4.setShort_name("USER4"); session.save(user4);
 		session.getTransaction().commit();
 		session.close();
 	
@@ -80,9 +82,11 @@ public class IngestAreaScannerWorkerTests {
 		
 		assertTrue(contractorsWhoseFoldersGetScanned.contains(user1));
 		assertTrue(contractorsWhoseFoldersGetScanned.contains(user2));
+		assertTrue(contractorsWhoseFoldersGetScanned.contains(user4));
 
-		assertSame(contractorsWhoseFoldersGetScanned.size(),2); 
+		assertSame(contractorsWhoseFoldersGetScanned.size(),3); 
 		// which means a) ignoring USER3 because he is not in the DB and b) ignoring files below ingestAreaRootPath.
+		
+		
 	}
-	
 }
