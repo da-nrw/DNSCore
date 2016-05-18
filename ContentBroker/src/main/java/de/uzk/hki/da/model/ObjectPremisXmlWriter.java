@@ -24,7 +24,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
@@ -140,32 +139,12 @@ public class ObjectPremisXmlWriter {
 		   	writer.writeEndDocument();
 			writer.close();
 			outputStream.close();
-			File out = new File("/home/julia/Desktop/premis_neu.xml");
-			copyFile(f, out);
-			System.out.println("-------------------------------------------------objectpremisxmlwriter-----------------------------------");
+
 	    } catch (XMLStreamException e) {
 	    	throw new RuntimeException("Failed to serialize premis.xml", e);
 		}
 	
 	}
-	 private void copyFile(File in, File out) throws IOException { 
-	        FileChannel inChannel = null; 
-	        FileChannel outChannel = null; 
-	        try { 
-	            inChannel = new FileInputStream(in).getChannel(); 
-	            outChannel = new FileOutputStream(out).getChannel(); 
-	            inChannel.transferTo(0, inChannel.size(), outChannel); 
-	        } catch (IOException e) { 
-	            throw e; 
-	        } finally { 
-	            try { 
-	                if (inChannel != null) 
-	                    inChannel.close(); 
-	                if (outChannel != null) 
-	                    outChannel.close(); 
-	            } catch (IOException e) {} 
-	        } 
-	    } 
 
 	/**
 	 * @param object

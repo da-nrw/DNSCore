@@ -374,13 +374,13 @@ class ObjectController {
 	}
 	
 	def premis() {
-		def xmldocument = "/ci/DNSCore/ContentBroker/src/test/resources/metadata/premistest.xml"
+		def xmldocument = "/home/julia/Desktop/premis_neu.xml"//"/ci/DNSCore/ContentBroker/src/test/resources/metadata/premistest.xml"
 		def premis = new XmlSlurper().parse(new File(xmldocument))
 		def events = premis.event
 		def c = Event.createCriteria()
 		def eventList = c.list() {
 			eq("objectIdentifier", params.objectIdentifier) //"1-2016032334")
 		}
-		render(view:"premis", model:[events: events, size: events.size(), eventList: eventList])
+		render(view:"premis", model:[events: events, size: events.size(), eventList: eventList, xmldocument: xmldocument])
 	}
 }
