@@ -14,7 +14,7 @@ Spezifikationen zum Storage Information Package und den darin enthaltenen Dateie
 
 Spezifikationen zum s.g. "Delta Feature" (der Ergänzung von AIP mittels eines Delta - Storage Information Package)
 
-* [Delta Spezifikation](./the_delta_feature.de.md) Version.
+* [Delta Spezifikation](./the_delta_feature.de.md)
 
 ## AIP 
 
