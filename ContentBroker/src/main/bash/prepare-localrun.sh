@@ -7,6 +7,7 @@ cp src/main/conf/config.properties.local conf/config.properties
 cp src/main/xml/logback.xml.debug conf/logback.xml
 cp src/main/xsd/xlink.xsd conf/xlink.xsd
 cp src/main/xsd/premis.xsd conf/premis.xsd
+cp src/main/xsd/v1/danrw-contract-1.xsd conf/danrw-contract-1.xsd
 
 
 

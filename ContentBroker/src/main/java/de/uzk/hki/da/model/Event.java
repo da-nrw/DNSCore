@@ -41,6 +41,7 @@ import javax.persistence.Transient;
  * @author Daniel M. de Oliveira
  */
 
+
 @Entity
 @Table(name="events")
 public class Event {
@@ -53,6 +54,7 @@ public class Event {
 	/** The id type. */
 	@Transient
 	private IdType idType;
+	//TODO: idType, id, type are redundant attributes. In mostcases 'type' is used, but it should have 'IdType'(or later 'EventType') as type not String 
 
 	/** The identifier. */
 	@Transient

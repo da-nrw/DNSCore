@@ -50,6 +50,7 @@
  <mapping class="de.uzk.hki.da.model.CopyJob"/>
  <mapping class="de.uzk.hki.da.model.SystemEvent"/>
  <mapping class="de.uzk.hki.da.model.PendingMail"/>
+ <mapping class="de.uzk.hki.da.model.FormatMapping"/>
 
 </session-factory>
 </hibernate-configuration>
