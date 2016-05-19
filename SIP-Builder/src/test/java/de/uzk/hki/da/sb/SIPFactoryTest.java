@@ -477,7 +477,6 @@ public class SIPFactoryTest {
 						String startDate =  streamReader.getElementText().substring(0, 10);
 						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 						String publicDate = sdf.format(rights.getPublicRights().getStartDate());
-						System.err.println("startDate: " + startDate + " -- publicDate: " + publicDate);
 						if (startDate.trim().equals(publicDate.trim())) {
 							return true;
 						}
