@@ -49,7 +49,8 @@
  <mapping class="de.uzk.hki.da.model.SystemEvent"/>
  <mapping class="de.uzk.hki.da.model.PendingMail"/>
  <mapping class="de.uzk.hki.da.model.FormatMapping"/>
-
+ <mapping class="de.uzk.hki.da.model.JHoveParameterMapping"/>
+ 
 </session-factory>
 </hibernate-configuration>
 

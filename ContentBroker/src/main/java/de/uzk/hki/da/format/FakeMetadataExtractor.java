@@ -21,6 +21,7 @@ package de.uzk.hki.da.format;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
@@ -30,7 +31,7 @@ import java.io.UnsupportedEncodingException;
 public class FakeMetadataExtractor implements MetadataExtractor{
 
 	@Override
-	public void extract(File file, File targetFile) throws FileNotFoundException {
+	public void extract(File file, File targetFile,	String expectedPUID) throws	FileNotFoundException{
 		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter(targetFile, "UTF-8");
@@ -46,4 +47,6 @@ public class FakeMetadataExtractor implements MetadataExtractor{
 	public boolean isConnectable() {
 		return true;
 	}
+
+
 }

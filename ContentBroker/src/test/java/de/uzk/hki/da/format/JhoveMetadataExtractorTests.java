@@ -44,7 +44,7 @@ import de.uzk.hki.da.utils.ProcessInformation;
  * @author Daniel M. de Oliveira
  */
 public class JhoveMetadataExtractorTests {
-
+	private static final String PUID_XML = "fmt/120";
 	private static final String VDA3_XML = "vda3.XML";
 	private static final String TIMEOUT = "timeout";
 	private static final String TMP_OUT_TXT = "/tmp/out.txt";
@@ -53,7 +53,7 @@ public class JhoveMetadataExtractorTests {
 	private static final ProcessInformation piRetval1=new ProcessInformation();
 	
 	CommandLineConnector cli = mock(CommandLineConnector.class);
-	JhoveMetadataExtractor jhove = new JhoveMetadataExtractor();
+	JhoveMetadataExtractorAndVerifier jhove = new JhoveMetadataExtractorAndVerifier();
 
 	@BeforeClass
 	public static void setUpBeforeClass() {
@@ -73,12 +73,12 @@ public class JhoveMetadataExtractorTests {
 	
 	@Test
 	public void connectabilityNotChecked() {
-		JhoveMetadataExtractor jhove = new JhoveMetadataExtractor();
+		JhoveMetadataExtractorAndVerifier jhove = new JhoveMetadataExtractorAndVerifier();
 		CommandLineConnector cli = mock(CommandLineConnector.class);
 		jhove.setCli(cli);
 		try {
 			jhove.extract(Path.makeFile(TEST_DIR,"notexistent.xml"), 
-					new File(TMP_OUT_TXT));
+					new File(TMP_OUT_TXT),PUID_XML);
 			fail();
 		} 
 		catch (IllegalStateException expected) {}
@@ -93,7 +93,7 @@ public class JhoveMetadataExtractorTests {
 	public void InputFileDoesNotExist() {
 		try {
 			jhove.extract(Path.makeFile(TEST_DIR,"notexistent.xml"), 
-					new File(TMP_OUT_TXT));
+					new File(TMP_OUT_TXT),PUID_XML);
 			fail();
 		} 
 		catch (FileNotFoundException expected) {}
@@ -105,7 +105,7 @@ public class JhoveMetadataExtractorTests {
 	public void targetFolderDoesNotExist() {
 		try {
 			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), 
-					Path.makeFile(TEST_DIR,"dirNotExists","outputfile.txt"));
+					Path.makeFile(TEST_DIR,"dirNotExists","outputfile.txt"),PUID_XML);
 			fail();
 		} 
 		catch (IllegalArgumentException expected) {}
@@ -119,7 +119,7 @@ public class JhoveMetadataExtractorTests {
 		when(cli.runCmdSynchronously((String[])anyObject(),(File)anyObject(),anyInt())).thenReturn(piRetval0);
 		
 		try {
-			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT));
+			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT),PUID_XML);
 		} 
 		catch (IOException e) { fail(); } 
 		catch (ConnectionException e) { fail(); }
@@ -133,7 +133,7 @@ public class JhoveMetadataExtractorTests {
 			.thenReturn(piRetval1);
 		
 		try {
-			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT));
+			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT),PUID_XML);
 			fail();
 		} 
 		catch (ConnectionException e) {}
@@ -148,7 +148,7 @@ public class JhoveMetadataExtractorTests {
 			.thenReturn(piRetval0); // let it work with the simple version
 		
 		try {
-			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT));
+			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT),PUID_XML);
 		} 
 		catch (ConnectionException e) { fail(); }
 		catch (Exception e) { fail(); } 
@@ -163,7 +163,7 @@ public class JhoveMetadataExtractorTests {
 			.thenThrow(new IOTimeoutException(TIMEOUT))
 			.thenThrow(new IOTimeoutException(TIMEOUT));
 		try {
-			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT));
+			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT),PUID_XML);
 			fail();
 		} catch (ConnectionException e) {}
 	}
@@ -175,7 +175,7 @@ public class JhoveMetadataExtractorTests {
 			.thenThrow(new IOTimeoutException(TIMEOUT))
 			.thenReturn(piRetval0); // let it work with the simple version
 		try {
-			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT));
+			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT),PUID_XML);
 			
 		} 
 		catch (ConnectionException e) {fail();}
@@ -191,10 +191,12 @@ public class JhoveMetadataExtractorTests {
 			.thenThrow(new IOTimeoutException(TIMEOUT))
 			.thenReturn(piRetval1);
 		try {
-			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT));
+			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT),PUID_XML);
 			
 		} 
 		catch (ConnectionException e) {}
 		catch (Exception e) { fail(); }  
 	}
+	
+	// testBroken JPEG testBrokenJP2000 testBrokenPDF testBrokenXML  testUsualJPEG testUSUAlJPG2000
 }

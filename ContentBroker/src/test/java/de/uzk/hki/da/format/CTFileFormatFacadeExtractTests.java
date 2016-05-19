@@ -38,10 +38,10 @@ import de.uzk.hki.da.utils.Path;
  * @author Daniel M. de Oliveira
  */
 public class CTFileFormatFacadeExtractTests {
-
+	private static final String PUID_XML = "fmt/120";
 	private static final Path testRoot = Path.make(TC.TEST_ROOT_FORMAT,"CTFileFormatFacadeExtract");
 	private static final ConfigurableFileFormatFacade fff = new ConfigurableFileFormatFacade();;
-	private static final JhoveMetadataExtractor metadataExtractor = new JhoveMetadataExtractor();
+	private static final JhoveMetadataExtractorAndVerifier metadataExtractor = new JhoveMetadataExtractorAndVerifier();
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws IOException {
@@ -64,7 +64,7 @@ public class CTFileFormatFacadeExtractTests {
 		assertTrue(fff.connectivityCheck());
 		
 		try {
-			fff.extract(Path.makeFile(testRoot,"vda3.XML"), Path.makeFile(testRoot,"vda3.XML.output"));
+			fff.extract(Path.makeFile(testRoot,"vda3.XML"), Path.makeFile(testRoot,"vda3.XML.output"),PUID_XML);
 		} catch (ConnectionException e) {
 			fail();
 		} catch (Exception e) {
@@ -77,7 +77,7 @@ public class CTFileFormatFacadeExtractTests {
 		CTTestHelper.cleanUpWhiteBoxTest();
 
 		try {
-			fff.extract(Path.makeFile(testRoot,"vda3.XML"), Path.makeFile(testRoot,"vda3.XML.output"));
+			fff.extract(Path.makeFile(testRoot,"vda3.XML"), Path.makeFile(testRoot,"vda3.XML.output"),PUID_XML);
 			fail();
 		} catch (ConnectionException e) {
 			assertTrue(e!=null);
