@@ -14,7 +14,7 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 
 #### Vorbedingung:
 
-* Der User hat den SIP-Builder mit der Build-Nr. >= XXXX.
+* Der User hat den SIP-Builder mit der Build-Nr. >= 1691.
 
 ## Szenario AT-BS-NOTAR-ONEFILE: Bilden eines einzelnen SIPs ohne Erstellung eines tar - Files
 
