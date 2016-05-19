@@ -19,20 +19,28 @@
 
 package de.uzk.hki.da.format;
 
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.Matchers.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static de.uzk.hki.da.test.TC.*;
+import de.uzk.hki.da.model.FormatMapping;
+import de.uzk.hki.da.model.JHoveParameterMapping;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.IOTimeoutException;
 import de.uzk.hki.da.utils.Path;
@@ -45,6 +53,9 @@ import de.uzk.hki.da.utils.ProcessInformation;
  */
 public class JhoveMetadataExtractorTests {
 	private static final String PUID_XML = "fmt/120";
+	private static final String MIME_XML = "text/xml";
+	private static final String JHOVE_OPT_XML = "-m XML-hul";
+	
 	private static final String VDA3_XML = "vda3.XML";
 	private static final String TIMEOUT = "timeout";
 	private static final String TMP_OUT_TXT = "/tmp/out.txt";
@@ -59,10 +70,36 @@ public class JhoveMetadataExtractorTests {
 	public static void setUpBeforeClass() {
 		piRetval0.setExitValue(0);
 		piRetval1.setExitValue(1);
+		
 	}
 	
 	@Before
 	public void setUp() throws IOException {
+		try {
+			//private variable in jhove definition with reflections to avoid DB fetches 
+			// to avoid java.lang.IllegalStateException: sessionFactory is null in HibernateUtil
+			List<JHoveParameterMapping> possibleOptions = new ArrayList<JHoveParameterMapping>();
+			possibleOptions.add(new JHoveParameterMapping(MIME_XML,JHOVE_OPT_XML));
+			Field possibleOptionsField;
+			possibleOptionsField = jhove.getClass().getDeclaredField("possibleOptions");
+			possibleOptionsField.setAccessible(true);
+			possibleOptionsField.set(jhove, possibleOptions);			
+
+			List<FormatMapping> pronomMimetypeList = new ArrayList<FormatMapping>();
+			FormatMapping fMapping=new FormatMapping();
+			fMapping.setPuid(PUID_XML);
+			fMapping.setMime_type(MIME_XML);
+			pronomMimetypeList.add(fMapping);
+			Field pronomMimetypeListField = jhove.getClass().getDeclaredField("pronomMimetypeList");
+			pronomMimetypeListField.setAccessible(true);
+			pronomMimetypeListField.set(jhove, pronomMimetypeList);
+
+
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			fail(e1.getMessage());
+		}
+		
 		jhove.setCli(cli);
 		ProcessInformation pi=new ProcessInformation();
 		pi.setStdOut("Jhove (Rel");
@@ -82,9 +119,9 @@ public class JhoveMetadataExtractorTests {
 			fail();
 		} 
 		catch (IllegalStateException expected) {}
-		catch (FileNotFoundException expected) {fail();}
-		catch (ConnectionException e) {fail();}
-		catch (Exception e) {fail();} 
+		catch (FileNotFoundException expected) {fail(expected.getMessage());}
+		catch (ConnectionException e) {fail(e.getMessage());}
+		catch (Exception e) {fail(e.getMessage());} 
 	}
 	
 	
@@ -97,8 +134,8 @@ public class JhoveMetadataExtractorTests {
 			fail();
 		} 
 		catch (FileNotFoundException expected) {}
-		catch (ConnectionException e) {fail();}
-		catch (Exception e) {fail();} 
+		catch (ConnectionException e) {fail(e.getMessage());}
+		catch (Exception e) {fail(e.getMessage());} 
 	}
 	
 	@Test
@@ -109,8 +146,8 @@ public class JhoveMetadataExtractorTests {
 			fail();
 		} 
 		catch (IllegalArgumentException expected) {}
-		catch (ConnectionException e) {fail();}
-		catch (Exception e) {fail();} 
+		catch (ConnectionException e) {fail(e.getMessage());}
+		catch (Exception e) {fail(e.getMessage());} 
 	}
 
 	@Test
@@ -121,8 +158,8 @@ public class JhoveMetadataExtractorTests {
 		try {
 			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT),PUID_XML);
 		} 
-		catch (IOException e) { fail(); } 
-		catch (ConnectionException e) { fail(); }
+		catch (IOException e) { fail(e.getMessage()); } 
+		catch (ConnectionException e) { fail(e.getMessage()); }
 	}
 	
 	@Test
@@ -137,7 +174,7 @@ public class JhoveMetadataExtractorTests {
 			fail();
 		} 
 		catch (ConnectionException e) {}
-		catch (Exception e) { fail(); } 
+		catch (Exception e) { fail(e.getMessage()); } 
 	}
 	
 	@Test
@@ -150,20 +187,45 @@ public class JhoveMetadataExtractorTests {
 		try {
 			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT),PUID_XML);
 		} 
-		catch (ConnectionException e) { fail(); }
-		catch (Exception e) { fail(); } 
+		catch (ConnectionException e) { fail(e.getMessage()); }
+		catch (Exception e) { fail(e.getMessage()); } 
 	}
 	
 	
 	
 	@Test
 	public void timeout() throws IOException {
-		
-		when(cli.runCmdSynchronously((String[])anyObject(),(File)anyObject(),anyLong()))
-			.thenThrow(new IOTimeoutException(TIMEOUT))
-			.thenThrow(new IOTimeoutException(TIMEOUT));
+		/*try {
+			//private variable definition with reflections to avoid DB fetches 
+			// to avoid java.lang.IllegalStateException: sessionFactory is null in HibernateUtil
+			List<JHoveParameterMapping> possibleOptions = new ArrayList<JHoveParameterMapping>();
+			possibleOptions.add(new JHoveParameterMapping(MIME_XML,JHOVE_OPT_XML));
+			Field possibleOptionsField;
+			possibleOptionsField = jhove.getClass().getDeclaredField("possibleOptions");
+			possibleOptionsField.setAccessible(true);
+			possibleOptionsField.set(jhove, possibleOptions);			
+
+			List<FormatMapping> pronomMimetypeList = new ArrayList<FormatMapping>();
+			FormatMapping fMapping=new FormatMapping();
+			fMapping.setPuid(PUID_XML);
+			fMapping.setMime_type(MIME_XML);
+			pronomMimetypeList.add(fMapping);
+			Field pronomMimetypeListField = jhove.getClass().getDeclaredField("pronomMimetypeList");
+			pronomMimetypeListField.setAccessible(true);
+			pronomMimetypeListField.set(jhove, pronomMimetypeList);
+
+
+		} catch (IllegalArgumentException e1) {
+			e1.printStackTrace();
+		} catch (ReflectiveOperationException e1) {
+			e1.printStackTrace();
+		}  catch (SecurityException e2) {
+			e2.printStackTrace();
+		}*/
+
+		when(cli.runCmdSynchronously((String[]) anyObject(), (File) anyObject(), anyLong())).thenThrow(new IOTimeoutException(TIMEOUT)).thenThrow(new IOTimeoutException(TIMEOUT));
 		try {
-			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT),PUID_XML);
+			jhove.extract(Path.makeFile(TEST_DIR, VDA3_XML), new File(TMP_OUT_TXT), PUID_XML);
 			fail();
 		} catch (ConnectionException e) {}
 	}
@@ -178,8 +240,8 @@ public class JhoveMetadataExtractorTests {
 			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT),PUID_XML);
 			
 		} 
-		catch (ConnectionException e) {fail();}
-		catch (Exception e) { fail(); }  
+		catch (ConnectionException e) {fail(e.getMessage());}
+		catch (Exception e) { fail(e.getMessage()); }  
 	}
 	
 	
@@ -195,7 +257,7 @@ public class JhoveMetadataExtractorTests {
 			
 		} 
 		catch (ConnectionException e) {}
-		catch (Exception e) { fail(); }  
+		catch (Exception e) { fail(e.getMessage()); }  
 	}
 	
 	// testBroken JPEG testBrokenJP2000 testBrokenPDF testBrokenXML  testUsualJPEG testUSUAlJPG2000

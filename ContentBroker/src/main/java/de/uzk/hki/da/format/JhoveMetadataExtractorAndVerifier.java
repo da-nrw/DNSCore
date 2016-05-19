@@ -48,8 +48,8 @@ import de.uzk.hki.da.utils.StringUtilities;
 public class JhoveMetadataExtractorAndVerifier implements MetadataExtractor {
 
 	private static final Logger logger = LoggerFactory.getLogger(JhoveMetadataExtractorAndVerifier.class);
-	static List<JHoveParameterMapping> possibleOptions=null;
-	static List<FormatMapping> pronomMimetypeList=null;
+	private List<JHoveParameterMapping> possibleOptions=null;
+	private List<FormatMapping> pronomMimetypeList=null;
 	
 	/**
 	 * {@link #pronomMimetypeList} can be long, binary comparator is useful to achieve better performance O(log(N)) instead of O(N)
@@ -208,6 +208,9 @@ public class JhoveMetadataExtractorAndVerifier implements MetadataExtractor {
 	
 
 	String getJHoveOptionForMimeType(String mimeType){
+		mimeType=mimeType.trim();
+		if(mimeType.isEmpty())
+			return "";
 		List<JHoveParameterMapping> mappingsConf=getJhoveParameterMappingTable();
 		for(JHoveParameterMapping iterMapping:mappingsConf)
 			if(iterMapping.getMime_type().equalsIgnoreCase(mimeType))
@@ -223,14 +226,15 @@ public class JhoveMetadataExtractorAndVerifier implements MetadataExtractor {
 			session.beginTransaction();
 			//List<Job> l = null;
 		
-			pronomMimetypeList = session.createQuery("FROM JHoveParameterMapping").setReadOnly(true).list();
+			possibleOptions = session.createQuery("FROM JHoveParameterMapping").setReadOnly(true).list();
 			session.close();
 			return possibleOptions;
 	}
 	}
 	
 	private String getMimeTypeForPronom(String puid){
-		if(puid.trim().isEmpty())
+		puid=puid.trim();
+		if(puid.isEmpty())
 			return "";
 		FormatMapping searchFor=new FormatMapping();
 		searchFor.setPuid(puid);
@@ -265,6 +269,20 @@ public class JhoveMetadataExtractorAndVerifier implements MetadataExtractor {
 		}
 		return pronomMimetypeList;
 	}
-	
-	
+
+
+
+
+	public List<JHoveParameterMapping> getPossibleOptions() {
+		return possibleOptions;
+	}
+	public void setPossibleOptions(List<JHoveParameterMapping> possibleOptions) {
+		this.possibleOptions = possibleOptions;
+	}
+	public List<FormatMapping> getPronomMimetypeList() {
+		return pronomMimetypeList;
+	}
+	public void setPronomMimetypeList(List<FormatMapping> pronomMimetypeList) {
+		this.pronomMimetypeList = pronomMimetypeList;
+	}
 }

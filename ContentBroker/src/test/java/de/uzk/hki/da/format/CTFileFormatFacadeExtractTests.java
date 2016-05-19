@@ -24,11 +24,16 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.uzk.hki.da.model.FormatMapping;
+import de.uzk.hki.da.model.JHoveParameterMapping;
 import de.uzk.hki.da.test.CTTestHelper;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.utils.CommandLineConnector;
@@ -39,12 +44,39 @@ import de.uzk.hki.da.utils.Path;
  */
 public class CTFileFormatFacadeExtractTests {
 	private static final String PUID_XML = "fmt/120";
+	private static final String MIME_XML = "text/xml";
+	private static final String JHOVE_OPT_XML = "-m XML-hul";
 	private static final Path testRoot = Path.make(TC.TEST_ROOT_FORMAT,"CTFileFormatFacadeExtract");
 	private static final ConfigurableFileFormatFacade fff = new ConfigurableFileFormatFacade();;
 	private static final JhoveMetadataExtractorAndVerifier metadataExtractor = new JhoveMetadataExtractorAndVerifier();
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws IOException {
+		try {
+			//private variable in jhove definition with reflections to avoid DB fetches 
+			// to avoid java.lang.IllegalStateException: sessionFactory is null in HibernateUtil
+			List<JHoveParameterMapping> possibleOptions = new ArrayList<JHoveParameterMapping>();
+			possibleOptions.add(new JHoveParameterMapping(MIME_XML,JHOVE_OPT_XML));
+			Field possibleOptionsField;
+			possibleOptionsField = metadataExtractor.getClass().getDeclaredField("possibleOptions");
+			possibleOptionsField.setAccessible(true);
+			possibleOptionsField.set(metadataExtractor, possibleOptions);			
+
+			List<FormatMapping> pronomMimetypeList = new ArrayList<FormatMapping>();
+			FormatMapping fMapping=new FormatMapping();
+			fMapping.setPuid(PUID_XML);
+			fMapping.setMime_type(MIME_XML);
+			pronomMimetypeList.add(fMapping);
+			Field pronomMimetypeListField = metadataExtractor.getClass().getDeclaredField("pronomMimetypeList");
+			pronomMimetypeListField.setAccessible(true);
+			pronomMimetypeListField.set(metadataExtractor, pronomMimetypeList);
+
+
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			fail(e1.getMessage());
+		}
+		
 		CTTestHelper.prepareWhiteBoxTest();
 		metadataExtractor.setCli(new CommandLineConnector());
 		if (!metadataExtractor.isConnectable()) fail();
@@ -66,9 +98,9 @@ public class CTFileFormatFacadeExtractTests {
 		try {
 			fff.extract(Path.makeFile(testRoot,"vda3.XML"), Path.makeFile(testRoot,"vda3.XML.output"),PUID_XML);
 		} catch (ConnectionException e) {
-			fail();
+			fail(e.getMessage());
 		} catch (Exception e) {
-			fail();
+			fail(e.getMessage());
 		}
 	}
 	
@@ -82,7 +114,7 @@ public class CTFileFormatFacadeExtractTests {
 		} catch (ConnectionException e) {
 			assertTrue(e!=null);
 		} catch (Exception e) {
-			fail();
+			fail(e.getMessage());;
 		}
 	}
 	
