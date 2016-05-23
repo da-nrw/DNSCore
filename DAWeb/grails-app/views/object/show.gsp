@@ -140,9 +140,9 @@ function toggle(source) {
 						<span id="origName-label" class="property-label">Enthaltene Formate aller zu diesem Objekt eingelieferten SIP</span>
 						<g:each in="${objectInstance.original_formats?.split(",")}"> 
 							<span class="property-value" aria-labelledby="urn-label">
-						  		<g:each in="${extensionSip.keySet().toString().replace('[', '').replace(']','').split(",")}" var="key">
-									<g:if test="${key.trim() == it.trim()}">
-										${extensionSip.getAt(key.trim()).toString().replace('[', '').replace(']','')} -- 
+						  		<g:each in="${extensionSip.keySet().toString().replace('[', '').replace(']','').split(",")}" var="keySIP">
+									<g:if test="${keySIP.trim() == it.trim()}">
+										${extensionSip.getAt(keySIP.trim()).toString().replace('[', '').replace(']','')} -- 
 									</g:if> 
 								</g:each>
 						  	 	<g:if test="${!it.startsWith("danrw")}">
@@ -152,9 +152,9 @@ function toggle(source) {
 						   		</g:if>
 						   		<g:else>
 						   			<span class="property-value" aria-labelledby="urn-label">
-							   			<g:each in="${extensionSip.keySet().toString().replace('[', '').replace(']','').split(",")}" var="key">
-											<g:if test="${key.trim() == it.trim()}">
-												${extensionSip.getAt(key.trim()).toString().replace('[', '').replace(']','')} -- 
+							   			<g:each in="${extensionSip.keySet().toString().replace('[', '').replace(']','').split(",")}" var="keySIP">
+											<g:if test="${keySIP.trim() == it.trim()}">
+												${extensionSip.getAt(keySIP.trim()).toString().replace('[', '').replace(']','')} -- 
 											</g:if> 
 										</g:each>	
 						   				${it}
@@ -169,9 +169,9 @@ function toggle(source) {
 						<span id="origName-label" class="property-label">Formate der aktuellsten Repräsentation (DIP)</span>
 						<g:each in="${objectInstance.most_recent_formats?.split(",")}">
 							<span class="property-value" aria-labelledby="urn-label">
-						  		<g:each in="${extensionDip.keySet().toString().replace('[', '').replace(']','').split(",")}" var="key">
-									<g:if test="${key.trim() == it.trim()}">
-										${extensionDip.getAt(key.trim()).toString().replace('[', '').replace(']','')} -- 
+						  		<g:each in="${extensionDip.keySet().toString().replace('[', '').replace(']','').split(",")}" var="keyDIP">
+									<g:if test="${keyDIP.trim() == it.trim()}">
+										${extensionDip.getAt(keyDIP.trim()).toString().replace('[', '').replace(']','')} -- 
 									</g:if> 
 								</g:each>
 								<g:if test="${!it.startsWith("danrw")}">
@@ -181,9 +181,9 @@ function toggle(source) {
 							    </g:if>
 							    <g:else>
 							      <span class="property-value" aria-labelledby="urn-label">
-								 	 <g:each in="${extensionDip.keySet().toString().replace('[', '').replace(']','').split(",")}" var="key">
-								        <g:if test="${key.trim() == it.trim()}">
-										  ${extensionDip.getAt(key.trim()).toString().replace('[', '').replace(']','')} -- 
+								 	 <g:each in="${extensionDip.keySet().toString().replace('[', '').replace(']','').split(",")}" var="keyDIP">
+								        <g:if test="${keyDIP.trim() == it.trim()}">
+										  ${extensionDip.getAt(keyDIP.trim()).toString().replace('[', '').replace(']','')} -- 
 									    </g:if> 
 								  	</g:each>	
 							   		${it}
