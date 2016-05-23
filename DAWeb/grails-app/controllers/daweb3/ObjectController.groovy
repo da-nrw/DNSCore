@@ -29,6 +29,7 @@ import grails.converters.*;
 import java.security.InvalidParameterException;
 
 import groovy.util.XmlSlurper
+import groovy.util.XmlParser
 
 class ObjectController {
 
@@ -433,37 +434,22 @@ class ObjectController {
 
 	}
 	
-	
-	def collectData = {
-		def result = []
-		def res = [:]
-		User user = springSecurityService.currentUser
-		def c1 = Object.createCriteria()
-		def objtsTotalForCont = c1.list() {
-			eq("user.id", user.id)
-			between("object_state", 50,200)
-		}
-		def totalObjs = objtsTotalForCont.size();
-		res.sum = 79
-		res.typ = "Archiviert"
-		result +=res
-		res = [:]
-		res.sum = 21
-		res.typ = "In progress"
-		result +=res
-		
-		render result as JSON
-	}
+
 	
 	def premis() {
 		def xmldocument = "/home/julia/Desktop/premis_neu.xml"//"/ci/DNSCore/ContentBroker/src/test/resources/metadata/premistest.xml"
-		def premis = new XmlSlurper().parse(new File(xmldocument))
-		def events = premis.event
+	//	def premis = new XmlSlurper().parse(new File(xmldocument))
+	//	def events = premis.event				events: events, size: events.size(),
 		def c = Event.createCriteria()
 		def eventList = c.list() {
 			eq("objectIdentifier", params.objectIdentifier) //"1-2016032334")
 		}
-		render(view:"premis", model:[events: events, size: events.size(), eventList: eventList, xmldocument: xmldocument])
+		render(view:"premis", model:[ eventList: eventList, xmldocument: xmldocument])
 	}
 
+	def premisAnzeigen() {
+		def xml = (new FileInputStream(params.xmldocument)).getText()
+		render (text: xml, contentType: "text/xml", encoding: "UTF-8")
+	}
+	
 }
