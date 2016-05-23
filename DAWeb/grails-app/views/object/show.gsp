@@ -135,36 +135,73 @@ function toggle(source) {
 						<span class="property-value" aria-labelledby="origName-label">${objectInstance.last_checked}</span>
 				</li>
 				</g:if>
-					<g:if test="${objectInstance?.original_formats}">
+				<g:if test="${objectInstance?.original_formats}">
 					<li class="fieldcontain">
-					<span id="origName-label" class="property-label">Enthaltene Formate aller zu diesem Objekt eingelieferten SIP</span>
-						  <g:each in="${objectInstance.original_formats?.split(",")}">
-						  	 <g:if test="${!it.startsWith("danrw")}">
-						  	 <g:link url="http://www.nationalarchives.gov.uk/PRONOM/${it}" target="_blank"><span class="property-value" aria-labelledby="urn-label">${it}</span></g:link>
-						   </g:if><g:else><span class="property-value" aria-labelledby="urn-label">${it}</span></g:else></g:each>
+						<span id="origName-label" class="property-label">Enthaltene Formate aller zu diesem Objekt eingelieferten SIP</span>
+						<g:each in="${objectInstance.original_formats?.split(",")}"> 
+							<span class="property-value" aria-labelledby="urn-label">
+						  		<g:each in="${extensionSip.keySet().toString().replace('[', '').replace(']','').split(",")}" var="key">
+									<g:if test="${key.trim() == it.trim()}">
+										${extensionSip.getAt(key.trim()).toString().replace('[', '').replace(']','')} -- 
+									</g:if> 
+								</g:each>
+						  	 	<g:if test="${!it.startsWith("danrw")}">
+						  			<g:link url="http://www.nationalarchives.gov.uk/PRONOM/${it}" target="_blank">
+								   		${it}
+							  		</g:link>
+						   		</g:if>
+						   		<g:else>
+						   			<span class="property-value" aria-labelledby="urn-label">
+							   			<g:each in="${extensionSip.keySet().toString().replace('[', '').replace(']','').split(",")}" var="key">
+											<g:if test="${key.trim() == it.trim()}">
+												${extensionSip.getAt(key.trim()).toString().replace('[', '').replace(']','')} -- 
+											</g:if> 
+										</g:each>	
+						   				${it}
+						   			</span>
+						   		</g:else>
+						   	</span>
+						</g:each>
 					</li>
 				</g:if>
-				
-					<g:if test="${objectInstance?.most_recent_formats}">
+				<g:if test="${objectInstance?.most_recent_formats}">
 					<li class="fieldcontain">
-					<span id="origName-label" class="property-label">Formate der aktuellsten Repräsentation (DIP)</span>
-					
-						  <g:each in="${objectInstance.most_recent_formats?.split(",")}">
-						  	 <g:if test="${!it.startsWith("danrw")}">
-						  	 <g:link url="http://www.nationalarchives.gov.uk/PRONOM/${it}" target="pronom"><span class="property-value" aria-labelledby="urn-label">${it}</span></g:link>
-						   </g:if><g:else><span class="property-value" aria-labelledby="origName-label">${it}</span></g:else></g:each>
-				</li>
+						<span id="origName-label" class="property-label">Formate der aktuellsten Repräsentation (DIP)</span>
+						<g:each in="${objectInstance.most_recent_formats?.split(",")}">
+							<span class="property-value" aria-labelledby="urn-label">
+						  		<g:each in="${extensionDip.keySet().toString().replace('[', '').replace(']','').split(",")}" var="key">
+									<g:if test="${key.trim() == it.trim()}">
+										${extensionDip.getAt(key.trim()).toString().replace('[', '').replace(']','')} -- 
+									</g:if> 
+								</g:each>
+								<g:if test="${!it.startsWith("danrw")}">
+							  		<g:link url="http://www.nationalarchives.gov.uk/PRONOM/${it}" target="pronom">
+							  			${it}
+							  		</g:link>
+							    </g:if>
+							    <g:else>
+							      <span class="property-value" aria-labelledby="urn-label">
+								 	 <g:each in="${extensionDip.keySet().toString().replace('[', '').replace(']','').split(",")}" var="key">
+								        <g:if test="${key.trim() == it.trim()}">
+										  ${extensionDip.getAt(key.trim()).toString().replace('[', '').replace(']','')} -- 
+									    </g:if> 
+								  	</g:each>	
+							   		${it}
+							   	  </span>
+						   		</g:else>
+						  	 </span>
+						</g:each>
+					</li>
 				</g:if>
-					<g:if test="${objectInstance?.most_recent_secondary_attributes}">
-					<li class="fieldcontain">
+				<g:if test="${objectInstance?.most_recent_secondary_attributes}">
+				   <li class="fieldcontain">
 					<span id="origName-label" class="property-label">Codecs der Oberflächenansicht</span>
 						  <g:each in="${objectInstance.most_recent_secondary_attributes?.split(",")}">
 						  	 <span class="property-value" aria-labelledby="origName-label">${it}</span>
 						  </g:each>
-				</li>
+				   </li>
 				</g:if>
 				<g:if test="${objectInstance?.ddb_exclusion!=null}">
-					
 					<li class="fieldcontain">
 					<span id="origName-label" class="property-label">Beschränkung Harvesting DDB</span>
 						  	 <span class="property-value" aria-labelledby="origName-label">${objectInstance.ddb_exclusion}</span>
