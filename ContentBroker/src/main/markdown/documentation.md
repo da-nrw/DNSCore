@@ -9,6 +9,7 @@ The Documentation is actually under review. Therefore you may find parts of the 
 The documentation will be restructured to match the several users need. Please select the part appropriate to your roles needs. The following guides are available:
 
 ## General Understanding
+
 * The DNSCore object model - reference documentation ([english](object_model.md)|[german](object_model.de.md))
 * SIP specification ([english](specification_sip.md)|[german](specification_sip.de.md))
 * DIP specification ([english](specification_dip.md))
