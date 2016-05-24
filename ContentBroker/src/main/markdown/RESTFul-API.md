@@ -7,8 +7,8 @@ The API gives access to the progress information for SIPs previously submitted t
 ## Service URL
 Contractors *must* use the Service URL of their associated Service Provider. Secure HTTP (https) is supported exclusively. Redirect from http to https depends on the Providers facilities. 
 
-## Login
-Cntractors must authenticate with BASIC AUTH. Credentials are same as contractor's.
+## Authenticate
+Contractors must authenticate with BASIC AUTH. Credentials are same as contractor's.
 
 [https://server/daweb3/](https://Server/daweb3/)
 
