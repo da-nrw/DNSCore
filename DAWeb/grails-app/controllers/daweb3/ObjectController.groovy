@@ -22,6 +22,7 @@ package daweb3
 
 
 import org.apache.commons.lang.StringUtils; 
+import org.apache.tools.ant.types.resources.selectors.InstanceOf;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import grails.converters.*;
@@ -393,7 +394,24 @@ class ObjectController {
 					result.msg = "Objekt ${object.urn} erfolgreich angefordert."
 					result.success = true
 				} catch ( Exception e ) {
-					result.msg = "Objekt ${object.urn} konnte nicht angefordert werden."
+				/*
+				 * DANRW-1419: error messages must be better specified
+				 * 1. RuntimeException: "Es gibt bereits einen laufenden Arbeitsauftrag für dieses Objekt"
+				 * 2. IllegalArgumentException: object == null oder responsibleNodeName == null
+				 * 3. Exception: !object.save() oder !job.save()
+				 */
+					if (e instanceof RuntimeException) {
+						result.msg = e.getMessage() +  " ${object.urn}" 
+					} else 
+					if (e instanceof IllegalArgumentException) { 
+						if (e.getMessage().equals("Object is not valid")) {
+							result.msg = "Objekt ${object.urn} konnte nicht angefordert werden. Das Object ist ungültig."
+						} else if (e.getMessage().equals("responsibleNodeName must not be null")) {
+							result.msg = "Objekt ${object.urn} konnte nicht angefordert werden. Der Knotenname ist nicht gesetzt."
+						}
+					} else {
+						result.msg = "Objekt ${object.urn} konnte nicht angefordert werden."
+					}
 					log.error("Error saving Retrieval request : " + e.printStackTrace())
 				}
 			}
