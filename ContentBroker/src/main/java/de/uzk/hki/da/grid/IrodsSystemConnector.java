@@ -290,11 +290,7 @@ public class IrodsSystemConnector {
 	private boolean connect() {
 			logger.debug("Establishing connection to the iRODS DataGrid now!");
 			try {
-				//TODO change to appropriate jargon version to implement Singleton
 				irodsFileSystem = IRODSFileSystemSingletonWrapper.instance();
-				// until this we use our own Wrapper 
-	//			irodsFileSystem = IRODSFileSystem.instance();
-				//irodsFileSystem = IrodsFileSystemConnector.getInstance(); 
 
 				if (setPamMode) {
 					System.setProperty("javax.net.ssl.keyStore", keyStore);
@@ -392,11 +388,9 @@ public class IrodsSystemConnector {
 	 */
 	public DataObjectAO getDataObjectAO() throws IrodsRuntimeException {
 		if (irodsFileSystem == null){
-			throw new IrodsRuntimeException(
-					"No IRODSFileSystem set, cannot obtain the DataObjectAO");
+			establishConnect();
+			if (!isConnected()) throw new IrodsRuntimeException ("no filesystem set!");
 		}
-		establishConnect();
-		
 		try {
 			IRODSAccessObjectFactory accessObjectFactory = getIRODSAccessObjectFactory();
 			return accessObjectFactory.getDataObjectAO(irodsAccount);

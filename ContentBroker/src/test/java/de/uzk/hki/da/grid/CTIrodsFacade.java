@@ -261,6 +261,7 @@ public class CTIrodsFacade {
 	
 	
 	private void putFileAndWaitUntilReplicatedAccordingToStoragePolicy() throws InterruptedException, IOException {
+		
 		assertTrue(ig.put(temp, testColl + "/urn.tar", sp, null));
 		
 		while (true) {

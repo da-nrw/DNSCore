@@ -20,12 +20,16 @@
 package de.uzk.hki.da.format;
 
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
 
+import org.elasticsearch.common.mvel2.ast.AssertNode;
+import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -43,8 +47,8 @@ public class CTFileFormatFacadeExtractTests {
 	private static final ConfigurableFileFormatFacade fff = new ConfigurableFileFormatFacade();;
 	private static final JhoveMetadataExtractor metadataExtractor = new JhoveMetadataExtractor();
 	
-	@BeforeClass
-	public static void setUpBeforeClass() throws IOException {
+	@Before
+	public void setUp() throws IOException {
 		CTTestHelper.prepareWhiteBoxTest();
 		metadataExtractor.setCli(new CommandLineConnector());
 		if (!metadataExtractor.isConnectable()) fail();
@@ -54,13 +58,15 @@ public class CTFileFormatFacadeExtractTests {
 	
 	
 	
-	@AfterClass
-	public static void tearDownAfterClass() throws IOException {
+	@After
+	public void tearDown() throws IOException {
 		CTTestHelper.cleanUpWhiteBoxTest();
 	}
 	
 	@Test
 	public void extractEAD() {
+		
+		assertNotNull(fff);
 		assertTrue(fff.connectivityCheck());
 		
 		try {
