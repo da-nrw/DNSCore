@@ -17,8 +17,8 @@ insert into jhove_parameter_mapping(id, mime_type, map_parameter) values(10,'app
 insert into jhove_parameter_mapping(id, mime_type, map_parameter) values(11,'text/xml','-m XML-hul');
 */
 
-insert into jhove_parameter_mapping(id, mime_type, map_parameter) values(9,'application/xml, text/xml','-m ASCII-hul');
-insert into jhove_parameter_mapping(id, mime_type, map_parameter) values(10,'application/xml','-m ASCII-hul');
-insert into jhove_parameter_mapping(id, mime_type, map_parameter) values(11,'text/xml','-m ASCII-hul');
+insert into jhove_parameter_mapping(id, mime_type, map_parameter) values(9,'application/xml, text/xml','-m UTF8-hul');
+insert into jhove_parameter_mapping(id, mime_type, map_parameter) values(10,'application/xml','-m UTF8-hul');
+insert into jhove_parameter_mapping(id, mime_type, map_parameter) values(11,'text/xml','-m UTF8-hul');
 
 commit;
