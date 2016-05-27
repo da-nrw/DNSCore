@@ -64,10 +64,9 @@ For Documentation see:
 
 Prerequisites:
 
-    JAVA 1.6
+    JAVA 1.8 (Building DA-Web needs 1.6)
     MAVEN
     GIT 
-    Grails 2.3.8
     Imagemagick 6.7.8 (with jasper, to use jpg2000, with tiff)
     Please ensure, the shells (bash and sh) of your workstation run in UTF-8 mode:
 
