@@ -39,7 +39,7 @@ import de.uzk.hki.da.format.ConnectionException;
 import de.uzk.hki.da.format.FFConstants;
 import de.uzk.hki.da.format.FidoFormatScanService;
 import de.uzk.hki.da.format.FileWithFileFormat;
-import de.uzk.hki.da.format.JhoveMetadataExtractorAndVerifier;
+import de.uzk.hki.da.format.JhoveMetadataExtractor;
 import de.uzk.hki.da.format.SimpleFileWithFileFormat;
 import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.grid.IrodsSystemConnector;
@@ -67,9 +67,8 @@ import de.uzk.hki.da.utils.StringUtilities;
  */
 public class Diagnostics {
 
-	private static final String TIFF_TESTFILE = "healthCheck.tif";
-	private static final String TIFF_TESTFILE_PATH = "conf/healthCheck.tif";
-	private static final String TIFF_TESTFILE_PUID= "fmt/120";
+	public static final String TIFF_TESTFILE = "healthCheck.tif";
+	public static final String TIFF_TESTFILE_PATH = "conf/healthCheck.tif";
 
 	private static final String BEAN_NAME_IRODS_ZONE = "irods.zone";
 
@@ -236,7 +235,7 @@ public class Diagnostics {
 		int errorCount = 0;
 		ConfigurableFileFormatFacade sfff = new ConfigurableFileFormatFacade();
 		sfff.setFormatScanService(new FidoFormatScanService());
-		JhoveMetadataExtractorAndVerifier meta = new JhoveMetadataExtractorAndVerifier();
+		JhoveMetadataExtractor meta = new JhoveMetadataExtractor();
 		meta.setCli(new CommandLineConnector());
 		sfff.setMetadataExtractor(meta);
 		
@@ -281,10 +280,13 @@ public class Diagnostics {
 		
 //		FileFormatFacade jhove = new ConfigurableFileFormatFacade();
 		try {
-			sfff.extract(new File(TIFF_TESTFILE_PATH), new File(TIFF_TESTFILE_TEMPPATH),TIFF_TESTFILE_PUID);
+			sfff.extract(new File(TIFF_TESTFILE_PATH), new File(TIFF_TESTFILE_TEMPPATH),FFConstants.FMT_353);
 		} catch (ConnectionException e) {
+			System.out.println("standardFileFormatFacadeJhoveWorkingProperly(): ConnectionException: "+e.getMessage());
 			return false;
 		} catch (Exception e) {
+			System.out.println("standardFileFormatFacadeJhoveWorkingProperly(): Exception: "+e.getMessage()+"\n");
+			e.printStackTrace(System.out);
 			return false;
 		}
 		return true;

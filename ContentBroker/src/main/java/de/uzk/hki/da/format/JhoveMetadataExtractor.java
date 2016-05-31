@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,8 +95,8 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 			throw new IllegalArgumentException("ParentFolder " + extractedMetadata.getParentFile() + " must exist in order to create " + extractedMetadata);
 
 		int retval = 0;
-		getJHoveOptionForMimeType("");
-		String typeOptions = getJHoveOptionForMimeType(getMimeTypeForPronom(expectedPUID));
+		String mimeType=getMimeTypeForPronom(expectedPUID);
+		String typeOptions = getJHoveOptionForMimeType(mimeType);
 		try {
 			retval = execCMD(jhoveCmd(extractedMetadata, makeFilePath(file), typeOptions));
 		} catch (IOTimeoutException timeout) {
@@ -126,15 +127,18 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 		JhoveResult jhResult;
 		try {
 			jhResult = JhoveResult.parseJHoveXML(extractedMetadata.getAbsolutePath());
-		} catch (SAXException e) {
-			// e.printStackTrace();
+		} catch (Exception e) {
 			logger.error("JHove Output(" + extractedMetadata.getAbsolutePath() + ") not interpretable: " + e.getMessage());
 			throw new JHoveValidationException("JHove Output(" + extractedMetadata.getAbsolutePath() + ") not interpretable: " + e.getMessage(), e);
 		}
 
+		/*
+		 * The JHove result is not taken in count because it often alert about errorneus file, but in fact these file can be processed/converted.
+		 * Second error is: jhove can't handle good enough files containing whitespaces in their names (jira: DANRW-1415)
+		 */
 		if (!jhResult.isValid()){
-			logger.error("JHove say " + file + " is not valid: " + jhResult);
-			throw new JHoveValidationException("JHove say " + file + " is not valid: " + jhResult);
+			logger.warn("JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + jhResult);
+			//throw new JHoveValidationException("JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + jhResult);
 		}
 	}
 	
