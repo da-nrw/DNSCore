@@ -2,6 +2,9 @@ package de.uzk.hki.da.format;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.TreeSet;
 
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
@@ -28,7 +31,7 @@ public class ImageMagickSubformatIdentifier implements FormatIdentifier, Connect
 	private String getEncoding(String input, boolean pruneExceptions) {
 		
 		String[] cmd = new String []{
-					"identify","-format","'%C'",input};
+					"identify","-format","%C'",input};
 		FormatCmdLineExecutor cle = new FormatCmdLineExecutor( getCliConnector(), knownErrors);
 		cle.setPruneExceptions(pruneExceptions);
 		try {
@@ -38,9 +41,21 @@ public class ImageMagickSubformatIdentifier implements FormatIdentifier, Connect
 				throw ufe;
 			}
 		}
-		String compression = cle.getStdOut();
-		if (compression.length()>0) 
-		compression = compression.substring( 1, compression.length() - 1 );
+
+		String stdOut = cle.getStdOut();
+		String compression = "";
+
+		if (stdOut.length()>0) {
+			String[] subs = stdOut.split("'");
+			TreeSet<String> subSet = new TreeSet<String>();
+			for (int sss=0; sss<subs.length; sss++){
+				subSet.add(subs[sss]);
+			}
+			for (String subbi: subSet){
+				compression += subbi + " ";
+			}
+			compression = compression.trim();
+		}
 		return compression;
 	}
 
