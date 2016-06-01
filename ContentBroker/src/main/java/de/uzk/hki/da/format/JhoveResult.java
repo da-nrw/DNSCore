@@ -1,14 +1,9 @@
 package de.uzk.hki.da.format;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.HashMap;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import nu.xom.Builder;
@@ -18,23 +13,22 @@ import nu.xom.Elements;
 import nu.xom.NodeFactory;
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
-import nu.xom.WellformednessException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xml.sax.Attributes;
-import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 import de.uzk.hki.da.metadata.PremisXmlReaderNodeFactory;
-import de.uzk.hki.da.model.DAFile;
-import de.uzk.hki.da.utils.CommandLineConnector;
-import de.uzk.hki.da.utils.IOTimeoutException;
-import de.uzk.hki.da.utils.ProcessInformation;
-import de.uzk.hki.da.utils.StringUtilities;
 
+/**
+ * Class contains important part of information which is given back from jhove. 
+ * 
+ * 
+ * @author Eugen Trebunski
+ *
+ */
 public class JhoveResult {
 
 	private static final Logger logger = LoggerFactory.getLogger(JhoveResult.class);
@@ -46,6 +40,15 @@ public class JhoveResult {
 	String format;
 	String message;
 
+	/**
+	 * Method parse jhove output file and initialize JhoveResult object. 
+	 * 
+	 * @author Eugen Trebunski
+	 * @param outFile
+	 * @return JhoveResult
+	 * @throws IOException
+	 * @throws SAXException
+	 */
 	public static JhoveResult parseJHoveXML(String outFile) throws IOException,
 			SAXException {
 		Reader reader = new FileReader(outFile);

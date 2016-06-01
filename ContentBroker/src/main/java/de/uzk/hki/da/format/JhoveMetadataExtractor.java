@@ -31,7 +31,6 @@ import org.apache.commons.io.FileUtils;
 import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.model.FormatMapping;
 import de.uzk.hki.da.model.JHoveParameterMapping;
@@ -44,6 +43,7 @@ import de.uzk.hki.da.utils.StringUtilities;
 /**
  * 
  * @author Daniel M. de Oliveira
+ * @author Eugen Trebunski
  *
  */
 public class JhoveMetadataExtractor implements MetadataExtractor {
@@ -76,6 +76,7 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 	/**
 	 * Scans a file with jhove and extracts technical metadata to a xml file.
 	 * Tries it a second time if the first time fails.
+	 * The jhove result will be validated and can cause JHoveValidationException if jhove report invalidity.
 	 * 
 	 * @throws ConnectionException
 	 *             when timeout limit reached two times.
@@ -107,9 +108,6 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 			retval = 1;
 		}
 		if (retval != 0) {
-			// throw new
-			// ConnectionException("Recieved not null return value from jhove.");
-
 			logger.info("Problem during extracting technical metadata. Will retry without parsing the whole file.");
 
 			retval = 0;
@@ -121,9 +119,10 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 				throw new IOException("Second call to JHOVE ended with IOError (the 2nd time already).", e);
 			}
 		}
-		if (retval != 0)
+		if (retval != 0){
 			throw new ConnectionException("Recieved not null return value from jhove.");
-
+		}
+		
 		JhoveResult jhResult;
 		try {
 			jhResult = JhoveResult.parseJHoveXML(extractedMetadata.getAbsolutePath());
@@ -134,7 +133,7 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 
 		/*
 		 * The JHove result is not taken in count because it often alert about errorneus file, but in fact these file can be processed/converted.
-		 * Second error is: jhove can't handle good enough files containing whitespaces in their names (jira: DANRW-1415)
+		 * Second bug in jhove is: jhove can't handle good enough files containing whitespaces in their names (jira: DANRW-1415)
 		 */
 		if (!jhResult.isValid()){
 			logger.warn("JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + jhResult);
@@ -217,7 +216,14 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 	}
 
 	
-
+	/**
+	 * This method returns additional type specific jhove parameter for specific mime type. If no no parameter for given mime type exists it will return empty string.
+	 * 
+	 * 
+	 * @author Eugen Trebunski
+	 * @param puid
+	 * @return mimetype
+	 */
 	String getJHoveOptionForMimeType(String mimeType){
 		mimeType=mimeType.trim();
 		if(mimeType.isEmpty())
@@ -229,35 +235,62 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 		return "";
 	}
 	
-	private List<JHoveParameterMapping>  getJhoveParameterMappingTable() {
+	/**
+	 * Get the actual table of jhove parameter mapping (mimetype to jhove-parameter), which is readed by hibernate and saved in {@link #possibleOptions}-Datastructure. 
+	 * After first call of this method and after {@link #possibleOptions}-Datastructure is initialized, only the {@link #possibleOptions}
+	 * will be return without use of hibernate.
+	 * 
+	 * @author Eugen Trebunski
+	 * @return {@link #possibleOptions}-Datastructure
+	 */
+	private List<JHoveParameterMapping> getJhoveParameterMappingTable() {
 		synchronized (this) {
-			if(possibleOptions!=null)
+			if (possibleOptions != null)
 				return possibleOptions;
 			Session session = HibernateUtil.openSession();
 			session.beginTransaction();
-			//List<Job> l = null;
-		
+			// List<Job> l = null;
+
 			possibleOptions = session.createQuery("FROM JHoveParameterMapping").setReadOnly(true).list();
 			session.close();
 			return possibleOptions;
-	}
+		}
 	}
 	
-	private String getMimeTypeForPronom(String puid){
-		puid=puid.trim();
-		if(puid.isEmpty())
+	/**
+	 * This method returns the mime type for specific pronom id. If no FormatMapping-Object  for given pronom id exists, it will return empty string.
+	 * This method use quicksearch to find the right FormatMapping very fast.
+	 * 
+	 * 
+	 * @author Eugen Trebunski
+	 * @param puid
+	 * @return mimetype
+	 */
+	private String getMimeTypeForPronom(String puid) {
+		puid = puid.trim();
+		if (puid.isEmpty())
 			return "";
-		FormatMapping searchFor=new FormatMapping();
+		FormatMapping searchFor = new FormatMapping();
 		searchFor.setPuid(puid);
-		int indexOfSearchFor=Collections.binarySearch(getPronomTable(), searchFor,  formatMappingComparator);
-		if(indexOfSearchFor<0){
-			logger.debug("Given pronom id("+puid+") is not in database");
-			//throw new RuntimeException("Given pronom id("+puid+") is not in database");
+		int indexOfSearchFor = Collections.binarySearch(getPronomTable(), searchFor, formatMappingComparator);
+		if (indexOfSearchFor < 0) {
+			logger.warn("Given pronom id(" + puid + ") is not in database");
+			// throw new RuntimeException("Given pronom id("+puid+") is not in database");
 			return "";
 		}
 		return getPronomTable().get(indexOfSearchFor).getMime_type();
 	}
 	
+	/**
+	 * Get the actual table of prnonom id's, which is readed by hibernate and saved in {@link #pronomMimetypeList}-Datastructure. 
+	 * After first call of this method and after {@link #pronomMimetypeList}-Datastructure is initialized, only the {@link #pronomMimetypeList}
+	 * will be return without use of hibernate.
+	 * <br/>
+	 * After {@link #pronomMimetypeList}-Datastructure is initialized by hibernate, it will be sorted before return, to allow fast searching in future accesses by using quicksearch.
+	 *
+	 * @author Eugen Trebunski
+	 * @return {@link #pronomMimetypeList}-Datastructure
+	 */
 	private List<FormatMapping>  getPronomTable() {
 		synchronized (this) {
 		
@@ -275,9 +308,6 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 		}
 		return pronomMimetypeList;
 	}
-
-
-
 
 	public List<JHoveParameterMapping> getPossibleOptions() {
 		return possibleOptions;

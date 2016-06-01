@@ -8,7 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 
-
+/**
+ * Class to map sql table entry to Object by hibernate. 
+ * @author Eugen Trebunski
+ *
+ */
 @Entity
 @Table(name="jhove_parameter_mapping")
 public class JHoveParameterMapping {
