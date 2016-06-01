@@ -1,3 +1,4 @@
+<%@page import="com.sun.org.apache.xerces.internal.xs.datatypes.ObjectList"%>
 <%@ page import="daweb3.User" %>
 <%@page import="daweb3.Object" %>
 <%@ page import="daweb3.Event" %>
@@ -58,54 +59,95 @@
 			</ul>
 		</div>
 		<div id="list-object" class="content scaffold-list" role="main">
-			<h1>Premis zu ${params.objectIdentifier }</h1>
-			Anzahl der Events ${size}
+			<h1>Premis zu Objekt ${params.objectIdentifier }</h1>
 			
-		<br/> Test Premis <br/>
-	${params}
 	
-	<br/><br/><br/>
 	
 	<div id="list">
 	
 	<ul>
-		<li class="file">Paket 1
-		<ul>
-		<% eventList.each{ 
-			if(it.type=="CONVERT")	{
-				$xml="/home/julia/Desktop/premis_neu.xml"
+		<% 
+		objectList?.packages.each {
+			it.each {
+				int pkgId = it.id
 				print "<li class='file'>"
-				print it.sourceFile?.relative_path
-				print "<div id='detail'>"
-				print it.sourceFile?.rep_name+"<br/>"
-				print it.targetFile?.rep_name+"<br/>"
-				%>
-				<g:link controller="Object" action="premisAnzeigen" params="[xmldocument: xmldocument]" target="_blank">mehr Informationen in XML anzeigen</g:link>
-				<%print "</div>"
-				print "</li>"
+			
+				print it.toString()
+		
+				print "<ul>"
+				eventList.each {
+					if(pkgId == it.pkg_id) {
+						if(it.type == "SIP_CREATION") {
+							print "Das Paket wurde mit " + it.agentName + " am " + it.date + " erstellt. <br/>"
+						}	
+						else if(it.type == "INGEST") {
+							print "Das Paket wurde von " + it.agentName + " am " + it. date + " eingeliefert. <br/>" 
+						}
+					}
+				}
+				
+				println "Folgende Dateien sind in dem Paket enthalten: "
+		
+				dafileList.each {
+					def dafile = it
+					if(dafile.pkg_id == pkgId) {
+					
+						boolean noEvent = true;
+						eventList.each {
+							def source = it.sourceFile
+		 					def target = it.targetFile		
+							if(source != null && target != null) {
+								if(dafile.id == source.id) {
+							
+									print "<li class='file'>"
+									print "Datei: " + dafile.relative_path
+							
+									print "<div id='detail'>"
+		
+									print "Die Datei wurde von " + source?.rep_name + " im Format " + source?.format_puid
+									print " nach " + target?.rep_name + " im Format " + target?.format_puid + " konvertiert. <br/>"
+							
+									%>
+									<g:link controller="Object" action="premisAnzeigen" params="[xmldocument: objectList.xml]" target="_blank">mehr Informationen in XML anzeigen</g:link>
+							
+		
+									</div>
+									</li>
+									<%
+									noEvent = false;
+								}
+								else if (dafile.id == target.id) {
+									noEvent = false;
+								}
+							}
+					
+						}
+						if(noEvent) {
+							print "<li class='file'>"
+							print "Datei: " + dafile.relative_path
+					
+							print "<div id='detail'>"
+		
+							print "Die Datei ist nicht konvertiert und liegt in " + dafile.rep_name + " im Format " + dafile.format_puid + ". <br/>"
+								
+							%>
+							<g:link controller="Object" action="premisAnzeigen" params="[xmldocument: objectList.xml]" target="_blank">mehr Informationen in XML anzeigen</g:link>
+		
+							</div>
+							</li>
+							<%
+						}
+					}
+				}	
+				print "</ul></li>"
 			}
-		} %>
-		</ul>
-		</li>
-		<li class="file">Paket 2 </li>
+		} 
+		%>
+
 		
 	</ul>
 	
 	</div>
-
 	
-	<!-- 
-	
-	print "<a href="+xmldocument+" target='_blank' type='text/plain'>mehr Informationen in XML anzeigen</a>"
-	
-	
-	<g:link url='"+xmldocument+"' target='_blank'></g:link>
-	
-	<a href="+xmldocument+" target='_blank'> 
-	
-	
-
-	
-	 -->
 	</body>
 </html>

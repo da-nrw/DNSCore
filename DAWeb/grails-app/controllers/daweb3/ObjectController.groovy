@@ -21,7 +21,7 @@ package daweb3
  */
 
 
-import org.apache.commons.lang.StringUtils; 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import grails.converters.*;
@@ -437,14 +437,43 @@ class ObjectController {
 
 	
 	def premis() {
-		def xmldocument = "/home/julia/Desktop/premis_neu.xml"//"/ci/DNSCore/ContentBroker/src/test/resources/metadata/premistest.xml"
+		def xmldocument = "" 
+		//"/home/julia/Desktop/premis_neu.xml"//"/ci/DNSCore/ContentBroker/src/test/resources/metadata/premistest.xml"
 	//	def premis = new XmlSlurper().parse(new File(xmldocument))
 	//	def events = premis.event				events: events, size: events.size(),
-		def c = Event.createCriteria()
-		def eventList = c.list() {
+		/*def c = Event.createCriteria()
+		def event2List = c.list() {
 			eq("objectIdentifier", params.objectIdentifier) //"1-2016032334")
 		}
-		render(view:"premis", model:[ eventList: eventList, xmldocument: xmldocument])
+						event2List: event2List, xmldocument: xmldocument,
+		*/
+		def o = PremisObject.createCriteria()
+		def objectList = o.list() {
+			eq("identifier", "1-20160530106") //"1-2016052584") //params.objectIdentifier)
+		}
+		
+		def eventList = new ArrayList<Event>()
+		def dafileList = new ArrayList<DAFile>()
+		if(objectList != null) {
+			xmldocument = objectList.xml
+			objectList.packages.each {
+				it.each{
+				def id = it.id
+				def e = Event.createCriteria()
+				def events = e.list() {
+					eq("pkg_id", id)
+				}
+				eventList.addAll(events)
+				def f = DAFile.createCriteria()
+				def dafiles = f.list() {
+					eq("pkg_id", id)
+				}
+				dafileList.addAll(dafiles)
+				}
+			} 
+
+		}
+		render(view:"premis", model:[objectList: objectList, eventList: eventList, dafileList: dafileList])
 	}
 
 	def premisAnzeigen() {

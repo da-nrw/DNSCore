@@ -14,4 +14,6 @@ class DAFile {
 	int id
 	String relative_path
 	String rep_name
+	String format_puid
+	int pkg_id
 }

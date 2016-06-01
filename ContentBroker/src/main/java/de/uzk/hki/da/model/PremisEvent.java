@@ -22,8 +22,6 @@ public class PremisEvent {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	
-	private String objectIdentifier;
-	
 	/** The id type. */
 	@Transient
 	private IdType idType;
@@ -303,14 +301,6 @@ public class PremisEvent {
 	 */
 	public void setAgent_type(String agentType) {
 		this.agent_type = agentType;
-	}
-
-	public String getObjectIdentifier() {
-		return objectIdentifier;
-	}
-
-	public void setObjectIdentifier(String objectIdentifier) {
-		this.objectIdentifier = objectIdentifier;
 	}
 
 	
