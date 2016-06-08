@@ -526,31 +526,72 @@ class ObjectController {
 		*/
 		def o = PremisObject.createCriteria()
 		def objectList = o.list() {
-			eq("identifier", "1-20160530106") //"1-2016052584") //params.objectIdentifier)
+			eq("identifier", "1-20160530106") //"2-20160405449925") //"2-20160414450456") //params.objectIdentifier)
 		}
 		
 		def eventList = new ArrayList<Event>()
+		def eventPkgList = new ArrayList<Event>()
+		def dafileEventList = new ArrayList<DAFile>()
 		def dafileList = new ArrayList<DAFile>()
 		if(objectList != null) {
 			xmldocument = objectList.xml
 			objectList.packages.each {
-				it.each{
-				def id = it.id
-				def e = Event.createCriteria()
-				def events = e.list() {
-					eq("pkg_id", id)
-				}
-				eventList.addAll(events)
-				def f = DAFile.createCriteria()
-				def dafiles = f.list() {
-					eq("pkg_id", id)
-				}
-				dafileList.addAll(dafiles)
+				it.each {
+					def id = it.id
+					eventPkgList.addAll(Event.findAll("from Event where (type = 'SIP_CREATION' or type = 'INGEST') and pkg_id = :pkg", [pkg: id]))
+					//dafileEventList.addAll(DAFile.findAll("from DAFile as file where file.id in (select event.sourceFile.id from Event as event where pkg_id = :pkg) and file.pkg_id = :pkg", [pkg: id]))
+					eventList.addAll(Event.findAll("from Event where type <> 'SIP_CREATION' and type <> 'INGEST' and pkg_id = :pkg", [pkg: id]))
+					dafileList.addAll(DAFile.findAll("from DAFile as file where file.id not in (select event.sourceFile.id from Event as event where event.sourceFile.id is not null and pkg_id = :pkg) and file.id not in (select event.targetFile.id from Event as event where event.targetFile.id is not null and pkg_id = :pkg) and pkg_id = :pkg", [pkg: id]))
+					/*def e = Event.createCriteria()
+					def events = e.list() {
+						eq("pkg_id", id)
+	
+					}
+					for(int i = 0; i < events.size(); i++) {
+						if(events.get(i).getType().equals("SIP_CREATION") || events.get(i).getType().equals("INGEST")) {
+							eventPkgList.add(events.get(i))
+						} else {
+							eventList.add(events.get(i))
+						}
+					}
+			
+					def f = DAFile.createCriteria()
+					def dafiles = f.list() {
+						eq("pkg_id", id)
+					}
+					dafileList.addAll(dafiles)
+					for(int i = 0; i < eventList.size(); i++) {
+						int j = 0
+						boolean b = false
+						while(j < dafileList.size()) {
+							if(eventList.get(i).getSourceFile().getId() == dafileList.get(j).getId() || eventList.get(i).getTargetFile().getId() == dafileList.get(j).getId()) {
+								dafileEventList.add(dafileList.get(j))
+								dafileList.remove(j) 
+								if(b) {
+									break
+								} else { 
+									b = true
+								}
+							} else {
+								j++
+							}
+						}
+					} 
+					/*for(int i = 0; i < dafiles.size(); i++) {
+						boolean added = false;
+						for(int j = 0; j < eventList.size(); j++) {
+							if(dafiles.get(i).getId() == eventList.get(j).getSourceFile().getId() || dafiles.get(i).getId() == eventList.get(j).getTargetFile().getId()) {
+								dafileEventList.add(dafiles.get(i))
+							}
+						}
+						if(!added) {
+							dafileList.add(dafiles.get(i))
+						}
+					}*/
 				}
 			} 
-
 		}
-		render(view:"premis", model:[objectList: objectList, eventList: eventList, dafileList: dafileList])
+		render(view:"premis", model:[objectList: objectList, eventPkgList: eventPkgList, eventList: eventList, dafileEventList: dafileEventList, dafileList: dafileList])
 	}
 
 	def premisAnzeigen() {

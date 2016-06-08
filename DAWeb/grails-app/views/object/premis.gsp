@@ -75,7 +75,8 @@
 				print it.toString()
 		
 				print "<ul>"
-				eventList.each {
+		
+				eventPkgList.each {
 					if(pkgId == it.pkg_id) {
 						if(it.type == "SIP_CREATION") {
 							print "Das Paket wurde mit " + it.agentName + " am " + it.date + " erstellt. <br/>"
@@ -87,12 +88,63 @@
 				}
 				
 				println "Folgende Dateien sind in dem Paket enthalten: "
+				
+				int counterEvent = 0
+				int counterFile = 0
+				int counter = 0	
+				int nextToTen = 0	
 		
-				dafileList.each {
-					def dafile = it
-					if(dafile.pkg_id == pkgId) {
+				while (counter < eventList.size()) {
+					counterEvent = 0
+					while ((counterEvent+1) % 11 != 0 && counter < eventList.size()) {	
+						print counter
+						def event = eventList.get(counter)
+						if(event.pkg_id == pkgId) {			
+							def source = event.sourceFile
+		 					def target = event.targetFile
+							if(!source.relative_path.equals("premis.xml") && !target.relative_path.equals("premis.xml")) {
+								print "<li class='file'>"
+								print "Datei: " + source.relative_path
+							
+								print "<div id='detail'>"
 					
-						boolean noEvent = true;
+								print "Die Datei wurde von " + source?.rep_name + " im Format " + source?.format_puid
+								print " nach " + target?.rep_name + " im Format " + target?.format_puid + " konvertiert. <br/>"
+		
+								%>
+								<g:link controller="Object" action="premisAnzeigen" params="[xmldocument: objectList.xml]" target="_blank">mehr Informationen in XML anzeigen</g:link>
+							
+								</div>
+								</li>
+								<%
+							counterEvent++
+							nextToTen = counterEvent
+							}
+						}
+						counter++
+					}
+					if(counter != dafileList.size() - 1) {
+						println "weitere Dateien anzeigen"
+					}		
+					// TODO
+				}
+		
+		print "<br/> nextToTen " + nextToTen + "<br/>"
+				counter = 0
+		while (counter < dafileList.size()) {
+							if(counterFile == 0) {
+								counterFile = nextToTen
+							} else {
+								counterFile = 0 
+							} //counterFile == 0 ? nextToTen : 0
+					while ((counterFile+1) % 11 != 0 && counter < dafileList.size()) {	
+				print counter
+				//dafileList.each {
+					def dafile = dafileList.get(counter)
+		//it
+					if(dafile.pkg_id == pkgId && !dafile.relative_path.equals("premis.xml")) {
+					
+						/* boolean noEvent = true;
 						eventList.each {
 							def source = it.sourceFile
 		 					def target = it.targetFile		
@@ -122,7 +174,7 @@
 							}
 					
 						}
-						if(noEvent) {
+						if(noEvent) {*/
 							print "<li class='file'>"
 							print "Datei: " + dafile.relative_path
 					
@@ -136,10 +188,16 @@
 							</div>
 							</li>
 							<%
-						}
+						//}
+		counterFile++			
+		}
+					counter++
 					}
+				if(counter != dafileList.size() - 1) {
+					println "weitere Dateien anzeigen"
 				}	
-				print "</ul></li>"
+				}	
+				print "</ul></li>" 
 			}
 		} 
 		%>

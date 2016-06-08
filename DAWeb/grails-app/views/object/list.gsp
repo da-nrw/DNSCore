@@ -183,7 +183,7 @@
 							<td style="text-align: center">
 								<g:if test="${!objectInstance.isInWorkflowButton()}">
 									 <g:link action="premis" params="['objectIdentifier':objectInstance.identifier, 'pkg':objectInstance.packages[0].id]">
-										<g:img style="width:16px; height:16px" uri="/images/icons/inspect_icon.png"/>
+										<g:img style="width:18px; height:18px" uri="/images/icons/text-file-icon.png"/>
 									</g:link>
 								</g:if>
 							</td>
