@@ -123,21 +123,21 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 			throw new ConnectionException("Recieved not null return value from jhove.");
 		}
 		
-		JhoveResult jhResult;
+		JhoveResult jhResult=null;
 		try {
 			jhResult = JhoveResult.parseJHoveXML(extractedMetadata.getAbsolutePath());
 		} catch (Exception e) {
-			logger.error("JHove Output(" + extractedMetadata.getAbsolutePath() + ") not interpretable: " + e.getMessage());
-			throw new JHoveValidationException("JHove Output(" + extractedMetadata.getAbsolutePath() + ") not interpretable: " + e.getMessage(), e);
+			logger.error("JHove outputfile(" + extractedMetadata.getAbsolutePath() + ") not interpretable: " + e.getMessage());
+			//throw new JHoveValidationException("JHove Output(" + extractedMetadata.getAbsolutePath() + ") not interpretable: " + e.getMessage(), e);
 		}
 
 		/*
 		 * The JHove result is not taken in count because it often alert about errorneus file, but in fact these file can be processed/converted.
 		 * Second bug in jhove is: jhove can't handle good enough files containing whitespaces in their names (jira: DANRW-1415)
 		 */
-		if (!jhResult.isValid()){
-			logger.warn("JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + jhResult);
-			//throw new JHoveValidationException("JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + jhResult);
+		if (jhResult==null || !jhResult.isValid()){
+			logger.warn("JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + (jhResult==null?"null":jhResult));
+			//throw new JHoveValidationException("JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + (jhResult==null?"null":jhResult));
 		}
 	}
 	
