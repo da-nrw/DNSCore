@@ -116,7 +116,7 @@ public class PublishImageConversionStrategyTest {
 		
 		String cmdPUBLIC[] = new String[]{
 				"convert",
-				Path.makeFile(dataPath,"a/filename.tif").getAbsolutePath(),
+				Path.makeFile(dataPath,"a/filename.tif[0]").getAbsolutePath(),
 				 "-resize","480x360", // ! ImageMagick expects this to be 2 params 
 				 "-pointsize", "10", "-draw",
 				 "gravity north fill #0000007f text 0,15 'Hallo' fill #ffffff7f text 0,14 'Hallo'",
@@ -126,7 +126,7 @@ public class PublishImageConversionStrategyTest {
 		
 		String cmdINST[] = new String[]{
 				"convert",
-				Path.makeFile(dataPath,"a/filename.tif").getAbsolutePath(),
+				Path.makeFile(dataPath,"a/filename.tif[0]").getAbsolutePath(),
 				Path.makeFile(dataPath,WorkArea.TMP_PIPS+"/institution/target/filename.jpg").getAbsolutePath()
 		};
 		when(cli.runCmdSynchronously(cmdINST)).thenReturn(pi);		
@@ -178,7 +178,7 @@ public class PublishImageConversionStrategyTest {
 		
 		String cmdPUBLIC[] = new String[]{
 				"convert",
-				Path.makeFile(dataPath,"a/filename.tif").getAbsolutePath(),
+				Path.makeFile(dataPath,"a/filename.tif[0]").getAbsolutePath(),
 					"-resize","480x360", // ! ImageMagick expects this to be 2 params 
 					"-background","black",
 					"-fill", "white",
@@ -193,7 +193,7 @@ public class PublishImageConversionStrategyTest {
 		
 		String cmdINST[] = new String[]{
 				"convert",
-				Path.makeFile(dataPath,"a/filename.tif").getAbsolutePath(),
+				Path.makeFile(dataPath,"a/filename.tif[0]").getAbsolutePath(),
 				Path.makeFile(dataPath,WorkArea.TMP_PIPS+"/institution/target/filename.jpg").getAbsolutePath()
 		};
 		when(cli.runCmdSynchronously(cmdINST)).thenReturn(pi);
@@ -245,7 +245,7 @@ public class PublishImageConversionStrategyTest {
 		
 		String cmdPUBLIC[] = new String[]{
 				"convert",
-				Path.makeFile(dataPath,"a/filename.tif").getAbsolutePath(),
+				Path.makeFile(dataPath,"a/filename.tif[0]").getAbsolutePath(),
 					"-background","black",
 					"-fill", "white",
 					"-gravity", "center",
@@ -259,7 +259,7 @@ public class PublishImageConversionStrategyTest {
 		
 		String cmdINST[] = new String[]{
 				"convert",
-				Path.makeFile(dataPath,"a/filename.tif").getAbsolutePath(),
+				Path.makeFile(dataPath,"a/filename.tif[0]").getAbsolutePath(),
 				Path.makeFile(dataPath,WorkArea.TMP_PIPS+"/institution/target/filename.jpg").getAbsolutePath()
 		};
 		when(cli.runCmdSynchronously(cmdINST)).thenReturn(pi);

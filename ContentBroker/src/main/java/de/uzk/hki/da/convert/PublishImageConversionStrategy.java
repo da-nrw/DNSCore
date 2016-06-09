@@ -91,7 +91,8 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 
 			commandAsList = new ArrayList<String>();
 			commandAsList.add("convert");
-			commandAsList.add(wa.toFile(ci.getSource_file()).getAbsolutePath());
+			String sourceFileName = wa.toFile(ci.getSource_file()).getAbsolutePath() + "[0]"; 
+			commandAsList.add(sourceFileName);
 			logger.debug(commandAsList.toString());
 			commandAsList = assembleResizeDimensionsCommand(commandAsList,audience);
 			commandAsList = assembleWatermarkCommand(commandAsList,audience);
@@ -99,7 +100,8 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 			
 			DAFile target = new DAFile( pips+"/"+audience.toLowerCase(),StringUtilities.slashize(ci.getTarget_folder())+
 					FilenameUtils.getBaseName(input)+"."+ci.getConversion_routine().getTarget_suffix());
-			commandAsList.add(wa.toFile(target).getAbsolutePath());
+			String targetFileName = wa.toFile(target).getAbsolutePath(); 
+			commandAsList.add(targetFileName);
 			
 			logger.debug(commandAsList.toString());
 			String[] commandAsArray = new String[commandAsList.size()];
@@ -117,33 +119,13 @@ public class PublishImageConversionStrategy extends PublishConversionStrategyBas
 				}
 				prunedError = " " + ufe.getKnownError().getError_name()  + " ISSUED WAS PRUNED BY USER!";
 			}
-			// In order to support multipage tiffs, we check for files by wildcard expression
-			String extension = FilenameUtils.getExtension(wa.toFile(target).getAbsolutePath());
-			List<File> wild = findFilesWithRegex(
-					new File(FilenameUtils.getFullPath(wa.toFile(target).getAbsolutePath())), 
-					Pattern.quote(FilenameUtils.getBaseName(target.getRelative_path()))+"-\\d+\\."+extension);
-			if (!wa.toFile(target).exists() && !wild.isEmpty()){
-				for (File f : wild){
-					DAFile multipageTarget = new DAFile( pips+"/"+audience.toLowerCase(),StringUtilities.slashize(ci.getTarget_folder())+f.getName());
-					
-					Event e = new Event();
-					e.setDetail(StringUtilities.createString(commandAsList) + prunedError);
-					e.setSource_file(ci.getSource_file());
-					e.setTarget_file(multipageTarget);
-					e.setType("CONVERT");
-					e.setDate(new Date());
-					results.add(e);
-				}
-			}
-			else{
-				Event e = new Event();
-				e.setDetail(StringUtilities.createString(commandAsList) + prunedError);
-				e.setSource_file(ci.getSource_file());
-				e.setTarget_file(target);
-				e.setType("CONVERT");
-				e.setDate(new Date());
-				results.add(e);
-			}
+			Event e = new Event();
+			e.setDetail(StringUtilities.createString(commandAsList) + prunedError);
+			e.setSource_file(ci.getSource_file());
+			e.setTarget_file(target);
+			e.setType("CONVERT");
+			e.setDate(new Date());
+			results.add(e);
 		}
 		
 		return results;

@@ -254,6 +254,14 @@ Im hier angegebenen Verzeichnis wird das fertige SIP am Ende des Generierungspro
 Beispiel:  
 -destination="D:\SIPs"
 
+#### Arbeitsverzeichnis 
+
+__-workspace="[Pfad]"__  
+Geben Sie einen Pfad zu einem Arbeitsverzeichnis an, das zur Zwischenspeicherung genutzt werden soll.
+
+Beispiel:
+-workspace="D:\inArbeit\SIPs"
+
 #### Generierungsmodus
 
 __-multiple (Standardoption)__  
@@ -332,6 +340,17 @@ Wählen Sie diese Option, um Dateien mit bestimmten Dateiendungen nicht in die e
 
 Beispiel: 
 -ignoreExtensions="txt;doc;rtf;odt;pdf"
+
+#### Tar-Erstellung unterdrücken
+
+__-noTar__  
+SIPs werden nicht mehr gepackt und nicht komprimiert. Die Dateien bleiben in der Verzeichnisstruktur liegen.
+
+__-destDir=""[Pfad]""__  
+SIPs werden in dem hier angegebenen Verzeichnis erstellt.  
+
+Beispiel:
+-destDir="D:\nichtTarren\SIPs"
 
 ### Beispielaufrufe
 

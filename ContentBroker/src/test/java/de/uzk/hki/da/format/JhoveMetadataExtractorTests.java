@@ -19,20 +19,28 @@
 
 package de.uzk.hki.da.format;
 
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.Matchers.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static de.uzk.hki.da.test.TC.*;
+import de.uzk.hki.da.model.FormatMapping;
+import de.uzk.hki.da.model.JHoveParameterMapping;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.IOTimeoutException;
 import de.uzk.hki.da.utils.Path;
@@ -41,13 +49,20 @@ import de.uzk.hki.da.utils.ProcessInformation;
 
 
 /**
+ * No Test generate Outputfile, becaouse the  CommandLineConnector is mocked, but JhoveMetadataExtractor evaluate output file.
+ * The Outputfile is already generated in workspace.
+ * 
  * @author Daniel M. de Oliveira
+ * @author Trebunski
  */
 public class JhoveMetadataExtractorTests {
-
-	private static final String VDA3_XML = "vda3.XML";
+	private static final String PUID_PDF = "fmt/18";
+	private static final String MIME_PDF = "application/pdf";
+	private static final String JHOVE_OPT_XML = "-m  PDF-hul";
+	
+	private static final String TEST_PDF = "ValidPDF.pdf";
 	private static final String TIMEOUT = "timeout";
-	private static final String TMP_OUT_TXT = "/tmp/out.txt";
+	private static final String TMP_OUT_TXT = "out.txt";
 	private static final Path TEST_DIR = Path.make(TEST_ROOT_FORMAT,"JhoveMetadataExtractor");
 	private static final ProcessInformation piRetval0=new ProcessInformation();
 	private static final ProcessInformation piRetval1=new ProcessInformation();
@@ -59,10 +74,36 @@ public class JhoveMetadataExtractorTests {
 	public static void setUpBeforeClass() {
 		piRetval0.setExitValue(0);
 		piRetval1.setExitValue(1);
+		
 	}
 	
 	@Before
 	public void setUp() throws IOException {
+		try {
+			//private variable in jhove definition with reflections to avoid DB fetches 
+			// to avoid java.lang.IllegalStateException: sessionFactory is null in HibernateUtil
+			List<JHoveParameterMapping> possibleOptions = new ArrayList<JHoveParameterMapping>();
+			possibleOptions.add(new JHoveParameterMapping(MIME_PDF,JHOVE_OPT_XML));
+			Field possibleOptionsField;
+			possibleOptionsField = jhove.getClass().getDeclaredField("possibleOptions");
+			possibleOptionsField.setAccessible(true);
+			possibleOptionsField.set(jhove, possibleOptions);			
+
+			List<FormatMapping> pronomMimetypeList = new ArrayList<FormatMapping>();
+			FormatMapping fMapping=new FormatMapping();
+			fMapping.setPuid(PUID_PDF);
+			fMapping.setMime_type(MIME_PDF);
+			pronomMimetypeList.add(fMapping);
+			Field pronomMimetypeListField = jhove.getClass().getDeclaredField("pronomMimetypeList");
+			pronomMimetypeListField.setAccessible(true);
+			pronomMimetypeListField.set(jhove, pronomMimetypeList);
+
+
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			fail(e1.getMessage());
+		}
+		
 		jhove.setCli(cli);
 		ProcessInformation pi=new ProcessInformation();
 		pi.setStdOut("Jhove (Rel");
@@ -78,13 +119,13 @@ public class JhoveMetadataExtractorTests {
 		jhove.setCli(cli);
 		try {
 			jhove.extract(Path.makeFile(TEST_DIR,"notexistent.xml"), 
-					new File(TMP_OUT_TXT));
+					Path.makeFile(TEST_DIR,TMP_OUT_TXT),PUID_PDF);
 			fail();
 		} 
 		catch (IllegalStateException expected) {}
-		catch (FileNotFoundException expected) {fail();}
-		catch (ConnectionException e) {fail();}
-		catch (Exception e) {fail();} 
+		catch (FileNotFoundException expected) {fail(expected.getMessage());}
+		catch (ConnectionException e) {fail(e.getMessage());}
+		catch (Exception e) {fail(e.getMessage());} 
 	}
 	
 	
@@ -93,51 +134,52 @@ public class JhoveMetadataExtractorTests {
 	public void InputFileDoesNotExist() {
 		try {
 			jhove.extract(Path.makeFile(TEST_DIR,"notexistent.xml"), 
-					new File(TMP_OUT_TXT));
+					Path.makeFile(TEST_DIR,TMP_OUT_TXT),PUID_PDF);
 			fail();
 		} 
 		catch (FileNotFoundException expected) {}
-		catch (ConnectionException e) {fail();}
-		catch (Exception e) {fail();} 
+		catch (ConnectionException e) {fail(e.getMessage());}
+		catch (Exception e) {fail(e.getMessage());} 
 	}
 	
 	@Test
 	public void targetFolderDoesNotExist() {
 		try {
-			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), 
-					Path.makeFile(TEST_DIR,"dirNotExists","outputfile.txt"));
+			jhove.extract(Path.makeFile(TEST_DIR,TEST_PDF), 
+					Path.makeFile(TEST_DIR,"dirNotExists","outputfile.txt"),PUID_PDF);
 			fail();
 		} 
 		catch (IllegalArgumentException expected) {}
-		catch (ConnectionException e) {fail();}
-		catch (Exception e) {fail();} 
+		catch (ConnectionException e) {fail(e.getMessage());}
+		catch (Exception e) {fail(e.getMessage());} 
 	}
 
 	@Test
 	public void extractSuccessful() throws IOException {
 		
-		when(cli.runCmdSynchronously((String[])anyObject(),(File)anyObject(),anyInt())).thenReturn(piRetval0);
-		
+		//CommandLineConnector cli = new CommandLineConnector();
+		//jhove.setCli(cli);
 		try {
-			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT));
+			jhove.extract(Path.makeFile(TEST_DIR,TEST_PDF),Path.makeFile(TEST_DIR,TMP_OUT_TXT),PUID_PDF);
 		} 
-		catch (IOException e) { fail(); } 
-		catch (ConnectionException e) { fail(); }
+		catch (IOException e) { fail(e.getMessage()); } 
+		catch (ConnectionException e) { fail(e.getMessage()); }
 	}
-	
-	@Test
-	public void extractNotSuccessfulWithErrorCodes() throws IOException {
+
+	@Test(expected=ConnectionException.class)
+	public void extractNotSuccessfulWithErrorCodes() throws IOException, ConnectionException {
 		
 		when(cli.runCmdSynchronously((String[])anyObject(),(File)anyObject(),anyInt()))
 			.thenReturn(piRetval1)
 			.thenReturn(piRetval1);
 		
 		try {
-			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT));
+			jhove.extract(Path.makeFile(TEST_DIR,TEST_PDF), Path.makeFile(TEST_DIR,TMP_OUT_TXT),PUID_PDF);
 			fail();
 		} 
-		catch (ConnectionException e) {}
-		catch (Exception e) { fail(); } 
+		catch (ConnectionException e) {throw e;}
+		catch (Exception e) { fail(e.getMessage()); } 
+		
 	}
 	
 	@Test
@@ -148,22 +190,25 @@ public class JhoveMetadataExtractorTests {
 			.thenReturn(piRetval0); // let it work with the simple version
 		
 		try {
-			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT));
+			jhove.extract(Path.makeFile(TEST_DIR,TEST_PDF), Path.makeFile(TEST_DIR,TMP_OUT_TXT),PUID_PDF);
 		} 
-		catch (ConnectionException e) { fail(); }
-		catch (Exception e) { fail(); } 
+	/*	catch(FileNotFoundException e){
+			//cli is mocked, jhove is not called and no outputfile will be generated, therefore no outputfile exists, so we expect FileNotFoundException
+			if(!e.getMessage().equals(TMP_OUT_TXT+" (No such file or directory)"))
+				 fail(e.getMessage());
+			}*/
+		catch (ConnectionException e) { fail(e.getMessage()); }
+		catch (Exception e) { fail(e.getMessage()); } 
 	}
 	
 	
 	
 	@Test
 	public void timeout() throws IOException {
-		
-		when(cli.runCmdSynchronously((String[])anyObject(),(File)anyObject(),anyLong()))
-			.thenThrow(new IOTimeoutException(TIMEOUT))
-			.thenThrow(new IOTimeoutException(TIMEOUT));
+
+		when(cli.runCmdSynchronously((String[]) anyObject(), (File) anyObject(), anyLong())).thenThrow(new IOTimeoutException(TIMEOUT)).thenThrow(new IOTimeoutException(TIMEOUT));
 		try {
-			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT));
+			jhove.extract(Path.makeFile(TEST_DIR, TEST_PDF), Path.makeFile(TEST_DIR,TMP_OUT_TXT), PUID_PDF);
 			fail();
 		} catch (ConnectionException e) {}
 	}
@@ -175,11 +220,15 @@ public class JhoveMetadataExtractorTests {
 			.thenThrow(new IOTimeoutException(TIMEOUT))
 			.thenReturn(piRetval0); // let it work with the simple version
 		try {
-			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT));
+			jhove.extract(Path.makeFile(TEST_DIR,TEST_PDF), Path.makeFile(TEST_DIR,TMP_OUT_TXT),PUID_PDF);
 			
-		} 
-		catch (ConnectionException e) {fail();}
-		catch (Exception e) { fail(); }  
+		} catch(FileNotFoundException e){
+			//cli is mocked, jhove is not called and no outputfile will be generated, therefore no outputfile exists, so we expect FileNotFoundException
+			if(!e.getMessage().equals(TMP_OUT_TXT+" (No such file or directory)"))
+				 fail(e.getMessage());
+			}
+		catch (ConnectionException e) {fail(e.getMessage());}
+		catch (Exception e) { fail(e.getMessage()); }  
 	}
 	
 	
@@ -191,10 +240,11 @@ public class JhoveMetadataExtractorTests {
 			.thenThrow(new IOTimeoutException(TIMEOUT))
 			.thenReturn(piRetval1);
 		try {
-			jhove.extract(Path.makeFile(TEST_DIR,VDA3_XML), new File(TMP_OUT_TXT));
+			jhove.extract(Path.makeFile(TEST_DIR,TEST_PDF), Path.makeFile(TEST_DIR,TMP_OUT_TXT),PUID_PDF);
 			
 		} 
 		catch (ConnectionException e) {}
-		catch (Exception e) { fail(); }  
+		catch (Exception e) { fail(e.getMessage()); }  
 	}
+	
 }

@@ -402,7 +402,7 @@ public abstract class AbstractAction implements Runnable {
 		sendJMSException(e);
 	}
 
-	private void reportTechnicalError(Exception e){
+	protected void reportTechnicalError(Exception e){
 		logger.error(this.getClass().getName()+": Exception in action: ",e);
 		new MailContents(preservationSystem,n).abstractActionCreateAdminReport(e, o, this);
 		sendJMSException(e);

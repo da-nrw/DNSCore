@@ -116,9 +116,9 @@ public class ConfigurableFileFormatFacade implements FileFormatFacade{
 	 * 
 	 */
 	@Override
-	public boolean extract(File file, File extractedMetadata) throws ConnectionException {
+	public boolean extract(File file, File extractedMetadata, String expectedMimeType) throws ConnectionException {
 		try {
-			getMetadataExtractor().extract(file, extractedMetadata);
+			getMetadataExtractor().extract(file, extractedMetadata,expectedMimeType);
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException(e);
 		} catch (IOException e) {
