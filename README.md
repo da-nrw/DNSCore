@@ -1,7 +1,6 @@
 DNSCore j8i4 branch JAVA 8 iRODS 4          
 ======= 
 
-
 [Dokumentation der DA-NRW Software Suite (DNS)](ContentBroker/src/main/markdown/documentation.de.md)
 
 [Liste der Kernfunktionen](ContentBroker/src/main/markdown/features.de.md)
