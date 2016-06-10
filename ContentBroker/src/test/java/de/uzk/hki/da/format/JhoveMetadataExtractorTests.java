@@ -58,7 +58,7 @@ import de.uzk.hki.da.utils.ProcessInformation;
 public class JhoveMetadataExtractorTests {
 	private static final String PUID_PDF = "fmt/18";
 	private static final String MIME_PDF = "application/pdf";
-	private static final String JHOVE_OPT_XML = "-m  PDF-hul";
+	private static final String JHOVE_OPT_PDF = "-m  PDF-hul";
 	
 	private static final String TEST_PDF = "ValidPDF.pdf";
 	private static final String TIMEOUT = "timeout";
@@ -83,7 +83,7 @@ public class JhoveMetadataExtractorTests {
 			//private variable in jhove definition with reflections to avoid DB fetches 
 			// to avoid java.lang.IllegalStateException: sessionFactory is null in HibernateUtil
 			List<JHoveParameterMapping> possibleOptions = new ArrayList<JHoveParameterMapping>();
-			possibleOptions.add(new JHoveParameterMapping(MIME_PDF,JHOVE_OPT_XML));
+			possibleOptions.add(new JHoveParameterMapping(MIME_PDF,JHOVE_OPT_PDF));
 			Field possibleOptionsField;
 			possibleOptionsField = jhove.getClass().getDeclaredField("possibleOptions");
 			possibleOptionsField.setAccessible(true);
