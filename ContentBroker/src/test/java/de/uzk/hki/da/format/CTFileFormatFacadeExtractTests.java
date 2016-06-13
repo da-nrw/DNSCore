@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -59,6 +60,12 @@ public class CTFileFormatFacadeExtractTests {
 		fff.setMetadataExtractor(metadataExtractor);
 		fff.setFormatScanService(new FakeFormatScanService());
 		setupMetadataExtractorByReflection(metadataExtractor);
+	}
+	
+	@Before
+	public  void setUpBefore() throws IOException {
+		CTTestHelper.prepareWhiteBoxTest();
+		//some tests do cleanupWhiteBoxTest, therefore it shuld be executed before each test
 	}
 	
 	private static void setupMetadataExtractorByReflection(JhoveMetadataExtractor jhove){
@@ -107,7 +114,7 @@ public class CTFileFormatFacadeExtractTests {
 			fail();
 		}
 	}
-	
+
 	@Test
 	public void binaryNotPresent() {
 		CTTestHelper.cleanUpWhiteBoxTest();
@@ -120,8 +127,6 @@ public class CTFileFormatFacadeExtractTests {
 		} catch (Exception e) {
 			fail();
 		}
-	}
-	
-	
+	}	
 	
 }
