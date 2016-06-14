@@ -524,10 +524,12 @@ class ObjectController {
 		}
 						event2List: event2List, xmldocument: xmldocument,
 		*/
-		def o = PremisObject.createCriteria()
+		/*def o = PremisObject.createCriteria()
 		def objectList = o.list() {
-			eq("identifier", "1-20160530106") //"2-20160405449925") //"2-20160414450456") //params.objectIdentifier)
-		}
+			eq("identifier", "2-20160405449925") //"1-20160530106") //"2-20160405449925") //"2-20160414450456") //params.objectIdentifier)
+		}*/
+		def objectList = new ArrayList<PremisObject>()
+		objectList.addAll(PremisObject.findAll("from PremisObject where identifier = '2-20160405449925'"))
 		
 		def eventList = new ArrayList<Event>()
 		def eventPkgList = new ArrayList<Event>()

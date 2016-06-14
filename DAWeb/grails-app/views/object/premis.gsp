@@ -9,7 +9,11 @@
 		<meta name="layout" content="main">
 		<title>Premis</title>
 		<style type="text/css" media="screen">
+			#list {
+				margin-left: 20px;
+			}
 			#list ul {
+				list-style: none;
 				list-style-position: inside;
 			}
 
@@ -17,6 +21,10 @@
 				line-height: 1.3;
 				list-style-position: inside;
 				margin: 0.5em;
+			}
+			#list li:before {
+				content: "+";
+				margin-right: 4px;
 			}
 			#detail {
 				background-color: #d0d0d0;
@@ -29,17 +37,30 @@
 			#list * #detail {
 				display: none;
 			}
-
+			#pkg {
+				margin-left: 15px;
+			}
+			#pkg_name {
+				font-size: 15px;
+			}
 		</style>
 		<r:script type="text/javascript">
 
 			$(document).ready(function() {
    				$(".file").click(function(e) {
-      				$(this).toggleClass("filed");
-      				$(this).children().slideToggle("300");
-      				e.stopPropagation();
+      		//		$(this).toggleClass("file");
+      		//		$(this).children().slideToggle("300");
+      		//		e.stopPropagation();
+   					
+   					$('.file', this).show();
+   					$(this).children().show();
+				}, function(e) {
+					$('.file', this).hide();
+					$(this).children().hide();
    				});  
 			});
+			
+
 			
 			
 			function xmlAnzeigen() {
@@ -67,14 +88,14 @@
 	
 	<ul>
 		<% 
-		objectList?.packages.each {
-			it.each {
+		for(int i = 0; i < objectList?.packages.size(); i++) { //objectList?.packages.each {
+			objectList?.packages.get(i).each { //it.each {
 				int pkgId = it.id
 				print "<li class='file'>"
 			
 				print it.toString()
 		
-				print "<ul>"
+				print "<ul><div id='pkg'>"
 		
 				eventPkgList.each {
 					if(pkgId == it.pkg_id) {
@@ -97,7 +118,7 @@
 				while (counter < eventList.size()) {
 					counterEvent = 0
 					while ((counterEvent+1) % 11 != 0 && counter < eventList.size()) {	
-						print counter
+						//print counter
 						def event = eventList.get(counter)
 						if(event.pkg_id == pkgId) {			
 							def source = event.sourceFile
@@ -124,12 +145,12 @@
 						counter++
 					}
 					if(counter != dafileList.size() - 1) {
-						println "weitere Dateien anzeigen"
+						//println "weitere Dateien anzeigen"
 					}		
 					// TODO
 				}
 		
-		print "<br/> nextToTen " + nextToTen + "<br/>"
+		//print "<br/> nextToTen " + nextToTen + "<br/>"
 				counter = 0
 		while (counter < dafileList.size()) {
 							if(counterFile == 0) {
@@ -138,7 +159,7 @@
 								counterFile = 0 
 							} //counterFile == 0 ? nextToTen : 0
 					while ((counterFile+1) % 11 != 0 && counter < dafileList.size()) {	
-				print counter
+				//print counter
 				//dafileList.each {
 					def dafile = dafileList.get(counter)
 		//it
@@ -194,10 +215,10 @@
 					counter++
 					}
 				if(counter != dafileList.size() - 1) {
-					println "weitere Dateien anzeigen"
+					//println "weitere Dateien anzeigen"
 				}	
 				}	
-				print "</ul></li>" 
+				print "</div></ul></li>" 
 			}
 		} 
 		%>
