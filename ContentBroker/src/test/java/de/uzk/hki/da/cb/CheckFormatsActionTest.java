@@ -85,7 +85,7 @@ public class CheckFormatsActionTest extends ConcreteActionUnitTest {
 	private ConfigurableFileFormatFacade setUpFakeFormatScanService()
 			throws IOException, ConnectionException {
 		ConfigurableFileFormatFacade fff = mock(ConfigurableFileFormatFacade.class);
-		when(fff.extract((File)anyObject(), (File)anyObject())).thenReturn(true);
+		when(fff.extract((File)anyObject(), (File)anyObject(),(String)anyObject())).thenReturn(true);
 		
 		when(fff.identify((Path)anyObject(),(List<FileWithFileFormat>)anyObject(),anyBoolean())).thenAnswer(new Answer< List<DAFile> >(){
 			@Override
