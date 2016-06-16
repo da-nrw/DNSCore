@@ -37,6 +37,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.StringUtilities;
 
 
 /**
@@ -64,6 +65,10 @@ public class ScanForPresentationAction extends AbstractAction{
 
 	@Override
 	public boolean implementation() throws SubsystemNotAvailableException{
+		
+		if (!StringUtilities.isSet(preservationSystem.getPresServer())){
+			return true;
+		}
 		
 		List<? extends FileWithFileFormat> fffl=null;
 		try {
