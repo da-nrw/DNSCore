@@ -8,7 +8,6 @@ DNSCore j8i4 branch JAVA 8 iRODS 4
 -----
 
 
-
 The Core System of the DA-NRW Software Suite.  
   
 The DNS software relies
