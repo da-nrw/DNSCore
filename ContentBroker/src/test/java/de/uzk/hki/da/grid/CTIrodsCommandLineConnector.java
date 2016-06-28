@@ -57,6 +57,7 @@ public class CTIrodsCommandLineConnector {
 	
 	@Before
 	public void before() throws IOException, RuntimeException {
+		new File(testCollPhysicalPathOnLTA+"/urn.tar").delete();
 		iclc = new IrodsCommandLineConnector();
 		file = createTestFile();
 		String destColl = 
@@ -106,7 +107,9 @@ public class CTIrodsCommandLineConnector {
 		iclc.remove(daolong);
 		iclc.remove("/c-i/aip/connector");
 		iclc.remove("/c-i/aip/connector2");
-	}
+
+		new File(testCollPhysicalPathOnLTA+"/urn.tar").delete();
+		}
 	
 	@AfterClass
 	public static void cleanup () throws IOException {
