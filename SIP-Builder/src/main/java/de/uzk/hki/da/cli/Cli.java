@@ -70,7 +70,6 @@ public class Cli {
 	private File fileListFile = null;
 	private File sipListFile = null;
 	
-	
 	public Cli(String confFolderPath, String dataFolderPath, String[] args) {
 		this.confFolderPath = confFolderPath;
 		this.args = args;
@@ -165,7 +164,10 @@ public class Cli {
     			sipFactory.setDestinationPath(extractParameter(arg));
     			continue;
     		}
-    		
+    		if (arg.startsWith("-workspace")) {
+    			sipFactory.setWorkingPath(extractParameter(arg));
+    			continue;
+    		}
     		if (arg.startsWith("-premis")) {
     			File premisFile = new File(extractParameter(arg));
     			if (!premisFile.exists()) {
@@ -237,6 +239,17 @@ public class Cli {
     			continue;
     		}
     		
+    		// DANRW-1416: Extension for disable tar - function
+    		if (arg.equals("-noTar")) {
+    			sipFactory.setTar(false);
+    			continue;
+    		} 
+    		
+    		if (arg.startsWith("-destDir")) {
+    			sipFactory.setDestinationPath(sipFactory.getDestinationPath() + File.separator + extractParameter(arg));
+    			continue;
+    		} 
+
     		if (arg.equals("-default") || arg.equals("-multiple") || arg.equals("-neverOverwrite") || arg.equals("-compression") || arg.equals("-nested"))
     			continue;
     		
@@ -245,6 +258,12 @@ public class Cli {
     		return Feedback.INVALID_PARAMETER;
     	}
     	
+		if (sipFactory.isTar() && sipFactory.getDestDir() != null) {
+			System.out.println("-destDir ist nicht ohne den Parameter -noTar gültig. Starten Sie den SipBuilder " 
+					+ "mit dem Parameter -help, um eine Liste aller möglichen Parameter anzuzeigen.");
+			return Feedback.INVALID_PARAMETER_COMBINATION;
+		} 
+
     	sipFactory.setMessageWriter(messageWriter);
     	
     	if (!contractRightsLoaded)
@@ -277,6 +296,15 @@ public class Cli {
 		if (sipFactory.getDestinationPath() == null || sipFactory.getDestinationPath().equals("")) {
     		System.out.println("Bitte geben Sie einen Zielordner an.");
     		return Feedback.NO_DESTINATION_FOLDER;
+		}
+		
+		if (sipFactory.getWorkingPath() == null || sipFactory.getWorkingPath().equals("")) {
+			sipFactory.setWorkingPath(sipFactory.getDestinationPath());
+		} 
+		
+		// DANRW-1416: directory name
+		if (sipFactory.getDestDir() == null || sipFactory.getDestDir().equals("")) {
+			sipFactory.setDestDir("output");
 		}
     		
     	UserInputValidator.Feedback feedback;
@@ -697,6 +725,7 @@ public class Cli {
 		System.out.println("   -source=\"[Pfad]\"          Angabe eines Quellordners, aus dem die SIPs erstellt werden sollen");
 		System.out.println("   -filelist=\"[Pfad]\"        Angabe einer Textdatei, die die Pfade zu den Dateien enthält, aus denen das SIP erstellt werden soll");
 		System.out.println("   -siplist=\"[Pfad]\"         Angabe einer XML-Datei, die die Pfade zu den Dateien enthält, aus denen SIPs erstellt werden sollen");
+		System.out.println("   -workspace=\"[Pfad]\"       Angabe eines Arbeitsverzeichnis, das zur Zwischenspeicherung genutzt werden soll");
 		System.out.println("");
 		System.out.println("   -destination=\"[Pfad]\"     Angabe des Zielordners, in dem die SIPs erstellt werden sollen");
 		System.out.println("");
@@ -713,6 +742,9 @@ public class Cli {
 		System.out.println("");
 		System.out.println("   -compression              SIPs als komprimierte tgz-Files erstellen (Standard)");
 		System.out.println("   -noCompression            SIPs als unkomprimierte tar-Files erstellen");
+		System.out.println("");
+		System.out.println("   -noTar                    SIPs als Verzeichnis erstellen");
+		System.out.println("   -destDir=\"[Name]\"         Verzeichnisname, in dem das SIP erstellt werden soll (abhängig vom gewählten Zielordner). Darf nur in Kombination mit -noTar verwendet werden");
 		System.out.println("");
 		System.out.println("   -neverOverwrite           SIPs nicht erstellen, wenn sich im Zielordner bereits ein SIP gleichen Namens befindet (Standard)");
 		System.out.println("   -alwaysOverwrite          Bereits existierende SIPs/Lieferungen gleichen Namens im Zielordner ohne Nachfrage überschreiben");

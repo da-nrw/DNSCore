@@ -100,7 +100,7 @@ Hierzu muss die mitgelierferte **premis.xml** folgende Eintrage aufweisen:
 <object xsi:type="representation">
     <objectIdentifier>
         <objectIdentifierType>URN</objectIdentifierType>
-	<objectIdentifierValue>urn:nbn:de:xyz-1-20131008367735</objectIdentifierValue>
+        <objectIdentifierValue>urn:nbn:de:xyz-1-20131008367735</objectIdentifierValue>
     </objectIdentifier>
 </object>
 ```

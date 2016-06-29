@@ -34,6 +34,7 @@ import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.StringUtilities;
 
 
 /**
@@ -60,6 +61,9 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	@Override
 	public boolean implementation() throws IOException {
 		
+		if (!StringUtilities.isSet(preservationSystem.getPresServer())){
+			return true;
+		}
 		logger.trace("Moving the dip content for presentation purposes out of the archival package.");
 		copyPIPSforReplication();
 		
@@ -125,17 +129,21 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 		
 		if (!wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile().exists())
 			distributedConversionAdapter.create(wa.pipSourceFolderRelativePath(WorkArea.PUBLIC).toString());
-		else
+		else {
+		
 			distributedConversionAdapter.register(wa.pipSourceFolderRelativePath(WorkArea.PUBLIC).toString(),
-				wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile().getAbsolutePath()
-				);
+			wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile().getAbsolutePath()
+			);
+			
+		}
 		
 		if (!wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile().exists())
 			distributedConversionAdapter.create(wa.pipSourceFolderRelativePath(WorkArea.WA_INSTITUTION).toString());
-		else
+		else {
 			distributedConversionAdapter.register(wa.pipSourceFolderRelativePath(WorkArea.WA_INSTITUTION).toString(),
-				wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile().getAbsolutePath()
-				);
+			wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile().getAbsolutePath()
+			);
+		}
 	}
 
 

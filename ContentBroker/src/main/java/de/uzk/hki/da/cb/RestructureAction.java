@@ -33,17 +33,17 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.IngestGate;
-import de.uzk.hki.da.core.MailContents;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.format.FileFormatException;
 import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
+import de.uzk.hki.da.format.UserFileFormatException;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.DocumentsGenService;
+import de.uzk.hki.da.model.KnownError;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.util.ConfigurationException;
@@ -203,20 +203,25 @@ public class RestructureAction extends AbstractAction{
 		}
 		logger.info("Listing all identified file formats (and ErrorCodes, if any):");
 		StringBuffer message = new StringBuffer();
-		UserExceptionId last = null;
+		KnownError last = null;
 		for (FileWithFileFormat f:scannedFiles){
 			String line = f+":"+f.getFormatPUID()+":"+f.getSubformatIdentifier();
 			String err = "";
-			if (f.getUserExceptionId()!=null) {
-				err = f.getUserExceptionId().toString();
+			if (f.getKnownErrors()!=null) {
+				for (KnownError ke: f.getKnownErrors()) {
+				err = ke.getDescription() + " " + ke.getError_name();
 				message.append(line + err + "\n");
-				last = f.getUserExceptionId();
-			}
+				last = ke;
+				}
+			} else err = "<NONE>";
 			logger.info(line + err);
 		}
-		if (message.length()>0)
-		new MailContents(preservationSystem,n).informUserAboutPendingDecision(o,message.toString());
-		if (last!=null) throw new UserException(last,"Entscheidungen erforderlich!");
+		if (last!=null && !o.getLatestPackage().isPruneExceptions()) {
+			if (last.getAdvice()!=null) {
+				message.append(last.getAdvice() + "\n");
+			}
+			throw new UserFileFormatException(last,message.toString(), o.getLatestPackage().isPruneExceptions());
+		}
 	}
 	
 	@Override

@@ -31,6 +31,8 @@ class User {
 	 boolean accountExpired 
 	 boolean accountLocked 
 	 boolean passwordExpired
+	 boolean mailsPooled
+	 
 	 String description
 	 String email_contact
 	 String forbidden_nodes
@@ -51,6 +53,7 @@ class User {
 		accountExpired column: 'accountexpired'
 		accountLocked column: 'accountlocked'
 		passwordExpired column: 'passwordexpired'
+		mailsPooled column: 'mails_pooled'
 		}
 
 	 Set<Role> getAuthorities() { UserRole.findAllByUser(this).collect { it.role } as Set }

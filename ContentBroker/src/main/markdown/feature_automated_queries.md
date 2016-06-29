@@ -6,7 +6,7 @@ Da es für massenhafte Abfragen (durch Drittsysteme, durch den Anwender zur Übe
 
 a) Es gibt eine technische Webschnittstelle, die Anfragen im JSON Format via HTTP verarbeiten kann. Die Antworten des Systems erfolgen als maschinenlesbarer JSON Code. Dieses Teilfeature eignet sich für Drittsysteme und arbeitet mit einer technischen Anmeldung am System. Direkter Internetzugriff zwischen DNS und dem Drittsystem sind erforderlich.
 
-b) Oftmals gibt es den Wunsch, den Status einer gesamten (vorgefertigten) Liste an Ablieferungsnamen zu untersuchen. Dazu gibt es gibt es die Möglichkeit Abfragen mittels einer vorbereiteten Datei durchzuführen. Diese Datei kann als CSV (comma separated values) Datei in die DA-Web Schnittstelle geladen werden. Die Auswertung erfolgt dann durch den ContentBroker und die Datei steht danach im outgoing Ordner der Anwendung zur Verfügung. 
+b) Oftmals gibt es den Wunsch, den Status einer gesamten (vorgefertigten) Liste an Ablieferungsnamen zu untersuchen. Dazu gibt es die Möglichkeit Abfragen mittels einer vorbereiteten Datei durchzuführen. Diese Datei kann als CSV (comma separated values) Datei in die DA-Web Schnittstelle geladen werden. Die Auswertung erfolgt dann durch den ContentBroker und die Datei steht danach im outgoing Ordner der Anwendung zur Verfügung. 
 
 Beide technischen Abfragen arbeiten jeweils im Use Case der reinen Statusabfrage:
 Bsp.:
@@ -77,7 +77,7 @@ outgoing read, write für irods user, read für tomcat user
 
 
 ```
-identifier;origName;statuscode;erfolg;bemerkung
+identifier;origName;statuscode;createddate;updateddate;erfolg;bemerkung
 ```
 Zeichensatz ist CP1252 (Windows-Standard). Es wird angenommen, dass die Datei mittels EXCEL erstellt wurde. 
 [Beispiel, bitte die RAW Filedarstellung sichern](../../../src/test/resources/at/ATCSVQueries.csv) 

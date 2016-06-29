@@ -33,7 +33,7 @@
 				<li><a class="list" href="${createLink(controller: 'role', action: 'index')}">Roles</a></li>
 				<li><a class="list" href="${createLink(controller: 'userRole', action: 'index')}">UserRoles</a></li>
 				<li><a class="list" href="${createLink(controller: 'PreservationSystem', action: 'index')}">PreservationSystem</a></li>
-			
+				<li><a class="list" href="${createLink(controller: 'formatMapping', action: 'map')}">Format-Mapping</a></li>
 			</ul>
 		</div>
     <div class="body">

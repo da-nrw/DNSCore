@@ -33,10 +33,12 @@ import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
+import de.uzk.hki.da.utils.StringUtilities;
 
 /**
  * Checks if the minimum number of replications of an AIP, as specified by minNodes, is available on any
@@ -84,8 +86,20 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 				aipPath().toString(), 
 				sp, o.getLatestPackage().getChecksum(), n.getCooperatingNodes()));
 		
-		toCreate=createPublicationJob(j,o,preservationSystem.getPresServer());
-		setObjectArchived();
+		if (StringUtilities.isSet(preservationSystem.getPresServer())) {
+				toCreate=createPublicationJob(j,o,preservationSystem.getPresServer());
+				setObjectArchived(Object.ObjectStatus.InWorkflow);
+		} else {
+			String pubbi = wa.pipSourceFolderRelativePath(WorkArea.PUBLIC).toString();
+			gridRoot.remove(pubbi);
+			FileUtils.deleteDirectory(wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile());
+
+			String insti = wa.pipSourceFolderRelativePath(WorkArea.WA_INSTITUTION).toString();
+			gridRoot.remove(insti);
+			FileUtils.deleteDirectory(wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile());
+
+			setObjectArchived(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+		}
 
 		logger.debug("Delete object "+wa.objectPath().toFile()+" from WorkArea.");
 		FileUtils.deleteDirectory(wa.objectPath().toFile());
@@ -137,6 +151,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		for (Package pkg : o.getPackages()){
 			pkg.getEvents().clear();
 			pkg.getFiles().clear();
+	
 		}
 	}
 
@@ -151,7 +166,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	 * @author Jens Peters
 	 * @author Daniel M. de Oliveira
 	 */
-	private void setObjectArchived() {
+	private void setObjectArchived(int object_state) {
 		
 		clearNonpersistentObjectProperties(o);
 		
@@ -172,7 +187,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		o.setStatic_nondisclosure_limit_institution(j.getStatic_nondisclosure_limit_institution());
 		o.setDynamic_nondisclosure_limit_institution(j.getDynamic_nondisclosure_limit_institution());
 
-		o.setObject_state(Object.ObjectStatus.InWorkflow); // object stays in workflow for publication
+		o.setObject_state(object_state);
 		o.setPublished_flag(C.PUBLISHEDFLAG_UNDEFINED);
 	}
 

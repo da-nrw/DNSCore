@@ -26,7 +26,7 @@ public class UserException extends RuntimeException {
 		DUPLICATE_METADATA_FILE,
 		INVALID_METADATA_FILE,
 		DELTA_RECIEVED_BEFORE_ARCHIVED,
-		WRONG_DATA_TYPE_IPTC	
+		INVALID_USER_FILE_FORMAT
 	};
 	
 	private static final long serialVersionUID = -6346016039624940492L;

@@ -20,11 +20,7 @@
 package de.uzk.hki.da.pkg;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -90,8 +86,9 @@ public class CopyUtility {
 			
 			if(!(source.getName().equals("thumbs")) && !(source.getName().equals("thumbnails"))) {
 
-				if(!destination.exists())
+				if(!destination.exists()){
 					destination.mkdir();
+				}
 
 				String files[] = source.list();
 
@@ -102,26 +99,13 @@ public class CopyUtility {
 					if (!copy(srcFile,destFile))
 						return false;
 				}
+				destination.setLastModified(source.lastModified());
 			}
 
 		}else{
 
-			if (!source.getName().equals(".DS_Store") &&
-				(source.length() != 0) &&
-				checkFileExtension(source.getName())) {
-			
-				InputStream input = new FileInputStream(source);
-				OutputStream output = new FileOutputStream(destination); 
-
-				byte[] buffer = new byte[2048];
-				int length;
-				
-				while ((length = input.read(buffer)) > 0) {
-					output.write(buffer, 0, length);
-				}
-			
-				input.close();
-				output.close();
+			if (!source.getName().equals(".DS_Store") && (source.length() != 0) && checkFileExtension(source.getName())) {
+				FileUtils.copyFile(source, destination);
 			}
 			
 			if (progressManager != null)

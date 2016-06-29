@@ -1,7 +1,7 @@
 Anleitung SIP-Builder
 =====================
 
-Bitte verwenden Sie eine Version des SIP-Builders, die mindestens die Build-Nr. __1512__ hat!
+Bitte verwenden Sie eine Version des SIP-Builders, die mindestens die Build-Nr. __1606__ hat!
 
 ## Überblick
 
@@ -29,6 +29,9 @@ Geben Sie hier den Pfad zum Verzeichnis an, das die Quelldaten enthält, aus den
 
 __Zielordner__  
 Geben Sie hier den Pfad zum Verzeichnis an, in dem das fertige SIP am Ende des Generierungsprozesses in Form einer tgz- oder tar-Archivdatei hinterlegt wird. Das gewählte Verzeichnis darf kein Unterverzeichnis des Quellordners sein. 
+
+__Arbeitsordner__  
+Die Angabe eines Arbeitsverzeichnisses ist dann sinnvoll, falls schnellere Laufwerke als Quelle und / oder Ziel verfügbar sind. Damit kann die Verarbeitungszeit ggf. wesentlich verkürzt werden.
 
 __Generierungsmodus__  
 Sie haben die Wahl zwischen verschiedenen Modi der SIP-Generierung:
@@ -251,6 +254,14 @@ Im hier angegebenen Verzeichnis wird das fertige SIP am Ende des Generierungspro
 Beispiel:  
 -destination="D:\SIPs"
 
+#### Arbeitsverzeichnis 
+
+__-workspace="[Pfad]"__  
+Geben Sie einen Pfad zu einem Arbeitsverzeichnis an, das zur Zwischenspeicherung genutzt werden soll.
+
+Beispiel:
+-workspace="D:\inArbeit\SIPs"
+
 #### Generierungsmodus
 
 __-multiple (Standardoption)__  
@@ -329,6 +340,17 @@ Wählen Sie diese Option, um Dateien mit bestimmten Dateiendungen nicht in die e
 
 Beispiel: 
 -ignoreExtensions="txt;doc;rtf;odt;pdf"
+
+#### Tar-Erstellung unterdrücken
+
+__-noTar__  
+SIPs werden nicht mehr gepackt und nicht komprimiert. Die Dateien bleiben in der Verzeichnisstruktur liegen.
+
+__-destDir=""[Pfad]""__  
+SIPs werden in dem hier angegebenen Verzeichnis erstellt.  
+
+Beispiel:
+-destDir="D:\nichtTarren\SIPs"
 
 ### Beispielaufrufe
 

@@ -37,6 +37,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.StringUtilities;
 
 
 /**
@@ -61,13 +62,17 @@ public class ScanForPresentationAction extends AbstractAction{
 	@Override
 	public void checkPreconditions() {
 	}
-	
+
 	@Override
 	public boolean implementation() throws SubsystemNotAvailableException{
 		
+		if (!StringUtilities.isSet(preservationSystem.getPresServer())){
+			return true;
+		}
+		
 		List<? extends FileWithFileFormat> fffl=null;
 		try {
-			fffl = fileFormatFacade.identify(wa.dataPath(),o.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()),false);
+			fffl = fileFormatFacade.identify(wa.dataPath(),o.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()),o.getLatestPackage().isPruneExceptions());
 		} catch (FileFormatException e) {
 			throw new RuntimeException(C.ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION,e);
 		} catch (IOException e) {

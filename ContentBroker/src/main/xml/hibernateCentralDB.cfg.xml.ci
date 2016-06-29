@@ -27,6 +27,7 @@
 <property name="format_sql">true</property>
 <property name="hbm2ddl.auto">validate</property>
  
+ 
  <mapping class="de.uzk.hki.da.model.User"/>
  <mapping class="de.uzk.hki.da.model.Role"/>
  <mapping class="de.uzk.hki.da.model.Node"/>
@@ -36,6 +37,7 @@
  <mapping class="de.uzk.hki.da.model.ConversionRoutine"/>
  <mapping class="de.uzk.hki.da.model.Object"/>
  <mapping class="de.uzk.hki.da.model.Document"/>
+ <mapping class="de.uzk.hki.da.model.KnownError"/>
  <mapping class="de.uzk.hki.da.model.DAFile"/>
  <mapping class="de.uzk.hki.da.model.Package"/>
  <mapping class="de.uzk.hki.da.model.Event"/>
@@ -46,5 +48,9 @@
  <mapping class="de.uzk.hki.da.model.CopyJob"/>
  <mapping class="de.uzk.hki.da.model.SystemEvent"/>
  <mapping class="de.uzk.hki.da.model.PendingMail"/>
+ <mapping class="de.uzk.hki.da.model.FormatMapping"/>
+ <mapping class="de.uzk.hki.da.model.JHoveParameterMapping"/>
+ 
 </session-factory>
 </hibernate-configuration>
+

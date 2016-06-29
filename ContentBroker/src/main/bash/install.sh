@@ -61,8 +61,12 @@ SunOS)
 esac
 
 ##############################################################
-
 echo "INSTALL - Installing to $INSTALLATION_TARGET"
+if  [ -e $INSTALLATION_TARGET/documentation ]
+then
+	echo "deleting old documentation folder"
+	rm -rf $INSTALLATION_TARGET/documentation
+fi
 $TAR xf ContentBroker.tar -C $INSTALLATION_TARGET
 if [ -e config.properties ]
 then
@@ -97,6 +101,8 @@ cp -f beans.xml.$BEANS_TYPE $INSTALLATION_TARGET/conf/beans.xml
 fi
 
 
+
+
 ##### deliver template files and copy them to the regular names if they do not exist #######
 ##### logback.xml #######
 ##### ContentBroker_stop.sh #######
@@ -122,7 +128,7 @@ cp -f ContentBroker_start.sh.template $INSTALLATION_TARGET/ # overwrite existing
 if  [ ! -e $INSTALLATION_TARGET/ContentBroker_start.sh ]
 then
 	echo "INSTALL - No ContentBroker_start.sh present in $INSTALLATION_TARGET."
-	echo "INSTALL - Installer will use ContentBroker_stop.sh.template to create a ContentBroker_start.sh file." 
+	echo "INSTALL - Installer will use ContentBroker_start.sh.template to create a ContentBroker_start.sh file." 
 	cp -f $INSTALLATION_TARGET/ContentBroker_start.sh.template $INSTALLATION_TARGET/ContentBroker_start.sh
 fi
 #############################

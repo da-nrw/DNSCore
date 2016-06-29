@@ -49,6 +49,7 @@
 		<entry key="SendToPresenterAction" value="3" />
 		<entry key="IngestPrepareSendToPresenterAction" value="3" />
 		<entry key="IngestUnpackAction" value="3" />
+		<entry key="IngestDeltaOnURNAction" value="3" />
 		<entry key="IngestConvertAction" value="3" />
 		<entry key="IngestScanAction" value="3" />
 		<entry key="IngestCreatePremisAction" value="3" />
@@ -103,6 +104,7 @@
 		<value>FetchPIPsAction</value>
 		<value>IngestValidateMetadataAction</value>
 		<value>IngestRestructureAction</value>
+		<value>IngestDeltaOnURNAction</value>
 		<value>IngestUnpackAction</value>
 		<value>AuditAction</value>
 		<value>PIPGenCleanWorkAreaAction</value>

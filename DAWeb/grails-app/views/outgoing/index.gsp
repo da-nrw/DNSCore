@@ -14,6 +14,6 @@
 			</ul>
 		</div>
 <g:each var="currentFile" in="${filelist}">
-     <g:link controller="outgoing" action="webdav" params="['filename':currentFile.getName()]">${currentFile.getName() }</g:link><br>
+     <g:link controller="outgoing" action="download" params="['filename':currentFile.getName()]">${currentFile.getName() }</g:link><br>
 </g:each>
 </body>

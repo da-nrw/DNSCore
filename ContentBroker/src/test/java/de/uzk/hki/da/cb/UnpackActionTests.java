@@ -83,8 +83,9 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 		
 		new File(CONF).mkdir();
 		FileUtils.copyDirectory(Path.makeFile(workAreaRootPath,"ingest_"), Path.makeFile(workAreaRootPath,"ingest"));
-		FileUtils.copyFileToDirectory(C.PREMIS_XSD, new File(CONF));
-		FileUtils.copyFileToDirectory(C.XLINK_XSD, new File(CONF));
+		FileUtils.copyFileToDirectory(C.PREMIS_XSD_TEST, new File(CONF));
+		FileUtils.copyFileToDirectory(C.XLINK_XSD_TEST, new File(CONF));
+		FileUtils.copyFileToDirectory(C.CONTRACT_XSD_TEST, new File(CONF));
 		
 		gate.setWorkAreaRootPath(workAreaRootPath.toString());
 		gate.setFreeDiskSpacePercent(5);
