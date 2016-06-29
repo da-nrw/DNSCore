@@ -35,7 +35,7 @@ Die Dokumentation ist Teil des Git-Repository der DNSCore und wird gemeinsam mit
 * Formatidentifikation mit DNSCore ([deutsch](operations_format_identification.de.md))
 * Formatkonversion mit DNSCore ([deutsch](operations_format_conversion.de.md))
 * Formatmodul ([englisch](format_module.md))
-
+* 3rd Party Module ([english](3rdPartyTools.md))
 
 ###Langzeitarchivierung mit DNSCore verstehen
 
