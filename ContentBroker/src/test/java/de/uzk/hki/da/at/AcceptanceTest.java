@@ -216,11 +216,13 @@ public class AcceptanceTest {
 		IrodsCommandLineConnector icl = new IrodsCommandLineConnector();
 		icl.remove("/"+localNode.getIdentifier() + "/work/TEST");
 		icl.remove("/"+localNode.getIdentifier() + "/aip/TEST");
+		icl.remove("/"+localNode.getIdentifier() + "/repl/TEST");
 		icl.remove("/"+localNode.getIdentifier() + "/pips/institution/TEST");
 		icl.remove("/"+localNode.getIdentifier() + "/pips/public/TEST");
 		
 		icl.mkCollection("/"+localNode.getIdentifier() + "/work/TEST");
 		icl.mkCollection("/"+localNode.getIdentifier() + "/aip/TEST");
+		icl.mkCollection("/"+localNode.getIdentifier() + "/repl/TEST");
 		icl.mkCollection("/"+localNode.getIdentifier() + "/pips/institution/TEST");
 		icl.mkCollection("/"+localNode.getIdentifier() + "/pips/public/TEST");
 		
