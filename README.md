@@ -97,5 +97,4 @@ running ContentBroker which will get installed from an automatically generated i
 For more information on building and testing DNSCore look [here](ContentBroker/src/main/markdown/development_deploy.md)
     
     
-    
 
