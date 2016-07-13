@@ -344,7 +344,7 @@ public class IrodsCommandLineConnector {
 	 * @return
 	 */
 	public String rsyncDir(String sourceColl, String destColl, String destRescName) {
-		if (StringUtilities.isNotSet(destRescName)) {
+		if (StringUtilities.isSet(destRescName)) {
 			String commandAsArray[] = new String[]{
 					"irsync","-rKVR",destRescName, "i:"  + sourceColl,"i:"+ destColl
 			};	
