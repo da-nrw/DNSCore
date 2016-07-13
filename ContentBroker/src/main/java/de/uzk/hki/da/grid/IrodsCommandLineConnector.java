@@ -323,7 +323,7 @@ public class IrodsCommandLineConnector {
 	 * @return
 	 */
 	public String rsync(String dao, String destDao, String destRescName) {
-		if (StringUtilities.isNotSet(destRescName)) {
+		if (StringUtilities.isSet(destRescName)) {
 			String commandAsArray[] = new String[]{
 					"irsync","-KVR",destRescName, "i:"  + dao,"i:"+ destDao
 			};	
