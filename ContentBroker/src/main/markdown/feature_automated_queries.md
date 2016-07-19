@@ -96,12 +96,12 @@ ATUseCaseIngest1.tgz
 3. Die Excel wird gespeichert.
 4. Der Tester meldet sich an der DAWEB an. 
 5. Hochladen der CSV Datei mittels der DA-WEB oder Ablage in den incoming Ordner des Contractors.
-6. Start der Berichtseerstellung mittels Aktion "Bericht generieren" und Klick auf Start.
+6. Start der Berichtserstellung mittels Aktion "Bericht generieren" und Klick auf Start.
 7. Entnahme der CSV Datei aus dem outgoing Ordner, bzw. Entnahme über die DA-Web. 
 
 #### Akzeptanzkriterien:
 
-1. Die CSV Datei enthält nun in der der Spalte Bemerkung "fertig archiviert" und in der Spalte "erfolg"  true, ferner ist die Spalte identifier vom System befüllt. 
+1. Die CSV Datei enthält nun in der Spalte Bemerkung "Objekt archiviert und in keiner Verarbeitung" und in der Spalte "erfolg"  true, ferner ist die Spalte identifier vom System befüllt. 
 
 #### Status und offene Punkte
 
