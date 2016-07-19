@@ -33,7 +33,7 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 #### Durchführung:
 
 1. Download des Testpakets
-1. Erstellen des SIPs mittels Ausfruf des SIP-Builders im CLI
+1. Erstellen des SIPs mittels Aufruf des SIP-Builders im CLI
 1. Folgende Parameter müssen beim Aufruf mitgegeben werden:  
 	-source="[Pfad zum Verzeichnis der Quelldateien]"  
     -destination="[Pfad, in dem das erzeugt SIP abgelegt werden soll]"  
@@ -69,7 +69,7 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 #### Durchführung:
 
 1. Download des Testpakets
-1. Erstellen des SIPs mittels Ausfruf des SIP-Builders im CLI
+1. Erstellen des SIPs mittels Aufruf des SIP-Builders im CLI
 1. Folgende Parameter müssen beim Aufruf mitgegeben werden:  
 	-source="[Pfad zum Verzeichnis der Quelldateien]"  
     -destination="[Pfad, in dem das erzeugt SIP abgelegt werden soll]"  
@@ -80,14 +80,14 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 
 1. Der ausgewählte Zielordner enthält folgende zwei Unteriordner Dateien  
 ```  
- <b> noTar1</b> : enthält folgende Dateien:   
+ noTar1: enthält folgende Dateien:   
       tagmanifest-md5.txt   
       manifest-md5.txt  
       bagit.txt  
       bag-info.txt  
       data/premis.xml  
       data/NoTar1.bmp    
- <b>  noTar2 </b>: enthält folgende Dateien:     
+ noTar2: enthält folgende Dateien:     
       tagmanifest-md5.txt   
       manifest-md5.txt  
       bagit.txt  
@@ -96,7 +96,7 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
       data/NoTar2.bmp   
 ``` 
 
-## Szenario AT-BS-NOTAR-DEST-DIR
+## Szenario AT-BS-NOTAR-DEST-DIR: Bilden eines einzelnen SIPs ohne Erstellung eines tar - Files mit Angabe Zielverzeichnis
 
 #### Kontext:
 
@@ -113,7 +113,7 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 #### Durchführung:
 
 1. Download des Testpakets
-1. Erstellen des SIPs mittels Ausfruf des SIP-Builders im CLI
+1. Erstellen des SIPs mittels Aufruf des SIP-Builders im CLI
 1. Folgende Parameter müssen beim Aufruf mitgegeben werden:  
 	-source="[Pfad zum Verzeichnis der Quelldateien]"  
     -destination="[Pfad, in dem das erzeugt SIP abgelegt werden soll]"  
@@ -123,7 +123,7 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 
 #### Akzeptanzkriterien:
 
-1.  Der ausgewählte Zielordner enthält folgende Dateien, wenn man z.B. davon ausgeht, dass  
+1.  Der ausgewählte Zielordner "test" enthält folgende Dateien, wenn man z.B. davon ausgeht, dass  
     im Parameter -destDir="test" steht
 ```  
   test/data/destDir/tagmanifest-md5.txt   
