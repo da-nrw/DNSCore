@@ -233,7 +233,7 @@ das Object als "Object in transient state"
 ```
 
 
-## Szenario: AT-R-JSON-1
+## Szenario: AT-R-JSON-1: Retrievalanfragen mittels JSON Request
 
 Automatisierte Drittsysteme haben die Möglichkeit, Retrievalanfragen auch mittels JSON Request zu erstellen. 
 Retrieval requests by external systems can be issued by POST requests to an RESTful interface which is available at the URL https://Servername/daweb3/automatedRetrieval/queueForRetrievalJSON
@@ -253,7 +253,7 @@ Example:
 
 #### Durchführung:
 
-1. In der DA-Web auf dem Punkt "Hinweise zur Ansteuerung durch autom. Systeme" gehen
+1. In der DA-Web auf dem Punkt "Hinweise zur Ansteuerung über externe Systeme" gehen
 2. Dort auf den Punkt "Erstellung von Retrievalanfragen" klicken 
 3. Eintragen des Identifiers in die Maske. Im Hintergrund wird ein JSON Post ausgelöst. 
 
@@ -261,7 +261,7 @@ Example:
 
 1. Das Paket steht zur Entnahme bereit.
 
-## Szenario: AT-R-CSV-1
+## Szenario: AT-R-CSV-1: Retrievalanfrage mittels vorbereiteter CSV-Datei
 
 #### Kontext:
 
@@ -291,7 +291,7 @@ ATUseCaseIngest1.tgz
 3. Die Excel wird gespeichert.
 4. Der Tester meldet sich an der DAWEB an. 
 5. Hochladen der CSV Datei mittels der DA-WEB oder Ablage in den incoming Ordner des Contractors.
-6. Start des Massentretrievals mittels "Retrieval starten".
+6. Start des Massentretrievals mittels "Abfragen verarbeiten".
 
 #### Akzeptanzkriterien:
 
