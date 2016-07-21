@@ -16,7 +16,7 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 
 * Der User hat den SIP-Builder mit der Build-Nr. >= 1691.
 
-## Szenario AT-BS-NOTAR-ONEFILE: Bilden eines einzelnen SIPs ohne Erstellung eines tar - Files
+## Szenario AT-BS-NOTAR-1: Bilden eines einzelnen SIPs ohne Erstellung eines tar - Files
 
 #### Kontext:
 
@@ -52,7 +52,7 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
   /data/noTar/data/NoTar.bmp 
 ``` 
 
-## Szenario AT-BS-NOTAR-MULT-FILES: Bilden mehrerer SIPs ohne Erstellung eines tar - Files
+## Szenario AT-BS-NOTAR-2: Bilden mehrerer SIPs ohne Erstellung eines tar - Files
 
 #### Kontext:
 
@@ -96,7 +96,7 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
       data/NoTar2.bmp   
 ``` 
 
-## Szenario AT-BS-NOTAR-DEST-DIR: Bilden eines einzelnen SIPs ohne Erstellung eines tar - Files mit Angabe Zielverzeichnis
+## Szenario AT-BS-NOTAR-3: Bilden eines einzelnen SIPs ohne Erstellung eines tar - Files mit Angabe Zielverzeichnis
 
 #### Kontext:
 
