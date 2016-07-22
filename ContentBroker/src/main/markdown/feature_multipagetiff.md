@@ -1,4 +1,6 @@
-# Leistungsmerkmal: Archivierung eines Paketes mit einem Multipage-Tiff  
+# Leistungsmerkmal: Archivierung von Multipage-Tiffs  
+
+Senario: AT-MPT-1: Multipage-Tiffs werden vollständig archiviert, die erste Seite publiziert  
 
 ## Hintergrund:
 
