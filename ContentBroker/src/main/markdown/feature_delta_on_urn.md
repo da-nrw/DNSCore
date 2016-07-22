@@ -20,7 +20,8 @@ Gilt für alle Szenarien!
 #### Vorbedingungen:
 
 * User ist unter der Rolle "Contractor" angemeldet/eingeloggt in der "DAWeb"
-
+* Der angemeldete User muss delta_on_urn auf true gesetzt haben
+ 
 #### Durchführung:
 
 1. Das Paket ATDeltaOnURN_1.tgz wird in den User-Eingangsordner abgelegt.
