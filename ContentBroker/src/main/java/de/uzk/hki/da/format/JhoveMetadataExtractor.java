@@ -137,7 +137,7 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 		 */
 		if (!jhResult.isValid()){
 			logger.warn("JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + jhResult);
-			//throw new JHoveValidationException("JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + jhResult);
+			throw new JHoveValidationException("JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + jhResult);
 		}
 	}
 	

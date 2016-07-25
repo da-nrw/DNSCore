@@ -93,6 +93,7 @@ done
 #needs at least all migration.sql should be executed before coredata skripts
 psql -U cb_usr -d CB -f ./src/main/sql/coredata/coredata1.sql   
 psql -U cb_usr -d CB -f ./src/main/sql/coredata/coredata2.sql
+psql -U cb_usr -d CB -f ./src/main/sql/coredata/coredataTEST.sql
 
 
 
