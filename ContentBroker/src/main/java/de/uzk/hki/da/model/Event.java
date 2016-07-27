@@ -106,10 +106,12 @@ public class Event {
 		
 		/** The target file path. */
 		TARGET_FILE_PATH, 
- /** The ingest id. */
- INGEST_ID, 
- /** The sip creation id. */
- SIP_CREATION_ID
+		/** The ingest id. */
+		INGEST_ID, 
+		/** The sip creation id. */
+		SIP_CREATION_ID,
+		/** Virus detected id **/
+		VIRUS_DETECTED_ID
 	}
 	
 	/**

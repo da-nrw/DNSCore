@@ -1,4 +1,4 @@
-# Leistungsmerkmal: Ein SIP aus dem Quellverzeichnis erstellen
+# Leistungsmerkmal: Ein SIP aus über Kommandozeile erstellen ohne ein TAR-File zu erzeugen
 
 #Beschreibung
 
@@ -80,14 +80,14 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 
 1. Der ausgewählte Zielordner enthält folgende zwei Unteriordner Dateien  
 ```  
- <b> noTar1</b> : enthält folgende Dateien:   
+ 	  noTar1: enthält folgende Dateien:   
       tagmanifest-md5.txt   
       manifest-md5.txt  
       bagit.txt  
       bag-info.txt  
       data/premis.xml  
       data/NoTar1.bmp    
- <b>  noTar2 </b>: enthält folgende Dateien:     
+      noTar2: enthält folgende Dateien:     
       tagmanifest-md5.txt   
       manifest-md5.txt  
       bagit.txt  

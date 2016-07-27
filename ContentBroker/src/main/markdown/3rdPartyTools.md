@@ -59,6 +59,11 @@ validation and conversion of submitted content. Therefore the document does not 
 <td>unpacking/packing</td>
 <td>GNU General Public License v3 or later</td>
 </tr>
+<td>clamAV</td>
+<td>0.99.1</td>
+<td>Virenscanner f&uumlr ContentBroker</td>
+<td>GNU General Public License </td>
+</tr>
 <tr>
 <td>ImageMagick</td>
 <td>6.7.8-10</td>
@@ -95,6 +100,7 @@ validation and conversion of submitted content. Therefore the document does not 
 <td>DA-Web GUI</td>
 <td>Apache License, Version 2.0</td>
 </tr>
+<tr>
 <tr>
 <td>Grails</td>
 <td>2.3.8</td>
