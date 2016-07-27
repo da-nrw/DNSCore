@@ -85,6 +85,7 @@
 		<entry key="PIPGenScanForPresentationAction" value="3" />
 		<entry key="PIPGenObjectToWorkAreaAction" value="3" />
 		<entry key="PIPGenCleanWorkAreaAction" value="3" />	
+		<entry key="WritePremisDBAction" value="2" />	
 	</util:map>
 	<util:list id="actionOrdering">
    		<value>ProcessUserDecisionsAction</value>
@@ -125,5 +126,6 @@
 		<value>PIPGenScanForPresentationAction</value>
 		<value>PIPGenObjectToWorkAreaAction</value>
         <value>PostRetrievalAction</value>
+        <value>WritePremisDBAction</value>
 	</util:list>
 </beans>

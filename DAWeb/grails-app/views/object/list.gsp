@@ -181,16 +181,21 @@
 								</g:if>
 							</td>
 							<td style="text-align: center">
-								<g:if test="${!objectInstance.isInWorkflowButton()}">
-									 <g:link action="premis" params="['objectIdentifier':objectInstance.identifier, 'pkg':objectInstance.packages[0].id]">
-										<g:img style="width:18px; height:18px" uri="/images/icons/text-file-icon.png"/>
+									<g:link action="premisAnfordern" params="['objectIdentifier':objectInstance.identifier, 'objName':objectInstance.origName, 'pkg':objectInstance.packages[0].id, 'first': true, 'file': baseFolder+ '/'+ objectInstance.identifier +'.tar', 'id': objectInstance.id, 'filename':objectInstance.identifier +'.tar']">
+										Premis anfordern<g:img style="width:18px; height:18px" uri="/images/icons/text-file-icon.png"/>
 									</g:link>
+								<g:if test="${!objectInstance.isInWorkflowButton()}">
+								
 								</g:if>
+									<g:link action="premis" params="['objectIdentifier':objectInstance.identifier, 'objName':objectInstance.origName, 'pkg':objectInstance.packages[0].id, 'first': true]">
+										Premis anzeigen<g:img style="width:18px; height:18px" uri="/images/icons/text-file-icon.png"/>
+									</g:link>
 							</td>
 						</tr>
 					</g:each>
 					</tbody>
 				</table>
+				<!-- 123${objectIdentifiers }456 -->
 				StandardView
 			</g:formRemote>
 

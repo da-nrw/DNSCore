@@ -1,5 +1,7 @@
 package daweb3
 
+import java.text.SimpleDateFormat
+
 class Event {
 
     static constraints = {
@@ -26,4 +28,21 @@ class Event {
 	DAFile sourceFile
 	DAFile targetFile
 	int pkg_id
+	
+	
+	def getFormatedDate() {
+		if (date!=null && date!="") {
+			String sdf = new SimpleDateFormat("dd.MM.yyyy").format(date)
+			return sdf
+		}
+		return "";
+	}
+	
+	def getFormatedTime() {
+		if (date!=null && date!="") {
+			String sdf = new SimpleDateFormat("HH:mm:ss").format(date)
+			return sdf
+		}
+		return "";
+	}
 }

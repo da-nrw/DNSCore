@@ -30,5 +30,11 @@
 		<property name="endStatus" value="970" />
 		<property name="name" value="PostRetrievalAction" />
 	</bean>	
+	<bean id="WritePremisDBAction" class="de.uzk.hki.da.cb.WritePremisDBAction"
+		scope="prototype">
+		<property name="startStatus" value="990" />
+		<property name="endStatus" value="1000" />
+		<property name="name" value="WritePremisDBAction" />
+	</bean>	
 	<!--  END UseCase Retrieval END -->
 </beans>
