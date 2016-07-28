@@ -242,7 +242,7 @@
 		</script>
 		<div id="filter" style="margin: 0.8em 0 0.3em">
 			<h1><a href="#">Filter</a></h1> 
-            <g:form name="searchForm" action="premis">
+            <g:form name="searchForm" action="premis" params="['objName': params.objName, 'pkg': params.pkg, 'objectIdentifier': params.objectIdentifier]">
             
             	<table>
             		<tr>
@@ -286,13 +286,8 @@
 			            			params.offset1 = 0;
 	            				    params.offset2 = 0;
 	            				    params.first = true;
+	            				    
             				    });
-
-            				   /* $("#submit").click(function() {
-            				    	params.offset1 = 0;
-	            				    params.offset2 = 0;
-	            				    params.first = true;
-            				    });*/
             				    
             			});</script>
             		</tr>
@@ -473,7 +468,7 @@ ${tmpDafiles }
 								<g:set var="counter" value="${counter + 1}"/>
 							</g:each>
 							<g:if test="${dafiles?.size() < dafilesSize}">
-								<g:form name="test_form" action="premis" params="['fileMeta': fileMeta, 'objectIdentifier': params.objectIdentifier, ('offset'+i): (params.int('offset'+i) + 10), 'first': params.boolean('first')]">
+								<g:form name="test_form" action="premis" params="['objName': params.objName, 'pkg': params.pkg, 'fileMeta': fileMeta, 'objectIdentifier': params.objectIdentifier, ('offset'+i): (params.int('offset'+i) + 10), 'first': params.boolean('first')]">
 									<button id="button_test_${fileMeta}" style="padding:2px; margin-left: 15px;">weitere Dateien anzeigen</button>
 									<!--<g:submitToRemote oncomplete="showMore(false)" onloading="showMore(true)" update="premisfilelist" url="[controller:'object', action:'showNext']" value="mehr">
 									</g:submitToRemote>-->
