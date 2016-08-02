@@ -13,3 +13,6 @@ deliverable.tar
 .DS_Store
 .thumbs_db
 *.bluej
+*.prefs
+*.project
+*.classpath
