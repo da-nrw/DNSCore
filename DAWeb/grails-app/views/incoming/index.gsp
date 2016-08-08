@@ -5,7 +5,6 @@
 	</head>
 	<body>
 		<script type="text/javascript">
-		alert('Hallo 1'); 
 			function toggle(source) {
 			  checkboxes = document.getElementsByName('currentFiles');
 			  for(var i in checkboxes)
