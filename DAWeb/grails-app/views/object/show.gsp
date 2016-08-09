@@ -15,6 +15,32 @@
 				  checkboxes[i].checked = source.checked;
 				}
 			}
+			function deselect(source) {
+				if (document.getElementById('waehlen').checked) {
+					if (source.checked ) {
+					} else {
+						document.getElementById('waehlen').checked = false;
+					}
+				} else {
+					checkboxes = document.getElementsByName('currentPackages');
+					var i= 0;
+ 					while ( i < checkboxes.length) {  
+					 	if( checkboxes[i].checked) {
+						 	check = true;
+						 	i++;
+						 } else {
+						 	check = false;
+						 	i++;
+						 	break;
+						}
+					}
+					if (check) {
+						document.getElementById('waehlen').checked = true;
+					} else {
+						document.getElementById('waehlen').checked = false;
+					}
+				}
+			}
 		</script>
 	
 		<a href="#show-object" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
@@ -52,24 +78,15 @@
 				<g:form controller="package" action="retrievePackages">
 				<g:hiddenField name="oid" value="${objectInstance?.id}" />			
 				
-				<span class="property-value" ><input type="checkbox"  onClick="toggle(this)"/>Alle an-/abwählen</span><br>
+				<span class="property-value" ><input type="checkbox" name="waehlen" value="" id="waehlen" onClick="toggle(this)"/> Alle an-/abwählen</span><br>
 				<g:if test="${sortedPackages}">
 					<g:each in="${sortedPackages}" var="p" status="i">
 							<span class="property-value" >
 								<g:if test="${!objectInstance.isInWorkflowButton()}">
-									<g:checkBox name="currentPackages" value="${p.getId()}" checked="false" />
+									<g:checkBox name="currentPackages" value="${p.getId()}" checked="false" onClick="deselect(this)"/>
 								</g:if>${p?.encodeAsHTML()}
 							</span>
-					</g:each>	
-								
-								
-					
-<%--					<div><input type="checkbox"  onClick="toggle(this)"/>Alle an-/abwählen</div><br>--%>
-<%--			<g:each in="${filelist}" var="currentFile" status="i">--%>
-<%--			    <p><g:checkBox name="currentFiles" value="${currentFile.getName()}" checked="false"/>${currentFile.getName()}</p>--%>
-<%--			</g:each>--%>
-					
-										
+					</g:each>	<br>
 					<span class="property-value" >
 						<g:if test="${!objectInstance.isInWorkflowButton()}">
 							<g:actionSubmit value="Versioniertes Retrieval starten" controller="package" action="retrievePackages"/>
