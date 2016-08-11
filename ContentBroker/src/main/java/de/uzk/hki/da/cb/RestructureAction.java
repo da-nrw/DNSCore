@@ -183,7 +183,7 @@ public class RestructureAction extends AbstractAction{
 		ProcessInformation pi = null;
 		try {
 			pi = new CommandLineConnector().runCmdSynchronously(new String[] {
-			        "/usr/bin/clamscan", "-r",
+					"clamscan" , "-r",
 			        wa.objectPath().toFile().toString()}, 0);
 			if (pi.getExitValue() > 0) {
 				if (pi.getExitValue() == 1)  {

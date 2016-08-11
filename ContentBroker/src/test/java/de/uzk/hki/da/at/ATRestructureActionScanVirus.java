@@ -58,7 +58,7 @@ public class ATRestructureActionScanVirus extends AcceptanceTest{
 		File source = new File(sourceDir, "ATRestructureActionScanVirus/noVirus");
 
  		pi = new CommandLineConnector().runCmdSynchronously(new String[] {
-                "/usr/bin/clamscan", "-r",
+                "clamscan", "-r",
                 source.getAbsolutePath()}, 0);
  		
  		assertTrue(pi.getExitValue() == 0);
@@ -70,7 +70,7 @@ public class ATRestructureActionScanVirus extends AcceptanceTest{
 		File source = new File(sourceDir, "ATRestructureActionScanVirus/virus");
 
 		pi = new CommandLineConnector().runCmdSynchronously(new String[] {
-                "/usr/bin/clamscan", "-r",
+                "clamscan", "-r",
                 source.getAbsolutePath()}, 0);
 
  		assertTrue(pi.getExitValue() == 1);
