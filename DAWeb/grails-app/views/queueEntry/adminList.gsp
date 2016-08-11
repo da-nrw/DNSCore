@@ -63,16 +63,17 @@
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
 			</ul>
 		</div>
-	
-		<div id="list-queueEntry" class="content scaffold-list" role="main">			
-			<h1>Bearbeitungsübersicht</h1>			
-			<g:if test="${flash.message}">
-				<div class="message" role="status">${flash.message}</div>
-			</g:if>
-				<div id="filter" style="margin: 0.8em 0 0.3em">
-			<h1><a href="#">Filter</a></h1> 
-            <g:form name="searchForm" id="filterform" action="list">
-            	<table>
+		
+		<h1>Bearbeitungsübersicht</h1>			
+		<g:if test="${flash.message}">
+			<div class="message" role="status">${flash.message}</div>
+		</g:if>
+<%--		<div id="list-queueEntry" class="content scaffold-list" role="main">			--%>
+			
+		<div id="filter" style="margin: 0.8em 0 0.3em">
+		  <h1><a href="#">Filter</a></h1> 
+          <g:form name="searchForm" id="filterform" action="list">
+             <table>
             	<tr>
             		<td>Status:</td>
             			<td><g:textField name="search.status" value="${params.search?.status}" size="5"/></td>
@@ -109,8 +110,8 @@
             			<td><g:submitButton name="submit" value="Filter anwenden"/></td>
             		</tr>
             	</table>     
-            </g:form>
-           </div>
+          </g:form>
+        </div>
            
 <g:if test="${ !params.search }">
 	<!-- Update:&nbsp;<a href="#" onclick="stopUpdater();">stop</a>&nbsp;<a href="#" onclick="startUpdater();">start</a> -->	

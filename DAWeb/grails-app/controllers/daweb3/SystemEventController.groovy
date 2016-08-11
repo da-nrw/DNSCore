@@ -95,17 +95,28 @@ class SystemEventController {
             '*'{ respond systemEventInstance, [status: OK] }
         }
     }
-
+	
+	/**
+	 * cancel: Abbrechen-Button
+	 * @return
+	 */
+	def cancel() {
+		redirect(action: "show",  id: params.id)
+	}
+	
     @Transactional
     def delete(SystemEvent systemEventInstance) {
+		
+		if (systemEventInstance == null) {
+			notFound()
+			return
+		}
+		
 		if (systemEventInstance.user.id !=  springSecurityService.currentUser.id) {
 			notFound()
 			return
 		}
-        if (systemEventInstance == null) {
-            notFound()
-            return
-        }
+        
 
         systemEventInstance.delete flush:true
 

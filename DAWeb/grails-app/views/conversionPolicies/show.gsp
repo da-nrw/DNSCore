@@ -28,38 +28,43 @@
 				<g:if test="${conversionPoliciesInstance?.id}">
 				<li class="fieldcontain">
 					<span id="contractor-label" class="property-label"><g:message code="conversionPolicies.contractor.label" default="id" /></span>
-					
-						<span class="property-value" aria-labelledby="contractor-label">${conversionPoliciesInstance?.id?.encodeAsHTML()}</span>
-					
+					<span class="property-value" aria-labelledby="contractor-label">${conversionPoliciesInstance?.id?.encodeAsHTML()}</span>
 				</li>
 				</g:if>
 			
 				<g:if test="${conversionPoliciesInstance?.conversion_routine}">
 				<li class="fieldcontain">
-					<span id="conversion_routine-label" class="property-label"><g:message code="conversionPolicies.conversion_routine.label" default="konversionroutine" /></span>
-					
-						<span class="property-value" aria-labelledby="conversion_routine-label">${conversionPoliciesInstance?.conversion_routine?.encodeAsHTML()}</span>
-					
+					<span id="conversion_routine-label" class="property-label"><g:message code="conversionPolicies.conversion_routine.label" default="Konversionroutine" /></span>
+					<span class="property-value" aria-labelledby="conversion_routine-label">${conversionPoliciesInstance?.conversion_routine?.encodeAsHTML()}</span>
 				</li>
 				</g:if>
 			
 				<g:if test="${conversionPoliciesInstance?.source_format}">
 				<li class="fieldcontain">
 					<span id="source_format-label" class="property-label"><g:message code="conversionPolicies.source_format.label" default="Quellformat" /></span>
-					
-						<span class="property-value" aria-labelledby="source_format-label"><g:fieldValue bean="${conversionPoliciesInstance}" field="source_format"/></span>
-					
+					<span class="property-value" aria-labelledby="source_format-label">
+						<g:if test="${extension}">
+							${extension} --  <g:fieldValue bean="${conversionPoliciesInstance}" field="source_format"/>
+						</g:if>
+						<g:else>
+							 <g:fieldValue bean="${conversionPoliciesInstance}" field="source_format"/>
+						</g:else>
+					</span>
 				</li>
 				</g:if>
 					<g:if test="${conversionPoliciesInstance?.conversion_routine?.target_suffix}">
 				<li class="fieldcontain">
 					<span id="source_format-label" class="property-label"><g:message code="conversionPolicies.conversion_routine.target_suffix.label" default="Zielformat" /></span>
-					
-						<span class="property-value" aria-labelledby="source_format-label"><g:fieldValue bean="${conversionRoutine}" field="target_suffix"/></span>
-					
-				</li>
+					<span class="property-value" aria-labelledby="source_format-label">${conversionPoliciesInstance?.conversion_routine?.target_suffix?.encodeAsHTML()}</span>
+					</li>
 				</g:if>
-			
+				
+				<li class="fieldcontain">
+					<span id="presentation-label" class="property-label"><g:message code="conversionPolicies.presentation.label" default="Presentation Repository Policy" /></span>
+					<span class="property-value" aria-labelledby="contractor-label">
+					<g:checkBox name="presentation" value="${conversionPoliciesInstance?.presentation}" disabled="true"/>
+					</span>
+				</li>
 			</ol>
 			<g:form>
 			

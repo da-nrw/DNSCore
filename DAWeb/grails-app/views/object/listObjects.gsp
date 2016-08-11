@@ -35,9 +35,10 @@
             		</tr>
             	</g:form>
              </table> 
-		</div>
+		  </div>
 		<div id="list-object" class="content scaffold-list" role="main" >
 		   <g:formRemote name="myForm" on404="alert('not found!')" url="[controller: 'object', action:'listObjects']"  onLoaded="queuedFor(data)">
+		    <div style="overflow:auto; height: 600px">
              <table>
 				 <thead>							
 					<tr>
@@ -68,6 +69,7 @@
 <%--        		    <tr><td><g:actionSubmit value="scannen und konvertieren" action="scanAndConvert" /></td></tr>--%>
              	</tbody>
              </table>
+		   </div>
 		   </g:formRemote>
 		</div>
 	</body>
