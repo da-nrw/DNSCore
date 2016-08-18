@@ -1,11 +1,11 @@
-# Leistungsmerkmal: Ein SIP aus dem Quellverzeichnis erstellen
+# Leistungsmerkmal: SIP-Bildung ohne Erstellung von tar-Files
 
 #Beschreibung
 
 ## Hintergrund
 
-Der Kunde hat seine Daten in einem Verzeichnis zusammengetragen und möchte sie in dieser Form in DNS langzeitarchivieren.
-Dafür muss er zunächst mit dem SIP-Builder ein SIP erstellen.
+Der Kunde hat seine Daten in Verzeichnissen zusammengetragen und möchte sie jeweils als Pakete in DNS langzeitarchivieren.
+Dafür muss er zunächst mit dem SIP-Builder SIPs erstellen.
 Der SIP-Builder überprüft vor der Bildung des SIP die Struktur des Pakets sowie die darin enthaltenen Metadaten. Bei identifizierten Abweichungen sieht der User entsprechende Fehlermeldungen.
 
 Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
@@ -16,43 +16,7 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 
 * Der User hat den SIP-Builder mit der Build-Nr. >= 1691.
 
-## Szenario AT-BS-NOTAR-1: Bilden eines einzelnen SIPs ohne Erstellung eines tar - Files
-
-#### Kontext:
-
-* [ATSipBuilderNoTar](../test/java/de/uzk/hki/da/at/ATSipBuilderNoTar.java).testOneFile()
-
-#### Testpaket:   
-
-* [ATSipBuilderNoTar](../test/resources/at/ATSipBuilderNoTar/ATSipBuilderNoTarSingle)
-
-#### Vorbedingungen
-
-* Siehe Hintergrund.
-
-#### Durchführung:
-
-1. Download des Testpakets
-1. Erstellen des SIPs mittels Aufruf des SIP-Builders im CLI
-1. Folgende Parameter müssen beim Aufruf mitgegeben werden:  
-	-source="[Pfad zum Verzeichnis der Quelldateien]"  
-    -destination="[Pfad, in dem das erzeugt SIP abgelegt werden soll]"  
- 	-noTar : dieser Paramater gibt an, dass kein tar erzeugt werden soll.  
- 	         Die Daten bleiben in der Verzeichnisstruktur liegen 
-
-#### Akzeptanzkriterien:
-
-1. Der ausgewählte Zielordner enthält folgende Dateien
-```  
-  /data/noTar/tagmanifest-md5.txt   
-  /data/noTar/manifest-md5.txt  
-  /data/noTar/bagit.txt  
-  /data/noTar/bag-info.txt  
-  /data/noTar/data/premis.xml  
-  /data/noTar/data/NoTar.bmp 
-``` 
-
-## Szenario AT-BS-NOTAR-2: Bilden mehrerer SIPs ohne Erstellung eines tar - Files
+## Szenario AT-BS-NOTAR-1: Bilden von SIPs ohne Erstellung von tar - Files
 
 #### Kontext:
 
@@ -62,10 +26,6 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 
 * [ATSipBuilderNoTar](../test/resources/at/ATSipBuilderNoTar/ATSipBuilderNoTarMultiple)
 
-#### Vorbedingungen
-
-* Siehe Hintergrund.
-
 #### Durchführung:
 
 1. Download des Testpakets
@@ -78,7 +38,7 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 
 #### Akzeptanzkriterien:
 
-1. Der ausgewählte Zielordner enthält folgende zwei Unteriordner Dateien  
+1. Der ausgewählte Zielordner enthält zwei Unterordner:  
 ```  
  noTar1: enthält folgende Dateien:   
       tagmanifest-md5.txt   
@@ -96,7 +56,7 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
       data/NoTar2.bmp   
 ``` 
 
-## Szenario AT-BS-NOTAR-3: Bilden eines einzelnen SIPs ohne Erstellung eines tar - Files mit Angabe Zielverzeichnis
+## Szenario AT-BS-NOTAR-2: SIP-Bildung ohne Erstellung von tar-Files - mit Angabe Zielverzeichnis
 
 #### Kontext:
 
@@ -119,7 +79,7 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
     -destination="[Pfad, in dem das erzeugt SIP abgelegt werden soll]"  
  	-noTar : dieser Paramater gibt an, dass kein tar erzeugt werden soll.  
  	         Die Daten bleiben in der Verzeichnisstruktur liegen  
- 	-destDir="[Name des zu erstellenenden Verzeichnisses]"
+ 	-destDir="[Name des zu erstellenden Verzeichnisses]"
 
 #### Akzeptanzkriterien:
 
