@@ -48,7 +48,7 @@ Dieser Test fokussiert die für den User offensichtlichsten Aspekte des Delta-Me
 #### Akzeptanzkriterien:
 
 * Der Einlieferungsbeleg enthält einen klaren Hinweis darauf, dass es sich um eine Delta-Lieferung zu einem bekannten Objekt handelt.
-* Der in der Mail erwähnte technische Identifier entspricht dem in Test AT-1a erhaltenen.
+* Der in der Mail erwähnte technische Identifier entspricht dem der ersten Einlieferung.
 * Das über die Ansicht "eingelieferte Objekte" zurückgeholte Paket muss nach dem Entpacken&nbsp;*exakt*&nbsp;die folgende Inhalte aufweisen:
 
 ``` 
