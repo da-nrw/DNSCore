@@ -66,9 +66,6 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
 
 * [ATSipBuilderNoTar](../test/resources/at/ATSipBuilderNoTar/ATSipBuilderNoTarDestDir)
 
-#### Vorbedingungen
-
-* Siehe Hintergrund.
 
 #### Durchführung:
 
