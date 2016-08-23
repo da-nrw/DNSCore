@@ -149,7 +149,10 @@ Ein sogenanntes Delta kann sowohl durch gleichen Einlieferungsnamen als auch dur
 1. Warten auf die Email mit dem Einlieferungsbeleg.
 1. Sobald der Einlieferungsbeleg eingetroffen ist, wird das zweite Paket ATDeltaOnURN_2.tgz eingeliefert, und zwar unter einem anderen Namen als das erste Paket.
 1. Erneut warten auf den Einlieferungsbeleg.
-1. Überprüfen ob dieser Einlieferungsbeleg die gleiche Identifikationsnummer trägt wie der erste.
 1. Sodann kann das dritte Paket ATDeltaOnURN_3.tgz eingeliefert werden, und zwar unter einem anderen Namen als das erste und das zweite Paket.
 1. Erneut warten auf den Einlieferungsbeleg.
-1. Auch dieser Einlieferungsbeleg muss die gleiche Identifikationsnummer tragen.
+
+#### Akzeptanzkriterien:
+
+* Der zweite und der dritte Einlieferungsbeleg tragen dieselbe Identifikationsnummer wie der erste Beleg.
+* Im Einlieferungsordner befindet sich nur ein Paket mit dem Namen des ersten Pakets.
