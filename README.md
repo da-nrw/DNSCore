@@ -5,6 +5,8 @@ DNSCore
 
 [Liste der Kernfunktionen](ContentBroker/src/main/markdown/features.de.md)
 
+Aktuelle Entwicklung im Tree j8i4 !
+
 -----
 
 The Core System of the DA-NRW Software Suite.  

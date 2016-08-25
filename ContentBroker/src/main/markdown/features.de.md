@@ -30,4 +30,3 @@
 * Leistungsmerkmal [Publikation Delta](feature_publication_delta.md)
 * Leistungsmerkmal [Automatisierte Abfragen (Status und Retrieval)](feature_automated_queries.md) 
 * Leistungsmerkmal [Archivierung von Multipage-Tiffs](feature_multipagetiff.md) 
-* Leistungsmerkmal [Erkennen eines Deltapaketes anhand gleicher URN](feature_delta_on_urn.md)
