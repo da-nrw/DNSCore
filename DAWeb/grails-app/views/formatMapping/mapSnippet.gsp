@@ -7,7 +7,8 @@
 			</g:if>		
 	</g:form>
 </div> <br>
-<table>
+<div style="overflow:auto; height: 600px">
+  <table>
 	 <thead>							
 			<tr>
 				<g:sortableColumn property="puid" title="${message(code: 'formatMapping.puid', default: 'PUID')}" />
@@ -26,4 +27,5 @@
 			</tr>
 		</g:each>
 	</tbody>
-</table>
+  </table>
+</div>

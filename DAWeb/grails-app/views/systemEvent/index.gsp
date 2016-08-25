@@ -20,8 +20,9 @@
 			<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 			</g:if>
-			<table>
-			<thead>
+		    <div style="overflow:auto; height: 200px">
+			  <table>
+				<thead>
 					<tr>
 						<g:sortableColumn property="parameter" title="${message(code: 'systemEvent.parameter.id', default: 'Id')}" />
 						<g:sortableColumn property="last_executed" title="${message(code: 'systemEvent.last_executed.label', default: 'Lastexecuted')}" />
@@ -41,6 +42,7 @@
 				</g:each>
 				</tbody>
 			</table>
+			</div>
 			<div class="pagination">
 				<g:paginate total="${systemEventInstanceCount ?: 0}" />
 			</div>

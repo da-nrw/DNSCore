@@ -19,6 +19,7 @@ function subForm(text, action) {
     return true;
 }
 </script>
+<div style="overflow:auto; height: 600px">
 <table>
 	<thead>
 		<tr><g:if test="${params.search?.status != null && params.search?.status.length()==3}">
@@ -157,4 +158,5 @@ function subForm(text, action) {
 	</tbody>
 	
 </table>
+</div>
 (Administrator view)

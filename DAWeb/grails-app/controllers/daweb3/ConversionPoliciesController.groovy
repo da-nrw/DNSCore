@@ -21,7 +21,10 @@ package daweb3
 /**
  * @author jpeters
  */
+import java.util.Map;
+
 import grails.plugin.springsecurity.annotation.Secured
+
 import org.springframework.dao.DataIntegrityViolationException
 
 class ConversionPoliciesController {
@@ -36,7 +39,29 @@ class ConversionPoliciesController {
 
     def list(Integer max) {
         params.max = Math.min(max ?: 30, 100)
-        [conversionPoliciesInstanceList: ConversionPolicies.list(params), conversionPoliciesInstanceTotal: ConversionPolicies.count()]
+		
+		/*
+		 * 11.07.2016 extension to access table format_mapping
+		 */
+		def fm = new FormatMapping()
+		def mapping
+		List<ConversionPolicies> lcp = ConversionPolicies.list(params)
+		Map <String, String> fmMap = [:]
+		String ext
+		
+		for (ConversionPolicies item : lcp) {
+			mapping = fm.findAll("from FormatMapping where puid = :puid", [puid : item.source_format])
+			 
+			String puid = mapping.puid.toString().replace('[', '').replace(']','');
+			String extension =  mapping.extension.toString().replace('[', '').replace(']','');
+			
+			
+			fmMap.put(puid, extension);	
+		}
+		
+        [conversionPoliciesInstanceList: ConversionPolicies.list(params), 
+			conversionPoliciesInstanceTotal: ConversionPolicies.count(),
+			formatMappList : fmMap]
     }
 
 	@Secured(['ROLE_PSADMIN'])
@@ -51,10 +76,23 @@ class ConversionPoliciesController {
             render(view: "create", model: [conversionPoliciesInstance: conversionPoliciesInstance])
             return
         }
-
         flash.message = message(code: 'default.created.message', args: [message(code: 'conversionPolicies.label', default: 'ConversionPolicies'), conversionPoliciesInstance.id])
+		redirect(action: "create")
 	 }
 
+	@Secured(['ROLE_PSADMIN'])
+	def delete(Long id) {
+		def conversionPoliciesInstance =  ConversionPolicies.get(id)
+		conversionPoliciesInstance.delete flush: true 
+		flash.message = message(code: 'default.deleted.message', args: [message(code: 'conversionPolicies.label', default: 'ConversionPolicies'), conversionPoliciesInstance.id])
+		redirect(action: "list")
+	}
+	
+	@Secured(['ROLE_PSADMIN'])
+	def cancel() {
+		redirect(action: "show",  id: params.id)  
+	}
+	
     def show(Long id) {
 		def user = springSecurityService.currentUser
 		def admin = 0;
@@ -63,18 +101,32 @@ class ConversionPoliciesController {
 		admin = 1;
 			}
         def conversionPoliciesInstance = ConversionPolicies.get(id)
+				
         if (!conversionPoliciesInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'conversionPolicies.label', default: 'ConversionPolicies'), id])
             redirect(action: "list")
             return
         } 
+		
+		/*
+		 * 11.07.2016 extension to access table format_mapping
+		 */
+		def fm = new FormatMapping()
+		def mapping
+		String ext
 
-        [conversionPoliciesInstance: conversionPoliciesInstance, admin: admin]
+		mapping = fm.findAll("from FormatMapping where puid = :puid", [puid : conversionPoliciesInstance.source_format])
+		ext = mapping.extension
+		
+        [conversionPoliciesInstance: conversionPoliciesInstance, admin: admin, 
+			extension : ext.replace("[", "").replace("]","")]
     }
+
+	
 	@Secured(['ROLE_PSADMIN'])
     def edit(Long id) {
       
-			def conversionPoliciesInstance = ConversionPolicies.get(id)
+		def conversionPoliciesInstance = ConversionPolicies.get(id)
         if (!conversionPoliciesInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'conversionPolicies.label', default: 'ConversionPolicies'), id])
             redirect(action: "list")
@@ -82,7 +134,7 @@ class ConversionPoliciesController {
         }
 
         [conversionPoliciesInstance: conversionPoliciesInstance]
-       } 
+    } 
 
 	@Secured(['ROLE_PSADMIN'])
     def update(Long id, Long version) {

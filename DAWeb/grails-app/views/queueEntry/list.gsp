@@ -1,4 +1,4 @@
-l<%@ page import="daweb3.QueueEntry" %>
+<%@ page import="daweb3.QueueEntry" %>
 <!doctype html>
 <html>
 	<head>
@@ -64,50 +64,66 @@ l<%@ page import="daweb3.QueueEntry" %>
 			</ul>
 		</div>
 	
-		<div id="list-queueEntry" class="content scaffold-list" role="main">			
-			<h1>Bearbeitungsübersicht</h1>			
-			<g:if test="${flash.message}">
-				<div class="message" role="status">${flash.message}</div>
-			</g:if>
-				<div id="filter" style="margin: 0.8em 0 0.3em">
-			<h1><a href="#">Filter</a></h1> 
-            <g:form name="searchForm" id="filterform" action="list">
-            	<table>
-            	<tr>
-            		<td>Status:</td>
-            			<td><g:textField name="search.status" value="${params.search?.status}" size="5"/></td>
-            		</tr>  		
-            		<tr>
-            			<td>Originalname:</td>
-            			<td><g:textField name="search.obj.origName" value="${params.search?.obj?.origName}" size="50"/></td>
-            		</tr>
-            		<tr>
-            			<td>URN:</td>
-            			<td><g:textField name="search.obj.urn" value="${params.search?.obj?.urn}" size="50"/></td>
-            		</tr>
-            			<tr>
-            			<td>Identifier:</td>
-            			<td><g:textField name="search.obj.identifier" value="${params.search?.obj?.identifier}" size="50"/></td>
-            		</tr>
-            	
-            		<tr>
-            			<td></td>
-            			<td>
-            			<g:submitButton name="submit" value="Filter anwenden"/></td>
-            		</tr>
-            	</table>     
-            </g:form>
-           </div>
-           
-<g:if test="${ !params.search }">
-	<!-- Update:&nbsp;<a href="#" onclick="stopUpdater();">stop</a>&nbsp;<a href="#" onclick="startUpdater();">start</a> -->	
-     </g:if>   
-			
+		<h1>Bearbeitungsübersicht</h1>			
+		<g:if test="${flash.message}">
+			<div class="message" role="status">${flash.message}</div>
+		</g:if>
+		<div id="filter" style="margin: 0.8em 0 0.3em"> 
+		  <h1><a href="#">Filter</a></h1> 
+          <g:form name="searchForm" id="filterform" action="list">
+           	<table>
+           		<tr>
+           			<td>Status:</td>
+           			<td><g:textField name="search.status" value="${params.search?.status}" size="5"/></td>
+              	</tr>  		
+           	  	<tr>
+           			<td>Originalname:</td>
+           			<td><g:textField name="search.obj.origName" value="${params.search?.obj?.origName}" size="50"/></td>
+           		</tr>
+           		<tr>
+           			<td>URN:</td>
+           			<td><g:textField name="search.obj.urn" value="${params.search?.obj?.urn}" size="50"/></td>
+           		</tr>
+           		<tr>
+           			<td>Identifier:</td>
+           			<td><g:textField name="search.obj.identifier" value="${params.search?.obj?.identifier}" size="50"/></td>
+           		</tr>
+           		<tr>
+           			<td></td>
+           			<td>
+	           			<g:submitButton name="submit" value="Filter anwenden"/>
+	           			<g:submitButton name="loeschen" type="submit" value="Filter löschen"/>
+           			</td>
+           			<script type="text/javascript">
+           			$(document).ready(function(){
+           				 	$("#loeschen").click(function() {                				 
+		            			$('#searchForm').find(':input').each(function() {
+		            	            switch(this.type) {
+		                            case 'text':
+		                            	$(this).val('');
+		                                break;                      
+		                            case 'textarea':
+		                                $(this).val('');
+		                                break;
+		            			 	case 'hidden':
+		                                $(this).val('0');
+		                                break;
+		                            }
+		            			});
+           				    });
+           			});</script>
+           		</tr>
+         	</table>     
+          </g:form>
+        </div>
+		<g:if test="${ !params.search }">
+		<!-- Update:&nbsp;<a href="#" onclick="stopUpdater();">stop</a>&nbsp;<a href="#" onclick="startUpdater();">start</a> -->	
+    	 </g:if>   
+		<div id="list-queueEntry" class="content scaffold-list" role="main">
 			<!-- This div is updated through the periodical updater -->
 			<div class="list" id="entry-list">
 				<g:include action="listSnippet" />
 			</div>
-						
 		</div>
 		<div id="legend">
 			<h1><a href="#">Hinweise zu den Statuscodes:</a></h1>
