@@ -49,8 +49,9 @@ cp src/main/xml/beans.xml.full.dev $INSTALLER
 cp src/main/xml/logback.xml $INSTALLER/logback.xml.template
 cp src/main/bash/ContentBroker_stop.sh $INSTALLER/ContentBroker_stop.sh.template
 cp src/main/bash/ContentBroker_start.sh $INSTALLER/ContentBroker_start.sh.template
-	
 cp src/main/xml/hibernateCentralDB.cfg.xml.$1 $INSTALLER/hibernateCentralDB.cfg.xml
+sed "s@BUILD_NUMBER@$BUILD_NUMBER@" src/main/rules/irodsFederatedGridFacade/dns.re  > $INSTALLER/dns.re
+
 case "$1" in
 dev)
 	HOME=`pwd` 
