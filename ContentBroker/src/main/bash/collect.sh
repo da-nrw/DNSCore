@@ -23,7 +23,6 @@ cp src/main/sh/jhove $1/jhove
 cp src/main/conf/jhove.conf $1/jhove/conf
 cp src/test/resources/at/ATUseCaseIngest1.tgz $1/conf/basic_test_package.tgz
 cp src/main/bash/fido.sh $1/
-#cp src/main/bash/ffmpeg.sh $1/
 cp src/main/bash/configure.sh $1/
 cp src/main/bash/cbTalk.sh $1/
 cp ../LICENSE $1
@@ -35,9 +34,6 @@ cp src/main/xsd/v1/danrw-contract-1.xsd $1/conf
 cp src/main/resources/frame.jsonld $1/conf
 cp src/main/conf/PDFA_def.ps $1/conf
 mkdir $1/activemq-data
-#mkdir $1/systemRules
-#cp -r src/main/rules/* $1/systemRules
-sed "s@BUILD_NUMBER@$BUILD_NUMBER@" src/main/rules/irodsFederatedGridFacade/dns.re  > $1/systemRules/irodsFederatedGridFacade/dns.re
 mkdir $1/log
 touch $1/log/contentbroker.log
 touch $1/log/time_stamp_actions.csv
