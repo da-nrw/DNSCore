@@ -34,6 +34,7 @@ import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.StringUtilities;
 
 
 /**
@@ -60,6 +61,9 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	@Override
 	public boolean implementation() throws IOException {
 		
+		if (!StringUtilities.isSet(preservationSystem.getPresServer())){
+			return true;
+		}
 		logger.trace("Moving the dip content for presentation purposes out of the archival package.");
 		copyPIPSforReplication();
 		
