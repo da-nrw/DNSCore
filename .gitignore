@@ -16,3 +16,5 @@ deliverable.tar
 *.prefs
 *.project
 *.classpath
+*.DS_Store
+

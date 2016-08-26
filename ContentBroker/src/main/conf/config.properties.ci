@@ -17,7 +17,7 @@ localNode.ingestAreaRootPath=/ci/storage/IngestArea
 localNode.workAreaRootPath=/ci/storage/WorkArea
 localNode.gridCacheAreaRootPath=/ci/storage/GridCacheArea
 localNode.workingResource=ciWorkingResource
-localNode.replDestinations=ciArchiveResourceGroup
+localNode.replDestinations=ciArchiveRescGroup
 localNode.id=1
 localNode.logFolder=/ci/ContentBroker/log
 

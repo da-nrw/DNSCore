@@ -67,9 +67,9 @@ public class FetchPIPsAction extends AbstractAction {
 		
 //		TODO check if source exists
 		distributedConversionAdapter.replicateToLocalNode(
-				makeRelativePIPSourceFolder(WorkArea.PUBLIC).toString());
+				makeRelativePIPSourceFolder(WorkArea.PUBLIC).toString(), n);
 		distributedConversionAdapter.replicateToLocalNode(
-				makeRelativePIPSourceFolder(WorkArea.WA_INSTITUTION).toString());
+				makeRelativePIPSourceFolder(WorkArea.WA_INSTITUTION).toString(),n);
 		
 		
 		if (makePIPSourceFolder(WorkArea.PUBLIC).exists()) {

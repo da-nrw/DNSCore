@@ -19,6 +19,8 @@
 
 package de.uzk.hki.da.grid;
 
+import de.uzk.hki.da.model.Node;
+
 /**
  * On local developer machines, we won't do distributed conversion. So for acceptance
  * testing we use this implementation.
@@ -38,7 +40,7 @@ public class FakeDistributedConversionAdapter implements DistributedConversionAd
 	}
 
 	@Override
-	public void replicateToLocalNode(String relativePath) {
+	public void replicateToLocalNode(String relativePath, Node node) {
 		
 	}
 

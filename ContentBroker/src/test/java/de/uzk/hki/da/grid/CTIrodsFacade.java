@@ -86,10 +86,10 @@ public class CTIrodsFacade {
 		
 		sp = new StoragePolicy();
 		sp.setMinNodes(1);
-		sp.setReplDestinations("ciArchiveResource");
+		sp.setReplDestinations("ciArchiveRescGroup");
 		sp.setWorkingResource("ciWorkingResource");
 		sp.setGridCacheAreaRootPath(properties.getProperty(PROP_GRID_CACHE_AREA_ROOT_PATH));
-		sp.setCommonStorageRescName("ciArchiveResource");
+		sp.setCommonStorageRescName("ciArchiveRescGroup");
 
 	}
 	
@@ -150,19 +150,6 @@ public class CTIrodsFacade {
 	
 	
 	
-	/**
-	 * Put file and test replications
-	 *
-	 * @throws Exception the exception
-	 * @author Jens Peters
-	 */
-	@Test 
-	public void putFileAndTestReplications() throws Exception {
-		putFileAndWaitUntilReplicatedAccordingToStoragePolicy();
-	
-		assertTrue(ig.isValid(testColl + "/urn.tar"));
-	}
-	
 	
 	
 	/**
@@ -217,10 +204,10 @@ public class CTIrodsFacade {
 	public void storagePolicyIsNotAchievedDueToCopiesNotReached() throws IOException {
 		StoragePolicy sp2 = new StoragePolicy();
 		sp2.setMinNodes(10);
-		sp2.setReplDestinations("ciArchiveResource");
+		sp2.setReplDestinations("lza");
 		sp2.setWorkingResource("ciWorkingResource");
 		sp2.setGridCacheAreaRootPath(sp.getGridCacheAreaRootPath());
-		sp2.setCommonStorageRescName("ciArchiveResource");
+		sp2.setCommonStorageRescName("ciArchiveRescGroup");
 		String aip = testColl + "/urn.tar";
 		sp2.setMinNodes(10);
 		assertTrue(ig.put(temp, aip, sp2, md5sum));
@@ -250,7 +237,7 @@ public class CTIrodsFacade {
 	 * 
 	 * @author Jens Peters
 	 * @author Daniel M. de Oliveira
-	 */
+	
 	@Test
 	public void destroyChecksumInStorage() throws Exception {
 		
@@ -259,7 +246,7 @@ public class CTIrodsFacade {
 		destroyTestFileOnLongTermStorage();
 		assertFalse(ig.isValid(testColl + "/urn.tar"));
 	}
-
+	 */
 	//-----------------------------------------------------------------
 	
 	
@@ -274,6 +261,7 @@ public class CTIrodsFacade {
 	
 	
 	private void putFileAndWaitUntilReplicatedAccordingToStoragePolicy() throws InterruptedException, IOException {
+		
 		assertTrue(ig.put(temp, testColl + "/urn.tar", sp, null));
 		
 		while (true) {

@@ -7,14 +7,42 @@
 		<g:set var="entityName" value="${message(code: 'object.label', default: 'Object')}" />
 		<title>DA-NRW Objekt</title>
 	</head>
-	<r:script>
-function toggle(source) {
-	  checkboxes = document.getElementsByName('currentPackages');
-	  for(var i in checkboxes) {
-	    checkboxes[i].checked = source.checked;
-		}
-	}</r:script>
 	<body>
+		<script type="text/javascript" >
+			function toggle(source) {
+				checkboxes = document.getElementsByName('currentPackages');
+				for(var i in checkboxes) {
+				  checkboxes[i].checked = source.checked;
+				}
+			}
+			function deselect(source) {
+				if (document.getElementById('waehlen').checked) {
+					if (source.checked ) {
+					} else {
+						document.getElementById('waehlen').checked = false;
+					}
+				} else {
+					checkboxes = document.getElementsByName('currentPackages');
+					var i= 0;
+ 					while ( i < checkboxes.length) {  
+					 	if( checkboxes[i].checked) {
+						 	check = true;
+						 	i++;
+						 } else {
+						 	check = false;
+						 	i++;
+						 	break;
+						}
+					}
+					if (check) {
+						document.getElementById('waehlen').checked = true;
+					} else {
+						document.getElementById('waehlen').checked = false;
+					}
+				}
+			}
+		</script>
+	
 		<a href="#show-object" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div class="nav" role="navigation">
 			<ul>
@@ -48,13 +76,22 @@ function toggle(source) {
 				</g:if><li class="fieldcontain">
 				<span id="packages-label" class="property-label"><g:message code="object.packages.label" default="Packages" /></span>
 				<g:form controller="package" action="retrievePackages">
-				<g:hiddenField name="oid" value="${objectInstance?.id}" />
-				<span class="property-value" ><input type="checkbox"  onClick="toggle(this)"/>Alle an-/abwählen</span><br>
+				<g:hiddenField name="oid" value="${objectInstance?.id}" />			
+				
+				<span class="property-value" ><input type="checkbox" name="waehlen" value="" id="waehlen" onClick="toggle(this)"/> Alle an-/abwählen</span><br>
 				<g:if test="${sortedPackages}">
-							<g:each in="${sortedPackages}" var="p">
-							<span class="property-value" ><g:if test="${!objectInstance.isInWorkflowButton()}"><g:checkBox name="currentPackages" value="${p.getId()}" checked="false" /></g:if>${p?.encodeAsHTML()}</span>
-						</g:each>	
-				<span class="property-value" ><g:if test="${!objectInstance.isInWorkflowButton()}"><g:actionSubmit value="Versioniertes Retrieval starten" controller="package" action="retrievePackages"/></span></g:if>
+					<g:each in="${sortedPackages}" var="p" status="i">
+							<span class="property-value" >
+								<g:if test="${!objectInstance.isInWorkflowButton()}">
+									<g:checkBox name="currentPackages" value="${p.getId()}" checked="false" onClick="deselect(this)"/>
+								</g:if>${p?.encodeAsHTML()}
+							</span>
+					</g:each>	<br>
+					<span class="property-value" >
+						<g:if test="${!objectInstance.isInWorkflowButton()}">
+							<g:actionSubmit value="Versioniertes Retrieval starten" controller="package" action="retrievePackages"/>
+						</g:if>
+					</span>
 				</g:if>
 				</g:form>
 				</li>

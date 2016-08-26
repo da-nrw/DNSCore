@@ -1,5 +1,5 @@
-DNSCore             
-========      
+DNSCore j8i4 branch JAVA 8 iRODS 4          
+======= 
 
 [Dokumentation der DA-NRW Software Suite (DNS)](ContentBroker/src/main/markdown/documentation.de.md)
 
@@ -9,9 +9,9 @@ Aktuelle Entwicklung im Tree j8i4 !
 
 -----
 
-The Core System of the DA-NRW Software Suite.  
+The Core System of the DA-NRW Software Suite.
   
-The DNS software relies
+The DNS software relies 
 exclusively on existing open source software components to implement a
 distributed, self- validating repository, allowing depositors a high degree of control over
 the methods applied to individual objects submitted for preservation and
@@ -65,10 +65,9 @@ For Documentation see:
 
 Prerequisites:
 
-    JAVA 1.6
+    JAVA 1.8 (Building DA-Web needs 1.6)
     MAVEN
     GIT 
-    Grails 2.3.8
     Imagemagick 6.7.8 (with jasper, to use jpg2000, with tiff)
     Please ensure, the shells (bash and sh) of your workstation run in UTF-8 mode:
 
@@ -97,5 +96,5 @@ running ContentBroker which will get installed from an automatically generated i
 
 For more information on building and testing DNSCore look [here](ContentBroker/src/main/markdown/development_deploy.md)
     
-    
+
 

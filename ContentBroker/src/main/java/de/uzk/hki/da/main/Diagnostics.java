@@ -89,7 +89,7 @@ public class Diagnostics {
 	private static final String BEANS_DIAGNOSTICS_FEDORA = "classpath*:META-INF/beans-diagnostics.fedora.xml";
 	private static final String BEANS_DIAGNOSTICS_ELASTICSEARCH = "classpath*:META-INF/beans-diagnostics.elasticsearch.xml";
 	
-	private static final String BEAN_NAME_IRODS_GRID_FACADE = "irodsGridFacade";
+	private static final String BEAN_NAME_IRODS_GRID_FACADE = "federatedGridFacade";
 	private static final String BEAN_NAME_IRODS_SYSTEM_CONNECTOR = "irodsSystemConnector";
 	private static final String BEAN_NAME_FEDORA_REPOSITORY_FACADE = "fedoraRepositoryFacade";
 //	private static final String BEAN_NAME_METADATA_INDEX_FACADE = "esMetadataIndex";
@@ -370,7 +370,7 @@ public class Diagnostics {
 		StoragePolicy sp = new StoragePolicy();
 		sp.setMinNodes(1);
 		sp.setGridCacheAreaRootPath((String)properties.get(PROP_GRID_CACHE_AREA_ROOT_PATH));
-	
+		sp.setCommonStorageRescName((String)properties.get(PROP_REPL_DESTINATIONS));
 		sp.setReplDestinations((String)properties.get(PROP_REPL_DESTINATIONS));
 		context.close();
 		
@@ -395,13 +395,13 @@ public class Diagnostics {
 			System.out.println(ERROR+"cannot put file via irodsGridFacade");
 			e.printStackTrace();
 		}
-		System.out.print(INFO+"CHECKING - GridFacade.isValid() ... ");
+		/*System.out.print(INFO+"CHECKING - GridFacade.isValid() ... ");
 		if (!irodsGridFacade.isValid(new RelativePath(C.TEST_USER_SHORT_NAME,testPkgName).toString())) {
 				errorCount++;
 				System.out.println(WARN+" GridFacade.isValid() returned false.");
 		}else
 				System.out.println(OK);
-	
+		*/
 		
 		System.out.print(INFO+"CHECKING - GridFacade.get() .... ");
 		if (DIAGNOSTICS_RETRIEVAL_FILE.exists()) DIAGNOSTICS_RETRIEVAL_FILE.delete();

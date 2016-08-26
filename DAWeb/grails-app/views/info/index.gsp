@@ -16,17 +16,17 @@
 </head>
 <body>
 
-<div class="nav" role="navigation">
-			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-			</ul>
-		</div>
-	<div id="controller-list" role="navigation">
-			<h2>REST Funktionen:</h2>
-			<ul>
-				<li class="controller"><g:link controller="automatedRetrieval">Erstellung von Retrievalanfragen </g:link></li>
-				<li class="controller"><g:link controller="status" action="teaser">Abfrage der Verarbeitung und Archivierung</g:link></li>
-			</ul>
-		</div>
+	<div class="nav" role="navigation">
+		<ul>
+			<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
+		</ul>
+	</div>
+	<div id="controller-list" role="navigation"  style="margin: 0.8em 0 0.3em">
+		<h2>REST Funktionen:</h2>
+		<ul>
+			<li class="controller"><g:link controller="automatedRetrieval">Erstellung von Retrievalanfragen </g:link></li>
+			<li class="controller"><g:link controller="status" action="teaser">Abfrage der Verarbeitung und Archivierung</g:link></li>
+		</ul>
+	</div>
 </body>
 </html>

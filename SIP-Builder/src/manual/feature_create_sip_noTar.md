@@ -1,5 +1,6 @@
 # Leistungsmerkmal: SIP-Bildung ohne Erstellung von tar-Files
 
+
 #Beschreibung
 
 ## Hintergrund
@@ -47,6 +48,7 @@ Zur Zeit gibt es zwei Kategorien von Fehlermeldungen:
       bag-info.txt  
       data/premis.xml  
       data/NoTar1.bmp    
+
  noTar2: enthält folgende Dateien:     
       tagmanifest-md5.txt   
       manifest-md5.txt  

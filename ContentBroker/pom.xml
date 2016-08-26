@@ -52,13 +52,27 @@
 	        <enabled>false</enabled>
 	      </snapshots>
 	    </repository>
+	    
+		<repository>
+	      <id>dice-git</id>
+	      <name>DICE MAVEN REPO</name>
+	      <layout>default</layout>
+	      <url>https://github.com/DICE-UNC/DICE-Maven/raw/master/releases</url>
+	      	<releases>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+				<checksumPolicy>warn</checksumPolicy>
+			</releases>
+	    </repository>
+	    
+	    
 		<repository>
 			<id>renci.repository</id>
 			<name>renci.repository</name>
 			<url>http://ci-dev.renci.org/nexus/content/repositories/public</url>
 			<releases>
 				<enabled>true</enabled>
-				<updatePolicy>never</updatePolicy>
+				<updatePolicy>always</updatePolicy>
 				<checksumPolicy>warn</checksumPolicy>
 			</releases>
 			<snapshots>
@@ -142,8 +156,11 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+				 <configuration> 
+                         <source>1.8</source> 
+                         <target>1.8</target> 
+                     </configuration> 
+
 				</configuration>
 			</plugin>
 
@@ -462,7 +479,7 @@
 		<dependency>
 			<groupId>org.irods.jargon</groupId>
 			<artifactId>jargon-core</artifactId>
-			<version>3.3.2-beta1</version>
+			<version>4.0.2.4-RELEASE</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.slf4j</groupId>
@@ -478,6 +495,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		
 		<dependency>
 			<groupId>xom</groupId>
 			<artifactId>xom</artifactId>

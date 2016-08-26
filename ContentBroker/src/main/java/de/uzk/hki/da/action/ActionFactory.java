@@ -250,7 +250,7 @@ public class ActionFactory implements ApplicationContextAware {
 	
 	private AbstractAction selectActionToExecute() {
 		
-		for (String jobType : actionStartStates.keySet()) {
+		for (String jobType : actionRegistry.getActionPriority()) {
 			if (!actionRegistry.getAvailableJobTypes().contains(jobType)) continue;
 			
 			Job jobCandidate = qc.fetchJobFromQueue(getActionStartStates().get(jobType)

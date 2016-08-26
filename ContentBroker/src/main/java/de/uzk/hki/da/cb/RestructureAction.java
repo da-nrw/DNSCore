@@ -36,6 +36,7 @@ import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.format.FileFormatException;
 import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
@@ -43,17 +44,22 @@ import de.uzk.hki.da.format.UserFileFormatException;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.DocumentsGenService;
+import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.KnownError;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.ProcessInformation;
 
 /**
  * <li>Creates a new Representation and copies the contents of the submission into it.
  * <li>Tests if it is a delta package (detected through orig_name=already existing orig_name of an object).
  * <li>If that's the case, the previous representations of the original packages get loaded, so that all 
  * reps including the new one are accessible under fork/[csn]/[orig_name]/data/[repnames]
+ * <li>Tests if the incoming sip contains a virus (Gaby Bender 18.07.2016)
  * 
  * @author Daniel M. de Oliveira
  */
@@ -90,14 +96,28 @@ public class RestructureAction extends AbstractAction{
 			throw new PreconditionsNotMetException("object path for object on WorkArea does not exist: "+wa.objectPath());
 		if (!wa.dataPath().toFile().exists()) 
 			throw new PreconditionsNotMetException("data path for object on WorkArea does not exist: "+wa.dataPath());
+		
 	}
 	
 	
-	
-	
+
 	@Override
 	public boolean implementation() throws FileNotFoundException, IOException,
 			UserException, RepositoryException, SubsystemNotAvailableException {
+		/*
+		 * Gaby Bender 14.07.2016
+		 * virus scan with clamAV
+		 */
+		listAllFiles();
+		
+		if (!scanWithClamAV()) {
+			logger.debug("###### VIRUS - Detected #####");
+				
+			Event e = createEvent();
+			o.getLatestPackage().getEvents().add(e);
+			
+			throw new UserException(UserExceptionId.VIRUS_DETECTED, " virus is detected! " );
+		}
 		
 		listAllFiles();
 		
@@ -133,7 +153,53 @@ public class RestructureAction extends AbstractAction{
 		Path.makeFile(wa.dataPath(),"jhove_temp").mkdirs();
 		return true;
 	}
+	
+	/**
+	 * createCreateEvent: creates an event if a virus is detected
+	 * @author Gaby Bender
+	 * @return
+	 */
+	private Event createEvent() {
+		
+		Event virusEventElement = new Event();
+		virusEventElement.setIdentifier(o.getIdentifier() + "+" + o.getLatestPackage().getName());
+		virusEventElement.setIdType(Event.IdType.VIRUS_DETECTED_ID);
+		virusEventElement.setAgent_name(n.getName());
+		virusEventElement.setAgent_type(C.AGENT_TYPE_NODE);
+		virusEventElement.setDate(new Date());
+		virusEventElement.setType(C.EVENT_TYPE_CREATE);
+		virusEventElement.setDetail("Virus im Paket mit Identifier " + o.getIdentifier() + " gefunden!");
+		
+		return virusEventElement;
+	}
 
+	/**
+	 * scanWithClamAV: reads the incoming-directory and checks it 
+	 * @author Gaby Bender
+	 * @return true: no virus detected, otherwise false 
+	 * @throws IOException
+	 */
+	private boolean scanWithClamAV() {
+		ProcessInformation pi = null;
+		try {
+			pi = new CommandLineConnector().runCmdSynchronously(new String[] {
+					"clamscan" , "-r",
+			        wa.objectPath().toFile().toString()}, 0);
+			if (pi.getExitValue() > 0) {
+				if (pi.getExitValue() == 1)  {
+					return false;
+				} else {
+					logger.error( pi.getStdErr());
+					return false;
+				}
+			} 
+			return true;
+		} catch (IOException e) {
+			logger.error( e.toString() );
+			return false;
+		}
+		
+	}
 	
 	private void makeCopyOfDeltaPremis() throws IOException {
 		FileUtils.copyFile(Path.makeFile(wa.dataPath(),o.getNameOfLatestBRep(),PREMIS),
@@ -155,9 +221,6 @@ public class RestructureAction extends AbstractAction{
 			for (DAFile daf:p.getFiles())
 				logger.debug(""+daf);
 	}
-	
-	
-	
 	
 	private boolean checkIfOnWorkAreaIsSpaceAvailabeForDeltaPackages(RetrievePackagesHelper retrievePackagesHelper) {
 		try {

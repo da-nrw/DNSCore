@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
+import de.uzk.hki.da.utils.StringUtilities;
 
 
 /**
@@ -318,18 +319,42 @@ public class IrodsCommandLineConnector {
 	 * irsyncs Dataobject to destination on given resource
 	 * @author Jens Peters
 	 * @param dao
-	 * @param destDaoif (!resourceName.equals("")) {
-			commandAsList.add("-R");
-			commandAsList.add(resourceName);
-		}
 	 * @param destRescName
 	 * @return
 	 */
 	public String rsync(String dao, String destDao, String destRescName) {
-		String commandAsArray[] = new String[]{
-				"irsync","-KVR",destRescName, "i:"  + dao,"i:"+ destDao
-		};	
-		return executeIcommand(commandAsArray);	
+		if (StringUtilities.isSet(destRescName)) {
+			String commandAsArray[] = new String[]{
+					"irsync","-KVR",destRescName, "i:"  + dao,"i:"+ destDao
+			};	
+			return executeIcommand(commandAsArray);	
+		} else {
+			String commandAsArray[] = new String[]{
+					"irsync","-KV","i:"  + dao,"i:"+ destDao
+			};	
+			return executeIcommand(commandAsArray);
+		}
+	}
+	
+	/**
+	 * irsyncs whole subtree to destination on given resource
+	 * @author Jens Peters
+	 * @param dao
+	 * @param destRescName
+	 * @return
+	 */
+	public String rsyncDir(String sourceColl, String destColl, String destRescName) {
+		if (StringUtilities.isSet(destRescName)) {
+			String commandAsArray[] = new String[]{
+					"irsync","-rKVR",destRescName, "i:"  + sourceColl,"i:"+ destColl
+			};	
+			return executeIcommand(commandAsArray);	
+		} else {
+			String commandAsArray[] = new String[]{
+					"irsync","-rKV","i:"  + sourceColl,"i:"+ destColl
+			};	
+			return executeIcommand(commandAsArray);
+		}
 	}
 	
 	/**

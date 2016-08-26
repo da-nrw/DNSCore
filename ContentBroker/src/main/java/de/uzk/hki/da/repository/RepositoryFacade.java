@@ -21,7 +21,7 @@ package de.uzk.hki.da.repository;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.OutputStream;
 
 import com.yourmediashelf.fedora.client.FedoraClientException;
 
@@ -33,6 +33,7 @@ import com.yourmediashelf.fedora.client.FedoraClientException;
  * 
  * @author Sebastian Cuy
  * @author Daniel M. de Oliveira
+ * @author Josef Hammer
  */
 public interface RepositoryFacade {
 	
@@ -76,8 +77,16 @@ public interface RepositoryFacade {
 	 * @return the contents of the file as an input stream, null if file does not exist
 	 * @throws RepositoryException
 	 */
-	InputStream retrieveFile(String objectId, String collection, String fileId) throws RepositoryException;
+	void retrieveTo(OutputStream outputStream, String objectId, String collection, String fileId) throws RepositoryException;
 
+	/**
+	 * Check if an object exists in the repository.
+	 * @param objectId the id of the object in the repository
+	 * @param collection a named collection
+	 * @return true if object is present, false if not
+	 * @throws RepositoryException
+	 */
+	boolean fileExists(String objectId, String collection, String fileId) throws RepositoryException;
 	/**
 	 * Check if an object exists in the repository.
 	 * @param objectId the id of the object in the repository

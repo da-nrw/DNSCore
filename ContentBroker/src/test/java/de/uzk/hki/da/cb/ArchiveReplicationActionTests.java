@@ -50,6 +50,7 @@ public class ArchiveReplicationActionTests {
 		workAreaRootPath = "src/test/resources/cb/ArchiveReplicationTests/fork/";
 		node.setWorkAreaRootPath(Path.make(workAreaRootPath));
 		node.setName("ci");
+		node.setIdentifier("LN");
 	}
 	
 	@Before

@@ -96,7 +96,8 @@ public class ConfigurableFileFormatFacade implements FileFormatFacade{
 		for (FileWithFileFormat f:files){
 			
 			// This is to compensate for a behavior of FIDO where it detects a too specific xml format. 
-			if (f.getFormatPUID().equals(FFConstants.DROID_XML_PUID)) {
+			if (f.getFormatPUID().equals(FFConstants.DROID_XML_PUID)
+			 || f.getFormatPUID().equals(FFConstants.DROID_XML_PUID2)) {
 				f.setFormatPUID(FFConstants.XML_PUID);
 				f.setSubformatIdentifier(
 						new XMLSubformatIdentifier().identify(Path.makeFile(workPath,f.getPath()),pruneExceptions));

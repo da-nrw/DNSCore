@@ -60,6 +60,7 @@ public class ATMetadataUpdatesXMP extends AcceptanceTest{
 		ath.waitForDefinedPublishedState(origName);
 		object=ath.getObject(origName);
 		ath.waitForObjectToBeIndexed(metadataIndex,object.getIdentifier());
+		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	
 	
@@ -95,7 +96,6 @@ public class ATMetadataUpdatesXMP extends AcceptanceTest{
 	
 	@Test
 	public void testPres() throws FileNotFoundException, JDOMException, IOException {
-		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build
 				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "XMP.xml").toFile()));

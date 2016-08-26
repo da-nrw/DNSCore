@@ -227,7 +227,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 			irodsSystemConnector.get(prefixedGridFileAdress, destination);
 		} catch (Exception e) {
 			// TODO should throw gridexception
-			throw new java.io.IOException("Error in retrieving file: " + gridFileAdress, e);
+			throw new java.io.IOException("Error in retrieving file: " + prefixedGridFileAdress, e);
 		}
 		
 		if (!MD5Checksum.getMD5checksumForLocalFile(destination).equals(irodsSystemConnector.getChecksum(prefixedGridFileAdress))){

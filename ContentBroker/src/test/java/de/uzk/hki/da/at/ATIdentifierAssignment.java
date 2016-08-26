@@ -17,7 +17,7 @@
 
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package de.uzk.hki.da.at;
 
 import static org.junit.Assert.assertEquals;
@@ -42,48 +42,40 @@ public class ATIdentifierAssignment extends AcceptanceTest {
 	private static final String ORIG_NAME_READ_URN_FROM_SIP = "ATReadURNFromSIP";
 	private static final String ORIG_NAME_URN_BASED_ON_TECHNICAL_IDENTIFIER = "urnBasedOnTechnicalIdentifier";
 
-
-
 	@BeforeClass
 	public static void setUp() throws IOException {
-		ath.putAIPToLongTermStorage("ATIdentifierAssignmentURNDelta",ORIG_NAME_DELTA_ORIGINAL_URN,new Date(),100);
+		ath.putAIPToLongTermStorage("ATIdentifierAssignmentURNDelta", ORIG_NAME_DELTA_ORIGINAL_URN, new Date(), 100);
+	}
 
-		ath.putSIPtoIngestArea("ATUseCaseIngest1","tgz",
-				ORIG_NAME_URN_BASED_ON_TECHNICAL_IDENTIFIER);
-		
-		ath.putSIPtoIngestArea(ORIG_NAME_READ_URN_FROM_SIP,"tgz",
-				ORIG_NAME_READ_URN_FROM_SIP);
-		
-		ath.putSIPtoIngestArea(ORIG_NAME_READ_URN_FROM_SIP,"tgz",
-				ORIG_NAME_DELTA_ORIGINAL_URN);
-		
-	}
-	
-	
 	@Test
-	public void urnBasedOnTechnicalIdentifier() {
-		ath.awaitObjectState(ORIG_NAME_URN_BASED_ON_TECHNICAL_IDENTIFIER,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+	public void urnBasedOnTechnicalIdentifier() throws IOException {
+		ath.putSIPtoIngestArea("ATUseCaseIngest1", "tgz", ORIG_NAME_URN_BASED_ON_TECHNICAL_IDENTIFIER);
+
+		ath.awaitObjectState(ORIG_NAME_URN_BASED_ON_TECHNICAL_IDENTIFIER, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		Object object = ath.getObject(ORIG_NAME_URN_BASED_ON_TECHNICAL_IDENTIFIER);
-	
-		assertTrue(object.getUrn().startsWith(AcceptanceTestHelper.URN_NBN_DE_DANRW+"1"));
+
+		assertTrue(object.getUrn().startsWith(AcceptanceTestHelper.URN_NBN_DE_DANRW + "1"));
 	}
-	
-	
+
 	@Test
 	public void urnByUserAssignment() throws IOException, InterruptedException {
-		ath.awaitObjectState(ORIG_NAME_READ_URN_FROM_SIP,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+
+		ath.putSIPtoIngestArea(ORIG_NAME_READ_URN_FROM_SIP, "tgz", ORIG_NAME_READ_URN_FROM_SIP);
+		ath.awaitObjectState(ORIG_NAME_READ_URN_FROM_SIP, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		Object object = ath.getObject(ORIG_NAME_READ_URN_FROM_SIP);
-		
+
 		assertEquals("urn:nbn:de:xyz-1-20131008367735", object.getUrn());
 	}
 
-	
 	@Test
-	public void keepURNOnDeltaIngest() {
-		// user assigned urn gets provided on delta. however the original urn was based on technical identifier.
-		
-		ath.awaitObjectState(ORIG_NAME_DELTA_ORIGINAL_URN,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+	public void keepURNOnDeltaIngest() throws IOException {
+		ath.putSIPtoIngestArea(ORIG_NAME_READ_URN_FROM_SIP, "tgz", ORIG_NAME_DELTA_ORIGINAL_URN);
+		// user assigned urn gets provided on delta. however the original urn
+		// was based on technical identifier.
+
+		ath.awaitObjectState(ORIG_NAME_DELTA_ORIGINAL_URN, Object.ObjectStatus.InWorkflow);
+		ath.awaitObjectState(ORIG_NAME_DELTA_ORIGINAL_URN, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		Object object = ath.getObject(ORIG_NAME_DELTA_ORIGINAL_URN);
-		assertEquals(AcceptanceTestHelper.URN_NBN_DE_DANRW+"ATIdentifierAssignmentURNDelta",object.getUrn());
+		assertEquals(AcceptanceTestHelper.URN_NBN_DE_DANRW + "ATIdentifierAssignmentURNDelta", object.getUrn());
 	}
 }
