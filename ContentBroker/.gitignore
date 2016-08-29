@@ -5,3 +5,11 @@
 .classpath
 /target/
 /bin/
+/mydb*
+.DS_Store
+.thumbs_db
+*.bluej
+*.prefs
+*.project
+*.classpath
+*.DS_Store
