@@ -6,6 +6,8 @@
 					});
 			</g:if>
 </script>
+<div style="overflow:auto; height: 600px">
+
 <table>
 	<thead>
 		<tr>
@@ -72,4 +74,5 @@
 		</g:if>
 	</tbody>
 </table>
+</div>
 (Standard view)

@@ -23,6 +23,9 @@ public class IrodsFederatedDistributedConversionAdapter extends
 			String dest = "/"+node.getIdentifier()+ relativePath;
 			logger.debug("sync " + src + " to " + dest );
 			try {
+			if (!iclc.exists(dest)) {
+				iclc.mkCollection(dest);
+			}
 			iclc.rsyncDir(src ,dest , node.getWorkingResource());
 			iclc.remove(src);
 			} catch (RuntimeException irex) {

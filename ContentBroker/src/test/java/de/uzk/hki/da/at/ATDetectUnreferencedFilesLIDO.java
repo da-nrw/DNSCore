@@ -33,9 +33,9 @@ public class ATDetectUnreferencedFilesLIDO extends AcceptanceTest{
 	@Test
 	public void test() throws IOException {
 		assertTrue(contentbrokerLogfile.exists());
-		assertTrue(targetFileStr.contains("ist nicht konsistent. Folgende Files sind nicht in den mitgelieferten Metadaten referenziert: "
+		assertTrue(targetFileStr.contains("ist nicht konsistent. SIP Paketname ist: ATDetectUnreferencedFilesLido.tgz. Folgende Files sind nicht in den mitgelieferten Metadaten referenziert: "
 				+ "[3.bmp, 4.bmp]. Die Verarbeitung findet dennoch statt.") || 
-				targetFileStr.contains("ist nicht konsistent. Folgende Files sind nicht in den mitgelieferten Metadaten referenziert: "
+				targetFileStr.contains("ist nicht konsistent. SIP Paketname ist: ATDetectUnreferencedFilesLido.tgz. Folgende Files sind nicht in den mitgelieferten Metadaten referenziert: "
 						+ "[4.bmp, 3.bmp]. Die Verarbeitung findet dennoch statt."));
 	}
 }

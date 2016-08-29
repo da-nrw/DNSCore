@@ -89,13 +89,11 @@
 			<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 			</g:if>
-
-			
 			<g:formRemote name="myForm" on404="alert('not found!')" 
               url="[controller: 'object', action:'queueAllForRetrieval']" 
               onLoaded="queuedFor(data)">
-
-				<table>
+              <div style="overflow:auto; height: 600px">
+				 <table>
 					<thead>
 						<tr>
 							<th><g:message code="object.identifier.label" default="Ident" /></th>
@@ -213,10 +211,8 @@
 					</g:each>
 					</tbody>
 				</table>AdminView
+			  </div>
 			</g:formRemote>
-
-
-
 			<g:if test="${paginate}" >
 				<!-- workaround weil paginate die search map zerhackstückelt -->
 				<g:set var="searchParams" value="${paramsList}"/>

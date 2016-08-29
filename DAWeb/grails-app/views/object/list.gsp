@@ -30,16 +30,17 @@
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
 			</ul>
 		</div>
+		<h1>eingelieferte AIP's</h1>
 		<script type="text/javascript">
 		 $(document).ready(function(){
-				$("#filter").accordion({ collapsible: true, active: false });
-				<g:if test="${filterOn==1}">
-				$( "#filter" ).accordion( "option", "active", 0 );
-				</g:if>
+			$("#filter").accordion({ collapsible: true, active: false });
+			<g:if test="${filterOn==1}">
+ 				$( "#filter" ).accordion( "option", "active", 1);
+			</g:if>
 		 });
 		</script>
 		<div id="filter" style="margin: 0.8em 0 0.3em">
-			<h1><a href="#">Filter</a></h1> 
+			<h1><a href="#">Filter</a></h1>
             <g:form name="searchForm" action="list">
             <g:hiddenField name="filterOn" value="${filterOn}" />
             	<table>
@@ -55,14 +56,13 @@
             			<td>Identifier:</td>
             			<td><g:textField name="search.identifier" value="${params.search?.identifier}" size="50"/></td>
             		</tr>
+	            		<tr>
+	            		<td>Datumsbereich:</td>
+	            		<td>
+	            			<g:select id="datetype" name="searchDateType" from="${['Datum erstellt','Datum geändert']}" keys="${['created','modified']}" value="${params.searchDateType}" />
+	            		</td>
+					</tr>
             		<tr>
-            		<td>
-            		Datumsbereich:
-            		</td><td>
-            		<g:select id="datetype" name="searchDateType" from="${['Datum erstellt','Datum geändert']}" keys="${['created','modified']}" value="${params.searchDateType}" />
-            			</td>
-						</tr>
-            			<tr>
             			<td>Von Datum: </td>
             			<td><jqueryPicker:time name="searchDateStart" value=""/>(TT.MM.JJJJ HH:mm:ss)
             			</td>
@@ -81,7 +81,8 @@
             		</tr>
             		<tr>
             			<td></td>
-            			<td><g:submitButton name="submit" value="Filter anwenden"/><g:submitButton name="loeschen" type="submit" value="Filter löschen"/></td>
+            			<td><g:submitButton name="submit" value="Filter anwenden"/>
+            				<g:submitButton name="loeschen" type="submit" value="Filter löschen"/></td>
             			<script type="text/javascript">
             			$(document).ready(function(){
             				 	$("#loeschen").click(function() {                				 
@@ -105,7 +106,7 @@
             </g:form>
         </div>
 		<div id="list-object" class="content scaffold-list" role="main">
-			<h1>Ihre DA-NRW Objekte (${objectInstanceList.size()} Treffer von ${totalObjs} insgesamt)</h1>
+			<h1>Ihre DA-NRW Objekte(${objectInstanceList.size()} Treffer von ${totalObjs} insgesamt)</h1>
 			<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 			</g:if>
@@ -114,7 +115,7 @@
 			<g:formRemote name="myForm" on404="alert('not found!')" 
               url="[controller: 'object', action:'queueAllForRetrieval']" 
               onLoaded="queuedFor(data)">
-
+			   <div style="overflow:auto; height: 600px">
 				<table>
 					<thead>
 						<tr>
@@ -184,6 +185,7 @@
 					</tbody>
 				</table>
 				StandardView
+			   </div>
 			</g:formRemote>
 
 

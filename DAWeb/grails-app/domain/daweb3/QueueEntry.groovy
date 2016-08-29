@@ -112,7 +112,8 @@ class QueueEntry {
 		def checkfor = [
 			WORKFLOW_STATUS_DIGIT_ERROR_BAD_ROLLBACK ,
 			WORKFLOW_STATUS_DIGIT_USER_ERROR,
-			WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET]
+			WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET,
+			WORKFLOW_STATUS_DIGIT_ERROR_PROPERLY_HANDLED]
 		def ch = status[-1]
 		if (checkfor.contains(ch) && getStatusAsInteger()<407) return true;
 		return false;

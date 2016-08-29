@@ -46,6 +46,10 @@ class CbNodeController {
         }
     }
 
+	def cancel(CbNode cbNodeInstance) {
+		redirect cbNodeInstance
+	}
+	
     def edit(CbNode cbNodeInstance) {
         respond cbNodeInstance
     }

@@ -23,6 +23,15 @@
 			</g:if>
 			<ol class="property-list systemEvent">
 			
+				<g:if test="${systemEventInstance?.id}">
+				<li class="fieldcontain">
+					<span id="id-label" class="property-label"><g:message code="systemEvent.id.label" default="Id" /></span>
+					
+						<span class="property-value" aria-labelledby="id-label">${systemEventInstance?.id?.encodeAsHTML()}</span>
+					
+				</li>
+				</g:if>
+			
 				<g:if test="${systemEventInstance?.parameter}">
 				<li class="fieldcontain">
 					<span id="parameter-label" class="property-label"><g:message code="systemEvent.parameter.label" default="Parameter" /></span>
@@ -54,7 +63,7 @@
 				<li class="fieldcontain">
 					<span id="node-label" class="property-label"><g:message code="systemEvent.node.label" default="Node" /></span>
 					
-						<span class="property-value" aria-labelledby="node-label"><g:link controller="cbNode" action="show" id="${systemEventInstance?.node?.id}">${systemEventInstance?.node?.encodeAsHTML()}</g:link></span>
+						<span class="property-value" aria-labelledby="node-label"><g:link controller="cbNode" action="show" id="${systemEventInstance?.node?.id}" params="['sysid' : systemEventInstance?.id]">${systemEventInstance?.node?.encodeAsHTML()}</g:link></span>
 					
 				</li>
 				</g:if>
@@ -72,7 +81,7 @@
 				<li class="fieldcontain">
 					<span id="user-label" class="property-label"><g:message code="systemEvent.user.label" default="User" /></span>
 					
-						<span class="property-value" aria-labelledby="user-label"><g:link controller="user" action="show" id="${systemEventInstance?.user?.id}">${systemEventInstance?.user?.encodeAsHTML()}</g:link></span>
+						<span class="property-value" aria-labelledby="user-label"><g:link controller="user" action="show" id="${systemEventInstance?.user?.id}" params="['sysid' : systemEventInstance?.id]">${systemEventInstance?.user?.encodeAsHTML()}</g:link></span>
 					
 				</li>
 				</g:if>

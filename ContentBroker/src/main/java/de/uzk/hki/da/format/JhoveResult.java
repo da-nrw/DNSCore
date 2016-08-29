@@ -104,14 +104,10 @@ public class JhoveResult {
 				ret.setMessage(messagesStringBuilder.toString());
 			}
 		} catch (ValidityException ve) {
-			throw new IOException(ve);
+			throw new JHoveValidationException(ve);
 		} catch (ParsingException pe) {
-			throw new IOException(pe);
-		} catch (IOException ie) {
-			throw new IOException(ie);
-		}
-
-		finally {
+			throw new JHoveValidationException(pe);
+		}finally {
 			reader.close();
 		}
 
