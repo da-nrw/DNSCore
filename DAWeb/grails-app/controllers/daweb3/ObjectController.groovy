@@ -755,8 +755,6 @@ class ObjectController {
 		}
 		
 		if(premisObject == null || params.boolean('first') ) {
-			log.debug(params.boolean('first'))
-			log.debug(params.objName)
 			finde(params.objName)
 			tmpDaFiles = new LinkedHashMap<String, ArrayList>()
 			tmpMeta = new LinkedHashMap<String, ArrayList>()
@@ -844,8 +842,7 @@ class ObjectController {
 	def finde = {	objName ->
 
 		def xmldocument = "" 
-		log.debug("!!!!!!!!!!!! " + objName)
-		premisObject = PremisObject.find("from PremisObject where origName = :name", [name: objName]) //'2-20160414450456']) //'2-20160405449925'])  '1-2016070651'])  //'1-2016062726']) //'1-20160627268']) //'1-2016070168']) //'1-2016062164']) //'1-20160530106']) // params.objectIdentifier
+		premisObject = PremisObject.find("from PremisObject where origName = :name", [name: 'Rheinländer_2016-04-14'])//objName]) //'2-20160414450456']) //'2-20160405449925'])  '1-2016070651'])  //'1-2016062726']) //'1-20160627268']) //'1-2016070168']) //'1-2016062164']) //'1-20160530106']) // params.objectIdentifier
 		
 		
 		
