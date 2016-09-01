@@ -32,11 +32,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.format.KnownFormatCmdLineErrors;
+import de.uzk.hki.da.format.QualityLevelException;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.QualityMessage;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.Path;
@@ -89,7 +91,7 @@ public class CLIConversionStrategy implements ConversionStrategy{
 		Path.make(wa.dataPath(),object.getNameOfLatestBRep(),ci.getTarget_folder()).toFile().mkdirs();
 		
 		String[] commandAsArray = assemble(wa,ci, object.getNameOfLatestBRep());
-		if (!cliConnector.execute(commandAsArray)) throw new RuntimeException("convert did not succeed");
+		if (!cliConnector.execute(commandAsArray)) throw new RuntimeException("convert did not succeed:"+cliConnector.getErrorMessages());
 		
 		String targetSuffix= ci.getConversion_routine().getTarget_suffix();
 		if (targetSuffix.equals("*")) targetSuffix= FilenameUtils.getExtension(toAbsolutePath(wa.dataPath(),ci.getSource_file()));

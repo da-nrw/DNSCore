@@ -38,6 +38,7 @@ import de.uzk.hki.da.format.ConnectionException;
 import de.uzk.hki.da.format.FileFormatException;
 import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
+import de.uzk.hki.da.format.QualityLevelException;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.FormatMapping;
 import de.uzk.hki.da.model.JHoveParameterMapping;
@@ -45,6 +46,7 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.QualityMessage;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.util.ConfigurationException;
@@ -157,6 +159,9 @@ public class CheckFormatsAction extends AbstractAction {
 						throw new RuntimeException("Unknown error during metadata file extraction.");
 				} catch (ConnectionException e) {
 					throw new SubsystemNotAvailableException("fileFormatFacade.extract() could not connect.",e);
+				}catch(QualityLevelException e){ //execution won't be interrupted, just quality level 
+					QualityMessage.addMessage(new QualityMessage(e.getType(),e.getMessage(),this.getJob(),this.getObject()));
+					
 				}
 			} else logger.debug("Skipping jhove validation for xml file "+f.getRelative_path());
 		}

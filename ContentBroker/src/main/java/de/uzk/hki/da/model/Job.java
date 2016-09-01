@@ -96,7 +96,7 @@ public class Job {
 	@Column(columnDefinition="varchar(50)")
 	private String container_extension;
 	
-	
+
 	
 	/** The contractor. */
 //	@ManyToOne

@@ -38,6 +38,7 @@ import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectPremisXmlReader;
+import de.uzk.hki.da.model.QualityMessage;
 import de.uzk.hki.da.model.RightsStatement;
 import de.uzk.hki.da.util.ConfigurationException;
 
@@ -79,18 +80,23 @@ public class ConvertAction extends AbstractAction {
 	public boolean implementation() throws IOException {
 		
 		if (j.getConversion_instructions().size()==0) {
+			QualityMessage.addMessage(new QualityMessage(QualityMessage.Type.CONVERSION,("No Conversion Instruction has be found for job."),this.getJob(),this.getObject()));
+			
 			logger.warn("No Conversion Instruction has be found for job.");
 			return true;
 		}
 		
 		// The publication related ConversionStrategies rely on the information from the contract.
 		o.setRights(getObjectRights()); 
-		
+		try{
 		events = 
 			new ConverterService(o.getLatestPackage().isPruneExceptions(),knownFormatCmdLineErrors).convertBatch(
 				wa,	o, 
 				new ArrayList(j.getConversion_instructions()));
-		
+		}catch(RuntimeException e){
+			QualityMessage.addMessage(new QualityMessage(QualityMessage.Type.CONVERSION,(e.getMessage()),this.getJob(),this.getObject()));
+			//throw e;
+		}
 		listFiles(o);
 		extendObject(o,events);
 		

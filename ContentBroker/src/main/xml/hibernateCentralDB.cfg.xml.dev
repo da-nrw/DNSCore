@@ -47,6 +47,7 @@
  <mapping class="de.uzk.hki.da.model.KnownError"/>
  <mapping class="de.uzk.hki.da.model.FormatMapping"/>
  <mapping class="de.uzk.hki.da.model.JHoveParameterMapping"/>
- 
+ <mapping class="de.uzk.hki.da.model.QualityMessage"/>
+  
 </session-factory>
 </hibernate-configuration>
