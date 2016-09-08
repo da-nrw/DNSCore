@@ -14,7 +14,7 @@ public class UserFileFormatException extends UserException {
 	private boolean wasPruned = false;
 	
 	public UserFileFormatException(KnownError knownError, boolean wasPruned){
-		this(knownError,knownError.getDescription(),wasPruned);
+		this(knownError,knownError.getDescription()+ " " + knownError.getAdvice(),wasPruned);
 	}
 	public UserFileFormatException(KnownError knownError, String message, boolean wasPruned){
 		super(UserExceptionId.INVALID_USER_FILE_FORMAT,message);
