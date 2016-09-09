@@ -52,7 +52,9 @@ import de.uzk.hki.da.utils.StringUtilities;
  * @author Daniel M. de Oliveira
  */
 public class AcceptanceTestHelper {
-
+	public static final String TEST_RESOURCES_PATH_PROPERTY="WorkaroundToPathTestCaseFilesPathToJUNITTests"; //Name for a system property to pass the testfiles directory
+	public static final String NO_DIRTY_CLEANUP_AFTER_EACH_TEST_PROPERTY="WorkaroundNoCleanupCompleteDB"; //Name for a system property to avoid cleanups, because they cleanup all data, not only testdata
+	
 	private static final String MSG_READY = "ready";
 	private static final String MSG_ERROR_WHEN_TIMEOUT_REACHED = "waited to long. test considered failed";
 	private static final String TEMP_FOLDER = "/tmp/";
@@ -76,6 +78,8 @@ public class AcceptanceTestHelper {
 		this.localNode=localNode;
 		this.testContractor=testContractor;
 		this.sp = sp;
+		if(System.getProperty(TEST_RESOURCES_PATH_PROPERTY)!=null)
+			TEST_DATA_ROOT_PATH = Path.make(System.getProperty(TEST_RESOURCES_PATH_PROPERTY));
 	}
 			
 			

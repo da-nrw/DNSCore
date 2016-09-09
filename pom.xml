@@ -14,9 +14,10 @@
     <modules>
         <module>DNSCommon</module>
         <module>ContentBroker</module>
-		<module>SIP-Builder</module>
-		<module>PasswordEncryptor</module>
-		<module>DAWeb</module>		
+	<module>SIP-Builder</module>
+	<module>PasswordEncryptor</module>
+	<module>DAWeb</module>
+	<module>RegressionTestCB</module>		
     </modules>
 
 	<repositories>

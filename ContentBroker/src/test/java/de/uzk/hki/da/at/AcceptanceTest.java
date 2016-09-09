@@ -145,7 +145,7 @@ public class AcceptanceTest {
 	 * @param contractorShortName the contractor short name
 	 * @return null if no contractor for short name could be found
 	 */
-	private static User getContractor(Session session, String contractorShortName) {
+	public static User getContractor(Session session, String contractorShortName) {
 	
 		@SuppressWarnings("rawtypes")
 		List list;	
@@ -191,15 +191,21 @@ public class AcceptanceTest {
 		ath = new AcceptanceTestHelper(gridFacade,localNode,testContractor,sp);
 		
 //		new CommandLineConnector().runCmdSynchronously(new String[] {"src/main/bash/rebuildIndex.sh"});
-		cleanStorage();
-		clearDB();
+		//If the previous test execution not cleaned 
+			cleanStorage();
+			clearDB();
 	}
 
 	@AfterClass
 	public static void tearDownAcceptanceTest() throws IOException{
 //		new CommandLineConnector().runCmdSynchronously(new String[] {"src/main/bash/rebuildIndex.sh"});
-//		cleanStorage();
-//		clearDB();
+		cleanStorage();
+		//If the at tests are running on systems with important data, then hard reset of the db is not allowed
+		if(System.getProperty(AcceptanceTestHelper.NO_DIRTY_CLEANUP_AFTER_EACH_TEST_PROPERTY)==null){
+			clearDB();
+		}else{
+			TESTHelper.dirtyClearDB();
+		}
 	}
 	
 
@@ -246,6 +252,6 @@ public class AcceptanceTest {
 	}
 	
 	private static void clearDB() {
-		TESTHelper.clearDB();
+		TESTHelper.clearDBOnlyTestUser();
 	}
 }
