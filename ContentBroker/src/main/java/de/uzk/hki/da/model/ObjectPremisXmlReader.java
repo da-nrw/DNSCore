@@ -311,7 +311,9 @@ public class ObjectPremisXmlReader{
 		}
 		
 		if (!eventAdded) {
-			if (eventType.toUpperCase().equals("SIP_CREATION"))
+			if (eventType.toUpperCase().equals("SIP_CREATION")
+					// DANRW-1452: Virus-Scan result must be print in the premis-file
+					|| eventType.toUpperCase().equals(C.EVENT_TYPE_VIRUS_SCAN))
 				object.getPackages().get(0).getEvents().add(event);
 			else
 				throw new RuntimeException("Premis file is not consistent: couldn't find object(s) referenced by event "

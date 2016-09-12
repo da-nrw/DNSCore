@@ -45,6 +45,7 @@ import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.DocumentsGenService;
 import de.uzk.hki.da.model.Event;
+import de.uzk.hki.da.model.Event.IdType;
 import de.uzk.hki.da.model.KnownError;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.RepositoryException;
@@ -111,12 +112,13 @@ public class RestructureAction extends AbstractAction{
 		listAllFiles();
 		
 		if (!scanWithClamAV()) {
-			logger.debug("###### VIRUS - Detected #####");
-				
-			Event e = createEvent();
+			Event e = createEvent( "Virus im Paket mit Identifier ", Event.IdType.VIRUS_DETECTED_ID);
 			o.getLatestPackage().getEvents().add(e);
 			
 			throw new UserException(UserExceptionId.VIRUS_DETECTED, " virus is detected! " );
+		} else {
+			Event e = createEvent("KEIN Virus im Paket mit Identifier ", Event.IdType.NO_VIRUS);
+			o.getLatestPackage().getEvents().add(e);
 		}
 		
 		listAllFiles();
@@ -153,22 +155,44 @@ public class RestructureAction extends AbstractAction{
 		Path.makeFile(wa.dataPath(),"jhove_temp").mkdirs();
 		return true;
 	}
-	
+
+	/**
+	 * getClamVersion: clamscan -V
+	 * @return
+	 */
+	private String getClamVersion() {
+		String clamVersion;
+		try {
+			ProcessInformation pi = new CommandLineConnector().runCmdSynchronously(new String[] {
+						"clamscan" , "-V"}, 0);
+			clamVersion = "'" + pi.getStdOut().trim()  +"'";
+			
+		} catch (IOException ioe) {
+			clamVersion = " 'not found'";
+			logger.error(ioe.toString());
+		}
+		return clamVersion;
+	}
+		
 	/**
 	 * createCreateEvent: creates an event if a virus is detected
 	 * @author Gaby Bender
+	 * @param clamVersion: version of the virus-db
 	 * @return
 	 */
-	private Event createEvent() {
+	private Event createEvent(String detail, IdType idType) {
 		
 		Event virusEventElement = new Event();
-		virusEventElement.setIdentifier(o.getIdentifier() + "+" + o.getLatestPackage().getName());
-		virusEventElement.setIdType(Event.IdType.VIRUS_DETECTED_ID);
+		
+		//virusEventElement.setIdentifier(o.getIdentifier() + "+" + o.getLatestPackage().getName());
+		virusEventElement.setIdentifier(o.getIdentifier());
+		virusEventElement.setIdType(idType);
 		virusEventElement.setAgent_name(n.getName());
 		virusEventElement.setAgent_type(C.AGENT_TYPE_NODE);
 		virusEventElement.setDate(new Date());
-		virusEventElement.setType(C.EVENT_TYPE_CREATE);
-		virusEventElement.setDetail("Virus im Paket mit Identifier " + o.getIdentifier() + " gefunden!");
+		virusEventElement.setType(C.EVENT_TYPE_VIRUS_SCAN);
+		virusEventElement.setDetail( detail + o.getIdentifier() + 
+					" gefunden! Gescannt mit " + getClamVersion());
 		
 		return virusEventElement;
 	}
