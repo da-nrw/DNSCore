@@ -5,7 +5,7 @@ DNSCore
 
 [Liste der Kernfunktionen](ContentBroker/src/main/markdown/features.de.md)
 
------
+----- 
 
 The Core System of the DA-NRW Software Suite.
   
