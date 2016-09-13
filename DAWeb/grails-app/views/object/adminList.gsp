@@ -79,7 +79,29 @@
             		</g:if>
             		<tr>
             			<td></td>
-            			<td><g:submitButton name="submit" value="Filter anwenden"/></td>
+            			<td>
+            				<g:submitButton name="submit" value="Filter anwenden"/>
+           					<g:submitButton name="loeschen" type="submit" value="Filter löschen"/>
+	           			</td>
+	           			<script type="text/javascript">
+		           			$(document).ready(function(){
+		           				 	$("#loeschen").click(function() {                				 
+				            			$('#searchForm').find(':input').each(function() {
+				            	            switch(this.type) {
+				                            case 'text':
+				                            	$(this).val('');
+				                                break;                      
+				                            case 'textarea':
+				                                $(this).val('');
+				                                break;
+				            			 	case 'hidden':
+				                                $(this).val('0');
+				                                break;
+				                            }
+				            			});
+		           				    });
+		           			});
+		           		</script>
             		</tr>
             	</table>     
             </g:form>
@@ -210,7 +232,7 @@
 						</tr>
 					</g:each>
 					</tbody>
-				</table>AdminView
+				</table>(AdministartorView)
 			  </div>
 			</g:formRemote>
 			<g:if test="${paginate}" >

@@ -107,22 +107,41 @@
 
             		<tr>
             			<td></td>
-            			<td><g:submitButton name="submit" value="Filter anwenden"/></td>
+            			<td>
+            				<g:submitButton name="submit" value="Filter anwenden"/>
+	           				<g:submitButton name="loeschen" type="submit" value="Filter löschen"/>
+	           			</td>
+	           			<script type="text/javascript">
+           			$(document).ready(function(){
+           				 	$("#loeschen").click(function() {                				 
+		            			$('#searchForm').find(':input').each(function() {
+		            	            switch(this.type) {
+		                            case 'text':
+		                            	$(this).val('');
+		                                break;                      
+		                            case 'textarea':
+		                                $(this).val('');
+		                                break;
+		            			 	case 'hidden':
+		                                $(this).val('0');
+		                                break;
+		                            }
+		            			});
+           				    });
+           			});</script>
             		</tr>
             	</table>     
           </g:form>
         </div>
            
-<g:if test="${ !params.search }">
-	<!-- Update:&nbsp;<a href="#" onclick="stopUpdater();">stop</a>&nbsp;<a href="#" onclick="startUpdater();">start</a> -->	
-     </g:if>   
+		<g:if test="${ !params.search }">
+			<!-- Update:&nbsp;<a href="#" onclick="stopUpdater();">stop</a>&nbsp;<a href="#" onclick="startUpdater();">start</a> -->	
+    	 </g:if>   
 			
 			<!-- This div is updated through the periodical updater -->
 			<div class="list" id="entry-list">
 				<g:include action="listSnippet" />
 			</div>
-						
-		</div>
 		<div id="legend">
 			<h1><a href="#">Hinweise zu den Statuscodes:</a></h1>
 			<div>
