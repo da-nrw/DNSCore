@@ -201,7 +201,7 @@ public class AcceptanceTest {
 //		new CommandLineConnector().runCmdSynchronously(new String[] {"src/main/bash/rebuildIndex.sh"});
 		cleanStorage();
 		//If the at tests are running on systems with important data, then hard reset of the db is not allowed
-		if(System.getProperty(AcceptanceTestHelper.NO_DIRTY_CLEANUP_AFTER_EACH_TEST_PROPERTY)==null){
+		if(System.getProperty(AcceptanceTestHelper.NO_DIRTY_CLEANUP_AFTER_EACH_TEST_PROPERTY)!=null){
 			clearDB();
 		}else{
 			TESTHelper.dirtyClearDB();

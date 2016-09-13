@@ -36,7 +36,6 @@ import de.uzk.hki.da.at.*;
 
 })*/
 public class CompleteATSuite extends Suite{
-	public static int testCount=0;
 	
 	 public  CompleteATSuite(Class<?> klass) throws InitializationError, IOException {
 		super(klass, getATTestClasses("classpath:/de/uzk/**/AT*.class"));
@@ -50,9 +49,8 @@ public class CompleteATSuite extends Suite{
 		for (Resource resource : resources) {
 			Class<?> clazz = getClassFromResource(resource);
 			classes.add(clazz);
-			testCount++;
 		}
-		
+		System.out.println("TestSuite contains : "+resources.length+" TestCases");
 		Class<?>[] classListArray=(Class<?>[]) classes.toArray(new Class[classes.size()]);
 		return classListArray;
 	}
@@ -60,9 +58,9 @@ public class CompleteATSuite extends Suite{
 	public static Class<?> getClassFromResource(Resource resource) {
 		try {
 			String resourceUri = resource.getURI().toString();
-			System.out.println(resourceUri);
 			if (resourceUri.indexOf("de") != -1)
 				resourceUri = resourceUri.substring(resourceUri.indexOf("de")).replace(".class", "").replace("/", ".");
+			System.out.println("Add Test-Case to suite: "+resourceUri);
 			return Class.forName(resourceUri);
 		} catch (Exception ex) {
 			ex.printStackTrace();

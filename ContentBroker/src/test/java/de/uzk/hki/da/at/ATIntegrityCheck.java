@@ -158,7 +158,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		assertSame(Integer.valueOf(object.getObject_state()), Integer.valueOf(Object.ObjectStatus.Error));
 		} catch (Exception e) {
 			e.printStackTrace();
-			fail();
+			fail(e.getMessage()+"\n"+e.toString());
 		}
 	}
 	
