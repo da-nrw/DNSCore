@@ -20,17 +20,26 @@
 
 package de.uzk.hki.da.at;
 
+import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.Namespace;
+import org.jdom.input.SAXBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
+import de.uzk.hki.da.utils.XMLUtils;
 
 /**
  * <a href="../../../../src/main/markdown/feature_restructure_action_scan.md">Feature Description</a>
@@ -41,6 +50,8 @@ public class ATRestructureActionScanVirus extends AcceptanceTest{
 
 	private static File sourceDir = new File("src/test/resources/at/");
 	private static ProcessInformation pi;
+	public static final String originalName = "ATRestructureActionScanVirusPremis";
+	public static final File unpackedDIP = new File("/tmp/ATRestructureActionVPREMISCheck");
 	
 	@Before
 	public void setUp() throws IOException{	
@@ -76,5 +87,52 @@ public class ATRestructureActionScanVirus extends AcceptanceTest{
  		assertTrue(pi.getExitValue() == 1);
 	}
 	
+	@Test
+	public void testPremisNoVirus() throws IOException {
+		Object object = null;
+		
+		ath.putSIPtoIngestArea(originalName, "tar", originalName);
+		ath.awaitObjectState(originalName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+		object=ath.getObject(originalName);
+		
+		ath.retrieveAIP(object,unpackedDIP,"1");
+		assertThat(object.getObject_state()).isEqualTo(100);
+		String unpackedObjectPath = unpackedDIP.getAbsolutePath()+"/";
+		String folders[] = new File(unpackedObjectPath + "data/").list();
+		String repBName="";
+		for (String f:folders){
+			if (f.contains("+b")) repBName = f;
+		}
+		assertTrue(new File(unpackedObjectPath + "data/" + repBName + "/premis.xml").exists());
+		
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		Document doc;
+		try {
+			doc = builder.build(new File(unpackedObjectPath +  "data/" +repBName + "/premis.xml"));
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to read premis file", e);
+		}
+		
+		Element rootElement = doc.getRootElement();
+		Namespace ns = rootElement.getNamespace();
+		
+		
+		@SuppressWarnings("unchecked")
+		List<Element> eventElements = rootElement.getChildren("event", ns);
+		
+		for (Element e:eventElements){
+			String eventType = e.getChildText("eventType", ns);
+			
+			if (eventType.equals(C.EVENT_TYPE_VIRUS_SCAN)){
+				String eventDetail = e.getChildText("eventDetail",ns);
+				String eventDetailText = "Gescannt mit 'ClamAV";
+				if (eventDetail.contains(eventDetailText)){
+					assertTrue(true);
+				} else 
+				 assertTrue(false);
+			}
+			
+		}
+	}
 	
 }

@@ -150,6 +150,7 @@ public class ObjectPremisXmlWriter {
 	/**
 	 * @param object
 	 * @throws XMLStreamException
+	 * @throws  
 	 */
 	private void generateEvents(Object object) throws XMLStreamException {
 		
@@ -160,14 +161,19 @@ public class ObjectPremisXmlWriter {
 					|| e.getType().toUpperCase().equals(C.EVENT_TYPE_CREATE)){
 				logger.debug("Serializing convert event: "+e);
 				createConvertEventElement(e);
-			}else{
+			} else
+				// DANRW-1452: Event virus-scan
+				if (e.getType().toUpperCase().equals(C.EVENT_TYPE_VIRUS_SCAN)) {
+				logger.debug("Serializing convert event: "+e);
+				createVirusEventElement(object,pkg.getName(), e);
+			} else{
 				logger.debug("Serializing package event:"+e);
 				createPackageEventElement(object, pkg, e);
 			}
 		}
 	}
 	
-	
+
 	/**
 	 * Creates the object element.
 	 *
@@ -190,6 +196,56 @@ public class ObjectPremisXmlWriter {
 			createTextElement("originalName",orig_name, 2);
 		createCloseElement(1);
 	}
+
+
+	/**
+	 * createVirusEventElement: DANRW-1452: new event in case of successful virus-scan
+	 * @param pkgName 
+	 * @param e
+	 */
+	private void createVirusEventElement(Object object, String pkgName, Event e) throws XMLStreamException {
+		createOpenElement("event", 1);
+		createOpenElement("eventIdentifier", 2);
+		createTextElement("eventIdentifierType", "NO_VIRUS", 3);
+		createTextElement("eventIdentifierValue", object.getIdentifier() , 3);
+		createCloseElement(2);
+		
+		createTextElement("eventType", e.getType(), 2);
+		if (e.getDate() != null)
+			createTextElement("eventDateTime", formatDate(e.getDate()), 2);
+		
+		if (e.getDetail() != null)
+			createTextElement("eventDetail", e.getDetail(), 2);
+
+		if (e.getOutcome() != null)
+		{
+			createOpenElement("eventOutcomeInformation", 2);
+			createTextElement("eventOutcome", e.getOutcome(), 3);
+			createCloseElement(2);
+		}
+
+		Agent a = new Agent();
+		a.setType("NODE");
+		a.setName(e.getAgent_name());
+		a.setLongName(e.getAgent_long_name());
+		agents.add(a);
+		
+		createOpenElement("linkingAgentIdentifier", 2);
+		createTextElement("linkingAgentIdentifierType", a.getIdentifierType(), 3);
+		createTextElement("linkingAgentIdentifierValue", a.getName(), 3);
+		createCloseElement(2);
+		
+		createOpenElement("linkingObjectIdentifier", 2);
+		createTextElement("linkingObjectIdentifierType", "PACKAGE_NAME", 3);
+		createTextElement("linkingObjectIdentifierValue", object.getOrig_name() +".tar", 3);
+		
+		createTextElement("linkingObjectRole", "outcome", 3);
+		createCloseElement(2);
+
+		
+		createCloseElement(1);
+	}
+
 
 	
 	/**
