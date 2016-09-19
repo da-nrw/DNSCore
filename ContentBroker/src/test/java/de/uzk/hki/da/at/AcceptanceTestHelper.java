@@ -61,6 +61,7 @@ public class AcceptanceTestHelper {
 	static final String URN_NBN_DE_DANRW = "urn:nbn:de:danrw-";
 	protected static Path TEST_DATA_ROOT_PATH = new RelativePath("src/test/resources/at/");
 	
+	
 	private static final int INTERVAL=2000; // in ms
 	private static final int TIMEOUT=1200000; // ins ms
 	
@@ -68,6 +69,7 @@ public class AcceptanceTestHelper {
 	private Node localNode;
 	private User testContractor;
 	private StoragePolicy sp;
+	private String logPath = null;
 	
 	public AcceptanceTestHelper(
 			GridFacade gridFacade,
@@ -80,6 +82,10 @@ public class AcceptanceTestHelper {
 		this.sp = sp;
 		if(System.getProperty(TEST_RESOURCES_PATH_PROPERTY)!=null)
 			TEST_DATA_ROOT_PATH = Path.make(System.getProperty(TEST_RESOURCES_PATH_PROPERTY));
+		
+		String localNodeWorkArea = localNode.getWorkAreaRootPath().toString();
+		String localNodeTMP = localNodeWorkArea.replace("/storage/WorkArea", "");
+		logPath=(new File(localNodeTMP+"/ContentBroker/log")).getAbsolutePath();//default logpath
 	}
 			
 			
@@ -391,11 +397,10 @@ public class AcceptanceTestHelper {
 		if (job.getObject().getIdentifier()!=null){
 			try {
 				System.out.println("SHOWING OBJECT LOG:");
-				String localNodeWorkArea = localNode.getWorkAreaRootPath().toString();
-				String localNode = localNodeWorkArea.replace("/storage/WorkArea", "");
-				System.out.println(FileUtils.readFileToString(new File(Path.make(localNode, "ContentBroker","log", "object-logs")+"/"+job.getObject().getIdentifier()+".log")));
+				System.out.println(FileUtils.readFileToString(new File(Path.make(logPath, "object-logs")+"/"+job.getObject().getIdentifier()+".log")));
 				System.out.println("END OF OBJECT LOG: "+job.getObject().getIdentifier());
 			} catch (IOException e) {
+				System.out.println(e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -537,5 +542,11 @@ public class AcceptanceTestHelper {
 				job.getStatus().endsWith(C.WORKFLOW_STATUS_DIGIT_ERROR_PROPERLY_HANDLED)
 				|| job.getStatus().endsWith(C.WORKFLOW_STATUS_DIGIT_USER_ERROR)) return true;
 		return false;
+	}
+
+
+
+	public void setLogPath(String newLogPath) {
+		logPath=newLogPath;
 	}
 }

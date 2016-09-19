@@ -51,4 +51,13 @@ public class FileWithFileFormatImpl implements FileWithFileFormat {
 		this.knownErrors = knownError;
 	}
 
+	@Override
+	public String toString() {
+		return "FileWithFileFormatImpl [" + (formatPUID != null ? "formatPUID=" + formatPUID + ", " : "")
+				+ (subformatIdentifier != null ? "subformatIdentifier=" + subformatIdentifier + ", " : "")
+				+ (path != null ? "path=" + path + ", " : "")
+				+ (knownErrors != null ? "knownErrors=" + knownErrors : "") + "]";
+	}
+
+
 }
