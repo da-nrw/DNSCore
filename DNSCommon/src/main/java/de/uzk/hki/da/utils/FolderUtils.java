@@ -34,6 +34,7 @@ import org.apache.commons.io.FileUtils;
  */
 
 public class FolderUtils {
+	public static final long TIME_TO_END_FILE_OPERATION=1000;
 
 	public static List<String> listFolderContents(File folder)
 	{
@@ -98,5 +99,31 @@ public class FolderUtils {
 		}	
 		return filesAreEqual;
 	}
+	
+	public static void deleteDirectorySafe(File directory) throws IOException {
+		try {
+			FileUtils.deleteDirectory(directory);
+		} catch (IOException e) {
+			try {
+				Thread.sleep(TIME_TO_END_FILE_OPERATION);
+				// Zweiter versuch nach einer Pause
+				FileUtils.deleteDirectory(directory);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
 
+	public static boolean deleteQuietly(File file) {
+		boolean result = FileUtils.deleteQuietly(file);
+		if (!result) {
+			try {
+				Thread.sleep(TIME_TO_END_FILE_OPERATION);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			result = FileUtils.deleteQuietly(file);
+		}
+		return result;
+	}
 }
