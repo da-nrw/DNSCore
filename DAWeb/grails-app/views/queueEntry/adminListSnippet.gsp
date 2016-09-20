@@ -6,18 +6,44 @@
 					});
 			</g:if>
 </script>
-<script language="JavaScript">
-function toggle(source) {
-	  checkboxes = document.getElementsByName('modifyIds');
-	  for(var i in checkboxes)
-	    checkboxes[i].checked = source.checked;
-}
-function subForm(text, action) {
-    if (!confirm(text)) return false;
-    document.getElementById('mod').action = action;
-    document.getElementById('mod').submit();
-    return true;
-}
+<script type="text/javascript">
+	function toggle(source) {
+		  checkboxes = document.getElementsByName('modifyIds');
+		  for(var i in checkboxes)
+		    checkboxes[i].checked = source.checked;
+	}
+	function subForm(text, action) {
+	    if (!confirm(text)) return false;
+	    document.getElementById('mod').action = action;
+	    document.getElementById('mod').submit();
+	    return true;
+	}
+	function deselect(source) {
+		if (document.getElementById('waehlen').checked) {
+			if (source.checked ) {
+			} else {
+				document.getElementById('waehlen').checked = false;
+			}
+		} else {
+			checkboxes = document.getElementsByName('modifyIds');
+			var i= 0;
+				while ( i < checkboxes.length) {  
+			 	if( checkboxes[i].checked) {
+				 	check = true;
+				 	i++;
+				 } else {
+				 	check = false;
+				 	i++;
+				 	break;
+				}
+			}
+			if (check) {
+				document.getElementById('waehlen').checked = true;
+			} else {
+				document.getElementById('waehlen').checked = false;
+			}
+		}
+	}
 </script>
 <div style="overflow:auto; height: 600px">
 <table>
@@ -69,14 +95,13 @@ function subForm(text, action) {
 			<g:set var="statusType" value="status-type-${queueEntryInstance.status[-1]}" />
 			<tr class="${ ((i % 2) == 0 ? 'odd' : 'even') + ' ' + statusType}">
 				<g:if test="${params.search?.status != null && params.search?.status.length()==3}">
-					<td><g:checkBox name="modifyIds" value="${queueEntryInstance.getId()}" checked="false"/></td>
+					<td><g:checkBox name="modifyIds" value="${queueEntryInstance.getId()}" checked="false"  onClick="deselect(this)"/></td>
 				</g:if>
 				<td>
 					<g:if test="${queueEntryInstance.obj != null}">
 						${fieldValue(bean: queueEntryInstance.obj, field: "identifier")}
 					</g:if>
 				</td>
-
 				<td>
 					<g:link action="show" id="${queueEntryInstance.id}">
 						${fieldValue(bean: queueEntryInstance, field: "status")}
@@ -132,9 +157,9 @@ function subForm(text, action) {
 			</tr>
 		</g:each>
 		<g:if test="${params.search?.status != null && params.search?.status.length()==3  && queueEntryInstanceList != null && !queueEntryInstanceList.isEmpty()}">
-				<tr>
+			<tr>
 				<td colspan="100">
-				<input type="checkbox" onClick="toggle(this)"/>  Alle an-/abwählen, für alle Pakete im Status ${params.search?.status}:
+				<input type="checkbox" name="waehlen" value="" id="waehlen" onClick="toggle(this)"/>  Alle an-/abwählen, für alle Pakete im Status ${params.search?.status}:
 					<g:if test="${ showRetryAll == "true"}">
 						<a onClick="return subForm('Nur den letzten Arbeitsschritt für alle Pakete wiederholen. Sind Sie sicher?','../queueRetryAll');"><img src="${resource(dir: 'images/icons', file: 'exchange32.png')}" style="width:16px; height:16px" alt="${message(code: 'default.workflow.icon.restart', default: 'Gesamten Workflow für Paket neu starten')}" title="${message(code: 'default.workflow.icon.retry', default: 'Workflow für Paket neu starten')}"/></a>
 					</g:if>
@@ -147,8 +172,8 @@ function subForm(text, action) {
 											alt="${message(code: 'default.workflow.icon.delete', default: 'Paket löschen')}"></a>
 					</g:if>
 				</td>
-				</tr>
-			</g:if>
+			</tr>
+		</g:if>
 	</form>
 		<g:if test="${queueEntryInstanceList == null || queueEntryInstanceList.isEmpty()}">
 			<tr class="even">

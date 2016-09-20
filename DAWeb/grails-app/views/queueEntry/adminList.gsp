@@ -17,23 +17,23 @@
 				$("#filter").accordion({ collapsible: true, active: false });
 			});
 	
-	<g:if test="${ !params.search }">		
-			var obj = $.PeriodicalUpdater("./listSnippet",
-				{
-					method: "get",
-					minTimeout: 1000,
-					maxTimeout: 1000,
-					data: function() {
-						return { order: order, sort: sort}
-					},
-					success: function(data) {
-						console.log("success - sort: "+sort+", order: "+order);
-						$("#entry-list").html(data);
-						$("#entry-list th.field-"+sort).addClass("sorted "+order);
-					}
-				}
-			);
-	</g:if>
+			<g:if test="${ !params.search }">		
+					var obj = $.PeriodicalUpdater("./listSnippet",
+						{
+							method: "get",
+							minTimeout: 1000,
+							maxTimeout: 1000,
+							data: function() {
+								return { order: order, sort: sort}
+							},
+							success: function(data) {
+								console.log("success - sort: "+sort+", order: "+order);
+								$("#entry-list").html(data);
+								$("#entry-list th.field-"+sort).addClass("sorted "+order);
+							}
+						}
+					);
+			</g:if>
 			function stopUpdater() {		
 				obj.stop();
 			}
@@ -68,10 +68,29 @@
 		<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
 		</g:if>
-<%--		<div id="list-queueEntry" class="content scaffold-list" role="main">			--%>
-			
 		<div id="filter" style="margin: 0.8em 0 0.3em">
-		  <h1><a href="#">Filter</a></h1> 
+		  <h1><a href="#">Filter
+		  	<g:if test="${params.search}"><br>
+	    		<g:if test="${!params.search?.status.isEmpty()}">
+	    		<span style="margin-right: 25px" ><i>Status: </i>${params.search?.status}</span>
+	    		</g:if> 
+	    		<g:if test="${!params.search?.obj?.origName.isEmpty()}">
+	    			<span style="margin-right: 25px"><i>Originalname: </i>${params.search?.obj?.origName}</span>
+	    		</g:if> 
+	    		<g:if test="${!params.search?.obj?.urn.isEmpty()}">
+	    			 <span style="margin-right: 25px"><i>URN: </i>${params.search?.obj?.urn}</span>
+	    		</g:if> 
+	    		<g:if test="${!params.search?.obj?.identifier.isEmpty()}">
+	    			<span style="margin-right: 25px"><i>Identifier: </i>${params.search?.obj?.identifier}</span>
+	    		</g:if> 
+	    		<g:if test="${params.search?.user != 'null'}">
+	    			<span style="margin-right: 25px"><i>Contractor: </i>${params.search?.user}</span>
+	    		</g:if> 
+	    		<g:if test="${params.search?.initialNode != 'null'}">
+	    			<span style="margin-right: 25px"><i>Zuständiger Knoten: </i>${params.search?.initialNode}</span>
+	    		</g:if> 
+	    	</g:if> 
+		  </a></h1> 
           <g:form name="searchForm" id="filterform" action="list">
              <table>
             	<tr>
@@ -91,20 +110,28 @@
             			<td>Identifier:</td>
             			<td><g:textField name="search.obj.identifier" value="${params.search?.obj?.identifier}" size="50"/></td>
             		</tr>
-
-            			<tr>
+           			<tr>
             			<td>Contractor:</td>
             			<td>
-            				<g:select id="user" name="search.user" from="${contractorList}" optionKey="shortName" noSelection="[null:'Alle auswählen']" required="" value="${objectInstance?.contractorList?.shortName}" class="many-to-one"/>
+            				<g:if test="${params.search?.user == null}" >
+            					<g:select id="user" name="search.user" from="${contractorList}" optionKey="shortName" noSelection="[null:'Alle auswählen']" required="" value="${objectInstance?.contractorList?.shortName}" class="many-to-one"/>
+            				</g:if>
+            				<g:if test="${params.search?.user != null && !params.search?.user.isEmpty()}" >
+            					<g:select id="user" name="search.user" from="${contractorList}" optionKey="shortName" noSelection="[null:'Alle auswählen']" required="" value="${params.search?.user}" class="many-to-one"/>
+            				</g:if>
             			</td>
             		</tr>
-            			<tr>
+           			<tr>
             			<td>Zuständiger Knoten:</td>
             			<td>
-            				<g:select id="initialNode" name="search.initialNode" from="${cbNodeList}" noSelection="[null:'Alle auswählen']" required="" value="${objectInstance?.cbNodeList?.name}" class="many-to-one"/>
+            				<g:if test="${params.search?.initialNode == null}" >
+            					<g:select id="initialNode" name="search.initialNode"  optionKey="name" from="${cbNodeList}" noSelection="[null:'Alle auswählen']" required="" value="${objectInstance?.cbNodeList?.name}" class="many-to-one"/>
+            				</g:if>
+            				<g:if test="${params.search?.initialNode != null && !params.search?.initialNode.isEmpty()}" >
+            					<g:select id="initialNode" name="search.initialNode"  optionKey="name" from="${cbNodeList}" noSelection="[null:'Alle auswählen']" required="" value="${params.search?.initialNode}" class="many-to-one"/>
+            				</g:if>
             			</td>
             		</tr>
-
             		<tr>
             			<td></td>
             			<td>
@@ -122,6 +149,9 @@
 		                            case 'textarea':
 		                                $(this).val('');
 		                                break;
+		                            case 'select-one':
+			                            $(this).val(null);
+			                            break;
 		            			 	case 'hidden':
 		                                $(this).val('0');
 		                                break;

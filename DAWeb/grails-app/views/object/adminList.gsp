@@ -29,7 +29,39 @@
 			</ul>
 		</div>
 		<div id="filter" style="margin: 0.8em 0 0.3em">
-			<h1><a href="#">Filter</a></h1> 
+			<h1><a href="#">Filter
+				
+				<g:if test="${params.search}"><br>
+		    		<g:if test="${!params.search?.origName.isEmpty()}">
+		    			<span style="margin-right: 25px"><i>Originalname: </i>${params.search?.origName}</span>
+		    		</g:if> 
+		    		<g:if test="${!params.search?.urn.isEmpty()}">
+		    			 <span style="margin-right: 25px"><i>URN: </i>${params.search?.urn}</span>
+		    		</g:if> 
+		    		<g:if test="${!params.search?.identifier.isEmpty()}">
+		    			<span style="margin-right: 25px"><i>Identifier: </i>${params.search?.identifier}</span>
+		    		</g:if> 
+		    		<g:if test="${params.searchContractorName != null}">
+		    			<span style="margin-right: 25px"><i>Contractor: </i>${params.searchContractorName}</span>
+		    		</g:if> 
+					<div>
+						<g:if test="${params.searchDateType != null}">
+			    			<g:if test="${params.searchDateType == 'created'}" >
+			    				<span style="margin-right: 25px"><i>Datumsbereich: </i>Datum erstellt</span>
+			    			</g:if>
+			    			<g:if test="${params.searchDateType == 'modified'}" >
+			    				<span style="margin-right: 25px"><i>Datumsbereich: </i>Datum ändern</span>
+			    			</g:if>
+			    		</g:if>    	
+			    		<g:if test="${!params.searchDateStart.isEmpty()}">
+			    			<span style="margin-right: 25px"><i>Von Datum: </i>${params.searchDateStart}</span>
+			    		</g:if> 	
+			    		<g:if test="${!params.searchDateEnd.isEmpty()}">
+			    			<span style="margin-right: 25px"><i>Bis Datum: </i>${params.searchDateEnd}</span>
+			    		</g:if> 
+			    	</div>
+		    	</g:if> 
+			</a></h1> 
             <g:form name="searchForm" action="list">
             	<table>
             		<tr>
@@ -46,18 +78,16 @@
             		</tr>
             		
             		<tr>
-            		<td>
-            		Datumsbereich:
-            		</td><td>
-            		<g:select id="datetype" name="searchDateType" from="${['Datum erstellt','Datum geändert']}" keys="${['created','modified']}" value="${params.searchDateType}" />
-            			</td>
-						</tr>
-            			<tr>
+            			<td>Datumsbereich:	</td>	
+	            		<td>
+	            			<g:select id="datetype" name="searchDateType" from="${['Datum erstellt','Datum geändert']}" keys="${['created','modified']}" value="${params.searchDateType}" noSelection="[null:'Alle auswählen']" />
+	            		</td>
+					</tr>
+            		<tr>
             			<td>Von Datum: </td>
-            			<td><jqueryPicker:time name="searchDateStart" value=""/>(TT.MM.JJJJ HH:mm:ss)
-            			</td>
+            			<td><jqueryPicker:time name="searchDateStart" value=""/>(TT.MM.JJJJ HH:mm:ss)</td>
             		</tr>
-            			<tr>
+            		<tr>
             			<td>Bis Datum: </td>
             			<td><jqueryPicker:time name="searchDateEnd" value=""/>(TT.MM.JJJJ HH:mm:ss)
             				<% // fix for https://github.com/zoran119/grails-jquery-date-time-picker/issues/12 %>
@@ -71,11 +101,16 @@
             		</tr>
             		<g:if test="${admin}">
             			<tr>
-            			<td>Contractor:</td>
-            			<td>
-            				<g:select id="contractor" name="searchContractorName" from="${contractorList}" noSelection="[null:'Alle auswählen']" optionKey="shortName" required="" value="${objectInstance?.contractorList?.shortName}" class="many-to-one"/>
-						</td>
-            		</tr>
+	            			<td>Contractor:</td>
+	            			<td>
+	            				<g:if test="${params.searchContractorName  == null}" >
+	            					<g:select id="user" name="searchContractorName" from="${contractorList}" optionKey="shortName" noSelection="[null:'Alle auswählen']" required="" value="${objectInstance?.contractorList?.shortName}" class="many-to-one"/>
+	            				</g:if>
+	            				<g:if test="${params.searchContractorName  != null && !params.searchContractorName.isEmpty()}" >
+	            					<g:select id="user" name="searchContractorName" from="${contractorList}" optionKey="shortName" noSelection="[null:'Alle auswählen']" required="" value="${params.searchContractorName}" class="many-to-one"/>
+	            				</g:if>
+	            			</td>
+            			</tr>
             		</g:if>
             		<tr>
             			<td></td>
@@ -96,7 +131,10 @@
 				                                break;
 				            			 	case 'hidden':
 				                                $(this).val('0');
-				                                break;
+				                                break;	
+				            			 	case 'select-one':
+					                            $(this).val(null);
+					                            break;
 				                            }
 				            			});
 		           				    });
