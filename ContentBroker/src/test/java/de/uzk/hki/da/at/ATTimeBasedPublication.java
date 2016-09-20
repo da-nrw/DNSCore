@@ -19,7 +19,12 @@
 
 package de.uzk.hki.da.at;
 
-import static de.uzk.hki.da.utils.C.*;
+import static de.uzk.hki.da.utils.C.CB_PACKAGETYPE_METS;
+import static de.uzk.hki.da.utils.C.FILE_EXTENSION_XML;
+import static de.uzk.hki.da.utils.C.PUBLISHEDFLAG_INSTITUTION;
+import static de.uzk.hki.da.utils.C.PUBLISHEDFLAG_NO_PUBLICATION;
+import static de.uzk.hki.da.utils.C.PUBLISHEDFLAG_PUBLIC;
+import static de.uzk.hki.da.utils.C.WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;

@@ -24,11 +24,10 @@ import static de.uzk.hki.da.cb.ArchiveReplicationCheckAction.createPublicationJo
 
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
-
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.utils.FolderUtils;
 
 /**
  * @author ???
@@ -56,7 +55,7 @@ public class CleanWorkAreaAction extends AbstractAction{
 	public boolean implementation() throws IOException {
 		
 		// to prevent leftover files from irods collection removal we delete the dirs on the filesystem first.
-		FileUtils.deleteDirectory(wa.objectPath().toFile());
+		FolderUtils.deleteDirectorySafe(wa.objectPath().toFile());
 		
 		clearNonpersistentObjectProperties(o);
 		toCreate=createPublicationJob(j,o,preservationSystem.getPresServer());

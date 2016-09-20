@@ -21,12 +21,12 @@ public class ATDuplicateFileNames {
 	
 	@Before
 	public void setUp() throws IOException{	
-		FileUtils.deleteDirectory(targetDir);
+		FolderUtils.deleteDirectorySafe(targetDir);
 	}
 	
 	@After
 	public void tearDown() throws IOException{
-		FileUtils.deleteDirectory(targetDir);
+		FolderUtils.deleteDirectorySafe(targetDir);
 		p.destroy();
 	}
 	

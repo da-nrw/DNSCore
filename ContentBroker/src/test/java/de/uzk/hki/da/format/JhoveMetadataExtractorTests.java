@@ -20,6 +20,7 @@
 package de.uzk.hki.da.format;
 
 
+import static de.uzk.hki.da.test.TC.TEST_ROOT_FORMAT;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
@@ -38,7 +39,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static de.uzk.hki.da.test.TC.*;
 import de.uzk.hki.da.model.FormatMapping;
 import de.uzk.hki.da.model.JHoveParameterMapping;
 import de.uzk.hki.da.utils.CommandLineConnector;

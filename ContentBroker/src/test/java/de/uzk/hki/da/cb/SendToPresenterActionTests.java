@@ -46,6 +46,7 @@ import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.ElasticsearchMetadataIndex;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.repository.RepositoryFacade;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -92,7 +93,7 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 	// if no public DIP is created EDM creation and ES indexing is skipped
 	@Test
 	public void endWorkflowWhenPublicPIPWasNotSuccessfullyIngested() throws IOException, RepositoryException {
-		FileUtils.deleteDirectory(Path.makeFile(WORKAREAROOTPATH,WorkArea.PIPS,WorkArea.PUBLIC,o.getContractor().getShort_name(),o.getIdentifier()));
+		FolderUtils.deleteDirectorySafe(Path.makeFile(WORKAREAROOTPATH,WorkArea.PIPS,WorkArea.PUBLIC,o.getContractor().getShort_name(),o.getIdentifier()));
 		action.implementation();
 		assertTrue(action.isKILLATEXIT());
 	}
@@ -191,6 +192,6 @@ public class SendToPresenterActionTests extends ConcreteActionUnitTest{
 	}
 
 	private void cleanUpWorkArea() throws IOException {
-		FileUtils.deleteDirectory(Path.makeFile(WORKAREAROOTPATH,WorkArea.PIPS));
+		FolderUtils.deleteDirectorySafe(Path.makeFile(WORKAREAROOTPATH,WorkArea.PIPS));
 	}
 }

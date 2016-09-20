@@ -33,7 +33,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.uzk.hki.da.convert.PublishXSLTConversionStrategy;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
@@ -42,6 +41,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 
@@ -95,8 +95,8 @@ public class PublishXsltConversionStrategyTests {
 	 */
 	@After
 	public void tearDown() throws IOException {
-		FileUtils.deleteDirectory(Path.makeFile(workAreaRootPath,"work/TEST/1/data/"+WorkArea.TMP_PIPS+"/public"));
-		FileUtils.deleteDirectory(Path.makeFile(workAreaRootPath,"work/TEST/1/data/"+WorkArea.TMP_PIPS+"/institution"));
+		FolderUtils.deleteDirectorySafe(Path.makeFile(workAreaRootPath,"work/TEST/1/data/"+WorkArea.TMP_PIPS+"/public"));
+		FolderUtils.deleteDirectorySafe(Path.makeFile(workAreaRootPath,"work/TEST/1/data/"+WorkArea.TMP_PIPS+"/institution"));
 	}
 	
 	/**

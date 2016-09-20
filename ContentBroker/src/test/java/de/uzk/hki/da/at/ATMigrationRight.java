@@ -24,7 +24,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -32,6 +31,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -52,7 +52,7 @@ public class ATMigrationRight extends AcceptanceTest {
 	
 	@After
 	public void tearDown(){
-		FileUtils.deleteQuietly(UNPACKED_DIP);
+		FolderUtils.deleteQuietlySafe(UNPACKED_DIP);
 	}
 	
 	@Test

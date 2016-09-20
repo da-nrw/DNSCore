@@ -47,14 +47,14 @@ public class ATSipBuilderCliNested {
 	
 	@Before
 	public void setUp() throws IOException{	
-		FileUtils.deleteDirectory(new File("target/atTargetDir/"));
+		FolderUtils.deleteDirectorySafe(new File("target/atTargetDir/"));
 	}
 	
 	@After
 	public void tearDown() throws IOException{
-		FileUtils.deleteQuietly(new File("target/atTargetDir/"+nestedSip1));
-		FileUtils.deleteQuietly(new File("target/atTargetDir/"+nestedSip2));
-		FileUtils.deleteDirectory(targetDir);
+		FolderUtils.deleteQuietlySafe(new File("target/atTargetDir/"+nestedSip1));
+		FolderUtils.deleteQuietlySafe(new File("target/atTargetDir/"+nestedSip2));
+		FolderUtils.deleteDirectorySafe(targetDir);
 		p.destroy();
 	}
 	

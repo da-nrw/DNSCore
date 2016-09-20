@@ -43,6 +43,7 @@ import de.uzk.hki.da.repository.MetadataIndex;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.MD5Checksum;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
@@ -63,7 +64,7 @@ public class AcceptanceTestHelper {
 	
 	
 	private static final int INTERVAL=2000; // in ms
-	private static final int TIMEOUT=1200000; // ins ms
+	private static final int TIMEOUT=300000; // ins ms
 	
 	private GridFacade gridFacade;
 	private Node localNode;
@@ -121,7 +122,7 @@ public class AcceptanceTestHelper {
 			fail("could not find source file or unarchive source file to tmp");
 		}
 		
-		if (targetFolder.exists()) FileUtils.deleteDirectory(targetFolder);
+		if (targetFolder.exists()) FolderUtils.deleteDirectorySafe(targetFolder);
 		FileUtils.moveDirectory(Path.makeFile(TEMP_FOLDER,object.getIdentifier()+packSuffix+packageName),targetFolder);
 		Path.makeFile(TEMP_FOLDER,object.getIdentifier()+packSuffix+packageName+C.FILE_EXTENSION_TAR).delete();
 	}
@@ -435,7 +436,7 @@ public class AcceptanceTestHelper {
 		} else {
 			source = Path.makeFile(TEST_DATA_ROOT_PATH,sourcePackageName);
 			target = Path.makeFile(localNode.getIngestAreaRootPath(),testContractor.getShort_name(),originalName);
-			if (target.exists()) FileUtils.deleteDirectory(target);
+			if (target.exists()) FolderUtils.deleteDirectorySafe(target);
 			FileUtils.copyDirectory(source, target, false);
 			}	
 	}

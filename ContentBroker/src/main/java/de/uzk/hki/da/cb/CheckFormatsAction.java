@@ -22,15 +22,11 @@ package de.uzk.hki.da.cb;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.io.FileUtils;
-import org.hibernate.Session;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
@@ -39,17 +35,12 @@ import de.uzk.hki.da.format.FileFormatException;
 import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.model.DAFile;
-import de.uzk.hki.da.model.FormatMapping;
-import de.uzk.hki.da.model.JHoveParameterMapping;
-import de.uzk.hki.da.model.Job;
-import de.uzk.hki.da.model.Node;
-import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.WorkArea;
-import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.CommaSeparatedList;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.MD5Checksum;
 import de.uzk.hki.da.utils.Path;
 
@@ -219,7 +210,7 @@ public class CheckFormatsAction extends AbstractAction {
 	
 	@Override
 	public void rollback() throws Exception {
-		FileUtils.deleteQuietly(Path.makeFile(wa.dataPath(),WorkArea.TMP_JHOVE));
+		FolderUtils.deleteQuietlySafe(Path.makeFile(wa.dataPath(),WorkArea.TMP_JHOVE));
 	}
 
 

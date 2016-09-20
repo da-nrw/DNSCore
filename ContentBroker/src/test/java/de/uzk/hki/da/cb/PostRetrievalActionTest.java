@@ -19,8 +19,10 @@
 
 package de.uzk.hki.da.cb;
 
-import static org.junit.Assert.*;
-import static de.uzk.hki.da.utils.C.*;
+import static de.uzk.hki.da.utils.C.FILE_EXTENSION_TAR;
+import static de.uzk.hki.da.utils.C.TEST_USER_SHORT_NAME;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -32,6 +34,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.test.TC;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -65,7 +68,7 @@ public class PostRetrievalActionTest  extends ConcreteActionUnitTest {
 	
 	@After
 	public void tearDown() throws Exception {
-		FileUtils.deleteQuietly(Path.makeFile(userAreaRootPath,TEST_USER_SHORT_NAME));
+		FolderUtils.deleteQuietlySafe(Path.makeFile(userAreaRootPath,TEST_USER_SHORT_NAME));
 	}
 	
 	/**

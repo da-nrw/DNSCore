@@ -21,8 +21,6 @@ package de.uzk.hki.da.action;
 
 import org.junit.Test;
 
-import de.uzk.hki.da.action.ActionFactory;
-import de.uzk.hki.da.action.ActionInformation;
 import de.uzk.hki.da.service.HibernateUtil;
 
 

@@ -22,8 +22,6 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import gov.loc.repository.bagit.Bag;
-import gov.loc.repository.bagit.BagFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,7 +29,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Namespace;
@@ -40,8 +37,11 @@ import org.junit.After;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
+import gov.loc.repository.bagit.Bag;
+import gov.loc.repository.bagit.BagFactory;
 
 
 /**
@@ -56,7 +56,7 @@ public class ATPremisCreation extends PREMISBase{
 	
 	@After
 	public void tearDown() throws IOException{
-		FileUtils.deleteDirectory(unpackedDIP);
+		FolderUtils.deleteDirectorySafe(unpackedDIP);
 		Path.makeFile("tmp",object.getIdentifier()+".pack_1.tar").delete(); // retrieved dip
 	}
 	

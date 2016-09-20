@@ -40,6 +40,7 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 
 /**
  * 
@@ -76,7 +77,7 @@ public class CSVQueryHandler {
 					createRetievalJob(o);
 				}
 			}
-			FileUtils.deleteQuietly(outCsvFile);
+			FolderUtils.deleteQuietlySafe(outCsvFile);
 			FileUtils.moveFile(csvFile, outCsvFile);
 		}catch (IOException e) {
 			logger.error("catched " + e.toString() + " while working with "
@@ -95,7 +96,7 @@ public class CSVQueryHandler {
 			csvFileHandler.parseFile(csvFile);
 			evalStates();
 			csvFileHandler.persistStates(csvFile);
-			FileUtils.deleteQuietly(outCsvFile);
+			FolderUtils.deleteQuietlySafe(outCsvFile);
 			FileUtils.moveFile(csvFile, outCsvFile);
 		} catch (IOException e) {
 			logger.error("catched " + e.toString() + " while working with "

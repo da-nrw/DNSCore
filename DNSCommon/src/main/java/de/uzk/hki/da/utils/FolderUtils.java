@@ -34,7 +34,7 @@ import org.apache.commons.io.FileUtils;
  */
 
 public class FolderUtils {
-	public static final long TIME_TO_END_FILE_OPERATION=1000;
+	public static final long TIME_TO_END_FILE_OPERATION=30000;
 
 	public static List<String> listFolderContents(File folder)
 	{
@@ -105,6 +105,7 @@ public class FolderUtils {
 			FileUtils.deleteDirectory(directory);
 		} catch (IOException e) {
 			try {
+				System.out.println("FolderUtils::deleteDirectorySafe(): First delete "+directory+" fails");
 				Thread.sleep(TIME_TO_END_FILE_OPERATION);
 				// Zweiter versuch nach einer Pause
 				FileUtils.deleteDirectory(directory);
@@ -114,7 +115,7 @@ public class FolderUtils {
 		}
 	}
 
-	public static boolean deleteQuietly(File file) {
+	public static boolean deleteQuietlySafe(File file) {
 		boolean result = FileUtils.deleteQuietly(file);
 		if (!result) {
 			try {

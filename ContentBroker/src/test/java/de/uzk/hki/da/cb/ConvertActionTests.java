@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,6 +39,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.test.TC;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 
@@ -118,7 +118,7 @@ public class ConvertActionTests extends ConcreteActionUnitTest{
 	public void tearDown() throws IOException{
 		
 		if (Path.makeFile(wa.dataPath(),"dip").exists())
-			FileUtils.deleteDirectory(Path.makeFile(wa.dataPath(),"dip"));
+			FolderUtils.deleteDirectorySafe(Path.makeFile(wa.dataPath(),"dip"));
 	}
 	
 	

@@ -37,6 +37,7 @@ import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.MD5Checksum;
 import de.uzk.hki.da.utils.StringUtilities;
 
@@ -148,9 +149,9 @@ public class FakeGridFacade implements GridFacade {
 
 			if (files.size()>0) {
 				logger.debug("found destroy marker");
-				FileUtils.deleteDirectory(new File(tmpFolder + dirname));
+				FolderUtils.deleteDirectorySafe(new File(tmpFolder + dirname));
 				return true;
-			} else FileUtils.deleteDirectory(new File(tmpFolder + dirname));
+			} else FolderUtils.deleteDirectorySafe(new File(tmpFolder + dirname));
 		} catch (Exception e) {
 			logger.error("Error while checking validity on fakedGridfacade on " + custodyFile.getAbsolutePath() + ": "+ e.getMessage());
 		} 

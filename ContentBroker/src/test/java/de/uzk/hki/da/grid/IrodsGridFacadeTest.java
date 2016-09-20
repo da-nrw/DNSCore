@@ -37,6 +37,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 
@@ -79,8 +80,8 @@ public class IrodsGridFacadeTest {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-		 FileUtils.deleteDirectory(new File(irodsDir));
-		 FileUtils.deleteDirectory(new File(forkDir));
+		 FolderUtils.deleteDirectorySafe(new File(irodsDir));
+		 FolderUtils.deleteDirectorySafe(new File(forkDir));
 	}
 	
 	/**
@@ -121,8 +122,8 @@ public class IrodsGridFacadeTest {
 	 */
 	@After
 	public void tearDown() throws Exception {
-		 FileUtils.deleteDirectory(new File(irodsDir));
-		 FileUtils.deleteDirectory(new File(forkDir));
+		 FolderUtils.deleteDirectorySafe(new File(irodsDir));
+		 FolderUtils.deleteDirectorySafe(new File(forkDir));
 	}
 	
 	/**

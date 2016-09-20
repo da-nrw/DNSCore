@@ -52,6 +52,7 @@ import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.ProcessInformation;
 
@@ -331,7 +332,7 @@ public class RestructureAction extends AbstractAction{
 			Path.makeFile( dataPath, repName + A ), 
 			Path.makeFile( objectPath, DATA_TMP ));
 			
-		FileUtils.deleteDirectory( dataPath.toFile() );
+		FolderUtils.deleteDirectorySafe( dataPath.toFile() );
 			
 		FileUtils.moveDirectory(
 			Path.makeFile( objectPath, DATA_TMP ), 

@@ -24,7 +24,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +36,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TESTHelper;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 
@@ -70,8 +70,8 @@ public class RetrievePackagesHelperTest {
 	
 	@After 
 	public void tearDown() throws IOException{
-		FileUtils.deleteDirectory(Path.make(workAreaRootPath,"work/TEST/id/loadedAIPs").toFile());
-		FileUtils.deleteDirectory(Path.make(workAreaRootPath,"work/TEST/id/data").toFile());
+		FolderUtils.deleteDirectorySafe(Path.make(workAreaRootPath,"work/TEST/id/loadedAIPs").toFile());
+		FolderUtils.deleteDirectorySafe(Path.make(workAreaRootPath,"work/TEST/id/data").toFile());
 	}
 	
 	

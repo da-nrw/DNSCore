@@ -18,19 +18,21 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.utils.FolderUtils;
 
 /** ComponentTest of IrodsCommandLineConnector
  * @author Jens Peters
@@ -113,8 +115,8 @@ public class CTIrodsCommandLineConnector {
 	
 	@AfterClass
 	public static void cleanup () throws IOException {
-		FileUtils.deleteDirectory(new File(tmpDir));
-		FileUtils.deleteQuietly(new File(workingRescPhysicalPath + "/aip/connector/urn3.tar"));
+		FolderUtils.deleteDirectorySafe(new File(tmpDir));
+		FolderUtils.deleteQuietlySafe(new File(workingRescPhysicalPath + "/aip/connector/urn3.tar"));
 	}
 
 	@Test

@@ -19,7 +19,9 @@
 
 package de.uzk.hki.da.metadata;
 
-import nu.xom.*;
+import nu.xom.Element;
+import nu.xom.NodeFactory;
+import nu.xom.Nodes;
 
 
 /**

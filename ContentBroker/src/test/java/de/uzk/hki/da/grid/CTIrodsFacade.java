@@ -18,7 +18,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -35,6 +38,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.MD5Checksum;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.PropertiesUtils;
@@ -100,7 +104,7 @@ public class CTIrodsFacade {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-		FileUtils.deleteDirectory(new File(tmpDir));
+		FolderUtils.deleteDirectorySafe(new File(tmpDir));
 		removeConfDir();
 	}
 	
@@ -121,8 +125,8 @@ public class CTIrodsFacade {
 	 */
 	@After
 	public void tearDown() throws Exception {
-		FileUtils.deleteQuietly(new File(testCollPhysicalPathOnGridCache));
-		FileUtils.deleteQuietly(new File(testCollPhysicalPathOnLTA));
+		FolderUtils.deleteQuietlySafe(new File(testCollPhysicalPathOnGridCache));
+		FolderUtils.deleteQuietlySafe(new File(testCollPhysicalPathOnLTA));
 		isc.removeCollectionAndEatException(testCollLogicalPath);
 	}
 	
@@ -316,7 +320,7 @@ public class CTIrodsFacade {
 	}
 
 	private static void removeConfDir() {
-		FileUtils.deleteQuietly(new File("conf")); 
+		FolderUtils.deleteQuietlySafe(new File("conf")); 
 	}
 
 	private File createTestFile() throws IOException {

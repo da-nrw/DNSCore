@@ -49,6 +49,7 @@ import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
 import de.uzk.hki.da.repository.RepositoryException;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 
@@ -88,7 +89,7 @@ public class CreateEDMActionTests extends ConcreteActionUnitTest{
 	
 	@After
 	public void tearDown() {
-		FileUtils.deleteQuietly(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.PIPS));
+		FolderUtils.deleteQuietlySafe(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.PIPS));
 	}
 	
 	@Test
@@ -105,7 +106,7 @@ public class CreateEDMActionTests extends ConcreteActionUnitTest{
 
 	@Test
 	public void missingMetadataFileInPublicPIP() throws IOException, RepositoryException, JDOMException, ParserConfigurationException, SAXException {
-		FileUtils.deleteQuietly(makeMetadataFile(CB_PACKAGETYPE_EAD));
+		FolderUtils.deleteQuietlySafe(makeMetadataFile(CB_PACKAGETYPE_EAD));
 		try {
 			action.implementation();
 			fail();

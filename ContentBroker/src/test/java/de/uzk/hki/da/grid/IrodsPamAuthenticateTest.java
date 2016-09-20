@@ -21,7 +21,6 @@ package de.uzk.hki.da.grid;
 
 import static org.junit.Assert.assertEquals;
 
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

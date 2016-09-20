@@ -36,6 +36,7 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
+import de.uzk.hki.da.utils.FolderUtils;
 
 
 /**
@@ -180,7 +181,7 @@ public class RetrievePackagesHelper {
 			
 		wa.dataPath().toFile().mkdir();
 		normalizeObject(object); // TODO really? for every package?
-		FileUtils.deleteDirectory(new File(loadedAIPsPath));
+		FolderUtils.deleteDirectorySafe(new File(loadedAIPsPath));
 		
 		return results;
 	}
@@ -234,7 +235,7 @@ public class RetrievePackagesHelper {
 			FileUtils.moveDirectoryToDirectory(rep, new File(targetPath), true);
 		}
 		
-		FileUtils.deleteDirectory(tempFolder);
+		FolderUtils.deleteDirectorySafe(tempFolder);
 		
 		return results;
 	}

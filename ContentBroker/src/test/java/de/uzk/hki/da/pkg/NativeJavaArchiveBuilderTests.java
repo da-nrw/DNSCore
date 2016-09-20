@@ -18,17 +18,17 @@
 */
 package de.uzk.hki.da.pkg;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.pkg.NativeJavaTarArchiveBuilder;
+import de.uzk.hki.da.utils.FolderUtils;
 
 /**
  * @author Daniel M. de Oliveira
@@ -48,7 +48,7 @@ public class NativeJavaArchiveBuilderTests {
 	@After
 	public void tearDown() throws IOException{
 		new File(tarPath).delete();
-		FileUtils.deleteDirectory(new File(targetDirPath));
+		FolderUtils.deleteDirectorySafe(new File(targetDirPath));
 	}
 	
 	@Test
@@ -88,7 +88,7 @@ public class NativeJavaArchiveBuilderTests {
 		assertTrue(new File(targetDirPath+"target/pdfSample2.pdf").exists());
 		
 		new File(tarPath).delete();
-		FileUtils.deleteDirectory(new File(targetDirPath));
+		FolderUtils.deleteDirectorySafe(new File(targetDirPath));
 		new File(targetDirPath).mkdir();
 		
 		builder.archiveFolder(new File(sourceDirPath), new File(tarPath), true);

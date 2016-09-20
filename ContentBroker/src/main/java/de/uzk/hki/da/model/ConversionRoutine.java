@@ -19,7 +19,6 @@
 
 package de.uzk.hki.da.model;
 import java.lang.Object;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

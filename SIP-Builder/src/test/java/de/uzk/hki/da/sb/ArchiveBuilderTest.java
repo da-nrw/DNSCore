@@ -65,7 +65,7 @@ public class ArchiveBuilderTest {
 	@After
 	public void tearDown() throws IOException {
 	
-		FileUtils.deleteDirectory(destinationFolder);	
+		FolderUtils.deleteDirectorySafe(destinationFolder);	
 	}
 			
 	/**

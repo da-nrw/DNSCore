@@ -20,7 +20,6 @@ package de.uzk.hki.da.format;
 
 import java.io.File;
 import java.util.List;
-import java.util.Set;
 
 import de.uzk.hki.da.model.KnownError;
 import de.uzk.hki.da.utils.Path;

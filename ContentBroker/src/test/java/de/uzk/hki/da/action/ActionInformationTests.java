@@ -30,9 +30,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import de.uzk.hki.da.action.ActionDescription;
-import de.uzk.hki.da.action.ActionInformation;
-
 
 
 /**

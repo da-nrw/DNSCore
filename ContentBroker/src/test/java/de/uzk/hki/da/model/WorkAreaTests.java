@@ -22,8 +22,10 @@
 
 package de.uzk.hki.da.model;
 
-import static org.junit.Assert.*;
-import static de.uzk.hki.da.utils.C.*;
+import static de.uzk.hki.da.utils.C.FILE_EXTENSION_XML;
+import static de.uzk.hki.da.utils.C.TEST_USER_SHORT_NAME;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,11 +35,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.model.Node;
-import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.User;
-import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 
@@ -73,7 +72,7 @@ public class WorkAreaTests {
 	
 	@After 
 	public void tearDown() throws IOException {
-		FileUtils.deleteDirectory(WORK_AREA_ROOT_PATH.toFile());
+		FolderUtils.deleteDirectorySafe(WORK_AREA_ROOT_PATH.toFile());
 	}
 	
 	@Test

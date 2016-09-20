@@ -34,7 +34,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Namespace;
@@ -44,6 +43,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
@@ -74,7 +74,7 @@ public class ATPremisCreationDelta extends PREMISBase {
 	
 	@After
 	public void tearDown() throws IOException{
-		FileUtils.deleteDirectory(unpackedDIP);
+		FolderUtils.deleteDirectorySafe(unpackedDIP);
 		Path.makeFile("tmp",object.getIdentifier()+".pack_2.tar").delete(); // retrieved dip
 	}
 	

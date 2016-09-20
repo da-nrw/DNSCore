@@ -42,6 +42,7 @@ import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.service.JmsMessageServiceHandler;
 import de.uzk.hki.da.test.TC;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -77,7 +78,7 @@ public class ObjectToWorkAreaActionTests extends ConcreteActionUnitTest{
 	
 	@After
 	public void tearDown() throws IOException {
-		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.WORK));
+		FolderUtils.deleteDirectorySafe(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.WORK));
 	}
 	
 	

@@ -21,6 +21,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 
 public class ATKeepModDates extends AcceptanceTest {
 	private static final String ORIG_NAME = "ATKeepModDates";
@@ -36,7 +37,7 @@ public class ATKeepModDates extends AcceptanceTest {
 	public void tearDown(){
 		distributedConversionAdapter.remove("aip/TEST/"+idiName); 
 		new File("/tmp/"+idiName+".tar").delete();
-		FileUtils.deleteQuietly(new File("/tmp/"+idiName));
+		FolderUtils.deleteQuietlySafe(new File("/tmp/"+idiName));
 	}
 
 	@Test

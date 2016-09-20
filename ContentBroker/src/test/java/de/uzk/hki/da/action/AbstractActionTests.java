@@ -23,7 +23,8 @@
 
 package de.uzk.hki.da.action;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -39,8 +40,8 @@ import org.junit.Test;
 import de.uzk.hki.da.cb.NullAction;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.core.UserExceptionManager;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
+import de.uzk.hki.da.core.UserExceptionManager;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;

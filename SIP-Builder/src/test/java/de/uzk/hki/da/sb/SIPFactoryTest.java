@@ -96,7 +96,7 @@ public class SIPFactoryTest {
 	 */
 	@After
 	public void tearDown() throws IOException {
-		FileUtils.deleteDirectory(new File(pathToResourcesFolder + "destination"));
+		FolderUtils.deleteDirectorySafe(new File(pathToResourcesFolder + "destination"));
 	}
 	
 	/**

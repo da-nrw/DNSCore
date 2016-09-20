@@ -503,7 +503,7 @@ public class SIPFactory {
 		progressManager.deleteTempProgress(jobId, 0.0);
 
 		try {
-			FileUtils.deleteDirectory(folder);
+			FolderUtils.deleteDirectorySafe(folder);
 		} catch (IOException e) {
 			logger.warn(
 					"Failed to delete temp folder " + folder.getAbsolutePath(),
@@ -614,10 +614,10 @@ public class SIPFactory {
 
 	private void rollback(File folder, File archiveFile) {
 
-		FileUtils.deleteQuietly(folder);
+		FolderUtils.deleteQuietlySafe(folder);
 
 		if (archiveFile != null)
-			FileUtils.deleteQuietly(archiveFile);
+			FolderUtils.deleteQuietlySafe(archiveFile);
 	}
 
 	/**
@@ -627,9 +627,9 @@ public class SIPFactory {
 	private void abortSipBuilding() {
 
 		if (listCreationTempFolder != null && listCreationTempFolder.exists())
-			FileUtils.deleteQuietly(listCreationTempFolder);
+			FolderUtils.deleteQuietlySafe(listCreationTempFolder);
 
-		FileUtils.deleteQuietly(collectionFolder);
+		FolderUtils.deleteQuietlySafe(collectionFolder);
 		progressManager.abort();
 	}
 
@@ -822,7 +822,7 @@ public class SIPFactory {
 
 					switch (answer) {
 					case YES:
-						FileUtils.deleteQuietly(collectionFolder);
+						FolderUtils.deleteQuietlySafe(collectionFolder);
 						break;
 					case NO:
 						progressManager.abort();
@@ -994,7 +994,7 @@ public class SIPFactory {
 
 			if (listCreationTempFolder != null
 					&& listCreationTempFolder.exists())
-				FileUtils.deleteQuietly(listCreationTempFolder);
+				FolderUtils.deleteQuietlySafe(listCreationTempFolder);
 
 			if (createCollection) {
 				progressManager.startJob(-1);

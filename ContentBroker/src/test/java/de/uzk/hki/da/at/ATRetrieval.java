@@ -20,8 +20,6 @@ package de.uzk.hki.da.at;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import gov.loc.repository.bagit.Bag;
-import gov.loc.repository.bagit.BagFactory;
 
 import java.io.File;
 import java.util.Date;
@@ -32,6 +30,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
+import de.uzk.hki.da.utils.FolderUtils;
+import gov.loc.repository.bagit.Bag;
+import gov.loc.repository.bagit.BagFactory;
 
 /**
  * Relates to AK-T/05 RetrieveObject - Happy Path Scenario.
@@ -50,7 +51,7 @@ public class ATRetrieval extends AcceptanceTest{
 	public static void tearDown(){
 		distributedConversionAdapter.remove("aip/TEST/"+identifier); // TODO does it work?
 		new File("/tmp/"+identifier+".tar").delete();
-		FileUtils.deleteQuietly(new File("/tmp/"+identifier));
+		FolderUtils.deleteQuietlySafe(new File("/tmp/"+identifier));
 	}
 	
 	@Test

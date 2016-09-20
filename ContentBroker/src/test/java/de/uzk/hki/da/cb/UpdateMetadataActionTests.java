@@ -20,8 +20,8 @@
 package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -54,6 +54,7 @@ import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
@@ -124,8 +125,8 @@ public class UpdateMetadataActionTests {
 		new File(workAreaPath + "/work/TEST/23/data/pips/public/DC.xml").delete();
 		new File(workAreaPath + "/work/TEST/23/data/pips/public/mets.xml").delete();
 		new File(workAreaPath + "/work/TEST/42/data/DC_.xml").delete();
-		FileUtils.deleteDirectory(new File(workAreaPath + "/TEST/42/data/pips"));
-		FileUtils.deleteDirectory(new File("conf/xslt"));
+		FolderUtils.deleteDirectorySafe(new File(workAreaPath + "/TEST/42/data/pips"));
+		FolderUtils.deleteDirectorySafe(new File("conf/xslt"));
 	}
 	
 	

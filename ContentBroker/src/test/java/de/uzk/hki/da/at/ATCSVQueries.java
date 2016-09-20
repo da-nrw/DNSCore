@@ -30,7 +30,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
 import org.hibernate.Session;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -42,6 +41,7 @@ import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.service.CSVFileHandler;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 
 
 /**
@@ -110,13 +110,13 @@ public class ATCSVQueries extends AcceptanceTest {
 		distributedConversionAdapter.remove("aip/TEST/"+ORIGINAL_NAME_ARCHIVED); 
 		distributedConversionAdapter.remove("aip/TEST/"+ORIGINAL_NAME_RETRIEVAL); 
 		
-		FileUtils.deleteQuietly(new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME_ARCHIVED+".csv"));
-		FileUtils.deleteQuietly(new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME_ERROR+".csv"));
-		FileUtils.deleteQuietly(new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME_RETRIEVAL+".csv"));
+		FolderUtils.deleteQuietlySafe(new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME_ARCHIVED+".csv"));
+		FolderUtils.deleteQuietlySafe(new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME_ERROR+".csv"));
+		FolderUtils.deleteQuietlySafe(new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME_RETRIEVAL+".csv"));
 		
-		FileUtils.deleteQuietly(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+ORIGINAL_NAME_ARCHIVED+".csv"));
-		FileUtils.deleteQuietly(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+ORIGINAL_NAME_ERROR+".csv"));
-		FileUtils.deleteQuietly(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+ORIGINAL_NAME_RETRIEVAL+".csv"));
+		FolderUtils.deleteQuietlySafe(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+ORIGINAL_NAME_ARCHIVED+".csv"));
+		FolderUtils.deleteQuietlySafe(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+ORIGINAL_NAME_ERROR+".csv"));
+		FolderUtils.deleteQuietlySafe(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+ORIGINAL_NAME_RETRIEVAL+".csv"));
 		
 	}
 

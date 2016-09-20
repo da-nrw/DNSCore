@@ -56,6 +56,7 @@ import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.FileIdGenerator;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.XMLUtils;
@@ -683,17 +684,17 @@ public class UpdateMetadataAction extends AbstractAction {
 				
 				for(String ref : ead.getMetsRefsInEad()) {
 					String metsRelPath = ead.getReferencedDafile(mf, ref, documents).getRelative_path();
-					FileUtils.deleteQuietly(wa.toFile(repName, metsRelPath));
+					FolderUtils.deleteQuietlySafe(wa.toFile(repName, metsRelPath));
 				}
 			}
 			if (repName.startsWith(WorkArea.TMP_PIPS)) {
 				metadataFileName = packageType + ".xml";
 			}
-			FileUtils.deleteQuietly(Path.makeFile(wa.dataPath(), repName, metadataFileName));
+			FolderUtils.deleteQuietlySafe(Path.makeFile(wa.dataPath(), repName, metadataFileName));
 			
 			for(File file : Path.makeFile(wa.dataPath(), repName).listFiles()) {
 				if(file.isDirectory() && file.listFiles().length==0) {
-					FileUtils.deleteDirectory(file);
+					FolderUtils.deleteDirectorySafe(file);
 				}
 			}
 		}

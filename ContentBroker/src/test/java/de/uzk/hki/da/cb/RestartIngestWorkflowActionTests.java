@@ -39,6 +39,7 @@ import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.WorkArea;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -75,8 +76,8 @@ public class RestartIngestWorkflowActionTests extends ConcreteActionUnitTest{
 
 	@After
 	public void tearDown() throws IOException{
-		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.WORK));
-		FileUtils.deleteDirectory(pipsFolder.toFile());
+		FolderUtils.deleteDirectorySafe(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.WORK));
+		FolderUtils.deleteDirectorySafe(pipsFolder.toFile());
 	}
 	
 	@Test

@@ -26,6 +26,7 @@ import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.FolderUtils;
 
 /**
  * @author Daniel M. de Oliveira
@@ -54,16 +55,16 @@ public class CTTestHelper {
 	}
 	
 	public static void cleanUpWhiteBoxTest(){
-		FileUtils.deleteQuietly(C.FIDO_INSTALLATION.toFile());
-		FileUtils.deleteQuietly(new File(C.FIDO_GLUE_SCRIPT));
-		FileUtils.deleteQuietly(C.CONF.toFile());
-		FileUtils.deleteQuietly(new File("jhove"));
-		FileUtils.deleteQuietly(new File(C.CONFIGURE_SCRIPT));
-		FileUtils.deleteQuietly(new File("ContentBroker_start.sh.template"));
-		FileUtils.deleteQuietly(new File("ContentBroker_stop.sh.template"));
-		FileUtils.deleteQuietly(new File("cbTalk.sh"));
-		FileUtils.deleteQuietly(new File("ffmpeg.sh"));
-		FileUtils.deleteQuietly(new File("systemRules"));
-		FileUtils.deleteQuietly(new File("activemq-data"));
+		FolderUtils.deleteQuietlySafe(C.FIDO_INSTALLATION.toFile());
+		FolderUtils.deleteQuietlySafe(new File(C.FIDO_GLUE_SCRIPT));
+		FolderUtils.deleteQuietlySafe(C.CONF.toFile());
+		FolderUtils.deleteQuietlySafe(new File("jhove"));
+		FolderUtils.deleteQuietlySafe(new File(C.CONFIGURE_SCRIPT));
+		FolderUtils.deleteQuietlySafe(new File("ContentBroker_start.sh.template"));
+		FolderUtils.deleteQuietlySafe(new File("ContentBroker_stop.sh.template"));
+		FolderUtils.deleteQuietlySafe(new File("cbTalk.sh"));
+		FolderUtils.deleteQuietlySafe(new File("ffmpeg.sh"));
+		FolderUtils.deleteQuietlySafe(new File("systemRules"));
+		FolderUtils.deleteQuietlySafe(new File("activemq-data"));
 	}
 }

@@ -19,6 +19,10 @@
 
 package de.uzk.hki.da.repository;
 
+import static de.uzk.hki.da.test.TC.IDENTIFIER;
+import static de.uzk.hki.da.test.TC.TEST_ROOT_REPOSITORY;
+import static de.uzk.hki.da.utils.C.ENCODING_UTF_8;
+import static de.uzk.hki.da.utils.C.OWL_SAMEAS;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -31,8 +35,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static de.uzk.hki.da.test.TC.*;
-import static de.uzk.hki.da.utils.C.*;
 import de.uzk.hki.da.utils.PasswordUtils;
 import de.uzk.hki.da.utils.Path;
 

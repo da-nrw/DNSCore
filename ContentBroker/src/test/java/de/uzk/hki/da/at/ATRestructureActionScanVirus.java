@@ -55,7 +55,7 @@ public class ATRestructureActionScanVirus extends AcceptanceTest{
 	
 	@Before
 	public void setUp() throws IOException{	
-//		FileUtils.deleteDirectory(targetDir);
+//		FolderUtils.deleteDirectorySafe(targetDir);
 	}
 	
 	@After

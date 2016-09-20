@@ -20,13 +20,12 @@ package de.uzk.hki.da.cb;
 
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
-
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.DocumentsGenService;
 import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 
@@ -87,7 +86,7 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 	
 	@Override
 	public void rollback() throws Exception {
-		FileUtils.deleteQuietly(Path.makeFile(wa.dataPath()));
+		FolderUtils.deleteQuietlySafe(Path.makeFile(wa.dataPath()));
 	}
 
 

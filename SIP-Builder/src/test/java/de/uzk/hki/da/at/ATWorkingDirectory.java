@@ -32,15 +32,15 @@ public class ATWorkingDirectory {
 	
 	@Before
 	public void setUp() throws IOException{	
-		FileUtils.deleteDirectory(new File("target/atTargetDir/"));
-		FileUtils.deleteDirectory(new File("target/atTargetDirWorking"));
+		FolderUtils.deleteDirectorySafe(new File("target/atTargetDir/"));
+		FolderUtils.deleteDirectorySafe(new File("target/atTargetDirWorking"));
 	}
 	
 	@After
 	public void tearDown() throws IOException{
-		FileUtils.deleteQuietly(new File("target/atTargetDir/"+sip1));;
-		FileUtils.deleteDirectory(s1);
-		FileUtils.deleteDirectory(targetDir);
+		FolderUtils.deleteQuietlySafe(new File("target/atTargetDir/"+sip1));;
+		FolderUtils.deleteDirectorySafe(s1);
+		FolderUtils.deleteDirectorySafe(targetDir);
 		p.destroy();
 	}
 	

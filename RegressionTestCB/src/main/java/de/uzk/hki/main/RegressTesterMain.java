@@ -24,6 +24,7 @@ import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
 
 import de.uzk.hki.da.at.AcceptanceTestHelper;
+import de.uzk.hki.da.utils.FolderUtils;
 
 /**
  * 
@@ -138,7 +139,7 @@ public class RegressTesterMain {
 	    //create link to resource dir. Some test cases access the location LOCAL_RESOURCE and expect to find some test resources there
 	    try {
 	    	if(LOCAL_RESOURCE.exists()){
-	    		FileUtils.deleteDirectory(LOCAL_RESOURCE);
+	    		FolderUtils.deleteDirectorySafe(LOCAL_RESOURCE);
 	    	}
 		   	LOCAL_RESOURCE.mkdirs();
 			Files.createSymbolicLink(Paths.get(LOCAL_RESOURCE.getAbsolutePath()+"/at"), Paths.get(testResourceFile.getAbsolutePath()));
