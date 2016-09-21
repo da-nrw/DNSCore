@@ -64,7 +64,7 @@ public class AcceptanceTestHelper {
 	
 	
 	private static final int INTERVAL=2000; // in ms
-	private static final int TIMEOUT=300000; // ins ms
+	private static final int TIMEOUT=1200000; // ins ms
 	
 	private GridFacade gridFacade;
 	private Node localNode;
