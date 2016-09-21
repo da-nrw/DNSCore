@@ -77,7 +77,13 @@ public class SimpleFileWithFileFormat implements FileWithFileFormat {
 		
 	}
 
-
+	@Override
+	public String toString() {
+		return "SimpleFileWithFileFormat [" + (file != null ? "file=" + file + ", " : "")
+				+ (formatPUID != null ? "formatPUID=" + formatPUID + ", " : "")
+				+ (secondary != null ? "secondary=" + secondary : "") + "]";
+	}
+	
 
 
 }

@@ -65,7 +65,7 @@ public class ScriptWrappedPronomFormatIdentifier implements FormatIdentifier, Co
 				"ConversionScript doesn't exist: "+conversionScript.getAbsolutePath());
 		
 		
-		if (!file.exists()) throw new Error("File doesn't exist");
+		if (!file.exists()) throw new Error("File ("+file.getAbsolutePath()+") doesn't exist");
 
 		
 		ProcessInformation pi = new CommandLineConnector().runCmdSynchronously( new String[]{

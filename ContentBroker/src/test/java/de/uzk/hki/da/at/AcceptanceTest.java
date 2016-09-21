@@ -52,8 +52,8 @@ import de.uzk.hki.da.utils.PropertiesUtils;
 public class AcceptanceTest {
 	
 	private static final String CONF_BEANS_XML = "conf/beans.xml";
-	private static final String CI_WORKING_RESOURCE = "ciWorkingResource";
-	private static final String CI_ARCHIVE_RESOURCE = "ciArchiveRescGroup";
+	private static String CI_WORKING_RESOURCE = "ciWorkingResource";
+	private static String CI_ARCHIVE_RESOURCE = "ciArchiveRescGroup";
 	private static final String BEAN_NAME_FAKE_REPOSITORY_FACADE = "fakeRepositoryFacade";
 	private static final String BEAN_NAME_FAKE_METADATA_INDEX = "fakeMetadataIndex";
 	protected static Node localNode;
@@ -79,6 +79,11 @@ public class AcceptanceTest {
 		
 		if (gridImplBeanName==null) gridImplBeanName="fakeGridFacade";
 		if (dcaImplBeanName==null) dcaImplBeanName="fakeDistributedConversionAdapter";
+		
+		if(properties.getProperty("localNode.workingResource")!=null) 
+			CI_WORKING_RESOURCE=properties.getProperty("localNode.workingResource");
+		if(properties.getProperty("localNode.replDestinations")!=null) 
+			CI_ARCHIVE_RESOURCE=properties.getProperty("localNode.replDestinations");
 		
 		AbstractApplicationContext context =
 				new FileSystemXmlApplicationContext(CONF_BEANS_XML);
@@ -189,6 +194,8 @@ public class AcceptanceTest {
 		session.close();
 		instantiateStoragePolicy();
 		ath = new AcceptanceTestHelper(gridFacade,localNode,testContractor,sp);
+		if(properties.getProperty("localNode.logFolder")!=null) 
+			ath.setLogPath(properties.getProperty("localNode.logFolder"));
 		
 //		new CommandLineConnector().runCmdSynchronously(new String[] {"src/main/bash/rebuildIndex.sh"});
 		//If the previous test execution not cleaned 

@@ -63,7 +63,7 @@ public class RegressTesterMain {
 	
 	public static void main(String[] argv) {
 		System.out.println("Start TestMain");
-		setLoggerOff();
+		
 		
 		String testName="CompleteATSuite";
 		String testResourcesPath="/ci/DNSCore/ContentBroker/src/test/resources/at/";
@@ -73,14 +73,19 @@ public class RegressTesterMain {
 		CommandLineParser parser = new DefaultParser();
 		// create the options
 		Options options = new Options();
-		options.addOption(new Option( "help", "Print this message" ));
+		
+		Option helpOption=new Option( "h","help",false, "Print this message" );
+		
 		Option testResourceOption  = new Option ("r","test-resources",true, "Path to the AT test resources directory. Default setting is '"+testResourcesPath+"'");
+		Option verboseLoggingOption  = new Option ("v","verbose",false, "Activate verbose logging");
 		Option testNameOption  = new Option ("n","test-name",true, "AT test name. To execute all AT use 'CompleteATSuite'. Default setting is '"+testName+"'");
 
+		options.addOption(helpOption);
 		options.addOption(testResourceOption);
 		options.addOption(testNameOption);
+		options.addOption(verboseLoggingOption);
 		HelpFormatter formatter = new HelpFormatter();
-		formatter.printHelp( "ant", options );
+		
 		
 		//parse arguments
 	    try {
@@ -94,6 +99,18 @@ public class RegressTesterMain {
 	        if(line.hasOption( testNameOption.getOpt() )||line.hasOption( testNameOption.getLongOpt() )){
 	        	testName=line.getOptionValue(testNameOption.getOpt());
 	        }
+	        
+	        if(!line.hasOption( verboseLoggingOption.getOpt() )&& !line.hasOption( verboseLoggingOption.getLongOpt() )){
+	        	setLoggerOff();
+	        }
+	        
+	        if(line.hasOption( helpOption.getOpt() )||line.hasOption( helpOption.getLongOpt() )){
+	        	formatter.printHelp( "ant", options );
+	        	System.exit(0);
+	        }else{
+	        	System.out.println("Pass --help to see all options");
+	        }
+	        
 	        
 
 			System.out.println("Used Parameter: TestSuite: "+testName+"\t Test-Resources dir:"+testResourcesPath); 
