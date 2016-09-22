@@ -12,6 +12,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -33,7 +34,14 @@ public class ATIngestLav extends AcceptanceTest {
 	private static Object object2;
 	private static Object object3;
 	
-	private static final String PORTAL_CI_TEST = "portal_ci_test";
+	private  String PORTAL_CI_TEST =getTestIndex();
+	
+	
+	@Before
+	public  void setVars(){
+		PORTAL_CI_TEST =getTestIndex();
+	}
+	
 	
 	@BeforeClass
 	public static void setUp() throws IOException, InterruptedException {

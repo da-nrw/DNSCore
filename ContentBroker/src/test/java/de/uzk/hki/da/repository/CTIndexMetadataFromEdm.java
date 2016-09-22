@@ -44,7 +44,7 @@ import de.uzk.hki.da.utils.RelativePath;
 public class CTIndexMetadataFromEdm {
 
     // index name generated from elasticsearch.indexName + _test for the TEST contractors
-	private static final String INDEX_NAME = "portal_ci_test";
+	private static final String INDEX_NAME = "portal_ci"+MetadataIndex.TEST_INDEX_SUFFIX;
 	
 	File edmFile = new RelativePath("src", "test", "resources", "repository", "CTIndexMetadataFromEdmTests", "edmContent").toFile();
 	File metsEdm = new RelativePath("src", "test", "resources", "repository", "CTIndexMetadataFromEdmTests", "metsEdm").toFile();

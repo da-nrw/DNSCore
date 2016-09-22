@@ -55,7 +55,7 @@ import de.uzk.hki.da.utils.XMLUtils;
 
 public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 	
-	private static final String PORTAL_CI_TEST = "portal_ci_test";
+	private static final String PORTAL_CI_TEST = getTestIndex();
 	private static final File retrievalFolder = new File("/tmp/unpackedMetsMods");
 	private static Path contractorsPipsPublic;
 	private static final String origName = "ATMetadataUpdates_METS";
@@ -70,7 +70,7 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForDefinedPublishedState(origName);
 		object=ath.getObject(origName);
-		ath.waitForObjectToBeIndexed(metadataIndex,object.getIdentifier());
+		ath.waitForObjectToBeIndexed(metadataIndex,getTestIndex(),object.getIdentifier());
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	

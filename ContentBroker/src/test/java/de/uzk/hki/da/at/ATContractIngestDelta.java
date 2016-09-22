@@ -65,8 +65,8 @@ public class ATContractIngestDelta extends AcceptanceTest{
 		repositoryFacade.retrieveTo(outi, o.getIdentifier(), collName,	JPG_STREAM_ID);
 		outi.close();
 		
-		ath.waitForObjectToBeIndexed(metadataIndex, o.getIdentifier());
-		assertTrue(metadataIndex.getIndexedMetadata("portal_ci_test", o.getIdentifier()).contains("Nudelmaschine in Originalverpackung"));
+		ath.waitForObjectToBeIndexed(metadataIndex,getTestIndex(), o.getIdentifier());
+		assertTrue(metadataIndex.getIndexedMetadata(getTestIndex(), o.getIdentifier()).contains("Nudelmaschine in Originalverpackung"));
 		
 		ath.putSIPtoIngestArea(ORIG_NAME+"2", DEFAULT_CONTAINER_EXTENSION, ORIG_NAME);
 		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.InWorkflow);
@@ -79,7 +79,7 @@ public class ATContractIngestDelta extends AcceptanceTest{
 		outi.close();
 		
 		Thread.sleep(3000);
-		assertTrue(metadataIndex.getIndexedMetadata("portal_ci_test", o.getIdentifier()).contains("Nudelmaschine in Originalverpackung"));
+		assertTrue(metadataIndex.getIndexedMetadata(getTestIndex(), o.getIdentifier()).contains("Nudelmaschine in Originalverpackung"));
 
 		ath.putSIPtoIngestArea(ORIG_NAME+"3", DEFAULT_CONTAINER_EXTENSION, ORIG_NAME);
 		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.InWorkflow);
@@ -91,6 +91,6 @@ public class ATContractIngestDelta extends AcceptanceTest{
 		assertFalse(exi3);
 		
 		Thread.sleep(3000);
-		assertFalse(metadataIndex.getIndexedMetadata("portal_ci_test", o.getIdentifier()).contains("Nudelmaschine in Originalverpackung"));
+		assertFalse(metadataIndex.getIndexedMetadata(getTestIndex(), o.getIdentifier()).contains("Nudelmaschine in Originalverpackung"));
 	}
 }

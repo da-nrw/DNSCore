@@ -37,6 +37,7 @@ import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.WorkArea;
+import de.uzk.hki.da.repository.ElasticsearchMetadataIndex;
 import de.uzk.hki.da.repository.MetadataIndex;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.service.HibernateUtil;
@@ -65,6 +66,7 @@ public class AcceptanceTest {
 	protected static PreservationSystem preservationSystem;
 	protected static AcceptanceTestHelper ath = null;
 	protected static StoragePolicy sp;
+	private static String testIndex;
 	
 	/**
 	 * @param gridImplBeanName bean name 
@@ -120,12 +122,14 @@ public class AcceptanceTest {
 	
 	private static void instantiateMetadataIndex(Properties properties) {
 		String indexImplBeanName=properties.getProperty("cb.implementation.index");
+		testIndex=properties.getProperty("elasticsearch.index")+MetadataIndex.TEST_INDEX_SUFFIX;;
 		if (indexImplBeanName==null) indexImplBeanName=BEAN_NAME_FAKE_METADATA_INDEX;
 		AbstractApplicationContext context =
 				new FileSystemXmlApplicationContext(CONF_BEANS_XML);
 		metadataIndex = (MetadataIndex) context.getBean(indexImplBeanName);
 		context.close();
 	}
+	
 	
 	/**
 	 * The StoragePolicy is normally configured in the app,
@@ -261,4 +265,9 @@ public class AcceptanceTest {
 	private static void clearDB() {
 		TESTHelper.clearDBOnlyTestUser();
 	}
+
+	public static String getTestIndex() {
+		return testIndex;
+	}
+	
 }
