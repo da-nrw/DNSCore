@@ -59,7 +59,7 @@ public class ATMetadataUpdatesXMP extends AcceptanceTest{
 		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForDefinedPublishedState(origName);
 		object=ath.getObject(origName);
-		ath.waitForObjectToBeIndexed(metadataIndex,object.getIdentifier());
+		ath.waitForObjectToBeIndexed(metadataIndex,getTestIndex(),object.getIdentifier());
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	

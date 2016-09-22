@@ -39,7 +39,7 @@ public class ATMetadataUpdatesNewDDBEad extends AcceptanceTest{
 		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForDefinedPublishedState(origName);
 		o=ath.getObject(origName);
-		ath.waitForObjectToBeIndexed(metadataIndex,o.getIdentifier());
+		ath.waitForObjectToBeIndexed(metadataIndex,getTestIndex(),o.getIdentifier());
 		
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
@@ -141,7 +141,7 @@ public class ATMetadataUpdatesNewDDBEad extends AcceptanceTest{
 //			testIndex
 		String cho = "/cho/";
 		String ID = firstID.substring(firstID.lastIndexOf(cho)+cho.length());
-		assertTrue(metadataIndex.getIndexedMetadata("portal_ci_test", ID).contains("\"dc:date\":[\"2000-01-01/2005-12-31\"]"));
+		assertTrue(metadataIndex.getIndexedMetadata(getTestIndex(), ID).contains("\"dc:date\":[\"2000-01-01/2005-12-31\"]"));
 		
 		frEdm.close();
 	}

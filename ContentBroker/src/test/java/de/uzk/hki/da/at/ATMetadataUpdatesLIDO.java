@@ -65,7 +65,7 @@ public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForDefinedPublishedState(origName);
 		object=ath.getObject(origName);
-		ath.waitForObjectToBeIndexed(metadataIndex,object.getIdentifier());
+		ath.waitForObjectToBeIndexed(metadataIndex,getTestIndex(),object.getIdentifier());
 		
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
@@ -194,7 +194,7 @@ public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 		assertTrue(testAggr1Exists&&testAggr2Exists);
 		
 //		testIndex
-		assertTrue(metadataIndex.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-ISIL/lido/Inventarnummer-1").contains("Nudelmaschine in Originalverpackung"));
+		assertTrue(metadataIndex.getIndexedMetadata(getTestIndex(), object.getIdentifier()+"-ISIL/lido/Inventarnummer-1").contains("Nudelmaschine in Originalverpackung"));
 		
 		frLido.close();
 	}

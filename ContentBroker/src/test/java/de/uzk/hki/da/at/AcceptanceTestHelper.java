@@ -342,12 +342,12 @@ public class AcceptanceTestHelper {
 
 
 
-	void waitForObjectToBeIndexed(MetadataIndex mi,String identifier) {
+	void waitForObjectToBeIndexed(MetadataIndex mi,String indexName,String identifier) {
 		int waited_ms_total=0;
 		while (true) {
 			waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT,INTERVAL);
 			
-			if (mi.getIndexedMetadata("portal_ci_test", identifier).contains(identifier)) break;
+			if (mi.getIndexedMetadata(indexName, identifier).contains(identifier)) break;
 		}
 	}
 

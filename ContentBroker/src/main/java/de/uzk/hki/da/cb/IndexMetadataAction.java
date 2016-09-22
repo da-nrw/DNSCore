@@ -125,7 +125,7 @@ public class IndexMetadataAction extends AbstractAction {
 		String contractorShortName = o.getContractor().getShort_name();
 		String adjustedIndexName = indexName;
 		if(testContractors != null && testContractors.contains(contractorShortName)) {
-			adjustedIndexName += "_test";
+			adjustedIndexName += MetadataIndex.TEST_INDEX_SUFFIX;
 		}
 		return adjustedIndexName;
 	}
