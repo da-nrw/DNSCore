@@ -9,22 +9,29 @@ import grails.transaction.Transactional
 class CbNodeController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
-
+	static CharacterEncodingUtils  ceu = new CharacterEncodingUtils()
+	
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
+		ceu.setEncoding(response)
         respond CbNode.list(params), model:[cbNodeInstanceCount: CbNode.count()]
     }
 
     def show(CbNode cbNodeInstance) {
+		ceu.setEncoding(response)
         respond cbNodeInstance
     }
 
     def create() {
+		ceu.setEncoding(response)
         respond new CbNode(params)
     }
 
     @Transactional
     def save(CbNode cbNodeInstance) {
+		
+		ceu.setEncoding(response)
+		
         if (cbNodeInstance == null) {
             notFound()
             return
@@ -51,6 +58,7 @@ class CbNodeController {
 	}
 	
     def edit(CbNode cbNodeInstance) {
+		ceu.setEncoding(response)
         respond cbNodeInstance
     }
 
