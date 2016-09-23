@@ -34,6 +34,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -55,7 +56,7 @@ import de.uzk.hki.da.utils.XMLUtils;
 
 public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 	
-	private static final String PORTAL_CI_TEST = getTestIndex();
+	private String PORTAL_CI_TEST = getTestIndex();
 	private static final File retrievalFolder = new File("/tmp/unpackedMetsMods");
 	private static Path contractorsPipsPublic;
 	private static final String origName = "ATMetadataUpdates_METS";

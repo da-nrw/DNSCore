@@ -25,106 +25,112 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+
 /**
  * List folder contents.
  *
- * @param folder the folder
+ * @param folder
+ *            the folder
  * @return the list
  * @author Thomas Kleinke
  */
 
 public class FolderUtils {
-	public static final long TIME_TO_END_FILE_OPERATION=30000;
+	public static final long TIME_TO_END_FILE_OPERATION = 5000;
 
-	public static List<String> listFolderContents(File folder)
-	{
+	public static List<String> listFolderContents(File folder) {
 		String[] fileNames = folder.list();
-		
+
 		List<String> fileList = new ArrayList<String>();
-		
-		for (String fileName : fileNames)
-		{
-			if (new File(folder.getAbsolutePath() + "/" + fileName).isDirectory())
-			{
+
+		for (String fileName : fileNames) {
+			if (new File(folder.getAbsolutePath() + "/" + fileName).isDirectory()) {
 				List<String> folderFileNames = listFolderContents(new File(folder.getAbsoluteFile() + "/" + fileName));
 				for (String folderFileName : folderFileNames)
 					fileList.add(fileName + "/" + folderFileName);
-			}
-			else
+			} else
 				fileList.add(fileName);
 		}
-		
+
 		return fileList;
 	}
 
 	/**
-	 * Compares two folders for equality. Compares the folderstructure and
-	 * the compares the bitwise equality of the included files.
+	 * Compares two folders for equality. Compares the folderstructure and the
+	 * compares the bitwise equality of the included files.
 	 *
-	 * @param lhs relative path to the first folder
-	 * @param rhs relative path to the second folder
+	 * @param lhs
+	 *            relative path to the first folder
+	 * @param rhs
+	 *            relative path to the second folder
 	 * @return true if lhs equals rhs
-	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
 	 */
 	public static boolean compareFolders(File lhs, File rhs) throws IOException {
-		
-		String rhsParentPath= rhs.getAbsolutePath();
-		String lhsParentPath= lhs.getAbsolutePath();
-		
-		String lhsChildren[]= lhs.list();
-		String rhsChildren[]= rhs.list();
-		
-		// Sometimes the order of the listings are not equal even though the files contained are
+
+		String rhsParentPath = rhs.getAbsolutePath();
+		String lhsParentPath = lhs.getAbsolutePath();
+
+		String lhsChildren[] = lhs.list();
+		String rhsChildren[] = rhs.list();
+
+		// Sometimes the order of the listings are not equal even though the
+		// files contained are
 		Arrays.sort(lhsChildren);
 		Arrays.sort(rhsChildren);
-				
-		boolean filesAreEqual= true;
-		for (int i=0;i<lhsChildren.length;i++){
-		
-			File lhsf= new File(lhsParentPath+"/"+lhsChildren[i]);
-			File rhsf= new File(rhsParentPath+"/"+rhsChildren[i]);
-			
-			if (lhsf.isFile()){
-				
+
+		boolean filesAreEqual = true;
+		for (int i = 0; i < lhsChildren.length; i++) {
+
+			File lhsf = new File(lhsParentPath + "/" + lhsChildren[i]);
+			File rhsf = new File(rhsParentPath + "/" + rhsChildren[i]);
+
+			if (lhsf.isFile()) {
+
 				if (!FileUtils.contentEquals(lhsf, rhsf))
-					filesAreEqual=false;
+					filesAreEqual = false;
 			}
-			
-			if (lhsf.isDirectory()){
-				if (!compareFolders(
-						lhsf,
-						rhsf)
-						) filesAreEqual=false;
-				}
-		}	
-		return filesAreEqual;
-	}
-	
-	public static void deleteDirectorySafe(File directory) throws IOException {
-		try {
-			FileUtils.deleteDirectory(directory);
-		} catch (IOException e) {
-			try {
-				System.out.println("FolderUtils::deleteDirectorySafe(): First delete "+directory+" fails");
-				Thread.sleep(TIME_TO_END_FILE_OPERATION);
-				// Zweiter versuch nach einer Pause
-				FileUtils.deleteDirectory(directory);
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
+
+			if (lhsf.isDirectory()) {
+				if (!compareFolders(lhsf, rhsf))
+					filesAreEqual = false;
 			}
 		}
+		return filesAreEqual;
+	}
+
+	public static void deleteDirectorySafe(File directory) throws IOException {
+		boolean successful = false;
+		for (int i = 1; i < 15 & !successful; i++) {
+			successful = true;
+			try {
+				FileUtils.deleteDirectory(directory);
+			} catch (IOException e) {
+				successful = false;
+				System.out.println("FolderUtils::deleteDirectorySafe(): delete " + directory + " fails: " + i+" x "+TIME_TO_END_FILE_OPERATION);
+				waitToCompleteNFSAwareFileOperation();
+				// Zweiter versuch nach einer Pause
+				// FileUtils.deleteDirectory(directory);
+			}
+		}
+
 	}
 
 	public static boolean deleteQuietlySafe(File file) {
 		boolean result = FileUtils.deleteQuietly(file);
 		if (!result) {
-			try {
-				Thread.sleep(TIME_TO_END_FILE_OPERATION);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			waitToCompleteNFSAwareFileOperation();
 			result = FileUtils.deleteQuietly(file);
 		}
 		return result;
+	}
+
+	public static void waitToCompleteNFSAwareFileOperation() {
+		try {
+			Thread.sleep(TIME_TO_END_FILE_OPERATION);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 }

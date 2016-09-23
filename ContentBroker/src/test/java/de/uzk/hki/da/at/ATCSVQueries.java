@@ -165,7 +165,14 @@ public class ATCSVQueries extends AcceptanceTest {
 	private boolean readCSVFileStatusReporting(String origName, String field, String mustcontain) throws IOException {
 		CSVFileHandler csf = new CSVFileHandler();
 		System.out.println("search CSV Report field " + field + " value " + mustcontain);
-		csf.parseFile(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+origName+".csv"));
+		File targetFile=new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+origName+".csv");
+		
+		for(int i=0;i<5 && !targetFile.exists();i++){
+			FolderUtils.waitToCompleteNFSAwareFileOperation();
+			System.out.println("Target("+targetFile+") file doesnt exist yet, wait: "+i);
+		}
+		
+		csf.parseFile(targetFile);
 		for (Map<String, java.lang.Object> csvEntry :csf.getCsvEntries()) {
 			if (csvEntry.get("origName").equals(origName))
 			if (csvEntry.get(field).equals(mustcontain)) return true;

@@ -38,6 +38,7 @@ import de.uzk.hki.da.model.Copy;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectNamedQueryDAO;
 import de.uzk.hki.da.service.HibernateUtil;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 
@@ -49,7 +50,7 @@ import de.uzk.hki.da.utils.Path;
 public class ATIntegrityCheck extends AcceptanceTest{
 	
 
-	private static final Path archiveStoragePath = Path.make("/ci/archiveStorage/aip/TEST/");
+	private final Path archiveStoragePath = Path.make(localNode.getUserAreaRootPath()+"/TEST/");
 	
 	@Test 
 	public void testInitialSetOfChecksum() throws IOException {
@@ -252,6 +253,11 @@ public class ATIntegrityCheck extends AcceptanceTest{
 
 		System.out.println("Trying to destroy file on the archive storage path now!");
 		File file = Path.makeFile(archiveStoragePath,identifier,identifier+".pack_1.tar");
+		for(int i=0;i<30 && !file.exists();i++){
+			FolderUtils.waitToCompleteNFSAwareFileOperation();
+			System.out.println("Target("+file+") file is not created yet, wait: "+i);
+		}
+		
 		if (!file.exists()) {	
 			fail(file  + " does not exist!" );
 		}
