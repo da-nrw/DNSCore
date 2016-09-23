@@ -30,18 +30,22 @@ import grails.transaction.Transactional
 class PreservationSystemController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
-
+	static CharacterEncodingUtils  ceu = new CharacterEncodingUtils()
+	
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
+		ceu.setEncoding(response)
         respond PreservationSystem.list(params), model:[preservationSystemInstanceCount: PreservationSystem.count()]
     }
 
     def show(PreservationSystem preservationSystemInstance) {
+		ceu.setEncoding(response)
         respond preservationSystemInstance
     }
 
     @Transactional
     def save(PreservationSystem preservationSystemInstance) {
+		ceu.setEncoding(response)
         if (preservationSystemInstance == null) {
             notFound()
             return
@@ -64,11 +68,13 @@ class PreservationSystemController {
     }
 
     def edit(PreservationSystem preservationSystemInstance) {
+		ceu.setEncoding(response)
         respond preservationSystemInstance
     }
 
     @Transactional
     def update(PreservationSystem preservationSystemInstance) {
+		ceu.setEncoding(response)
         if (preservationSystemInstance == null) {
             notFound()
             return

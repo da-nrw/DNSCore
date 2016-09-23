@@ -234,10 +234,12 @@ private synchronized Object fetchObject(String origName) {
 						} else erfolg = true;
 						csvEntry.put("statuscode", (java.lang.Object) job.getStatus());
 						csvEntry.put("createddate", formatDate(job.getDate_created(),1000L));
-						csvEntry.put("updateddate", formatDate(job.getDate_created(),1000L));	
+//						csvEntry.put("updateddate", formatDate(job.getDate_created(),1000L));	
+						csvEntry.put("updateddate", formatDate(job.getDate_modified(),1000L));
 					} else {
 						csvEntry.put("createddate", formatDate(o.getDate_created(),1L));
-						csvEntry.put("updateddate", formatDate(o.getDate_created(),1L));	
+//						csvEntry.put("updateddate", formatDate(o.getDate_created(),1L));	
+						csvEntry.put("updateddate", formatDate(o.getDate_modified(),1L));
 					}
 				}
 				csvEntry.put("erfolg", (java.lang.Object) String.valueOf(erfolg));
