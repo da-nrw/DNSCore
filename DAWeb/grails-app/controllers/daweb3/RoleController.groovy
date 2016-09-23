@@ -27,22 +27,27 @@ import grails.transaction.Transactional
 class RoleController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
-
+	static CharacterEncodingUtils ceu = new CharacterEncodingUtils()
+	
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
+		ceu.setEncoding(response)
         respond Role.list(params), model:[roleInstanceCount: Role.count()]
     }
 
     def show(Role roleInstance) {
+		ceu.setEncoding(response)
         respond roleInstance
     }
 
     def create() {
+		ceu.setEncoding(response)
         respond new Role(params)
     }
 
     @Transactional
     def save(Role roleInstance) {
+		ceu.setEncoding(response)
         if (roleInstance == null) {
             notFound()
             return
@@ -65,11 +70,13 @@ class RoleController {
     }
 
     def edit(Role roleInstance) {
+		ceu.setEncoding(response)
         respond roleInstance
     }
 
     @Transactional
     def update(Role roleInstance) {
+		ceu.setEncoding(response)
         if (roleInstance == null) {
             notFound()
             return
