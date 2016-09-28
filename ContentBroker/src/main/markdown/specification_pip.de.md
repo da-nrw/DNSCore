@@ -156,28 +156,50 @@ Im DNSCore werden lediglich die core Klassen des EDM erzeugt. Hier gibt es die E
 1.  edm:ProvidedCHO - beinhaltet das bereitgestellte Objekt für das Kulturerbe z.B. das eigentliche Bild
 1.	ore:Aggregation - Aggregation zur Gruppierung der Klassen 
 
+#### Provided cultural heritage object (edm:ProvidedCHO)
+
+Diese Objektgruppe kann im DSNCore folgende Elemente beinhalten:
+
+* dc:title	 		- 'der Titel des CHO'
+* dc:contributor 	- 'der Beitragender des CHO' 
+* dc:creator 		- 'der Ersteller des CHO'
+* dc:date			- 'ein markantes Datum für das CHO'
+* edm:hasType		- 'Angabe des Typs des CHO (basierend auf Thesaurus)'
+* dc:identifier		- 'Kennzeichnung (ID) des original CHO'
+* dc:publisher		- 'Name des Herausgebers des CHO' 
+* dcterms:hasPart	- 'beschreibt eine Resource, die entweder physikalisch oder logisch in das CHO eingebunden ist'
+* dcterms:isPartOf	- 'beschreibt eine Resource, in die das CHO physikalisch oder logisch eingebunden ist'
+
+#### Properties for the aggregation (ore:Aggregation)
+
+Diese Objektgruppe kann im DSNCore folgende Elemente beinhalten:
+
+* edm:dataProvider		- 'der Name des data providers des Objektes' 
+* edm:isShownBy			 
+* edm:isShownAt			 
+* edm:aggregatedCHO		- 'die ID des Quellobjektes an sich. Dies kann eine vollwertige URL sein oder eine interne ID
+* edm:hasView			- 'die URL der Web-Resource, welche die digitale Repräsentation des Objektes widerspiegelt'
+* edm:object			- 'die URL des Objektes, welche für eine Vorschau für das Europeana Portal verwendet wird'
+* edm:provider			- 'Name oder ID des providers des Objektes'
+
+
 Beispielhaft Struktur im DNSCore
 
 	<rdf:RDF>
-		<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/1-20160922858-md801613">
+		<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/1-20160922833-ISIL/lido/Inventarnummer">
 			<edm:hasType>is root element</edm:hasType>
-			<dc:title>Text Text// mahels///Titel</dc:title>
-			<dc:contributor>aut:Nachname, Vorname</dc:contributor>
-           <dc:date>1523</dc:date>
-           <dc:date>2011</dc:date>
-           <dc:identifier>id42</dc:identifier>
-           <dc:identifier>urn:nbn:de:hbz:42</dc:identifier>
-           <dc:identifier>1-20160922858</dc:identifier>
-           <dc:identifier>urn:nbn:de:hbz:42</dc:identifier>
-           <dc:publisher>Grimm] ([Augsburg)</dc:publisher>
-           <dc:publisher>ULB (Stadt)</dc:publisher>
-       </edm:ProvidedCHO>
-       <ore:Aggregation rdf:about="http://data.danrw.de/aggregation/1-20160922858-md801613">
-       		<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/1-20160922858-md801613"/>
-       		<edm:isShownBy rdf:resource="http://data.danrw.de/file/1-20160922858/_bee84f142bba34a1036ecc4667b54615.jpg"/>
-       		<edm:object rdf:resource="http://data.danrw.de/file/1-20160922858/_bee84f142bba34a1036ecc4667b54615.jpg"/>
-       		<edm:dataProvider>ULB</edm:dataProvider>
-       	</ore:Aggregation></rdf:RDF>
+			<dc:title>Küchenmaschine</dc:title>
+			<dc:date>01.01.1950-31.12.1959</dc:date>
+			<dc:date>01.01.1950-31.12.1969</dc:date>
+			<dc:identifier>1-20160922833</dc:identifier>
+			<dc:identifier>urn:nbn:de:danrw-1-20160922833</dc:identifier>
+			<dc:publisher>Bergisch Gladbach</dc:publisher>
+		</edm:ProvidedCHO>
+		<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/1-20160922833-ISIL/lido/Inventarnummer">
+			<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/1-20160922833-ISIL/lido/Inventarnummer"/>
+			<edm:isShownBy rdf:resource="http://data.danrw.de/file/1-20160922833/_c3836acf068a9b227834e0adda226ac2.jpg"/>
+			<edm:object rdf:resource="http://data.danrw.de/file/1-20160922833/_c3836acf068a9b227834e0adda226ac2.jpg"/>
+		</ore:Aggregation>
 	</rdf:RDF>
 
 ## mögliche Formate
