@@ -33,7 +33,7 @@ Rücklieferung Dissemination Information Package
 
 Presentation Information Package
 
-* [PIP Spezifikation](./spezifikation_pip.de.md)
+* [PIP Spezifikation](./specification_pip.de.md)
 
 ## Rückmeldungen 
 
