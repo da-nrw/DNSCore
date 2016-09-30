@@ -23,7 +23,8 @@
 Die Spezifikation befindet sich zur Zeit **im Aufbau** !!! 
 
 ## Inhalt eines PIP 
-Ein **PIP** besteht prinzipiell aus Metadaten (mind. epicur.xml) und Originaldaten.
+Ein **PIP** besteht prinzipiell aus internetfähigen Dateien und diese Dateien näher beschreibenden Metadaten. Alle Metadaten müssen konsitent sein. Alle Dateien werden in Dateiform an das Presentation Repository des DNS gesendet. 
+
 Ein PIP muss, um für DNSCore verarbeitbar zu sein, mindestens aus folgenden Metadaten bestehen: 
 
 	epicur.xml
@@ -78,20 +79,11 @@ Der Aufbau sieht im DNSCore wie folgt aus:
 
 <epicur> 
 
-**epicur** ist das Wurzelement und hat "administrative_data" und "record" als Unterelemente.
 
-1.Die Elementgruppe **administrative_data** 
-
-Sie dient 
-
-* der Kapselung von Legitimationsdaten, 
-* der Spezifizierung des URN-Meldeprozesses,
-* der verwendeten Transferschnittstelle   sowie der 
-* Art der Rückmeldung
-
-und hat das Unterelement "delivery". Diese Elementgruppe ist zwingend notwendig und muss genau einmal vorkommen.
 
 Unterelement **delivery** 
+
+Diese Elementgruppe ist zwingend notwendig und muss genau einmal vorkommen.
 
 Das Unterelement **delivery** muss das Element "update_status" beinhalten und dient der Spezifizierung des Meldeprozesses. 
 **update_data** besitzt das Attribut "type", welches in DNSCore immer den Wert "urn_new" beinhaltet. "urn_new" kennzeichnet die Meldung als "URN-Erstregistrierung". Bei Einbindung in Open Archives Initiative (OAI) muss bei Neuerstellung von Records "urn_new" angegeben werden.
@@ -104,6 +96,8 @@ Sie kapselt die URN-URL-Beziehungen der Objekte, ist zwingend notwendig und darf
 
 * Die Elementgruppe muss das Element "identifier" besitzen, welches genau einmal vorkommen muss. Es enthält Informationen über eine URN und URL.Im DNSCore wird immer über die urn referenziert (<identifier scheme="urn:nbn:de"> ...</identifier>)
 * Desweiteren besitz die Elementgruppe im DNSCore das Element "resource". Dieses Element ist nicht obligatorisch und kann bei Bedarf wiederholt werden. In DNSCore wird es geanau einmal verwendet. Es kapselt die Unterelemente "identifier" mit den Attributen scheme="url" (dient der Erfassung der URN bzw. der URL des Objektes) und role="primary" (kennzeichnet eine URL als 'Master-URL', falls mehr als eine URL zu einer URN registriert ist) sowie das Element "format", welches zur Erfassung der URL und des MimeTypes des Objektes dient. Es ist nicht obligatorisch und darf max. einmal vorkommen. IM DNSCore kommt das Element genau einmal vor und hat immer den Content "text/html"
+
+In diesem Zusammenhang wird davon ausgegangen, dass die URN gültig ist und gemeldet werden kann. Die Verwaltung der URN ist Aufgabe des einliefernden Systems.
 
 ### DC.xml
 
