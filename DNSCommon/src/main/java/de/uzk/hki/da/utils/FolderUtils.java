@@ -100,6 +100,12 @@ public class FolderUtils {
 		return filesAreEqual;
 	}
 
+	/**
+	 * Method for execute NFS-aware Directory deletion.
+	 * 
+	 * @param directory
+	 * @throws IOException
+	 */
 	public static void deleteDirectorySafe(File directory) throws IOException {
 		boolean successful = false;
 		for (int i = 1; i < 15 & !successful; i++) {

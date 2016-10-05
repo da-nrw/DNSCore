@@ -148,6 +148,7 @@ public class TESTHelper {
 		session.createSQLQuery("DELETE FROM events").executeUpdate();
 		session.createSQLQuery("DELETE FROM conversion_queue").executeUpdate();
 		session.createSQLQuery("DELETE from documents").executeUpdate();
+		session.createSQLQuery("DELETE from dafile_knownerror").executeUpdate();
 		session.createSQLQuery("DELETE FROM dafiles").executeUpdate();
 		session.createSQLQuery("DELETE FROM queue").executeUpdate();
 		session.createSQLQuery("DELETE from messages").executeUpdate();
