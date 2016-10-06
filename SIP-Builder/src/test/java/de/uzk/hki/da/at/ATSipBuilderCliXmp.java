@@ -12,6 +12,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.utils.FolderUtils;
+
 /**
  * 
  * @author Polina Gubaidullina

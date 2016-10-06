@@ -12,6 +12,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.utils.FolderUtils;
+
 public class ATDuplicateFileNames {
 	private static File targetDir = new File("target/atTargetDir/");
 	private static File sourceDir = new File("src/test/resources/at/");

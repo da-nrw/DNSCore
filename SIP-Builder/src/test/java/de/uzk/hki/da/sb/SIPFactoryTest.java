@@ -54,6 +54,7 @@ import de.uzk.hki.da.main.SIPBuilder;
 import de.uzk.hki.da.metadata.ContractRights;
 import de.uzk.hki.da.pkg.SipArchiveBuilder;
 import de.uzk.hki.da.sb.MessageWriter.UserInput;
+import de.uzk.hki.da.utils.FolderUtils;
 
 /**
  * Class under test: SIPFactory

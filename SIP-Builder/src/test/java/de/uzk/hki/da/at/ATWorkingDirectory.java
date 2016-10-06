@@ -16,6 +16,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
+import de.uzk.hki.da.utils.FolderUtils;
 
 public class ATWorkingDirectory {
 	private static String sip1 = "ATWorkingDirectory.tgz";

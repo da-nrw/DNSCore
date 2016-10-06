@@ -48,6 +48,7 @@ import de.uzk.hki.da.sb.MessageWriter;
 import de.uzk.hki.da.sb.SIPFactory;
 import de.uzk.hki.da.sb.UserInputValidator;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.StringUtilities;
 import de.uzk.hki.da.utils.Utilities;
 

@@ -31,6 +31,8 @@ import org.junit.Test;
 
 import de.uzk.hki.da.pkg.CopyUtility;
 import de.uzk.hki.da.sb.SIPFactory.SipBuildingProcess;
+import de.uzk.hki.da.utils.FolderUtils;
+
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;

@@ -45,6 +45,7 @@ import de.uzk.hki.da.pkg.SipArchiveBuilder;
 import de.uzk.hki.da.pkg.CopyUtility;
 import de.uzk.hki.da.pkg.NestedContentStructure;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Utilities;
 import de.uzk.hki.da.utils.formatDetectionService;
 

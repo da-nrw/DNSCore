@@ -12,6 +12,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.utils.FolderUtils;
+
 public class ATSipBuilderCliNestedLAV {
 	
 	private static final String sip1 = "urn+nbn+de+danrw+de2189-48c69c71-b98e-4229-a1c1-69a5930d44103.tgz";

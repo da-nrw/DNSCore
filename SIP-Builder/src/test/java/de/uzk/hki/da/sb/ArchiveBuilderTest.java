@@ -29,6 +29,8 @@ import org.junit.Test;
 
 import de.uzk.hki.da.pkg.SipArchiveBuilder;
 import de.uzk.hki.da.sb.SIPFactory.SipBuildingProcess;
+import de.uzk.hki.da.utils.FolderUtils;
+
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

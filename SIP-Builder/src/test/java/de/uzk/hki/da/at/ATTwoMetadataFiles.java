@@ -13,6 +13,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.utils.FolderUtils;
+
 public class ATTwoMetadataFiles {
 	
 	private static File targetDir = new File("target/atTargetDir/");
