@@ -49,8 +49,7 @@ import de.uzk.hki.da.utils.Path;
  */
 public class ATIntegrityCheck extends AcceptanceTest{
 	
-
-	private final Path archiveStoragePath = Path.make(localNode.getUserAreaRootPath()+"/TEST/");
+	private static final Path archiveStoragePath = Path.make("/ci/archiveStorage/aip/TEST/");
 	
 	@Test 
 	public void testInitialSetOfChecksum() throws IOException {
