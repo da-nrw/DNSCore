@@ -357,7 +357,8 @@ public class MetsParser{
 		try {
 			String role = name.getChild("role", C.MODS_NS).getValue();
 			if(!(role.equals("aut") && !role.equals("creator"))) {
-				namePartValue = role+": "+getName(name);
+				//namePartValue = role+": "+getName(name); //Fix
+				namePartValue =getName(name); //Fix DANRW-1439
 			}
 		} catch (Exception e) {
 			logger.debug("No contributor found!");
