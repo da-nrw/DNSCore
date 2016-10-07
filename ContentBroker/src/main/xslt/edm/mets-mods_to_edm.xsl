@@ -480,11 +480,13 @@
 				<xsl:value-of select="mods:displayForm"/>
 				<xsl:text>) </xsl:text>
 			</xsl:if>
+			<!--  
 			<xsl:for-each select="mods:role[mods:roleTerm[@type='text']!='creator']">
 				<xsl:text> (</xsl:text>
 				<xsl:value-of select="normalize-space(.)"/>
 				<xsl:text>) </xsl:text>
 			</xsl:for-each>
+			-->
 		</xsl:variable>
 		<xsl:value-of select="normalize-space($name)"/>
 	</xsl:template>
