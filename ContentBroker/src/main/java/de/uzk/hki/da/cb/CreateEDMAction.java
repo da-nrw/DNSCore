@@ -108,7 +108,7 @@ public class CreateEDMAction extends AbstractAction {
 			throw new RuntimeException("Missing file in public PIP: "+o.getPackage_type()+FILE_EXTENSION_XML);
 
 		edmXSLTDestinationFile = generateEdmUsingXslt(xsltTransformationFile, new File(o.getPackage_type()+FILE_EXTENSION_XML), EDM_XSLT_METADATA_STREAM_ID);
-		putToRepository(edmXSLTDestinationFile);		
+		putToRepository(edmXSLTDestinationFile); //this file will be overwriten by the next call of putToRepository(...)
 		
 		File metadataFile= new RelativePath(o.getPackage_type()+FILE_EXTENSION_XML).toFile();
 		edmIndexDestinationFile = serializeEDM(xsltTransformationFile, metadataFile);
