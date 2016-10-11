@@ -19,14 +19,14 @@
 	  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/
 	
-# Spezifikation PIP (Presentation Information Package) in DNSCore
+# Spezifikation PIP (Presentation Information Package) zur Abgabe in Presentation Repository von DNS
 Die Spezifikation befindet sich zur Zeit **im Aufbau** !!! 
 
 ## Inhalt eines PIP 
 
-Ein **PIP** besteht immer aus internetfähigen Dateien (in klassischen Portalen und Viewern darstellbaren Dateien) und diese Dateien näher beschreibenden Metadaten. Alle Metadaten und deren referenzierten Dateien müssen konsistent sein. Alle Dateien werden in Dateiform an das Presentation Repository des DNS gesendet. Unterordner sind nicht möglich.
+Ein **PIP** besteht immer aus internetfähigen Dateien (in klassischen Portalen und Viewern darstellbaren Dateien) und diese Dateien näher beschreibenden Metadaten. Alle Metadaten und deren referenzierten Dateien müssen konsistent sein. Alle Dateien werden in Dateiform an das Presentation Repository des DNS gesendet. 
 
-Ein PIP muss, um für DNSCore verarbeitbar zu sein, mindestens aus folgenden Metadaten bestehen: 
+Ein PIP muss, um für das Presentation Repository von DNS verarbeitbar zu sein, mindestens aus folgenden Metadaten bestehen: 
 
 	epicur.xml
 	EDM.xml
@@ -42,6 +42,7 @@ Der generelle Aufbau eines von DNSCore erstellten **PIP** sieht wie folgt aus (B
     DC.xml (optional)
     EDM.xml
 
+Unterordner sind auf Grund Verwendung von Fedora Commons als Repository nicht möglich.
 Und jeweils eines der folgenden Metadatenformate:
 
     LIDO.xml
