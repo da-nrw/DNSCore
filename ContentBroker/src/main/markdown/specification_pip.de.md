@@ -40,22 +40,20 @@ Der generelle Aufbau eines von DNSCore erstellten **PIP** sieht wie folgt aus:
     meinBild1.jpg
     meinBild2.jpg
     meinBildn.jpg
-    
-Zusätzlich können folgende Metadaten benötigt werden (falls eine Konvertierung stattfindet):
-
-    DC.xml
+    DC.xml (optional)
     EDM.xml
 
-Sowie die dazugehörigen Formatbeschreibungen:
+Und jeweils eines der folgenden Metadatenformate:
 
     LIDO.xml
     EAD.xml
     METS.xml
     
 ### epicur.xml 
+
 Die epicur.xml ist eine Metadaten-Datei, die in jedem PIP enthalten sein muss 
 (s. [Spezifikation epicur](http://www.persistent-identifier.de/?link=210)).
-Sie beteht aus einem Wurzelelement <epicur> und zwei hierarchisch untergeordneten Elementen
+Sie beteht aus einem Wurzelelement <epicur> und zwei hierarchisch untergeordneten Elementen.
 	<administrative_data>
 	<record>
 	
@@ -79,9 +77,7 @@ Der Aufbau sieht im DNSCore wie folgt aus:
 
 <epicur> 
 
-
-
-Unterelement **delivery** 
+1.Unterelement **delivery** 
 
 Diese Elementgruppe ist zwingend notwendig und muss genau einmal vorkommen.
 
@@ -90,7 +86,7 @@ Das Unterelement **delivery** muss das Element "update_status" beinhalten und di
 
 Die Elemtentgruppe kann weitere Unterelmente besitzen, welche in [Spezifikation epicur](http://www.persistent-identifier.de/?link=210) beschrieben werden.
 
-2.Die Elementgruppe **record**
+2.Die Unterelementgruppe **record**
 
 Sie kapselt die URN-URL-Beziehungen der Objekte, ist zwingend notwendig und darf wiederholt werden. Im DNSCore wird diese Elementgruppe allerdings nicht wiederholt. 
 
@@ -143,7 +139,7 @@ Die beispielhaft Struktur im DNSCore
     
 ### Europeana Data Model  EDM.xml
 
-Die EDM.xml ist die Schnittstelle zum Portal. Aus jedem Metdatenformat wird eine EDM erstellt [ofizielle Web-Seite](http://pro.europeana.eu/page/edm-documentation). 
+Die EDM.xml ist die Schnittstelle zum Portal. Aus jedem Metdatenformat wird für jedes PIP eine EDM erstellt. Zur Spezifikation der EDM siehe [ofizielle Web-Seite](http://pro.europeana.eu/page/edm-documentation). 
 
 Im DNSCore werden lediglich die core Klassen des EDM erzeugt. Hier gibt es die Elemente 
 
