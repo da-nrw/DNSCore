@@ -140,14 +140,14 @@ Die beispielhaft Struktur im DNSCore
 
 Die EDM.xml ist die Schnittstelle zum Portal. Aus jedem Metdatenformat wird für jedes PIP eine EDM erstellt. Zur Spezifikation der EDM siehe [ofizielle Web-Seite](http://pro.europeana.eu/page/edm-documentation). 
 
-Im DNSCore werden lediglich die core Klassen des EDM erzeugt. Hier gibt es die Elemente 
+Im Presentation Repository werden die core Klassen des EDM verlangt. Hier gibt es die Elemente 
 
 1.  edm:ProvidedCHO - beinhaltet das bereitgestellte Objekt für das Kulturerbe z.B. das eigentliche Bild
 1.	ore:Aggregation - Aggregation zur Gruppierung der Klassen 
 
 #### Provided cultural heritage object (edm:ProvidedCHO)
 
-Diese Objektgruppe kann im DSNCore folgende Elemente beinhalten:
+Diese Objektgruppe kann im EDM im Presentation Repository folgende Elemente beinhalten:
 
 * dc:title	 		- 'der Titel des CHO'
 * dc:contributor 	- 'der Beitragender des CHO' 
@@ -161,7 +161,7 @@ Diese Objektgruppe kann im DSNCore folgende Elemente beinhalten:
 
 #### Properties for the aggregation (ore:Aggregation)
 
-Diese Objektgruppe kann im DSNCore folgende Elemente beinhalten:
+Diese Objektgruppe kann im EDM im Presentation Repository folgende Elemente beinhalten:
 
 * edm:dataProvider		- 'der Name des data providers des Objektes' 
 * edm:isShownBy			 
@@ -172,7 +172,7 @@ Diese Objektgruppe kann im DSNCore folgende Elemente beinhalten:
 * edm:provider			- 'Name oder ID des providers des Objektes'
 
 
-Beispielhaft Struktur im DNSCore
+Beispielhafte Struktur im PR
 
 	<rdf:RDF>
 		<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/1-20160922833-ISIL/lido/Inventarnummer">
