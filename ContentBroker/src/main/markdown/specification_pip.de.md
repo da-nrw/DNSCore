@@ -23,7 +23,8 @@
 Die Spezifikation befindet sich zur Zeit **im Aufbau** !!! 
 
 ## Inhalt eines PIP 
-Ein **PIP** besteht prinzipiell aus internetfähigen Dateien und diese Dateien näher beschreibenden Metadaten. Alle Metadaten müssen konsitent sein. Alle Dateien werden in Dateiform an das Presentation Repository des DNS gesendet. 
+
+Ein **PIP** besteht prinzipiell aus internetfähigen Dateien (in klassischen Portalen und Viewern darstellbaren Dateien) und diese Dateien näher beschreibenden Metadaten. Alle Metadaten und deren referenzierten Dateien müssen konsistent sein. Alle Dateien werden in Dateiform an das Presentation Repository des DNS gesendet. 
 
 Ein PIP muss, um für DNSCore verarbeitbar zu sein, mindestens aus folgenden Metadaten bestehen: 
 
@@ -31,8 +32,6 @@ Ein PIP muss, um für DNSCore verarbeitbar zu sein, mindestens aus folgenden Met
 	EDM.xml
 	<Datenformat>.xml (z.B. METS.xml, LIDO.xml, ...)
 	
-
-
 ## Aufbau eines PIP
 Der generelle Aufbau eines von DNSCore erstellten **PIP** sieht wie folgt aus:
 
