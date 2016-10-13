@@ -19,43 +19,41 @@
 	  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/
 	
-# Spezifikation PIP (Presentation Information Package) in DNSCore
+# Spezifikation PIP (Presentation Information Package) zur Abgabe in Presentation Repository von DNS
 Die Spezifikation befindet sich zur Zeit **im Aufbau** !!! 
 
 ## Inhalt eines PIP 
-Ein **PIP** besteht prinzipiell aus internetfähigen Dateien und diese Dateien näher beschreibenden Metadaten. Alle Metadaten müssen konsitent sein. Alle Dateien werden in Dateiform an das Presentation Repository des DNS gesendet. 
 
-Ein PIP muss, um für DNSCore verarbeitbar zu sein, mindestens aus folgenden Metadaten bestehen: 
+Ein **PIP** besteht immer aus internetfähigen Dateien (in klassischen Portalen und Viewern darstellbaren Dateien) und diese Dateien näher beschreibenden Metadaten. Alle Metadaten und deren referenzierten Dateien müssen konsistent sein. Alle Dateien werden in Dateiform an das Presentation Repository des DNS gesendet. 
+
+Ein PIP muss, um für das Presentation Repository von DNS verarbeitbar zu sein, mindestens aus folgenden Metadaten bestehen: 
 
 	epicur.xml
 	EDM.xml
 	<Datenformat>.xml (z.B. METS.xml, LIDO.xml, ...)
 	
-
-
 ## Aufbau eines PIP
-Der generelle Aufbau eines von DNSCore erstellten **PIP** sieht wie folgt aus:
+Der generelle Aufbau eines von DNSCore erstellten **PIP** sieht wie folgt aus (Beispiel):
 
     epicur.xml
-    meinBild1.jpg
+    meinBild1.jpg  
     meinBild2.jpg
     meinBildn.jpg
-    
-Zusätzlich können folgende Metadaten benötigt werden (falls eine Konvertierung stattfindet):
-
-    DC.xml
+    DC.xml (optional)
     EDM.xml
 
-Sowie die dazugehörigen Formatbeschreibungen:
+Unterordner sind auf Grund Verwendung von Fedora Commons als Repository nicht möglich.
+Und jeweils eines der folgenden Metadatenformate:
 
     LIDO.xml
     EAD.xml
     METS.xml
     
 ### epicur.xml 
+
 Die epicur.xml ist eine Metadaten-Datei, die in jedem PIP enthalten sein muss 
 (s. [Spezifikation epicur](http://www.persistent-identifier.de/?link=210)).
-Sie beteht aus einem Wurzelelement <epicur> und zwei hierarchisch untergeordneten Elementen
+Sie beteht aus einem Wurzelelement <epicur> und zwei hierarchisch untergeordneten Elementen.
 	<administrative_data>
 	<record>
 	
@@ -79,9 +77,7 @@ Der Aufbau sieht im DNSCore wie folgt aus:
 
 <epicur> 
 
-
-
-Unterelement **delivery** 
+1.Unterelement **delivery** 
 
 Diese Elementgruppe ist zwingend notwendig und muss genau einmal vorkommen.
 
@@ -90,7 +86,7 @@ Das Unterelement **delivery** muss das Element "update_status" beinhalten und di
 
 Die Elemtentgruppe kann weitere Unterelmente besitzen, welche in [Spezifikation epicur](http://www.persistent-identifier.de/?link=210) beschrieben werden.
 
-2.Die Elementgruppe **record**
+2.Die Unterelementgruppe **record**
 
 Sie kapselt die URN-URL-Beziehungen der Objekte, ist zwingend notwendig und darf wiederholt werden. Im DNSCore wird diese Elementgruppe allerdings nicht wiederholt. 
 
@@ -143,16 +139,16 @@ Die beispielhaft Struktur im DNSCore
     
 ### Europeana Data Model  EDM.xml
 
-Die EDM.xml ist die Schnittstelle zum Portal. Aus jedem Metdatenformat wird eine EDM erstellt [ofizielle Web-Seite](http://pro.europeana.eu/page/edm-documentation). 
+Die EDM.xml ist die Schnittstelle zum Portal. Aus jedem Metdatenformat wird für jedes PIP eine EDM erstellt. Zur Spezifikation der EDM siehe [ofizielle Web-Seite](http://pro.europeana.eu/page/edm-documentation). 
 
-Im DNSCore werden lediglich die core Klassen des EDM erzeugt. Hier gibt es die Elemente 
+Im Presentation Repository werden die core Klassen des EDM verlangt. Hier gibt es die Elemente 
 
 1.  edm:ProvidedCHO - beinhaltet das bereitgestellte Objekt für das Kulturerbe z.B. das eigentliche Bild
 1.	ore:Aggregation - Aggregation zur Gruppierung der Klassen 
 
 #### Provided cultural heritage object (edm:ProvidedCHO)
 
-Diese Objektgruppe kann im DSNCore folgende Elemente beinhalten:
+Diese Objektgruppe kann im EDM im Presentation Repository folgende Elemente beinhalten:
 
 * dc:title	 		- 'der Titel des CHO'
 * dc:contributor 	- 'der Beitragender des CHO' 
@@ -166,7 +162,7 @@ Diese Objektgruppe kann im DSNCore folgende Elemente beinhalten:
 
 #### Properties for the aggregation (ore:Aggregation)
 
-Diese Objektgruppe kann im DSNCore folgende Elemente beinhalten:
+Diese Objektgruppe kann im EDM im Presentation Repository folgende Elemente beinhalten:
 
 * edm:dataProvider		- 'der Name des data providers des Objektes' 
 * edm:isShownBy			 
@@ -177,7 +173,7 @@ Diese Objektgruppe kann im DSNCore folgende Elemente beinhalten:
 * edm:provider			- 'Name oder ID des providers des Objektes'
 
 
-Beispielhaft Struktur im DNSCore
+Beispielhafte Struktur im PR
 
 	<rdf:RDF>
 		<edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/1-20160922833-ISIL/lido/Inventarnummer">
