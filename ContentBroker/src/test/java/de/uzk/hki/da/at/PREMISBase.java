@@ -79,7 +79,6 @@ public class PREMISBase extends AcceptanceTest {
 		List<Element> linkingObjectIdentifiers = e.getChildren("linkingObjectIdentifier", ns);
 		int links = 0;
 		for (Element linkingObjectIdentifer:linkingObjectIdentifiers){
-			
 			if ((linkingObjectIdentifer.getChildText("linkingObjectRole",ns).equals("source"))
 				&& (linkingObjectIdentifer.getChildText("linkingObjectIdentifierValue",ns).endsWith("+a/"+fileName)))
 					links++;
@@ -89,8 +88,9 @@ public class PREMISBase extends AcceptanceTest {
 					links++;
 		}
 		assertEquals(2,links);
-
-		assertEquals(nodeName,e.getChild("linkingAgentIdentifier",ns).getChildText("linkingAgentIdentifierValue",ns));
+		String nodeNameInPremis=e.getChild("linkingAgentIdentifier",ns).getChildText("linkingAgentIdentifierValue",ns);
+		//IF Testing on different node as localnode, some events are linked to agent localnode, some another to currently used node
+		assertTrue(nodeName.equals(nodeNameInPremis) ||"localnode".equals(nodeNameInPremis)) ;
 
 		try {dateFormat.parse(e.getChild("eventDateTime", ns).getValue());} catch (ParseException ex) {	fail();	}					
 	}

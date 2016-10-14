@@ -269,5 +269,11 @@ public class AcceptanceTest {
 	public static String getTestIndex() {
 		return testIndex;
 	}
+
+	public static Node getLocalNode() {
+		return localNode;
+	}
+	
+	
 	
 }
