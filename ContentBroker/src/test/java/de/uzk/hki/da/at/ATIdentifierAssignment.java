@@ -53,8 +53,7 @@ public class ATIdentifierAssignment extends AcceptanceTest {
 
 		ath.awaitObjectState(ORIG_NAME_URN_BASED_ON_TECHNICAL_IDENTIFIER, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		Object object = ath.getObject(ORIG_NAME_URN_BASED_ON_TECHNICAL_IDENTIFIER);
-
-		assertTrue(object.getUrn().startsWith(AcceptanceTestHelper.URN_NBN_DE_DANRW + "1"));
+		assertTrue(object.getUrn().startsWith(AcceptanceTestHelper.URN_NBN_DE_DANRW + localNode.getId()));
 	}
 
 	@Test
