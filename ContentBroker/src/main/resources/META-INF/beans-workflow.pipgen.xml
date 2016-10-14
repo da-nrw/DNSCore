@@ -44,6 +44,7 @@
 		<property name="name" value="PIPGenUpdateMetadataAction" />
 		<property name="namespaces" ref="updateMetadataNamespaces" />
 		<property name="xpathsToUrls" ref="updateMetadataXpathsForUrls" />
+		<property name="presMode" value="true"/>
 		<property name="repNames">
 			<util:list>
 				<value>temp_pips/public</value>

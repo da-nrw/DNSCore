@@ -106,6 +106,21 @@ public class UpdateMetadataAction extends AbstractAction {
 		
 		logger.debug("UpdateMetadataAction ...");
 		
+		if (this.presMode) {
+			if (Boolean.TRUE.equals(o.getContractor().isUsePublicMets())) {
+				DAFile srcMetadataFile = o.getLatest(C.PUBLIC_METS);
+				if (srcMetadataFile == null){
+					logger.debug("Use Public METS: " + C.PUBLIC_METS + " not found. No publication.");
+					j.setStatic_nondisclosure_limit(null);
+					j.setStatic_nondisclosure_limit_institution(null);
+					return true;
+				}
+				logger.debug("Use Public METS: " + C.PUBLIC_METS);
+				copyMetadataFileToNewReps(o.getPackage_type(), C.PUBLIC_METS);
+				return true;
+			}
+		}
+
 		logger.debug("Package type: "+o.getPackage_type());
 		logger.debug("Metadata file: "+o.getMetadata_file());
 		

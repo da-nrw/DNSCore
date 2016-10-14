@@ -74,6 +74,55 @@ public class MetsParser{
 		return urn;
 	}
 	
+	@SuppressWarnings("unchecked")
+	private List<String> getTitlePageReferencesFromFrontimage() {
+		List<String> ret = new ArrayList<String>();
+		
+		List<Element> fileSecs = metsDoc.getRootElement().getChildren("fileSec", METS_NS);
+		if (fileSecs == null){
+			return ret;
+		}
+		List<Element> fileGrps = null;
+		for (Element fileSec : fileSecs){
+			fileGrps = fileSec.getChildren("fileGrp", METS_NS);
+			if (fileGrps != null){
+				break;
+			}
+		}
+		if (fileGrps == null){
+			return ret;
+		}
+		List<Element> files = null;
+		for (Element fileGrp : fileGrps) {
+			String usi = fileGrp.getAttributeValue("USE");
+			if ("FRONTIMAGE".equals(usi)) {
+				files = fileGrp.getChildren("file", METS_NS);
+				if (files != null) {
+					break;
+				}
+			}
+		}
+		if (files == null){
+			return ret;
+		}
+		
+		for (Element file : files){
+			List<Element> fLocs = file.getChildren("FLocat", METS_NS);
+			if (fLocs == null){
+				continue;
+			}
+			
+			for (Element fLoc : fLocs){
+				String href = fLoc.getAttributeValue("href", XLINK_NS);
+				if (href != null && href.length() > 0){
+					ret.add(href);
+				}
+			}
+		}
+		
+		return ret;
+	}
+	
 	private List<String> getTitlePageReferencesFromDmdId(String dmdID, String objectId) {
 		List<String> titlePageRefs = new ArrayList<String>();
 		String titlePageLogicalId = getIdFromLogicalStructMap(dmdID.replace(objectId+"-", ""), TITLE_PAGE, "ID");
@@ -589,7 +638,11 @@ public class MetsParser{
 			dmdSecInfo.put(C.EDM_PUBLISHER, publishers);
 			
 //			TitlePage
-			List<String> titlePageRefs = getTitlePageReferencesFromDmdId(id, ObjectId);
+			List<String> titlePageRefs = getTitlePageReferencesFromFrontimage();
+			if (titlePageRefs.isEmpty()) {
+				titlePageRefs = getTitlePageReferencesFromDmdId(id, ObjectId);
+			}
+			
 			List<String> allReferences = getReferencesFromDmdId(id, ObjectId);
 			
 //			LAV
