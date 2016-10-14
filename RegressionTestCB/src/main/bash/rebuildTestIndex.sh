@@ -7,6 +7,8 @@ function get_property
 }
 
 indexHost=$(get_property "conf/config.properties" "elasticsearch.hosts")
+indexHost=(${indexHost//,/ })
+indexHost=${indexHost[0]}
 #indexHost=${indexHost##:*}
 if [ "$indexHost" == "" ] ; then
 	echo "No indexhost found in properties!!!";
@@ -24,12 +26,12 @@ indexName=$indexName"_test"
 printf "Reset Index: $indexHost $indexName \n"
 export http_proxy=
 echo rebuilding index
-curl -XDELETE "$indexHost:9200/$indexName"
-curl -XPUT "$indexHost:9200/$indexName"
+curl -XDELETE "$indexHost/$indexName"
+curl -XPUT "$indexHost/$indexName"
 
 sleep 5
-curl -XPOST "$indexHost:9200/$indexName/_close"
-curl -XPUT "$indexHost:9200/$indexName/_settings" -d "@conf/es_settings.json"
-curl -XPUT  "$indexHost:9200/$indexName/ore:Aggregation/_mapping" -d "@conf/es_mapping.json"
-curl -XPOST "$indexHost:9200/$indexName/_open"
+curl -XPOST "$indexHost/$indexName/_close"
+curl -XPUT "$indexHost/$indexName/_settings" -d "@conf/es_settings.json"
+curl -XPUT  "$indexHost/$indexName/ore:Aggregation/_mapping" -d "@conf/es_mapping.json"
+curl -XPOST "$indexHost/$indexName/_open"
 echo "\nReset Index: $indexHost $indexName done\n"

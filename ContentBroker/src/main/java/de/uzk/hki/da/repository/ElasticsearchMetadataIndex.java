@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
@@ -169,7 +170,15 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 		logger.trace("set cluster.name: {}", cluster);
 		TransportClient client = new TransportClient(settings);
 		for (String esHost : hosts) {
-			client.addTransportAddress(new InetSocketTransportAddress(esHost, 9300));
+			URL aURL;
+			try {
+				aURL = new URL(esHost);
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+				return null;
+			}
+			//client.addTransportAddress(new InetSocketTransportAddress(esHost, 9300));
+			client.addTransportAddress(new InetSocketTransportAddress(aURL.getHost(),9300/*aURL.getPort()*/)); //TransportClient connects only by use 9300 port
 		}
 		return client;
 	}
@@ -179,7 +188,7 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 		
 		try {
 			String requestURL = 
-					"http://"+hosts[0]+":9200/"+indexName+"/"+C.ORE_AGGREGATION+"/_search?q=_id:"+objectId+"*";
+					hosts[0]+"/"+indexName+"/"+C.ORE_AGGREGATION+"/_search?q=_id:"+objectId+"*";
 			System.out.println("requestURL:"+requestURL);
 			logger.debug("requestURL:"+requestURL);
 			URL wikiRequest;
@@ -206,7 +215,7 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 		
 		try {
 			String requestURL = 
-					"http://"+hosts[0]+":9200/"+indexName+"/"+C.ORE_AGGREGATION+"/_search?q=_id:"+objectId+""+"*";
+					hosts[0]+"/"+indexName+"/"+C.ORE_AGGREGATION+"/_search?q=_id:"+objectId+""+"*";
 			System.out.println("requestURL:"+requestURL);
 			logger.debug("requestURL:"+requestURL);
 			URL wikiRequest;
@@ -236,7 +245,7 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 		try{
 			DefaultHttpClient httpClient = new DefaultHttpClient();
 			HttpDelete deleteRequest = 
-					new HttpDelete("http://"+hosts[0]+":9200/"+indexName+"/"+C.ORE_AGGREGATION+"/_query?q=_id:"+objectID+""+"*");
+					new HttpDelete(hosts[0]+"/"+indexName+"/"+C.ORE_AGGREGATION+"/_query?q=_id:"+objectID+""+"*");
 			HttpResponse response = httpClient.execute(deleteRequest);
 	
 			int statusCode = response.getStatusLine().getStatusCode();

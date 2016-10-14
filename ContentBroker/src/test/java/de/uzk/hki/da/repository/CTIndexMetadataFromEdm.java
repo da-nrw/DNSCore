@@ -57,7 +57,7 @@ public class CTIndexMetadataFromEdm {
 	public void setUp() throws MalformedURLException {
 		esmi = new ElasticsearchMetadataIndex(); 
 		esmi.setCluster("cluster_ci");
-		String[] hosts={"localhost"};
+		String[] hosts={"http://localhost:9200/"};
 		esmi.setHosts(hosts);
 		esmi.setEdmJsonFrame(new RelativePath("src", "main", "resources", "frame.jsonld").toString());		
 	}
