@@ -56,8 +56,12 @@ class StatusController {
 				result.origName = inst.origName
 				def packages = []
 				result.packages = packages
+				//inst.packages.each() {pack ->
+				//		result.packages.add(pack.container_name)
+				//}
+				// rolled back to:
 				inst.packages.each() {pack ->
-						result.packages.add(pack.container_name)
+					result.packages.add(pack.name)
 				}
 				result = [:]
 				results.result.add(result)
