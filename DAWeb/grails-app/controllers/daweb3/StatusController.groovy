@@ -166,8 +166,13 @@ class StatusController {
 				result.identifier = instance.identifier
 				def packages = []
 				result.packages = packages;
+				
+				//instance.packages.each() {pack ->
+				//		result.packages.add(pack.container_name)
+				//}
+				
 				instance.packages.each() {pack ->
-						result.packages.add(pack.container_name)
+						result.packages.add(pack.name)
 				} 
 				results.result.add(result)
 				result = [:]
