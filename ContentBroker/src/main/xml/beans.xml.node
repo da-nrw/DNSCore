@@ -67,6 +67,7 @@
 		<entry key="IngestArchiveReplicationAction" value="3" />
 		<entry key="IngestTarAction" value="3" />
 		<entry key="RetrievalObjectToWorkAreaAction" value="3" />
+		<entry key="RetrievalObjectToWorkAreaAction2" value="2" />
 		<entry key="RetrievalAction" value="3" />
 		<entry key="PostRetrievalAction" value="3" />
 		<entry key="AuditAction" value="3" />
@@ -105,6 +106,7 @@
 		<value>IngestDeltaOnURNAction</value>
 		<value>IngestUnpackAction</value>
 		<value>RetrievalObjectToWorkAreaAction</value>
+		<value>RetrievalObjectToWorkAreaAction2</value>
 		<value>RetrievalAction</value>
 		<value>AuditAction</value>
 		<value>PIPGenCleanWorkAreaAction</value>

@@ -90,7 +90,6 @@ public class RetrievalAction extends AbstractAction {
 			specialRetrieval(tempFolder);
 		}
 		
-		
 		bagitAndTarit(tempFolder);
 
 		cleanupFS();
@@ -120,7 +119,6 @@ public class RetrievalAction extends AbstractAction {
 
 
 	private void specialRetrieval(Path tempFolder) throws IOException {
-
 		for (Package p:packagesToRetrieve()){
 
 			for (DAFile f:p.getFiles()){

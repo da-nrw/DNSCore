@@ -30,6 +30,14 @@
 		<property name="endStatus" value="970" />
 		<property name="name" value="PostRetrievalAction" />
 	</bean>	
+	<bean id="RetrievalObjectToWorkAreaAction2" class="de.uzk.hki.da.cb.ObjectToWorkAreaAction"
+		scope="prototype">
+		<property name="startStatus" value="980" />
+		<property name="endStatus" value="990" />
+		<property name="gridFacade" ref="${cb.implementation.grid:fakeGridFacade}"/>
+		<property name="name" value="RetrievalObjectToWorkAreaAction" />
+		<property name="ingestGate" ref="ingestGate" />
+	</bean>	
 	<bean id="WritePremisDBAction" class="de.uzk.hki.da.cb.WritePremisDBAction"
 		scope="prototype">
 		<property name="startStatus" value="990" />

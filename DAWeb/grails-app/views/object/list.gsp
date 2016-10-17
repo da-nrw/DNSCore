@@ -180,17 +180,20 @@
 									</g:link>
 								</g:if>
 							</td>
-							<td style="text-align: center">
-									<g:link action="premisAnfordern" params="['objectIdentifier':objectInstance.identifier, 'objName':objectInstance.origName, 'pkg':objectInstance.packages[0].id, 'first': true, 'file': baseFolder+ '/'+ objectInstance.identifier +'.tar', 'id': objectInstance.id, 'filename':objectInstance.identifier +'.tar']">
-										Premis anfordern<g:img style="width:18px; height:18px" uri="/images/icons/text-file-icon.png"/>
+							<g:if test="${!objectInstance.isInWorkflowButton()}">
+								<td style="text-align: center">
+									<g:link action="premisAnfordern" onLoaded="queuedFor(data)" id="${objectInstance.id}"  params="['objectIdentifier':objectInstance.identifier, 'objName':objectInstance.origName, 'pkg':objectInstance.packages[0].id, 'first': true, 'file': baseFolder+ '/'+ objectInstance.identifier +'.tar', 'id': objectInstance.id, 'filename':objectInstance.identifier +'.tar']">
+										Premis anfordern<g:img style="width:12px; height:16px" uri="/images/icons/file-add-icon.png"/>
 									</g:link>
 								<g:if test="${!objectInstance.isInWorkflowButton()}">
 								
 								</g:if>
-									<g:link action="premis" params="['objectIdentifier':objectInstance.identifier, 'objName':objectInstance.origName, 'pkg':objectInstance.packages[0].id, 'first': true]">
+									<g:link action="premis" params="['objectIdentifier':objectInstance.identifier, 'objName':objectInstance.origName, 'pkg':objectInstance.packages[0].id, 'first': true, 'urn': objectInstance.urn]">
 										Premis anzeigen<g:img style="width:18px; height:18px" uri="/images/icons/text-file-icon.png"/>
 									</g:link>
-							</td>
+								</td>
+							</g:if><g:else><td style="text-align: center">Objekt in der Verarbeitung</td>
+							</g:else>
 						</tr>
 					</g:each>
 					</tbody>

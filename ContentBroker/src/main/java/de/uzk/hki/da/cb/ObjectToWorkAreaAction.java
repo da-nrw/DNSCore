@@ -78,6 +78,7 @@ public class ObjectToWorkAreaAction extends AbstractAction {
 		}
 		
 		dgs.addDocumentsToObject(o);
+		
 		return true;
 	}
 

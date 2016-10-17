@@ -21,18 +21,10 @@
 
 package de.uzk.hki.da.model;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,23 +32,15 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import org.apache.commons.io.FilenameUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import de.uzk.hki.da.model.PublicationRight.Audience;
-import de.uzk.hki.da.utils.C;
-import de.uzk.hki.da.utils.SidecarUtils;
 
 
 /**
@@ -142,16 +126,6 @@ public class PremisObject {
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<PremisPackage> packages = new ArrayList<PremisPackage>();
 	
-	
-	private File xml;
-
-	public void setXml(File xml) {
-		this.xml = xml;
-	}
-	
-	public File getXml() {
-		return xml;
-	}
 	
 	/**
 	 * Sets the data_pk.

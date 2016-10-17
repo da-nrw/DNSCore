@@ -54,6 +54,8 @@
 			 
 			.list {
 				margin-left: 20px;
+				font: normal 14px/16px ;
+				color: #333;
 			}
 
 			.list label.inputList[for]::before {
@@ -71,11 +73,6 @@
 
 			.list li ul {
 				margin: 0 0 0 22px;
-			}
-
-			.list {
-				font: normal 14px/16px ;
-				color: #333;
 			}
 
 			.list input.inputList[type="checkbox"] {

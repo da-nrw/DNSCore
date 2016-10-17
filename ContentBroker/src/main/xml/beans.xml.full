@@ -74,7 +74,8 @@
 		<entry key="IngestArchiveReplicationCheckAction" value="3" />
 		<entry key="IngestValidateMetadataAction" value="3" />
 		<entry key="RetrievalAction" value="3" />			
-		<entry key="RetrievalObjectToWorkAreaAction" value="3" />			
+		<entry key="RetrievalObjectToWorkAreaAction" value="3" />
+		<entry key="RetrievalObjectToWorkAreaAction2" value="2" />			
 		<entry key="AuditAction" value="3" />
 		<entry key="IngestBuildAIPAction" value="3" />
 		<entry key="PostRetrievalAction" value="3" />
@@ -93,6 +94,7 @@
 		<value>RestartIngestWorkflowAction</value>
 		<value>RetrievalAction</value>
 		<value>RetrievalObjectToWorkAreaAction</value>
+		<value>RetrievalObjectToWorkAreaAction2</value>
 		<value>IngestArchiveReplicationCheckAction</value>
 		<value>IngestArchiveReplicationAction</value>
 		<value>IngestTarAction</value>

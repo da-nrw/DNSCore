@@ -20,6 +20,5 @@ class PremisObject {
 	int id
 	String identifier
 	String urn
-	File xml
 	String origName
 }

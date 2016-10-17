@@ -19,11 +19,7 @@ import nu.xom.ValidityException;
 
 public class PremisReader extends ObjectPremisXmlReader {
 
-	public PremisObject buildPremisObject (File file)
-	//ArrayList<PremisEvent> buildPremisEvents(File file)
-			throws IOException {
-
-		//ArrayList<PremisEvent> liste = new ArrayList<PremisEvent>();
+	public PremisObject buildPremisObject (File file)throws IOException {
 
 		readFile(file);
 
@@ -32,30 +28,7 @@ public class PremisReader extends ObjectPremisXmlReader {
 		try {
 			Document doc = parser.build(reader);
 			Element root = doc.getRootElement();
-/*
-			Elements objectElements = root
-					.getChildElements("object", PREMIS_NS);
 
-			for (int i = 0; i < objectElements.size(); i++) {
-				String objectIdType = objectElements
-						.get(i)
-						.getFirstChildElement("objectIdentifier", PREMIS_NS)
-						.getFirstChildElement("objectIdentifierType", PREMIS_NS)
-						.getValue();
-				if (objectIdType.toUpperCase().equals("OBJECT_BUSINESS_KEY")) {
-					objectIdentifier = objectElements
-							.get(i)
-							.getFirstChildElement("objectIdentifier", PREMIS_NS)
-							.getFirstChildElement("objectIdentifierValue",
-									PREMIS_NS).getValue();
-					break;
-				}
-			}
-
-			Elements eventElements = root.getChildElements("event", PREMIS_NS);
-			for (int i = 0; i < eventElements.size(); i++)
-				liste.add(buildEvent(eventElements.get(i)));
-*/
 			// Object & packages
 			List<PremisPackage> packages = new ArrayList<PremisPackage>();
 			Elements objectElements = root.getChildElements("object", PREMIS_NS);
@@ -65,7 +38,7 @@ public class PremisReader extends ObjectPremisXmlReader {
 								
 				if (objectIdType.toUpperCase().equals("URN")
 						|| objectIdType.toUpperCase().equals("OBJECT_BUSINESS_KEY"))
-					object = buildObject(objectElements.get(i), file);
+					object = buildObject(objectElements.get(i));
 
 				else if (objectElements.get(i).getFirstChildElement("objectIdentifier", PREMIS_NS)
 						.getFirstChildElement("objectIdentifierType", PREMIS_NS).getValue().toUpperCase().equals("PACKAGE_NAME"))
@@ -101,11 +74,11 @@ public class PremisReader extends ObjectPremisXmlReader {
 		} finally {
 			reader.close();
 		}
-		return object;//liste;
+		return object;
 	}
 	
 	
-	private PremisObject buildObject(Element objectEl, File xml) throws NullPointerException {
+	private PremisObject buildObject(Element objectEl) throws NullPointerException {
 		String objectIdentifier = null;
 		String urn = null;		
 		
@@ -134,7 +107,6 @@ public class PremisReader extends ObjectPremisXmlReader {
 		PremisObject object = new PremisObject();
 		object.setIdentifier(objectIdentifier);
 		object.setUrn(urn);
-		object.setXml(xml);
 		object.setOrig_name(origName);
 				
 		logger.debug("object identifier: " + objectIdentifier);
@@ -191,9 +163,7 @@ public class PremisReader extends ObjectPremisXmlReader {
 		if (pkg==null){
 			throw new ParseException("incosistent PREMIS file: referenced package "+ packageName + " does not exist ", 0);
 		}
-		
-		
-		
+			
 		
 		PremisDAFile f = new PremisDAFile("", "");
 		String fullPath = objectEl.getFirstChildElement("objectIdentifier", PREMIS_NS)

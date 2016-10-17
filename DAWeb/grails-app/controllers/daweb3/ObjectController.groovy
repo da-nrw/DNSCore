@@ -567,7 +567,7 @@ class ObjectController {
 		render a1 as JSON
 	}
 	
-	def premisAnfordern() {
+	def premisAnfordern = {
 		
 //		abc123()
 //		queueForRetrieval()
@@ -575,10 +575,16 @@ class ObjectController {
 //		OutgoingController.download()
 		
 		
-		def result = [success:false]
+		def obj = Object.find("from Object where origName like :name", [name: params.objName])
+		
+		//def result = [success:false]
 		User user = springSecurityService.currentUser
 		def object = Object.get(params.id)
 
+		
+		/*
+		
+		
 		if ( object == null ) {
 			result.msg = "Das Objekt ${object.urn} konnte nicht gefunden werden!"
 		}
@@ -588,6 +594,11 @@ class ObjectController {
 
 			} else {
 				try {
+					def list = QueueEntry.findAll("from QueueEntry where obj = :object and status in ('952', '1000')", [object: obj])
+					if (list != null && list.size() > 0) {
+						QueueEntry.executeUpdate("delete QueueEntry where obj = :object and status in ('952', '1000')", [object: obj])
+					}
+					
 					String lnid = grailsApplication.config.localNode.id
 					log.debug("Create Retrieval job on node id: " + lnid)
 
@@ -601,7 +612,7 @@ class ObjectController {
 				 * 1. RuntimeException: "Es gibt bereits einen laufenden Arbeitsauftrag für dieses Objekt"
 				 * 2. IllegalArgumentException: object == null oder responsibleNodeName == null
 				 * 3. Exception: !object.save() oder !job.save()
-				 */
+				 * /
 					if (e instanceof RuntimeException) {
 						result.msg = e.getMessage() +  " ${object.urn}"
 					} else
@@ -647,7 +658,13 @@ class ObjectController {
 //			redirect(url:webdavurl + "/" + params.filename)
 //		}
 		
-		def obj = Object.find("from Object where origName like :name", [name: params.objName])
+			
+			
+			*/
+			
+			
+			
+	//	def obj = Object.find("from Object where origName like :name", [name: params.objName])
 		int coun = 0
 		final long timeStart = System.currentTimeMillis()
 		long time = System.currentTimeMillis()
@@ -660,20 +677,20 @@ class ObjectController {
 		//def obj = Object.findAll("from Object where origName like :name", [name: params.objName])
 		//def obj = Object.find("from Object where origName like :name", [name: params.objName])
 		if(obj != null) {
-		def result2 = [success2:false]
+		def result = [success:false]
 		try {
-			def list = QueueEntry.findAll("from QueueEntry where obj = :object and status in ('952', '991', '1000')", [object: obj])
+			def list = QueueEntry.findAll("from QueueEntry where obj = :object and status like '1000'", [object: obj]) //'952', '991', '992', 
 			if (list != null && list.size() > 0) {
-				QueueEntry.executeUpdate("delete QueueEntry where obj = :object and status in ('952', '991', '1000')", [object: obj])
+				QueueEntry.executeUpdate("delete QueueEntry where obj = :object and status like '1000'", [object: obj]) // '952', '991', '992', 
 			}
 			
 			String lnid = grailsApplication.config.localNode.id
 			log.debug("Create Retrieval job on node id: " + lnid)
 
 			CbNode cbn = CbNode.get(Integer.parseInt(lnid))
-			qu.createJob( obj ,"990", cbn.getName())
-			result2.msg2 = "Objekt ${obj.urn} erfolgreich angefordert."
-			result2.success2 = true
+			qu.createJob( obj ,"980", cbn.getName())
+			result.msg = "Objekt ${obj.urn} erfolgreich angefordert."
+			result.success = true
 		} catch ( Exception e ) {
 		/*
 		 * DANRW-1419: error messages must be better specified
@@ -682,41 +699,39 @@ class ObjectController {
 		 * 3. Exception: !object.save() oder !job.save()
 		 */
 			if (e instanceof RuntimeException) {
-				result2.msg2 = e.getMessage() +  " ${obj.urn}"
+				result.msg = e.getMessage() +  " ${obj.urn}"
 			} else
 			if (e instanceof IllegalArgumentException) {
 				if (e.getMessage().equals("Object is not valid")) {
-					result2.msg2 = "Objekt ${obj.urn} konnte nicht angefordert werden. Das Object ist ungültig."
+					result.msg = "Objekt ${obj.urn} konnte nicht angefordert werden. Das Object ist ungültig."
 				} else if (e.getMessage().equals("responsibleNodeName must not be null")) {
-					result2.msg2 = "Objekt ${obj.urn} konnte nicht angefordert werden. Der Knotenname ist nicht gesetzt."
+					result.msg = "Objekt ${obj.urn} konnte nicht angefordert werden. Der Knotenname ist nicht gesetzt."
 				}
 			} else {
-				result2.msg2 = "Objekt ${obj.urn} konnte nicht angefordert werden."
+				result.msg = "Objekt ${obj.urn} konnte nicht angefordert werden."
 			}
 			log.error("Error saving Retrieval request : " + e.printStackTrace())
 		}
-		result.r = "r1"
-		result2.r = "r2"
 		def res = [success3:true, counter:coun]
 		res += result
-		res += result2
-		render (res) as JSON
+		//render (res) as JSON
+		render (view: "premisRequest", model: [result: res])
 		} else {
 		def res = [success3:false]
 		res.fehler = "fehler"
-		render res as JSON
+		res.msg = "fehler"
+		//render res as JSON
+		render (view: "premisRequest", model: [result: res])
 		}
-		def list = QueueEntry.findAll("from QueueEntry where obj = :object and status in ('952', '991', '1000')", [object: obj])
+		def list = QueueEntry.findAll("from QueueEntry where obj = :object and status like '1000'", [object: obj]) // '952', '991', '992', 
 		if (list != null && list.size() > 0) {
-			QueueEntry.executeUpdate("delete QueueEntry where obj = :object and status in ('952', '991', '1000')", [object: obj])
+			QueueEntry.executeUpdate("delete QueueEntry where obj = :object and status like '1000'", [object: obj]) // '952', '991', '992', 
 		}
 	}
 	
 	def premis() {
 		
-		
 		def zeit1 = new Date()
-		
 		
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
 		params.offset1 = params.int('offset1') ?: oldOffset1
@@ -733,7 +748,6 @@ class ObjectController {
 		
 		def dName = params.search?.dataName
 		def dExtension = params.search?.dataExtension
-	
 		
 		if((dName != null && dName != "") || (dExtension != null && dExtension != "")) {
 			params.offset1 = 0
@@ -810,7 +824,9 @@ class ObjectController {
 			render(view:"premis", model:[targetNames: targetNames, dafilesMaxSize: dafilesMaxSize, metaMaxSize: metaMaxSize, tmpDafiles: tmpDaFiles, tmpMeta: tmpMeta, pkgEvents: pkgEvents, dataName: dataName, numberShowFiles: numberShowFiles, max: max, meta: meta, dafiles: dafiles, packages: sortPackages, object: premisObject, eventPkgList: eventPkgList])
 		}
 		else {
-			render("Premis konnte nicht geladen werden.")
+			//def result =[msg: "Der PremisViewer konnte nicht geladen werden, da die dazugehörige Premis in der Datenbank nicht vorliegt. Zuerst muss die Premis in die Datenbank geladen werden, anschließend kann der PremisViewer angezeigt werden."]
+			//render result as JSON
+			render (view: "noPremis")
 		}
 		
 	} 
@@ -841,8 +857,8 @@ class ObjectController {
 	
 	def finde = {	objName ->
 
-		def xmldocument = "" 
-		premisObject = PremisObject.find("from PremisObject where origName = :name", [name: 'Rheinländer_2016-04-14'])//objName]) //'2-20160414450456']) //'2-20160405449925'])  '1-2016070651'])  //'1-2016062726']) //'1-20160627268']) //'1-2016070168']) //'1-2016062164']) //'1-20160530106']) // params.objectIdentifier
+		//def xmldocument = "" 
+		premisObject = PremisObject.find("from PremisObject where origName = :name", [name: objName]) //'2-20160414450456']) //'2-20160405449925'])  '1-2016070651'])  //'1-2016062726']) //'1-20160627268']) //'1-2016070168']) //'1-2016062164']) //'1-20160530106']) // params.objectIdentifier
 		
 		
 		
@@ -867,7 +883,7 @@ class ObjectController {
 			meta = new LinkedHashMap<String, ArrayList>()
 		
 			//if(object != null) {
-				xmldocument = premisObject.xml
+				//xmldocument = premisObject.xml
 				sortPackages.each {
 					
 					int id = it.id
@@ -1045,13 +1061,8 @@ class ObjectController {
 		//render(view:"premis", model:[zeit1: zeit1, zeit2: zeit2, pkgEvents: pkgEvents, dataName: dataName, numberShowFiles: numberShowFiles, max: max, meta: meta, dafiles: dafiles, packages: sortPackages, object: object, eventPkgList: eventPkgList])
 		}
 		else {
-			render("Premis konnte nicht geladen werden.")
+			//render("Premis konnte nicht geladen werden.")
 		}
-	}
-
-	def premisAnzeigen() {
-		def xml = (new FileInputStream(params.xmldocument)).getText()
-		render (text: xml, contentType: "text/xml", encoding: "UTF-8")
 	}
 	
 }
