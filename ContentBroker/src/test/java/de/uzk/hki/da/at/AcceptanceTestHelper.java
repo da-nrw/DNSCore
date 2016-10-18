@@ -323,7 +323,10 @@ public class AcceptanceTestHelper {
 					
 					throw new RuntimeException(msg);
 				}
-			}  
+			}  else{
+				System.out.println("Job is NULL. originalName: "+originalName);
+				
+			}
 		}
 	}
 
@@ -347,7 +350,8 @@ public class AcceptanceTestHelper {
 		int waited_ms_total=0;
 		while (true) {
 			waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT,INTERVAL);
-			
+			System.out.println("Awaiting object to be indexed. Identifier: "+identifier+
+					". Index: "+indexName+". MetadataIndex: "+mi+". ");
 			if (mi.getIndexedMetadata(indexName, identifier).contains(identifier)) break;
 		}
 	}

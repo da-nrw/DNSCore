@@ -28,12 +28,14 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Namespace;
@@ -262,7 +264,6 @@ public class ATPremisCreationDelta extends PREMISBase {
 		for (Element e : agentElements){
 			Element agentIdentifier = e.getChild("agentIdentifier", ns);
 			String agentName = agentIdentifier.getChildText("agentIdentifierValue", ns);			
-			System.out.println("checked AGENT: "+agentName);
 			if (agentName.startsWith("DA NRW SIP-Builder")){
 				assertEquals("APPLICATION", e.getChildText("agentType", ns));
 				assertEquals("APPLICATION_NAME", agentIdentifier.getChildText("agentIdentifierType", ns));
@@ -276,6 +277,7 @@ public class ATPremisCreationDelta extends PREMISBase {
 				assertEquals("NODE_NAME", agentIdentifier.getChildText("agentIdentifierType", ns));
 				checkedAgents++;
 			}
+			System.out.println("checked AGENT: "+agentName);
 		}
 		assertEquals(4, checkedAgents);	// change to 3 if both packages are build with the same SIPBuilder
 	}
