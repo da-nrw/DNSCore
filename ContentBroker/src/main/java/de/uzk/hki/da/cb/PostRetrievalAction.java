@@ -40,7 +40,6 @@ public class PostRetrievalAction extends AbstractAction {
 
 	private static final String OUTGOING = "outgoing";
 	private int timeOut = 20000;
-	private long days = 2;
 	
 	public PostRetrievalAction(){
 		SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;
@@ -59,6 +58,8 @@ public class PostRetrievalAction extends AbstractAction {
 			throw new PreconditionsNotMetException("Must be set: n.getUserAreaRootPath");
 		if (! Path.makeFile(n.getUserAreaRootPath(),o.getContractor().getShort_name(),OUTGOING).exists())
 			throw new PreconditionsNotMetException("Must exist: "+Path.makeFile(n.getUserAreaRootPath(),o.getContractor().getShort_name(),OUTGOING));
+		if(n.getRetrieval_remain_time()<=0)
+			throw new PreconditionsNotMetException("Must be set >0: n.getRetrieval_remain_time");
 		
 	}
 	
@@ -72,7 +73,7 @@ public class PostRetrievalAction extends AbstractAction {
 			logger.debug("Retrieval is already deleted by other software, modify Object status");
 			modifyObject(o);
 		} else {
-			if (System.currentTimeMillis() / 1000 <= (Long.parseLong(j.getDate_created()) + (86400L * days))) {
+			if (System.currentTimeMillis() / 1000 <= (Long.parseLong(j.getDate_created()) + (86400L * n.getRetrieval_remain_time()))) {
 				delay();
 				logger.debug("CB not yet able to delete that item yet!");
 				return false;
