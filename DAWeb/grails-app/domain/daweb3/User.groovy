@@ -32,8 +32,8 @@ class User {
 	 boolean accountLocked 
 	 boolean passwordExpired
 	 boolean mailsPooled
-	 boolean use_public_mets = false
-	 boolean delta_on_urn = true
+	 boolean use_public_mets
+	 boolean delta_on_urn
 	 
 	 String description
 	 String email_contact
