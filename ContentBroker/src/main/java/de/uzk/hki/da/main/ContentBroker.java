@@ -21,6 +21,7 @@
 package de.uzk.hki.da.main;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.activemq.xbean.XBeanBrokerService;
 import org.slf4j.Logger;
@@ -34,6 +35,8 @@ import de.uzk.hki.da.action.ActionInformation;
 import de.uzk.hki.da.action.Controller;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.service.JmsMessageServiceHandler;
+import sun.misc.Signal;
+import sun.misc.SignalHandler;
 
 
 
@@ -138,6 +141,7 @@ public class ContentBroker {
 			logger.error("Exception in main!",e);
 			System.exit(1);
 		}
+
 	}
 	
 	
@@ -159,6 +163,29 @@ public class ContentBroker {
 				getServerSocketNumber(),
 				actionFactory, actionInformation, mqBroker, jmsMessageServiceHandler );
 		(new Thread(controller)).start();
+		
+ 
+		// Runtime.addShutdownHook doens't work properly. SIGKILL is -9 it is used by vm and can not be used by developer. 
+		//SIGTERM is -15
+		Signal.handle(new Signal("TERM"), new SignalHandler () {
+		      public void handle(Signal sig) {
+		    	  logger.info("ContentBrocker is killed by SIGTERM try to execute a 'bit gracefully shutdown'");
+		        actionFactory.setPaused(true);
+		        List tmpList=actionFactory.getActionRegistry().getCurrentActionDescriptions();
+
+		        for(int maxTry=25;tmpList.size()>0 &&maxTry>=0;maxTry-=5){
+		        	logger.info("Give a chance for running actions ("+tmpList.size()+") to exit themself");
+		        	tmpList=actionFactory.getActionRegistry().getCurrentActionDescriptions();
+		        	try {
+						Thread.sleep(5000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+		        }
+		        logger.info("Time is out for a 'bit gracefully shutdown', "+actionFactory.getActionRegistry().getCurrentActionDescriptions().size()+" actions are still running");
+		        System.exit(0);
+		      }
+		    });
 		
 	}
 	
