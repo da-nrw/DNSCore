@@ -29,6 +29,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.utils.FolderUtils;
 import gov.loc.repository.bagit.Bag;
@@ -69,7 +70,8 @@ public class ATRetrieval extends AcceptanceTest{
 		FileUtils.moveFileToDirectory(
 				new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+identifier+".tar"), 
 				new File("/tmp"), false);
-		
+		//after moving the retrieval-file, PostRetrievalAction(952) have to end the workflow
+		ath.awaitObjectState(originalName, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow); 
 		ArchiveBuilderFactory.getArchiveBuilderForFile(new File("/tmp/"+identifier+".tar"))
 			.unarchiveFolder(new File("/tmp/"+identifier+".tar"), new File ("/tmp/"));
 		

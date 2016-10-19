@@ -323,7 +323,10 @@ public class AcceptanceTestHelper {
 					
 					throw new RuntimeException(msg);
 				}
-			}  
+			} else{
+				System.out.println("Awaiting job (OriginalName: "+originalName+") to be in state "+status+". Job is NULL ");
+				
+			}
 		}
 	}
 
