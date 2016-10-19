@@ -17,4 +17,3 @@
 	</label>
 	<g:textField name="name" value="${cbNodeInstance?.name}"/>
 </div>
-
