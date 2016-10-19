@@ -65,35 +65,28 @@ public class PostRetrievalAction extends AbstractAction {
 	@Override
 	public boolean implementation() {
 		logger.debug("PostRetrievalAction called! ");
-		if (new Date().getTime()/1000L < (Long.parseLong(j.getDate_created())+(86400L*days))){
-			delay();
-			logger.debug("CB not yet able to delete that item yet!");
-			return false;
-		} 
-		if ((new Date().getTime())/1000L > (Long.parseLong(j.getDate_created())+(86400L*days))){							
-		Path outgoingFolder = Path.make(n.getUserAreaRootPath(),o.getContractor().getShort_name(),OUTGOING);
-		File toDel =  Path.makeFile(outgoingFolder,o.getIdentifier() + C.FILE_EXTENSION_TAR);
-		if (toDel.exists()) {
-			logger.debug("Deleting  " +toDel);
-			toDel.delete(); 
-		} else logger.warn("Called delete but cannot execute. File does not exist: "+toDel);
-			
-			
-
-		
-		modifyObject(o);
+		Path outgoingFolder = Path.make(n.getUserAreaRootPath(), o.getContractor().getShort_name(), OUTGOING);
+		File toDel = Path.makeFile(outgoingFolder, o.getIdentifier() + C.FILE_EXTENSION_TAR);
+		if (!toDel.exists()) {// For the use case the File has been
+								// moved/deleted manually
+			logger.debug("Retrieval is already deleted by other software, modify Object status");
+			modifyObject(o);
 		} else {
-			logger.info("Deletion skipped  " + o.getIdentifier() + C.FILE_EXTENSION_TAR + " is still to young"); 
-			return false;
+			if (System.currentTimeMillis() / 1000 <= (Long.parseLong(j.getDate_created()) + (86400L * days))) {
+				delay();
+				logger.debug("CB not yet able to delete that item yet!");
+				return false;
+			} else {
+				if (toDel.exists()) {
+					logger.debug("Deleting  " + toDel);
+					toDel.delete();
+				} else
+					logger.warn("Called delete but cannot execute. File does not exist: " + toDel);
+				modifyObject(o);
+			}
 		}
-		
-		
-		
 		return true;
 	}
-	
-	
-	
 	
 	private void delay(){
 		try {
