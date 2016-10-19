@@ -38,7 +38,7 @@ public class ATPublicMets extends AcceptanceTest {
 
 	@After
 	public void tearDown() {
-		Boolean oldUsePublicMets = this.setUserPublicMets(null);
+		Boolean oldUsePublicMets = this.setUserPublicMets(Boolean.FALSE);
 	}
 
 	@Test
