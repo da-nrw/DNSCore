@@ -516,8 +516,10 @@ public class AcceptanceTestHelper {
 	}
 
 	
-	
 	void createJob(String origName,String jobStatus) {
+		createJob(origName, jobStatus,String.valueOf(new Date().getTime()/1000L));
+	}
+	void createJob(String origName,String jobStatus, String createDate) {
 		Object o = getObject(origName);
 		
 		Session session = HibernateUtil.openSession();
@@ -528,8 +530,8 @@ public class AcceptanceTestHelper {
 		Job j = new Job();
 		j.setResponsibleNodeName(node.getName());
 		j.setObject(o);
-		j.setDate_created(String.valueOf(new Date().getTime()/1000L));
-		j.setDate_modified(String.valueOf(new Date().getTime()/1000L));
+		j.setDate_created(createDate);
+		j.setDate_modified(createDate);
 		j.setStatus(jobStatus);
 	
 		session.save(j);

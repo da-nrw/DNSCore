@@ -39,7 +39,7 @@ import de.uzk.hki.da.utils.StringUtilities;
 public class PostRetrievalAction extends AbstractAction {
 
 	private static final String OUTGOING = "outgoing";
-	private int timeOut = 20000;
+	public static int PAUSE_DELAY = 20000;
 	
 	public PostRetrievalAction(){
 		SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;
@@ -91,7 +91,7 @@ public class PostRetrievalAction extends AbstractAction {
 	
 	private void delay(){
 		try {
-			Thread.sleep(timeOut); // to prevent unnecessary small intervals when checking
+			Thread.sleep(PAUSE_DELAY); // to prevent unnecessary small intervals when checking
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
