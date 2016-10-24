@@ -22,15 +22,24 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.apache.commons.io.FileUtils;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.uzk.hki.da.cb.PostRetrievalAction;
+import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
+import de.uzk.hki.da.service.HibernateUtil;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.FolderUtils;
 import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.BagFactory;
@@ -42,25 +51,31 @@ import gov.loc.repository.bagit.BagFactory;
 public class ATRetrieval extends AcceptanceTest{
 	
 	private static final String identifier = "ATRetrieval_identifier";
-	
+	static String originalName = "ATRetrieval";
 	@BeforeClass
 	public static void setUp() {
+		removeTMPFiles();
+		try {
+			ath.putAIPToLongTermStorage(identifier, originalName, new Date(), 100);
+		} catch (IOException e) {
+			e.printStackTrace();
+			fail(e.toString());
+		}
 	}
-	
 	
 	@AfterClass
 	public static void tearDown(){
 		distributedConversionAdapter.remove("aip/TEST/"+identifier); // TODO does it work?
+		removeTMPFiles();
+	}
+	
+	private static void removeTMPFiles(){
 		new File("/tmp/"+identifier+".tar").delete();
 		FolderUtils.deleteQuietlySafe(new File("/tmp/"+identifier));
 	}
 	
 	@Test
 	public void testHappyPath() throws Exception{
-		
-		String originalName = "ATRetrieval";
-		
-		ath.putAIPToLongTermStorage(identifier, originalName, new Date(), 100);
 		ath.createJob(originalName, "900");
 		ath.waitForJobToBeInStatus(originalName, "952");
 		
@@ -71,6 +86,7 @@ public class ATRetrieval extends AcceptanceTest{
 				new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+identifier+".tar"), 
 				new File("/tmp"), false);
 		//after moving the retrieval-file, PostRetrievalAction(952) have to end the workflow
+		Thread.sleep((int)(PostRetrievalAction.PAUSE_DELAY * 1.5));
 		ath.awaitObjectState(originalName, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow); 
 		ArchiveBuilderFactory.getArchiveBuilderForFile(new File("/tmp/"+identifier+".tar"))
 			.unarchiveFolder(new File("/tmp/"+identifier+".tar"), new File ("/tmp/"));
@@ -86,5 +102,40 @@ public class ATRetrieval extends AcceptanceTest{
 		Bag bag = bagFactory.createBag(file);
 		return bag.verifyValid().isSuccess();
 	}	
+
+	@Test
+	public void testTimebasedRemoveRetrievalAfter14DayBeforeTimeout() throws Exception {
+		int usualRetrievalTime = localNode.getRetrieval_remain_time();
+
+		String createTime = String.valueOf(new Date().getTime() / 1000L - ((usualRetrievalTime * 24 - 12) * 60 * 60));// - 1/2 Day for timeout
+		ath.createJob(originalName, "900", createTime);
+		ath.waitForJobToBeInStatus(originalName, "952");
+
+		System.out.println(
+				new File(localNode.getUserAreaRootPath() + "/TEST/outgoing/" + identifier + ".tar").getAbsolutePath());
+		assertTrue(new File(localNode.getUserAreaRootPath() + "/TEST/outgoing/" + identifier + ".tar").exists());
+
+		Thread.sleep((int)(PostRetrievalAction.PAUSE_DELAY * 1.5));
+		ath.waitForJobToBeInStatus(originalName, "952");
+		assertTrue(new File(localNode.getUserAreaRootPath() + "/TEST/outgoing/" + identifier + ".tar").exists());
+		new File(localNode.getUserAreaRootPath() + "/TEST/outgoing/" + identifier + ".tar").delete();
+		Thread.sleep((int)(PostRetrievalAction.PAUSE_DELAY * 1.5));
+		assertTrue(ath.getJob(originalName) == null);
+	}
+
 	
+	@Test
+	public void testTimebasedRemoveRetrievalAfter14DayAfterTimeout() throws Exception {
+		int usualRetrievalTime = localNode.getRetrieval_remain_time();
+
+		String createTime = String.valueOf(new Date().getTime() / 1000L - ((usualRetrievalTime * 24 + 12) * 60 * 60));// +1/2 Day after timeout
+		ath.createJob(originalName, "900", createTime);
+		//ath.waitForJobToBeInStatus(originalName, "952");
+
+		Thread.sleep((int)(PostRetrievalAction.PAUSE_DELAY * 1.5));
+		ath.awaitObjectState(originalName, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+		assertTrue(ath.getJob(originalName) == null);
+		assertTrue(!new File(localNode.getUserAreaRootPath() + "/TEST/outgoing/" + identifier + ".tar").exists());
+
+	}
 }
