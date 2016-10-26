@@ -22,6 +22,8 @@ package de.uzk.hki.da.at;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -36,16 +38,20 @@ import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectNamedQueryDAO;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.User;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.pkg.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.repository.MetadataIndex;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.MD5Checksum;
 import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.ProcessInformation;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.StringUtilities;
 
@@ -68,6 +74,7 @@ public class AcceptanceTestHelper {
 	
 	private GridFacade gridFacade;
 	private Node localNode;
+	private PreservationSystem preservationSystem;
 	private User testContractor;
 	private StoragePolicy sp;
 	private String logPath = null;
@@ -76,7 +83,8 @@ public class AcceptanceTestHelper {
 			GridFacade gridFacade,
 			Node localNode,
 			User testContractor,
-			StoragePolicy sp){
+			StoragePolicy sp,
+			PreservationSystem ps){
 		this.gridFacade=gridFacade;
 		this.localNode=localNode;
 		this.testContractor=testContractor;
@@ -87,6 +95,7 @@ public class AcceptanceTestHelper {
 		String localNodeWorkArea = localNode.getWorkAreaRootPath().toString();
 		String localNodeTMP = localNodeWorkArea.replace("/storage/WorkArea", "");
 		logPath=(new File(localNodeTMP+"/ContentBroker/log")).getAbsolutePath();//default logpath
+		preservationSystem=ps;
 	}
 			
 			
@@ -555,4 +564,52 @@ public class AcceptanceTestHelper {
 	public void setLogPath(String newLogPath) {
 		logPath=newLogPath;
 	}
+	
+	/*
+	public File getMetsFileFromPip(String identifier) throws IOException{
+		return loadFileFromPip(identifier,C.CB_PACKAGETYPE_METS+C.FILE_EXTENSION_XML);
+	}
+	
+	public File loadFileFromPip(String identifier, String fileName) throws IOException{
+		Path contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
+		//Path contractorsPipsPublicTMP = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC+"ATtoRemove", C.TEST_USER_SHORT_NAME);
+		
+		Path filePath=Path.make(contractorsPipsPublic, 
+				identifier, fileName);
+		File tmpFile=filePath.toFile();
+		
+		if(localNode.getName().equals(preservationSystem.getPresServer())){
+			//TODO: get Pip from filesystem
+			if(!tmpFile.exists()){
+				throw new IOException("File: "+tmpFile+ "doesnt exists");
+			}
+		}else{
+			//private static final Path container = Path.make(outgoingFolder,TC.IDENTIFIER+C.FILE_EXTENSION_TAR);
+
+			if(tmpFile.exists()){
+				tmpFile.delete();
+			}
+			tmpFile.createNewFile();
+			fetchFileFromFedora(identifier,fileName,tmpFile);
+		}
+		return tmpFile;
+	}
+	
+	public static void fetchFileFromFedora(String identifier,String srcFileName, File targetFile) throws IOException{
+		
+		FileWriter fw=new FileWriter(targetFile);
+		//sollte in der config von RegressCB-Anwendung stehen
+		String url="http://localhost:8080/fedora/objects/collection-open:IDENTIFIER/datastreams/FILENAME/content";
+		String curlUrlCommand="curl X GET \"" + url.replace("IDENTIFIER", identifier).replace("FILENAME", srcFileName)+"\"";
+		ProcessInformation pi = new CommandLineConnector().runCmdSynchronously(new String[]{"curl X GET ", url},null,60000);
+		
+		String htmlString=pi.getStdOut();
+		fw.write(htmlString.split("</html>")[1]); //get the part of content after html-stuff
+		fw.close();
+		//curl X GET "http://localhost:8080/fedora/objects/collection-open:1-2016102534/datastreams/_1175-mets_1175.xml/content"
+		//https://danrw-q-repo.hbz-nrw.de/file/8-2016101915371/_b26200b1649a6be51841b740ae745f3b.jpg    -> danrw:8-2016101915371/...
+		//https://danrw-q-repo.hbz-nrw.de/file/8-2016101915371/METS.xml
+	}
+	
+	*/
 }

@@ -197,7 +197,7 @@ public class AcceptanceTest {
 		preservationSystem = (PreservationSystem) session.get(PreservationSystem.class, 1);
 		session.close();
 		instantiateStoragePolicy();
-		ath = new AcceptanceTestHelper(gridFacade,localNode,testContractor,sp);
+		ath = new AcceptanceTestHelper(gridFacade,localNode,testContractor,sp,preservationSystem);
 		if(properties.getProperty("localNode.logFolder")!=null) 
 			ath.setLogPath(properties.getProperty("localNode.logFolder"));
 		
