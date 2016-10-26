@@ -4,7 +4,7 @@ Deutsche Version | [English Version](documentation.md)
 
 Willkommen auf der Startseite der Dokumentation des DNSCore Softwarepakets! Dies hier ist die primäre Quelle zu allen Fragen bezüglich der Handhabung des Softwarepakets. 
 
-**Schneller Überblick**
+**Schneller Überblick** 
 
 [Zusammenfassung der verschiedenen Spezifikationen zu SIP/AIP/DIP/Delta-SIP/PIP](./specifications_DNS.md)
 
