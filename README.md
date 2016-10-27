@@ -7,7 +7,6 @@ DNSCore
 
 -----
 
-
 The Core System of the DA-NRW Software Suite.
   
 The DNS software relies 
