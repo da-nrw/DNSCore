@@ -4,13 +4,15 @@ In bestimmten Fällen kann es zu einzelnen Paketfehlern kommen, die sich durch e
 In besonderen Ausahmesituationen kann es passieren, dass das System scheinbar "hängt" und nicht den erwarteten Durchsatz zeigt.
 Starten Sie in diesem Zusammenhang nicht einfach "neu" - bitte analysieren Sie zunächst das Fehlerbild. 
 
+Achtung: Bitte löschen Sie nicht auf "eigene Faust" von der WorkArea, vor allem nicht bei laufendem ContentBroker mit Jobs auf diesem Objekten - ein hängender CB ist die Folge. 
+
 **Überlick gewinnen:**
 
 Einsicht in die [DA-Web Adminoberfläche](../../../../DAWeb/doc/contentBroker_administration.md), Anmeldung als Knotenadmin. Dort laufen alle Systemmeldungen auf.
 
 ## Das ganze System "hängt" scheinbar
 
-Der CB hat eine ganze Reihe an Sicherungsfunktionalitäten, die seine Arbeit automatisch stoppen. 
+Der CB hat eine ganze Reihe an Sicherungsfunktionalitäten, die seine Arbeit automatisch stoppen. Ein Abbruch ist in soweit ein "erwartetes" Verhalten!
 
 Bitte untersuchen Sie, ob die folgenden Bedingungen zutreffen:
 
@@ -18,6 +20,9 @@ Bitte untersuchen Sie, ob die folgenden Bedingungen zutreffen:
 2. Der CB läuft grundsätzlich. Prüfen Sie ob der CB noch Logmeldungen schreibt.
 3. Noch genügend Speicherplatz auf WorkingArea? Üblicherweise stoppt der CB seine Verabreitung wenn nicht ausreichend Speicherplatz frei ist. Den Wert dafür legt der Knotenadmin fest siehe beans.xml.
 4. Diagnostics läuft?
+5. Der Knoten kann ins Netz zugreifen?
+6. Es wurden keine Pakete unzulässig (d.h. z.B. per Konsole) aus der WorkArea entfernt, die noch Einträge in der Queue-Tabelle aufweisen? 
+7. Es gibt hängende Prozesse von Dritt-Modulen, die noch arbeiten?
 
 ### Diagnostics durchführen
 
