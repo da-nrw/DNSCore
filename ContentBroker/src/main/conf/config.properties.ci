@@ -25,7 +25,7 @@ localNode.fedoraUrlTemplateForDownload=http://localhost:8080/fedora/objects/coll
 localNode.auditSleepFor=10000
 
 elasticsearch.index=portal_ci
-elasticsearch.hosts=localhost
+elasticsearch.hosts=http://localhost:9200
 elasticsearch.cluster=cluster_ci
 
 cb.serverSocketNumber=4455
