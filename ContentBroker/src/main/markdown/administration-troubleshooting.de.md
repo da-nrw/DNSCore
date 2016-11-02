@@ -24,6 +24,7 @@ Bitte untersuchen Sie, ob die folgenden Bedingungen zutreffen:
 6. Es wurden keine Pakete unzulässig (d.h. z.B. per Konsole) aus der WorkArea entfernt, die noch Einträge in der Queue-Tabelle aufweisen? 
 7. Es gibt hängende Prozesse von Dritt-Modulen, die noch arbeiten?
 8. stdout.log und stderr.log prüfen 
+9. Stellen Sie bitte nicht "wild" Job-Einträge auf die Recovery & Delete Status (600,800). Diese gelten nur für den Bereich in der die Weboberfläche dies auch anbietet.
 
 ### Diagnostics durchführen
 
@@ -129,7 +130,8 @@ Grundsätzlich sind Status <=400 immer im Gesamten rücksetzbar. Bei Status >440
 Das Betätigen des Buttons vom Admin führt zur Löschung des Objekts sowohl aus der Datenbank als auch vom Speicher. 
 Der Orig_name kann somit wieder verwendet werden.
 Sollte es sich beim eingelieferten Paket um ein Delta handeln, wird nur das neuste Paket gelöscht. Das Originalobjekt bleibt erhalten.
-Der Contractor bekommt eine EMail vom System
+Der Contractor bekommt eine EMail vom System. 
+Dieser Status darf nicht in einem Bereich >400 gesetzt werden! Die Weboberfläche bietet den Button nur im gültigen Spektrum an.
 
 ## Der "Gesamter Workflow zurücksetzen"-Button - Rollback (Status 600)
 
