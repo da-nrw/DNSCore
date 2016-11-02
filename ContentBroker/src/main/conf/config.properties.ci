@@ -20,6 +20,7 @@ localNode.workingResource=ciWorkingResource
 localNode.replDestinations=ciArchiveRescGroup
 localNode.id=1
 localNode.logFolder=/ci/ContentBroker/log
+localNode.fedoraUrlTemplateForDownload=http://localhost:8080/fedora/objects/collection-open:IDENTIFIER/datastreams/FILENAME/content
 
 localNode.auditSleepFor=10000
 

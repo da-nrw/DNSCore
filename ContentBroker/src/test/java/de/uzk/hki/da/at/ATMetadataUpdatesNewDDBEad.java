@@ -3,6 +3,7 @@ package de.uzk.hki.da.at;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -50,8 +51,10 @@ public class ATMetadataUpdatesNewDDBEad extends AcceptanceTest{
 	
 	@Test
 	public void testPres() throws FileNotFoundException, JDOMException, IOException {
+		File mets=ath.loadFileFromPip(o.getIdentifier(), "mets_1_280920.xml");
+		//FileReader frMets = new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), "mets_1_280920.xml").toFile());
+		FileReader frMets = new FileReader(ath.loadFileFromPip(o.getIdentifier(), "mets_1_280920.xml"));
 		
-		FileReader frMets = new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), "mets_1_280920.xml").toFile());
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build(frMets);
 		List<Element> metsFileElements = mh.getMetsFileElements(doc);
@@ -62,7 +65,8 @@ public class ATMetadataUpdatesNewDDBEad extends AcceptanceTest{
 		assertEquals(C.MIMETYPE_IMAGE_JPEG, mh.getMimetypeInMets(fileElement));
 		frMets.close();
 		
-		FileReader frEad = new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), EAD_XML).toFile());
+		//FileReader frEad = new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), EAD_XML).toFile());
+		FileReader frEad = new FileReader(ath.loadFileFromPip(o.getIdentifier(),EAD_XML));
 		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document eadDoc = eadSaxBuilder.build(frEad);
 		EadParser ep = new EadParser(eadDoc);
@@ -86,7 +90,8 @@ public class ATMetadataUpdatesNewDDBEad extends AcceptanceTest{
 	@Test
 	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
 		
-		FileReader frEdm = new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), "EDM.xml").toFile());
+		//FileReader frEdm = new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), "EDM.xml").toFile());
+		FileReader frEdm = new FileReader(ath.loadFileFromPip(o.getIdentifier(), "EDM.xml"));
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build(frEdm);
 		@SuppressWarnings("unchecked")

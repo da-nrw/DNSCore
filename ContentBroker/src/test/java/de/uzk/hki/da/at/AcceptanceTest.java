@@ -201,6 +201,9 @@ public class AcceptanceTest {
 		if(properties.getProperty("localNode.logFolder")!=null) 
 			ath.setLogPath(properties.getProperty("localNode.logFolder"));
 		
+		if(properties.getProperty("localNode.fedoraUrlTemplateForDownload")!=null) 
+			ath.setFedoraUrlTemplate(properties.getProperty("localNode.fedoraUrlTemplateForDownload"));
+		
 //		new CommandLineConnector().runCmdSynchronously(new String[] {"src/main/bash/rebuildIndex.sh"});
 		//If the previous test execution not cleaned 
 			cleanStorage();

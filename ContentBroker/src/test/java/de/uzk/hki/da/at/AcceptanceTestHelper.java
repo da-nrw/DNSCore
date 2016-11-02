@@ -21,10 +21,17 @@ package de.uzk.hki.da.at;
 
 import static org.junit.Assert.fail;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 
@@ -78,6 +85,10 @@ public class AcceptanceTestHelper {
 	private User testContractor;
 	private StoragePolicy sp;
 	private String logPath = null;
+	private String fedoraUrlTemplate=null;
+			//"http://localhost:8080/fedora/objects/collection-open:IDENTIFIER/datastreams/FILENAME/content";
+			//"https://danrw-q-repo.hbz-nrw.de/file/IDENTIFIER/FILENAME";
+	
 	
 	public AcceptanceTestHelper(
 			GridFacade gridFacade,
@@ -564,52 +575,73 @@ public class AcceptanceTestHelper {
 	public void setLogPath(String newLogPath) {
 		logPath=newLogPath;
 	}
-	
-	/*
-	public File getMetsFileFromPip(String identifier) throws IOException{
-		return loadFileFromPip(identifier,C.CB_PACKAGETYPE_METS+C.FILE_EXTENSION_XML);
-	}
-	
-	public File loadFileFromPip(String identifier, String fileName) throws IOException{
-		Path contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
-		//Path contractorsPipsPublicTMP = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC+"ATtoRemove", C.TEST_USER_SHORT_NAME);
-		
-		Path filePath=Path.make(contractorsPipsPublic, 
-				identifier, fileName);
-		File tmpFile=filePath.toFile();
-		
-		if(localNode.getName().equals(preservationSystem.getPresServer())){
-			//TODO: get Pip from filesystem
-			if(!tmpFile.exists()){
-				throw new IOException("File: "+tmpFile+ "doesnt exists");
-			}
-		}else{
-			//private static final Path container = Path.make(outgoingFolder,TC.IDENTIFIER+C.FILE_EXTENSION_TAR);
 
-			if(tmpFile.exists()){
+
+	public void setFedoraUrlTemplate(String fedoraUrlTemplate) {
+		this.fedoraUrlTemplate = fedoraUrlTemplate;
+	}
+
+
+
+	public File getDefaultMetsFileFromPip(String identifier) throws IOException {
+		return loadFileFromPip(identifier, C.CB_PACKAGETYPE_METS + C.FILE_EXTENSION_XML);
+	}
+
+	public File loadFileFromPip(String identifier, String fileName) throws IOException {
+		Path contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(), WorkArea.PIPS, WorkArea.PUBLIC,	C.TEST_USER_SHORT_NAME);
+
+		Path targetDir = Path.make(contractorsPipsPublic, identifier);
+		Path filePath = Path.make(targetDir, fileName);
+		File tmpFile = filePath.toFile();
+
+		if (localNode.getName().equals(preservationSystem.getPresServer())) {
+			if (!tmpFile.exists()) {
+				throw new IOException("File: " + tmpFile + "doesnt exists");
+			}
+		} else {
+			if (tmpFile.exists()) {
 				tmpFile.delete();
 			}
+			Files.createDirectories(Paths.get(targetDir.toFile().getAbsolutePath()));
 			tmpFile.createNewFile();
-			fetchFileFromFedora(identifier,fileName,tmpFile);
+			if (fedoraUrlTemplate == null)
+				throw new IOException("File: " + tmpFile + " is not downloadable, fedora Url is not seted");
+			fetchFileFromFedora(identifier, fileName, tmpFile);
 		}
 		return tmpFile;
 	}
-	
-	public static void fetchFileFromFedora(String identifier,String srcFileName, File targetFile) throws IOException{
-		
-		FileWriter fw=new FileWriter(targetFile);
-		//sollte in der config von RegressCB-Anwendung stehen
-		String url="http://localhost:8080/fedora/objects/collection-open:IDENTIFIER/datastreams/FILENAME/content";
-		String curlUrlCommand="curl X GET \"" + url.replace("IDENTIFIER", identifier).replace("FILENAME", srcFileName)+"\"";
-		ProcessInformation pi = new CommandLineConnector().runCmdSynchronously(new String[]{"curl X GET ", url},null,60000);
-		
-		String htmlString=pi.getStdOut();
-		fw.write(htmlString.split("</html>")[1]); //get the part of content after html-stuff
+
+	public void fetchFileFromFedora(String identifier, String srcFileName, File targetFile) throws IOException {
+		FileWriter fw = new FileWriter(targetFile);
+		String url = fedoraUrlTemplate.replace("IDENTIFIER", identifier).replace("FILENAME", srcFileName);
+		// String curlUrlCommand="curl X GET \"" + url.replace("IDENTIFIER",
+		// identifier).replace("FILENAME", srcFileName)+"\"";
+		// ProcessInformation pi = new
+		// CommandLineConnector().runCmdSynchronously(new String[]{"curl X GET
+		// ", url},null,60000);
+
+		String htmlString = getFileAsHTMContent(url); // pi.getStdOut();
+		String[] htmlStringSplit = htmlString.split("</html>");
+		fw.write(htmlStringSplit[htmlStringSplit.length - 1]); // get the partbof content after html-stuff
 		fw.close();
-		//curl X GET "http://localhost:8080/fedora/objects/collection-open:1-2016102534/datastreams/_1175-mets_1175.xml/content"
-		//https://danrw-q-repo.hbz-nrw.de/file/8-2016101915371/_b26200b1649a6be51841b740ae745f3b.jpg    -> danrw:8-2016101915371/...
-		//https://danrw-q-repo.hbz-nrw.de/file/8-2016101915371/METS.xml
+		// curl X GET
+		// "http://localhost:8080/fedora/objects/collection-open:1-2016102534/datastreams/_1175-mets_1175.xml/content"
+		// https://danrw-q-repo.hbz-nrw.de/file/8-2016101915371/_b26200b1649a6be51841b740ae745f3b.jpgn -> danrw:8-2016101915371/...
+		// https://danrw-q-repo.hbz-nrw.de/file/8-2016101915371/METS.xml
 	}
-	
-	*/
+
+	private static String getFileAsHTMContent(String urlString) throws UnsupportedEncodingException, IOException {
+		System.out.println(urlString);
+		URL url = new URL(urlString);
+		URLConnection urlc = url.openConnection();
+		urlc.addRequestProperty("User-Agent", "Mozilla/5.0");
+		StringBuilder ret = new StringBuilder();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+		for (String line; (line = reader.readLine()) != null;) {
+			System.out.println(line);
+			ret.append(line);
+		}
+
+		return ret.toString();
+	}
 }
