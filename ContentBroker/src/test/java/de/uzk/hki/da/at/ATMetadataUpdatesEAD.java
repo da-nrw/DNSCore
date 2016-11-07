@@ -35,7 +35,6 @@ import de.uzk.hki.da.utils.XMLUtils;
 public class ATMetadataUpdatesEAD extends AcceptanceTest{
 	
 	private static final String URL = "URL";
-	private static Path contractorsPipsPublic;
 	private static String origName = "ATMetadataUpdatesEAD";
 	private static Object o;
 	private static final String EAD_XML = "EAD.xml";
@@ -49,8 +48,6 @@ public class ATMetadataUpdatesEAD extends AcceptanceTest{
 		ath.waitForDefinedPublishedState(origName);
 		o=ath.getObject(origName);
 		ath.waitForObjectToBeIndexed(metadataIndex,getTestIndex(),o.getIdentifier());
-		
-		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	
 	@AfterClass
@@ -119,18 +116,18 @@ public class ATMetadataUpdatesEAD extends AcceptanceTest{
 	@Test
 	public void testPres() throws FileNotFoundException, JDOMException, IOException {
 		
-		FileReader frMets = new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), "mets_2_32044.xml").toFile());
+		FileReader frMets = new FileReader(ath.loadFileFromPip(o.getIdentifier(), "mets_2_32044.xml"));
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build(frMets);
 		List<Element> metsFileElements = mh.getMetsFileElements(doc);
 		Element fileElement = metsFileElements.get(0);
 		String metsURL = mh.getMetsHref(fileElement);
-		assertTrue(metsURL.startsWith("http://data.danrw.de/file/"+o.getIdentifier()) && metsURL.endsWith(".jpg"));
+		assertTrue(metsURL.startsWith(preservationSystem.getUrisFile()+"/"+o.getIdentifier()) && metsURL.endsWith(".jpg"));
 		assertEquals(URL, mh.getMetsLoctype(fileElement));
 		assertEquals(C.MIMETYPE_IMAGE_JPEG, mh.getMimetypeInMets(fileElement));
 		frMets.close();
 		
-		FileReader frEad = new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), EAD_XML).toFile());
+		FileReader frEad = new FileReader(ath.loadFileFromPip(o.getIdentifier(), EAD_XML));
 		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document eadDoc = eadSaxBuilder.build(frEad);
 		EadParser ep = new EadParser(eadDoc);
@@ -139,15 +136,15 @@ public class ATMetadataUpdatesEAD extends AcceptanceTest{
 		assertTrue(metsReferences.size()==5);
 		for(String metsRef : metsReferences) {
 			if(metsRef.contains("mets_2_32044.xml")) {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ o.getIdentifier() +"/mets_2_32044.xml"));
+				assertTrue(metsRef.equals(preservationSystem.getUrisFile()+"/"+ o.getIdentifier() +"/mets_2_32044.xml"));
 			} else if(metsRef.contains("mets_2_32045.xml")) {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ o.getIdentifier() +"/mets_2_32045.xml"));
+				assertTrue(metsRef.equals(preservationSystem.getUrisFile()+"/"+ o.getIdentifier() +"/mets_2_32045.xml"));
 			} else if(metsRef.contains("mets_2_32046.xml")) {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ o.getIdentifier() +"/mets_2_32046.xml"));
+				assertTrue(metsRef.equals(preservationSystem.getUrisFile()+"/"+ o.getIdentifier() +"/mets_2_32046.xml"));
 			} else if(metsRef.contains("mets_2_32047.xml")) {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ o.getIdentifier() +"/mets_2_32047.xml"));
+				assertTrue(metsRef.equals(preservationSystem.getUrisFile()+"/"+ o.getIdentifier() +"/mets_2_32047.xml"));
 			} else {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ o.getIdentifier() +"/mets_2_32048.xml"));
+				assertTrue(metsRef.equals(preservationSystem.getUrisFile()+"/"+ o.getIdentifier() +"/mets_2_32048.xml"));
 			}
 		}
 	}
@@ -155,7 +152,7 @@ public class ATMetadataUpdatesEAD extends AcceptanceTest{
 	@Test
 	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
 		
-		FileReader frEdm = new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), "EDM.xml").toFile());
+		FileReader frEdm = new FileReader(ath.loadFileFromPip(o.getIdentifier(), "EDM.xml"));
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build(frEdm);
 		@SuppressWarnings("unchecked")
@@ -192,7 +189,7 @@ public class ATMetadataUpdatesEAD extends AcceptanceTest{
 				achenbachID = pcho.getAttributeValue("about", C.RDF_NS);;
 			} 
 			
-			if(pcho.getAttributeValue("about", C.RDF_NS).equals("http://data.danrw.de/cho/"+o.getIdentifier())) {
+			if(pcho.getAttributeValue("about", C.RDF_NS).equals(preservationSystem.getUrisCho()+"/"+o.getIdentifier())) {
 				assertTrue(pcho.getChild("title", C.DC_NS).getValue()
 						.equals("VDA - Forschungsstelle Rheinlländer in aller Welt: Bezirksstelle West des Vereins für das Deutschtum im Ausland"));
 				assertTrue(pcho.getChild("hasType", C.EDM_NS).getValue().equals("is root element"));
@@ -203,7 +200,7 @@ public class ATMetadataUpdatesEAD extends AcceptanceTest{
 			
 			if(pcho.getChild("title", C.DC_NS).getValue().equals("01. Bundesleitung und Bezirksverbände")) {
 				bundesleitungUndBezirksverbaendeExists = true;
-				assertTrue(pcho.getChild("isPartOf", C.DCTERMS_NS).getAttributeValue("resource", C.RDF_NS).equals("http://data.danrw.de/cho/"+o.getIdentifier()));
+				assertTrue(pcho.getChild("isPartOf", C.DCTERMS_NS).getAttributeValue("resource", C.RDF_NS).equals(preservationSystem.getUrisCho()+"/"+o.getIdentifier()));
 				assertTrue(pcho.getChildren("hasPart", C.DCTERMS_NS).size()==39);
 			} else if(pcho.getChild("title", C.DC_NS).getValue().equals("02. Finanzsachen")) {
 				assertTrue(pcho.getChildren("hasPart", C.DCTERMS_NS).size()==13);

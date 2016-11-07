@@ -23,7 +23,7 @@ import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -53,6 +53,7 @@ import de.uzk.hki.da.pkg.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.repository.MetadataIndex;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.test.TC;
+import de.uzk.hki.da.util.FileIdGenerator;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.FolderUtils;
@@ -584,7 +585,7 @@ public class AcceptanceTestHelper {
 
 
 
-	public File getDefaultMetsFileFromPip(String identifier) throws IOException {
+	public File loadDefaultMetsFileFromPip(String identifier) throws IOException {
 		return loadFileFromPip(identifier, C.CB_PACKAGETYPE_METS + C.FILE_EXTENSION_XML);
 	}
 
@@ -604,7 +605,7 @@ public class AcceptanceTestHelper {
 				tmpFile.delete();
 			}
 			Files.createDirectories(Paths.get(targetDir.toFile().getAbsolutePath()));
-			tmpFile.createNewFile();
+			tmpFile.getParentFile().mkdirs(); //if filename contains directories
 			if (fedoraUrlTemplate == null)
 				throw new IOException("File: " + tmpFile + " is not downloadable, fedora Url is not seted");
 			fetchFileFromFedora(identifier, fileName, tmpFile);
@@ -613,18 +614,24 @@ public class AcceptanceTestHelper {
 	}
 
 	public void fetchFileFromFedora(String identifier, String srcFileName, File targetFile) throws IOException {
-		FileWriter fw = new FileWriter(targetFile);
-		String url = fedoraUrlTemplate.replace("IDENTIFIER", identifier).replace("FILENAME", srcFileName);
+		String url = fedoraUrlTemplate.replace("IDENTIFIER", identifier).replace("FILENAME", FileIdGenerator.getFileId(srcFileName));
 		// String curlUrlCommand="curl X GET \"" + url.replace("IDENTIFIER",
 		// identifier).replace("FILENAME", srcFileName)+"\"";
 		// ProcessInformation pi = new
 		// CommandLineConnector().runCmdSynchronously(new String[]{"curl X GET
 		// ", url},null,60000);
-
-		String htmlString = getFileAsHTMContent(url); // pi.getStdOut();
-		String[] htmlStringSplit = htmlString.split("</html>");
-		fw.write(htmlStringSplit[htmlStringSplit.length - 1]); // get the partbof content after html-stuff
-		fw.close();
+		String htmlString = null;
+		try {
+			htmlString = getFileAsHTMContent(url); // pi.getStdOut();
+		} catch (FileNotFoundException e) {
+			System.out.println("ERROR: " + url + " is not awaible!!! " + e);
+		}
+		if (htmlString != null) {
+			String[] htmlStringSplit = htmlString.split("</html>");
+			FileWriter fw = new FileWriter(targetFile);
+			fw.write(htmlStringSplit[htmlStringSplit.length - 1]); // get the part of content after html-stuff
+			fw.close();
+		}
 		// curl X GET
 		// "http://localhost:8080/fedora/objects/collection-open:1-2016102534/datastreams/_1175-mets_1175.xml/content"
 		// https://danrw-q-repo.hbz-nrw.de/file/8-2016101915371/_b26200b1649a6be51841b740ae745f3b.jpgn -> danrw:8-2016101915371/...
@@ -632,16 +639,18 @@ public class AcceptanceTestHelper {
 	}
 
 	private static String getFileAsHTMContent(String urlString) throws UnsupportedEncodingException, IOException {
-		System.out.println(urlString);
+		System.out.println("Fetch File from fedora: "+urlString);
 		URL url = new URL(urlString);
 		URLConnection urlc = url.openConnection();
 		urlc.addRequestProperty("User-Agent", "Mozilla/5.0");
 		StringBuilder ret = new StringBuilder();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
-		for (String line; (line = reader.readLine()) != null;) {
-			System.out.println(line);
-			ret.append(line);
-		}
+		
+			BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+			for (String line; (line = reader.readLine()) != null;) {
+				System.out.println(line);
+				ret.append(line);
+			}
+		
 
 		return ret.toString();
 	}

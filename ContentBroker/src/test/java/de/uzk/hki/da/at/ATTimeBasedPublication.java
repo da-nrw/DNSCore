@@ -85,8 +85,8 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		boolean exi1 = repositoryFacade.fileExists(object.getIdentifier(), preservationSystem.getOpenCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg");
 		boolean exi2 = repositoryFacade.fileExists(object.getIdentifier(), preservationSystem.getClosedCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg");
 		
-		assertTrue(exi1);
-		assertTrue(exi2);
+		assertTrue(object.getIdentifier()+" "+preservationSystem.getOpenCollectionName()+" "+"_0c32b463b540e3fee433961ba5c491d6.jpg"+" existiert nicht",exi1);
+		assertTrue(object.getIdentifier()+" "+preservationSystem.getClosedCollectionName()+" "+"_0c32b463b540e3fee433961ba5c491d6.jpg"+" exisitert nicht",exi2);
 		
 		File publFile = Path.makeFile(localNode.getWorkAreaRootPath(),
 				WorkArea.PIPS,WorkArea.PUBLIC,object.getContractor().getShort_name(),
@@ -139,8 +139,8 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		assertNotNull(object);
 		boolean exPubl = repositoryFacade.fileExists(object.getIdentifier(), preservationSystem.getOpenCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg");
 		boolean exInst = repositoryFacade.fileExists(object.getIdentifier(), preservationSystem.getClosedCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg");	
-		assertFalse(exPubl);
-		assertTrue(exInst);
+		assertFalse(object.getIdentifier()+" "+ preservationSystem.getOpenCollectionName()+" "+ "_0c32b463b540e3fee433961ba5c491d6.jpg",exPubl);
+		assertTrue(object.getIdentifier()+" "+preservationSystem.getClosedCollectionName()+" "+ "_0c32b463b540e3fee433961ba5c491d6.jpg",exInst);
 		assertEquals(PUBLISHEDFLAG_INSTITUTION,object.getPublished_flag());
 	}
 	
@@ -192,7 +192,7 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		Thread.sleep(2000);
 		
 		assertNotNull(object);
-		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getOpenCollectionName()));
+		assertTrue(object.getIdentifier()+"doenst exist in Fedora Facade",repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getOpenCollectionName()));
 		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getClosedCollectionName()));
 		assertEquals(PUBLISHEDFLAG_PUBLIC+
 				PUBLISHEDFLAG_INSTITUTION, object.getPublished_flag());

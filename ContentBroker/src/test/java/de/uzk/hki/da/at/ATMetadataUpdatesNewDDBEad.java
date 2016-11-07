@@ -29,7 +29,6 @@ public class ATMetadataUpdatesNewDDBEad extends AcceptanceTest{
 	
 	private static final String origName = "NewDDBEad";
 	private static Object o;
-	private static Path contractorsPipsPublic;
 	private MetadataHelper mh = new MetadataHelper();
 	private static final String URL = "URL";
 	private static final String EAD_XML = "EAD.xml";
@@ -41,8 +40,6 @@ public class ATMetadataUpdatesNewDDBEad extends AcceptanceTest{
 		ath.waitForDefinedPublishedState(origName);
 		o=ath.getObject(origName);
 		ath.waitForObjectToBeIndexed(metadataIndex,getTestIndex(),o.getIdentifier());
-		
-		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	
 	@AfterClass
@@ -51,8 +48,6 @@ public class ATMetadataUpdatesNewDDBEad extends AcceptanceTest{
 	
 	@Test
 	public void testPres() throws FileNotFoundException, JDOMException, IOException {
-		File mets=ath.loadFileFromPip(o.getIdentifier(), "mets_1_280920.xml");
-		//FileReader frMets = new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), "mets_1_280920.xml").toFile());
 		FileReader frMets = new FileReader(ath.loadFileFromPip(o.getIdentifier(), "mets_1_280920.xml"));
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
@@ -60,12 +55,11 @@ public class ATMetadataUpdatesNewDDBEad extends AcceptanceTest{
 		List<Element> metsFileElements = mh.getMetsFileElements(doc);
 		Element fileElement = metsFileElements.get(0);
 		String metsURL = mh.getMetsHref(fileElement);
-		assertTrue(metsURL.startsWith("http://data.danrw.de/file/"+o.getIdentifier()) && metsURL.endsWith(".jpg"));
+		assertTrue("String is wrong:"+metsURL,metsURL.startsWith(preservationSystem.getUrisFile()+"/"+o.getIdentifier()) && metsURL.endsWith(".jpg"));
 		assertEquals(URL, mh.getMetsLoctype(fileElement));
 		assertEquals(C.MIMETYPE_IMAGE_JPEG, mh.getMimetypeInMets(fileElement));
 		frMets.close();
 		
-		//FileReader frEad = new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), EAD_XML).toFile());
 		FileReader frEad = new FileReader(ath.loadFileFromPip(o.getIdentifier(),EAD_XML));
 		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document eadDoc = eadSaxBuilder.build(frEad);
@@ -78,19 +72,17 @@ public class ATMetadataUpdatesNewDDBEad extends AcceptanceTest{
 		for(String metsRef : metsReferences) {
 			if(metsRef.contains("mets_1_280920.xml")) {
 				mets1refExists = true;
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ o.getIdentifier() +"/mets_1_280920.xml"));
+				assertTrue("Ref to mets_1_280920.xml not found in ("+metsRef+")",metsRef.equals(preservationSystem.getUrisFile()+"/"+ o.getIdentifier() +"/mets_1_280920.xml"));
 			} else if(metsRef.contains("mets_2_32042.xml")) {
 				mets2refExists = true;
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ o.getIdentifier() +"/mets_2_32042.xml"));
+				assertTrue("Ref to mets_2_32042.xml not found in ("+metsRef+")",metsRef.equals(preservationSystem.getUrisFile()+"/"+ o.getIdentifier() +"/mets_2_32042.xml"));
 			}
 		}
-		assertTrue(mets1refExists&&mets2refExists);
+		assertTrue("MetsFiles doesnt exists: 1:"+mets1refExists+" 2:"+mets2refExists,mets1refExists&&mets2refExists);
 	}
 	
 	@Test
 	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
-		
-		//FileReader frEdm = new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), "EDM.xml").toFile());
 		FileReader frEdm = new FileReader(ath.loadFileFromPip(o.getIdentifier(), "EDM.xml"));
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = builder.build(frEdm);
