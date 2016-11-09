@@ -42,6 +42,21 @@
 	<g:textField name="description" value="${userInstance?.description}"/>
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'use_public_mets', 'error')} ">
+<label for="enabled">
+	<g:message code="user.use_public_mets.label" default="Use Public Mets" />
+	
+</label>
+<g:checkBox name="use_public_mets" value="${userInstance?.delta_on_urn}" />
+</div>
+<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'delta_on_urn', 'error')} ">
+<label for="enabled">
+	<g:message code="user.use_public_mets.label" default="Delta On URN" />
+	
+</label>
+<g:checkBox name="use_public_mets" value="${userInstance?.delta_on_urn}" />
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'forbidden_nodes', 'error')} ">
 	<label for="forbidden_nodes">
 		<g:message code="user.forbidden_nodes.label" default="Forbiddennodes" />

@@ -54,6 +54,7 @@ import de.uzk.hki.da.main.SIPBuilder;
 import de.uzk.hki.da.metadata.ContractRights;
 import de.uzk.hki.da.pkg.SipArchiveBuilder;
 import de.uzk.hki.da.sb.MessageWriter.UserInput;
+import de.uzk.hki.da.utils.FolderUtils;
 
 /**
  * Class under test: SIPFactory
@@ -96,7 +97,7 @@ public class SIPFactoryTest {
 	 */
 	@After
 	public void tearDown() throws IOException {
-		FileUtils.deleteDirectory(new File(pathToResourcesFolder + "destination"));
+		FolderUtils.deleteDirectorySafe(new File(pathToResourcesFolder + "destination"));
 	}
 	
 	/**

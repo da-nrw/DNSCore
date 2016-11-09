@@ -18,40 +18,18 @@
  */
 package de.uzk.hki.da.metadata;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.ParseException;
-import java.util.Calendar;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
-import org.apache.commons.io.FileUtils;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-
-import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.core.UserException.UserExceptionId;
-import de.uzk.hki.da.model.Event;
-import de.uzk.hki.da.model.MigrationRight;
-import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.ObjectPremisXmlReader;
-import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.model.PremisXmlValidator;
-import de.uzk.hki.da.model.PublicationRight.Audience;
-import de.uzk.hki.da.utils.C;
-import de.uzk.hki.da.utils.Path;
 
 /**
  * The Class PremisXmlXSDAvailabilityTest.

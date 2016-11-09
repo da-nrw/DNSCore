@@ -50,7 +50,7 @@ public class ATUseCaseIngestSpecialCases extends AcceptanceTest{
 	@AfterClass
 	public static void tearDown(){
 		
-//		FileUtils.deleteQuietly(Path.make(localNode.getWorkAreaRootPath(),"/work/TEST/"+object.getIdentifier()).toFile());
+//		FolderUtils.deleteQuietlySafe(Path.make(localNode.getWorkAreaRootPath(),"/work/TEST/"+object.getIdentifier()).toFile());
 
 		Path.make(localNode.getIngestAreaRootPath(),"/TEST/AT_CON1.tar").toFile().delete();
 		Path.make(localNode.getIngestAreaRootPath(),"/TEST/AT_CON2.tgz").toFile().delete();

@@ -9,7 +9,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -23,6 +22,7 @@ import de.uzk.hki.da.metadata.MetadataHelper;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
@@ -48,14 +48,14 @@ public class ATMetadataUpdatesEAD extends AcceptanceTest{
 		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForDefinedPublishedState(origName);
 		o=ath.getObject(origName);
-		ath.waitForObjectToBeIndexed(metadataIndex,o.getIdentifier());
+		ath.waitForObjectToBeIndexed(metadataIndex,getTestIndex(),o.getIdentifier());
 		
 		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	
 	@AfterClass
 	public static  void tearDown() throws IOException{
-		FileUtils.deleteDirectory(retrievalFolder);
+		FolderUtils.deleteDirectorySafe(retrievalFolder);
 		Path.makeFile("tmp",o.getIdentifier()+".pack_1.tar").delete(); // retrieved dip
 	}
 	
@@ -262,7 +262,7 @@ public class ATMetadataUpdatesEAD extends AcceptanceTest{
 //			testIndex
 		String cho = "/cho/";
 		String ID = testId.substring(testId.lastIndexOf(cho)+cho.length());
-		assertTrue(metadataIndex.getIndexedMetadata("portal_ci_test", ID).contains("\"dc:date\":[\"1938-01-01/1939-12-31\"]"));
+		assertTrue(metadataIndex.getIndexedMetadata(getTestIndex(), ID).contains("\"dc:date\":[\"1938-01-01/1939-12-31\"]"));
 		
 		frEdm.close();
 	}

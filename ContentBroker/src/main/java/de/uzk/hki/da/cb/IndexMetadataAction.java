@@ -32,11 +32,11 @@ import org.apache.commons.io.IOUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
+import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.MetadataIndex;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.util.ConfigurationException;
-import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.WorkArea;
 
 /**
  * This action fetches EDM/RDF-Metadata from the public PIP,  
@@ -125,7 +125,7 @@ public class IndexMetadataAction extends AbstractAction {
 		String contractorShortName = o.getContractor().getShort_name();
 		String adjustedIndexName = indexName;
 		if(testContractors != null && testContractors.contains(contractorShortName)) {
-			adjustedIndexName += "_test";
+			adjustedIndexName += MetadataIndex.TEST_INDEX_SUFFIX;
 		}
 		return adjustedIndexName;
 	}

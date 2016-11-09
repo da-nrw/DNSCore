@@ -32,6 +32,7 @@ import org.junit.Test;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.WorkArea;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.RelativePath;
 
 
@@ -110,7 +111,7 @@ public class ShortenFileNamesActionTests extends ConcreteActionUnitTest{
 	 */
 	@After
 	public void tearDown() throws IOException {		
-		FileUtils.deleteDirectory(new File(workAreaRootPath+"work/TEST/identifier"));
+		FolderUtils.deleteDirectorySafe(new File(workAreaRootPath+"work/TEST/identifier"));
 	}
 
 }

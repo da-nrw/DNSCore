@@ -18,6 +18,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
+import de.uzk.hki.da.utils.FolderUtils;
 
 
 public class ATSipKeepModDates {
@@ -33,17 +34,17 @@ public class ATSipKeepModDates {
 	
 	@Before
 	public void setUp() throws IOException{	
-		FileUtils.deleteDirectory(targetDir);
-		FileUtils.deleteDirectory(workDir);
-		FileUtils.deleteDirectory(sourceDir);
+		FolderUtils.deleteDirectorySafe(targetDir);
+		FolderUtils.deleteDirectorySafe(workDir);
+		FolderUtils.deleteDirectorySafe(sourceDir);
 	}
 	
 	@After
 	public void tearDown() throws IOException{
-		FileUtils.deleteQuietly(new File("target/atTargetDir/"+sip));
-		FileUtils.deleteDirectory(targetDir);
-		FileUtils.deleteDirectory(workDir);
-		FileUtils.deleteDirectory(sourceDir);
+		FolderUtils.deleteQuietlySafe(new File("target/atTargetDir/"+sip));
+		FolderUtils.deleteDirectorySafe(targetDir);
+		FolderUtils.deleteDirectorySafe(workDir);
+		FolderUtils.deleteDirectorySafe(sourceDir);
 		p.destroy();
 	}
 

@@ -27,7 +27,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.hibernate.Session;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -37,13 +36,11 @@ import org.junit.AfterClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Job;
-import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.SystemEvent;
-import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.C;
-import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.XMLUtils;
 
 
@@ -68,7 +65,7 @@ public class ATInvalidTiffTagsInBigTiff extends PREMISBase{
 	}
 	@AfterClass
 	public static void tearDown() throws IOException{
-		FileUtils.deleteDirectory(unpackedDIP);
+		FolderUtils.deleteDirectorySafe(unpackedDIP);
 	}
 	@Test 
 	public void testInvalidTiffTagsPrunedByUser() throws IOException, InterruptedException {

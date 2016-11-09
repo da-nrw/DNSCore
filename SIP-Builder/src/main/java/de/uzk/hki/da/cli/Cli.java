@@ -48,6 +48,7 @@ import de.uzk.hki.da.sb.MessageWriter;
 import de.uzk.hki.da.sb.SIPFactory;
 import de.uzk.hki.da.sb.UserInputValidator;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.StringUtilities;
 import de.uzk.hki.da.utils.Utilities;
 
@@ -324,7 +325,7 @@ public class Cli {
 
     		case COLLECTION_ALREADY_EXISTS:
     			if (alwaysOverwrite) {
-    				FileUtils.deleteQuietly(new File(new File(sipFactory.getDestinationPath()),
+    				FolderUtils.deleteQuietlySafe(new File(new File(sipFactory.getDestinationPath()),
     						sipFactory.getCollectionName()));
     			} else {
     				System.out.println("Im Zielverzeichnis existiert bereits eine Lieferung namens \"" + sipFactory.getCollectionName() + "\". " + 
@@ -551,7 +552,7 @@ public class Cli {
     				logger.error("File " + file.getAbsolutePath() + " is referenced in filelist, " +
 	    						   "but does not exist");
     				System.out.println("\nDie in der Dateiliste angegebene Datei " + file.getAbsolutePath() + " existiert nicht.");
-    				FileUtils.deleteQuietly(tempDirectory);
+    				FolderUtils.deleteQuietlySafe(tempDirectory);
     				return "";
     			}
 
@@ -564,7 +565,7 @@ public class Cli {
     			} catch (IOException e) {
     				logger.error("Failed to copy file " + file.getAbsolutePath() + " to folder " + tempDirectory.getAbsolutePath(), e);
     				System.out.println("\nDie in der Dateiliste angegebene Datei " + file.getAbsolutePath() + " konnte nicht kopiert werden.");
-    				FileUtils.deleteQuietly(tempDirectory);
+    				FolderUtils.deleteQuietlySafe(tempDirectory);
     				return "";
     			}
     		}
@@ -641,7 +642,7 @@ public class Cli {
 				
 				File tempDirectory = new File(tempFolderName + File.separator + sipName);
 				if (tempDirectory.exists()) {
-					FileUtils.deleteQuietly(new File(tempFolderName));	
+					FolderUtils.deleteQuietlySafe(new File(tempFolderName));	
 					System.out.println("\nDie SIP-Liste enthält mehrere SIPs mit dem Namen " + sipName + ". " +
 									   "Bitte vergeben Sie für jedes SIP einen eigenen Namen.");
 					return "";
@@ -660,7 +661,7 @@ public class Cli {
 	    						   "but does not exist");
 	    				System.out.println("\nDie in der SIP-Liste angegebene Datei " + file.getAbsolutePath() +
 	    						" existiert nicht.");
-	    				FileUtils.deleteQuietly(new File(tempFolderName));
+	    				FolderUtils.deleteQuietlySafe(new File(tempFolderName));
 	    				return "";
 	    			}
 
@@ -675,7 +676,7 @@ public class Cli {
 	    						   tempDirectory.getAbsolutePath(), e);
 	    				System.out.println("\nDie in der SIP-Liste angegebene Datei " + file.getAbsolutePath() +
 	    						" konnte nicht kopiert werden.");
-	    				FileUtils.deleteQuietly(new File(tempFolderName));
+	    				FolderUtils.deleteQuietlySafe(new File(tempFolderName));
 	    				return "";
 	    			}					
 				}				

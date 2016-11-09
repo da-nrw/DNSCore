@@ -44,6 +44,7 @@ import de.uzk.hki.da.grid.FakeGridFacade;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.test.TC;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
  
 /**
@@ -80,7 +81,7 @@ public class RestructureActionScanVirusTests extends ConcreteActionUnitTest{
 	
 	@After
 	public void tearDown(){
-		FileUtils.deleteQuietly(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,SIP_INPUT));
+		FolderUtils.deleteQuietlySafe(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,SIP_INPUT));
 	}
 	
 	@Test

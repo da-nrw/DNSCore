@@ -56,7 +56,7 @@ public class CTElasticSearchMetadataIndexTests {
 	private static final String TITLE = "@title";
 	private static final String FRANCIS_FORD_COPPOLA = "Francis Ford Coppola";
 	private static final String THE_GODFATHER = "The Godfather";
-	private static final String URL_PREFIX = "http://localhost:9200/";
+	//private static final String URL_PREFIX = "http://localhost:9200/";
 	
 	String url;
 	String portal;
@@ -70,13 +70,13 @@ public class CTElasticSearchMetadataIndexTests {
 	@Before
 	public void setUp() throws MalformedURLException, ProtocolException, IOException{
 		Properties properties = PropertiesUtils.read(propertiesFile);
-
+		String[] hosts=new String[]{properties.getProperty("elasticsearch.hosts")};
 		portal = properties.getProperty("elasticsearch.index");
-		url = URL_PREFIX+portal+"/test_collection/test_object_1";
+		url = "http://"+hosts[0]+":9200/"+portal+"/test_collection/test_object_1";
 		
 		index = new ElasticsearchMetadataIndex();
 		index.setCluster(properties.getProperty("elasticsearch.cluster"));
-		index.setHosts(new String[]{properties.getProperty("elasticsearch.hosts")});
+		index.setHosts(hosts);
 		data = new HashMap<String,Object>();
 		data.put(TITLE,THE_GODFATHER);
 		data.put(DIRECTOR,FRANCIS_FORD_COPPOLA);

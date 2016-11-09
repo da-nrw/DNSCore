@@ -56,6 +56,7 @@ import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.FileIdGenerator;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.XMLUtils;
@@ -105,6 +106,21 @@ public class UpdateMetadataAction extends AbstractAction {
 		
 		logger.debug("UpdateMetadataAction ...");
 		
+		if (this.presMode) {
+			if (Boolean.TRUE.equals(o.getContractor().isUsePublicMets())) {
+				DAFile srcMetadataFile = o.getLatest(C.PUBLIC_METS);
+				if (srcMetadataFile == null){
+					logger.debug("Use Public METS: " + C.PUBLIC_METS + " not found. No publication.");
+					j.setStatic_nondisclosure_limit(null);
+					j.setStatic_nondisclosure_limit_institution(null);
+					return true;
+				}
+				logger.debug("Use Public METS: " + C.PUBLIC_METS);
+				copyMetadataFileToNewReps(o.getPackage_type(), C.PUBLIC_METS);
+				return true;
+			}
+		}
+
 		logger.debug("Package type: "+o.getPackage_type());
 		logger.debug("Metadata file: "+o.getMetadata_file());
 		
@@ -683,17 +699,17 @@ public class UpdateMetadataAction extends AbstractAction {
 				
 				for(String ref : ead.getMetsRefsInEad()) {
 					String metsRelPath = ead.getReferencedDafile(mf, ref, documents).getRelative_path();
-					FileUtils.deleteQuietly(wa.toFile(repName, metsRelPath));
+					FolderUtils.deleteQuietlySafe(wa.toFile(repName, metsRelPath));
 				}
 			}
 			if (repName.startsWith(WorkArea.TMP_PIPS)) {
 				metadataFileName = packageType + ".xml";
 			}
-			FileUtils.deleteQuietly(Path.makeFile(wa.dataPath(), repName, metadataFileName));
+			FolderUtils.deleteQuietlySafe(Path.makeFile(wa.dataPath(), repName, metadataFileName));
 			
 			for(File file : Path.makeFile(wa.dataPath(), repName).listFiles()) {
 				if(file.isDirectory() && file.listFiles().length==0) {
-					FileUtils.deleteDirectory(file);
+					FolderUtils.deleteDirectorySafe(file);
 				}
 			}
 		}

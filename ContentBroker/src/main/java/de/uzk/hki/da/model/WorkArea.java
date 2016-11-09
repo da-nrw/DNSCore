@@ -22,8 +22,8 @@
 
 package de.uzk.hki.da.model;
 
-import static de.uzk.hki.da.utils.C.*;
-import static de.uzk.hki.da.utils.StringUtilities.*;
+import static de.uzk.hki.da.utils.C.FILE_EXTENSION_XML;
+import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
 
 import java.io.File;
 import java.io.FileFilter;

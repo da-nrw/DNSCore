@@ -19,8 +19,13 @@
 
 package de.uzk.hki.da.cb;
 
-import static org.junit.Assert.*;
-import static de.uzk.hki.da.utils.C.*;
+import static de.uzk.hki.da.utils.C.CB_PACKAGETYPE_EAD;
+import static de.uzk.hki.da.utils.C.ENCODING_UTF_8;
+import static de.uzk.hki.da.utils.C.FILE_EXTENSION_XML;
+import static de.uzk.hki.da.utils.C.METADATA_STREAM_ID_DC;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -46,6 +51,7 @@ import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -74,7 +80,7 @@ public class CreateDCActionTests extends ConcreteActionUnitTest{
 	
 	@After 
 	public void tearDown() throws IOException {
-		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.PIPS));
+		FolderUtils.deleteDirectorySafe(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.PIPS));
 	}
 	
 	
@@ -90,7 +96,7 @@ public class CreateDCActionTests extends ConcreteActionUnitTest{
 	
 	@Test
 	public void createPublicDC() throws IOException, UserException, RepositoryException, JDOMException, ParserConfigurationException, SAXException, SubsystemNotAvailableException {
-		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.PIPS,WorkArea.WA_INSTITUTION));
+		FolderUtils.deleteDirectorySafe(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.PIPS,WorkArea.WA_INSTITUTION));
 	
 		action.implementation();
 		
@@ -101,7 +107,7 @@ public class CreateDCActionTests extends ConcreteActionUnitTest{
 	
 	@Test
 	public void createInsitutionDC() throws FileNotFoundException, UserException, IOException, RepositoryException, JDOMException, ParserConfigurationException, SAXException, SubsystemNotAvailableException {
-		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.PIPS,WorkArea.PUBLIC));
+		FolderUtils.deleteDirectorySafe(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.PIPS,WorkArea.PUBLIC));
 		
 		action.implementation();
 		
@@ -111,8 +117,8 @@ public class CreateDCActionTests extends ConcreteActionUnitTest{
 	
 	@Test
 	public void createNoDC() throws IOException, UserException, RepositoryException, JDOMException, ParserConfigurationException, SAXException, SubsystemNotAvailableException {
-		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH, WorkArea.PIPS,WorkArea.PUBLIC));
-		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH, WorkArea.PIPS,WorkArea.WA_INSTITUTION));
+		FolderUtils.deleteDirectorySafe(Path.makeFile(WORK_AREA_ROOT_PATH, WorkArea.PIPS,WorkArea.PUBLIC));
+		FolderUtils.deleteDirectorySafe(Path.makeFile(WORK_AREA_ROOT_PATH, WorkArea.PIPS,WorkArea.WA_INSTITUTION));
 
 		action.implementation();
 

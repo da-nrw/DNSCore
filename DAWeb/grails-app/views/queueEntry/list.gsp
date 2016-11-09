@@ -54,8 +54,6 @@
 		</r:script>
 	</head>
 	<body>
-	
-
 		<a href="#list-queueEntry" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		
 		<div class="nav" role="navigation">
@@ -69,7 +67,22 @@
 			<div class="message" role="status">${flash.message}</div>
 		</g:if>
 		<div id="filter" style="margin: 0.8em 0 0.3em"> 
-		  <h1><a href="#">Filter</a></h1> 
+		  <h1><a href="#">Filter 
+			  <g:if test="${params.search }"><br>
+	    		<g:if test="${!params.search?.status.isEmpty()}">
+	    		<span style="margin-right: 25px"><i>Status: </i>${params.search?.status}</span>
+	    		</g:if> 
+	    		<g:if test="${!params.search?.obj?.origName.isEmpty()}">
+	    			<span style="margin-right: 25px"><i>Originalname: </i>${params.search?.obj?.origName}</span>
+	    		</g:if> 
+	    		<g:if test="${!params.search?.obj?.urn.isEmpty()}">
+	    			 <span style="margin-right: 25px"><i>URN: </i>${params.search?.obj?.urn}</span>
+	    		</g:if> 
+	    		<g:if test="${!params.search?.obj?.identifier.isEmpty()}">
+	    			<span style="margin-right: 25px"><i>Identifier: </i>${params.search?.obj?.identifier}</span>
+	    		</g:if> 
+	    	  </g:if> 
+		  </a></h1> 
           <g:form name="searchForm" id="filterform" action="list">
            	<table>
            		<tr>
@@ -95,7 +108,7 @@
 	           			<g:submitButton name="loeschen" type="submit" value="Filter löschen"/>
            			</td>
            			<script type="text/javascript">
-           			$(document).ready(function(){
+	           			$(document).ready(function(){
            				 	$("#loeschen").click(function() {                				 
 		            			$('#searchForm').find(':input').each(function() {
 		            	            switch(this.type) {
@@ -111,15 +124,16 @@
 		                            }
 		            			});
            				    });
-           			});</script>
+	           			});
+	           		</script>
            		</tr>
          	</table>     
           </g:form>
         </div>
-		<g:if test="${ !params.search }">
+		<g:if test="${  !params.search }">
 		<!-- Update:&nbsp;<a href="#" onclick="stopUpdater();">stop</a>&nbsp;<a href="#" onclick="startUpdater();">start</a> -->	
-    	 </g:if>   
-		<div id="list-queueEntry" class="content scaffold-list" role="main">
+    	</g:if>   
+    	<div id="list-queueEntry" class="content scaffold-list" role="main">
 			<!-- This div is updated through the periodical updater -->
 			<div class="list" id="entry-list">
 				<g:include action="listSnippet" />

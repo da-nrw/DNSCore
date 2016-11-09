@@ -17,6 +17,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.utils.FolderUtils;
+
 /**
  * 
  * @author Gaby Bender
@@ -30,12 +32,12 @@ public class ATSipBuilderNoTar {
 	
 	@Before
 	public void setUp() throws IOException{	
-		FileUtils.deleteDirectory(targetDir);
+		FolderUtils.deleteDirectorySafe(targetDir);
 	}
 	
 	@After
 	public void tearDown() throws IOException{
-		FileUtils.deleteDirectory(targetDir);
+		FolderUtils.deleteDirectorySafe(targetDir);
 		p.destroy();
 	}
 	

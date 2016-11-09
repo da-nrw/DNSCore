@@ -43,6 +43,7 @@ import de.uzk.hki.da.repository.MetadataIndex;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.MD5Checksum;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
@@ -52,12 +53,15 @@ import de.uzk.hki.da.utils.StringUtilities;
  * @author Daniel M. de Oliveira
  */
 public class AcceptanceTestHelper {
-
+	public static final String TEST_RESOURCES_PATH_PROPERTY="WorkaroundToPathTestCaseFilesPathToJUNITTests"; //Name for a system property to pass the testfiles directory
+	public static final String NO_DIRTY_CLEANUP_AFTER_EACH_TEST_PROPERTY="WorkaroundNoCleanupCompleteDB"; //Name for a system property to avoid cleanups, because they cleanup all data, not only testdata
+	
 	private static final String MSG_READY = "ready";
 	private static final String MSG_ERROR_WHEN_TIMEOUT_REACHED = "waited to long. test considered failed";
 	private static final String TEMP_FOLDER = "/tmp/";
 	static final String URN_NBN_DE_DANRW = "urn:nbn:de:danrw-";
 	protected static Path TEST_DATA_ROOT_PATH = new RelativePath("src/test/resources/at/");
+	
 	
 	private static final int INTERVAL=2000; // in ms
 	private static final int TIMEOUT=1200000; // ins ms
@@ -66,6 +70,7 @@ public class AcceptanceTestHelper {
 	private Node localNode;
 	private User testContractor;
 	private StoragePolicy sp;
+	private String logPath = null;
 	
 	public AcceptanceTestHelper(
 			GridFacade gridFacade,
@@ -76,6 +81,12 @@ public class AcceptanceTestHelper {
 		this.localNode=localNode;
 		this.testContractor=testContractor;
 		this.sp = sp;
+		if(System.getProperty(TEST_RESOURCES_PATH_PROPERTY)!=null)
+			TEST_DATA_ROOT_PATH = Path.make(System.getProperty(TEST_RESOURCES_PATH_PROPERTY));
+		
+		String localNodeWorkArea = localNode.getWorkAreaRootPath().toString();
+		String localNodeTMP = localNodeWorkArea.replace("/storage/WorkArea", "");
+		logPath=(new File(localNodeTMP+"/ContentBroker/log")).getAbsolutePath();//default logpath
 	}
 			
 			
@@ -111,7 +122,7 @@ public class AcceptanceTestHelper {
 			fail("could not find source file or unarchive source file to tmp");
 		}
 		
-		if (targetFolder.exists()) FileUtils.deleteDirectory(targetFolder);
+		if (targetFolder.exists()) FolderUtils.deleteDirectorySafe(targetFolder);
 		FileUtils.moveDirectory(Path.makeFile(TEMP_FOLDER,object.getIdentifier()+packSuffix+packageName),targetFolder);
 		Path.makeFile(TEMP_FOLDER,object.getIdentifier()+packSuffix+packageName+C.FILE_EXTENSION_TAR).delete();
 	}
@@ -312,7 +323,10 @@ public class AcceptanceTestHelper {
 					
 					throw new RuntimeException(msg);
 				}
-			}  
+			} else{
+				System.out.println("Awaiting job (OriginalName: "+originalName+") to be in state "+status+". Job is NULL ");
+				
+			}
 		}
 	}
 
@@ -332,12 +346,12 @@ public class AcceptanceTestHelper {
 
 
 
-	void waitForObjectToBeIndexed(MetadataIndex mi,String identifier) {
+	void waitForObjectToBeIndexed(MetadataIndex mi,String indexName,String identifier) {
 		int waited_ms_total=0;
 		while (true) {
 			waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT,INTERVAL);
 			
-			if (mi.getIndexedMetadata("portal_ci_test", identifier).contains(identifier)) break;
+			if (mi.getIndexedMetadata(indexName, identifier).contains(identifier)) break;
 		}
 	}
 
@@ -387,11 +401,10 @@ public class AcceptanceTestHelper {
 		if (job.getObject().getIdentifier()!=null){
 			try {
 				System.out.println("SHOWING OBJECT LOG:");
-				String localNodeWorkArea = localNode.getWorkAreaRootPath().toString();
-				String localNode = localNodeWorkArea.replace("/storage/WorkArea", "");
-				System.out.println(FileUtils.readFileToString(new File(Path.make(localNode, "ContentBroker","log", "object-logs")+"/"+job.getObject().getIdentifier()+".log")));
+				System.out.println(FileUtils.readFileToString(new File(Path.make(logPath, "object-logs")+"/"+job.getObject().getIdentifier()+".log")));
 				System.out.println("END OF OBJECT LOG: "+job.getObject().getIdentifier());
 			} catch (IOException e) {
+				System.out.println(e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -426,7 +439,7 @@ public class AcceptanceTestHelper {
 		} else {
 			source = Path.makeFile(TEST_DATA_ROOT_PATH,sourcePackageName);
 			target = Path.makeFile(localNode.getIngestAreaRootPath(),testContractor.getShort_name(),originalName);
-			if (target.exists()) FileUtils.deleteDirectory(target);
+			if (target.exists()) FolderUtils.deleteDirectorySafe(target);
 			FileUtils.copyDirectory(source, target, false);
 			}	
 	}
@@ -503,8 +516,10 @@ public class AcceptanceTestHelper {
 	}
 
 	
-	
 	void createJob(String origName,String jobStatus) {
+		createJob(origName, jobStatus,String.valueOf(new Date().getTime()/1000L));
+	}
+	void createJob(String origName,String jobStatus, String createDate) {
 		Object o = getObject(origName);
 		
 		Session session = HibernateUtil.openSession();
@@ -515,8 +530,8 @@ public class AcceptanceTestHelper {
 		Job j = new Job();
 		j.setResponsibleNodeName(node.getName());
 		j.setObject(o);
-		j.setDate_created(String.valueOf(new Date().getTime()/1000L));
-		j.setDate_modified(String.valueOf(new Date().getTime()/1000L));
+		j.setDate_created(createDate);
+		j.setDate_modified(createDate);
 		j.setStatus(jobStatus);
 	
 		session.save(j);
@@ -533,5 +548,11 @@ public class AcceptanceTestHelper {
 				job.getStatus().endsWith(C.WORKFLOW_STATUS_DIGIT_ERROR_PROPERLY_HANDLED)
 				|| job.getStatus().endsWith(C.WORKFLOW_STATUS_DIGIT_USER_ERROR)) return true;
 		return false;
+	}
+
+
+
+	public void setLogPath(String newLogPath) {
+		logPath=newLogPath;
 	}
 }

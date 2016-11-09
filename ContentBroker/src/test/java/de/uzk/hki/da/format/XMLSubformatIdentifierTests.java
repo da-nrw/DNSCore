@@ -25,7 +25,6 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import de.uzk.hki.da.format.XMLSubformatIdentifier;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.utils.Path;
 

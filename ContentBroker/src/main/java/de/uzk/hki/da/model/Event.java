@@ -111,7 +111,8 @@ public class Event {
 		/** The sip creation id. */
 		SIP_CREATION_ID,
 		/** Virus detected id **/
-		VIRUS_DETECTED_ID
+		VIRUS_DETECTED_ID,
+		NO_VIRUS
 	}
 	
 	/**

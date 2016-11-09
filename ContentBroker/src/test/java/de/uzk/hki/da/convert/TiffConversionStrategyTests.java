@@ -20,27 +20,17 @@ package de.uzk.hki.da.convert;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.format.KnownFormatCmdLineErrors;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
-import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.WorkArea;
@@ -49,8 +39,8 @@ import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.ProcessInformation;
 import de.uzk.hki.da.utils.RelativePath;
 
 /**
@@ -90,8 +80,8 @@ public class TiffConversionStrategyTests {
 	public void tearDown() throws IOException {
 		Path.makeFile(contractorFolder,"1/data/rep+b/CCITT_1.TIF").delete();
 		Path.makeFile(contractorFolder,"1/data/rep+b/CCITT_1_UNCOMPRESSED.TIF").delete();
-		FileUtils.deleteQuietly(Path.makeFile(contractorFolder,"1/data/rep+b"));
-		org.apache.commons.io.FileUtils.deleteDirectory(Path.makeFile(contractorFolder,"/1/data/rep+b/subfolder"));
+		FolderUtils.deleteQuietlySafe(Path.makeFile(contractorFolder,"1/data/rep+b"));
+		FolderUtils.deleteDirectorySafe(Path.makeFile(contractorFolder,"/1/data/rep+b/subfolder"));
 	}
 	
 	

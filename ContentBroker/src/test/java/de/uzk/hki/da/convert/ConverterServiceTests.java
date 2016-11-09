@@ -25,12 +25,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.convert.ConverterService;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
@@ -39,6 +37,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 
@@ -110,7 +109,7 @@ public class ConverterServiceTests {
 	public void tearDown() throws IOException{
 		Path.makeFile(wa.dataPath(),"2011+11+01+b/abc.xml").delete();
 		Path.makeFile(wa.dataPath(),"2011+11+01+b/140864.png").delete();
-		FileUtils.deleteDirectory(Path.makeFile(wa.dataPath(),"2011+11+01+b"));
+		FolderUtils.deleteDirectorySafe(Path.makeFile(wa.dataPath(),"2011+11+01+b"));
 		
 	}
 	

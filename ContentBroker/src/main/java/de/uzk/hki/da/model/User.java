@@ -23,10 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,6 +33,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 
 
@@ -74,6 +73,8 @@ public class User{
 	private Boolean mailsPooled;
 	@Column(name="delta_on_urn", columnDefinition="boolean")
 	private Boolean deltaOnUrn;
+	@Column(name="use_public_mets", columnDefinition="boolean")
+	private Boolean usePublicMets;
 	
 	private String username;
 	private String password;
@@ -200,6 +201,14 @@ public class User{
 		this.deltaOnUrn = deltaOnUrn;
 	}
 
+	public Boolean isUsePublicMets() {
+		return usePublicMets;
+	}
+	
+	public void setUsePublicMets(Boolean usePublicMets) {
+		this.usePublicMets = usePublicMets;
+	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */

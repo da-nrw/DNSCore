@@ -17,13 +17,16 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package de.uzk.hki.da.test;
+import java.util.List;
+
 import org.hibernate.Session;
 
-import de.uzk.hki.da.model.PreservationSystem;
-import de.uzk.hki.da.model.User;
+import de.uzk.hki.da.at.AcceptanceTest;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.Path;
 
@@ -113,13 +116,39 @@ public class TESTHelper {
 		
 		return o;
 	}
-	
-	public static void clearDB() {
+
+	public static void clearDBOnlyTestUser() {
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
+		final User contract = AcceptanceTest.getContractor(session, "TEST");
+
+		List joblist = session.createQuery("SELECT j FROM Job j left join j.obj as o where o.user = :CSN")
+				.setParameter("CSN", contract).list();
+		for (java.lang.Object o : joblist)
+			session.delete(o);
+		
+		List objlist = session.createQuery(" FROM Object where user = :CSN").setParameter("CSN", contract).list();
+		for (java.lang.Object o : objlist)
+			session.delete(o);
+
+		List copyJoblist = session
+				.createQuery("FROM CopyJob as cj where cj.source_node_identifier like concat('%',:CSNPATH,'%')")
+				.setParameter("CSNPATH", "/aip/TEST/").list();
+		for (java.lang.Object o : copyJoblist)
+			session.delete(o);
+
+		session.getTransaction().commit();
+		session.close();
+	}
+
+	public static void dirtyClearDB() {
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+
 		session.createSQLQuery("DELETE FROM events").executeUpdate();
 		session.createSQLQuery("DELETE FROM conversion_queue").executeUpdate();
 		session.createSQLQuery("DELETE from documents").executeUpdate();
+		session.createSQLQuery("DELETE from dafile_knownerror").executeUpdate();
 		session.createSQLQuery("DELETE FROM dafiles").executeUpdate();
 		session.createSQLQuery("DELETE FROM queue").executeUpdate();
 		session.createSQLQuery("DELETE from messages").executeUpdate();
@@ -128,8 +157,9 @@ public class TESTHelper {
 		session.createSQLQuery("DELETE FROM copyjob").executeUpdate();
 		session.createSQLQuery("DELETE FROM packages").executeUpdate();
 		session.createSQLQuery("DELETE FROM objects").executeUpdate();
+
 		session.getTransaction().commit();
 		session.close();
 	}
-	
+
 }

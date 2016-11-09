@@ -50,6 +50,7 @@ import de.uzk.hki.da.model.ObjectPremisXmlWriter;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PremisXmlValidator;
 import de.uzk.hki.da.model.PublicationRight;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -316,7 +317,7 @@ public class CreatePremisAction extends AbstractAction {
 		File tempFolder = new File("jhove/temp/" + j.getId());
 		if (tempFolder.exists())
 		try {
-			FileUtils.deleteDirectory(tempFolder);
+			FolderUtils.deleteDirectorySafe(tempFolder);
 		} catch (IOException e) {
 			throw new RuntimeException("Failed to delete directory " + tempFolder);
 		}
@@ -332,7 +333,7 @@ public class CreatePremisAction extends AbstractAction {
 		
 		File tempFolder = new File("jhove/temp/" + j.getId() + "/premis_output/");
 		if (tempFolder.exists())
-			FileUtils.deleteDirectory(tempFolder);
+			FolderUtils.deleteDirectorySafe(tempFolder);
 		
 		o.getLatestPackage().getEvents().removeAll(addedEvents);
 		

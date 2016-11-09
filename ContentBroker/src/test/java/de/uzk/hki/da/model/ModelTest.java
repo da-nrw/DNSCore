@@ -61,7 +61,7 @@ public class ModelTest {
 	
 	@AfterClass
 	public static void tearDownAfterClass(){
-		TESTHelper.clearDB();
+		TESTHelper.dirtyClearDB();
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		session.createSQLQuery("DELETE FROM users").executeUpdate();

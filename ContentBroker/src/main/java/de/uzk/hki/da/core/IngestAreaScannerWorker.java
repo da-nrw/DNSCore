@@ -295,7 +295,7 @@ public class IngestAreaScannerWorker extends Worker{
 				
 				if (!Path.makeFile(ingestAreaRootPath,contractorShortName,children[i]).isDirectory()) continue;
 				String bags[] = Path.makeFile(ingestAreaRootPath,contractorShortName,children[i]).list(new BagitScanner());
-				if (bags.length>0) {
+				if (bags!=null&&bags.length>0) {
 					// we don't check for bagit consistency while UnpackAction does this and we'll get those 
 					// packs by move operation
 					logger.debug("found directory " + children[i] + " which may contain unpacked bagit");	

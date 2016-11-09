@@ -19,7 +19,7 @@
 
 package de.uzk.hki.da.format;
 
-import static de.uzk.hki.da.utils.StringUtilities.*;
+import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
 
 import java.io.File;
 import java.io.FileNotFoundException;

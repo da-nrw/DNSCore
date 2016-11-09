@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -18,6 +17,7 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -35,7 +35,7 @@ public class ATMigrationDecisionTimeout extends AcceptanceTest {
 
 	@After
 	public void tearDown() {
-		FileUtils.deleteQuietly(UNPACKED_TMP);
+		FolderUtils.deleteQuietlySafe(UNPACKED_TMP);
 	}
 
 	@Test

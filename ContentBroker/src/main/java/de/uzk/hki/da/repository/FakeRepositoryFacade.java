@@ -29,6 +29,8 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.utils.FolderUtils;
+
 /**
  * Implements a simple file system based repository
  * for acceptance testing on developer machines.
@@ -45,7 +47,7 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 			throws RepositoryException {
 		try {
 			if (objectExists(objectId, collection)) {
-				FileUtils.deleteDirectory(getFile(objectId, collection, null));
+				FolderUtils.deleteDirectorySafe(getFile(objectId, collection, null));
 				return true;
 			} else {
 				return false;

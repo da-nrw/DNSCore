@@ -22,8 +22,6 @@ package de.uzk.hki.da.cb;
 import java.io.IOException;
 import java.util.Date;
 
-import org.apache.commons.io.FileUtils;
-
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.MailContents;
 import de.uzk.hki.da.grid.GridFacade;
@@ -36,6 +34,7 @@ import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.StringUtilities;
@@ -92,19 +91,19 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		} else {
 			String pubbi = wa.pipSourceFolderRelativePath(WorkArea.PUBLIC).toString();
 			gridRoot.remove(pubbi);
-			FileUtils.deleteDirectory(wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile());
+			FolderUtils.deleteDirectorySafe(wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile());
 
 			String insti = wa.pipSourceFolderRelativePath(WorkArea.WA_INSTITUTION).toString();
 			gridRoot.remove(insti);
-			FileUtils.deleteDirectory(wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile());
+			FolderUtils.deleteDirectorySafe(wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile());
 
 			setObjectArchived(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		}
 
 		logger.debug("Delete object "+wa.objectPath().toFile()+" from WorkArea.");
-		FileUtils.deleteDirectory(wa.objectPath().toFile());
+		FolderUtils.deleteDirectorySafe(wa.objectPath().toFile());
 		logger.debug("Delete object "+wa.replPath().toFile()+" from WorkArea.");
-		FileUtils.deleteDirectory(wa.replPath().toFile());
+		FolderUtils.deleteDirectorySafe(wa.replPath().toFile());
 		String filename = o.getIdentifier() + ".pack_" + o.getLatestPackage().getName() + ".tar";
 		Path replFilePath = Path.make(n.getIdentifier(), "repl", o.getContractor().getShort_name(), filename);
 		logger.debug("Delete object "+replFilePath.toString()+" from WorkArea.");

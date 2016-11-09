@@ -45,6 +45,7 @@ import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.pkg.BagitConsistencyChecker;
 import de.uzk.hki.da.pkg.ConsistencyChecker;
 import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.SidecarUtils;
 
@@ -123,7 +124,7 @@ public class UnpackAction extends AbstractAction {
 		logger.info("Removing SIP from IngestArea");
 		if (!sipContainerOnIngestAreaIsDir()) {
 		sipContainerOnIngestArea().delete();
-		} else FileUtils.deleteDirectory(sipContainerOnIngestArea());
+		} else FolderUtils.deleteDirectorySafe(sipContainerOnIngestArea());
 		return true;
 	}	
 	
@@ -152,7 +153,7 @@ public class UnpackAction extends AbstractAction {
 	@Override
 	public void rollback() throws IOException {
 		
-		FileUtils.deleteDirectory(wa.objectPath().toFile());
+		FolderUtils.deleteDirectorySafe(wa.objectPath().toFile());
 		if (!sipContainerOnIngestAreaIsDir())
 		wa.sipFile().delete();
 		
@@ -298,7 +299,7 @@ public class UnpackAction extends AbstractAction {
 			}
 			
 			try {
-				FileUtils.deleteDirectory(files[0]);
+				FolderUtils.deleteDirectorySafe(files[0]);
 			} catch (IOException e) {
 				throw new RuntimeException("couldn't delete folder " + files[0].getAbsolutePath());
 			}

@@ -35,7 +35,7 @@ class CbNode {
 	static hasMany = [contractors: User]
 	int id
 	String name
-	int urn_index
+	int urn_index 
 	String toString() {
 		return "$name"
 	}

@@ -25,7 +25,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import de.uzk.hki.da.service.HibernateUtil;
 

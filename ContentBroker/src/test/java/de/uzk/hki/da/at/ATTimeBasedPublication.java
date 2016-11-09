@@ -19,7 +19,12 @@
 
 package de.uzk.hki.da.at;
 
-import static de.uzk.hki.da.utils.C.*;
+import static de.uzk.hki.da.utils.C.CB_PACKAGETYPE_METS;
+import static de.uzk.hki.da.utils.C.FILE_EXTENSION_XML;
+import static de.uzk.hki.da.utils.C.PUBLISHEDFLAG_INSTITUTION;
+import static de.uzk.hki.da.utils.C.PUBLISHEDFLAG_NO_PUBLICATION;
+import static de.uzk.hki.da.utils.C.PUBLISHEDFLAG_PUBLIC;
+import static de.uzk.hki.da.utils.C.WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -99,11 +104,16 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		mETS_NS = Namespace.getNamespace(METS_NAMESPACE);
 		xLINK_NS = Namespace.getNamespace(XLINK_NAMESPACE);
 		
+		String prefix = preservationSystem.getUrisFile() + File.separator + object.getIdentifier() + File.separator;
+		String should = prefix + "_0c32b463b540e3fee433961ba5c491d6.jpg"; 
+		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+
 		Document publDoc = builder.build(new FileInputStream(publFile));
-		assertEquals("_0c32b463b540e3fee433961ba5c491d6.jpg", getUrl(publDoc));
+		assertEquals(should, getUrl(publDoc));
+
 		Document instDoc = builder.build(new FileInputStream(instFile));
-		assertEquals("_0c32b463b540e3fee433961ba5c491d6.jpg", getUrl(instDoc));
+		assertEquals(should, getUrl(instDoc));
 	}
 
 	private String getUrl(Document doc) {

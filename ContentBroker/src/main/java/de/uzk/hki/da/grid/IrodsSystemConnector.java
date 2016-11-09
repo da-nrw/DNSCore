@@ -31,8 +31,8 @@ import java.util.Map;
 
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.irods.jargon.core.connection.AbstractIRODSMidLevelProtocol;
-import org.irods.jargon.core.connection.IRODSAccount;
 import org.irods.jargon.core.connection.AuthScheme;
+import org.irods.jargon.core.connection.IRODSAccount;
 import org.irods.jargon.core.connection.SettableJargonProperties;
 import org.irods.jargon.core.connection.auth.AuthResponse;
 import org.irods.jargon.core.exception.DataNotFoundException;

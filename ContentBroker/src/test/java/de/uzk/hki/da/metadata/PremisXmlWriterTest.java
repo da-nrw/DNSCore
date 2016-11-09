@@ -35,20 +35,20 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.model.AudioRestriction;
-import de.uzk.hki.da.model.ObjectPremisXmlWriter;
-import de.uzk.hki.da.model.PremisXmlValidator;
-import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.ImageRestriction;
 import de.uzk.hki.da.model.MigrationRight;
+import de.uzk.hki.da.model.MigrationRight.Condition;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.ObjectPremisXmlWriter;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.PremisXmlValidator;
 import de.uzk.hki.da.model.PublicationRight;
+import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.model.RightsStatement;
 import de.uzk.hki.da.model.TextRestriction;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.VideoRestriction;
-import de.uzk.hki.da.model.MigrationRight.Condition;
-import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 

@@ -1,0 +1,2 @@
+3cf279281ed6b44bbf1a71bd6fccaf2b  data/premis.xml
+e676e3eb95d2f5163dc71939156ad6d9  data/input.bmp

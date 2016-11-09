@@ -31,7 +31,7 @@ import java.util.Map;
  * @author Daniel M. de Oliveira
  */
 public interface MetadataIndex {
-	
+	public static final String TEST_INDEX_SUFFIX="_test"; //ugly, append suffix to used index name, for test contractors
 	/**
 	 * Indexes metadata.
 	 * 

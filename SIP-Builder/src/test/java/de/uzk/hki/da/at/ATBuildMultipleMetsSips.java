@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
+import de.uzk.hki.da.utils.FolderUtils;
 
 public class ATBuildMultipleMetsSips {
 	
@@ -31,17 +32,17 @@ public class ATBuildMultipleMetsSips {
 	
 	@Before
 	public void setUp() throws IOException{	
-		FileUtils.deleteDirectory(new File("target/atTargetDir/"));
+		FolderUtils.deleteDirectorySafe(new File("target/atTargetDir/"));
 	}
 	
 	@After
 	public void tearDown() throws IOException{
-		FileUtils.deleteQuietly(new File("target/atTargetDir/"+sip1));
-		FileUtils.deleteQuietly(new File("target/atTargetDir/"+sip2));
-		FileUtils.deleteQuietly(new File("target/atTargetDir/"+sip3));
-		FileUtils.deleteQuietly(new File("target/atTargetDir/"+sip3));
-		FileUtils.deleteDirectory(s1);
-		FileUtils.deleteDirectory(targetDir);
+		FolderUtils.deleteQuietlySafe(new File("target/atTargetDir/"+sip1));
+		FolderUtils.deleteQuietlySafe(new File("target/atTargetDir/"+sip2));
+		FolderUtils.deleteQuietlySafe(new File("target/atTargetDir/"+sip3));
+		FolderUtils.deleteQuietlySafe(new File("target/atTargetDir/"+sip3));
+		FolderUtils.deleteDirectorySafe(s1);
+		FolderUtils.deleteDirectorySafe(targetDir);
 		p.destroy();
 	}
 	

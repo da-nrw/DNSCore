@@ -11,7 +11,7 @@
 				$("#filter").accordion({ collapsible: true, active: false });
 			});
 			
-			$.PeriodicalUpdater("./snippetIncoming",
+			$.PeriodicalUpdater("./snippetIncoming", 
 				{
 					method: "get",
 					minTimeout: 3000,
@@ -48,7 +48,7 @@
 				<input type="file" name="file"/>
 <input type="submit" value="Hochladen" />
 </g:form><br>
-(Spaltenkopf: identifier;origName;status;bemerkung; semikolongetrennt, EXCEL)	
+(Spaltenkopf: identifier;origName;statuscode;createddate;updateddate;erfolg;bemerkung; semikolongetrennt, EXCEL)	
 <p>
 <script language="JavaScript">
 function toggle(source) {

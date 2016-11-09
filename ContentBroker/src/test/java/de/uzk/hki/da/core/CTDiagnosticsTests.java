@@ -33,6 +33,7 @@ import de.uzk.hki.da.main.Diagnostics;
 import de.uzk.hki.da.test.CTTestHelper;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 
@@ -71,11 +72,11 @@ public class CTDiagnosticsTests {
 	
 	@After
 	public void tearDown(){
-		FileUtils.deleteQuietly(C.CONF.toFile());
-		FileUtils.deleteQuietly(FIDO_DIR);
-		FileUtils.deleteQuietly(JHOVE_DIR);
-		FileUtils.deleteQuietly(new File(C.CONFIGURE_SCRIPT));
-		FileUtils.deleteQuietly(FIDO_SH);
+		FolderUtils.deleteQuietlySafe(C.CONF.toFile());
+		FolderUtils.deleteQuietlySafe(FIDO_DIR);
+		FolderUtils.deleteQuietlySafe(JHOVE_DIR);
+		FolderUtils.deleteQuietlySafe(new File(C.CONFIGURE_SCRIPT));
+		FolderUtils.deleteQuietlySafe(FIDO_SH);
 		CTTestHelper.cleanUpWhiteBoxTest();
 	}
 	

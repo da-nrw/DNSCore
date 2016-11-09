@@ -40,6 +40,7 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 
 /**
  * 
@@ -73,10 +74,10 @@ public class CSVQueryHandler {
 				String origName = String.valueOf(csvEntry.get("origName"));
 				o = fetchObject(origName);
 				if (o != null) {
-					createRetievalJob(o);
+					createRetrievalJob(o);
 				}
 			}
-			FileUtils.deleteQuietly(outCsvFile);
+			FolderUtils.deleteQuietlySafe(outCsvFile);
 			FileUtils.moveFile(csvFile, outCsvFile);
 		}catch (IOException e) {
 			logger.error("catched " + e.toString() + " while working with "
@@ -95,7 +96,7 @@ public class CSVQueryHandler {
 			csvFileHandler.parseFile(csvFile);
 			evalStates();
 			csvFileHandler.persistStates(csvFile);
-			FileUtils.deleteQuietly(outCsvFile);
+			FolderUtils.deleteQuietlySafe(outCsvFile);
 			FileUtils.moveFile(csvFile, outCsvFile);
 		} catch (IOException e) {
 			logger.error("catched " + e.toString() + " while working with "
@@ -108,7 +109,7 @@ public class CSVQueryHandler {
 	}
 	
 
-	private void createRetievalJob(Object o){
+	private void createRetrievalJob(Object o){
 		if (fetchJob (o.getOrig_name(),o.getIdentifier())== null) {
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
@@ -233,10 +234,10 @@ private synchronized Object fetchObject(String origName) {
 						} else erfolg = true;
 						csvEntry.put("statuscode", (java.lang.Object) job.getStatus());
 						csvEntry.put("createddate", formatDate(job.getDate_created(),1000L));
-						csvEntry.put("updateddate", formatDate(job.getDate_created(),1000L));	
+						csvEntry.put("updateddate", formatDate(job.getDate_modified(),1000L));
 					} else {
 						csvEntry.put("createddate", formatDate(o.getDate_created(),1L));
-						csvEntry.put("updateddate", formatDate(o.getDate_created(),1L));	
+						csvEntry.put("updateddate", formatDate(o.getDate_modified(),1L));
 					}
 				}
 				csvEntry.put("erfolg", (java.lang.Object) String.valueOf(erfolg));

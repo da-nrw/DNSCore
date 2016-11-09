@@ -12,6 +12,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -19,6 +20,7 @@ import de.uzk.hki.da.metadata.MetsParser;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
@@ -33,7 +35,8 @@ public class ATIngestLav extends AcceptanceTest {
 	private static Object object2;
 	private static Object object3;
 	
-	private static final String PORTAL_CI_TEST = "portal_ci_test";
+	private  String PORTAL_CI_TEST =getTestIndex();
+	
 	
 	@BeforeClass
 	public static void setUp() throws IOException, InterruptedException {
@@ -113,6 +116,10 @@ public class ATIngestLav extends AcceptanceTest {
 		File edmFile1 = Path.make(contractorsPipsPublic, object1.getIdentifier(), "EDM.xml").toFile();
 		Document edmDoc1 = builder.build
 				(new FileReader(edmFile1));
+		for(int i=0;i<30 && !edmFile1.exists();i++){
+			FolderUtils.waitToCompleteNFSAwareFileOperation();
+			System.out.println("Target("+edmFile1+") file is not created yet, wait: "+i);
+		}
 		assertTrue(edmFile1.exists());
 		
 //		File edmFile2 = Path.make(contractorsPipsPublic, object2.getIdentifier(), "EDM.xml").toFile();

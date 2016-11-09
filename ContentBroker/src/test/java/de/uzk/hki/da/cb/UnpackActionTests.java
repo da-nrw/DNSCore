@@ -38,6 +38,7 @@ import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 
@@ -102,9 +103,9 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 	 */
 	@After
 	public void tearDown() throws IOException{
-		FileUtils.deleteQuietly(new File(CONF));
-		FileUtils.deleteDirectory(Path.makeFile(workAreaRootPath,"ingest"));
-		FileUtils.deleteDirectory(Path.makeFile(csnPath,o.getIdentifier()));
+		FolderUtils.deleteQuietlySafe(new File(CONF));
+		FolderUtils.deleteDirectorySafe(Path.makeFile(workAreaRootPath,"ingest"));
+		FolderUtils.deleteDirectorySafe(Path.makeFile(csnPath,o.getIdentifier()));
 	}
 
 	/**
