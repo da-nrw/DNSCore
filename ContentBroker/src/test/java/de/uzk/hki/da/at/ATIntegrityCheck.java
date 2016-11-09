@@ -32,6 +32,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.hibernate.Session;
+import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Copy;
@@ -49,8 +50,13 @@ import de.uzk.hki.da.utils.Path;
  */
 public class ATIntegrityCheck extends AcceptanceTest{
 	
-	private static final Path archiveStoragePath = Path.make("/ci/archiveStorage/aip/TEST/");
+	private static Path archiveStoragePath = null;
 	
+	@Before
+	public void beforeTest(){
+		System.out.println("ArchivePath: "+archiveStoragePath);
+		archiveStoragePath = Path.make(getCI_ARCHIVE_STORAGE());//it have to be setted after AcceptanceTest::setUpAcceptanceTest()
+	}
 	@Test 
 	public void testInitialSetOfChecksum() throws IOException {
 		Object object = null;
