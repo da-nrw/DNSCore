@@ -160,7 +160,8 @@
 							
 							<g:sortableColumn property="urn" title="${message(code: 'object.urn.label', default: 'Urn')}" />
 						
-							<g:sortableColumn property="contractor" title="${message(code: 'object.user.label', default: 'Contractor')}" />
+<%--							<g:sortableColumn property="contractor" title="${message(code: 'object.user.label', default: 'Contractor')}" />--%>
+	     					<g:sortableColumn property="user" title="${message(code: 'object.user.label', default: 'Contractor')}" />
 							<!-- <th><g:message code="object.contractor.label" default="Contractor" /></th> -->
 							
 							
