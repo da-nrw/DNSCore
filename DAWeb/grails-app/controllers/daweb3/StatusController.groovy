@@ -60,7 +60,9 @@ class StatusController {
 				//		result.packages.add(pack.container_name)
 				//}
 				// rolled back to:
-				inst.packages.each() {pack ->
+				
+				def spackages = inst.packages.sort{it.id}
+				spackages.each() {pack ->
 					result.packages.add(pack.name)
 				}
 				result = [:]
@@ -170,9 +172,9 @@ class StatusController {
 				//instance.packages.each() {pack ->
 				//		result.packages.add(pack.container_name)
 				//}
-				
-				instance.packages.each() {pack ->
-						result.packages.add(pack.name)
+				def spackages = instance.packages.sort{it.id}
+				spackages.each() {pack ->
+					result.packages.add(pack.name)
 				} 
 				results.result.add(result)
 				result = [:]

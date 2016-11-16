@@ -70,7 +70,7 @@
 	
 		<h1>Bearbeitungsübersicht</h1>			
 		<g:if test="${  !params.search }">
-			<i>Aktualieseren der Seite:&nbsp; </i>
+			<i>Aktualisieren der Seite:&nbsp; </i>
 			<input id="stopper" type="button" onclick="stopUpdater();this.disabled=true;" value="stoppen"/>
 			 &nbsp;
 			<input id="starter" type="button" onclick="startUpdater();this.disabled=true;" disabled value="starten"/>
