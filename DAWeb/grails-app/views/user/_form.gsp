@@ -41,20 +41,29 @@
 	</label>
 	<g:textField name="description" value="${userInstance?.description}"/>
 </div>
-
-<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'use_public_mets', 'error')} ">
-<label for="enabled">
-	<g:message code="user.use_public_mets.label" default="Use Public Mets" />
+<h1>Änderung an diesem Feldern kann signifikantes Systemverhalten ändern!</h1>
+<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'usePublicMets', 'error')} ">
+<label for="usePublicMets">
+	<g:message code="user.usePublicMets.label" default="Use Public Mets" />
 	
 </label>
-<g:checkBox name="use_public_mets" value="${userInstance?.delta_on_urn}" />
+<g:checkBox name="usePublicMets" value="${userInstance?.usePublicMets}" />
 </div>
-<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'delta_on_urn', 'error')} ">
-<label for="enabled">
-	<g:message code="user.use_public_mets.label" default="Delta On URN" />
+
+
+<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'deltaOnUrn', 'error')} ">
+<label for="deltaOnUrn">
+	<g:message code="user.deltaOnUrn.label" default="Delta On URN" />
 	
 </label>
-<g:checkBox name="use_public_mets" value="${userInstance?.delta_on_urn}" />
+<g:checkBox name="deltaOnUrn" value="${userInstance?.deltaOnUrn}" />
+</div>
+<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'mailsPooled', 'error')} ">
+	<label for="mailsPooled">
+		<g:message code="user.mails_pooled.label" default="Emails täglich als gesammelten Report" />
+		
+	</label>
+	<g:checkBox name="mailsPooled" value="${userInstance?.mailsPooled}" />
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'forbidden_nodes', 'error')} ">
@@ -89,13 +98,7 @@
 	<g:checkBox name="enabled" value="${userInstance?.enabled}" />
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'mailsPooled', 'error')} ">
-	<label for="mailsPooled">
-		<g:message code="user.mails_pooled.label" default="Emails täglich als gesammelten Report" />
-		
-	</label>
-	<g:checkBox name="enabled" value="${userInstance?.enabled}" />
-</div>
+
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'passwordExpired', 'error')} ">
 	<label for="passwordExpired">
