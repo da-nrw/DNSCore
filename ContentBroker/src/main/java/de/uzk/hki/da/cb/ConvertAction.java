@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
@@ -40,7 +41,9 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectPremisXmlReader;
 import de.uzk.hki.da.model.QualityMessage;
 import de.uzk.hki.da.model.RightsStatement;
+import de.uzk.hki.da.model.Event.IdType;
 import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.utils.C;
 
 
 
@@ -80,8 +83,6 @@ public class ConvertAction extends AbstractAction {
 	public boolean implementation() throws IOException {
 		
 		if (j.getConversion_instructions().size()==0) {
-			QualityMessage.addMessage(new QualityMessage(QualityMessage.Type.CONVERSION,("No Conversion Instruction has be found for job."),this.getJob(),this.getObject()));
-			
 			logger.warn("No Conversion Instruction has be found for job.");
 			return true;
 		}
@@ -90,16 +91,12 @@ public class ConvertAction extends AbstractAction {
 		o.setRights(getObjectRights()); 
 		try{
 		events = 
-			new ConverterService(o.getLatestPackage().isPruneExceptions(),knownFormatCmdLineErrors).convertBatch(
-				wa,	o, 
-				new ArrayList(j.getConversion_instructions()));
+			new ConverterService(o.getLatestPackage().isPruneExceptions(),knownFormatCmdLineErrors).convertBatch(wa,o,new ArrayList(j.getConversion_instructions()));
 		}catch(RuntimeException e){
-			QualityMessage.addMessage(new QualityMessage(QualityMessage.Type.CONVERSION,(e.getMessage()),this.getJob(),this.getObject()));
-			//throw e;
+			logger.debug("RuntimeException: "+e.getStackTrace()[0]+"\n"+e);
 		}
 		listFiles(o);
 		extendObject(o,events);
-		
 		j.getConversion_instructions().clear();
 		return true;
 	}
@@ -133,17 +130,15 @@ public class ConvertAction extends AbstractAction {
 	 * Extracts the information from the events generated during the conversion batch
 	 * and translates it into a proper object model structure. 
 	 */
-	private void extendObject(Object o,List<Event> events) {
-		
-		for (Event e:events){
-	
+	private void extendObject(Object o, List<Event> events) {
+		for (Event e : events) {
 			o.getLatestPackage().getFiles().add(e.getTarget_file());
 			if (e.getTarget_file()==null) {
 				logger.debug("target file is null");
 				continue;
 			}
 			addDAFileToDocument(o,e.getTarget_file());
-			
+
 			o.getLatestPackage().getEvents().add(e);
 		}
 	}

@@ -145,6 +145,9 @@ public class Object {
 	/** The published_flag. */
 	private int published_flag=C.PUBLISHEDFLAG_UNDEFINED;
 	
+	@Column(name="quality_flag", columnDefinition="INTEGER DEFAULT "+C.QUALITYFLAG_UNDEFINED)
+	private int quality_flag=C.QUALITYFLAG_UNDEFINED;
+	
 	
 	/** The last_checked. */
 	private Date last_checked;
@@ -904,9 +907,14 @@ public class Object {
 		
 		return files;
 	}
-	
-	
-	
+
+	public int getQuality_flag() {
+		return quality_flag;
+	}
+
+	public void setQuality_flag(int quality_flag) {
+		this.quality_flag = quality_flag;
+	}
 	
 	
 }

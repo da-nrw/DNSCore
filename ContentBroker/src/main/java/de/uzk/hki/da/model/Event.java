@@ -112,7 +112,7 @@ public class Event {
 		SIP_CREATION_ID,
 		/** Virus detected id **/
 		VIRUS_DETECTED_ID,
-		NO_VIRUS
+		NO_VIRUS,
 	}
 	
 	/**
@@ -261,7 +261,7 @@ public class Event {
 	 */
 	public DAFile getSource_file() {
 		if ((getType()==null)||getType().equals("")) throw new IllegalStateException("Type for Event not set");
-		if (!getType().equals("CONVERT") && !getType().equals("COPY")) throw new RuntimeException("Operation not allowed for non CONVERT/COPY events");
+		//if (!getType().equals("CONVERT") && !getType().equals("COPY")) throw new RuntimeException("Operation not allowed for non CONVERT/COPY events");
 		
 		return source_file;
 	}
@@ -285,7 +285,7 @@ public class Event {
 	 */
 	public DAFile getTarget_file() {
 		if ((getType()==null)||getType().equals("")) throw new IllegalStateException("Type for Event not set");
-		if (!getType().equals("CONVERT") && !getType().equals("COPY") && !getType().equals("CREATE")) throw new IllegalStateException("Operation not allowed for non CONVERT/COPY/CREATE events");
+		//if (!getType().equals("CONVERT") && !getType().equals("COPY") && !getType().equals("CREATE")) throw new IllegalStateException("Operation not allowed for non CONVERT/COPY/CREATE events");
 		
 		return target_file;
 	}

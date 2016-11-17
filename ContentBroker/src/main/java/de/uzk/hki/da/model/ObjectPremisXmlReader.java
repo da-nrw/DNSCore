@@ -266,7 +266,9 @@ public class ObjectPremisXmlReader{
 		boolean eventAdded = false;		
 		if (eventType.toUpperCase().equals(C.EVENT_TYPE_CONVERT)
 				|| eventType.toUpperCase().equals(C.EVENT_TYPE_COPY)
-				|| eventType.toUpperCase().equals(C.EVENT_TYPE_CREATE)) {
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_CREATE)
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_CONVERSION)
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_VALIDATION)) {
 			for (Package pkg : object.getPackages()) {
 				for (DAFile f : pkg.getFiles()) {
 					if (sourceFile.equals("") && outcomeFile.equals("")
@@ -279,7 +281,8 @@ public class ObjectPremisXmlReader{
 					
 					if (sourceFile.equals(f.getRep_name() + "/" + f.getRelative_path())) {
 						event.setSource_file(f);
-						if (event.getTarget_file() != null) {
+						if (event.getTarget_file() != null || eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_CONVERSION)
+								|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_VALIDATION)) {
 							pkg.getEvents().add(event);
 							eventAdded = true;
 							break;
@@ -312,7 +315,12 @@ public class ObjectPremisXmlReader{
 		if (!eventAdded) {
 			if (eventType.toUpperCase().equals("SIP_CREATION")
 					// DANRW-1452: Virus-Scan result must be print in the premis-file
-					|| eventType.toUpperCase().equals(C.EVENT_TYPE_VIRUS_SCAN))
+					|| eventType.toUpperCase().equals(C.EVENT_TYPE_VIRUS_SCAN)
+					|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1)
+					|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2)
+					|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_3)
+					|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4)
+					)
 				object.getPackages().get(0).getEvents().add(event);
 			else
 				throw new RuntimeException("Premis file is not consistent: couldn't find object(s) referenced by event "

@@ -81,6 +81,15 @@ public class C {
 	public static final String EVENT_TYPE_COPY = "COPY";
 	public static final String EVENT_TYPE_CONVERT = "CONVERT";
 	public static final String EVENT_TYPE_VIRUS_SCAN = "VIRUS_SCAN";
+	//public static final String EVENT_TYPE_QUALITY_SCAN = "QUALITY_SCAN";
+	public static final String  EVENT_TYPE_QUALITY_CHECK_LEVEL_4="QUALITY_CHECK_LEVEL_4";
+	public static final String  EVENT_TYPE_QUALITY_CHECK_LEVEL_3="QUALITY_CHECK_LEVEL_3";
+	public static final String  EVENT_TYPE_QUALITY_CHECK_LEVEL_2="QUALITY_CHECK_LEVEL_2";
+	public static final String  EVENT_TYPE_QUALITY_CHECK_LEVEL_1="QUALITY_CHECK_LEVEL_1";
+
+	public static final String  EVENT_TYPE_QUALITY_FAULT_VALIDATION="QUALITY_FAULT_VALIDATION";
+	public static final String  EVENT_TYPE_QUALITY_FAULT_CONVERSION="QUALITY_FAULT_CONVERSION";
+
 	public static final String AGENT_TYPE_NODE = "NODE";
 	
 	// Error messages
@@ -175,6 +184,12 @@ public class C {
 	public static final int PUBLISHEDFLAG_INSTITUTION = 2;
 	public static final int PUBLISHEDFLAG_PUBLIC = 1;
 	public static final int PUBLISHEDFLAG_UNDEFINED = -1;
+	
+	public static final int QUALITYFLAG_UNDEFINED = -1;
+	public static final int QUALITYFLAG_LEVEL_1 = 1;
+	public static final int QUALITYFLAG_LEVEL_2 = 2;
+	public static final int QUALITYFLAG_LEVEL_3 = 3;
+	public static final int QUALITYFLAG_LEVEL_4 = 4;
 
 	
 	public static final String ORE_AGGREGATION = "ore:Aggregation";

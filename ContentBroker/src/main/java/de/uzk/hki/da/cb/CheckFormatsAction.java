@@ -22,6 +22,7 @@ package de.uzk.hki.da.cb;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,9 +37,11 @@ import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.format.QualityLevelException;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.QualityMessage;
 import de.uzk.hki.da.model.WorkArea;
+import de.uzk.hki.da.model.Event.IdType;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.CommaSeparatedList;
@@ -151,8 +154,19 @@ public class CheckFormatsAction extends AbstractAction {
 				} catch (ConnectionException e) {
 					throw new SubsystemNotAvailableException("fileFormatFacade.extract() could not connect.",e);
 				}catch(QualityLevelException e){ //execution won't be interrupted, just quality level 
-					QualityMessage.addMessage(new QualityMessage(e.getType(),e.getMessage(),this.getJob(),this.getObject()));
-					
+					logger.debug("Validation failed by QualityLevelException: "+e);
+					Event qualityEvent = new Event();
+					qualityEvent.setAgent_name(n.getName());
+					qualityEvent.setAgent_type(C.AGENT_TYPE_NODE);
+					qualityEvent.setDate(new Date());
+					qualityEvent.setType(C.EVENT_TYPE_QUALITY_FAULT_VALIDATION);
+					qualityEvent.setSource_file(f);
+					String msg=e.getType()+" "+e.getMessage();
+					if(msg.length()>1000)
+						msg=msg.substring(0,1000);
+					qualityEvent.setDetail(msg);
+					logger.debug("QualityEvent created: "+qualityEvent);
+					o.getLatestPackage().getEvents().add(qualityEvent);
 				}
 			} else logger.debug("Skipping jhove validation for xml file "+f.getRelative_path());
 		}

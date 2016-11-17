@@ -139,7 +139,7 @@ public class CreatePremisAction extends AbstractAction {
 		File newPREMISXml = Path.make(wa.dataPath(), 
 				o.getNameOfLatestBRep(),PREMIS).toFile();
 		logger.trace("trying to write new Premis file at " + newPREMISXml.getAbsolutePath());
-		new ObjectPremisXmlWriter().serialize(newPREMISObject, newPREMISXml,Path.make(wa.dataPath(),"jhove_temp"));
+		new ObjectPremisXmlWriter().serialize(newPREMISObject, newPREMISXml,Path.make(wa.dataPath(),wa.TMP_JHOVE));
 		
 		try {
 			if (!PremisXmlValidator.validatePremisFile(newPREMISXml))
