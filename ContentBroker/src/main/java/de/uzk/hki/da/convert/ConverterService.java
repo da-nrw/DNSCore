@@ -36,9 +36,7 @@ import de.uzk.hki.da.format.QualityLevelException;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.QualityMessage;
 import de.uzk.hki.da.model.WorkArea;
-import de.uzk.hki.da.model.Event.IdType;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.Path;
@@ -100,7 +98,7 @@ public class ConverterService {
 				qualityEvent.setAgent_type(C.AGENT_TYPE_NODE);
 				qualityEvent.setType(C.EVENT_TYPE_QUALITY_FAULT_CONVERSION);
 				qualityEvent.setSource_file(ci.getSource_file());
-				String msg=QualityMessage.Type.CONVERSION+" "+e.getMessage();
+				String msg=QualityLevelException.Type.CONVERSION+" "+e.getMessage();
 				if(msg.length()>1000)
 					msg=msg.substring(0,1000);
 				qualityEvent.setDetail(msg);

@@ -39,7 +39,6 @@ import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectPremisXmlReader;
-import de.uzk.hki.da.model.QualityMessage;
 import de.uzk.hki.da.model.RightsStatement;
 import de.uzk.hki.da.model.Event.IdType;
 import de.uzk.hki.da.util.ConfigurationException;

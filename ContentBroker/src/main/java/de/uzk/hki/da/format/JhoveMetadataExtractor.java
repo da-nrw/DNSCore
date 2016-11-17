@@ -34,7 +34,6 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.model.FormatMapping;
 import de.uzk.hki.da.model.JHoveParameterMapping;
-import de.uzk.hki.da.model.QualityMessage;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.IOTimeoutException;
@@ -129,22 +128,18 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 			jhResult = JhoveResult.parseJHoveXML(extractedMetadata.getAbsolutePath());
 		} catch (Exception e) {
 			logger.error("JHove outputfile(" + extractedMetadata.getAbsolutePath() + ") not interpretable: " + e.getMessage());
-			//throw new JHoveValidationException("JHove Output(" + extractedMetadata.getAbsolutePath() + ") not interpretable: " + e.getMessage(), e);
-			//QualityMessage.addMessage(new QualityMessage(QualityMessage.Type.VALIDATION,("JHove outputfile(" + extractedMetadata.getAbsolutePath() + ") not interpretable: " + e.getMessage()).substring(0,QualityMessage.MAX_MESSAGE_LEN),action.getJob(),action.getObject()));
-			throw new QualityLevelException(QualityMessage.Type.VALIDATION,"JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + jhResult);
+			throw new QualityLevelException(QualityLevelException.Type.VALIDATION,"JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + jhResult);
 			
 		}
 
 		/*
-		 * The JHove result is not taken in count because it often alert about errorneus file, but in fact these file can be processed/converted.
 		 * Second bug in jhove is: jhove can't handle good enough files containing whitespaces in their names (jira: DANRW-1415)
+		 * TODO: check newer version of jhove and hope files with whitespaces can be processed 
 		 */
 
 		if (!jhResult.isValid()){
 			logger.warn("JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + jhResult);
-			//throw new JHoveValidationException("JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + jhResult);
-			//QualityMessage.addMessage(new QualityMessage(QualityMessage.Type.VALIDATION,("JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + jhResult).substring(0,QualityMessage.MAX_MESSAGE_LEN),action.getJob(),action.getObject()));
-			throw new QualityLevelException(QualityMessage.Type.VALIDATION,"JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + jhResult);
+			throw new QualityLevelException(QualityLevelException.Type.VALIDATION,"JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + jhResult);
 		}
 	}
 	

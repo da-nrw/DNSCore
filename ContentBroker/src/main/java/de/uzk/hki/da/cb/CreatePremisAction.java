@@ -50,6 +50,7 @@ import de.uzk.hki.da.model.ObjectPremisXmlWriter;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PremisXmlValidator;
 import de.uzk.hki.da.model.PublicationRight;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
@@ -139,7 +140,7 @@ public class CreatePremisAction extends AbstractAction {
 		File newPREMISXml = Path.make(wa.dataPath(), 
 				o.getNameOfLatestBRep(),PREMIS).toFile();
 		logger.trace("trying to write new Premis file at " + newPREMISXml.getAbsolutePath());
-		new ObjectPremisXmlWriter().serialize(newPREMISObject, newPREMISXml,Path.make(wa.dataPath(),wa.TMP_JHOVE));
+		new ObjectPremisXmlWriter().serialize(newPREMISObject, newPREMISXml,Path.make(wa.dataPath(),WorkArea.TMP_JHOVE));
 		
 		try {
 			if (!PremisXmlValidator.validatePremisFile(newPREMISXml))

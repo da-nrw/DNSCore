@@ -32,13 +32,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.format.KnownFormatCmdLineErrors;
-import de.uzk.hki.da.format.QualityLevelException;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.model.QualityMessage;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.Path;

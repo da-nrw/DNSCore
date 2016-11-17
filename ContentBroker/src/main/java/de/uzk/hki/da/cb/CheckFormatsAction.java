@@ -39,7 +39,6 @@ import de.uzk.hki.da.format.QualityLevelException;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Package;
-import de.uzk.hki.da.model.QualityMessage;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.model.Event.IdType;
 import de.uzk.hki.da.util.ConfigurationException;
