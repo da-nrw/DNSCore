@@ -41,7 +41,7 @@
 	</label>
 	<g:textField name="description" value="${userInstance?.description}"/>
 </div>
-<h1>Änderung an diesem Feldern kann signifikantes Systemverhalten ändern!</h1>
+<h1>Änderung an diesen Feldern kann signifikantes Systemverhalten ändern!</h1>
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'usePublicMets', 'error')} ">
 <label for="usePublicMets">
 	<g:message code="user.usePublicMets.label" default="Use Public Mets" />
