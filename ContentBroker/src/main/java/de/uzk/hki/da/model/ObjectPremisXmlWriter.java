@@ -295,7 +295,7 @@ public class ObjectPremisXmlWriter {
 		createTextElement("linkingAgentIdentifierValue", a.getName(), 3);
 		createCloseElement(2);
 		
-		if (e.getType().equals(C.EVENT_TYPE_QUALITY_FAULT_VALIDATION)||e.getType().equals(C.EVENT_TYPE_QUALITY_FAULT_CONVERSION)) {
+		if (e.getSource_file()!=null) {
 			createOpenElement("linkingObjectIdentifier", 2);
 			createTextElement("linkingObjectIdentifierType", "FILE_PATH", 3);
 			createTextElement("linkingObjectIdentifierValue", e.getSource_file().getRep_name() + "/" + e.getSource_file().getRelative_path(), 3);

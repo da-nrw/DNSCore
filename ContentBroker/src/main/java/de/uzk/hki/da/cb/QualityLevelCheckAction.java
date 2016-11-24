@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.List;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.utils.C;
 
@@ -82,12 +83,12 @@ public class QualityLevelCheckAction extends AbstractAction {
 		Collections.sort(conversionEvents, eventComparator);
 		Collections.sort(validationEvents, eventComparator);
 		if(validationEvents.isEmpty()&&conversionEvents.isEmpty()){
-			extendObject(C.QUALITYFLAG_LEVEL_4,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4,"NO CRITICAL QUALITY_LEVEL EVENTS"));
+			extendObject(C.QUALITYFLAG_LEVEL_4,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4,o.getLatestPackage().getFiles().get(0),"NO CRITICAL QUALITY_LEVEL EVENTS"));
 			
 		}else if(!validationEvents.isEmpty()&&conversionEvents.isEmpty()){
-			extendObject(C.QUALITYFLAG_LEVEL_3,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_3,generateQualityEventDetail("ONLY VALIDATION QUALITY_LEVEL EVENTS",validationEvents)));
+			extendObject(C.QUALITYFLAG_LEVEL_3,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_3,validationEvents.get(0).getSource_file(),generateQualityEventDetail("ONLY VALIDATION QUALITY_LEVEL EVENTS",validationEvents)));
 		}else if(validationEvents.isEmpty()&&!conversionEvents.isEmpty()){
-			extendObject(C.QUALITYFLAG_LEVEL_2,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2,generateQualityEventDetail("ONLY CONVERSION QUALITY_LEVEL EVENTS",conversionEvents)));
+			extendObject(C.QUALITYFLAG_LEVEL_2,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2,conversionEvents.get(0).getSource_file(),generateQualityEventDetail("ONLY CONVERSION QUALITY_LEVEL EVENTS",conversionEvents)));
 		}else{
 			List<Event> commonConversionEvents=new ArrayList<Event>();
 			Event[] validationEventsArray=new Event[validationEvents.size()];
@@ -100,9 +101,9 @@ public class QualityLevelCheckAction extends AbstractAction {
 			}
 			if(commonConversionEvents.isEmpty()){//there is no validation and conversion events on same files
 				conversionEvents.addAll(validationEvents);
-				extendObject(C.QUALITYFLAG_LEVEL_2,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2,generateQualityEventDetail("CONVERSION AND VALIDATION QUALITY_LEVEL EVENTS ON DIFFERENT FILES",conversionEvents)));
+				extendObject(C.QUALITYFLAG_LEVEL_2,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2,conversionEvents.get(0).getSource_file(),generateQualityEventDetail("CONVERSION AND VALIDATION QUALITY_LEVEL EVENTS ON DIFFERENT FILES",conversionEvents)));
 			}else{
-				extendObject(C.QUALITYFLAG_LEVEL_1,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1,generateQualityEventDetail("CONVERSION AND VALIDATION QUALITY_LEVEL EVENTS ON SAME FILES",commonConversionEvents)));
+				extendObject(C.QUALITYFLAG_LEVEL_1,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1,commonConversionEvents.get(0).getSource_file(),generateQualityEventDetail("CONVERSION AND VALIDATION QUALITY_LEVEL EVENTS ON SAME FILES",commonConversionEvents)));
 			}
 		}
 		
@@ -150,13 +151,14 @@ public class QualityLevelCheckAction extends AbstractAction {
 	}
 	
 	
-	private Event createEvent(String qualityLevel,String qualityMessage) {
+	private Event createEvent(String qualityLevel,DAFile srcFile,String qualityMessage) {
 		
 		Event qualityEvent = new Event();
 		
 		//virusEventElement.setIdentifier(o.getIdentifier() + "+" + o.getLatestPackage().getName());
 		qualityEvent.setIdentifier(o.getIdentifier());
 		//qualityEvent.setIdType(qualityLevel);
+		qualityEvent.setSource_file(srcFile);
 		qualityEvent.setType(qualityLevel);
 		qualityEvent.setAgent_name(n.getName());
 		qualityEvent.setAgent_type(C.AGENT_TYPE_NODE);
