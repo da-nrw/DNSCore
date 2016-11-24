@@ -512,7 +512,11 @@ public class MetsParser{
 					titleValue = nonSortValue + " " + titleValue;
 				}
 				MainTitleValue = titleValue;
-			} else {
+			}
+			else if(!nonSortValue.equals("")) {
+				MainTitleValue = nonSortValue;
+			}
+			else {
 				MainTitleValue = displayLabelValue;
 			}
 		} catch(Exception e) {
