@@ -80,8 +80,8 @@ Grundsätzlich sind Status <=400 immer im Gesamten rücksetzbar. Bei Status >440
 
 |Status| Aktion | Beschreibung |Fehlerbehandlung|
 |---|---|---|---|
-110 |IngestUnpackAction | Auspacken & Vollständigkeitstests | Rücksetzung auf 110 |
-120 |IngestRestructureObjectAction |Objekt- oder Deltaerkennung, Typerkennung | Rücksetzung auf 120 |
+110 |IngestUnpackAction | Auspacken & Vollständigkeitstests | Rücksetzung auf 118 , Ggfs. bei Abbruch beim Auspacken: WorkArea des Jobs löschen |
+120 |IngestRestructureObjectAction |Objekt- oder Deltaerkennung, Typerkennung | Rücksetzung auf 128 |
 130 |IngestValidateMetadataAction |	Validierung der Metadaten | Rücksetzung auf 600, Löschung 800 |
 140 |IngestScanAction | Formaterkennung |  Rücksetzung auf 600, Löschung auf 800
 150 |RegisterURNAction | Register URN in DNS |	Rücksetzung auf 600, Löschung auf 800
