@@ -5,7 +5,7 @@ import urllib
 
 class FedoraClient:
 
-	def __init__(self,url="http://localhost:8080/fedora",username="fedoraAdmin",password="clBDmno7"):
+	def __init__(self,url="http://localhost:8080/fedora",username="fedoraAdmin",password=""):
 		self.h = httplib2.Http()
 		self.h.add_credentials("fedoraAdmin","clBDmno7")
 		self.url = url
@@ -132,7 +132,14 @@ class FedoraClient:
 	
 		request_url = "%s/objects/%s/datastreams/%s/content" % (self.url, pid, dsID)
 		return self.h.request(request_url, method="GET")
-		
+	
+	def getDatastream(self,pid,dsID):
+
+		params = {}
+		params['format'] = 'xml'
+		request_url = "%s/objects/%s/datastreams/%s?%s" % (self.url, pid, dsID, urllib.urlencode(params))
+		return self.h.request(request_url, method="GET")
+			
 	def export(self,pid,context="public"):
 		
 		params = {}
