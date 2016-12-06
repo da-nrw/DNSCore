@@ -75,6 +75,10 @@ public class Node{
 	/** The urn_index. */
 	private int urn_index=-1;
 	
+	/** The remain time before retrieval is deleted after creation*/
+	@Column(name="retrieval_remain_time",nullable=false, columnDefinition="INTEGER DEFAULT 2")
+	private int retrieval_remain_time;
+
 	/** The repl_destinations. */
 	@Transient private String repl_destinations;
 	
@@ -458,4 +462,11 @@ public class Node{
 		this.identifier = identifier;
 	}
 	
+	public int getRetrieval_remain_time() {
+		return retrieval_remain_time;
+	}
+
+	public void setRetrieval_remain_time(int retrieval_remain_time) {
+		this.retrieval_remain_time = retrieval_remain_time;
+	}
 }

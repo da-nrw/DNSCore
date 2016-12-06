@@ -51,7 +51,8 @@ public class C {
 	public static final String CB_PACKAGETYPE_LIDO = "LIDO";
 	public static final String CB_PACKAGETYPE_METS = "METS";
 	public static final String CB_PACKAGETYPE_EAD  = "EAD"; 
-
+	public static final String PUBLIC_METS = "public_mets.xml"; 
+	
 		/** common metadata file for all XMP type packages */
 	public static final String METADATA_FILE_XMP = "XMP.xml";
 		/** Fedora datastream id for EDM. */

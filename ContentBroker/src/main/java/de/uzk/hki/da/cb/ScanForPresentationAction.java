@@ -69,6 +69,10 @@ public class ScanForPresentationAction extends AbstractAction{
 		if (!StringUtilities.isSet(preservationSystem.getPresServer())){
 			return true;
 		}
+
+		if (Boolean.TRUE.equals(o.getContractor().isUsePublicMets())){
+			return true;
+		}
 		
 		List<? extends FileWithFileFormat> fffl=null;
 		try {

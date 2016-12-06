@@ -21,13 +21,7 @@ package daweb3
  */
 
 
-import org.apache.commons.lang.StringUtils; 
-import org.apache.tools.ant.types.resources.selectors.InstanceOf;
-import org.springframework.dao.DataIntegrityViolationException;
-
-import grails.converters.*;
-
-import java.security.InvalidParameterException;
+import grails.converters.*
 
 
 class ObjectController {
@@ -157,13 +151,20 @@ class ObjectController {
 			def ds = daweb3.Object.convertDateIntoStringDate(params.searchDateStart)
 			def de = daweb3.Object.convertDateIntoStringDate(params.searchDateEnd)
 
-			def st = "created"
-			if (params.searchDateType!=null) {
-				st = params.searchDateType;
+			def st = "created"; 
+			String searchDateType = params.searchDateType;
+			if (ds!=null || de!=null) {
+				if ( params.searchDateType.equals("null") ) {
+					params.searchDateType = "created"
+				} else {
+					st =  params.searchDateType;
+				}
+			} else {
+				if ( params.searchDateType.equals("null") ) {
+					params.remove("searchDateType")
+				}
 			}
-
-			log.debug("Search in Field " + params.searchDateType)
-
+			
 			if (ds!=null && de!=null) {
 				filterOn=1
 				log.debug("Objects between " + ds + " and " + de)
@@ -205,7 +206,13 @@ class ObjectController {
 		if(params.searchContractorName){
 			paramsList.putAt("searchContractorName", params?.searchContractorName)
 		}
-
+		
+		if (paramsList != null) {
+			paramsList.putAt("searchDateType", params?.searchDateType);
+			paramsList.putAt("searchDateStart", params?.searchDateStart);
+			paramsList.putAt("searchDateEnd", params?.searchDateEnd);
+		}
+		
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			render(view:"adminList", model:[	objectInstanceList: objects,
 				objectInstanceTotal: objects.getTotalCount(),

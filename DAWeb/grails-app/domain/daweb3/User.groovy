@@ -32,6 +32,8 @@ class User {
 	 boolean accountLocked 
 	 boolean passwordExpired
 	 boolean mailsPooled
+	 boolean usePublicMets
+	 boolean deltaOnUrn
 	 
 	 String description
 	 String email_contact
@@ -54,6 +56,8 @@ class User {
 		accountLocked column: 'accountlocked'
 		passwordExpired column: 'passwordexpired'
 		mailsPooled column: 'mails_pooled'
+		usePublicMets column: 'use_public_mets'
+		deltaOnUrn column: 'delta_on_urn'
 		}
 
 	 Set<Role> getAuthorities() { UserRole.findAllByUser(this).collect { it.role } as Set }
