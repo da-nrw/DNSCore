@@ -7,7 +7,7 @@ class FedoraClient:
 
 	def __init__(self,url="http://localhost:8080/fedora",username="fedoraAdmin",password=""):
 		self.h = httplib2.Http()
-		self.h.add_credentials("fedoraAdmin","clBDmno7")
+		self.h.add_credentials(username,password)
 		self.url = url
 		
 	def ingest(self,pid="new",label="",ownerId="",content=None,format="info:fedora/fedora-system:FOXML-1.1"):
