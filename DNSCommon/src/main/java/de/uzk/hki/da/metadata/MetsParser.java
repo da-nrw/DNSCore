@@ -388,27 +388,44 @@ public class MetsParser{
 		return nameElements;
 	}
 	
-	private String getCreator(Element name) {
+	private String getContributor(Element name) {
 		String namePartValue = "";
 		try {
-			String role = name.getChild("role", C.MODS_NS).getValue();
-			if(role.equals("aut")||role.equals("creator")) {
+			//String role = name.getChild("role", C.MODS_NS).getValue();
+			//if(role.equals("aut")||role.equals("creator")) {
 				namePartValue = getName(name);
-			}
+			//}
 		} catch (Exception e) {
 			logger.debug("No creator found!");
 		}
 		return namePartValue;
 	}
 	
-	private String getContributor(Element name) {
+	private String getCreator(Element name) {
 		String namePartValue = "";
 		try {
-			String role = name.getChild("role", C.MODS_NS).getValue();
+			String roleCode=null,roleText=null;
+			Element roleElem=name.getChild("role", C.MODS_NS);
+			List<Element> roleTermElem=roleElem.getChildren("roleTerm", C.MODS_NS);
+			for(Element e:roleTermElem){
+				String type=e.getAttribute("type").getValue();
+				if(type.equals("code")){
+					roleCode=e.getValue();
+				}else if(type.equals("text")){
+					roleText=e.getValue();
+				}
+			}
+			/*String role = roleElem.getValue();
 			if(!(role.equals("aut") && !role.equals("creator"))) {
 				//namePartValue = role+": "+getName(name); //Fix
 				namePartValue =getName(name); //Fix DANRW-1439
-			}
+			}*/
+			
+			if(roleText!=null && roleCode!=null && (roleCode.equals("aut")||roleCode.equals("creator")))
+				namePartValue = roleText+": "+getName(name);
+			else
+				namePartValue =getName(name);
+				
 		} catch (Exception e) {
 			logger.debug("No contributor found!");
 		}
