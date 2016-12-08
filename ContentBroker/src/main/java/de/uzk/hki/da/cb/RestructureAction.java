@@ -36,6 +36,7 @@ import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.format.FileFormatException;
 import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
@@ -43,12 +44,17 @@ import de.uzk.hki.da.format.UserFileFormatException;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.DocumentsGenService;
+import de.uzk.hki.da.model.Event;
+import de.uzk.hki.da.model.Event.IdType;
 import de.uzk.hki.da.model.KnownError;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.ProcessInformation;
 
 /**
  * <li>Creates a new Representation and copies the contents of the submission into it.
@@ -71,7 +77,7 @@ public class RestructureAction extends AbstractAction{
 	private IngestGate ingestGate;
 	private GridFacade gridRoot;
 	private DocumentsGenService dgs = new DocumentsGenService();
-	
+		
 	public RestructureAction(){
 		SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;
 	}
@@ -100,23 +106,24 @@ public class RestructureAction extends AbstractAction{
 	@Override
 	public boolean implementation() throws FileNotFoundException, IOException,
 			UserException, RepositoryException, SubsystemNotAvailableException {
-		/*
-		 * Gaby Bender 14.07.2016
-		 * virus scan with clamAV
-		 * DANRW-1479: Aufgrund von Performance Problemen für den schnellen Durchstich deaktiviert
-		 */
 		
-//		listAllFiles();
-//		
-//		if (!scanWithClamAV()) {
-//			Event e = createEvent( "Virus im Paket mit Identifier ", Event.IdType.VIRUS_DETECTED_ID);
-//			o.getLatestPackage().getEvents().add(e);
-//			
-//			throw new UserException(UserExceptionId.VIRUS_DETECTED, " virus is detected! " );
-//		} else {
-//			Event e = createEvent("KEIN Virus im Paket mit Identifier ", Event.IdType.NO_VIRUS);
-//			o.getLatestPackage().getEvents().add(e);
-//		}
+		/*
+		 *  G. Bender 29.11.2016
+		 *  DANRW-1472: Virenscanner ein-, ausschalten über Tabelle user
+		 */
+		if (o.getContractor().isUseVirusScan()) {
+			if (!scanWithClamAV()) {
+				
+				//Event e = createEvent( "Virus im Paket mit Identifier ", Event.IdType.VIRUS_DETECTED_ID);
+				Event e = createEvent( "Virus im Paket mit Identifier ");
+				o.getLatestPackage().getEvents().add(e);
+				
+				throw new UserException(UserExceptionId.VIRUS_DETECTED, " virus is detected! " );
+			} else {
+				Event e = createEvent("KEIN Virus im Paket mit Identifier ");
+				o.getLatestPackage().getEvents().add(e);
+			}
+		}
 		
 		listAllFiles();
 		
@@ -153,74 +160,72 @@ public class RestructureAction extends AbstractAction{
 		return true;
 	}
 
-//	/**
-//	 * getClamVersion: clamscan -V
-//	 * @return
-//	 */
-//	private String getClamVersion() {
-//		String clamVersion;
-//		try {
-//			ProcessInformation pi = new CommandLineConnector().runCmdSynchronously(new String[] {
-//						"clamscan" , "-V"}, 0);
-//			clamVersion = "'" + pi.getStdOut().trim()  +"'";
-//			
-//		} catch (IOException ioe) {
-//			clamVersion = " 'not found'";
-//			logger.error(ioe.toString());
-//		}
-//		return clamVersion;
-//	}
-//		
-//	/**
-//	 * createCreateEvent: creates an event if a virus is detected
-//	 * @author Gaby Bender
-//	 * @param clamVersion: version of the virus-db
-//	 * @return
-//	 */
-//	private Event createEvent(String detail, IdType idType) {
-//		
-//		Event virusEventElement = new Event();
-//		
-//		//virusEventElement.setIdentifier(o.getIdentifier() + "+" + o.getLatestPackage().getName());
-//		virusEventElement.setIdentifier(o.getIdentifier());
-//		virusEventElement.setIdType(idType);
-//		virusEventElement.setAgent_name(n.getName());
-//		virusEventElement.setAgent_type(C.AGENT_TYPE_NODE);
-//		virusEventElement.setDate(new Date());
-//		virusEventElement.setType(C.EVENT_TYPE_VIRUS_SCAN);
-//		virusEventElement.setDetail( detail + o.getIdentifier() + 
-//					" gefunden! Gescannt mit " + getClamVersion());
-//		
-//		return virusEventElement;
-//	}
-//
-//	/**
-//	 * scanWithClamAV: reads the incoming-directory and checks it 
-//	 * @author Gaby Bender
-//	 * @return true: no virus detected, otherwise false 
-//	 * @throws IOException
-//	 */
-//	private boolean scanWithClamAV() {
-//		ProcessInformation pi = null;
-//		try {
-//			pi = new CommandLineConnector().runCmdSynchronously(new String[] {
-//					"clamscan" , "-r",
-//			        wa.objectPath().toFile().toString()}, 0);
-//			if (pi.getExitValue() > 0) {
-//				if (pi.getExitValue() == 1)  {
-//					return false;
-//				} else {
-//					logger.error( pi.getStdErr());
-//					return false;
-//				}
-//			} 
-//			return true;
-//		} catch (IOException e) {
-//			logger.error( e.toString() );
-//			return false;
-//		}
-//		
-//	}
+	/**
+	 * scanWithClamAV: reads the incoming-directory and checks it 
+	 * @author Gaby Bender
+	 * @return true: no virus detected, otherwise false 
+	 * @throws IOException
+	 */
+	private boolean scanWithClamAV(){
+		ProcessInformation pi = null;
+		
+		try {
+		pi = new CommandLineConnector().runCmdSynchronously(new String[] {
+				"clamscan" , "-r", "--quiet",wa.objectPath().toFile().toString()}, 0);
+		if (pi.getExitValue() > 0) {
+			if (pi.getExitValue() == 1)  {
+				return false;
+			} else {
+				logger.error( pi.getStdErr());
+				return false;
+			}
+		}
+		return true;
+		} catch (IOException e){
+			logger.error( e.toString() );
+			return false;
+		}
+	}
+	
+	/**
+	 * createCreateEvent: creates an event if a virus is detected
+	 * @author Gaby Bender
+	 * @param virusTimeout 
+	 * @param clamVersion: version of the virus-db
+	 * @return
+	 */
+	private Event createEvent(String detail) {
+		
+		Event virusEventElement = new Event();
+
+		virusEventElement.setType(C.EVENT_TYPE_VIRUS_SCAN);
+		virusEventElement.setIdentifier(o.getIdentifier() + "+" + o.getLatestPackage().getName());
+		virusEventElement.setIdType(IdType.VIRUS_SCAN_ID);
+		virusEventElement.setAgent_type("CONTRACTOR");
+		virusEventElement.setAgent_name(o.getContractor().getShort_name());
+		virusEventElement.setDate(new Date());
+		virusEventElement.setDetail( detail + o.getIdentifier() + 
+					" gefunden! Gescannt mit " + getClamVersion());
+		return virusEventElement;
+	}
+	
+	/**
+	 * getClamVersion: clamscan -V
+	 * @return
+	 */
+	private String getClamVersion() {
+		String clamVersion;
+		try {
+			ProcessInformation pi = new CommandLineConnector().runCmdSynchronously(new String[] {
+						"clamscan" , "-V"}, 0);
+			clamVersion = "'" + pi.getStdOut().trim()  + "'";
+			
+		} catch (IOException ioe) {
+			clamVersion = " 'not found'";
+			logger.error(ioe.toString());
+		}
+		return clamVersion;
+	}
 	
 	private void makeCopyOfDeltaPremis() throws IOException {
 		FileUtils.copyFile(Path.makeFile(wa.dataPath(),o.getNameOfLatestBRep(),PREMIS),
