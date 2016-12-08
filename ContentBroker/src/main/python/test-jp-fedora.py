@@ -3,6 +3,7 @@
 
 from fedorarest import FedoraClient
 from lxml import etree
+import lxml.html as html
 import fileinput
 import datetime
 
@@ -17,7 +18,7 @@ requirements:
 sudo yum install python-lxml
 '''
 
-client = FedoraClient(url="http://localhost:8080/fedora",password="")
+client = FedoraClient(url="http://localhost:8080/fedora",password="clBDmno7")
 
 parser = etree.XMLParser(remove_blank_text=True,encoding='UTF-8')
 
@@ -25,9 +26,13 @@ LOG_FILE="./jp-fedora"+datetime.datetime.now().strftime("%Y%m%d-%H%M%S")+".log"
 XML_NAMESPACES={'rdf':'http://www.w3.org/1999/02/22-rdf-syntax-ns#','edm' : 'http://www.europeana.eu/schemas/edm/', 'dc': 'http://purl.org/dc/elements/1.1/','xsi':'http://www.w3.org/2001/XMLSchema-instance','mets':'http://www.loc.gov/METS/','xlink' : 'http://www.w3.org/1999/xlink', 'vls': 'http://semantics.de/vls', 'mods':'http://www.loc.gov/mods/v3'}
 
 
+
+
 def getPathToFile(targetFile):
 	response, body = client.getDatastream(pid,targetFile)
 	print "status: %s" % (response["status"])
+	if response["status"]<>'200':
+		raise RuntimeError(targetFile,u' nicht gefunden ')
 	#print " %s" % (body)
 	result_tree = etree.fromstring(body)
 	ds_elems = result_tree.xpath("/f:datastreamProfile/f:dsLocation",namespaces={'f':'http://www.fedora.info/definitions/1/0/management/'})
@@ -35,10 +40,18 @@ def getPathToFile(targetFile):
 		dsLocation = ds_elem.text
 		print "%s - dsLocation" % (dsLocation)
 
+	#response, body = client.getDatastreamDissemination(pid,targetFile)
+	#tree = etree.fromstring(body,parser)
+	return dsLocation
+
+
+def getXMLTreeFromFile(targetFile):
+	path=getPathToFile(targetFile)
+	print "patH: ",path
 	response, body = client.getDatastreamDissemination(pid,targetFile)
 	#tree = etree.fromstring(body,parser)
-	return body
-
+	tree = etree.parse(path)
+	return tree
 
 
 '''
@@ -144,13 +157,19 @@ for line in fileinput.input('inputId.txt'):
 		print " %s" % (line)
 		pid = line[0:-1]
 		print " %s" % (pid)
-		edmTree = etree.fromstring(getPathToFile("EDM.xml"),parser)
-		metsTree = etree.fromstring(getPathToFile("METS.xml"),parser)
-		
-		#print etree.tostring(edmTree, pretty_print=True)
-		#print etree.tostring(metsTree, pretty_print=True)
-		#help(metsTree)
 		try:
+			#edmTree = etree.fromstring(getPathToFile("EDM.xml"),parser)
+			#metsTree = etree.fromstring(getPathToFile("METS.xml"),parser)
+			
+			edmTree=getXMLTreeFromFile("EDM.xml");
+			metsTree =getXMLTreeFromFile("METS.xml");
+			
+			#etree.fromstring(getPathToFile("METS.xml"),parser)
+			
+			#print etree.tostring(edmTree, pretty_print=True)
+			#print etree.tostring(metsTree, pretty_print=True)
+			#help(metsTree)
+			
 			metsEdmHashArr=createMetsEdmHashArr(metsTree,edmTree);
 			for metsNode in metsEdmHashArr:
 				correctRoleTermForNodePair(metsNode,metsEdmHashArr[metsNode])
@@ -163,6 +182,7 @@ for line in fileinput.input('inputId.txt'):
 		except RuntimeError as e:
 			LOGFILE.write(pid+" -> Error: "+str(e))
 			print pid+" -> Error: "+str(e)
+			continue;
 		
 		
 		
@@ -178,7 +198,10 @@ for line in fileinput.input('inputId.txt'):
 		content = etree.tostring(edmTree, pretty_print=True)
 		#print " %s" % (content)
 		#outFile = open(getPathToFile("EDM.xml")+'TEST', 'w')
-		etree.ElementTree(edmTree).write('file:///ci/storage/WorkArea/pips/public/TEST/1-20161205838/EDM_OUT.xml', xml_declaration=True, encoding='utf-16', pretty_print=True) 
+		path=getPathToFile("EDM.xml").replace("EDM.xml","EDM_NEW.xml")
+		print "Path: "+path
+		#etree.ElementTree(edmTree)
+		edmTree.write(path, xml_declaration=True, encoding='utf-16', pretty_print=True) 
 		#response, body = client.modifyDatastream(pid,"EDM.xml",content)
 		#print "%s - status: %s" % (pid,response["status"])
 		
