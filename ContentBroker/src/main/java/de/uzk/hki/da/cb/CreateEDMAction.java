@@ -20,7 +20,6 @@
 package de.uzk.hki.da.cb;
 
 import static de.uzk.hki.da.utils.C.EDM_FOR_ES_INDEX_METADATA_STREAM_ID;
-import static de.uzk.hki.da.utils.C.EDM_XSLT_METADATA_STREAM_ID;
 import static de.uzk.hki.da.utils.C.FILE_EXTENSION_XML;
 import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
 
@@ -92,7 +91,6 @@ public class CreateEDMAction extends AbstractAction {
 			throw new PreconditionsNotMetException("missing package type");
 	}
 
-
 	@Override
 	public boolean implementation() throws IOException, RepositoryException, JDOMException, ParserConfigurationException, SAXException {
 		
@@ -107,9 +105,6 @@ public class CreateEDMAction extends AbstractAction {
 		if (!metadataSourceFile.exists())
 			throw new RuntimeException("Missing file in public PIP: "+o.getPackage_type()+FILE_EXTENSION_XML);
 
-		edmXSLTDestinationFile = generateEdmUsingXslt(xsltTransformationFile, new File(o.getPackage_type()+FILE_EXTENSION_XML), EDM_XSLT_METADATA_STREAM_ID);
-		putToRepository(edmXSLTDestinationFile);		
-		
 		File metadataFile= new RelativePath(o.getPackage_type()+FILE_EXTENSION_XML).toFile();
 		edmIndexDestinationFile = serializeEDM(xsltTransformationFile, metadataFile);
 		putToRepository(edmIndexDestinationFile);
