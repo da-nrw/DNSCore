@@ -43,6 +43,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.model.Event.IdType;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 
@@ -153,9 +154,9 @@ public class ObjectPremisXmlWriter {
 	 * @throws  
 	 */
 	private void generateEvents(Object object) throws XMLStreamException {
-		
 		for (Package pkg : object.getPackages())
 		  for (Event e : pkg.getEvents()){
+
 			if (e.getType().toUpperCase().equals(C.EVENT_TYPE_CONVERT)
 					|| e.getType().toUpperCase().equals(C.EVENT_TYPE_COPY)
 					|| e.getType().toUpperCase().equals(C.EVENT_TYPE_CREATE)){
@@ -164,7 +165,7 @@ public class ObjectPremisXmlWriter {
 			} else
 				// DANRW-1452: Event virus-scan
 				if (e.getType().toUpperCase().equals(C.EVENT_TYPE_VIRUS_SCAN)) {
-				logger.debug("Serializing convert event: "+e);
+				logger.debug("Serializing scan event: "+e);
 				createVirusEventElement(object,pkg.getName(), e);
 			} else{
 				logger.debug("Serializing package event:"+e);
@@ -206,8 +207,9 @@ public class ObjectPremisXmlWriter {
 	private void createVirusEventElement(Object object, String pkgName, Event e) throws XMLStreamException {
 		createOpenElement("event", 1);
 		createOpenElement("eventIdentifier", 2);
-		createTextElement("eventIdentifierType", "NO_VIRUS", 3);
-		createTextElement("eventIdentifierValue", object.getIdentifier() , 3);
+		createTextElement("eventIdentifierType", IdType.VIRUS_SCAN_ID.toString(), 3);
+		createTextElement("eventIdentifierValue", object.getIdentifier()+ "+" + object.getLatestPackage().getName() , 3);
+		
 		createCloseElement(2);
 		
 		createTextElement("eventType", e.getType(), 2);
@@ -225,7 +227,7 @@ public class ObjectPremisXmlWriter {
 		}
 
 		Agent a = new Agent();
-		a.setType("NODE");
+		a.setType("CONTRACTOR");
 		a.setName(e.getAgent_name());
 		a.setLongName(e.getAgent_long_name());
 		agents.add(a);
@@ -237,7 +239,8 @@ public class ObjectPremisXmlWriter {
 		
 		createOpenElement("linkingObjectIdentifier", 2);
 		createTextElement("linkingObjectIdentifierType", "PACKAGE_NAME", 3);
-		createTextElement("linkingObjectIdentifierValue", object.getOrig_name() +".tar", 3);
+//		createTextElement("linkingObjectIdentifierValue", object.getOrig_name() +".tar", 3);
+		createTextElement("linkingObjectIdentifierValue", object.getIdentifier() + ".pack_" + pkgName + ".tar",3);
 		
 		createTextElement("linkingObjectRole", "outcome", 3);
 		createCloseElement(2);
@@ -441,6 +444,7 @@ public class ObjectPremisXmlWriter {
 		createOpenElement("linkingObjectIdentifier", 2);
 		createTextElement("linkingObjectIdentifierType", "PACKAGE_NAME", 3);
 		createTextElement("linkingObjectIdentifierValue", object.getIdentifier()+".pack_"+pkg.getName()+".tar", 3);
+		
 		createCloseElement(2);	
 		
 		createCloseElement(1);

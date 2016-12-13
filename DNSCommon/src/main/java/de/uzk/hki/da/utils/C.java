@@ -57,7 +57,6 @@ public class C {
 	public static final String METADATA_FILE_XMP = "XMP.xml";
 		/** Fedora datastream id for EDM. */
 
-	public static final String EDM_XSLT_METADATA_STREAM_ID = "EDM_xslt"; 
 	public static final String EDM_FOR_ES_INDEX_METADATA_STREAM_ID = "EDM"; 
 	public static final String METADATA_STREAM_ID_DC = "DC";
 	public static final String METADATA_STREAM_ID_EPICUR = "epicur";
