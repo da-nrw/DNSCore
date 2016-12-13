@@ -274,6 +274,14 @@ Dieser Abschitt enthält weitere Schnittstellenelemente die in der premis.xml ei
 * Contractor Short Name des Contractors, der das Paket eingeliefert hat
 * Name des Pakets (= Name der am Ende des Ingestvorgangs erzeugten tar-Datei)
 
+##### VirusScanEvent
+
+* Event-Typ VIRUS_SCAN
+* Identifier vom Typ VIRUS_SCAN_ID&nbsp;
+* Zeitpunkt des Virenscans
+* Contractor Short Name des Contractors, der das Paket eingeliefert hat
+* Name des Pakets (= Name der am Ende des Ingestvorgangs erzeugten tar-Datei)
+
 ##### SIPCreationEvent
 
 * Event-Typ SIP_CREATION
