@@ -391,10 +391,20 @@ public class MetsParser{
 	private String getContributor(Element name) {
 		String namePartValue = "";
 		try {
-			//String role = name.getChild("role", C.MODS_NS).getValue();
-			//if(role.equals("aut")||role.equals("creator")) {
+			String roleCode="",roleText="";
+			Element roleElem=name.getChild("role", C.MODS_NS);
+			List<Element> roleTermElem=roleElem.getChildren("roleTerm", C.MODS_NS);
+			for(Element e:roleTermElem){
+				String type=e.getAttribute("type").getValue();
+				if(type.equals("code")){
+					roleCode=e.getValue();
+				}else if(type.equals("text")){
+					roleText=e.getValue();
+				}
+			}
+			if(!roleCode.equals("aut")&&!roleCode.equals("creator")) {
 				namePartValue = getName(name);
-			//}
+			}
 		} catch (Exception e) {
 			logger.debug("No creator found!");
 		}
@@ -404,7 +414,7 @@ public class MetsParser{
 	private String getCreator(Element name) {
 		String namePartValue = "";
 		try {
-			String roleCode=null,roleText=null;
+			String roleCode="",roleText="";
 			Element roleElem=name.getChild("role", C.MODS_NS);
 			List<Element> roleTermElem=roleElem.getChildren("roleTerm", C.MODS_NS);
 			for(Element e:roleTermElem){
@@ -421,11 +431,8 @@ public class MetsParser{
 				namePartValue =getName(name); //Fix DANRW-1439
 			}*/
 			
-			if(roleText!=null && roleCode!=null && (roleCode.equals("aut")||roleCode.equals("creator")))
-				namePartValue = roleText+": "+getName(name);
-			else
-				namePartValue =getName(name);
-				
+			if((roleCode.equals("aut")||roleCode.equals("creator")))
+				namePartValue = roleText+(roleText.trim().isEmpty()?"":": ")+getName(name);
 		} catch (Exception e) {
 			logger.debug("No contributor found!");
 		}

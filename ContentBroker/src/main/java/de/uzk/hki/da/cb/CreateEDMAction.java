@@ -107,6 +107,7 @@ public class CreateEDMAction extends AbstractAction {
 		if (!metadataSourceFile.exists())
 			throw new RuntimeException("Missing file in public PIP: "+o.getPackage_type()+FILE_EXTENSION_XML);
 
+		//xslt file not needed more, transformations are done by java code
 		edmXSLTDestinationFile = generateEdmUsingXslt(xsltTransformationFile, new File(o.getPackage_type()+FILE_EXTENSION_XML), EDM_XSLT_METADATA_STREAM_ID);
 		putToRepository(edmXSLTDestinationFile); //this file will be overwriten by the next call of putToRepository(...)
 		
