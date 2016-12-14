@@ -3,9 +3,11 @@
 
 from fedorarest import FedoraClient
 from lxml import etree
-import lxml.html as html
+#import lxml.html as html
 import fileinput
 import datetime
+import traceback
+import re
 
 import sys
 reload(sys)
@@ -47,10 +49,15 @@ def getPathToFile(targetFile):
 
 def getXMLTreeFromFile(targetFile):
 	path=getPathToFile(targetFile)
-	print "patH: ",path
+	print "getXMLTreeFromFile patH: ",path
 	response, body = client.getDatastreamDissemination(pid,targetFile)
-	#tree = etree.fromstring(body,parser)
-	tree = etree.parse(path)
+	#print "getXMLTreeFromFile body: ",body
+	body=re.sub(r"&(?!#\d{4};|amp;)", "&amp;", body) #mask ampersand
+	#body=re.sub(r'(?<!^)"(?!$)', '\\"',body) # mask nesteds doublequotes
+	#r'(?=[\"]{1})(*)"(*)(?=[\"]{1})'
+	print body.splitlines(True)[0]
+	tree = etree.fromstring(body,parser)
+	#tree = etree.parse(path)
 	return tree
 
 
@@ -81,8 +88,9 @@ def createMetsEdmHashArr(metsTree,edmTree):
 '''
 
 '''
-def correctRoleTermForNodePair(metsNode,edmNode):
-	metsElemList=metsNode.xpath('./mets:mdWrap/mets:xmlData/mods:mods/mods:name ',namespaces=XML_NAMESPACES)
+def correctRoleTermForNodePairContributor(metsNode,edmNode):
+	#metsElemList=metsNode.xpath('./mets:mdWrap/mets:xmlData/mods:mods/mods:name ',namespaces=XML_NAMESPACES)
+	metsElemList=metsNode.xpath('./mets:mdWrap/mets:xmlData/mods:mods/mods:name[not(contains(./mods:role/mods:roleTerm,\'aut\') or contains(./mods:role/mods:roleTerm,\'cre\'))] ',namespaces=XML_NAMESPACES)
 	edmElemList=edmNode.xpath('./dc:contributor',namespaces=XML_NAMESPACES)
 	if( len(metsElemList)<>len(edmElemList)):
 		raise RuntimeError(u'Die Anzahl der Verfasser/Autoren stimmt in der EDM- und METS-File nicht überein: ',len(metsElemList)," vs ",len(edmElemList))
@@ -97,7 +105,26 @@ def correctRoleTermForNodePair(metsNode,edmNode):
 		#print "removeRoleTermFromOneNodePair after: ",edmElemList[i].text
 	
 	
-	print "ende removeRoleTermFromOneNodePair"
+	print "ende correctRoleTermForNodePairContributor"
+
+def correctRoleTermForNodePairCreator(metsNode,edmNode):
+	#metsElemList=metsNode.xpath('./mets:mdWrap/mets:xmlData/mods:mods/mods:name ',namespaces=XML_NAMESPACES)
+	metsElemList=metsNode.xpath('./mets:mdWrap/mets:xmlData/mods:mods/mods:name[contains(./mods:role/mods:roleTerm,\'aut\') or contains(./mods:role/mods:roleTerm,\'cre\')] ',namespaces=XML_NAMESPACES)
+	edmElemList=edmNode.xpath('./dc:creator',namespaces=XML_NAMESPACES)
+	if( len(metsElemList)<>len(edmElemList)):
+		raise RuntimeError(u'Die Anzahl der Verfasser/Autoren stimmt in der EDM- und METS-File nicht überein: ',len(metsElemList)," vs ",len(edmElemList))
+
+	for i in range(len(edmElemList)):
+		roleText=''
+		roleElements=metsElemList[i].xpath('./mods:role/mods:roleTerm[contains(@type, \'text\')][1] ',namespaces=XML_NAMESPACES)
+		if(len(roleElements)==1):
+			roleText=roleElements[0].text+": "
+		#print "removeRoleTermFromOneNodePair before: ",edmElemList[i].text
+		edmElemList[i].text=roleText+metsElemList[i].xpath('./mods:namePart[1] ',namespaces=XML_NAMESPACES)[0].text#.getchildren()[0].text
+		#print "removeRoleTermFromOneNodePair after: ",edmElemList[i].text
+	
+	
+	print "ende correctRoleTermForNodePairContributor"
 	
 	
 '''
@@ -116,22 +143,23 @@ def correctTitleConsiderNonSort(metsTree,edmTree):
 		
 	nonSortElem,titleElem,displayLabelElem,subTitleElem=None,None,None,None
 	mainTitle=""
-	tmpElemArr=metsElemList[0].xpath('./mods:nonSort[1] ',namespaces=XML_NAMESPACES)
+	tmpElemArr=metsElemList[0].xpath('./mods:nonSort ',namespaces=XML_NAMESPACES)
 	if len(tmpElemArr)==1:
 		nonSortElem=tmpElemArr[0]
-	tmpElemArr=metsElemList[0].xpath('./mods:title[1] ',namespaces=XML_NAMESPACES)
+	tmpElemArr=metsElemList[0].xpath('./mods:title ',namespaces=XML_NAMESPACES)
 	if len(tmpElemArr)==1:
 		titleElem=tmpElemArr[0]
-	tmpElemArr=metsElemList[0].xpath('./mods:displayLabel[1] ',namespaces=XML_NAMESPACES)
+	tmpElemArr=metsElemList[0].xpath('./mods:displayLabel ',namespaces=XML_NAMESPACES)
 	if len(tmpElemArr)==1:
 		displayLabelElem=tmpElemArr[0]
-	tmpElemArr=metsElemList[0].xpath('./mods:subTitle[1] ',namespaces=XML_NAMESPACES)
+	tmpElemArr=metsElemList[0].xpath('./mods:subTitle ',namespaces=XML_NAMESPACES)
 	if len(tmpElemArr)==1:
 		subTitleElem=tmpElemArr[0]
-	
+	print "nonSortElem %s ,titleElem %s ,displayLabelElem %s ,subTitleElem %s" %(nonSortElem,titleElem,displayLabelElem,subTitleElem )
 	if titleElem is not None:
 		if nonSortElem is not None:
 			mainTitle=nonSortElem.text+" "+titleElem.text	
+		mainTitle=titleElem.text
 	elif nonSortElem is not None:
 		mainTitle=nonSortElem.text
 	else:
@@ -172,16 +200,18 @@ for line in fileinput.input('inputId.txt'):
 			
 			metsEdmHashArr=createMetsEdmHashArr(metsTree,edmTree);
 			for metsNode in metsEdmHashArr:
-				correctRoleTermForNodePair(metsNode,metsEdmHashArr[metsNode])
+				correctRoleTermForNodePairContributor(metsNode,metsEdmHashArr[metsNode])
+				correctRoleTermForNodePairCreator(metsNode,metsEdmHashArr[metsNode])
 				correctTitleConsiderNonSort(metsNode,metsEdmHashArr[metsNode])
 				#correctTitleConsiderNoTitleForSubPackage(metsNode,metsEdmHashArr[metsNode])
 				#correctOriginInfo(metsNode,metsEdmHashArr[metsNode])
 			#removeXEpicURLIfUrnIsSpecific();
 			#removeMETS_XSLT();
 			LOGFILE.write(pid+" -> Success")
-		except RuntimeError as e:
+		except Exception as e:
 			LOGFILE.write(pid+" -> Error: "+str(e))
-			print pid+" -> Error: "+str(e)
+			print pid+" -> Error: "+str(e.__class__.__doc__)+" "+str(e)
+			traceback.print_exc()
 			continue;
 		
 		
@@ -191,7 +221,7 @@ for line in fileinput.input('inputId.txt'):
 		for el in edmTree.xpath('/rdf:RDF/edm:ProvidedCHO/dc:title ',namespaces={'rdf':'http://www.w3.org/1999/02/22-rdf-syntax-ns#','edm' : 'http://www.europeana.eu/schemas/edm/', 'dc': 'http://purl.org/dc/elements/1.1/'}):
 			#if el.text.startswith("urn:nbn:de"):
 			#print "%s - found: %s" % (pid,el.text)
-			el.text = el.text.upper()
+			#el.text = el.text.upper()
 			print " %s" % (el.text)
 		
 			#	 el.getparent().remove(el)
@@ -200,7 +230,7 @@ for line in fileinput.input('inputId.txt'):
 		#outFile = open(getPathToFile("EDM.xml")+'TEST', 'w')
 		path=getPathToFile("EDM.xml").replace("EDM.xml","EDM_NEW.xml")
 		print "Path: "+path
-		#etree.ElementTree(edmTree)
+		edmTree=etree.ElementTree(edmTree)
 		edmTree.write(path, xml_declaration=True, encoding='utf-16', pretty_print=True) 
 		#response, body = client.modifyDatastream(pid,"EDM.xml",content)
 		#print "%s - status: %s" % (pid,response["status"])
