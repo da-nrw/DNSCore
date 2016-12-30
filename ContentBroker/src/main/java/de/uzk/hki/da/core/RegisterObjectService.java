@@ -168,8 +168,8 @@ public class RegisterObjectService {
 		
 		obj.setContractor(contractor);
 		
-		obj.setDate_created(String.valueOf(new Date().getTime()));
-		obj.setDate_modified(String.valueOf(new Date().getTime()));
+		obj.setCreatedAt(new Date());
+		obj.setModifiedAt(new Date());
 		obj.setLast_checked(new Date());
 		obj.setInitial_node(localNodeName);
 		obj.setOrig_name(origName);

@@ -32,8 +32,8 @@ public class ATUseCaseIngestDeltaDuringRetrievalOrigPkg extends AcceptanceTest{
 		job.setStatus("900");
 		job.setObject(object);
 		job.setResponsibleNodeName(object.getInitial_node());
-		job.setDate_created(String.valueOf(new Date().getTime()/1000L));
-		job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
+		job.setCreatedAt(new Date());
+		job.setModifiedAt(new Date());
 
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();

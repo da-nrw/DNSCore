@@ -206,7 +206,7 @@ public abstract class AbstractAction implements Runnable {
 	
 	
 	private void updateStatus(String endDigit) {
-		j.setDate_modified(String.valueOf(new Date().getTime()/1000L));
+		j.setModifiedAt(new Date());
 		j.setStatus(getStartStatus().substring(0, getStartStatus().length() - 1) + endDigit);
 	}
 	
@@ -239,7 +239,7 @@ public abstract class AbstractAction implements Runnable {
 			j.setStatus(startStatus);
 			resetModifiers();
 		} else {
-			j.setDate_modified(String.valueOf(new Date().getTime()/1000L));
+			j.setModifiedAt(new Date());
 			baseLogger.info(this.getClass().getName()+" finished working on job: "+j.getId()+". Now commiting changes to database.");
 			if (kILLATEXIT)	{
 				baseLogger.info("Set the job status to the end status "+endStatus+" .");

@@ -1,16 +1,10 @@
 package de.uzk.hki.da.at;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
-import org.apache.commons.io.FileUtils;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -18,12 +12,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.model.Job;
-import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.PendingMail;
 import de.uzk.hki.da.model.User;
-import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.C;
 
@@ -38,7 +28,7 @@ public class ATPublicMets extends AcceptanceTest {
 
 	@After
 	public void tearDown() {
-		Boolean oldUsePublicMets = this.setUserPublicMets(Boolean.FALSE);
+		this.setUserPublicMets(Boolean.FALSE);
 	}
 
 	@Test

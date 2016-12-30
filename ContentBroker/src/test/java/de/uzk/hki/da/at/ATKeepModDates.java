@@ -57,8 +57,8 @@ public class ATKeepModDates extends AcceptanceTest {
 		Job j = new Job();
 		j.setResponsibleNodeName(node.getName());
 		j.setObject(o);
-		j.setDate_created(String.valueOf(new Date().getTime()/1000L));
-		j.setDate_modified(String.valueOf(new Date().getTime()/1000L));
+		j.setCreatedAt(new Date());
+		j.setModifiedAt(new Date());
 		j.setQuestion("RETRIEVE:1");
 		j.setStatus("900");
 	

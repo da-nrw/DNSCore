@@ -46,11 +46,11 @@
 					</th>
 					
 					<th class="sortable field-created">
-						<a href="#" onClick="return sortQueue('created');">${message(code: 'queueEntry.created.label', default: 'Erstellt')}</a>
+						<a href="#" onClick="return sortQueue('createdAt');">${message(code: 'queueEntry.created.label', default: 'Erstellt')}</a>
 					</th>
 					
 					<th class="sortable field-modified">
-						<a href="#" onClick="return sortQueue('modified');">${message(code: 'queueEntry.modified.label', default: 'Geändert')}</a>
+						<a href="#" onClick="return sortQueue('modifiedAt');">${message(code: 'queueEntry.modified.label', default: 'Geändert')}</a>
 					</th>
 					
 					<th class="sortable field-origName">

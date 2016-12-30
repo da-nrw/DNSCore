@@ -106,8 +106,11 @@ public class ATRetrieval extends AcceptanceTest{
 	@Test
 	public void testTimebasedRemoveRetrievalAfter14DayBeforeTimeout() throws Exception {
 		int usualRetrievalTime = localNode.getRetrieval_remain_time();
+		
+		long subHours =  (usualRetrievalTime * 24L - 12L);
 
-		String createTime = String.valueOf(new Date().getTime() / 1000L - ((usualRetrievalTime * 24 - 12) * 60 * 60));// - 1/2 Day for timeout
+		Date createTime = new Date(new Date().getTime() - subHours * 3600L * 1000L);
+		
 		ath.createJob(originalName, "900", createTime);
 		ath.waitForJobToBeInStatus(originalName, "952");
 
@@ -128,7 +131,10 @@ public class ATRetrieval extends AcceptanceTest{
 	public void testTimebasedRemoveRetrievalAfter14DayAfterTimeout() throws Exception {
 		int usualRetrievalTime = localNode.getRetrieval_remain_time();
 
-		String createTime = String.valueOf(new Date().getTime() / 1000L - ((usualRetrievalTime * 24 + 12) * 60 * 60));// +1/2 Day after timeout
+		long subHours =  (usualRetrievalTime * 24L + 12L);
+
+		Date createTime = new Date(new Date().getTime() - subHours * 3600L * 1000L);
+
 		ath.createJob(originalName, "900", createTime);
 		//ath.waitForJobToBeInStatus(originalName, "952");
 

@@ -78,7 +78,7 @@ public class PostRetrievalActionTest  extends ConcreteActionUnitTest {
 	public void testPostRetrievalDeletionAfterSomeTime() {
 		Calendar now = Calendar.getInstance();
 		now.add(Calendar.HOUR_OF_DAY, -49);
-		j.setDate_created(String.valueOf(now.getTimeInMillis()/1000L));
+		j.setCreatedAt(now.getTime());
 		
 		
 		assertTrue(Path.makeFile(userAreaRootPath,TEST_USER_SHORT_NAME,OUTGOING,o.getIdentifier()+FILE_EXTENSION_TAR).exists());

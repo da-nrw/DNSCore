@@ -489,8 +489,8 @@ public class AcceptanceTestHelper {
 		object.setIdentifier(identifier);
 		object.setObject_state(object_state);
 		object.setUrn(urn);
-		object.setDate_created(String.valueOf(createddate.getTime()));
-		object.setDate_modified(String.valueOf(createddate.getTime()));
+		object.setCreatedAt(createddate);
+		object.setModifiedAt(createddate);
 		object.setLast_checked(createddate);
 		object.setOrig_name(originalName);
 		Package pkg = new Package();
@@ -517,9 +517,9 @@ public class AcceptanceTestHelper {
 
 	
 	void createJob(String origName,String jobStatus) {
-		createJob(origName, jobStatus,String.valueOf(new Date().getTime()/1000L));
+		createJob(origName, jobStatus, new Date());
 	}
-	void createJob(String origName,String jobStatus, String createDate) {
+	void createJob(String origName,String jobStatus, Date createdAt) {
 		Object o = getObject(origName);
 		
 		Session session = HibernateUtil.openSession();
@@ -530,8 +530,8 @@ public class AcceptanceTestHelper {
 		Job j = new Job();
 		j.setResponsibleNodeName(node.getName());
 		j.setObject(o);
-		j.setDate_created(createDate);
-		j.setDate_modified(createDate);
+		j.setCreatedAt(createdAt);
+		j.setModifiedAt(createdAt);
 		j.setStatus(jobStatus);
 	
 		session.save(j);

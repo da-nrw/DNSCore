@@ -117,7 +117,7 @@ public class CSVQueryHandler {
 		result = new Job (nodeName,C.WORKFLOW_STATUS_START___RETRIEVAL_ACTION);
 		result.setResponsibleNodeName(nodeName);
 		result.setObject(o);
-		result.setDate_created(String.valueOf(new Date().getTime()/1000L));
+		result.setCreatedAt(new Date());
 		session.save(result);
 		session.getTransaction().commit();
 		session.close();
@@ -191,14 +191,13 @@ private synchronized Object fetchObject(String origName) {
 			session.close();
 		logger.error("Caught error in fetchObjectFromQueue");
 		throw new RuntimeException(e.getMessage(), e);
+		}
 	}
-}
 
-	private String formatDate(String ts,long factor) {
-		String sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date(Long.valueOf(ts).longValue()*factor) );
+	private String formatDate(Date date) {
+		String sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(date);
 		return sdf.toString();
 	}
-
 
 	@SuppressWarnings("unchecked")
 	private void evalStates() {
@@ -233,11 +232,11 @@ private synchronized Object fetchObject(String origName) {
 							erfolg = false;
 						} else erfolg = true;
 						csvEntry.put("statuscode", (java.lang.Object) job.getStatus());
-						csvEntry.put("createddate", formatDate(job.getDate_created(),1000L));
-						csvEntry.put("updateddate", formatDate(job.getDate_modified(),1000L));
+						csvEntry.put("createddate", formatDate(job.getCreatedAt()));
+						csvEntry.put("updateddate", formatDate(job.getModifiedAt()));
 					} else {
-						csvEntry.put("createddate", formatDate(o.getDate_created(),1L));
-						csvEntry.put("updateddate", formatDate(o.getDate_modified(),1L));
+						csvEntry.put("createddate", formatDate(o.getCreatedAt()));
+						csvEntry.put("updateddate", formatDate(o.getModifiedAt()));
 					}
 				}
 				csvEntry.put("erfolg", (java.lang.Object) String.valueOf(erfolg));

@@ -73,7 +73,7 @@ public class PostRetrievalAction extends AbstractAction {
 			logger.debug("Retrieval is already deleted by other software, modify Object status");
 			modifyObject(o);
 		} else {
-			if (System.currentTimeMillis() / 1000 <= (Long.parseLong(j.getDate_created()) + (86400L * n.getRetrieval_remain_time()))) {
+			if (System.currentTimeMillis() <= (j.getCreatedAt().getTime() + (86400000L * n.getRetrieval_remain_time()))) {
 				delay();
 				logger.debug("CB not yet able to delete that item yet!");
 				return false;
@@ -98,7 +98,7 @@ public class PostRetrievalAction extends AbstractAction {
 	}
 	private void modifyObject(Object obj) {
 		o.setObject_state(100);
-		o.setDate_modified(String.valueOf(new Date().getTime()));
+		o.setModifiedAt(new Date());
 	}
 
 	@Override

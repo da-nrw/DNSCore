@@ -79,11 +79,11 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${queueEntryInstance?.created}">
+				<g:if test="${queueEntryInstance?.createdAt}">
 				<li class="fieldcontain">
 					<span id="created-label" class="property-label"><g:message code="queueEntry.created.label" default="Created" /></span>
 					
-						<span class="property-value" aria-labelledby="created-label"><g:fieldValue bean="${queueEntryInstance}" field="created"/></span>
+						<span class="property-value" aria-labelledby="created-label"><g:fieldValue bean="${queueEntryInstance}" field="createdAt"/></span>
 					
 				</li>
 				</g:if>
@@ -97,11 +97,11 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${queueEntryInstance?.modified}">
+				<g:if test="${queueEntryInstance?.modifiedAt}">
 				<li class="fieldcontain">
 					<span id="modified-label" class="property-label"><g:message code="queueEntry.modified.label" default="Modified" /></span>
 					
-						<span class="property-value" aria-labelledby="modified-label"><g:fieldValue bean="${queueEntryInstance}" field="modified"/></span>
+						<span class="property-value" aria-labelledby="modified-label"><g:fieldValue bean="${queueEntryInstance}" field="modifiedAt"/></span>
 					
 				</li>
 				</g:if>

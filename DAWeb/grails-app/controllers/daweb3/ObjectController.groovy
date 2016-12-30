@@ -148,14 +148,14 @@ class ObjectController {
 			}
 
 			log.debug("Date as Strings " + params.searchDateStart + " and " + params.searchDateEnd)
-			def ds = daweb3.Object.convertDateIntoStringDate(params.searchDateStart)
-			def de = daweb3.Object.convertDateIntoStringDate(params.searchDateEnd)
+			def ds = daweb3.Object.convertDateIntoDate(params.searchDateStart)
+			def de = daweb3.Object.convertDateIntoDate(params.searchDateEnd)
 
-			def st = "created"; 
+			def st = "createdAt"; 
 			String searchDateType = params.searchDateType;
 			if (ds!=null || de!=null) {
 				if ( params.searchDateType.equals("null") ) {
-					params.searchDateType = "created"
+					params.searchDateType = "createdAt"
 				} else {
 					st =  params.searchDateType;
 				}
