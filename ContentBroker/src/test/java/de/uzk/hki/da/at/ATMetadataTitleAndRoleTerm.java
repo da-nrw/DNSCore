@@ -95,11 +95,11 @@ public class ATMetadataTitleAndRoleTerm extends AcceptanceTest {
 			boolean contributor2 = false;
 			boolean contributor3 = false;
 			for(Element cont : contributor) {
-				if(cont.getValue().equals("Bauchmüller, Katharina")) {
+				if(cont.getValue().equals("Adressatin: Bauchmüller, Katharina")) {
 					contributor1 = true;
-				} else if(cont.getValue().equals("Bauchmüller, Robert")) {
+				} else if(cont.getValue().equals("Adressat: Bauchmüller, Robert")) {
 					contributor2 = true;
-				} else if(cont.getValue().equals("Preußen / Ministerium der Geistlichen, Unterrichts- und Medizinalangelegenheiten")) {
+				} else if(cont.getValue().equals("Urheber: Preußen / Ministerium der Geistlichen, Unterrichts- und Medizinalangelegenheiten")) {
 					contributor3 = true;
 				}
 			}
@@ -121,11 +121,11 @@ public class ATMetadataTitleAndRoleTerm extends AcceptanceTest {
 		boolean contributor2 = false;
 		boolean contributor3 = false;
 		for(int i =0;i<jsonContributorArray.length();i++) {
-			if(jsonContributorArray.getString(i).equals("Bauchmüller, Katharina")) {
+			if(jsonContributorArray.getString(i).equals("Adressatin: Bauchmüller, Katharina")) {
 				contributor1 = true;
-			} else if(jsonContributorArray.getString(i).equals("Bauchmüller, Robert")) {
+			} else if(jsonContributorArray.getString(i).equals("Adressat: Bauchmüller, Robert")) {
 				contributor2 = true;
-			} else if(jsonContributorArray.getString(i).equals("Preußen / Ministerium der Geistlichen, Unterrichts- und Medizinalangelegenheiten")) {
+			} else if(jsonContributorArray.getString(i).equals("Urheber: Preußen / Ministerium der Geistlichen, Unterrichts- und Medizinalangelegenheiten")) {
 				contributor3 = true;
 			}
 		}
