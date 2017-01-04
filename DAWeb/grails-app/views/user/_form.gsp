@@ -50,6 +50,13 @@
 <g:checkBox name="usePublicMets" value="${userInstance?.usePublicMets}" />
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'useVirusScan', 'error')} ">
+	<label for="useVirusScan">
+		<g:message code="user.useVirusScan.label" default="Use Virus Scan" />
+		
+	</label>
+	<g:checkBox name="useVirusScan" value="${userInstance?.useVirusScan}" />
+</div>
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'deltaOnUrn', 'error')} ">
 <label for="deltaOnUrn">
