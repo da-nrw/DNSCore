@@ -37,7 +37,6 @@ cb.implementation.metadataExtractor=jhoveMetadataExtractor
 cb.implementation.formatScanService=fidoFormatScanService
 cb.implementation.subformatScanService=subformatScanService
 
-
 cb.bin.python=/ci/python/python
 
 checksumWorker.trustChecksumForDays=30
