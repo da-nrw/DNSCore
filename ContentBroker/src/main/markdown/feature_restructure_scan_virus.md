@@ -15,12 +15,13 @@ Im Fehlerfall wird eine UserException (VIRUS_DETECTED) geworfen, wodurch eine EM
 
 #### Vorbedingung (gilt für alle Szenarien): 
 
+* Der User hat einen Account und in der Tabelle users in der Spalte use_virus_scan = true für den verwendeten Contractor 
 * Der User hat einen Account und ist unter der Rolle "Contractor" in DA-WEB eingeloggt.
 * Der User hat einen Webshare mit Incoming Ordner, in den er Pakete legen kann. DA-WEB zeigt den Inhalt dieses Ordners in der Maske&nbsp;"Verarbeitung für abgelieferte SIP starten" an.
 
 #### Durchführung:
 
-1. Das Tespaket wird im Incoming Order ablegt
+1. Das Tespaket wird im Incoming Ordner ablegt
 2. starten der Verarbeitung über "Verarbeitung für abgelieferte SIP starten"
 
 
@@ -97,7 +98,7 @@ ATRestructureActionScanVirus.testPremisNoVirus
 
 #### Akzeptanzkriterien:
 
-1) überprüfen, ob in der premis.xml ein event-Tag mit eventIdentifierType = NO_VIRUS vorhanden ist.
+1) überprüfen, ob in der premis.xml ein event-Tag mit eventIdentifierType = VIRUS_SCAN_ID vorhanden ist.
    Des Weiteren muss in dem Tag eventDetail die Version des Virenscanners enthalten sein 
    (z.B. "KEIN Virus im Paket mit Identifier 1-20160912420 gefunden! Gescannt mit 'ClamAV 0.99.2/22199/Wed Sep  7 01:36:53 2016'")
 

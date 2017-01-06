@@ -30,7 +30,6 @@
 		</div>
 		<div id="filter" style="margin: 0.8em 0 0.3em">
 			<h1><a href="#">Filter
-				
 				<g:if test="${params.search}"><br>
 		    		<g:if test="${!params.search?.origName.isEmpty()}">
 		    			<span style="margin-right: 25px"><i>Originalname: </i>${params.search?.origName}</span>
@@ -45,14 +44,10 @@
 		    			<span style="margin-right: 25px"><i>Contractor: </i>${params.searchContractorName}</span>
 		    		</g:if> 
 					<div>
-						<g:if test="${params.searchDateType != null}">
-			    			<g:if test="${params.searchDateType == 'created'}" >
-			    				<span style="margin-right: 25px"><i>Datumsbereich: </i>Datum erstellt</span>
-			    			</g:if>
-			    			<g:if test="${params.searchDateType == 'modified'}" >
-			    				<span style="margin-right: 25px"><i>Datumsbereich: </i>Datum ändern</span>
-			    			</g:if>
-			    		</g:if>    	
+						<g:if test="${params.searchDateType != null } ">
+	    					<g:if test="${params.searchDateType == 'created'}">Datumsbereich erstellt</g:if>
+	    					<g:if test="${params.searchDateType == 'modified'}">Datumsbereich geändert</g:if>
+			    		</g:if>    
 			    		<g:if test="${!params.searchDateStart.isEmpty()}">
 			    			<span style="margin-right: 25px"><i>Von Datum: </i>${params.searchDateStart}</span>
 			    		</g:if> 	
@@ -80,7 +75,7 @@
             		<tr>
             			<td>Datumsbereich:	</td>	
 	            		<td>
-	            			<g:select id="datetype" name="searchDateType" from="${['Datum erstellt','Datum geändert']}" keys="${['created','modified']}" value="${params.searchDateType}" noSelection="[null:'Alle auswählen']" />
+	            			<g:select id="datetype" name="searchDateType" from="${['Datum erstellt','Datum geändert']}" keys="${['created','modified']}" value="${params.searchDateType}" noSelection="[null:'Bitte auswählen']"/>
 	            		</td>
 					</tr>
             		<tr>
@@ -104,10 +99,10 @@
 	            			<td>Contractor:</td>
 	            			<td>
 	            				<g:if test="${params.searchContractorName  == null}" >
-	            					<g:select id="user" name="searchContractorName" from="${contractorList}" optionKey="shortName" noSelection="[null:'Alle auswählen']" required="" value="${objectInstance?.contractorList?.shortName}" class="many-to-one"/>
+	            					<g:select id="user" name="searchContractorName" from="${contractorList}" optionKey="shortName" noSelection="[null:'Bitte auswählen']" required="" value="${objectInstance?.contractorList?.shortName}" class="many-to-one"/>
 	            				</g:if>
 	            				<g:if test="${params.searchContractorName  != null && !params.searchContractorName.isEmpty()}" >
-	            					<g:select id="user" name="searchContractorName" from="${contractorList}" optionKey="shortName" noSelection="[null:'Alle auswählen']" required="" value="${params.searchContractorName}" class="many-to-one"/>
+	            					<g:select id="user" name="searchContractorName" from="${contractorList}" optionKey="shortName" noSelection="[null:'Bitte auswählen']" required="" value="${params.searchContractorName}" class="many-to-one"/>
 	            				</g:if>
 	            			</td>
             			</tr>
@@ -157,34 +152,26 @@
 					<thead>
 						<tr>
 							<th><g:message code="object.identifier.label" default="Ident" /></th>
-							
 							<g:sortableColumn property="urn" title="${message(code: 'object.urn.label', default: 'Urn')}" />
-						
-							<g:sortableColumn property="contractor" title="${message(code: 'object.user.label', default: 'Contractor')}" />
-							<!-- <th><g:message code="object.contractor.label" default="Contractor" /></th> -->
-							
-							
+	     					<g:sortableColumn property="user" title="${message(code: 'object.user.label', default: 'Contractor')}" />
 							<g:sortableColumn property="origName" title="${message(code: 'object.origName.label', default: 'Orig Name')}" />
 							<g:sortableColumn property="created" title="${message(code: 'object.created.label', default: 'Erstellt')}" />
 							<g:sortableColumn property="modified" title="${message(code: 'object.modified.label', default: 'Geändert')}" />
 							
 							<g:if test="${admin}">
-							<g:sortableColumn style="text-align: center" property="object_state" title="${message(code: 'object.object_state.label', default: 'Objekt Status')}" />
-							<th style="text-align: center">Überprüfen</th>
-							<th style="text-align: center">Pres. Derivate</th>
-							<th style="text-align: center">Index</th>
+								<g:sortableColumn style="text-align: center" property="object_state" title="${message(code: 'object.object_state.label', default: 'Objekt Status')}" />
+								<th style="text-align: center">Überprüfen</th>
+								<th style="text-align: center">Pres. Derivate</th>
+								<th style="text-align: center">Index</th>
 							</g:if>
 							<th style="text-align: center">Publ.</th>
 							<th style="text-align: center">Anfordern				
 								<g:if test="${!paginate}">
 										<g:actionSubmitImage value="submit" action="submit"
-                     	src="${resource(dir: 'images/icons', file: 'boxdownload32.png')}" />
+                     						src="${resource(dir: 'images/icons', file: 'boxdownload32.png')}" />
 								</g:if>
 							</th>
-							<th style="text-align: center">Entnahme			
-							</th>			
-							
-
+							<th style="text-align: center">Entnahme	</th>			
 						</tr>
 					</thead>
 					<tbody>

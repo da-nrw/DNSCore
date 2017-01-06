@@ -78,9 +78,11 @@ class OutgoingController {
 			it.setModified(String.valueOf(dateCode))
 			it.save();
 		}
-		
-		def webdavurl = grailsApplication.config.transferNode.downloadLinkPrefix +"/"+   user.getShortName()  + "/outgoing"
-		redirect(url:webdavurl + "/" + params.filename)
+		def redirecturl = request.getHeader('referer');
+		if (grailsApplication.config.transferNode.downloadLinkPrefix && grailsApplication.config.transferNode.downloadLinkPrefix.trim().length() > 0) {
+			redirecturl = grailsApplication.config.transferNode.downloadLinkPrefix +"/"+   user.getShortName()  + "/outgoing/" + params.filename
+		}
+		redirect(url:redirecturl)
 	}
 
 }

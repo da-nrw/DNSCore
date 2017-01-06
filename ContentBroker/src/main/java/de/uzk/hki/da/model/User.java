@@ -76,6 +76,10 @@ public class User{
 	@Column(name="use_public_mets", columnDefinition="boolean")
 	private Boolean usePublicMets;
 	
+	// G.Bender 29.11.2016
+	@Column(name="use_virus_scan", columnDefinition="boolean")
+	private boolean useVirusScan;
+	
 	private String username;
 	private String password;
 	private String description;
@@ -209,6 +213,14 @@ public class User{
 		this.usePublicMets = usePublicMets;
 	}
 	
+	public boolean isUseVirusScan() {
+		return useVirusScan;
+	}
+
+	public void setUseVirusScan(boolean useVirusScan) {
+		this.useVirusScan = useVirusScan;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */

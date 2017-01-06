@@ -17,25 +17,31 @@
 				$("#filter").accordion({ collapsible: true, active: false });
 			});
 	
-		<g:if test="${ !params.search }">		
-			var obj = $.PeriodicalUpdater("./listSnippet",
-				{
-					method: "get",
-					minTimeout: 1000,
-					maxTimeout: 1000,
-					data: function() {
-						return { order: order, sort: sort}
-					},
-					success: function(data) {
-						console.log("success - sort: "+sort+", order: "+order);
-						$("#entry-list").html(data);
-						$("#entry-list th.field-"+sort).addClass("sorted "+order);
+			<g:if test="${ !params.search }">		
+				var obj = $.PeriodicalUpdater("./listSnippet",
+					{
+						method: "get",
+						minTimeout: 5000,
+						maxTimeout: 5000,						
+						data: function() {
+							return { order: order, sort: sort}
+						},
+						success: function(data) {
+							console.log("success - sort: "+sort+", order: "+order);
+							$("#entry-list").html(data);
+							$("#entry-list th.field-"+sort).addClass("sorted "+order);
+						}
 					}
-				}
-			);
+				);
 			</g:if>
 			function stopUpdater() {		
 				obj.stop();
+				document.getElementById("starter").disabled=false;
+			}
+			
+			function startUpdater() {
+				obj.restart();
+				document.getElementById("stopper").disabled=false;
 			}
 		
 			function sortQueue(field) {
@@ -63,6 +69,12 @@
 		</div>
 	
 		<h1>Bearbeitungsübersicht</h1>			
+		<g:if test="${  !params.search }">
+			<i>Aktualisieren der Seite:&nbsp; </i>
+			<input id="stopper" type="button" onclick="stopUpdater();this.disabled=true;" value="stoppen"/>
+			 &nbsp;
+			<input id="starter" type="button" onclick="startUpdater();this.disabled=true;" disabled value="starten"/>
+    	</g:if> 
 		<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
 		</g:if>
@@ -130,9 +142,6 @@
          	</table>     
           </g:form>
         </div>
-		<g:if test="${  !params.search }">
-		<!-- Update:&nbsp;<a href="#" onclick="stopUpdater();">stop</a>&nbsp;<a href="#" onclick="startUpdater();">start</a> -->	
-    	</g:if>   
     	<div id="list-queueEntry" class="content scaffold-list" role="main">
 			<!-- This div is updated through the periodical updater -->
 			<div class="list" id="entry-list">
