@@ -402,8 +402,8 @@ public class MetsParser{
 					roleText=e.getValue();
 				}
 			}
-			if(!roleCode.equals("aut")&&!roleCode.equals("creator")) {
-				namePartValue = getName(name);
+			if(!roleCode.equals("aut")&&!roleCode.equals("cre")) {
+				namePartValue = roleText+(roleText.trim().isEmpty()?"":": ")+getName(name);
 			}
 		} catch (Exception e) {
 			logger.debug("No creator found!");
@@ -425,14 +425,16 @@ public class MetsParser{
 					roleText=e.getValue();
 				}
 			}
-			/*String role = roleElem.getValue();
-			if(!(role.equals("aut") && !role.equals("creator"))) {
-				//namePartValue = role+": "+getName(name); //Fix
-				namePartValue =getName(name); //Fix DANRW-1439
-			}*/
 			
-			if((roleCode.equals("aut")||roleCode.equals("creator")))
+			/*if(roleCode.equals("aut"))
+				namePartValue = "Verfasser: "+getName(name);
+			else if(roleCode.equals("cre"))
+				namePartValue = "Autor: "+getName(name);*/
+			
+			if(roleCode.equals("aut")||roleCode.equals("cre")) {
 				namePartValue = roleText+(roleText.trim().isEmpty()?"":": ")+getName(name);
+			}
+			
 		} catch (Exception e) {
 			logger.debug("No contributor found!");
 		}
