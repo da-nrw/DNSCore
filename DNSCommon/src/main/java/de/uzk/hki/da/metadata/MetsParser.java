@@ -74,6 +74,34 @@ public class MetsParser{
 		return urn;
 	}
 	
+	private List<String> getPhysicalDescriptionFromDmdId(String dmdId) {
+		List<String> extent = new ArrayList<String>();
+		try {
+			@SuppressWarnings("unchecked")
+			List<Element> dmdSecs = metsDoc.getRootElement().getChildren("dmdSec", METS_NS);
+			for(Element dmdSec : dmdSecs) {
+				if(dmdSec.getAttributeValue("ID").equals(dmdId)) {
+					Element rootDmdSec = dmdSec;
+					@SuppressWarnings("unchecked")
+					List<Element> elements = getModsXmlData(rootDmdSec).getChildren();
+					for (Element e : elements) {
+						if(e.getName().equals("physicalDescription") && !e.getChildren("extent", METS_NS).isEmpty()) {
+							List<Element> childElements=e.getChildren("extent", METS_NS);
+							for(Element eChild:childElements){
+								if(!eChild.getValue().trim().isEmpty())
+									extent.add(eChild.getValue());
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			logger.error("Unable to find urn.");
+		}
+		return extent;
+		}
+
+	
 	@SuppressWarnings("unchecked")
 	private List<String> getTitlePageReferencesFromFrontimage() {
 		List<String> ret = new ArrayList<String>();
@@ -366,10 +394,20 @@ public class MetsParser{
 		return origInfoElements;
 	}
 	
-	private String getDate(Element originInfo) {
+	private String getDateIssued(Element originInfo) {
 		String date = "";
 			try {
 				date = originInfo.getChild("dateIssued", C.MODS_NS).getValue(); 
+			} catch (Exception e) {
+				logger.debug("Element dateIssued does not exist!");
+			}
+		return date;
+	}
+	
+	private String getDateCreated(Element originInfo) {
+		String date = "";
+			try {
+				date = originInfo.getChild("dateCreated", C.MODS_NS).getValue(); 
 			} catch (Exception e) {
 				logger.debug("Element dateIssued does not exist!");
 			}
@@ -653,20 +691,32 @@ public class MetsParser{
 			dmdSecInfo.put(C.EDM_CONTRIBUTOR, contributors);
 			
 //			Date && Place
-			List<String> dates = new ArrayList<String>();
+			List<String> datesIssued = new ArrayList<String>();
+			List<String> datesCreated = new ArrayList<String>();
 			List<String> publishers = new ArrayList<String>();
 			for(Element origInfo : getOrigInfoElements(e)) {
-				String date = getDate(origInfo);
+				String dateIssued = getDateIssued(origInfo);
+				String dateCreated = getDateCreated(origInfo);
 				String publisher = getPublisher(origInfo);
-				if(!date.equals("")) {
-					dates.add(date);
+				if(!dateIssued.equals("")) {
+					datesIssued.add(dateIssued);
+				}
+				if(!dateCreated.equals("")) {
+					datesCreated.add(dateCreated);
 				}
 				if(!publisher.equals("")) {
 					publishers.add(publisher);
 				}
 			}
-			dmdSecInfo.put(C.EDM_DATE, dates);
+			dmdSecInfo.put(C.EDM_DATE_ISSUED, datesIssued);
+			dmdSecInfo.put(C.EDM_DATE_CREATED, datesCreated);
 			dmdSecInfo.put(C.EDM_PUBLISHER, publishers);
+			
+			
+			List<String> allPhysicalDescr = getPhysicalDescriptionFromDmdId(id);
+			if (!allPhysicalDescr.isEmpty()) {
+				dmdSecInfo.put(C.EDM_EXTENT, allPhysicalDescr);
+			}
 			
 //			TitlePage
 			List<String> titlePageRefs = getTitlePageReferencesFromFrontimage();
@@ -720,6 +770,8 @@ public class MetsParser{
 		return indexInfo;
 	}
 	
+
+
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  SETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
 	public void setMimetype(Element fileElement, String mimetype) {

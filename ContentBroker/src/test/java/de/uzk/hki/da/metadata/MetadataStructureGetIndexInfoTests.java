@@ -65,18 +65,18 @@ public class MetadataStructureGetIndexInfoTests {
 			if(content.get(C.EDM_TITLE).contains("Poltrona di Proust")) {
 				assertTrue(
 						content.get(C.EDM_PUBLISHER).get(0).equals("Mailand, Italien"));
-				assertTrue(content.get(C.EDM_DATE).size()==2&&
-						content.get(C.EDM_DATE).contains("1978 (Herstellungsjahr: 1980/1990)")&&
-						content.get(C.EDM_DATE).contains("1978-1990"));
+				assertTrue(content.get(C.EDM_DATE_ISSUED).size()==2&&
+						content.get(C.EDM_DATE_ISSUED).contains("1978 (Herstellungsjahr: 1980/1990)")&&
+						content.get(C.EDM_DATE_ISSUED).contains("1978-1990"));
 				
 			}
 			if(content.get(C.EDM_TITLE).contains("Prämienschein Konzentrationslager Floßenbürg 009739")) {
 				assertTrue(
 						content.get(C.EDM_PUBLISHER).get(0).equals("Floßenbürg, Deutschland"));
 				assertTrue(
-						content.get(C.EDM_DATE).size()==2
-						&&content.get(C.EDM_DATE).contains("o. D.")
-						&&content.get(C.EDM_DATE).contains("1943-1945"));
+						content.get(C.EDM_DATE_ISSUED).size()==2
+						&&content.get(C.EDM_DATE_ISSUED).contains("o. D.")
+						&&content.get(C.EDM_DATE_ISSUED).contains("1943-1945"));
 			}
 			
 		}
@@ -101,8 +101,8 @@ public class MetadataStructureGetIndexInfoTests {
 		assertEquals(content.get(C.EDM_TITLE).get(0), "Chronik der Stadt Hoerde"+" : "+"und der größeren evangelischen Gemeinde in derselben");
 			
 		
-		assertTrue(content.get(C.EDM_DATE).contains("1836")
-				&&content.get(C.EDM_DATE).contains("2011"));
+		assertTrue(content.get(C.EDM_DATE_ISSUED).contains("1836")
+				&&content.get(C.EDM_DATE_ISSUED).contains("2011"));
 		
 		assertTrue(content.get(C.EDM_PUBLISHER).contains("Hoerde")
 				&&content.get(C.EDM_PUBLISHER).contains("Universitäts- und Landesbibliothek (Münster)"));
@@ -128,8 +128,8 @@ public class MetadataStructureGetIndexInfoTests {
 		content = indexInfo.get(objectID+"-md1617166");
 		
 		assertTrue(content.get(C.EDM_TITLE).contains("[Atlas von Europa]"));	
-		assertTrue(content.get(C.EDM_DATE).contains("1794")
-				&&content.get(C.EDM_DATE).contains("2012"));
+		assertTrue(content.get(C.EDM_DATE_ISSUED).contains("1794")
+				&&content.get(C.EDM_DATE_ISSUED).contains("2012"));
 		assertTrue(content.get(C.EDM_PUBLISHER).contains("Otto (Wien)")
 				&&content.get(C.EDM_PUBLISHER).contains("Univ.- und Landesbibliothek (Münster)"));
 
@@ -160,7 +160,7 @@ public class MetadataStructureGetIndexInfoTests {
 			if(content.get(C.EDM_TITLE).contains("Pressemitteilungen, Amerikadienst")) {
 				
 				assertTrue(
-						content.get(C.EDM_DATE).contains("1938-01-01/1938-12-31"));
+						content.get(C.EDM_DATE_CREATED).contains("1938-01-01/1938-12-31"));
 				assertTrue(content.get(C.EDM_IDENTIFIER).size()==3&&
 						content.get(C.EDM_IDENTIFIER).contains("XIV 34")&&
 						content.get(C.EDM_IDENTIFIER).contains("4667")&&
@@ -170,7 +170,7 @@ public class MetadataStructureGetIndexInfoTests {
 			}
 			if(content.get(C.EDM_TITLE).contains("Hans Abel")) {
 				assertTrue(
-						content.get(C.EDM_DATE).contains("0000/0000"));
+						content.get(C.EDM_DATE_CREATED).contains("0000/0000"));
 				assertTrue(content.get(C.EDM_IDENTIFIER).size()==2&&
 						content.get(C.EDM_IDENTIFIER).contains("2")&&
 						content.get(C.EDM_IDENTIFIER).contains("4547_Blatt_002"));
