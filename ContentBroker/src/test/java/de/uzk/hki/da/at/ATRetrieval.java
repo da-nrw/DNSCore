@@ -83,7 +83,7 @@ public class ATRetrieval extends AcceptanceTest{
 		ath.createJob(originalName, "900");
 		ath.waitForJobToBeInStatus(originalName, "952");
 		
-		assertTrue("Temp Daten aus der Datenbank noch nicht bereinigt",nonPersistPropertiesExist(ath.getObject(originalName)));
+		assertTrue("Temp Daten aus der Datenbank noch nicht bereinigt",!nonPersistPropertiesExist(ath.getObject(originalName)));
 		
 		System.out.println(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+identifier+".tar").getAbsolutePath());
 		assertTrue(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+identifier+".tar").exists());
