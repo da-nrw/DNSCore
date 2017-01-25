@@ -19,7 +19,6 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.cb.ArchiveReplicationCheckAction.clearNonpersistentObjectProperties;
 import static de.uzk.hki.da.cb.ArchiveReplicationCheckAction.createPublicationJob;
 
 import java.io.IOException;
