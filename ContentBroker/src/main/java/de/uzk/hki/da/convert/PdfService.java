@@ -169,7 +169,7 @@ public class PdfService {
 			document.close();
 		} catch (Exception e) {
 			logger.error("Exception validating PDF/A compliance for " + file
-					+ " " + e.getCause());
+					+ " " + e.getCause(),e);
 			return false;
 		}
 		if (result.isValid()) {
