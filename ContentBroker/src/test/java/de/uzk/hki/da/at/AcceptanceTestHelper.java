@@ -76,6 +76,7 @@ public class AcceptanceTestHelper {
 	static final String URN_NBN_DE_DANRW = "urn:nbn:de:danrw-";
 	protected static Path TEST_DATA_ROOT_PATH = new RelativePath("src/test/resources/at/");
 	
+	public static final String TMP_INDICATOR="_ath_TMP";
 	
 	private static final int INTERVAL=2000; // in ms
 	private static final int TIMEOUT=1200000; // ins ms
@@ -454,21 +455,45 @@ public class AcceptanceTestHelper {
 		if (localNode.getIngestAreaRootPath()==null) throw new IllegalStateException();
 		File source;
 		File target;
-		if (StringUtilities.isSet(ext)){
-		source = Path.makeFile(TEST_DATA_ROOT_PATH,sourcePackageName+"."+ext);
-		target = Path.makeFile(localNode.getIngestAreaRootPath(),testContractor.getShort_name(),originalName+"."+ext);
-		FileUtils.copyFile( source, target );
+		if (StringUtilities.isSet(ext)) {
+			source = Path.makeFile(TEST_DATA_ROOT_PATH, sourcePackageName + "." + ext);
+			target = Path.makeFile(localNode.getIngestAreaRootPath(), testContractor.getShort_name(),originalName + "." + ext);
+			doCopyLikeMoveFile(source, target);
 		} else {
-			source = Path.makeFile(TEST_DATA_ROOT_PATH,sourcePackageName);
-			target = Path.makeFile(localNode.getIngestAreaRootPath(),testContractor.getShort_name(),originalName);
-			if (target.exists()) FolderUtils.deleteDirectorySafe(target);
-			FileUtils.copyDirectory(source, target, false);
-			}	
+			source = Path.makeFile(TEST_DATA_ROOT_PATH, sourcePackageName);
+			target = Path.makeFile(localNode.getIngestAreaRootPath(), testContractor.getShort_name(), originalName);
+			if (target.exists())
+				FolderUtils.deleteDirectorySafe(target);
+			doCopyLikeMoveDirectory(source, target, false);
+		}
 	}
 	
+	/**
+	 * Copy file but try to do it as atomic operation.
+	 * 
+	 * @param source
+	 * @param target
+	 * @throws IOException
+	 */
+	void doCopyLikeMoveFile(File source, File target) throws IOException{
+		File target_tmp= new File(source.getAbsolutePath()+TMP_INDICATOR);
+		FileUtils.copyFile(source, target_tmp);
+		FileUtils.moveFile(target_tmp, target);
+	}
 	
-
-		
+	/**
+	 * Copy dir but try to do it as atomic operation.
+	 *  
+	 * @param source
+	 * @param target
+	 * @param preserveFileDate
+	 * @throws IOException
+	 */
+	void doCopyLikeMoveDirectory(File source, File target, boolean preserveFileDate) throws IOException{
+		File target_tmp= new File(source.getAbsolutePath()+TMP_INDICATOR);
+		FileUtils.copyDirectory(source, target_tmp,preserveFileDate);
+		FileUtils.moveDirectory(target_tmp, target);
+	}
 
 	
 	
