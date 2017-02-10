@@ -20,11 +20,12 @@ localNode.workingResource=ciWorkingResource
 localNode.replDestinations=ciArchiveRescGroup
 localNode.id=1
 localNode.logFolder=/ci/ContentBroker/log
+localNode.fedoraUrlTemplateForDownload=http://localhost:8080/fedora/objects/collection-open:IDENTIFIER/datastreams/FILENAME/content
 
 localNode.auditSleepFor=10000
 
 elasticsearch.index=portal_ci
-elasticsearch.hosts=localhost
+elasticsearch.hosts=http://localhost:9200
 elasticsearch.cluster=cluster_ci
 
 cb.serverSocketNumber=4455
@@ -35,7 +36,6 @@ cb.implementation.index=esMetadataIndex
 cb.implementation.metadataExtractor=jhoveMetadataExtractor
 cb.implementation.formatScanService=fidoFormatScanService
 cb.implementation.subformatScanService=subformatScanService
-
 
 cb.bin.python=/ci/python/python
 

@@ -121,7 +121,7 @@ public class TESTHelper {
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		final User contract = AcceptanceTest.getContractor(session, "TEST");
-
+		//int nodeId=AcceptanceTest.getLocalNode().getId();
 		List joblist = session.createQuery("SELECT j FROM Job j left join j.obj as o where o.user = :CSN")
 				.setParameter("CSN", contract).list();
 		for (java.lang.Object o : joblist)
@@ -135,6 +135,11 @@ public class TESTHelper {
 				.createQuery("FROM CopyJob as cj where cj.source_node_identifier like concat('%',:CSNPATH,'%')")
 				.setParameter("CSNPATH", "/aip/TEST/").list();
 		for (java.lang.Object o : copyJoblist)
+			session.delete(o);
+		
+		//if ATTest Fails in some cases the events will not be deleted because the end of test methods will not be reached, therefore it have to be done here 
+		List sysEventlist = session.createQuery(" FROM SystemEvent where owner = :CSN and node= :NODE").setParameter("CSN", contract).setParameter("NODE", AcceptanceTest.getLocalNode()).list();
+		for (java.lang.Object o : sysEventlist)
 			session.delete(o);
 
 		session.getTransaction().commit();

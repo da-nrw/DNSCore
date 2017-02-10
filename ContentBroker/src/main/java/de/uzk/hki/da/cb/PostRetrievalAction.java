@@ -39,7 +39,7 @@ import de.uzk.hki.da.utils.StringUtilities;
 public class PostRetrievalAction extends AbstractAction {
 
 	private static final String OUTGOING = "outgoing";
-	public static int PAUSE_DELAY = 20000;
+	public static int PAUSE_DELAY = 20000; //
 	
 	public PostRetrievalAction(){
 		SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;
@@ -65,7 +65,6 @@ public class PostRetrievalAction extends AbstractAction {
 	
 	@Override
 	public boolean implementation() {
-		logger.debug("PostRetrievalAction called! ");
 		Path outgoingFolder = Path.make(n.getUserAreaRootPath(), o.getContractor().getShort_name(), OUTGOING);
 		File toDel = Path.makeFile(outgoingFolder, o.getIdentifier() + C.FILE_EXTENSION_TAR);
 		if (!toDel.exists()) {// For the use case the File has been

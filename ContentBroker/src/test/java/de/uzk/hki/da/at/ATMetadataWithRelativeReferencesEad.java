@@ -39,7 +39,6 @@ public class ATMetadataWithRelativeReferencesEad extends AcceptanceTest {
 	private static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
 	private String EAD_XPATH_EXPRESSION = "//daoloc/@href";
 	private static final String URL = "URL";
-	private static Path contractorsPipsPublic;
 	private static String origName = "ATMetadataWithRelativeReferencesEad";
 	private static Object o;
 	private static final String EAD_XML = "EAD.xml";
@@ -52,8 +51,6 @@ public class ATMetadataWithRelativeReferencesEad extends AcceptanceTest {
 		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForDefinedPublishedState(origName);
 		o=ath.getObject(origName);
-		
-		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	
 	@AfterClass
@@ -121,28 +118,26 @@ public class ATMetadataWithRelativeReferencesEad extends AcceptanceTest {
 	public void testPres() throws FileNotFoundException, JDOMException, IOException {
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		Document doc = builder.build
-				(new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), "mets_361", "mets_2_32044.xml").toFile()));
-		assertTrue(getMetsURL(doc).contains("http://data.danrw.de"));
+		Document doc = builder.build(new FileReader(ath.loadFileFromPip(o.getIdentifier(), "mets_361/mets_2_32044.xml")));
+		assertTrue(getMetsURL(doc).contains(preservationSystem.getUrisFile()));
 		assertEquals(URL, getLoctype(doc));
 		assertEquals(C.MIMETYPE_IMAGE_JPEG, getMetsMimetype(doc));
 		
 		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
-		Document eadDoc = eadSaxBuilder.build(new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), EAD_XML).toFile()));
-		
+		Document eadDoc = eadSaxBuilder.build(new FileReader(ath.loadFileFromPip(o.getIdentifier(), EAD_XML)));
 		List<String> metsReferences = getMetsRefsInEad(eadDoc);
 		assertTrue(metsReferences.size()==5);
 		for(String metsRef : metsReferences) {
 			if(metsRef.contains("mets_2_32044.xml")) {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+o.getIdentifier()+"/mets_361-mets_2_32044.xml"));
+				assertTrue(metsRef.equals(preservationSystem.getUrisFile()+"/"+o.getIdentifier()+"/mets_361-mets_2_32044.xml"));
 			} else if(metsRef.contains("mets_2_32045.xml")) {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+o.getIdentifier()+"/mets_361-mets_2_32045.xml"));
+				assertTrue(metsRef.equals(preservationSystem.getUrisFile()+"/"+o.getIdentifier()+"/mets_361-mets_2_32045.xml"));
 			} else if(metsRef.contains("mets_2_32046.xml")) {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+o.getIdentifier()+"/mets_361-mets_2_32046.xml"));
+				assertTrue(metsRef.equals(preservationSystem.getUrisFile()+"/"+o.getIdentifier()+"/mets_361-mets_2_32046.xml"));
 			} else if(metsRef.contains("mets_2_32047.xml")) {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+o.getIdentifier()+"/mets_361-mets_2_32047.xml"));
+				assertTrue(metsRef.equals(preservationSystem.getUrisFile()+"/"+o.getIdentifier()+"/mets_361-mets_2_32047.xml"));
 			} else {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+o.getIdentifier()+"/mets_361-mets_2_32048.xml"));
+				assertTrue(metsRef.equals(preservationSystem.getUrisFile()+"/"+o.getIdentifier()+"/mets_361-mets_2_32048.xml"));
 			}
 		}
 	}

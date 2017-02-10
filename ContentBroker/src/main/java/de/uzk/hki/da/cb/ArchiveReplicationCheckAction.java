@@ -144,19 +144,6 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	
 	
 	
-	static void clearNonpersistentObjectProperties(Object o) {
-		
-		o.getDocuments().clear();
-		for (Package pkg : o.getPackages()){
-			pkg.getEvents().clear();
-			pkg.getFiles().clear();
-	
-		}
-	}
-
-	
-	
-	
 	/** 
 	 * Cleans object db entry from data which should not get persisted and
 	 * adds data which should get persisted. 

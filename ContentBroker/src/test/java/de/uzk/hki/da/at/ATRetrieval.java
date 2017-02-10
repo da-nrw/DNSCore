@@ -37,6 +37,7 @@ import org.junit.Test;
 import de.uzk.hki.da.cb.PostRetrievalAction;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.C;
@@ -74,10 +75,15 @@ public class ATRetrieval extends AcceptanceTest{
 		FolderUtils.deleteQuietlySafe(new File("/tmp/"+identifier));
 	}
 	
+	private static boolean nonPersistPropertiesExist(Object o){
+		return !o.getDocuments().isEmpty();
+	}
 	@Test
 	public void testHappyPath() throws Exception{
 		ath.createJob(originalName, "900");
 		ath.waitForJobToBeInStatus(originalName, "952");
+		
+		assertTrue("Temp Daten aus der Datenbank noch nicht bereinigt",!nonPersistPropertiesExist(ath.getObject(originalName)));
 		
 		System.out.println(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+identifier+".tar").getAbsolutePath());
 		assertTrue(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+identifier+".tar").exists());
@@ -86,7 +92,7 @@ public class ATRetrieval extends AcceptanceTest{
 				new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+identifier+".tar"), 
 				new File("/tmp"), false);
 		//after moving the retrieval-file, PostRetrievalAction(952) have to end the workflow
-		Thread.sleep((int)(PostRetrievalAction.PAUSE_DELAY * 1.5));
+		Thread.sleep((int)(PostRetrievalAction.PAUSE_DELAY * 1.2));
 		ath.awaitObjectState(originalName, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow); 
 		ArchiveBuilderFactory.getArchiveBuilderForFile(new File("/tmp/"+identifier+".tar"))
 			.unarchiveFolder(new File("/tmp/"+identifier+".tar"), new File ("/tmp/"));
@@ -118,11 +124,11 @@ public class ATRetrieval extends AcceptanceTest{
 				new File(localNode.getUserAreaRootPath() + "/TEST/outgoing/" + identifier + ".tar").getAbsolutePath());
 		assertTrue(new File(localNode.getUserAreaRootPath() + "/TEST/outgoing/" + identifier + ".tar").exists());
 
-		Thread.sleep((int)(PostRetrievalAction.PAUSE_DELAY * 1.5));
+		Thread.sleep((int)(PostRetrievalAction.PAUSE_DELAY * 1.2));
 		ath.waitForJobToBeInStatus(originalName, "952");
 		assertTrue(new File(localNode.getUserAreaRootPath() + "/TEST/outgoing/" + identifier + ".tar").exists());
 		new File(localNode.getUserAreaRootPath() + "/TEST/outgoing/" + identifier + ".tar").delete();
-		Thread.sleep((int)(PostRetrievalAction.PAUSE_DELAY * 1.5));
+		Thread.sleep((int)(PostRetrievalAction.PAUSE_DELAY * 1.2));
 		assertTrue(ath.getJob(originalName) == null);
 	}
 
@@ -138,7 +144,7 @@ public class ATRetrieval extends AcceptanceTest{
 		ath.createJob(originalName, "900", createTime);
 		//ath.waitForJobToBeInStatus(originalName, "952");
 
-		Thread.sleep((int)(PostRetrievalAction.PAUSE_DELAY * 1.5));
+		Thread.sleep((int)(PostRetrievalAction.PAUSE_DELAY * 1.2));
 		ath.awaitObjectState(originalName, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		assertTrue(ath.getJob(originalName) == null);
 		assertTrue(!new File(localNode.getUserAreaRootPath() + "/TEST/outgoing/" + identifier + ".tar").exists());

@@ -21,8 +21,17 @@ package de.uzk.hki.da.at;
 
 import static org.junit.Assert.fail;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 
@@ -36,16 +45,21 @@ import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectNamedQueryDAO;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.User;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.pkg.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.repository.MetadataIndex;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.test.TC;
+import de.uzk.hki.da.util.FileIdGenerator;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.MD5Checksum;
 import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.ProcessInformation;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.StringUtilities;
 
@@ -68,15 +82,21 @@ public class AcceptanceTestHelper {
 	
 	private GridFacade gridFacade;
 	private Node localNode;
+	private PreservationSystem preservationSystem;
 	private User testContractor;
 	private StoragePolicy sp;
 	private String logPath = null;
+	private String fedoraUrlTemplate=null;
+			//"http://localhost:8080/fedora/objects/collection-open:IDENTIFIER/datastreams/FILENAME/content";
+			//"https://danrw-q-repo.hbz-nrw.de/file/IDENTIFIER/FILENAME";
+	
 	
 	public AcceptanceTestHelper(
 			GridFacade gridFacade,
 			Node localNode,
 			User testContractor,
-			StoragePolicy sp){
+			StoragePolicy sp,
+			PreservationSystem ps){
 		this.gridFacade=gridFacade;
 		this.localNode=localNode;
 		this.testContractor=testContractor;
@@ -87,6 +107,7 @@ public class AcceptanceTestHelper {
 		String localNodeWorkArea = localNode.getWorkAreaRootPath().toString();
 		String localNodeTMP = localNodeWorkArea.replace("/storage/WorkArea", "");
 		logPath=(new File(localNodeTMP+"/ContentBroker/log")).getAbsolutePath();//default logpath
+		preservationSystem=ps;
 	}
 			
 			
@@ -323,9 +344,9 @@ public class AcceptanceTestHelper {
 					
 					throw new RuntimeException(msg);
 				}
+
 			} else{
-				System.out.println("Awaiting job (OriginalName: "+originalName+") to be in state "+status+". Job is NULL ");
-				
+				System.out.println("Awaiting job (OriginalName: "+originalName+") to be in state "+status+". Job is NULL ");		
 			}
 		}
 	}
@@ -350,7 +371,8 @@ public class AcceptanceTestHelper {
 		int waited_ms_total=0;
 		while (true) {
 			waited_ms_total=updateTimeout(waited_ms_total,TIMEOUT,INTERVAL);
-			
+			System.out.println("Awaiting object to be indexed. Identifier: "+identifier+
+					". Index: "+indexName+". MetadataIndex: "+mi+". ");
 			if (mi.getIndexedMetadata(indexName, identifier).contains(identifier)) break;
 		}
 	}
@@ -554,5 +576,83 @@ public class AcceptanceTestHelper {
 
 	public void setLogPath(String newLogPath) {
 		logPath=newLogPath;
+	}
+
+
+	public void setFedoraUrlTemplate(String fedoraUrlTemplate) {
+		this.fedoraUrlTemplate = fedoraUrlTemplate;
+	}
+
+
+
+	public File loadDefaultMetsFileFromPip(String identifier) throws IOException {
+		return loadFileFromPip(identifier, C.CB_PACKAGETYPE_METS + C.FILE_EXTENSION_XML);
+	}
+
+	public File loadFileFromPip(String identifier, String fileName) throws IOException {
+		Path contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(), WorkArea.PIPS, WorkArea.PUBLIC,	C.TEST_USER_SHORT_NAME);
+
+		Path targetDir = Path.make(contractorsPipsPublic, identifier);
+		Path filePath = Path.make(targetDir, fileName);
+		File tmpFile = filePath.toFile();
+
+		if (localNode.getName().equals(preservationSystem.getPresServer())) {
+			if (!tmpFile.exists()) {
+				//throw new IOException("File: " + tmpFile + "doesnt exists");
+				System.out.println("File: " + tmpFile + "doesnt exists");
+			}
+		} else {
+			if (tmpFile.exists()) {
+				tmpFile.delete();
+			}
+			Files.createDirectories(Paths.get(targetDir.toFile().getAbsolutePath()));
+			tmpFile.getParentFile().mkdirs(); //if filename contains directories
+			if (fedoraUrlTemplate == null)
+				throw new IOException("File: " + tmpFile + " is not downloadable, fedora Url is not seted");
+			fetchFileFromFedora(identifier, fileName, tmpFile);
+		}
+		return tmpFile;
+	}
+
+	public void fetchFileFromFedora(String identifier, String srcFileName, File targetFile) throws IOException {
+		String url = fedoraUrlTemplate.replace("IDENTIFIER", identifier).replace("FILENAME", FileIdGenerator.getFileId(srcFileName));
+		// String curlUrlCommand="curl X GET \"" + url.replace("IDENTIFIER",
+		// identifier).replace("FILENAME", srcFileName)+"\"";
+		// ProcessInformation pi = new
+		// CommandLineConnector().runCmdSynchronously(new String[]{"curl X GET
+		// ", url},null,60000);
+		String htmlString = null;
+		try {
+			htmlString = getFileAsHTMContent(url); // pi.getStdOut();
+		} catch (FileNotFoundException e) {
+			System.out.println("ERROR: " + url + " is not awaible!!! " + e);
+		}
+		if (htmlString != null) {
+			String[] htmlStringSplit = htmlString.split("</html>");
+			FileWriter fw = new FileWriter(targetFile);
+			fw.write(htmlStringSplit[htmlStringSplit.length - 1]); // get the part of content after html-stuff
+			fw.close();
+		}
+		// curl X GET
+		// "http://localhost:8080/fedora/objects/collection-open:1-2016102534/datastreams/_1175-mets_1175.xml/content"
+		// https://danrw-q-repo.hbz-nrw.de/file/8-2016101915371/_b26200b1649a6be51841b740ae745f3b.jpgn -> danrw:8-2016101915371/...
+		// https://danrw-q-repo.hbz-nrw.de/file/8-2016101915371/METS.xml
+	}
+
+	private static String getFileAsHTMContent(String urlString) throws UnsupportedEncodingException, IOException {
+		System.out.println("Fetch File from fedora: "+urlString);
+		URL url = new URL(urlString);
+		URLConnection urlc = url.openConnection();
+		urlc.addRequestProperty("User-Agent", "Mozilla/5.0");
+		StringBuilder ret = new StringBuilder();
+		
+			BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+			for (String line; (line = reader.readLine()) != null;) {
+				System.out.println(line);
+				ret.append(line);
+			}
+		
+
+		return ret.toString();
 	}
 }

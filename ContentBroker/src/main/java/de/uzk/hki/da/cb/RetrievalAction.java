@@ -97,6 +97,7 @@ public class RetrievalAction extends AbstractAction {
 		cleanupFS();
 		o.setObject_state(100);
 		new MailContents(preservationSystem,n).retrievalReport(o);
+		clearNonpersistentObjectProperties(o);
 		return true;
 	}
 

@@ -51,10 +51,10 @@ import de.uzk.hki.da.utils.PropertiesUtils;
  * @author Daniel M. de Oliveira
  */
 public class AcceptanceTest {
-	
 	private static final String CONF_BEANS_XML = "conf/beans.xml";
 	private static String CI_WORKING_RESOURCE = "ciWorkingResource";
 	private static String CI_ARCHIVE_RESOURCE = "ciArchiveRescGroup";
+	private static String CI_ARCHIVE_STORAGE = "/ci/archiveStorage/aip/TEST/";
 	private static final String BEAN_NAME_FAKE_REPOSITORY_FACADE = "fakeRepositoryFacade";
 	private static final String BEAN_NAME_FAKE_METADATA_INDEX = "fakeMetadataIndex";
 	protected static Node localNode;
@@ -181,6 +181,7 @@ public class AcceptanceTest {
 		System.out.println("localnode: "+localNode.getName());
 		
 		Properties properties = PropertiesUtils.read(new File("conf/config.properties"));
+		
 		instantiateGrid(properties);
 		if (gridFacade==null) throw new IllegalStateException("gridFacade could not be instantiated");
 		
@@ -197,9 +198,15 @@ public class AcceptanceTest {
 		preservationSystem = (PreservationSystem) session.get(PreservationSystem.class, 1);
 		session.close();
 		instantiateStoragePolicy();
-		ath = new AcceptanceTestHelper(gridFacade,localNode,testContractor,sp);
+		ath = new AcceptanceTestHelper(gridFacade,localNode,testContractor,sp,preservationSystem);
 		if(properties.getProperty("localNode.logFolder")!=null) 
 			ath.setLogPath(properties.getProperty("localNode.logFolder"));
+		
+		if(properties.getProperty("regression.fedoraUrlTemplateForDownload")!=null) 
+			ath.setFedoraUrlTemplate(properties.getProperty("regression.fedoraUrlTemplateForDownload"));
+		
+		if(properties.getProperty("regression.archiveStorage")!=null)
+			CI_ARCHIVE_STORAGE=properties.getProperty("regression.archiveStorage");
 		
 //		new CommandLineConnector().runCmdSynchronously(new String[] {"src/main/bash/rebuildIndex.sh"});
 		//If the previous test execution not cleaned 
@@ -269,5 +276,15 @@ public class AcceptanceTest {
 	public static String getTestIndex() {
 		return testIndex;
 	}
+
+	public static Node getLocalNode() {
+		return localNode;
+	}
+
+	public static String getCI_ARCHIVE_STORAGE() {
+		return CI_ARCHIVE_STORAGE;
+	}
+	
+	
 	
 }

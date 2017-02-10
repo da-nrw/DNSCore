@@ -76,6 +76,7 @@ public class ScanAction extends AbstractAction{
 		
 		Object premisObject = parsePremisToMetadata(wa.toFile(o.
 				getLatest(PREMIS_XML)));
+		o.setDdbExclusion(premisObject.ddbExcluded());
 		if (!premisObject.grantsRight(MIGRATION))
 		{
 			logger.info("PREMIS says migration is not granted. Will ask the user what to do next.");

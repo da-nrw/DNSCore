@@ -30,7 +30,6 @@ public class ATIngestLav extends AcceptanceTest {
 	private static final String urn2 = "urn+nbn+de+danrw+de2189-89532c28-d082-4c38-8783-21b9019225988";
 	private static final String urn3 = "urn+nbn+de+danrw+de2189-0c6ab310-f2f6-4f66-80e2-a138bd4db6938";
 	
-	Path contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
 	private static Object object1;
 	private static Object object2;
 	private static Object object3;
@@ -59,6 +58,13 @@ public class ATIngestLav extends AcceptanceTest {
 	
 	}
 	
+	@Test
+	public void testDDBExclusion() throws IOException, JDOMException {
+		assertTrue("ddbExcluded have to be false",!ath.getObject(urn1).ddbExcluded());
+		assertTrue("ddbExcluded have to be false",!ath.getObject(urn2).ddbExcluded());
+		assertTrue("ddbExcluded have to be false",!ath.getObject(urn3).ddbExcluded());
+	}
+	
 	@AfterClass
 	public static void tearDownAfterClass() throws IOException{
 	}
@@ -67,16 +73,16 @@ public class ATIngestLav extends AcceptanceTest {
 	public void testPIPMets() throws IOException, JDOMException {
 
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		File metsFile1 = Path.make(contractorsPipsPublic, object1.getIdentifier(), "METS.xml").toFile();
+		File metsFile1 = ath.loadFileFromPip(object1.getIdentifier(), "METS.xml");
 		Document mets1 = builder.build
 				(new FileReader(metsFile1));
 		assertTrue(metsFile1.exists());
 		
-		File metsFile2 = Path.make(contractorsPipsPublic, object2.getIdentifier(), "METS.xml").toFile();
+		File metsFile2 = ath.loadFileFromPip(object2.getIdentifier(), "METS.xml");
 		Document mets2 = builder.build
 				(new FileReader(metsFile2));
 		
-		File metsFile3 = Path.make(contractorsPipsPublic, object3.getIdentifier(), "METS.xml").toFile();
+		File metsFile3 = ath.loadFileFromPip(object3.getIdentifier(), "METS.xml");
 		Document mets3 = builder.build
 				(new FileReader(metsFile3));		
 	
@@ -113,7 +119,7 @@ public class ATIngestLav extends AcceptanceTest {
 	public void testPIPEdm1() throws IOException, JDOMException {
 
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		File edmFile1 = Path.make(contractorsPipsPublic, object1.getIdentifier(), "EDM.xml").toFile();
+		File edmFile1 = ath.loadFileFromPip(object1.getIdentifier(), "EDM.xml");
 		Document edmDoc1 = builder.build
 				(new FileReader(edmFile1));
 		for(int i=0;i<30 && !edmFile1.exists();i++){
@@ -158,7 +164,7 @@ public class ATIngestLav extends AcceptanceTest {
 		
 		assertTrue(edmDoc1.getRootElement().getChild("Aggregation", C.ORE_NS).getChild("dataProvider", C.EDM_NS).getValue().contains("Landesarchiv NRW"));
 		assertTrue(edmDoc1.getRootElement().getChild("Aggregation", C.ORE_NS).getChild("isShownBy", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
-				.contains("http://data.danrw.de/file/"+object1.getIdentifier()+"/_6d8889c54cd506f75be230bd630cd70d.jpg"));
+				.contains(preservationSystem.getUrisFile()+"/"+object1.getIdentifier()+"/_6d8889c54cd506f75be230bd630cd70d.jpg"));
 		
 		@SuppressWarnings("unchecked")
 		List<Element> references = edmDoc1.getRootElement().getChild("Aggregation", C.ORE_NS).getChildren("hasView", C.EDM_NS);
