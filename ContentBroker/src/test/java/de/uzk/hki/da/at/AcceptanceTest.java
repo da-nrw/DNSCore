@@ -205,6 +205,13 @@ public class AcceptanceTest {
 		if(properties.getProperty("regression.fedoraUrlTemplateForDownload")!=null) 
 			ath.setFedoraUrlTemplate(properties.getProperty("regression.fedoraUrlTemplateForDownload"));
 		
+		if(properties.getProperty("regression.maxWaitTime")!=null) {
+			int maxTimeout=Integer.parseInt(properties.getProperty("regression.maxWaitTime"));
+        	if(maxTimeout<1 || maxTimeout>30)
+        		throw new IllegalStateException("Parameter max-waittime have to be between 1-30 minutes");
+			ath.setTIMEOUT(maxTimeout*60*1000);
+		}
+		
 		if(properties.getProperty("regression.archiveStorage")!=null)
 			CI_ARCHIVE_STORAGE=properties.getProperty("regression.archiveStorage");
 		

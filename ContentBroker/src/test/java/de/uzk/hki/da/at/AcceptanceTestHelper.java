@@ -69,7 +69,6 @@ import de.uzk.hki.da.utils.StringUtilities;
 public class AcceptanceTestHelper {
 	public static final String TEST_RESOURCES_PATH_PROPERTY="WorkaroundToPathTestCaseFilesPathToJUNITTests"; //Name for a system property to pass the testfiles directory
 	public static final String NO_DIRTY_CLEANUP_AFTER_EACH_TEST_PROPERTY="WorkaroundNoCleanupCompleteDB"; //Name for a system property to avoid cleanups, because they cleanup all data, not only testdata
-	public static final String MAX_TIME_OUT_TIME="WorkaroundSetupMaxTimeout";
 	
 	private static final String MSG_READY = "ready";
 	private static final String MSG_ERROR_WHEN_TIMEOUT_REACHED = "waited to long. test considered failed";
@@ -79,7 +78,7 @@ public class AcceptanceTestHelper {
 	
 	
 	private static final int INTERVAL=2000; // in ms
-	private static int TIMEOUT=1200000; // ins ms
+	private int TIMEOUT=1200000; // ins ms
 	
 	private GridFacade gridFacade;
 	private Node localNode;
@@ -104,9 +103,6 @@ public class AcceptanceTestHelper {
 		this.sp = sp;
 		if(System.getProperty(TEST_RESOURCES_PATH_PROPERTY)!=null)
 			TEST_DATA_ROOT_PATH = Path.make(System.getProperty(TEST_RESOURCES_PATH_PROPERTY));
-		
-		if(System.getProperty(MAX_TIME_OUT_TIME)!=null)
-			TIMEOUT = Integer.parseInt(System.getProperty(MAX_TIME_OUT_TIME));
 		
 		String localNodeWorkArea = localNode.getWorkAreaRootPath().toString();
 		String localNodeTMP = localNodeWorkArea.replace("/storage/WorkArea", "");
@@ -558,6 +554,12 @@ public class AcceptanceTestHelper {
 	public void setLogPath(String newLogPath) {
 		logPath=newLogPath;
 	}
+
+
+	public void setTIMEOUT(int tIMEOUT) {
+		TIMEOUT = tIMEOUT;
+	}
+
 
 
 	public void setFedoraUrlTemplate(String fedoraUrlTemplate) {
