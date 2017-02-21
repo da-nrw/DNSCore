@@ -67,6 +67,7 @@ public class RegressTesterMain {
 		
 		
 		String testName="CompleteATSuite";
+		int maxTimeout=6;
 		String testResourcesPath="/ci/DNSCore/ContentBroker/src/test/resources/at/";
 		File testResourceFile=new File(testResourcesPath);
 		Class testClass=CompleteATSuite.class;		
@@ -80,11 +81,14 @@ public class RegressTesterMain {
 		Option testResourceOption  = new Option ("r","test-resources",true, "Path to the AT test resources directory. Default setting is '"+testResourcesPath+"'");
 		Option verboseLoggingOption  = new Option ("v","verbose",false, "Activate verbose logging");
 		Option testNameOption  = new Option ("n","test-name",true, "AT test name. To execute all AT use 'CompleteATSuite'. Default setting is '"+testName+"'");
+		Option maxTimeOutOption  = new Option ("t","max-waittime",true, "Max wait time in minutes to complete each test. Default setting is '"+maxTimeout+"'");
 
+		
 		options.addOption(helpOption);
 		options.addOption(testResourceOption);
 		options.addOption(testNameOption);
 		options.addOption(verboseLoggingOption);
+		options.addOption(maxTimeOutOption);
 		HelpFormatter formatter = new HelpFormatter();
 		
 		
@@ -101,6 +105,12 @@ public class RegressTesterMain {
 	        	testName=line.getOptionValue(testNameOption.getOpt());
 	        }
 	        
+	        if(line.hasOption( maxTimeOutOption.getOpt() )||line.hasOption( maxTimeOutOption.getLongOpt() )){
+	        	maxTimeout=Integer.parseInt(line.getOptionValue(maxTimeOutOption.getOpt()));
+	        	if(maxTimeout<1 || maxTimeout>30)
+	        		throw new ParseException("Parameter max-waittime have to be between 1-30 minutes");
+	        }
+	        
 	        if(!line.hasOption( verboseLoggingOption.getOpt() )&& !line.hasOption( verboseLoggingOption.getLongOpt() )){
 	        	setLoggerOff();
 	        }
@@ -113,9 +123,10 @@ public class RegressTesterMain {
 	        }
 	        
 	        
-
-			System.out.println("Used Parameter: TestSuite: "+testName+"\t Test-Resources dir:"+testResourcesPath); 
-	        
+	        System.out.println();
+			System.out.println("Used Parameter: TestSuite: "+testName+"\t Test-Resources dir:"+testResourcesPath+"\t Maximal wait-time: "+maxTimeout+" Min."); 
+			System.out.println();
+			
 	        if(testName.equals("CompleteATSuite"))
 	        	testName="de.uzk.hki.main.CompleteATSuite";
 	        else
@@ -149,13 +160,12 @@ public class RegressTesterMain {
 	    
 	    //set important properties, to control junit testcases execution 
 		System.setProperty(AcceptanceTestHelper.TEST_RESOURCES_PATH_PROPERTY, testResourcesPath);
+		System.setProperty(AcceptanceTestHelper.MAX_TIME_OUT_TIME, ""+maxTimeout*60*1000);
 		System.setProperty(AcceptanceTestHelper.NO_DIRTY_CLEANUP_AFTER_EACH_TEST_PROPERTY, "1");
 	    
 		JUnitCore junit = new JUnitCore();
 		junit.addListener(myJUnitListener);
 		Result result = junit.run(testClass); //SuiteMetadataUpdates.class) ATMigrationRight.class CompleteATSuite.class
-		System.out.println("Junit Result: "+(result.wasSuccessful()?"SUCCESSFUL":"FAIL")+"\nFailureCount: "+result.getFailureCount()+" | IgnoreCount: "+result.getIgnoreCount());
-		System.out.println("RunCount:"+result.getRunCount());
 		
 		
 		for(Failure fail: result.getFailures()){
@@ -166,6 +176,11 @@ public class RegressTesterMain {
 			System.out.println("Description: "+fail.getDescription());
 			System.out.println("Execution: "+fail.getException());
 		}
+		
+		System.out.println("Junit Result: "+(result.wasSuccessful()?"SUCCESSFUL":(1.0*result.getFailureCount()/result.getRunCount()<0.2?"20%-TOLLERANCE-SUCCESSFUL":"FAIL")));
+		System.out.println("RunCount:"+result.getRunCount()+" | FailureCount: "+result.getFailureCount()+" | IgnoreCount: "+result.getIgnoreCount());
+		System.out.println("Successratio:"+Math.round((100-100.0*result.getFailureCount()/result.getRunCount()))+"%");
+		
 
 		LOCAL_RESOURCE.delete();
 		System.exit(0); //otherwise application control is gained by junit threads and application doesn't stop at the end of main
