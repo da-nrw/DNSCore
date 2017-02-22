@@ -15,7 +15,7 @@ newErrors=`grep -vf ExpectedFuilureList.txt LastFailureList.txt`
 
 if [ "$newErrors" != "" ] ; then 
 	echo "Unexpected Fails: "; 
-	echo $newErrors ; 
+	echo "$newErrors" ; 
 	echo " "; 
 	echo 'Last Regression-Test NOT OK'; 
 	exit 1;
