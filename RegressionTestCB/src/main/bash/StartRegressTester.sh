@@ -2,7 +2,7 @@
 
 
 LASTLOG=regressLog`date "+%Y%m%d-%H%M%S"`.txt
-java -jar ./RegressionTestCBFull.jar $@ |  tee -a $LASTLOG &
+java -jar ./RegressionTestCBFull.jar $@ |  tee -a $LASTLOG
 
 more $LASTLOG | grep '>>>TestFailure' | cut -d ':' -f 2 | sort > LastFailureList.txt
 
