@@ -20,7 +20,8 @@
 	*/
 	
 # Spezifikation PIP (Presentation Information Package) zur Abgabe in Presentation Repository von DNS
-Die Spezifikation befindet sich zur Zeit **im Aufbau** !!! 
+
+Die Spezifikation ist im fertig abgenommen Zustand und spiegelt den monentanen Zustand der Software wieder.
 
 ## Inhalt eines PIP 
 
