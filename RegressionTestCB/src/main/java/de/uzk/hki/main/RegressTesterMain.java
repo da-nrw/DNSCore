@@ -33,10 +33,12 @@ import de.uzk.hki.da.utils.FolderUtils;
  */
 public class RegressTesterMain {
 	public static final File LOCAL_RESOURCE=new File("./src/test/resources/");
+	static int counterFailedWithhoutStart=0;
 	
 	static RunListener myJUnitListener=new RunListener(){
 		String currentTestClass="";
 		int counter=0;
+		
 
 		@Override
 		public void testStarted(Description description) throws Exception {
@@ -58,6 +60,9 @@ public class RegressTesterMain {
 		@Override
 		public void testFailure(Failure failure) throws Exception {
 			System.out.println(">>>>>TestFailure: "+failure.toString());
+			if(!currentTestClass.equals(failure.getDescription().getTestClass().toString())){
+				counterFailedWithhoutStart++;
+			}
 			super.testFailure(failure);
 		}
 	};
@@ -166,11 +171,12 @@ public class RegressTesterMain {
 			System.out.println("Description: "+fail.getDescription());
 			System.out.println("Execution: "+fail.getException());
 		}
-		
-		double failRatio=1.0*result.getFailureCount()/(result.getRunCount()<result.getFailureCount()?result.getFailureCount():result.getRunCount());
+		int totalRunCount=result.getRunCount()+counterFailedWithhoutStart;
+		double failRatio=1.0*result.getFailureCount()/(totalRunCount<result.getFailureCount()?result.getFailureCount():totalRunCount);
 		double sucessRatio=1-failRatio;
+		System.out.println("\n\n");
 		System.out.println("Junit Result: "+(result.wasSuccessful()?"SUCCESSFUL":(sucessRatio>0.8?"80%-TOLLERANCE-SUCCESSFUL":"FAIL")));
-		System.out.println("RunCount: "+result.getRunCount()+" | FailureCount: "+result.getFailureCount()+" | IgnoreCount: "+result.getIgnoreCount());
+		System.out.println("RunCount: "+totalRunCount+" | FailureCount: "+result.getFailureCount()+" | IgnoreCount: "+result.getIgnoreCount()+ " | FailedWithoutStart:"+counterFailedWithhoutStart);
 		System.out.println("Successratio: "+Math.round((100.0*sucessRatio))+"%");
 		
 
