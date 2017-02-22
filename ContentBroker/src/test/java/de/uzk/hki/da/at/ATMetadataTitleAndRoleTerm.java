@@ -62,14 +62,16 @@ public class ATMetadataTitleAndRoleTerm extends AcceptanceTest {
 	public void testPIPEdm1() throws IOException, JDOMException {
 
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		File edmFile1 = Path.make(contractorsPipsPublic, object1.getIdentifier(), "EDM.xml").toFile();
-		Document edmDoc1 = builder.build
-				(new FileReader(edmFile1));
+		
+		File edmFile1 = ath.loadFileFromPip(object1.getIdentifier(), "EDM.xml");
+
 		for(int i=0;i<30 && !edmFile1.exists();i++){
 			FolderUtils.waitToCompleteNFSAwareFileOperation();
 			System.out.println("Target("+edmFile1+") file is not created yet, wait: "+i);
 		}
 		assertTrue(edmFile1.exists());	
+		Document edmDoc1 = builder.build
+				(new FileReader(edmFile1));
 	
 		@SuppressWarnings("unchecked")
 		List<Element> providetCho = edmDoc1.getRootElement().getChildren("ProvidedCHO", C.EDM_NS);
