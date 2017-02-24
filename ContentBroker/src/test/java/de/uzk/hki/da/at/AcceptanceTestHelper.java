@@ -78,7 +78,7 @@ public class AcceptanceTestHelper {
 	
 	
 	private static final int INTERVAL=2000; // in ms
-	private static final int TIMEOUT=1200000; // ins ms
+	private int TIMEOUT=1200000; // ins ms
 	
 	private GridFacade gridFacade;
 	private Node localNode;
@@ -349,11 +349,7 @@ public class AcceptanceTestHelper {
 				System.out.println("Awaiting job (OriginalName: "+originalName+") to be in state "+status+". Job is NULL ");		
 			}
 		}
-	}
-
-	
-	
-	
+	}	
 	
 	
 	public Job getJob(String originalName) {
@@ -364,7 +360,6 @@ public class AcceptanceTestHelper {
 		session.close();
 		return job;
 	}
-
 
 
 	void waitForObjectToBeIndexed(MetadataIndex mi,String indexName,String identifier) {
@@ -432,14 +427,7 @@ public class AcceptanceTestHelper {
 		}
 		throw new RuntimeException(msg);
 	}
-	
-	
-	
 
-	
-	
-	
-	
 	
 	/**
 	 * Makes a copy of a file from src/test/resources/at/[sourcePackagename].[ext]
@@ -467,17 +455,10 @@ public class AcceptanceTestHelper {
 	}
 	
 	
-
-		
-
-	
-	
 	Object putAIPToLongTermStorage(String identifier,String originalName, Date createddate, int object_state) throws IOException{
 		return putAIPToLongTermStorage(identifier, originalName, createddate, object_state, null, null);
 	}
 	
-
-
 
 	/**
 	 * @throws IOException 
@@ -541,6 +522,7 @@ public class AcceptanceTestHelper {
 	void createJob(String origName,String jobStatus) {
 		createJob(origName, jobStatus, new Date());
 	}
+	
 	void createJob(String origName,String jobStatus, Date createdAt) {
 		Object o = getObject(origName);
 		
@@ -562,9 +544,6 @@ public class AcceptanceTestHelper {
 		session.close();
 	}
 
-	
-
-
 	private boolean isInErrorState(Job job){
 		if (job.getStatus().endsWith(C.WORKFLOW_STATUS_DIGIT_ERROR_BAD_ROLLBACK) || 
 				job.getStatus().endsWith(C.WORKFLOW_STATUS_DIGIT_ERROR_PROPERLY_HANDLED)
@@ -572,18 +551,20 @@ public class AcceptanceTestHelper {
 		return false;
 	}
 
-
-
 	public void setLogPath(String newLogPath) {
 		logPath=newLogPath;
 	}
 
 
-	public void setFedoraUrlTemplate(String fedoraUrlTemplate) {
-		this.fedoraUrlTemplate = fedoraUrlTemplate;
+	public void setTIMEOUT(int tIMEOUT) {
+		TIMEOUT = tIMEOUT;
 	}
 
 
+
+	public void setFedoraUrlTemplate(String fedoraUrlTemplate) {
+		this.fedoraUrlTemplate = fedoraUrlTemplate;
+	}
 
 	public File loadDefaultMetsFileFromPip(String identifier) throws IOException {
 		return loadFileFromPip(identifier, C.CB_PACKAGETYPE_METS + C.FILE_EXTENSION_XML);
@@ -598,8 +579,8 @@ public class AcceptanceTestHelper {
 
 		if (localNode.getName().equals(preservationSystem.getPresServer())) {
 			if (!tmpFile.exists()) {
-				//throw new IOException("File: " + tmpFile + "doesnt exists");
-				System.out.println("File: " + tmpFile + "doesnt exists");
+				//throw new IOException("File: " + tmpFile + " doesn't exists");
+				System.out.println("File: " + tmpFile + " doesn't exists");
 			}
 		} else {
 			if (tmpFile.exists()) {

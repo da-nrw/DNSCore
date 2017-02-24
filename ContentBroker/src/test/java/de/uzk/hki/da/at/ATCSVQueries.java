@@ -147,12 +147,9 @@ public class ATCSVQueries extends AcceptanceTest {
 		SystemEvent se = new SystemEvent();
 		se.setNode(localNode);
 		se.setType(eventName);
-		User user = new User();
-		user.setId(1);
-		user.setShort_name("TEST");
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
-		se.setOwner(user);
+		se.setOwner(testContractor);
 		session.save(se);
 		session.getTransaction().commit();
 		session.close();

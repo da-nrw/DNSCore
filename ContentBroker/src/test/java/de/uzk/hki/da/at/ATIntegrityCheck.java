@@ -93,7 +93,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 			assertSame(object.getObject_state(), Object.ObjectStatus.Error);
 		} catch (Exception e) {
 			e.printStackTrace();
-			fail();
+			fail(e.getMessage()+"\n"+e.toString());
 		}
 	}
 	
@@ -114,7 +114,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 			assertSame(Integer.valueOf(object.getObject_state()), Integer.valueOf(Object.ObjectStatus.Error));
 		} catch (Exception e) {
 			e.printStackTrace();
-			fail();
+			fail(e.getMessage()+"\n"+e.toString());
 		}
 	}
 	
@@ -137,7 +137,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		assertSame(Integer.valueOf(object.getObject_state()),Integer.valueOf(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow));
 		} catch (Exception e) {
 			e.printStackTrace();
-			fail();
+			fail(e.getMessage()+"\n"+e.toString());
 		}
 	}
 	
@@ -190,7 +190,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 			assertSame(Integer.valueOf(object.getObject_state()), Integer.valueOf(Object.ObjectStatus.Error));
 		} catch (Exception e) {
 			e.printStackTrace();
-			fail();
+			fail(e.getMessage()+"\n"+e.toString());
 		}
 	}
 
@@ -215,6 +215,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 			assertSame(Integer.valueOf(object.getObject_state()), Integer.valueOf(Object.ObjectStatus.Error));
 		} catch (Exception e) {
 			e.printStackTrace();
+			fail(e.getMessage()+"\n"+e.toString());
 		}
 	}
 	
@@ -274,7 +275,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		} catch (IOException ex) {
 		  fail("writing to file " + file + " failed");
 		} finally {
-		   try {writer.close();} catch (Exception ex) { fail();}
+		   try {writer.close();} catch (Exception ex) { fail(ex.getMessage()+"\n"+ex.toString());}
 		}
 		
 	}

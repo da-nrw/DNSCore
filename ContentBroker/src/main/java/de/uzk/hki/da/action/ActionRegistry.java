@@ -92,7 +92,10 @@ public class ActionRegistry {
 				packageId=a.getJob().getObject().getLatestPackage().getId();
 			}
 			ActionDescription ad = new ActionDescription(a.getName(), a.getJob().getId(), packageId);
-			ad.setDescription(a.getDescription());
+			
+			ad.setStartStatus(a.getStartStatus());
+			ad.setEndStatus(a.getEndStatus());
+			ad.setDescription("ObjId: "+a.getObject().getIdentifier()+" "+a.getJob());
 			result.add(ad);
 			
 		}
