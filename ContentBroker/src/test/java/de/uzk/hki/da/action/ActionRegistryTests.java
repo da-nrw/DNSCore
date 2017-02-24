@@ -89,6 +89,7 @@ public class ActionRegistryTests {
 		job.setId(1);
 		AbstractAction tarAction = (AbstractAction) context.getBean("IngestTarAction");
 		tarAction.setJob(job);
+		tarAction.setObject(o);
 		registry.registerAction(tarAction);
 		
 		List<ActionDescription> list = registry.getCurrentActionDescriptions();
