@@ -242,14 +242,14 @@ public class ATPremisCreationDelta extends PREMISBase {
 				String ingestId = e.getChild("eventIdentifier", ns).getChildText("eventIdentifierValue", ns);
 				if (ingestId.equals("1-20140718220" + "+1")) { // the object id is different from our test object id because it was generated in the run for creating the test tar package
 					try {dateFormat.parse(e.getChild("eventDateTime", ns).getValue());} catch (ParseException ex) {	fail();	}	
-					assertThat(e.getChild("linkingAgentIdentifier", ns).getChildText("linkingAgentIdentifierValue", ns)).isEqualTo("TEST");
+					assertThat(e.getChild("linkingAgentIdentifier", ns).getChildText("linkingAgentIdentifierValue", ns)).isEqualTo(testContractor.getUsername());
 					assertThat(e.getChild("linkingObjectIdentifier", ns).getChildText("linkingObjectIdentifierValue", ns)).isEqualTo(objectIdentifier + ".pack_1.tar");
 					System.out.println("checked INGEST event: "+objectIdentifier+"1");
 					checkedEvents++;
 				}
 				if (ingestId.equals(objectIdentifier + "+2")) {
 					try {dateFormat.parse(e.getChild("eventDateTime", ns).getValue());} catch (ParseException ex) {	fail();	}	
-					assertThat(e.getChild("linkingAgentIdentifier", ns).getChildText("linkingAgentIdentifierValue", ns)).isEqualTo("TEST");
+					assertThat(e.getChild("linkingAgentIdentifier", ns).getChildText("linkingAgentIdentifierValue", ns)).isEqualTo(testContractor.getUsername());
 					assertThat(e.getChild("linkingObjectIdentifier", ns).getChildText("linkingObjectIdentifierValue", ns)).isEqualTo(objectIdentifier + ".pack_2.tar");
 					System.out.println("checked INGEST event: "+objectIdentifier+"2");
 					checkedEvents++;
@@ -268,7 +268,7 @@ public class ATPremisCreationDelta extends PREMISBase {
 				assertEquals("APPLICATION", e.getChildText("agentType", ns));
 				assertEquals("APPLICATION_NAME", agentIdentifier.getChildText("agentIdentifierType", ns));
 				checkedAgents++;
-			}else if ("TEST".equals(agentName)){
+			}else if (testContractor.getUsername().equals(agentName)){
 				assertEquals("CONTRACTOR", e.getChildText("agentType", ns));
 				assertEquals("CONTRACTOR_SHORT_NAME", agentIdentifier.getChildText("agentIdentifierType", ns));
 				checkedAgents++;

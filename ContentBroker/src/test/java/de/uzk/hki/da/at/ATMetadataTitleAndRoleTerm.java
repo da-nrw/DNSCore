@@ -32,7 +32,7 @@ public class ATMetadataTitleAndRoleTerm extends AcceptanceTest {
 	
 	private static final String sip = "ATMetadataRoleTermNonSortTitle";
 	
-	Path contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
+	Path contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, testContractor.getUsername());
 	private static Object object1;
 	
 	private  String PORTAL_CI_TEST =getTestIndex();

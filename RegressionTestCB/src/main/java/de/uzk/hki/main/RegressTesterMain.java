@@ -13,7 +13,6 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Appender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -22,7 +21,6 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
-
 import de.uzk.hki.da.at.AcceptanceTestHelper;
 import de.uzk.hki.da.utils.FolderUtils;
 
@@ -38,8 +36,14 @@ public class RegressTesterMain {
 	static RunListener myJUnitListener=new RunListener(){
 		String currentTestClass="";
 		int counter=0;
+		long lastTime=0;
 		
-
+		@Override
+		public void testRunFinished(Result result) throws Exception {
+			System.out.println(">>>>>testRunFinished("+currentTestClass+"):\tRunCount: "+result.getRunCount()+"\t RunTime: "+Math.round(result.getRunTime()/1000.0)+" sec");
+			super.testRunFinished(result);
+		}
+		
 		@Override
 		public void testStarted(Description description) throws Exception {
 			if(!currentTestClass.equals(description.getTestClass().toString())){
@@ -177,6 +181,7 @@ public class RegressTesterMain {
 		System.out.println("\n\n");
 		System.out.println("Junit Result: "+(result.wasSuccessful()?"SUCCESSFUL":(sucessRatio>0.8?"80%-TOLLERANCE-SUCCESSFUL":"FAIL")));
 		System.out.println("RunCount: "+totalRunCount+" | FailureCount: "+result.getFailureCount()+" | IgnoreCount: "+result.getIgnoreCount()+ " | FailedWithoutStart:"+counterFailedWithhoutStart);
+		System.out.println("RunTime: "+result.getRunTime()+" sec");
 		System.out.println("Successratio: "+Math.round((100.0*sucessRatio))+"%");
 		
 

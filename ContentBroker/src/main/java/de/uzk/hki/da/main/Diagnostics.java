@@ -174,7 +174,7 @@ public class Diagnostics {
 		System.out.print(INFO+"CHECKING - FEDORA CONNECTIVITY .... ");
 		try {
 			fedora.purgeObjectIfExists("abc", "coll1");
-			fedora.createObject("abc", "coll1", "TEST");
+			fedora.createObject("abc", "coll1", C.TEST_USER_SHORT_NAME);
 			fedora.purgeObjectIfExists("abc", "coll1");
 			System.out.println(OK);
 		} catch (RepositoryException e) {
