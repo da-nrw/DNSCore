@@ -97,6 +97,7 @@ public class Diagnostics {
 	private static final String PROP_GRID_CACHE_AREA_ROOT_PATH = "localNode.gridCacheAreaRootPath";
 	private static final String PROP_USER_AREA_ROOT_PATH = "localNode.userAreaRootPath";
 	private static final String PROP_INGEST_AREA_ROOT_PATH = "localNode.ingestAreaRootPath";
+	private static final String PROP_INGEST_AREA_NO_BAGIT_ROOT_PATH = "localNode.ingestAreaNoBagitRootPath";
 	private static final String PROP_WORK_AREA_ROOT_PATH = "localNode.workAreaRootPath";
 	private static final String PROP_REPL_DESTINATIONS = "localNode.replDestinations";
 	private static final String PROP_IRODS_ZONE = BEAN_NAME_IRODS_ZONE;
@@ -105,6 +106,7 @@ public class Diagnostics {
 	private static final String MSG_GRID_CACHE_AREA_NOT_EXISTS = "ERROR (path configured by localNode.gridCacheAreaRootPath does not exist)";
 	private static final String MSG_WORK_AREA_NOT_EXISTS = "ERROR (path configured by localNode.workAreaRootPath does not exist)";
 	private static final String MSG_INGEST_AREA_NOT_EXISTS = "ERROR (path configured by localNode.ingestAreaRootPath does not exist)";
+	private static final String MSG_INGEST_AREA_NO_BAGIT_NOT_EXISTS = "ERROR (path configured by localNode.ingestAreaNoBagitRootPath does not exist)";
 
 	
 	
@@ -447,6 +449,18 @@ public class Diagnostics {
 				errorCount++;
 			}
 		}
+		
+		if ((properties.getProperty(PROP_INGEST_AREA_NO_BAGIT_ROOT_PATH)==null) ||
+				((String)properties.getProperty(PROP_INGEST_AREA_NO_BAGIT_ROOT_PATH)).isEmpty())
+				
+				logger.warn(INFO+PROP_INGEST_AREA_NO_BAGIT_ROOT_PATH+" is empty. will not check for path");
+		else {
+			if (!new File(properties.getProperty(PROP_INGEST_AREA_NO_BAGIT_ROOT_PATH)).exists()){
+				System.out.println(MSG_INGEST_AREA_NO_BAGIT_NOT_EXISTS);
+				errorCount++;
+			}
+		}
+		
 		
 		if ((properties.getProperty(PROP_GRID_CACHE_AREA_ROOT_PATH)==null) ||
 				((String)properties.getProperty(PROP_GRID_CACHE_AREA_ROOT_PATH)).isEmpty())

@@ -15,6 +15,7 @@
 
 	<import resource="classpath*:META-INF/beans-workflow.presentation.xml"/>
 	<import resource="classpath*:META-INF/beans-workflow.ingest.xml"/>
+	<import resource="classpath*:META-INF/beans-workflow.ingestnobagit.xml"/>
 	<import resource="classpath*:META-INF/beans-workflow.retrieval.xml"/>
 	<import resource="classpath*:META-INF/beans-workflow.pipgen.xml"/>
 	<import resource="classpath*:META-INF/beans-workflow.other.xml"/>
@@ -30,6 +31,7 @@
 		<task:scheduled-tasks scheduler="taskScheduler">
 		<task:scheduled ref="contentBrokerWorker" method="scheduleTask" fixed-delay="200" />
 		<task:scheduled ref="ingestAreaScannerWorker" method="scheduleTask" fixed-delay="100" />
+		<task:scheduled ref="ingestAreaNoBagitScannerWorker" method="scheduleTask" fixed-delay="1000" />
 		<task:scheduled ref="integrityWorker" method="scheduleTask" fixed-delay="20000" />
 		<task:scheduled ref="checksumWorker" method="scheduleTask" fixed-delay="20000" />
 		<task:scheduled ref="distributionWorker" method="scheduleTask" fixed-delay="20000" />
@@ -49,6 +51,7 @@
 		<entry key="SendToPresenterAction" value="3" />
 		<entry key="IngestPrepareSendToPresenterAction" value="3" />
 		<entry key="IngestUnpackAction" value="3" />
+		<entry key="IngestUnpackNoBagitAction" value="1" /> <!-- Workaround DANRW-1352 -->
 		<entry key="IngestDeltaOnURNAction" value="3" />
 		<entry key="IngestConvertAction" value="3" />
 		<entry key="IngestScanAction" value="3" />
@@ -106,6 +109,7 @@
 		<value>IngestRestructureAction</value>
 		<value>IngestDeltaOnURNAction</value>
 		<value>IngestUnpackAction</value>
+		<value>IngestUnpackNoBagitAction</value>
 		<value>AuditAction</value>
 		<value>PIPGenCleanWorkAreaAction</value>
 		<value>PIPGenPrepareSendToPresenterAction</value>

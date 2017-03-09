@@ -80,6 +80,9 @@ public class SIPFactory {
 	// DANRW-1416: Extension for disable tar - function
 	private boolean tar = true;
 	private String destDir = null;
+	
+	// DANRW-1352: to disable bagit creation
+	private boolean bagit = true;
 
 	private List<String> forbiddenFileExtensions = null;
 
@@ -787,6 +790,14 @@ public class SIPFactory {
 
 	public void setDestDir(String destDir) {
 		this.destDir = destDir;
+	}
+
+	public boolean isBagit() {
+		return bagit;
+	}
+
+	public void setBagit(boolean bagit) {
+		this.bagit = bagit;
 	}
 
 	/**

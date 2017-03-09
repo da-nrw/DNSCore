@@ -313,6 +313,7 @@ public class ActionFactory implements ApplicationContextAware {
 			action.checkPreconditions();
 		}catch(PreconditionsNotMetException e) {
 			logger.error("Regarding job for object ["+jobCandidate.getObject().getIdentifier()+"]. Preconfigurations not met for action. "+e.getMessage());
+			System.out.println("Regarding job for object ["+jobCandidate.getObject().getIdentifier()+"]. Preconfigurations not met for action. "+e.getMessage());
 			qc.updateJobStatus(jobCandidate, 
 					status(getActionStartStates().get(jobType),WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET));
 			
