@@ -27,6 +27,6 @@ public class ATUseCaseIngestEadMetsVariousRefs extends AcceptanceTest{
 	
 	@Test
 	public void test() {
-		Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
+		Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, testContractor.getUsername());
 	}
 }

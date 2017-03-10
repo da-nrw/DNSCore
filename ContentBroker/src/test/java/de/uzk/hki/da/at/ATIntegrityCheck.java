@@ -82,14 +82,14 @@ public class ATIntegrityCheck extends AcceptanceTest{
 
 			changeLastCheckedObjectDate(object, -25);
 
-			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, testContractor.getUsername());
 
 			setChecksumSecondaryCopy(object, object.getLatestPackage().getChecksum(), -1);
 			destroyFileInCIEnvironment(object.getIdentifier());
 			changeLastCheckedObjectDate(object, -25);
 
 			ath.awaitObjectState(ORIGINAL_NAME, Object.ObjectStatus.Error);
-			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, testContractor.getUsername());
 			assertSame(object.getObject_state(), Object.ObjectStatus.Error);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -105,12 +105,12 @@ public class ATIntegrityCheck extends AcceptanceTest{
 			ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
 			ath.awaitObjectState(ORIGINAL_NAME, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 
-			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, testContractor.getUsername());
 			setChecksumSecondaryCopy(object, "abcedde5", -31);
 			changeLastCheckedObjectDate(object, -25);
 
 			ath.awaitObjectState(ORIGINAL_NAME, Object.ObjectStatus.Error);
-			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, testContractor.getUsername());
 			assertSame(Integer.valueOf(object.getObject_state()), Integer.valueOf(Object.ObjectStatus.Error));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -133,7 +133,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		assertSame(Integer.valueOf(object.getObject_state()),Integer.valueOf(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow));
 		
 		waitForObjectChecked(object, ORIGINAL_NAME);
-		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, testContractor.getUsername());
 		assertSame(Integer.valueOf(object.getObject_state()),Integer.valueOf(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -153,14 +153,14 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		changeLastCheckedObjectDate(object, -25);
 		Thread.sleep(2000L);
 		
-		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, testContractor.getUsername());
 		destroyFileInCIEnvironment(object.getIdentifier());
 		
 		setChecksumSecondaryCopy(object, "abcd77",-31);
 		changeLastCheckedObjectDate(object, -25);
 		//assertTrue(waitForObjectInStatus(ORIGINAL_NAME,Object.ObjectStatus.Error));
 		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.Error);
-		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, testContractor.getUsername());
 		assertSame(Integer.valueOf(object.getObject_state()), Integer.valueOf(Object.ObjectStatus.Error));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -181,12 +181,12 @@ public class ATIntegrityCheck extends AcceptanceTest{
 			setChecksumSecondaryCopy(object, object.getLatestPackage().getChecksum(), -8761);
 
 			assertSame(Integer.valueOf(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow), Integer.valueOf(object.getObject_state()));
-			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, testContractor.getUsername());
 
 			changeLastCheckedObjectDate(object, -25);
 
 			ath.awaitObjectState(ORIGINAL_NAME, Object.ObjectStatus.Error);
-			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, testContractor.getUsername());
 			assertSame(Integer.valueOf(object.getObject_state()), Integer.valueOf(Object.ObjectStatus.Error));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -205,13 +205,13 @@ public class ATIntegrityCheck extends AcceptanceTest{
 			object = ath.getObject(ORIGINAL_NAME);
 
 			assertSame(Integer.valueOf(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow), Integer.valueOf(object.getObject_state()));
-			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, testContractor.getUsername());
 			;
 			changeLastCheckedObjectDate(object, -8761);
 			Thread.sleep(2000L);
 			// assertTrue(waitForObjectInStatus(ORIGINAL_NAME,Object.ObjectStatus.Error));
 			ath.awaitObjectState(ORIGINAL_NAME, Object.ObjectStatus.Error);
-			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, testContractor.getUsername());
 			assertSame(Integer.valueOf(object.getObject_state()), Integer.valueOf(Object.ObjectStatus.Error));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -224,7 +224,7 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		System.out.println("last check was : " + old);
 		Date neu = old;
 		while (neu.compareTo(old)<=0) {
-			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, testContractor.getUsername());
 			neu = object.getLast_checked();	
 		}
 		System.out.println("new check was on : " + neu + " object state " + object.getObject_state());
