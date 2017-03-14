@@ -64,7 +64,7 @@ public class ATPublicMets extends AcceptanceTest {
 	public Boolean setUserPublicMets(Boolean usePublicMets) {
 		Session session = HibernateUtil.openSession();
 		Transaction transaction = session.beginTransaction();
-		Query query = session.createQuery("SELECT u FROM User u where username = 'TEST'");
+		Query query = session.createQuery("SELECT u FROM User u where username = '"+testContractor.getUsername()+"'");
 
 		@SuppressWarnings("unchecked")
 		List<User> users = query.list();

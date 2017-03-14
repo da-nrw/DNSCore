@@ -52,9 +52,9 @@ public class ATUseCaseIngestSpecialCases extends AcceptanceTest{
 		
 //		FolderUtils.deleteQuietlySafe(Path.make(localNode.getWorkAreaRootPath(),"/work/TEST/"+object.getIdentifier()).toFile());
 
-		Path.make(localNode.getIngestAreaRootPath(),"/TEST/AT_CON1.tar").toFile().delete();
-		Path.make(localNode.getIngestAreaRootPath(),"/TEST/AT_CON2.tgz").toFile().delete();
-		Path.make(localNode.getIngestAreaRootPath(),"/TEST/AT_CON3.zip").toFile().delete();
+		Path.make(localNode.getIngestAreaRootPath(),"/"+testContractor.getUsername()+"/AT_CON1.tar").toFile().delete();
+		Path.make(localNode.getIngestAreaRootPath(),"/"+testContractor.getUsername()+"/AT_CON2.tgz").toFile().delete();
+		Path.make(localNode.getIngestAreaRootPath(),"/"+testContractor.getUsername()+"/AT_CON3.zip").toFile().delete();
 		
 		
 	}
