@@ -17,9 +17,9 @@ if [ "$newErrors" != "" ] ; then
 	echo "Unexpected Fails: "; 
 	echo "$newErrors" ; 
 	echo " "; 
-	echo 'Last Regression-Test NOT OK'; 
+	echo 'Last Regression-Test NOT OK (unexpected failures)'; 
 	exit 1;
 else 
-	echo 'Last Regression-Test OK'; 
+	echo 'Last Regression-Test OK (only expected failures)'; 
 	exit 0;
 fi;
