@@ -49,7 +49,7 @@
 	/* hide all but the first column of list tables */
 	.scaffold-list td:not(:first-child),
 	.scaffold-list th:not(:first-child) {
-		display: none;
+		display: table-cell;
 	}
 
 	.scaffold-list thead th {

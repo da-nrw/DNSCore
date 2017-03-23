@@ -1,7 +1,5 @@
 <%@ page import="daweb3.UserRole" %>
 
-
-
 <div class="fieldcontain ${hasErrors(bean: userRoleInstance, field: 'role', 'error')} required">
 	<label for="role">
 		<g:message code="userRole.role.label" default="Role" />
@@ -9,7 +7,6 @@
 	</label>
 	<g:select id="role" name="role.id" from="${daweb3.Role.list()}" optionKey="id" required="" value="${userRoleInstance?.role?.id}" class="many-to-one"/>
 </div>
-
 <div class="fieldcontain ${hasErrors(bean: userRoleInstance, field: 'user', 'error')} required">
 	<label for="user">
 		<g:message code="userRole.user.label" default="User" />

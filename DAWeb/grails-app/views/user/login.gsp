@@ -22,7 +22,6 @@
                   <input type="text" id="login" name="login"/>
                 </td>
               </tr> 
-          
               <tr class="prop">
                 <td class="name">
                   <label for="password">Password:</label>

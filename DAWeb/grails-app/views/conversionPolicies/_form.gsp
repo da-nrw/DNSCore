@@ -11,7 +11,6 @@
 <div class="fieldcontain ${hasErrors(bean: conversionPoliciesInstance, field: 'source_format', 'error')} ">
 	<label for="source_format">
 		<g:message code="conversionPolicies.source_format.label" default="Sourceformat" />
-		
 	</label>
 	<g:textField name="source_format" value="${conversionPoliciesInstance?.source_format}"/>
 </div>
@@ -19,7 +18,6 @@
 <div class="fieldcontain ${hasErrors(bean: conversionPoliciesInstance, field: 'presentation', 'error')} ">
 	<label for="accountExpired">
 		<g:message code="conversionPolicies.presentation.label" default="Presentation Repository Policy" />
-		
 	</label>
 	<g:checkBox name="presentation" value="${conversionPoliciesInstance?.presentation}" />
 </div>
