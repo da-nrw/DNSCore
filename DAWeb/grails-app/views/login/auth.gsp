@@ -9,6 +9,7 @@
 		text-align: center;
 	}
 
+
 	#login .inner {
 		width: 290px;
 		padding-bottom: 6px;
