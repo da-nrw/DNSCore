@@ -84,7 +84,7 @@ public class ATTimeBasedPipGen extends AcceptanceTest {
 		object.setStatic_nondisclosure_limit_institution(pubDate);
 		
 		object.setPublished_flag(C.PUBLISHEDFLAG_INSTITUTION);
-		String lastModified = object.getDate_modified();
+		Date lastModified = object.getModifiedAt();
 		
 		Transaction transaction = session.beginTransaction();
 
@@ -97,7 +97,7 @@ public class ATTimeBasedPipGen extends AcceptanceTest {
 		session.close();
 		assertNotNull(object);
 		assertEquals(C.PUBLISHEDFLAG_INSTITUTION, object.getPublished_flag());
-		assertEquals(lastModified, object.getDate_modified());
+		assertEquals(lastModified, object.getModifiedAt());
 	}
 
 	@Test
@@ -121,7 +121,7 @@ public class ATTimeBasedPipGen extends AcceptanceTest {
 		object.setStatic_nondisclosure_limit(pubDate);
 		object.setStatic_nondisclosure_limit_institution(pubDate);
 		object.setPublished_flag(C.PUBLISHEDFLAG_NO_PUBLICATION);
-		String lastModified = object.getDate_modified();
+		Date lastModified = object.getModifiedAt();
 		
 		Transaction transaction = session.beginTransaction();
 
@@ -134,7 +134,7 @@ public class ATTimeBasedPipGen extends AcceptanceTest {
 		session.close();
 		assertNotNull(object);
 		assertEquals(C.PUBLISHEDFLAG_NO_PUBLICATION, object.getPublished_flag());
-		assertEquals(lastModified, object.getDate_modified());
+		assertEquals(lastModified, object.getModifiedAt());
 	}
 
 	@Test
@@ -159,7 +159,7 @@ public class ATTimeBasedPipGen extends AcceptanceTest {
 		object.setStatic_nondisclosure_limit_institution(pubDate);
 		object.setPublished_flag(C.PUBLISHEDFLAG_NO_PUBLICATION);
 		object.setLastPublicationTry(new Date());
-		String lastModified = object.getDate_modified();
+		Date lastModified = object.getModifiedAt();
 		
 		Transaction transaction = session.beginTransaction();
 
@@ -172,7 +172,7 @@ public class ATTimeBasedPipGen extends AcceptanceTest {
 		session.close();
 		assertNotNull(object);
 		assertEquals(C.PUBLISHEDFLAG_NO_PUBLICATION, object.getPublished_flag());
-		assertEquals(lastModified, object.getDate_modified());
+		assertEquals(lastModified, object.getModifiedAt());
 	}
 
 	@Test

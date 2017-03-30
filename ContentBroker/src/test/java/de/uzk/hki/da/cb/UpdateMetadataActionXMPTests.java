@@ -21,8 +21,8 @@
 package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -53,6 +53,7 @@ import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
@@ -182,7 +183,7 @@ public class UpdateMetadataActionXMPTests extends ConcreteActionUnitTest {
 		Path.make(wa.dataPath(),WorkArea.TMP_PIPS+"/institution/a.xmp").toFile().delete();
 		Path.make(wa.dataPath(),WorkArea.TMP_PIPS+"/public/b.xmp").toFile().delete();
 		Path.make(wa.dataPath(),WorkArea.TMP_PIPS+"/institution/b.xmp").toFile().delete();
-		FileUtils.deleteDirectory(new File("conf/xslt"));
+		FolderUtils.deleteDirectorySafe(new File("conf/xslt"));
 	}
 	
 	@Test

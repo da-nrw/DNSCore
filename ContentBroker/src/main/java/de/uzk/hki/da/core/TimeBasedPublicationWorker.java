@@ -96,7 +96,7 @@ public class TimeBasedPublicationWorker extends Worker {
 
 			obbi.setObject_state(Object.ObjectStatus.InWorkflow);
 			obbi.setLastPublicationTry(new Date());
-			obbi.setDate_modified(String.valueOf(new Date().getTime()));
+			obbi.setModifiedAt(new Date());
 			Job job = new Job();
 			job.setObject(obbi);
 
@@ -105,7 +105,7 @@ public class TimeBasedPublicationWorker extends Worker {
 			job.setStatus(C.WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION);
 			job.setResponsibleNodeName(this.getLocalNode().getName());
 
-			job.setDate_created(String.valueOf(new Date().getTime() / 1000L));
+			job.setCreatedAt(new Date());
 
 			session.save(obbi);
 			session.save(job);

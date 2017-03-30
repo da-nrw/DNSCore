@@ -27,7 +27,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -40,6 +39,7 @@ import de.uzk.hki.da.metadata.MetadataHelper;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
@@ -51,11 +51,10 @@ import de.uzk.hki.da.utils.XMLUtils;
 
 public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 
-	private static final String DATA_DANRW_DE = "http://data.danrw.de";
+	private final String DATA_DANRW_DE = preservationSystem.getUrisFile();
 	private static final String origName = "ATMetadataUpdatesLIDO";
 	private static final File retrievalFolder = new File("/tmp/LIDOunpacked");
 	private static Object object;
-	private static Path contractorsPipsPublic;
 	private static MetadataHelper mh = new MetadataHelper();
 	
 	@BeforeClass
@@ -65,14 +64,12 @@ public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForDefinedPublishedState(origName);
 		object=ath.getObject(origName);
-		ath.waitForObjectToBeIndexed(metadataIndex,object.getIdentifier());
-		
-		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
+		ath.waitForObjectToBeIndexed(metadataIndex,getTestIndex(),object.getIdentifier());
 	}
 	
 	@AfterClass
 	public static void tearDown() throws IOException{
-		FileUtils.deleteDirectory(retrievalFolder);
+		FolderUtils.deleteDirectorySafe(retrievalFolder);
 		Path.makeFile("tmp",object.getIdentifier()+".pack_1.tar").delete(); // retrieved dip
 	}
 	
@@ -119,7 +116,7 @@ public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 	@Test
 	public void testPres() throws FileNotFoundException, JDOMException, IOException{
 		
-		FileReader frLido = new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "LIDO.xml").toFile());
+		FileReader frLido = new FileReader(ath.loadFileFromPip(object.getIdentifier(), "LIDO.xml"));
 		SAXBuilder lidoSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = lidoSaxBuilder.build(frLido);
 		
@@ -138,7 +135,7 @@ public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 	@Test
 	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
 		
-		FileReader frLido = new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(),"EDM.xml").toFile());
+		FileReader frLido = new FileReader(ath.loadFileFromPip(object.getIdentifier(), "EDM.xml"));
 		SAXBuilder lidoSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = lidoSaxBuilder.build(frLido);
 	
@@ -178,15 +175,15 @@ public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 			if(a.getAttributeValue("about", C.RDF_NS).contains(object.getIdentifier()+"-ISIL/lido/Inventarnummer-1")) {
 				testAggr1Exists = true;
 				assertTrue(a.getChild("isShownBy", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
-						.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_c8079103e5eecf45d2978a396e1839a9.jpg"));
+						.contains(preservationSystem.getUrisFile()+"/"+object.getIdentifier()+"/_c8079103e5eecf45d2978a396e1839a9.jpg"));
 				assertTrue(a.getChild("object", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
-						.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_c8079103e5eecf45d2978a396e1839a9.jpg"));
+						.contains(preservationSystem.getUrisFile()+"/"+object.getIdentifier()+"/_c8079103e5eecf45d2978a396e1839a9.jpg"));
 			} else if(a.getAttributeValue("about", C.RDF_NS).contains(object.getIdentifier()+"-ISIL/lido/Inventarnummer-2")){
 				testAggr2Exists = true;
 				assertTrue(a.getChild("isShownBy", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
-						.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_c3836acf068a9b227834e0adda226ac2.jpg"));
+						.contains(preservationSystem.getUrisFile()+"/"+object.getIdentifier()+"/_c3836acf068a9b227834e0adda226ac2.jpg"));
 				assertTrue(a.getChild("object", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
-						.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_c3836acf068a9b227834e0adda226ac2.jpg"));
+						.contains(preservationSystem.getUrisFile()+"/"+object.getIdentifier()+"/_c3836acf068a9b227834e0adda226ac2.jpg"));
 			}
 		}
 		
@@ -194,7 +191,7 @@ public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 		assertTrue(testAggr1Exists&&testAggr2Exists);
 		
 //		testIndex
-		assertTrue(metadataIndex.getIndexedMetadata("portal_ci_test", object.getIdentifier()+"-ISIL/lido/Inventarnummer-1").contains("Nudelmaschine in Originalverpackung"));
+		assertTrue(metadataIndex.getIndexedMetadata(getTestIndex(), object.getIdentifier()+"-ISIL/lido/Inventarnummer-1").contains("Nudelmaschine in Originalverpackung"));
 		
 		frLido.close();
 	}

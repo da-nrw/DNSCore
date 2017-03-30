@@ -33,15 +33,6 @@ import java.util.TimeZone;
 
 import javax.xml.parsers.SAXParserFactory;
 
-import nu.xom.Builder;
-import nu.xom.Document;
-import nu.xom.Element;
-import nu.xom.Elements;
-import nu.xom.Node;
-import nu.xom.NodeFactory;
-import nu.xom.ParsingException;
-import nu.xom.ValidityException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.ErrorHandler;
@@ -51,6 +42,14 @@ import org.xml.sax.XMLReader;
 
 import de.uzk.hki.da.metadata.PremisXmlReaderNodeFactory;
 import de.uzk.hki.da.utils.C;
+import nu.xom.Builder;
+import nu.xom.Document;
+import nu.xom.Element;
+import nu.xom.Elements;
+import nu.xom.Node;
+import nu.xom.NodeFactory;
+import nu.xom.ParsingException;
+import nu.xom.ValidityException;
 
 
 /**
@@ -311,7 +310,9 @@ public class ObjectPremisXmlReader{
 		}
 		
 		if (!eventAdded) {
-			if (eventType.toUpperCase().equals("SIP_CREATION"))
+			if (eventType.toUpperCase().equals("SIP_CREATION")
+					// DANRW-1452: Virus-Scan result must be print in the premis-file
+					|| eventType.toUpperCase().equals(C.EVENT_TYPE_VIRUS_SCAN))
 				object.getPackages().get(0).getEvents().add(event);
 			else
 				throw new RuntimeException("Premis file is not consistent: couldn't find object(s) referenced by event "
@@ -369,7 +370,7 @@ public class ObjectPremisXmlReader{
 				right.setMigrationRight(migrationRight);
 			}
 			
-			Element ddbExclusionEl = rightsEl.getFirstChildElement("DDBexclusion", C.CONTRACT_NS);
+			Element ddbExclusionEl = rightsExtEl.getFirstChildElement("DDBexclusion", C.CONTRACT_NS);
 			object.setDdbExclusion(ddbExclusionEl != null);
 			
 			Elements publicationRightEls = rightsExtEl

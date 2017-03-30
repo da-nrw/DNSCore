@@ -18,21 +18,18 @@
 */
 
 package de.uzk.hki.da.pkg;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.*;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
-import org.apache.commons.io.FileUtils;
+import org.junit.After;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-import de.uzk.hki.da.pkg.ArchiveBuilder;
-import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
-import de.uzk.hki.da.pkg.NativeJavaTarArchiveBuilder;
-import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.FolderUtils;
 
 
@@ -91,7 +88,7 @@ public class ArchiveBuilderTests {
 		if (tarFile.exists()) tarFile.delete();
 		if (tarGZFile.exists()) tarGZFile.delete();
 		
-		if (destFolder.exists()) FileUtils.deleteDirectory(destFolder);
+		if (destFolder.exists()) FolderUtils.deleteDirectorySafe(destFolder);
 	}
 	
 	
@@ -114,7 +111,7 @@ public class ArchiveBuilderTests {
 			
 			assertTrue(file.exists());
 			
-			FileUtils.deleteDirectory(destFolder);
+			FolderUtils.deleteDirectorySafe(destFolder);
 		}
 	}
 		
@@ -143,7 +140,7 @@ public class ArchiveBuilderTests {
 			assertTrue(destFolder.exists());
 			assertTrue (FolderUtils.compareFolders(srcFolder, destFolder));
 			
-			FileUtils.deleteDirectory(destFolder);
+			FolderUtils.deleteDirectorySafe(destFolder);
 		}
 	}
 	
@@ -167,7 +164,7 @@ public class ArchiveBuilderTests {
 			assertTrue(destFolder.exists());
 			assertTrue (FolderUtils.compareFolders(srcFolder, destFolder));
 			
-			FileUtils.deleteDirectory(destFolder);
+			FolderUtils.deleteDirectorySafe(destFolder);
 		}
 	}
 	

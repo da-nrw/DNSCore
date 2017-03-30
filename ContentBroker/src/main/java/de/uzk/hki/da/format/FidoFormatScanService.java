@@ -28,8 +28,6 @@ import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 
 
-
-
 /**
  * Provides funcionalities for adding file format information to DAFile objects.
  *
@@ -38,7 +36,6 @@ import de.uzk.hki.da.utils.Path;
 public class FidoFormatScanService implements FormatScanService, Connector {
 	
 	private ScriptWrappedPronomFormatIdentifier pronom;
-	
 	/**
 	 * Instantiates a new format scan service.
 	 *

@@ -9,20 +9,8 @@
            http://www.springframework.org/schema/task
            http://www.springframework.org/schema/task/spring-task-3.0.xsd">
           
-          
-    <bean class="de.uzk.hki.da.format.FormatCmdLineError" id="formatCmdLineIptcError">
-  		<property name="errorText" value="Probleme mit IPTC Tag im IFD bei BigTiff"/>
-  		<property name="userExceptionId"><value type="de.uzk.hki.da.core.UserException$UserExceptionId">WRONG_DATA_TYPE_IPTC</value>
-  		</property>
-  		<property name="errOutContainsRegex" value="(?s).*RichTIFFIPTC.*TIFFErrors.*"/>
-  	</bean>
   	
-  	<bean class="de.uzk.hki.da.format.KnownFormatCmdLineErrors" id="knownErrors">
-  		<property name="formatCmdLineErrors">
-  		<list>
-  			<ref bean="formatCmdLineIptcError"/>
-  		</list>
-  		</property>
+  	<bean class="de.uzk.hki.da.format.KnownFormatCmdLineErrors" id="knownErrors" init-method="init">
   	</bean>
  </beans>
   

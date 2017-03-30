@@ -33,6 +33,7 @@ import de.uzk.hki.da.main.Diagnostics;
 import de.uzk.hki.da.test.CTTestHelper;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 
@@ -50,7 +51,7 @@ public class CTDiagnosticsTests {
 	private static final File FIDO_DIR = new File("fido");
 	private static final File JHOVE_DIR = new File("jhove");
 	private static final File TEST_PACKAGE_SRC = Path.makeFile(TC.TEST_ROOT_AT,"AT_CON2.tgz");
-	private static final File CI_DATABASE_CFG = new RelativePath("src","main","xml","hibernateCentralDB.cfg.xml.ci").toFile();
+	public static final File CI_DATABASE_CFG = new RelativePath("src","main","xml","hibernateCentralDB.cfg.xml.ci").toFile();
 
 	
 	private static final File FIDO_SH = new File("fido.sh");
@@ -63,7 +64,6 @@ public class CTDiagnosticsTests {
 		
 		FileUtils.copyFile(TEST_PACKAGE_SRC, C.BASIC_TEST_PACKAGE);
 		FileUtils.copyFile(CI_DATABASE_CFG, C.HIBERNATE_CFG);
-
 		FileUtils.copyFile(new File(TC.FIDO_SH_SRC), FIDO_SH);
 		
 		Runtime.getRuntime().exec("./"+C.CONFIGURE_SCRIPT);
@@ -72,17 +72,17 @@ public class CTDiagnosticsTests {
 	
 	@After
 	public void tearDown(){
-		FileUtils.deleteQuietly(C.CONF.toFile());
-		FileUtils.deleteQuietly(FIDO_DIR);
-		FileUtils.deleteQuietly(JHOVE_DIR);
-		FileUtils.deleteQuietly(new File(C.CONFIGURE_SCRIPT));
-		FileUtils.deleteQuietly(FIDO_SH);
+		FolderUtils.deleteQuietlySafe(C.CONF.toFile());
+		FolderUtils.deleteQuietlySafe(FIDO_DIR);
+		FolderUtils.deleteQuietlySafe(JHOVE_DIR);
+		FolderUtils.deleteQuietlySafe(new File(C.CONFIGURE_SCRIPT));
+		FolderUtils.deleteQuietlySafe(FIDO_SH);
+		CTTestHelper.cleanUpWhiteBoxTest();
 	}
 	
 	
 	@Test
 	public void stubDiagnostics() throws IOException{
-		
 		assertEquals(new Integer(0),Diagnostics.run());
 	}
 }

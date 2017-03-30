@@ -56,8 +56,14 @@ class StatusController {
 				result.origName = inst.origName
 				def packages = []
 				result.packages = packages
-				inst.packages.each() {pack ->
-						result.packages.add(pack.name)
+				//inst.packages.each() {pack ->
+				//		result.packages.add(pack.container_name)
+				//}
+				// rolled back to:
+				
+				def spackages = inst.packages.sort{it.id}
+				spackages.each() {pack ->
+					result.packages.add(pack.name)
 				}
 				result = [:]
 				results.result.add(result)
@@ -76,11 +82,22 @@ class StatusController {
 			rList = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn and q.obj.identifier=:idn",
 			 [idn: params.identifier, 
 				 csn: springSecurityService.currentUser.toString()]);
+		} else if (params.containerName) {
+			def criteria = QueueEntry.createCriteria ()
+			rList = criteria.listDistinct {
+				obj {
+					and {
+						user { eq 'shortName', springSecurityService.currentUser.toString() }
+						packages { eq 'container_name', params.containerName  }
+					}
+				}
+			}
 		}
 		boolean hasAQueueEntry = false
 		def queueResult = "package in progress";
 		// found a QueueEntry
-		rList.each()  { instance ->	
+			rList.each()  { instance ->
+			
 			result.type = "QueueEntry"
 			result.urn = instance.obj.urn
 			result.contractor = instance.obj.user.shortName;
@@ -95,6 +112,18 @@ class StatusController {
 			if (instance.status.endsWith("4")) {
 				queueResult = "package in progress error : (" + instance.status + ")"
 			}
+			if (instance.status.endsWith("5")) {
+				queueResult = "package in progress error : (" + instance.status + ")"
+			}
+			if (instance.status.endsWith("6")) {
+				queueResult = "package in progress error : (" + instance.status + ")"
+			}
+			if (instance.status.endsWith("7")) {
+				queueResult = "package in progress error : (" + instance.status + ")"
+			}
+			if (instance.status.endsWith("8")) {
+				queueResult = "package in progress error : (" + instance.status + ")"
+			}
 			if (instance.status.endsWith("0")) {
 				queueResult = "package in progress waiting : (" + instance.status + ")"
 			}
@@ -106,7 +135,6 @@ class StatusController {
 			hasAQueueEntry = true;
 			results.result.add(result)
 			result = [:]
-			
 		}  
 		
 		if (params.urn) {
@@ -117,6 +145,17 @@ class StatusController {
 		} 
 		if (params.identifier) {
 				rList = Object.findAllByUserAndIdentifierAndObject_stateBetween(contractor, params.identifier,50,100)	
+		}
+		if (params.containerName) {
+			def criteria = Object.createCriteria ()
+			rList = criteria.listDistinct {
+				and {
+					eq 'user', contractor
+				}
+				packages{
+					eq 'container_name', params.containerName 
+				}
+			}
 		}
 		// Found Object, must be true if we found anything (Queue or Object only)
 		boolean foundObject = false;
@@ -129,8 +168,13 @@ class StatusController {
 				result.identifier = instance.identifier
 				def packages = []
 				result.packages = packages;
-				instance.packages.each() {pack ->
-						result.packages.add(pack.name)
+				
+				//instance.packages.each() {pack ->
+				//		result.packages.add(pack.container_name)
+				//}
+				def spackages = instance.packages.sort{it.id}
+				spackages.each() {pack ->
+					result.packages.add(pack.name)
 				} 
 				results.result.add(result)
 				result = [:]

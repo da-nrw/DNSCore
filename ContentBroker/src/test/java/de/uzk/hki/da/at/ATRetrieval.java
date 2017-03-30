@@ -20,18 +20,30 @@ package de.uzk.hki.da.at;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import gov.loc.repository.bagit.Bag;
-import gov.loc.repository.bagit.BagFactory;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.apache.commons.io.FileUtils;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.uzk.hki.da.cb.PostRetrievalAction;
+import de.uzk.hki.da.model.Job;
+import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
+import de.uzk.hki.da.service.HibernateUtil;
+import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
+import gov.loc.repository.bagit.Bag;
+import gov.loc.repository.bagit.BagFactory;
 
 /**
  * Relates to AK-T/05 RetrieveObject - Happy Path Scenario.
@@ -40,35 +52,48 @@ import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 public class ATRetrieval extends AcceptanceTest{
 	
 	private static final String identifier = "ATRetrieval_identifier";
-	
+	static String originalName = "ATRetrieval";
 	@BeforeClass
 	public static void setUp() {
+		removeTMPFiles();
+		try {
+			ath.putAIPToLongTermStorage(identifier, originalName, new Date(), 100);
+		} catch (IOException e) {
+			e.printStackTrace();
+			fail(e.toString());
+		}
 	}
-	
 	
 	@AfterClass
 	public static void tearDown(){
-		distributedConversionAdapter.remove("aip/TEST/"+identifier); // TODO does it work?
-		new File("/tmp/"+identifier+".tar").delete();
-		FileUtils.deleteQuietly(new File("/tmp/"+identifier));
+		distributedConversionAdapter.remove("aip/"+testContractor.getUsername()+"/"+identifier); // TODO does it work?
+		removeTMPFiles();
 	}
 	
+	private static void removeTMPFiles(){
+		new File("/tmp/"+identifier+".tar").delete();
+		FolderUtils.deleteQuietlySafe(new File("/tmp/"+identifier));
+	}
+	
+	private static boolean nonPersistPropertiesExist(Object o){
+		return !o.getDocuments().isEmpty();
+	}
 	@Test
 	public void testHappyPath() throws Exception{
-		
-		String originalName = "ATRetrieval";
-		
-		ath.putAIPToLongTermStorage(identifier, originalName, new Date(), 100);
 		ath.createJob(originalName, "900");
 		ath.waitForJobToBeInStatus(originalName, "952");
 		
-		System.out.println(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+identifier+".tar").getAbsolutePath());
-		assertTrue(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+identifier+".tar").exists());
+		assertTrue("Temp Daten aus der Datenbank noch nicht bereinigt",!nonPersistPropertiesExist(ath.getObject(originalName)));
+		
+		System.out.println(new File(localNode.getUserAreaRootPath()+"/"+testContractor.getUsername()+"/outgoing/"+identifier+".tar").getAbsolutePath());
+		assertTrue(new File(localNode.getUserAreaRootPath()+"/"+testContractor.getUsername()+"/outgoing/"+identifier+".tar").exists());
 		
 		FileUtils.moveFileToDirectory(
-				new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+identifier+".tar"), 
+				new File(localNode.getUserAreaRootPath()+"/"+testContractor.getUsername()+"/outgoing/"+identifier+".tar"), 
 				new File("/tmp"), false);
-		
+		//after moving the retrieval-file, PostRetrievalAction(952) have to end the workflow
+		Thread.sleep((int)(PostRetrievalAction.PAUSE_DELAY * 1.2));
+		ath.awaitObjectState(originalName, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow); 
 		ArchiveBuilderFactory.getArchiveBuilderForFile(new File("/tmp/"+identifier+".tar"))
 			.unarchiveFolder(new File("/tmp/"+identifier+".tar"), new File ("/tmp/"));
 		
@@ -83,5 +108,46 @@ public class ATRetrieval extends AcceptanceTest{
 		Bag bag = bagFactory.createBag(file);
 		return bag.verifyValid().isSuccess();
 	}	
+
+	@Test
+	public void testTimebasedRemoveRetrievalAfter14DayBeforeTimeout() throws Exception {
+		int usualRetrievalTime = localNode.getRetrieval_remain_time();
+		
+		long subHours =  (usualRetrievalTime * 24L - 12L);
+
+		Date createTime = new Date(new Date().getTime() - subHours * 3600L * 1000L);
+		
+		ath.createJob(originalName, "900", createTime);
+		ath.waitForJobToBeInStatus(originalName, "952");
+
+		System.out.println(
+				new File(localNode.getUserAreaRootPath() + "/"+testContractor.getUsername()+"/outgoing/" + identifier + ".tar").getAbsolutePath());
+		assertTrue(new File(localNode.getUserAreaRootPath() + "/"+testContractor.getUsername()+"/outgoing/" + identifier + ".tar").exists());
+
+		Thread.sleep((int)(PostRetrievalAction.PAUSE_DELAY * 1.2));
+		ath.waitForJobToBeInStatus(originalName, "952");
+		assertTrue(new File(localNode.getUserAreaRootPath() + "/"+testContractor.getUsername()+"/outgoing/" + identifier + ".tar").exists());
+		new File(localNode.getUserAreaRootPath() + "/"+testContractor.getUsername()+"/outgoing/" + identifier + ".tar").delete();
+		Thread.sleep((int)(PostRetrievalAction.PAUSE_DELAY * 1.2));
+		assertTrue(ath.getJob(originalName) == null);
+	}
+
 	
+	@Test
+	public void testTimebasedRemoveRetrievalAfter14DayAfterTimeout() throws Exception {
+		int usualRetrievalTime = localNode.getRetrieval_remain_time();
+
+		long subHours =  (usualRetrievalTime * 24L + 12L);
+
+		Date createTime = new Date(new Date().getTime() - subHours * 3600L * 1000L);
+
+		ath.createJob(originalName, "900", createTime);
+		//ath.waitForJobToBeInStatus(originalName, "952");
+
+		Thread.sleep((int)(PostRetrievalAction.PAUSE_DELAY * 1.2));
+		ath.awaitObjectState(originalName, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+		assertTrue(ath.getJob(originalName) == null);
+		assertTrue(!new File(localNode.getUserAreaRootPath() + "/"+testContractor.getUsername()+"/outgoing/" + identifier + ".tar").exists());
+
+	}
 }

@@ -33,7 +33,9 @@ import de.uzk.hki.da.model.ObjectPremisXmlReader;
 import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.StringUtilities;
 
 
 /**
@@ -60,6 +62,9 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 	@Override
 	public boolean implementation() throws IOException {
 		
+		if (!StringUtilities.isSet(preservationSystem.getPresServer())){
+			return true;
+		}
 		logger.trace("Moving the dip content for presentation purposes out of the archival package.");
 		copyPIPSforReplication();
 		
@@ -77,16 +82,16 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 		
 		if (!premisObject.grantsRight("PUBLICATION")) {
 			logger.info("Publication Right not granted. Will delete datastreams");
-			if (wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile().exists()) FileUtils.deleteDirectory(wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile());
-			if (wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile().exists()) FileUtils.deleteDirectory(wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile());
+			if (wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile().exists()) FolderUtils.deleteDirectorySafe(wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile());
+			if (wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile().exists()) FolderUtils.deleteDirectorySafe(wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile());
 		} else {
 			if (!premisObject.grantsPublicationRight(Audience.PUBLIC)) {
 				logger.info("Publication Right for audience public not granted. Will delete public datastreams.");
-				if (wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile().exists()) FileUtils.deleteDirectory(wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile());
+				if (wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile().exists()) FolderUtils.deleteDirectorySafe(wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile());
 			}
 			if (!premisObject.grantsPublicationRight(Audience.INSTITUTION)) {
 				logger.info("Publication Right for audience institution not granted. Will delete institution datastreams.");
-				if (wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile().exists()) FileUtils.deleteDirectory(wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile());
+				if (wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile().exists()) FolderUtils.deleteDirectorySafe(wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile());
 			}
 		}
 	}
@@ -94,8 +99,8 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 
 	@Override
 	public void rollback() throws Exception {
-		if (wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile().exists()) FileUtils.deleteDirectory(wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile());
-		if (wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile().exists()) FileUtils.deleteDirectory(wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile());
+		if (wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile().exists()) FolderUtils.deleteDirectorySafe(wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile());
+		if (wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile().exists()) FolderUtils.deleteDirectorySafe(wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile());
 		logger.info("@Admin: You can safely roll back this job to status "+this.getStartStatus()+" now.");
 	}
 
@@ -125,17 +130,21 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 		
 		if (!wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile().exists())
 			distributedConversionAdapter.create(wa.pipSourceFolderRelativePath(WorkArea.PUBLIC).toString());
-		else
+		else {
+		
 			distributedConversionAdapter.register(wa.pipSourceFolderRelativePath(WorkArea.PUBLIC).toString(),
-				wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile().getAbsolutePath()
-				);
+			wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile().getAbsolutePath()
+			);
+			
+		}
 		
 		if (!wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile().exists())
 			distributedConversionAdapter.create(wa.pipSourceFolderRelativePath(WorkArea.WA_INSTITUTION).toString());
-		else
+		else {
 			distributedConversionAdapter.register(wa.pipSourceFolderRelativePath(WorkArea.WA_INSTITUTION).toString(),
-				wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile().getAbsolutePath()
-				);
+			wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile().getAbsolutePath()
+			);
+		}
 	}
 
 
@@ -155,14 +164,14 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 
 		if (Path.makeFile(wa.dataPath(),WorkArea.TMP_PIPS,WorkArea.PUBLIC).exists()){
 			logger.info("Copying public datastreams to " + wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile().getAbsolutePath());
-			if (wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile().exists()) FileUtils.deleteDirectory(wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile());
+			if (wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile().exists()) FolderUtils.deleteDirectorySafe(wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile());
 			FileUtils.copyDirectory(
 					Path.make(wa.dataPath(),WorkArea.TMP_PIPS,WorkArea.PUBLIC).toFile(), 
 					wa.pipSourceFolderPath(WorkArea.PUBLIC).toFile());
 		}
 		if (Path.makeFile(wa.dataPath(),WorkArea.TMP_PIPS,WorkArea.WA_INSTITUTION).exists()){
 			logger.info("Copying institution datastreams to " + wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION));
-			if (wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile().exists()) FileUtils.deleteDirectory(wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile());
+			if (wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile().exists()) FolderUtils.deleteDirectorySafe(wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile());
 			FileUtils.copyDirectory(
 					Path.make(wa.dataPath(),WorkArea.TMP_PIPS,WorkArea.PUBLIC).toFile(), 
 					wa.pipSourceFolderPath(WorkArea.WA_INSTITUTION).toFile());

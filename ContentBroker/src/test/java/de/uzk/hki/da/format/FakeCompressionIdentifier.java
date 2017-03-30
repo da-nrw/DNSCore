@@ -21,7 +21,6 @@ package de.uzk.hki.da.format;
 
 import java.io.File;
 
-import de.uzk.hki.da.format.FormatIdentifier;
 import de.uzk.hki.da.utils.CommandLineConnector;
 
 /**

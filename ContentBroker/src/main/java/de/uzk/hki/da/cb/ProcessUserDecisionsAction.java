@@ -88,6 +88,7 @@ public class ProcessUserDecisionsAction extends AbstractAction {
 				logger.info("System Question: " + C.QUESTION_STORE_ALLOWED_IPTC_ERROR
 						+ " User response: " + C.ANSWER_YO);
 				o.getLatestPackage().setPruneExceptions(true);
+				j.setQuestion(" ");
 				this.setEndStatus(C.WORKFLOW_STATUS_START___RESTART_INGEST_WORKFLOW);
 			} else {
 				logger.info("System Question: " + C.QUESTION_STORE_ALLOWED_IPTC_ERROR

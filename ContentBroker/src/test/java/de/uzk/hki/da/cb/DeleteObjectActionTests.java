@@ -27,7 +27,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,6 +34,7 @@ import org.junit.Test;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.WorkArea;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -59,7 +59,7 @@ public class DeleteObjectActionTests extends ConcreteActionUnitTest{
 	
 	@After
 	public void tearDown() throws IOException{
-		FileUtils.deleteDirectory(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.WORK,"TEST/identifier/data"));
+		FolderUtils.deleteDirectorySafe(Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.WORK,"TEST/identifier/data"));
 		Path.makeFile(WORK_AREA_ROOT_PATH,WorkArea.WORK,"TEST/abc.txt").delete();
 		Path.makeFile(INGEST_AREA_ROOT_PATH,"TEST/abc.txt").delete();
 	}

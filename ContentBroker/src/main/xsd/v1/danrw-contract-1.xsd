@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.danrw.de/contract/v1" xmlns:danrw="http://www.danrw.de/contract/v1" targetNamespace="http://www.danrw.de/contract/v1" elementFormDefault="qualified">
+	<xs:element name="rightsGranted" type="RightsGrantedType"/>
+	<xs:complexType name="RightsGrantedType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="publicationRight" type="PublicationRightType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="migrationRight" type="MigrationRightType" minOccurs="0"/>
+			<xs:element name="DDBexclusion">
+			    <xs:complexType/>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="PublicationRightType">
+		<xs:all>
+			<xs:element name="audience">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="PUBLIC"/>
+						<xs:enumeration value="INSTITUTION"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="startDate" type="xs:string" minOccurs="0"/>
+			<xs:element name="lawID" type="xs:string" minOccurs="0"/>
+			<xs:element name="restrictions">
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="expireDate" type="xs:date" minOccurs="0"/>
+						<xs:element name="restrictImage" minOccurs="0">
+							<xs:complexType>
+								<xs:all>
+									<xs:element name="width" type="xs:string" minOccurs="0"/>
+									<xs:element name="height" type="xs:string" minOccurs="0"/>
+									<xs:element name="footerText" type="xs:string" minOccurs="0"/>
+									<xs:element name="watermark" minOccurs="0">
+										<xs:complexType>
+											<xs:all>
+												<xs:element name="watermarkString" type="xs:string"/>
+												<xs:element name="pointSize" type="xs:integer"/>
+												<xs:element name="position" type="xs:string"/>
+												<xs:element name="opacity" type="xs:string"/>
+											</xs:all>
+										</xs:complexType>
+									</xs:element>
+								</xs:all>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="restrictVideo" minOccurs="0">
+							<xs:complexType>
+								<xs:all>
+									<xs:element name="width" type="xs:string" minOccurs="0"/>
+									<xs:element name="height" type="xs:string" minOccurs="0"/>
+									<xs:element name="duration" type="xs:integer" minOccurs="0"/>
+								</xs:all>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="restrictAudio" minOccurs="0">
+							<xs:complexType>
+								<xs:all>
+									<xs:element name="duration" type="xs:integer" minOccurs="0"/>
+								</xs:all>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="restrictText" minOccurs="0">
+							<xs:complexType>
+								<xs:all>
+									<xs:element name="certainPages" minOccurs="0">
+										<xs:simpleType>
+											<xs:list itemType="xs:integer"/>
+										</xs:simpleType>
+									</xs:element>
+								</xs:all>
+							</xs:complexType>
+						</xs:element>
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="MigrationRightType">
+		<xs:all>
+			<xs:element name="condition" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="NOTIFY"/>
+						<xs:enumeration value="CONFIRM"/>
+						<xs:enumeration value="NONE"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+</xs:schema>

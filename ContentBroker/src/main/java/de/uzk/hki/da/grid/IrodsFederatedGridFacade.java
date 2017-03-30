@@ -146,12 +146,13 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 			for (Node node: cnodes) {
 				String remoteGridPath = "/"+ node.getIdentifier() +"/federated" + gridPath;
 				logger.info("Checking existence of remote Copy at " + remoteGridPath);
-				if (iclc.existsWithChecksum(remoteGridPath, checksum)) {
-					numberOfCopies++;
+				try {
+					if (iclc.existsWithChecksum(remoteGridPath, checksum)) {
+						numberOfCopies++;
+					} 
+				} catch (Exception irex) {
+					logger.error("recieved Exception while checking "+ remoteGridPath + " "+ irex.getMessage());
 				}
-//				else {
-//					if (iclc.exists(remoteGridPath))  numberOfCopies++;
-//				} 
 			}
 			} else logger.debug("Cooperating nodes was NULL, checking only local copy");
 			if (numberOfCopies>= minNodes) {

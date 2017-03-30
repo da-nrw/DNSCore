@@ -25,12 +25,12 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
-import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.model.KnownError;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.Path;
@@ -39,24 +39,27 @@ public class FormatCmdLineExecutorTest {
 
 	String fileIptcError = Path.make(TC.TEST_ROOT_FORMAT,"bigTiff","268754.tif").toString(); 
 
-	private static final String BEANS_ERROR_INFRASTRUCTURE = "classpath*:META-INF/beans-infrastructure.knownerrors.xml";
-	
 	@Test
 	public void testGetRuntimeExceptionForNotPruned() {
 		File iptcerror = new File(fileIptcError);
+		KnownError ke = new KnownError();
+		ke.setStd_err_contains_regex("(?s).*RichTIFFIPTC.*TIFFErrors.*");
+		ke.setError_name("WRONG_DATA_TYPE_IPTC");
+		ke.setQuestion("IPTC_ERROR_STORE_ALLOWED?");
+		ke.setDescription("Probleme mit IPTC Tag im IFD bei BigTiff");
+		KnownFormatCmdLineErrors kle = new KnownFormatCmdLineErrors();
 		
-		AbstractApplicationContext context = 
-				new FileSystemXmlApplicationContext(BEANS_ERROR_INFRASTRUCTURE);
-		KnownFormatCmdLineErrors kle = (KnownFormatCmdLineErrors) context.getBean("knownErrors");
-		context.close();
-		
+		List<KnownError> kl = new ArrayList();
+		kl.add(ke);
+		kle.setFormatCmdLineErrors(kl);
 		String[] cmd = new String []{
 				"identify","-format","'%C'",iptcerror.getAbsolutePath()};
 	FormatCmdLineExecutor cle = new FormatCmdLineExecutor(new CommandLineConnector(),kle);
 	try {
 	cle.execute(cmd);
-	} catch (UserException e) {
+	} catch (UserFileFormatException e) {
 		assertTrue(e.getMessage().indexOf("Probleme")>=0);
+		assertTrue(!e.isWasPruned());
 		return;
 	}
 	fail();
@@ -66,16 +69,28 @@ public class FormatCmdLineExecutorTest {
 	@Test
 	public void testGetRuntimeExceptionForPrunedException() {
 		File iptcerror = new File(fileIptcError);
-		AbstractApplicationContext context = 
-				new FileSystemXmlApplicationContext(BEANS_ERROR_INFRASTRUCTURE);
-		KnownFormatCmdLineErrors kle = (KnownFormatCmdLineErrors) context.getBean("knownErrors");
-		context.close();
+		KnownError ke = new KnownError();
+		ke.setStd_err_contains_regex("(?s).*RichTIFFIPTC.*TIFFErrors.*");
+		ke.setError_name("WRONG_DATA_TYPE_IPTC");
+		ke.setQuestion("IPTC_ERROR_STORE_ALLOWED?");
+		ke.setDescription("Probleme mit IPTC Tag im IFD bei BigTiff");
+		KnownFormatCmdLineErrors kle = new KnownFormatCmdLineErrors();
 		
+		List<KnownError> kl = new ArrayList();
+		kl.add(ke);
+		kle.setFormatCmdLineErrors(kl);
 		String[] cmd = new String []{
 				"identify","-format","'%C'",iptcerror.getAbsolutePath()};
 	FormatCmdLineExecutor cle = new FormatCmdLineExecutor(new CommandLineConnector(),kle);
 	cle.setPruneExceptions(true);
+	try {
 	assertTrue(cle.execute(cmd));
+	} catch (UserFileFormatException e) {
+		assertTrue(e.getMessage().indexOf("Probleme")>=0);
+		assertTrue(e.isWasPruned());
+		return;
+	}
+	fail();
 	}
 
 }

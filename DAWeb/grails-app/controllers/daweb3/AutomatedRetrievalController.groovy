@@ -40,9 +40,8 @@ class AutomatedRetrievalController {
 		def jsonObject = request.JSON
 		
 		def instance = Object.findByIdentifier(jsonObject['identifier'])
-		
+		try {
 		if (instance!=null) {
-			
 			if (instance.user.shortName != user.getShortName()) {
 				result.msg = "Sie haben nicht die nötigen Berechtigungen, um das Objekt " + jsonObject['identifier'] + " anzufordern!"
 				render result as JSON
@@ -53,7 +52,7 @@ class AutomatedRetrievalController {
 			result.msg = "Erfolgreich Arbeitsauftrag erstellt für "  + jsonObject['identifier']
 			render result as JSON
 			return
-			}
+		}
 		instance = Object.findByUrn(jsonObject['urn'])
 		if (instance!=null) {
 			if (instance.user.shortName != user.getShortName()) {
@@ -80,7 +79,7 @@ class AutomatedRetrievalController {
 			render result as JSON
 			return
 		}
-		
+		} catch (Exception e) { }
 		result.msg = "Fehler bei Erstellung eines Arbeitsauftrages"
 		render result as JSON
 		

@@ -32,6 +32,7 @@ import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -67,9 +68,9 @@ public class FetchPIPsAction extends AbstractAction {
 		
 //		TODO check if source exists
 		distributedConversionAdapter.replicateToLocalNode(
-				makeRelativePIPSourceFolder(WorkArea.PUBLIC).toString());
+				makeRelativePIPSourceFolder(WorkArea.PUBLIC).toString(), n);
 		distributedConversionAdapter.replicateToLocalNode(
-				makeRelativePIPSourceFolder(WorkArea.WA_INSTITUTION).toString());
+				makeRelativePIPSourceFolder(WorkArea.WA_INSTITUTION).toString(),n);
 		
 		
 		if (makePIPSourceFolder(WorkArea.PUBLIC).exists()) {
@@ -131,10 +132,10 @@ public class FetchPIPsAction extends AbstractAction {
 	private void deletePreviousPIPs() throws IOException{	
 		
 		if (makePIPFolder(WorkArea.PUBLIC).exists());
-			FileUtils.deleteDirectory(makePIPFolder(WorkArea.PUBLIC));
+			FolderUtils.deleteDirectorySafe(makePIPFolder(WorkArea.PUBLIC));
 		
 		if (makePIPFolder(WorkArea.WA_INSTITUTION).exists())
-			FileUtils.deleteDirectory(makePIPFolder(WorkArea.WA_INSTITUTION));
+			FolderUtils.deleteDirectorySafe(makePIPFolder(WorkArea.WA_INSTITUTION));
 	}
 
 

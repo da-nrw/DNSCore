@@ -38,6 +38,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.apache.commons.io.FileUtils;
+import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.format.FileFormatFacade;
@@ -49,6 +50,7 @@ import de.uzk.hki.da.model.ObjectPremisXmlWriter;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PremisXmlValidator;
 import de.uzk.hki.da.model.PublicationRight;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -109,6 +111,7 @@ public class CreatePremisAction extends AbstractAction {
 		newPREMISObject.setIdentifier(o.getIdentifier());
 		newPREMISObject.setUrn(o.getUrn());
 		newPREMISObject.setContractor(o.getContractor());
+		newPREMISObject.setDdbExclusion(o.ddbExcluded());
 		
 		Object sipPREMISObject = parsePremisFile(
 				new File(Path.make(wa.dataPath(),o.getNameOfLatestBRep(),PREMIS).toString().replace("+b", "+a")));
@@ -139,8 +142,13 @@ public class CreatePremisAction extends AbstractAction {
 		logger.trace("trying to write new Premis file at " + newPREMISXml.getAbsolutePath());
 		new ObjectPremisXmlWriter().serialize(newPREMISObject, newPREMISXml,Path.make(wa.dataPath(),"jhove_temp"));
 		
-		if (!PremisXmlValidator.validatePremisFile(newPREMISXml))
-			throw new RuntimeException("PREMIS that has recently been created is not valid");
+		try {
+			if (!PremisXmlValidator.validatePremisFile(newPREMISXml))
+				throw new RuntimeException("PREMIS that has recently been created is not valid");
+		} catch (SAXException e) {
+			logger.error(e.getMessage());
+			throw new RuntimeException("PREMIS that has recently been created is not valid: "+e.getMessage());
+		}
 		logger.trace("Successfully created premis file");
 		o.getLatestPackage().getFiles().add(new DAFile(j.getRep_name()+"b",PREMIS));
 		
@@ -310,7 +318,7 @@ public class CreatePremisAction extends AbstractAction {
 		File tempFolder = new File("jhove/temp/" + j.getId());
 		if (tempFolder.exists())
 		try {
-			FileUtils.deleteDirectory(tempFolder);
+			FolderUtils.deleteDirectorySafe(tempFolder);
 		} catch (IOException e) {
 			throw new RuntimeException("Failed to delete directory " + tempFolder);
 		}
@@ -326,7 +334,7 @@ public class CreatePremisAction extends AbstractAction {
 		
 		File tempFolder = new File("jhove/temp/" + j.getId() + "/premis_output/");
 		if (tempFolder.exists())
-			FileUtils.deleteDirectory(tempFolder);
+			FolderUtils.deleteDirectorySafe(tempFolder);
 		
 		o.getLatestPackage().getEvents().removeAll(addedEvents);
 		

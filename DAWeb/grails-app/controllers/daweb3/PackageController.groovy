@@ -72,13 +72,17 @@ class PackageController {
 			}
 			log.debug("RETRIEVE:"+packages.join(","))
 			CbNode cbn = CbNode.get(grailsApplication.config.localNode.id)
+			if (packages.join(",").length()==0) {
+				result = "Es wurden keine Packages gewählt"
+			} else {
 			try {
-			qu.createJob( obj, "900", cbn.getName(), "RETRIEVE:"+packages.join(",")) 
-				result = "Packages konnten angefordert werden."
-			} catch ( Exception e ) { 
-				result = "Packages konnten nicht angefordert werden: "+ packages
-				log.error(result + " "+e.printStackTrace())
-			}		
+				qu.createJob( obj, "900", cbn.getName(), "RETRIEVE:"+packages.join(",")) 
+					result = "Packages konnten angefordert werden."
+				} catch ( Exception e ) { 
+					result = "Packages konnten nicht angefordert werden: "+ packages
+					log.error(result + " "+e.printStackTrace())
+				}		
+			}
 			flash.message = result
 			redirect(controller: "object", action: "show", id:obj.getId())
    

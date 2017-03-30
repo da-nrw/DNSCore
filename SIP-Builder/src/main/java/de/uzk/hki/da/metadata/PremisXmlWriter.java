@@ -654,7 +654,9 @@ public class PremisXmlWriter {
 	}
 	
 	private String formatDate(Date date, SimpleDateFormat format) {
-		format.setTimeZone(TimeZone.getTimeZone("GMT+01:00"));
+//		format.setTimeZone(TimeZone.getTimeZone("GMT+01:00"));
+		// DANRW-1233 
+		format.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"));
 		String dateString = format.format(date);
 		if (dateString.endsWith("00") && !dateString.endsWith(":00"))
 			dateString = dateString.substring(0, dateString.length() - 2) + ":00";

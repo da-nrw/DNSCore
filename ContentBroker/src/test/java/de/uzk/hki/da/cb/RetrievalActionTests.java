@@ -24,9 +24,6 @@ package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import gov.loc.repository.bagit.Bag;
-import gov.loc.repository.bagit.BagFactory;
-import gov.loc.repository.bagit.utilities.SimpleResult;
 
 import java.io.IOException;
 
@@ -40,7 +37,11 @@ import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.pkg.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
+import gov.loc.repository.bagit.Bag;
+import gov.loc.repository.bagit.BagFactory;
+import gov.loc.repository.bagit.utilities.SimpleResult;
 
 
 /**
@@ -97,10 +98,10 @@ public class RetrievalActionTests extends ConcreteActionUnitTest{
 	 */
 	@After
 	public void tearDown () throws IOException {
-		FileUtils.deleteDirectory(Path.makeFile(workAreaRootPath,WorkArea.WORK,o.getContractor().getShort_name(),TC.IDENTIFIER));
-		FileUtils.deleteDirectory(Path.makeFile(outgoingFolder,TC.IDENTIFIER));
+		FolderUtils.deleteDirectorySafe(Path.makeFile(workAreaRootPath,WorkArea.WORK,o.getContractor().getShort_name(),TC.IDENTIFIER));
+		FolderUtils.deleteDirectorySafe(Path.makeFile(outgoingFolder,TC.IDENTIFIER));
 		Path.makeFile(outgoingFolder,TC.IDENTIFIER+C.FILE_EXTENSION_TAR).delete();
-		FileUtils.deleteDirectory(userAreaRootPath.toFile());
+		FolderUtils.deleteDirectorySafe(userAreaRootPath.toFile());
 	}
 	
 	

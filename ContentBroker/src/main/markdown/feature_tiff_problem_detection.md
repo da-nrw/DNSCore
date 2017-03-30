@@ -126,3 +126,31 @@ wie AT-TIFFT-1
 * Der Vertragspartner bekommt einen weiteren Email-Report.
 * Der Email Report enthält einen Hinweis, dass die Löschung des Objektes durchgeführt werden wird.
 * Das Objekt taucht nicht in der Ansicht "eingelieferte Objekte" als "archiviert" auf.
+
+## Szenario AT-TIFFT-4 Archivierung nach Rückfrage dauerhaft durchführen 
+
+* Der Contractor will die Archivierung auf Grund des Hinweises dauerhaft durchführen lassen. 
+
+#### Kontext:
+
+* [ATInvalidTiffTagsInBigTiff](../../test/java/de/uzk/hki/da/at/ATInvalidTiffTagsInBigTiff.java)#testInvalidTiffTagsPermanentlyPruned
+
+#### Testpaket:
+
+[ATInvalidTiffTagsInBigTiff.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATInvalidTiffTagsInBigTiff.tgz)
+
+#### Vorbedingungen:
+
+wie AT-TIFFT-1
+
+#### Durchführung:
+
+1. zunächst wie AT-TIFFT-1.
+1. Nach Erhalt des Email-Reports: Der Contractor will die Entscheidung dauerhaft hinterlegen. 
+1. In der Maske "System-Events" hinterlegt der Contractor für die Fehlerklasse einen Systemdienst (AutomaticCheckIPTCErrorEvent).  
+
+#### Akzeptanzkriterien:
+
+* wie AT-TIFFT-1
+* Ohne Einsichtnahme in die Maske "Entscheidungsübersicht" läuft die Datei nach Hinterlegung des Systemdiensts automatisch ein und taucht in den "eingelieferten Objekten" auf.
+

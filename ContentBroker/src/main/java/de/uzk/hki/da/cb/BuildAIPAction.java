@@ -22,11 +22,10 @@ package de.uzk.hki.da.cb;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
-
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.pkg.BagitUtils;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -94,7 +93,7 @@ public class BuildAIPAction extends AbstractAction {
 			if (!children[i].contains(repName) &&
 					Path.make(objectPath,WorkArea.DATA,children[i]).toFile().isDirectory()) {
 				try {
-					FileUtils.deleteDirectory(Path.make(objectPath,WorkArea.DATA,children[i]).toFile());
+					FolderUtils.deleteDirectorySafe(Path.make(objectPath,WorkArea.DATA,children[i]).toFile());
 				} catch (IOException e) {
 					throw new RuntimeException("Couldn't delete folder: "+children[i], e);
 				}

@@ -19,7 +19,6 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.cb.ArchiveReplicationCheckAction.clearNonpersistentObjectProperties;
 import static de.uzk.hki.da.cb.BuildAIPAction.deleteBagitFiles;
 import static de.uzk.hki.da.cb.RestructureAction.makeRepOfSIPContent;
 import static de.uzk.hki.da.cb.RestructureAction.revertToSIPContent;
@@ -28,10 +27,9 @@ import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
-
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.model.WorkArea;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 
@@ -112,9 +110,9 @@ public class RestartIngestWorkflowAction extends AbstractAction {
 	private void deleteTemporaryPIPs() throws IOException {
 		
 		if (makePIPSourceFolder(WorkArea.PUBLIC).exists())
-			FileUtils.deleteDirectory(makePIPSourceFolder(WorkArea.PUBLIC));
+			FolderUtils.deleteDirectorySafe(makePIPSourceFolder(WorkArea.PUBLIC));
 		if (makePIPSourceFolder(WorkArea.WA_INSTITUTION).exists())
-			FileUtils.deleteDirectory(makePIPSourceFolder(WorkArea.WA_INSTITUTION));
+			FolderUtils.deleteDirectorySafe(makePIPSourceFolder(WorkArea.WA_INSTITUTION));
 	}
 	
 	private File makePIPSourceFolder(String pipType) {

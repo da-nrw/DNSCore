@@ -18,19 +18,21 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.utils.FolderUtils;
 
 /** ComponentTest of IrodsCommandLineConnector
  * @author Jens Peters
@@ -50,13 +52,14 @@ public class CTIrodsCommandLineConnector {
 	File file;
 	String md5sum;
 	String testCollPhysicalPathOnLTA = "/ci/archiveStorage/aip/connector";
-	String archiveStorage = "ciArchiveResource";
+	String archiveStorage = "ciArchiveRescGroup";
 	
 	String workingResc = "ciWorkingResource";
 	static String workingRescPhysicalPath = "/ci/storage/WorkArea";
 	
 	@Before
-	public void before() throws IOException {
+	public void before() throws IOException, RuntimeException {
+		new File(testCollPhysicalPathOnLTA+"/urn.tar").delete();
 		iclc = new IrodsCommandLineConnector();
 		file = createTestFile();
 		String destColl = 
@@ -106,12 +109,14 @@ public class CTIrodsCommandLineConnector {
 		iclc.remove(daolong);
 		iclc.remove("/c-i/aip/connector");
 		iclc.remove("/c-i/aip/connector2");
-	}
+
+		new File(testCollPhysicalPathOnLTA+"/urn.tar").delete();
+		}
 	
 	@AfterClass
-	public static void cleanup () {
-		FileUtils.deleteQuietly(new File(tmpDir));
-		FileUtils.deleteQuietly(new File(workingRescPhysicalPath + "/aip/connector/urn3.tar"));
+	public static void cleanup () throws IOException {
+		FolderUtils.deleteDirectorySafe(new File(tmpDir));
+		FolderUtils.deleteQuietlySafe(new File(workingRescPhysicalPath + "/aip/connector/urn3.tar"));
 	}
 
 	@Test
@@ -131,6 +136,7 @@ public class CTIrodsCommandLineConnector {
 	
 	@Test
 	public void destroyedFile() throws IOException {
+	
 		destroyTestFileOnLongTermStorage();
 		assertFalse(iclc.isValid(dao));
 		assertTrue(iclc.existsWithChecksum(dao, md5sum));
@@ -148,7 +154,7 @@ public class CTIrodsCommandLineConnector {
 	@Test
 	public void testIrule() throws IOException {
 		String out = iclc.executeIrule(testiRule());
-		assertTrue(out.contains("numberOfCopies = 1"));
+		assertTrue(out.contains("5"));
 	}
 	
 	@Test
@@ -193,8 +199,12 @@ public class CTIrodsCommandLineConnector {
 	
 	@Test
 	public void testIReg() throws IOException {
+		String destColl = new File(dao3).getParentFile().getAbsolutePath();
+		iclc.unregColl(destColl);
+		assertFalse(iclc.exists(destColl));
 		new File(workingRescPhysicalPath + "/aip/connector/urn3.tar").createNewFile();
-		iclc.ireg(new File(workingRescPhysicalPath + "/aip/connector/urn3.tar"), workingResc, dao3, true);
+		iclc.ireg(new File(workingRescPhysicalPath + "/aip/connector/"), workingResc, destColl, true);
+		assertTrue(iclc.exists(destColl));;
 		assertTrue(iclc.exists(dao3));
 		assertTrue(new File(workingRescPhysicalPath + "/aip/connector/urn3.tar").exists());
 	}
@@ -220,13 +230,14 @@ public class CTIrodsCommandLineConnector {
 	private File testiRule() throws IOException {
 		File testFile = new File(tmpDir + "test.r");
 		FileWriter writer = new FileWriter(testFile ,false);
-		writer.write("checkNumberTest { \n " +
-		"*numberOfCopies=0;\n" +
-		"acGetNumberOfCopies(*dao,*numberOfCopies);\n"
+		writer.write("checkiRule { \n " +
+		"*len=0;\n" +
+		"msiStrlen(\"hallo\",*len);\n"
 		+"}\n"
-		+"INPUT *dao=\""+dao+"\"\n"
-		+"OUTPUT *numberOfCopies");
+		+"INPUT null\n"
+		+"OUTPUT *len");
 		writer.close(); 
+		
 		return testFile;
 	}
 	

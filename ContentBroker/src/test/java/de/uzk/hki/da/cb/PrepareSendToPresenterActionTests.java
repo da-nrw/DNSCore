@@ -34,6 +34,7 @@ import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.WorkArea;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.RelativePath;
 
 
@@ -113,10 +114,10 @@ public class PrepareSendToPresenterActionTests extends ConcreteActionUnitTest{
 	@After
 	public void tearDown() throws IOException {
 		
-		FileUtils.deleteDirectory(new File(WORK_AREA_ROOT_PATH+"/work/TEST/identifier_1"));
-		FileUtils.deleteDirectory(new File(WORK_AREA_ROOT_PATH+"/work/TEST/identifier_2"));
-		FileUtils.deleteDirectory(new File(WORK_AREA_ROOT_PATH+"/pips/institution"));
-		FileUtils.deleteDirectory(new File(WORK_AREA_ROOT_PATH+"/pips/public"));
+		FolderUtils.deleteDirectorySafe(new File(WORK_AREA_ROOT_PATH+"/work/TEST/identifier_1"));
+		FolderUtils.deleteDirectorySafe(new File(WORK_AREA_ROOT_PATH+"/work/TEST/identifier_2"));
+		FolderUtils.deleteDirectorySafe(new File(WORK_AREA_ROOT_PATH+"/pips/institution"));
+		FolderUtils.deleteDirectorySafe(new File(WORK_AREA_ROOT_PATH+"/pips/public"));
 	}
 	
 	

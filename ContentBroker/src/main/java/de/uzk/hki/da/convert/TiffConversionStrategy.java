@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.format.FormatCmdLineExecutor;
 import de.uzk.hki.da.format.ImageMagickSubformatIdentifier;
 import de.uzk.hki.da.format.KnownFormatCmdLineErrors;
+import de.uzk.hki.da.format.UserFileFormatException;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
@@ -85,6 +86,7 @@ public class TiffConversionStrategy implements ConversionStrategy {
 
 		String input = wa.toFile(ci.getSource_file()).getAbsolutePath();
 		String[] commandAsArray;
+		String prunedError = "";
 		FormatCmdLineExecutor cle = new FormatCmdLineExecutor(cliConnector, knownErrors);
 		try {
 			// Codec identification is done by subformatidentification
@@ -108,8 +110,14 @@ public class TiffConversionStrategy implements ConversionStrategy {
 			logger.debug("Try to Execute conversion command: " +  StringUtils.join(commandAsArray,","));
 			
 			cle.setPruneExceptions(prune);
+			try {
 			cle.execute(commandAsArray);
-		} catch (IOException e1) {
+			} catch (UserFileFormatException ufe) {
+				if (!ufe.isWasPruned())
+					throw ufe;
+				prunedError = " " + ufe.getKnownError().getError_name()  + " ISSUED WAS PRUNED BY USER!";
+			}
+			} catch (IOException e1) {
 			throw new RuntimeException(e1);
 		}
 
@@ -125,10 +133,7 @@ public class TiffConversionStrategy implements ConversionStrategy {
 		List<File> results = findFilesWithWildcard(
 				new File(FilenameUtils.getFullPath(result.getAbsolutePath())),
 				baseName + "*." + extension);
-		String prunedError = "";
-		if (cle.getError()!=null && prune){
-			prunedError = " " + cle.getError().getUserExceptionId().toString()  + " ISSUED WAS PRUNED BY USER!";
-		}
+		
 		for (File f : results) {
 			DAFile daf = new DAFile(object.getNameOfLatestBRep(),
 					StringUtilities.slashize(ci.getTarget_folder())

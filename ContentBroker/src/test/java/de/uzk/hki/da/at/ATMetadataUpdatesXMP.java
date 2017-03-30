@@ -26,7 +26,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
@@ -38,6 +37,7 @@ import org.junit.Test;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
@@ -49,7 +49,6 @@ public class ATMetadataUpdatesXMP extends AcceptanceTest{
 	private static final Namespace RDF_NS = Namespace.getNamespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
 	private static final String origName = "ATMetadataUpdatesXMP";
 	private static Object object;
-	private static Path contractorsPipsPublic;
 	private static final File retrievalFolder = new File("/tmp/XMPunpacked");
 	
 	@BeforeClass
@@ -59,13 +58,13 @@ public class ATMetadataUpdatesXMP extends AcceptanceTest{
 		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForDefinedPublishedState(origName);
 		object=ath.getObject(origName);
-		ath.waitForObjectToBeIndexed(metadataIndex,object.getIdentifier());
+		ath.waitForObjectToBeIndexed(metadataIndex,getTestIndex(),object.getIdentifier());
 	}
 	
 	
 	@AfterClass
 	public static void tearDown() throws IOException{
-		FileUtils.deleteDirectory(retrievalFolder);
+		FolderUtils.deleteDirectorySafe(retrievalFolder);
 		Path.makeFile("tmp",object.getIdentifier()+".pack_1.tar").delete(); // retrieved dip
 		
 	}
@@ -95,11 +94,9 @@ public class ATMetadataUpdatesXMP extends AcceptanceTest{
 	
 	@Test
 	public void testPres() throws FileNotFoundException, JDOMException, IOException {
-		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		Document doc = builder.build
-				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "XMP.xml").toFile()));
-		assertTrue(getURL(doc).contains("http://data.danrw.de/file/"+object.getIdentifier()) && (getURL(doc).endsWith(".jpg")));
+		Document doc = builder.build(new FileReader(ath.loadFileFromPip(object.getIdentifier(), "XMP.xml")));
+		assertTrue(getURL(doc).contains(preservationSystem.getUrisFile()+"/"+object.getIdentifier()) && (getURL(doc).endsWith(".jpg")));
 	}
 	
 	@Test
@@ -120,12 +117,11 @@ public class ATMetadataUpdatesXMP extends AcceptanceTest{
 	@Test
 	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		Document doc = builder.build
-				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "EDM.xml").toFile()));
+		Document doc = builder.build(new FileReader(ath.loadFileFromPip(object.getIdentifier(), "EDM.xml")));
 		String fullId = doc.getRootElement()
 					.getChild("ProvidedCHO", C.EDM_NS)
 					.getAttributeValue("about", C.RDF_NS);
-		assertTrue(fullId.equals("http://data.danrw.de/cho/"+object.getIdentifier()+"-1"));
+		assertTrue(fullId.equals(preservationSystem.getUrisCho()+"/"+object.getIdentifier()+"-1"));
 		String title = doc.getRootElement().getChild("ProvidedCHO", C.EDM_NS).getChild("title", C.DC_NS).getValue();
 		assertTrue(title.equals("Martinsfeuer"));
 		String hasType = doc.getRootElement().getChild("ProvidedCHO", C.EDM_NS).getChild("hasType", C.EDM_NS).getValue();

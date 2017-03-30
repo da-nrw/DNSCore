@@ -6,23 +6,69 @@
 		<g:set var="entityName" value="${message(code: 'object.label', default: 'Object')}" />
 		<title>DA-NRW Objekte</title>
 		
+		<r:require module="messagebox"/>
+	<r:script>
+			$(function() {
+				$("#filter").accordion({ collapsible: true, active: false });
+			});
+			function queuedFor(result) {
+				var type = "error";
+				if (result.success) type = "info";
+				var messageBox = $("<div class='message-box'></div>");
+				$("#page-body").prepend(messageBox);
+				messageBox.message({
+					type: type, message: result.msg
+				});
+			}
+		</r:script>
 		
 		<r:require module="messagebox"/>
 	</head>
 	<body>
-			<script type="text/javascript">
+		<a href="#list-object" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
+		<div class="nav" role="navigation">
+			<ul>
+				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
+			</ul>
+		</div>
+		<h1>eingelieferte AIP's</h1>
+		<script type="text/javascript">
 		 $(document).ready(function(){
-				$("#filter2").accordion({ collapsible: true, active: false });
-				<g:if test="${filterOn==1}">
-				$( "#filter2" ).accordion( "option", "active", 0 );
-				</g:if>
+			$("#filter").accordion({ collapsible: true, active: false });
+			<g:if test="${filterOn==1}">
+ 				$( "#filter" ).accordion( "option", "active", 1);
+			</g:if>
 		 });
-		</script>	
-		<h1 style="text-align: center;">eingelieferte AIP's</h1>
-		<div id="filter2" style="margin: 0.8em 0 0.3em;">
-			<h1>
-				<a href="#">Filter</a>
-			</h1> 
+		</script>
+		<div id="filter" style="margin: 0.8em 0 0.3em">
+			<h1><a href="#">Filter
+			<g:if test="${filterOn==1}">
+			 
+				<g:if test="${params.search}"><br>
+		    		<g:if test="${!params.search?.origName.isEmpty()}">
+		    			<span style="margin-right: 25px"><i>Originalname: </i>${params.search?.origName}</span>
+		    		</g:if> 
+		    		<g:if test="${!params.search?.urn.isEmpty()}">
+		    			 <span style="margin-right: 25px"><i>URN: </i>${params.search?.urn}</span>
+		    		</g:if> 
+		    		<g:if test="${!params.search?.identifier.isEmpty()}">
+		    			<span style="margin-right: 25px"><i>Identifier: </i>${params.search?.identifier}</span>
+		    		</g:if> 
+		    		<div>
+						<g:if test="${params.searchDateType != null } ">
+	    					<g:if test="${params.searchDateType == 'createdAt'}">Datumsbereich erstellt</g:if>
+	    					<g:if test="${params.searchDateType == 'modifiedAt'}">Datumsbereich geändert</g:if>
+			    		</g:if>   
+			    		<g:if test="${!params.searchDateStart.isEmpty()}">
+			    			<span style="margin-right: 25px"><i>Von Datum: </i>${params.searchDateStart}</span>
+			    		</g:if> 	
+			    		<g:if test="${!params.searchDateEnd.isEmpty()}">
+			    			<span style="margin-right: 25px"><i>Bis Datum: </i>${params.searchDateEnd}</span>
+			    		</g:if> 
+			    	</div>
+		    	</g:if> 
+		   		</g:if>
+			</a></h1>
             <g:form name="searchForm" action="list">
             <g:hiddenField name="filterOn" value="${filterOn}" />
             <div>
@@ -45,10 +91,10 @@
             				<g:textField name="search.identifier" value="${params.search?.identifier}" size="50"/>
             			</td>
             		</tr>
-            		<tr>
-            			<td>Datumsbereich:</td>
+	            		<tr>
+	            		<td>Datumsbereich:</td>
 	            		<td>
-	            			<g:select id="datetype" name="searchDateType" from="${['Datum erstellt','Datum geändert']}" keys="${['created','modified']}" value="${params.searchDateType}" />
+	            			<g:select id="datetype" name="searchDateType" from="${['Datum erstellt','Datum geändert']}" keys="${['createdAt','modifiedAt']}" value="${params.searchDateType}" noSelection="[null:'Bitte auswählen']" />
 	            		</td>
 					</tr>
             		<tr>
@@ -71,10 +117,8 @@
             		</tr>
             		<tr>
             			<td></td>
-            			<td>
-            				<g:submitButton name="submit" value="Filter anwenden"/><g:submitButton name="loeschen" type="submit" value="Filter löschen"/>
-            			</td>
-            			
+            			<td><g:submitButton name="submit" value="Filter anwenden"/>
+            				<g:submitButton name="loeschen" type="submit" value="Filter löschen"/></td>
             			<script type="text/javascript">
             			$(document).ready(function(){
             				 	$("#loeschen").click(function() {                				 
@@ -89,6 +133,9 @@
 			            			 	case 'hidden':
 			                                $(this).val('0');
 			                                break;
+			            				case 'select-one':
+				                            $(this).val(null);
+				                            break;
 			                            }
 			            			});
             				    });
@@ -99,13 +146,17 @@
             </g:form>
         </div>
 		<div id="list-object" class="content scaffold-list" role="main">
-			<h1>Ihre DA-NRW Objekte (${objectInstanceList.size()} Treffer von ${totalObjs} insgesamt)</h1>
+			<h1>Ihre DA-NRW Objekte(${objectInstanceList.size()} Treffer von ${totalObjs} insgesamt)</h1>
 			<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 			</g:if>
-			<g:formRemote name="myForm" on404="alert('not found!')" url="[controller: 'object', action:'queueAllForRetrieval']" onLoaded="queuedFor(data)">
-			<div class="table-responsive">
-				<table class="table">
+
+			
+			<g:formRemote name="myForm" on404="alert('not found!')" 
+              url="[controller: 'object', action:'queueAllForRetrieval']" 
+              onLoaded="queuedFor(data)">
+			   <div style="overflow:auto; height: 600px">
+				<table>
 					<thead>
 						<tr>
 							<th>
@@ -113,8 +164,8 @@
 							</th>
 							<g:sortableColumn property="urn" title="${message(code: 'object.urn.label', default: 'Urn')}" />						
 							<g:sortableColumn property="origName" title="${message(code: 'object.origName.label', default: 'Orig Name')}" />
-							<g:sortableColumn property="created" title="${message(code: 'object.created.label', default: 'Erstellt')}" />
-							<g:sortableColumn property="modified" title="${message(code: 'object.modified.label', default: 'Geändert')}" />
+							<g:sortableColumn property="createdAt" title="${message(code: 'object.created.label', default: 'Erstellt')}" />
+							<g:sortableColumn property="modifiedAt" title="${message(code: 'object.modified.label', default: 'Geändert')}" />
 							<th style="text-align: center">Publ.</th>
 							<th style="text-align: center">Anfordern				
 								<g:if test="${!paginate}">
@@ -176,6 +227,7 @@
 				</table>
 				</div>
 				StandardView
+			   </div>
 			</g:formRemote>
 			<g:if test="${paginate}" >
 				<!-- workaround weil paginate die search map zerhackstückelt -->

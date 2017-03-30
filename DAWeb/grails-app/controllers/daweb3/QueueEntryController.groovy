@@ -299,7 +299,7 @@ class QueueEntryController {
 		params.remove("modifyIds")
 		redirect(action: "list")
 	}
-	
+
 	/**
 	 * List Migration requests
 	 * 

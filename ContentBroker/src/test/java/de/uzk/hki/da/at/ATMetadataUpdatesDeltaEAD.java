@@ -9,7 +9,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -24,6 +23,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
@@ -36,7 +36,6 @@ import de.uzk.hki.da.utils.XMLUtils;
 public class ATMetadataUpdatesDeltaEAD extends AcceptanceTest{
 
 	private static final String ORIG_NAME_ORIG = "ATMetadataUpdatesDeltaEAD";
-	private static Path contractorsPipsPublic;
 	private static Object o;
 	private static final File retrievalFolder = new File("/tmp/unpackedDIP");
 	private MetadataHelper mh = new MetadataHelper();
@@ -45,9 +44,6 @@ public class ATMetadataUpdatesDeltaEAD extends AcceptanceTest{
 	
 	@BeforeClass
 	public static void setUp() throws IOException, InterruptedException {
-		
-		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
-		
 		ath.putSIPtoIngestArea(ORIG_NAME_ORIG+"_orig","tgz", ORIG_NAME_ORIG);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForDefinedPublishedState(ORIG_NAME_ORIG);
@@ -61,7 +57,7 @@ public class ATMetadataUpdatesDeltaEAD extends AcceptanceTest{
 	
 	@AfterClass
 	public static void tearDownAfterClass() throws IOException{
-		FileUtils.deleteDirectory(retrievalFolder);
+		FolderUtils.deleteDirectorySafe(retrievalFolder);
 		Path.makeFile("tmp",o.getIdentifier()+".pack_2.tar").delete(); // retrieved dip
 	}
 	
@@ -128,58 +124,59 @@ public class ATMetadataUpdatesDeltaEAD extends AcceptanceTest{
 	public void testPres() throws FileNotFoundException, JDOMException, IOException {
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		FileReader fr1 = new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), "mets_2_32044.xml").toFile());
+		
+		FileReader fr1 = new FileReader(ath.loadFileFromPip(o.getIdentifier(), "mets_2_32044.xml"));
 		Document doc1 = builder.build(fr1);
 		List<Element> metsFileElements1 = mh.getMetsFileElements(doc1);
 		Element fileElement1 = metsFileElements1.get(0);
 		String metsURL1 = mh.getMetsHref(fileElement1);
-		assertTrue(metsURL1.equals("http://data.danrw.de/file/"+o.getIdentifier()+"/_c3836acf068a9b227834e0adda226ac2.jpg"));
+		assertTrue(metsURL1.equals(preservationSystem.getUrisFile()+"/"+o.getIdentifier()+"/_c3836acf068a9b227834e0adda226ac2.jpg"));
 		assertEquals("URL", mh.getMetsLoctype(fileElement1));
 		assertEquals(C.MIMETYPE_IMAGE_JPEG, mh.getMimetypeInMets(fileElement1));
 		fr1.close();
 		
-		FileReader fr2 = new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), "mets_2_32045.xml").toFile());
+		FileReader fr2 = new FileReader(ath.loadFileFromPip(o.getIdentifier(), "mets_2_32045.xml"));
 		Document doc2 = builder.build(fr2);
 		List<Element> metsFileElements2 = mh.getMetsFileElements(doc2);
 		Element fileElement2 = metsFileElements2.get(0);
 		String metsURL2 = mh.getMetsHref(fileElement2);
-		assertTrue(metsURL2.equals("http://data.danrw.de/file/"+o.getIdentifier()+"/_c8079103e5eecf45d2978a396e1839a9.jpg"));
+		assertTrue(metsURL2.equals(preservationSystem.getUrisFile()+"/"+o.getIdentifier()+"/_c8079103e5eecf45d2978a396e1839a9.jpg"));
 		assertEquals("URL", mh.getMetsLoctype(fileElement2));
 		assertEquals(C.MIMETYPE_IMAGE_JPEG, mh.getMimetypeInMets(fileElement2));
 		fr2.close();
 		
-		FileReader fr3 = new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), "mets_2_32046.xml").toFile());
+		FileReader fr3 = new FileReader(ath.loadFileFromPip(o.getIdentifier(), "mets_2_32046.xml"));
 		Document doc3 = builder.build(fr3);
 		List<Element> metsFileElements3 = mh.getMetsFileElements(doc3);
 		Element fileElement3 = metsFileElements3.get(0);
 		String metsURL3 = mh.getMetsHref(fileElement3);
-		assertTrue(metsURL3.equals("http://data.danrw.de/file/"+o.getIdentifier()+"/_fa55eb875c9ad7ceedb0f61868daf0e4.jpg"));
+		assertTrue(metsURL3.equals(preservationSystem.getUrisFile()+"/"+o.getIdentifier()+"/_fa55eb875c9ad7ceedb0f61868daf0e4.jpg"));
 		assertEquals("URL", mh.getMetsLoctype(fileElement3));
 		assertEquals(C.MIMETYPE_IMAGE_JPEG, mh.getMimetypeInMets(fileElement3));
 		fr3.close();
 		
-		FileReader fr4 = new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), "mets_2_32047.xml").toFile());
+		FileReader fr4 = new FileReader(ath.loadFileFromPip(o.getIdentifier(), "mets_2_32047.xml"));
 		Document doc4 = builder.build(fr4);
 		List<Element> metsFileElements4 = mh.getMetsFileElements(doc4);
 		Element fileElement4 = metsFileElements4.get(0);
 		String metsURL4 = mh.getMetsHref(fileElement4);
-		assertTrue(metsURL4.equals("http://data.danrw.de/file/"+o.getIdentifier()+"/_a66c85bf5ddf7683f7999cb4a20bfd61.jpg"));
+		assertTrue(metsURL4.equals(preservationSystem.getUrisFile()+"/"+o.getIdentifier()+"/_a66c85bf5ddf7683f7999cb4a20bfd61.jpg"));
 		assertEquals("URL", mh.getMetsLoctype(fileElement4));
 		assertEquals(C.MIMETYPE_IMAGE_JPEG, mh.getMimetypeInMets(fileElement4));
 		fr4.close();
 		
-		FileReader fr5 = new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), "mets_2_32048.xml").toFile());
+		FileReader fr5 =new FileReader(ath.loadFileFromPip(o.getIdentifier(), "mets_2_32048.xml"));
 		Document doc5 = builder.build(fr5);
 		List<Element> metsFileElements5 = mh.getMetsFileElements(doc5);
 		Element fileElement5 = metsFileElements5.get(0);
 		String metsURL5 = mh.getMetsHref(fileElement5);
-		assertTrue(metsURL5.equals("http://data.danrw.de/file/"+o.getIdentifier()+"/_12b1c1ce98f2726c6d9c91d0e589979d.jpg"));
+		assertTrue(metsURL5.equals(preservationSystem.getUrisFile()+"/"+o.getIdentifier()+"/_12b1c1ce98f2726c6d9c91d0e589979d.jpg"));
 		assertEquals("URL", mh.getMetsLoctype(fileElement5));
 		assertEquals(C.MIMETYPE_IMAGE_JPEG, mh.getMimetypeInMets(fileElement5));
 		fr5.close();
 		
 		
-		FileReader fr = new FileReader(Path.make(contractorsPipsPublic, o.getIdentifier(), EAD_XML).toFile());
+		FileReader fr = new FileReader(ath.loadFileFromPip(o.getIdentifier(), EAD_XML));
 		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document eadDoc = eadSaxBuilder.build(fr);
 		EadParser ep = new EadParser(eadDoc);
@@ -188,15 +185,15 @@ public class ATMetadataUpdatesDeltaEAD extends AcceptanceTest{
 		assertTrue(metsReferences.size()==5);
 		for(String metsRef : metsReferences) {
 			if(metsRef.contains("mets_2_32044.xml")) {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ o.getIdentifier() +"/mets_2_32044.xml"));
+				assertTrue(metsRef.equals(preservationSystem.getUrisFile()+"/"+ o.getIdentifier() +"/mets_2_32044.xml"));
 			} else if(metsRef.contains("mets_2_32045.xml")) {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ o.getIdentifier() +"/mets_2_32045.xml"));
+				assertTrue(metsRef.equals(preservationSystem.getUrisFile()+"/"+ o.getIdentifier() +"/mets_2_32045.xml"));
 			} else if(metsRef.contains("mets_2_32046.xml")) {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ o.getIdentifier() +"/mets_2_32046.xml"));
+				assertTrue(metsRef.equals(preservationSystem.getUrisFile()+"/"+ o.getIdentifier() +"/mets_2_32046.xml"));
 			} else if(metsRef.contains("mets_2_32047.xml")) {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ o.getIdentifier() +"/mets_2_32047.xml"));
+				assertTrue(metsRef.equals(preservationSystem.getUrisFile()+"/"+ o.getIdentifier() +"/mets_2_32047.xml"));
 			} else {
-				assertTrue(metsRef.equals("http://data.danrw.de/file/"+ o.getIdentifier() +"/mets_2_32048.xml"));
+				assertTrue(metsRef.equals(preservationSystem.getUrisFile()+"/"+ o.getIdentifier() +"/mets_2_32048.xml"));
 			}
 		}
 		fr.close();

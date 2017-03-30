@@ -23,10 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,6 +33,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 
 
@@ -72,7 +71,15 @@ public class User{
 	private String emailAddress;
 	@Column(name="mails_pooled", columnDefinition="boolean")
 	private Boolean mailsPooled;
-
+	@Column(name="delta_on_urn", columnDefinition="boolean")
+	private Boolean deltaOnUrn;
+	@Column(name="use_public_mets", columnDefinition="boolean")
+	private Boolean usePublicMets;
+	
+	// G.Bender 29.11.2016
+	@Column(name="use_virus_scan", columnDefinition="boolean")
+	private boolean useVirusScan;
+	
 	private String username;
 	private String password;
 	private String description;
@@ -87,7 +94,6 @@ public class User{
 	private Boolean accountexpired;
 	private Boolean accountlocked;
 	private Boolean passwordexpired;
-	
 	
 	/** The events. */
 	@OneToMany(orphanRemoval=true)
@@ -189,6 +195,30 @@ public class User{
 
 	public void setMailsPooled(Boolean mailsPooled) {
 		this.mailsPooled = mailsPooled;
+	}
+
+	public Boolean isDeltaOnUrn() {
+		return deltaOnUrn;
+	}
+
+	public void setDeltaOnUrn(Boolean deltaOnUrn) {
+		this.deltaOnUrn = deltaOnUrn;
+	}
+
+	public Boolean isUsePublicMets() {
+		return usePublicMets;
+	}
+	
+	public void setUsePublicMets(Boolean usePublicMets) {
+		this.usePublicMets = usePublicMets;
+	}
+	
+	public boolean isUseVirusScan() {
+		return useVirusScan;
+	}
+
+	public void setUseVirusScan(boolean useVirusScan) {
+		this.useVirusScan = useVirusScan;
 	}
 
 	/* (non-Javadoc)

@@ -43,6 +43,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.model.Event.IdType;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 
@@ -150,24 +151,30 @@ public class ObjectPremisXmlWriter {
 	/**
 	 * @param object
 	 * @throws XMLStreamException
+	 * @throws  
 	 */
 	private void generateEvents(Object object) throws XMLStreamException {
-		
 		for (Package pkg : object.getPackages())
 		  for (Event e : pkg.getEvents()){
+
 			if (e.getType().toUpperCase().equals(C.EVENT_TYPE_CONVERT)
 					|| e.getType().toUpperCase().equals(C.EVENT_TYPE_COPY)
 					|| e.getType().toUpperCase().equals(C.EVENT_TYPE_CREATE)){
 				logger.debug("Serializing convert event: "+e);
 				createConvertEventElement(e);
-			}else{
+			} else
+				// DANRW-1452: Event virus-scan
+				if (e.getType().toUpperCase().equals(C.EVENT_TYPE_VIRUS_SCAN)) {
+				logger.debug("Serializing scan event: "+e);
+				createVirusEventElement(object,pkg.getName(), e);
+			} else{
 				logger.debug("Serializing package event:"+e);
 				createPackageEventElement(object, pkg, e);
 			}
 		}
 	}
 	
-	
+
 	/**
 	 * Creates the object element.
 	 *
@@ -190,6 +197,58 @@ public class ObjectPremisXmlWriter {
 			createTextElement("originalName",orig_name, 2);
 		createCloseElement(1);
 	}
+
+
+	/**
+	 * createVirusEventElement: DANRW-1452: new event in case of successful virus-scan
+	 * @param pkgName 
+	 * @param e
+	 */
+	private void createVirusEventElement(Object object, String pkgName, Event e) throws XMLStreamException {
+		createOpenElement("event", 1);
+		createOpenElement("eventIdentifier", 2);
+		createTextElement("eventIdentifierType", IdType.VIRUS_SCAN_ID.toString(), 3);
+		createTextElement("eventIdentifierValue", object.getIdentifier()+ "+" + object.getLatestPackage().getName() , 3);
+		
+		createCloseElement(2);
+		
+		createTextElement("eventType", e.getType(), 2);
+		if (e.getDate() != null)
+			createTextElement("eventDateTime", formatDate(e.getDate()), 2);
+		
+		if (e.getDetail() != null)
+			createTextElement("eventDetail", e.getDetail(), 2);
+
+		if (e.getOutcome() != null)
+		{
+			createOpenElement("eventOutcomeInformation", 2);
+			createTextElement("eventOutcome", e.getOutcome(), 3);
+			createCloseElement(2);
+		}
+
+		Agent a = new Agent();
+		a.setType("CONTRACTOR");
+		a.setName(e.getAgent_name());
+		a.setLongName(e.getAgent_long_name());
+		agents.add(a);
+		
+		createOpenElement("linkingAgentIdentifier", 2);
+		createTextElement("linkingAgentIdentifierType", a.getIdentifierType(), 3);
+		createTextElement("linkingAgentIdentifierValue", a.getName(), 3);
+		createCloseElement(2);
+		
+		createOpenElement("linkingObjectIdentifier", 2);
+		createTextElement("linkingObjectIdentifierType", "PACKAGE_NAME", 3);
+//		createTextElement("linkingObjectIdentifierValue", object.getOrig_name() +".tar", 3);
+		createTextElement("linkingObjectIdentifierValue", object.getIdentifier() + ".pack_" + pkgName + ".tar",3);
+		
+		createTextElement("linkingObjectRole", "outcome", 3);
+		createCloseElement(2);
+
+		
+		createCloseElement(1);
+	}
+
 
 	
 	/**
@@ -241,7 +300,6 @@ public class ObjectPremisXmlWriter {
 				createAttribute("MDTYPE", "OTHER");
 				createAttribute("OTHERMDTYPE", "JHOVE");
 					createOpenElement("xmlData", 6);
-						System.out.println(DigestUtils.md5Hex(f.getRelative_path()));
 						integrateJhoveData(Path.make(jhoveDataPath,f.getRep_name(),
 								DigestUtils.md5Hex(f.getRelative_path())).toString(), 7);
 						createCloseElement(6);
@@ -386,6 +444,7 @@ public class ObjectPremisXmlWriter {
 		createOpenElement("linkingObjectIdentifier", 2);
 		createTextElement("linkingObjectIdentifierType", "PACKAGE_NAME", 3);
 		createTextElement("linkingObjectIdentifierValue", object.getIdentifier()+".pack_"+pkg.getName()+".tar", 3);
+		
 		createCloseElement(2);	
 		
 		createCloseElement(1);

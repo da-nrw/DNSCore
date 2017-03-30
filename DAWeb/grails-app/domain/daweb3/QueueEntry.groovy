@@ -40,16 +40,16 @@ class QueueEntry {
 	int id
 	String status
 	String initialNode
-	String created
-	String modified
+	Date createdAt
+	Date modifiedAt
 	Object obj
 	String question
 	String answer
 
     static constraints = {
 		status(nullable:false)
-		created(nullable:true)
-		modified(nullable:true)
+		createdAt(nullable:true)
+		modifiedAt(nullable:true)
 		question(nullable:true)
 		answer(nullable:true)
 	}
@@ -60,8 +60,8 @@ class QueueEntry {
 		id column: 'id'
 		obj column: 'objects_id'
 		// necessary because dateCreated and dateModified seem to be reserved by grails
-		created column: 'date_created'
-		modified column: 'date_modified'
+		createdAt column: 'created_at'
+		modifiedAt column: 'modified_at'
 	}
 	
 	
@@ -77,8 +77,8 @@ class QueueEntry {
 	
 	def getFormattedCreatedDate() {
 			
-		if (created!=null && created!="" && created!="NULL" && created.length()>5) {
-			String sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date(Long.valueOf(created).longValue()*1000L) ) 
+		if (createdAt!=null) {
+			String sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(createdAt) 
 			return sdf
 		}
 		return "";
@@ -87,8 +87,8 @@ class QueueEntry {
 
 	def getFormattedModifiedDate() {
 		
-		if (modified!=null && modified!="" && modified!="NULL" && modified.length()>5) {
-			String sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date(Long.valueOf(modified).longValue()*1000L) )
+		if (modifiedAt!=null) {
+			String sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(modifiedAt)
 			return sdf
 		}
 		return ""
@@ -112,7 +112,8 @@ class QueueEntry {
 		def checkfor = [
 			WORKFLOW_STATUS_DIGIT_ERROR_BAD_ROLLBACK ,
 			WORKFLOW_STATUS_DIGIT_USER_ERROR,
-			WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET]
+			WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET,
+			WORKFLOW_STATUS_DIGIT_ERROR_PROPERLY_HANDLED]
 		def ch = status[-1]
 		if (checkfor.contains(ch) && getStatusAsInteger()<407) return true;
 		return false;
@@ -158,17 +159,17 @@ class QueueEntry {
 	}
 	
 	/**
-	 * @author jpeters shows retry button after some time (48 hours)
+	 * @author jpeters shows recover button after some time (48 hours) and state < 401
 	 * 
 	 */
 	
-	boolean showRetryButtonAfterSomeTime(){
+	boolean showRecoverButtonAfterSomeTime(){
 		def checkfor = [WORKFLOW_STATUS_DIGIT_WORKING]
 		def ch = status[-1]
 		if (checkfor.contains(ch)) {
-			if (modified!=null && modified!="" && modified!="NULL" && modified.length()>5) {
-				long diff = new Date().getTime()-Long.valueOf(modified).longValue()*1000L;
-				if (diff > 2 * 24 * 60 * 60 * 1000) {
+			if (modifiedAt !=null) {
+				long diff = new Date().getTime() - modifiedAt.getTime();
+				if (diff > 2 * 24 * 60 * 60 * 1000 && getStatusAsInteger()<=400) {
 					return true;
 				}
 			}

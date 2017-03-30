@@ -155,23 +155,36 @@ public class ValidateMetadataAction extends AbstractAction {
 
 		int ptypeCount=0;
 		
-		if (getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_EAD).size()==1){
-			detectedMetadataFile=getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_EAD).get(0);
+		List<DAFile> metaFiles = getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_EAD);
+		if (metaFiles.size() > 1){
+			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"Mehr als eine Metadatendatei vorhanden vom Typ: EAD");
+		} else if (metaFiles.size() == 1){
+			detectedMetadataFile=metaFiles.get(0);
 			detectedPackageType=C.CB_PACKAGETYPE_EAD;
 			ptypeCount++;
-		}
-		
-		if ((getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_EAD).size()!=1)&&
-				getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_METS).size()>1){
-			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"Mehr als eine Metadatendatei vorhanden vom Typ: METS");
+		} else {
+			metaFiles = getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_METS);		
+
+			if (Boolean.TRUE.equals(o.getContractor().isUsePublicMets()) ){
+				for (int iii=metaFiles.size()-1; iii>=0; iii--){
+					DAFile metaFile = metaFiles.get(iii);
+
+					if (metaFile.getRelative_path().equalsIgnoreCase(C.PUBLIC_METS)){
+						metaFiles.remove(iii);
+						break;
+					}
+				}
+			}
+			
+			if (metaFiles.size() > 1) {
+				throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"Mehr als eine Metadatendatei vorhanden vom Typ: METS");
+			}  else if (metaFiles.size() == 1) {
+				detectedMetadataFile=metaFiles.get(0);
+				detectedPackageType=C.CB_PACKAGETYPE_METS;
+				ptypeCount++;
+			}  
 		}  
 				
-		if (getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_METS).size()==1){
-			detectedMetadataFile=getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_METS).get(0);
-			detectedPackageType=C.CB_PACKAGETYPE_METS;
-			ptypeCount++;
-		}
-		
 		if ((getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_XMP)).size()>=1){
 			detectedMetadataFile=new DAFile(
 					o.getNameOfLatestBRep(),C.METADATA_FILE_XMP);

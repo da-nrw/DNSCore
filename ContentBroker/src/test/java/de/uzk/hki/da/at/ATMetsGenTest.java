@@ -9,7 +9,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -22,13 +21,13 @@ import de.uzk.hki.da.metadata.MetadataHelper;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
 public class ATMetsGenTest extends AcceptanceTest{
 	private static String origName = "MetsGenTest";
 	private static Object object;
-	private static Path contractorsPipsPublic;
 	private static final File retrievalFolder = new File("/tmp/unpackedMetsMods");
 	MetadataHelper mh = new MetadataHelper();
 	
@@ -38,13 +37,12 @@ public class ATMetsGenTest extends AcceptanceTest{
 		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForDefinedPublishedState(origName);
 		object=ath.getObject(origName);
-		ath.waitForObjectToBeIndexed(metadataIndex,object.getIdentifier());
-		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
+		ath.waitForObjectToBeIndexed(metadataIndex,getTestIndex(),object.getIdentifier());
 	}
 	
 	@AfterClass
 	public static void tearDown() throws IOException{
-		FileUtils.deleteDirectory(retrievalFolder);
+		FolderUtils.deleteDirectorySafe(retrievalFolder);
 		Path.makeFile("tmp",object.getIdentifier()+".pack_1.tar").delete(); // retrieved dip
 	}
 	
@@ -88,10 +86,7 @@ public class ATMetsGenTest extends AcceptanceTest{
 		assertEquals(C.CB_PACKAGETYPE_METS,object.getPackage_type());
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		Document pipMets = builder.build
-			(new FileReader(
-				Path.make(contractorsPipsPublic, 
-					object.getIdentifier(), C.CB_PACKAGETYPE_METS+C.FILE_EXTENSION_XML).toFile()));
+		Document pipMets = builder.build(new FileReader(ath.loadDefaultMetsFileFromPip(object.getIdentifier())));
 		List<Element> fileElements = mh.getMetsFileElements(pipMets);
 		Boolean _3b91a3c29a50f62d23bd395e5fa3103c_exists = false;
 		Boolean _a39342aa7817e8a8d3fa924b0a0b51fc_exists = false;
@@ -99,9 +94,9 @@ public class ATMetsGenTest extends AcceptanceTest{
 			assertTrue(mh.getMimetypeInMets(e).equals("image/jpeg"));
 			assertTrue(mh.getMetsLoctype(e).equals("URL"));
 			if(mh.getMetsHref(e)
-					.equals("http://data.danrw.de/file/"+object.getIdentifier()+"/_3b91a3c29a50f62d23bd395e5fa3103c.jpg")) {
+					.equals(preservationSystem.getUrisFile()+"/"+object.getIdentifier()+"/_3b91a3c29a50f62d23bd395e5fa3103c.jpg")) {
 				_3b91a3c29a50f62d23bd395e5fa3103c_exists = true;
-			} else if(mh.getMetsHref(e).equals("http://data.danrw.de/file/"+object.getIdentifier()+"/_a39342aa7817e8a8d3fa924b0a0b51fc.jpg")) {
+			} else if(mh.getMetsHref(e).equals(preservationSystem.getUrisFile()+"/"+object.getIdentifier()+"/_a39342aa7817e8a8d3fa924b0a0b51fc.jpg")) {
 				_a39342aa7817e8a8d3fa924b0a0b51fc_exists = true;
 			}
 		}

@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
-import org.apache.commons.io.FileUtils;
 import org.hibernate.Session;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -13,6 +12,7 @@ import org.junit.Test;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.service.HibernateUtil;
+import de.uzk.hki.da.utils.FolderUtils;
 
 public class ATUseCaseIngestDeltaDuringRetrievalOrigPkg extends AcceptanceTest{
 
@@ -29,11 +29,11 @@ public class ATUseCaseIngestDeltaDuringRetrievalOrigPkg extends AcceptanceTest{
 		
 		object.setObject_state(50);
 		Job job = new Job();
-		job.setStatus("950");
+		job.setStatus("900");
 		job.setObject(object);
 		job.setResponsibleNodeName(object.getInitial_node());
-		job.setDate_created(String.valueOf(new Date().getTime()/1000L));
-		job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
+		job.setCreatedAt(new Date());
+		job.setModifiedAt(new Date());
 
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
@@ -45,7 +45,7 @@ public class ATUseCaseIngestDeltaDuringRetrievalOrigPkg extends AcceptanceTest{
 	
 	@AfterClass
 	public static  void tearDown() throws IOException{
-		FileUtils.deleteDirectory(retrievalFolder);
+		FolderUtils.deleteDirectorySafe(retrievalFolder);
 	}
 	
 	@Test
@@ -70,6 +70,6 @@ public class ATUseCaseIngestDeltaDuringRetrievalOrigPkg extends AcceptanceTest{
 		
 //		object = ath.ingest(ORIG_NAME);
 	
-//		FileUtils.deleteQuietly(new File("src/test/resources/at/"+ORIG_NAME+".tgz"));
+//		FolderUtils.deleteQuietlySafe(new File("src/test/resources/at/"+ORIG_NAME+".tgz"));
 	}
 }

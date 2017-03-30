@@ -15,11 +15,8 @@
 		</a>
 		<div class="nav" role="navigation">
 			<ul>
-				<li>
-					<a class="home" href="${createLink(uri: '/')}">
-						<g:message code="default.home.label"/>
-					</a>
-				</li>
+				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
+				<li><a class="list" href="<g:createLink controller="queueEntry" action="list" />">Bearbeitungsliste</a></li>
 			</ul>
 		</div>
 		<div id="show-queueEntry" class="content scaffold-show" role="main">
@@ -90,48 +87,45 @@
 					<span class="property-value" aria-labelledby="contractorShortName-label">${queueEntryInstance?.obj.getUser().getShortName()}</span>
 				</li>
 				</g:if>
-				<g:if test="${queueEntryInstance?.created}">
-					<li class="fieldcontain">
-						<span id="created-label" class="property-label">
-							<g:message code="queueEntry.created.label" default="Created" />
-						</span>
-						<span class="property-value" aria-labelledby="created-label">
-							<g:fieldValue bean="${queueEntryInstance}" field="created"/>
-						</span>
-					</li>
-					</g:if>
-					<g:if test="${queueEntryInstance?.initialNode}">
-						<li class="fieldcontain">
-							<span id="initialNode-label" class="property-label">
-								<g:message code="queueEntry.initialNode.label" default="Initial Node" />
-							</span>
-							<span class="property-value" aria-labelledby="initialNode-label">
-								<g:fieldValue bean="${queueEntryInstance}" field="initialNode"/>
-							</span>
-						</li>
-						</g:if>
-						<g:if test="${queueEntryInstance?.modified}">
-							<li class="fieldcontain">
-								<span id="modified-label" class="property-label">
-									<g:message code="queueEntry.modified.label" default="Modified" />
-								</span>
-								<span class="property-value" aria-labelledby="modified-label">
-									<g:fieldValue bean="${queueEntryInstance}" field="modified"/>
-								</span>
-							</li>
-							</g:if>
-							<g:if test="${queueEntryInstance?.obj.origName}">
-							<li class="fieldcontain">
-								<span id="origName-label" class="property-label">
-									<g:message code="queueEntry.obj.origName.label" default="Orig Name" />
-								</span>
-								<span class="property-value" aria-labelledby="origName-label">
-									<g:fieldValue bean="${queueEntryInstance.obj}" field="origName"/>
-								</span>
-							</li>
-						</g:if>
-					</ol>
-				<g:form>
+			
+				<g:if test="${queueEntryInstance?.createdAt}">
+				<li class="fieldcontain">
+					<span id="created-label" class="property-label"><g:message code="queueEntry.created.label" default="Created" /></span>
+					
+						<span class="property-value" aria-labelledby="created-label"><g:fieldValue bean="${queueEntryInstance}" field="createdAt"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${queueEntryInstance?.initialNode}">
+				<li class="fieldcontain">
+					<span id="initialNode-label" class="property-label"><g:message code="queueEntry.initialNode.label" default="Initial Node" /></span>
+					
+						<span class="property-value" aria-labelledby="initialNode-label"><g:fieldValue bean="${queueEntryInstance}" field="initialNode"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${queueEntryInstance?.modifiedAt}">
+				<li class="fieldcontain">
+					<span id="modified-label" class="property-label"><g:message code="queueEntry.modified.label" default="Modified" /></span>
+					
+						<span class="property-value" aria-labelledby="modified-label"><g:fieldValue bean="${queueEntryInstance}" field="modifiedAt"/></span>
+					
+				</li>
+				</g:if>
+				<g:if test="${queueEntryInstance?.obj.origName}">
+				<li class="fieldcontain">
+					<span id="origName-label" class="property-label"><g:message code="queueEntry.obj.origName.label" default="Orig Name" /></span>
+					
+						<span class="property-value" aria-labelledby="origName-label"><g:fieldValue bean="${queueEntryInstance.obj}" field="origName"/></span>
+					
+				</li>
+				</g:if>
+			
+				
+			</ol>
+			<g:form>
 				<fieldset class="buttons">
 					<g:hiddenField name="id" value="${queueEntryInstance?.id}" />
 						%{--<g:link class="edit" action="edit" id="${queueEntryInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link><g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />--}%

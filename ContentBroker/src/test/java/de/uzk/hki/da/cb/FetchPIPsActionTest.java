@@ -37,6 +37,7 @@ import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.FakeDistributedConversionAdapter;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 
@@ -72,7 +73,7 @@ public class FetchPIPsActionTest extends ConcreteActionUnitTest {
 	
 	@After
 	public void cleanUp() {
-		FileUtils.deleteQuietly(Path.makeFile( TESTDIR, WorkArea.PIPS ));
+		FolderUtils.deleteQuietlySafe(Path.makeFile( TESTDIR, WorkArea.PIPS ));
 	}
 	
 	
@@ -109,16 +110,16 @@ public class FetchPIPsActionTest extends ConcreteActionUnitTest {
 
 
 	private void simulateImpl() throws IOException {
-		FileUtils.deleteDirectory(makePIPFolder(WorkArea.PUBLIC));
-		FileUtils.deleteDirectory(makePIPFolder(WorkArea.WA_INSTITUTION));
+		FolderUtils.deleteDirectorySafe(makePIPFolder(WorkArea.PUBLIC));
+		FolderUtils.deleteDirectorySafe(makePIPFolder(WorkArea.WA_INSTITUTION));
 		FileUtils.moveDirectory(
 				makePIPSourceFolder(WorkArea.PUBLIC), 
 				makePIPFolder(WorkArea.PUBLIC));
 		FileUtils.moveDirectory(
 				makePIPSourceFolder(WorkArea.WA_INSTITUTION), 
 				makePIPFolder(WorkArea.WA_INSTITUTION));
-		FileUtils.deleteDirectory(makePIPSourceFolder(WorkArea.PUBLIC));
-		FileUtils.deleteDirectory(makePIPSourceFolder(WorkArea.WA_INSTITUTION));
+		FolderUtils.deleteDirectorySafe(makePIPSourceFolder(WorkArea.PUBLIC));
+		FolderUtils.deleteDirectorySafe(makePIPSourceFolder(WorkArea.WA_INSTITUTION));
 	}
 	
 	

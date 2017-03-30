@@ -34,6 +34,7 @@
 			<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 			</g:if>
+		  <div style="overflow:auto; height: 400px">
 			<table>
 				<thead>
 					<tr>
@@ -70,6 +71,7 @@
 				</g:each>
 				</tbody>
 			</table>
+			</div>
 			<div class="pagination">
 				<g:paginate total="${userInstanceCount ?: 0}" />
 			</div>

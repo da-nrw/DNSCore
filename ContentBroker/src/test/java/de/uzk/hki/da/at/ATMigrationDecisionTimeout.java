@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -18,6 +17,7 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -35,7 +35,7 @@ public class ATMigrationDecisionTimeout extends AcceptanceTest {
 
 	@After
 	public void tearDown() {
-		FileUtils.deleteQuietly(UNPACKED_TMP);
+		FolderUtils.deleteQuietlySafe(UNPACKED_TMP);
 	}
 
 	@Test
@@ -45,15 +45,14 @@ public class ATMigrationDecisionTimeout extends AcceptanceTest {
 				C.WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION);
 
 		Job jobbi = ath.getJob(ORIG_NAME_NOTALLOWED);
-		String notRealyLongAgo = String
-				.valueOf(new Date().getTime() / 1000L - 86400 * 30);
+		Date notRealyLongAgo = new Date(new Date().getTime() - 86400L * 30L * 1000L);
 
 		Session session = HibernateUtil.openSession();
 		session.refresh(jobbi);
 
 		Object obbi = jobbi.getObject();
 		Transaction trans = session.beginTransaction();
-		jobbi.setDate_modified(notRealyLongAgo);
+		jobbi.setModifiedAt(notRealyLongAgo);
 		session.save(jobbi);
 		trans.commit();
 		session.close();

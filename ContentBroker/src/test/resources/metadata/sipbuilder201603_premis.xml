@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<premis xmlns="info:lc/xmlns/premis-v2" xmlns:premis="info:lc/xmlns/premis-v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-2.xsd" version="2.2">
+    <object xsi:type="representation">
+        <objectIdentifier>
+            <objectIdentifierType>PACKAGE_NAME</objectIdentifierType>
+            <objectIdentifierValue>TESTPremisRights</objectIdentifierValue>
+        </objectIdentifier>
+    </object>
+    <event>
+        <eventIdentifier>
+            <eventIdentifierType>SIP_CREATION_ID</eventIdentifierType>
+            <eventIdentifierValue>Sip_Creation_2016-03-09T16:26:35.659+01:00</eventIdentifierValue>
+        </eventIdentifier>
+        <eventType>SIP_CREATION</eventType>
+        <eventDateTime>2016-03-09T16:26:35.659+01:00</eventDateTime>
+        <linkingAgentIdentifier>
+            <linkingAgentIdentifierType>APPLICATION_NAME</linkingAgentIdentifierType>
+            <linkingAgentIdentifierValue>DA NRW SIP-Builder Build: 123</linkingAgentIdentifierValue>
+        </linkingAgentIdentifier>
+        <linkingObjectIdentifier>
+            <linkingObjectIdentifierType>PACKAGE_NAME</linkingObjectIdentifierType>
+            <linkingObjectIdentifierValue>TESTPremisRights</linkingObjectIdentifierValue>
+        </linkingObjectIdentifier>
+    </event>
+    <agent>
+        <agentIdentifier>
+            <agentIdentifierType>APPLICATION_NAME</agentIdentifierType>
+            <agentIdentifierValue>DA NRW SIP-Builder 123</agentIdentifierValue>
+        </agentIdentifier>
+        <agentType>APPLICATION</agentType>
+    </agent>
+    <rights>
+        <rightsStatement>
+            <rightsStatementIdentifier>
+                <rightsStatementIdentifierType>rightsid</rightsStatementIdentifierType>
+                <rightsStatementIdentifierValue></rightsStatementIdentifierValue>
+            </rightsStatementIdentifier>
+            <rightsBasis>license</rightsBasis>
+            <rightsGranted>
+                <act>PUBLICATION_PUBLIC</act>
+                <restriction>see rightsExtension</restriction>
+                <termOfGrant>
+                    <startDate>2016-03-09T00:00:00.000+01:00</startDate>
+                </termOfGrant>
+            </rightsGranted>
+            <rightsGranted>
+                <act>PUBLICATION_INSTITUTION</act>
+                <restriction>see rightsExtension</restriction>
+                <termOfGrant>
+                    <startDate>2016-03-01T00:00:00.000+01:00</startDate>
+                </termOfGrant>
+            </rightsGranted>
+            <rightsGranted>
+                <act>MIGRATION</act>
+                <restriction>see rightsExtension</restriction>
+                <termOfGrant>
+                    <startDate>2016-03-09T00:00:00.000+01:00</startDate>
+                </termOfGrant>
+            </rightsGranted>
+        </rightsStatement>
+        <rightsExtension>
+            <rightsGranted xmlns="http://www.danrw.de/contract/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.danrw.de/contract/v1 file:///C:/Users/Z1334005/Downloads/danrw-contract-1-20160310RestrictCase.xsd">
+                <migrationRight>
+                    <condition>CONFIRM</condition>
+                </migrationRight>
+                <publicationRight>
+                    <audience>PUBLIC</audience>
+                        <startDate>2016-03-09T00:00:00.000+01:00</startDate>
+                        <lawID>EPFLICHT</lawID>
+                    <restrictions>
+                        <restrictAudio>
+                            <duration>120</duration>
+                        </restrictAudio>
+                        <restrictImage>
+                            <width>800</width>
+                            <height>600</height>
+                            <watermark>
+                                <watermarkString>CopyRightZeichen</watermarkString>
+                                <pointSize>10</pointSize>
+                                <position>south</position>
+                                <opacity>5</opacity>
+                            </watermark>
+                        </restrictImage>
+                        <restrictText>
+                            <certainPages>1</certainPages>
+                        </restrictText>
+                        <restrictVideo>
+                            <height>1080</height>
+                            <duration>15</duration>
+                        </restrictVideo>
+                    </restrictions>
+                </publicationRight>
+                <publicationRight>
+                    <audience>INSTITUTION</audience>
+                        <startDate>2016-03-01T00:00:00.000+01:00</startDate>
+                    <restrictions>
+                        <restrictAudio>
+                            <duration>60</duration>
+                        </restrictAudio>
+                        <restrictImage>
+                            <width>25%</width>
+                            <height>25%</height>
+                            <watermark>
+                                <watermarkString>EigenesWasserzeichen</watermarkString>
+                                <pointSize>10</pointSize>
+                                <position>north</position>
+                                <opacity>5</opacity>
+                            </watermark>
+                        </restrictImage>
+                        <restrictText>
+                            <certainPages>1 2 3 4 5 6 7 8 9 10</certainPages>
+                        </restrictText>
+                        <restrictVideo>
+                            <height>720</height>
+                            <duration>15</duration>
+                        </restrictVideo>
+                    </restrictions>
+                </publicationRight>
+            </rightsGranted>
+        </rightsExtension>
+    </rights>
+</premis>

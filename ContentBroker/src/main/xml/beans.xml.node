@@ -49,6 +49,7 @@
 		<entry key="DeleteObjectAction" value="3" />
 		<entry key="RestartIngestWorkflowAction" value="3" />
 		<entry key="IngestUnpackAction" value="3" />
+		<entry key="IngestDeltaOnURNAction" value="3" />
 		<entry key="IngestRestructureAction" value="3" />
 		<entry key="IngestValidateMetadataAction" value="3" />
 		<entry key="IngestConvertAction" value="3" />
@@ -100,6 +101,7 @@
 		<value>IngestScanAction</value>
 		<value>IngestValidateMetadataAction</value>
 		<value>IngestRestructureAction</value>
+		<value>IngestDeltaOnURNAction</value>
 		<value>IngestUnpackAction</value>
 		<value>RetrievalObjectToWorkAreaAction</value>
 		<value>RetrievalAction</value>

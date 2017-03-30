@@ -18,8 +18,9 @@
 */
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.test.TC.*;
-import static de.uzk.hki.da.utils.C.*;
+import static de.uzk.hki.da.test.TC.IDENTIFIER;
+import static de.uzk.hki.da.test.TC.URN;
+import static de.uzk.hki.da.utils.C.TEST_USER_SHORT_NAME;
 
 import java.lang.reflect.Field;
 
@@ -68,6 +69,7 @@ public class ConcreteActionUnitTest {
 	public void setUpBeforeActionTest() throws Exception{
 		ps = new PreservationSystem();
 		ps.setId(1);
+		ps.setPresServer("localnode");
 		ps.setOpenCollectionName("open-collection");
 		ps.setClosedCollectionName("closed-collection");
 		ps.setUrnNameSpace("urn:nbn:de");

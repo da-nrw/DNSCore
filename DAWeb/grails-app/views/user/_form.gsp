@@ -38,6 +38,37 @@
 	</label>
 	<g:textField name="description" value="${userInstance?.description}"/>
 </div>
+<h1>Änderung an diesen Feldern kann signifikantes Systemverhalten ändern!</h1>
+<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'usePublicMets', 'error')} ">
+<label for="usePublicMets">
+	<g:message code="user.usePublicMets.label" default="Use Public Mets" />
+	
+</label>
+<g:checkBox name="usePublicMets" value="${userInstance?.usePublicMets}" />
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'useVirusScan', 'error')} ">
+	<label for="useVirusScan">
+		<g:message code="user.useVirusScan.label" default="Use Virus Scan" />
+		
+	</label>
+	<g:checkBox name="useVirusScan" value="${userInstance?.useVirusScan}" />
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'deltaOnUrn', 'error')} ">
+<label for="deltaOnUrn">
+	<g:message code="user.deltaOnUrn.label" default="Delta On URN" />
+	
+</label>
+<g:checkBox name="deltaOnUrn" value="${userInstance?.deltaOnUrn}" />
+</div>
+<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'mailsPooled', 'error')} ">
+	<label for="mailsPooled">
+		<g:message code="user.mails_pooled.label" default="Emails täglich als gesammelten Report" />
+		
+	</label>
+	<g:checkBox name="mailsPooled" value="${userInstance?.mailsPooled}" />
+</div>
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'forbidden_nodes', 'error')} ">
 	<label for="forbidden_nodes">
@@ -66,6 +97,8 @@
 	</label>
 	<g:checkBox name="enabled" value="${userInstance?.enabled}" />
 </div>
+
+
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'passwordExpired', 'error')} ">
 	<label for="passwordExpired">

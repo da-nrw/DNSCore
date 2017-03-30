@@ -51,12 +51,12 @@ public class C {
 	public static final String CB_PACKAGETYPE_LIDO = "LIDO";
 	public static final String CB_PACKAGETYPE_METS = "METS";
 	public static final String CB_PACKAGETYPE_EAD  = "EAD"; 
-
+	public static final String PUBLIC_METS = "public_mets.xml"; 
+	
 		/** common metadata file for all XMP type packages */
 	public static final String METADATA_FILE_XMP = "XMP.xml";
 		/** Fedora datastream id for EDM. */
 
-	public static final String EDM_XSLT_METADATA_STREAM_ID = "EDM_xslt"; 
 	public static final String EDM_FOR_ES_INDEX_METADATA_STREAM_ID = "EDM"; 
 	public static final String METADATA_STREAM_ID_DC = "DC";
 	public static final String METADATA_STREAM_ID_EPICUR = "epicur";
@@ -79,6 +79,7 @@ public class C {
 	public static final String EVENT_TYPE_CREATE = "CREATE";
 	public static final String EVENT_TYPE_COPY = "COPY";
 	public static final String EVENT_TYPE_CONVERT = "CONVERT";
+	public static final String EVENT_TYPE_VIRUS_SCAN = "VIRUS_SCAN";
 	public static final String AGENT_TYPE_NODE = "NODE";
 	
 	// Error messages
@@ -92,11 +93,14 @@ public class C {
 	// File system
 	public static final Path CONF = new RelativePath("conf");
 	public static final String PREMIS_XSD_PATH = "conf/premis.xsd";
+	public static final String CONTRACT_XSD_PATH = "conf/danrw-contract-1.xsd";
 	public static final String CONFIG_PROPS = "conf/config.properties";
-	public static final File HIBERNATE_CFG = new RelativePath(CONF,"hibernateCentralDB.cfg.xml").toFile();
-	public static final File XLINK_XSD = new File("src/main/xsd/xlink.xsd");
-	public static final File PREMIS_XSD = new File("src/main/xsd/premis.xsd");
 	public static final String XLINK_XSD_PATH = "conf/xlink.xsd";
+	public static final File HIBERNATE_CFG = new RelativePath(CONF,"hibernateCentralDB.cfg.xml").toFile();
+	// The availability of the flowing *_TEST resources is only important for JUnit-Test step
+	public static final File XLINK_XSD_TEST = new File("src/main/xsd/xlink.xsd");
+	public static final File PREMIS_XSD_TEST = new File("src/main/xsd/premis.xsd");
+	public static final File CONTRACT_XSD_TEST = new File("src/main/xsd/v1/danrw-contract-1.xsd");
 	public static final String FIDO_GLUE_SCRIPT = "fido.sh";
 	public static final Path FIDO_INSTALLATION = new RelativePath("fido");
 	public static final String CONFIGURE_SCRIPT = "configure.sh"; 
@@ -158,7 +162,7 @@ public class C {
 	public static final String WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET = "6";
 	public static final String WORKFLOW_STATUS_DIGIT_ERROR_BAD_CONFIGURATION = "7";
 	public static final String WORKFLOW_STATUS_DIGIT_UP_TO_ROLLBACK= "8";
-	public static final String WORKFLOW_STATUS_START___INGEST_REGISTER_URN_ACTION = "150";
+	public static final String WORKFLOW_STATUS_START___INGEST_REGISTER_URN_ACTION = "160";
 	public static final String WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION = "700";
 	public static final String WORKFLOW_STATUS_START___INGEST_UNPACK_ACTION = "110";
 	public static final String WORKFLOW_STATUS_START___FETCH_PIPS_ACTION = "540";
@@ -184,6 +188,8 @@ public class C {
 	public static final String KIND_OF_SIPBUILDING_SINGLE_WITH_TARGET_FOLDER_NAME="Einzelnes SIP mit dem angegebenen Namen aus dem Quellordner erstellen";
 	public static final String KIND_OF_SIPBUILDING_MULTIPLE="SIPs aus Unterordnern des Quellverzeichnisses erstellen";
 	public static final String KIND_OF_SIPBUILDING_NESTED="SIPs aus verzweigter Ordnerstruktur erstellen (nur METS)";
+
+
 	
 }
 

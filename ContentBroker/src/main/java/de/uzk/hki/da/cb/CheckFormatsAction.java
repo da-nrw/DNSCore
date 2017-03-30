@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.io.FileUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
@@ -41,6 +40,7 @@ import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.CommaSeparatedList;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.MD5Checksum;
 import de.uzk.hki.da.utils.Path;
 
@@ -111,7 +111,7 @@ public class CheckFormatsAction extends AbstractAction {
 		}
 		
 		try {
-			allFiles = getFileFormatFacade().identify(wa.dataPath(),allFiles,false);
+			allFiles = getFileFormatFacade().identify(wa.dataPath(),allFiles,o.getLatestPackage().isPruneExceptions());
 		} catch (FileFormatException e) {
 			throw new RuntimeException(C.ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION,e);
 		} catch (IOException e) {
@@ -132,6 +132,7 @@ public class CheckFormatsAction extends AbstractAction {
 	 * @throws SubsystemNotAvailableException 
 	 */
 	private void attachJhoveInfoToAllFiles(List<DAFile> files) throws IOException, SubsystemNotAvailableException {
+		
 		for (DAFile f : files) {
 			// dir
 			String dir = Path.make(wa.dataPath(),WorkArea.TMP_JHOVE,f.getRep_name()).toString();
@@ -141,8 +142,9 @@ public class CheckFormatsAction extends AbstractAction {
 			if (f.getRelative_path().toLowerCase().equals("premis.xml") || !f.getRelative_path().toLowerCase().endsWith(".xml")) {
 				File target = Path.makeFile(dir,fileName);
 				logger.debug("will write jhove output to: "+target);
+				
 				try {
-					if (!fileFormatFacade.extract(wa.toFile(f), target)) 
+					if (!fileFormatFacade.extract(wa.toFile(f), target,f.getFormatPUID())) 
 						throw new RuntimeException("Unknown error during metadata file extraction.");
 				} catch (ConnectionException e) {
 					throw new SubsystemNotAvailableException("fileFormatFacade.extract() could not connect.",e);
@@ -208,7 +210,7 @@ public class CheckFormatsAction extends AbstractAction {
 	
 	@Override
 	public void rollback() throws Exception {
-		FileUtils.deleteQuietly(Path.makeFile(wa.dataPath(),WorkArea.TMP_JHOVE));
+		FolderUtils.deleteQuietlySafe(Path.makeFile(wa.dataPath(),WorkArea.TMP_JHOVE));
 	}
 
 

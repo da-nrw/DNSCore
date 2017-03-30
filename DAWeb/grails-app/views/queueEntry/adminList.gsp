@@ -2,42 +2,60 @@
 <!doctype html>
 <html>
 	<head>
-	<meta name="layout" content="main">
-	<g:set var="entityName" value="${message(code: 'queueEntry.label', default: 'QueueEntry')}" />
-	<title>Status der Verarbeitung - Admin</title>
+		<meta name="layout" content="main">
+		<g:set var="entityName" value="${message(code: 'queueEntry.label', default: 'QueueEntry')}" />
+		<title>Status der Verarbeitung - Admin</title>
+		<r:require modules="periodicalupdater, jqueryui"/>
+		 <jqui:resources/>
+		<r:script>
+			var order = "desc";
+			var sort = "createdAt";
+			$(function() {
+				$("#legend").accordion({ collapsible: true, active: false, autoHeight: false });
+			});
+			$(function() {
+				$("#filter").accordion({ collapsible: true, active: false });
+			});
 	
-	<r:require modules="periodicalupdater, jqueryui" />
-	<jqui:resources />
-	<r:script>
-				var order = "desc";
-				var sort = "created";
-				$(function() {
-					$("#legend").accordion({ collapsible: true, active: false, autoHeight: false });
-				});
-				$(function() {
-					$("#filter").accordion({ collapsible: true, active: false });
-				});
-		
-		<g:if test="${ !params.search }">		
-				var obj = $.PeriodicalUpdater("./listSnippet",
-					{
-						method: "get",
-						minTimeout: 1000,
-						maxTimeout: 1000,
-						data: function() {
-							return { order: order, sort: sort}
-						},
-						success: function(data) {
-							console.log("success - sort: "+sort+", order: "+order);
-							$("#entry-list").html(data);
-							$("#entry-list th.field-"+sort).addClass("sorted "+order);
+			<g:if test="${ !params.search }">		
+					var obj = $.PeriodicalUpdater("./listSnippet",
+						{
+							method: "get",
+							minTimeout: 5000,
+							maxTimeout: 5000,
+							data: function() {
+								return { order: order, sort: sort}
+							},
+							success: function(data) {
+								console.log("success - sort: "+sort+", order: "+order);
+								$("#entry-list").html(data);
+								$("#entry-list th.field-"+sort).addClass("sorted "+order);
+							}
 						}
-					}
-				);
-		</g:if>
-				function stopUpdater() {		
-					obj.stop();
-				}
+					);
+			</g:if>
+			function stopUpdater() {		
+				obj.stop();
+				document.getElementById("starter").disabled=false;
+			}
+			
+			function startUpdater() {
+				obj.restart();
+				document.getElementById("stopper").disabled=false;
+			}
+		
+			function sortQueue(field) {
+				console.log("sortQueue: "+field);
+				if (field == sort && order == "asc") order = "desc";
+				else order = "asc";
+				sort = field;
+				console.log("sortQueue - sort: "+sort+", order: "+order);
+				return false;
+			}
+			function test(field) {
+				console.log(field);
+				return false;
+			}
 			
 				function sortQueue(field) {
 					console.log("sortQueue: "+field);
@@ -56,81 +74,129 @@
 	</head>
 	<body>
 	
-		<a href="#list-queueEntry" class="skip" tabindex="-1">
-			<g:message code="default.link.skip.label" default="Skip to content&hellip;" />
-		</a>	
-		<div id="list-queueEntry" class="content scaffold-list" role="main">
-			<h1>Bearbeitungsübersicht</h1>
-				<g:if test="${flash.message}">
-					<div class="message" role="status">
-						${flash.message}
-					</div>
-				</g:if>
-			<div id="filter" style="margin: 0.8em 0 0.3em">
-				<h1>
-					<a href="#">Filter</a>
-				</h1>
-				<g:form name="searchForm" id="filterform" action="list">
-					<div class="table-responsive">
-						<table class="table">
-							<tr>
-								<td>Status:</td>
-								<td>
-									<g:textField name="search.status" value="${params.search?.status}" size="5" />
-								</td>
-							</tr>
-	
-							<tr>
-								<td>Originalname:</td>
-								<td>
-									<g:textField name="search.obj.origName" value="${params.search?.obj?.origName}" size="50" />
-								</td>
-							</tr>
-							<tr>
-								<td>URN:</td>
-								<td>
-									<g:textField name="search.obj.urn" value="${params.search?.obj?.urn}" size="50" />
-								</td>
-							</tr>
-							<tr>
-								<td>Identifier:</td>
-								<td>
-									<g:textField name="search.obj.identifier" value="${params.search?.obj?.identifier}" size="50" />
-								</td>
-							</tr>
-							<tr>
-								<td>Contractor:</td>
-								<td>
-									<g:select id="user" name="search.user" from="${contractorList}" optionKey="shortName" noSelection="[null:'Alle auswählen']" required="" value="${objectInstance?.contractorList?.shortName}" class="many-to-one" />
-								</td>
-							</tr>
-							<tr>
-								<td>Zuständiger Knoten:</td>
-								<td>
-									<g:select id="initialNode" name="search.initialNode" from="${cbNodeList}" noSelection="[null:'Alle auswählen']" required="" value="${objectInstance?.cbNodeList?.name}" class="many-to-one" />
-								</td>
-							</tr>
-							<tr>
-								<td></td>
-								<td>
-									<g:submitButton name="submit" value="Filter anwenden" />
-								</td>
-							</tr>
-						</table>
-					</div>
-				</g:form>
-			</div>
-	
-			<g:if test="${ !params.search }">
-				<!-- Update:&nbsp;<a href="#" onclick="stopUpdater();">stop</a>&nbsp;<a href="#" onclick="startUpdater();">start</a> -->
-			</g:if>
-	
+
+		<a href="#list-queueEntry" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
+		
+		<div class="nav" role="navigation">
+			<ul>
+				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
+			</ul>
+		</div>
+		
+		<h1>Bearbeitungsübersicht</h1>		
+		<g:if test="${  !params.search }">
+			<i>Aktualieseren der Seite:&nbsp; </i>
+			<input id="stopper" type="button" onclick="stopUpdater();disabled=true;" value="stoppen"/>
+			 &nbsp;
+			<input id="starter" type="button" onclick="startUpdater();disabled=true;" disabled  value="starten"/>
+    	</g:if> 
+		<g:if test="${flash.message}">
+			<div class="message" role="status">${flash.message}</div>
+		</g:if>
+		<div id="filter" style="margin: 0.8em 0 0.3em">
+		  <h1><a href="#">Filter
+		  	<g:if test="${params.search}"><br>
+	    		<g:if test="${!params.search?.status.isEmpty()}">
+	    		<span style="margin-right: 25px" ><i>Status: </i>${params.search?.status}</span>
+	    		</g:if> 
+	    		<g:if test="${!params.search?.obj?.origName.isEmpty()}">
+	    			<span style="margin-right: 25px"><i>Originalname: </i>${params.search?.obj?.origName}</span>
+	    		</g:if> 
+	    		<g:if test="${!params.search?.obj?.urn.isEmpty()}">
+	    			 <span style="margin-right: 25px"><i>URN: </i>${params.search?.obj?.urn}</span>
+	    		</g:if> 
+	    		<g:if test="${!params.search?.obj?.identifier.isEmpty()}">
+	    			<span style="margin-right: 25px"><i>Identifier: </i>${params.search?.obj?.identifier}</span>
+	    		</g:if> 
+	    		<g:if test="${params.search?.user != 'null'}">
+	    			<span style="margin-right: 25px"><i>Contractor: </i>${params.search?.user}</span>
+	    		</g:if> 
+	    		<g:if test="${params.search?.initialNode != 'null'}">
+	    			<span style="margin-right: 25px"><i>Zuständiger Knoten: </i>${params.search?.initialNode}</span>
+	    		</g:if> 
+	    	</g:if> 
+		  </a></h1> 
+          <g:form name="searchForm" id="filterform" action="list">
+             <table>
+            	<tr>
+            		<td>Status:</td>
+            			<td><g:textField name="search.status" value="${params.search?.status}" size="5"/></td>
+            		</tr>
+            		
+            		<tr>
+            			<td>Originalname:</td>
+            			<td><g:textField name="search.obj.origName" value="${params.search?.obj?.origName}" size="50"/></td>
+            		</tr>
+            		<tr>
+            			<td>URN:</td>
+            			<td><g:textField name="search.obj.urn" value="${params.search?.obj?.urn}" size="50"/></td>
+            		</tr>
+            			<tr>
+            			<td>Identifier:</td>
+            			<td><g:textField name="search.obj.identifier" value="${params.search?.obj?.identifier}" size="50"/></td>
+            		</tr>
+           			<tr>
+            			<td>Contractor:</td>
+            			<td>
+            				<g:if test="${params.search?.user == null}" >
+            					<g:select id="user" name="search.user" from="${contractorList}" optionKey="shortName" noSelection="[null:'Alle auswählen']" required="" value="${objectInstance?.contractorList?.shortName}" class="many-to-one"/>
+            				</g:if>
+            				<g:if test="${params.search?.user != null && !params.search?.user.isEmpty()}" >
+            					<g:select id="user" name="search.user" from="${contractorList}" optionKey="shortName" noSelection="[null:'Alle auswählen']" required="" value="${params.search?.user}" class="many-to-one"/>
+            				</g:if>
+            			</td>
+            		</tr>
+           			<tr>
+            			<td>Zuständiger Knoten:</td>
+            			<td>
+            				<g:if test="${params.search?.initialNode == null}" >
+            					<g:select id="initialNode" name="search.initialNode"  optionKey="name" from="${cbNodeList}" noSelection="[null:'Alle auswählen']" required="" value="${objectInstance?.cbNodeList?.name}" class="many-to-one"/>
+            				</g:if>
+            				<g:if test="${params.search?.initialNode != null && !params.search?.initialNode.isEmpty()}" >
+            					<g:select id="initialNode" name="search.initialNode"  optionKey="name" from="${cbNodeList}" noSelection="[null:'Alle auswählen']" required="" value="${params.search?.initialNode}" class="many-to-one"/>
+            				</g:if>
+            			</td>
+            		</tr>
+            		<tr>
+            			<td></td>
+            			<td>
+            				<g:submitButton name="submit" value="Filter anwenden"/>
+	           				<g:submitButton name="loeschen" type="submit" value="Filter löschen"/>
+	           			</td>
+	           			<script type="text/javascript">
+           			$(document).ready(function(){
+           				 	$("#loeschen").click(function() {                				 
+		            			$('#searchForm').find(':input').each(function() {
+		            	            switch(this.type) {
+		                            case 'text':
+		                            	$(this).val('');
+		                                break;                      
+		                            case 'textarea':
+		                                $(this).val('');
+		                                break;
+		                            case 'select-one':
+			                            $(this).val(null);
+			                            break;
+		            			 	case 'hidden':
+		                                $(this).val('0');
+		                                break;
+		                            }
+		            			});
+           				    });
+           			});</script>
+            		</tr>
+            	</table>     
+          </g:form>
+        </div>
+           
+		<g:if test="${ !params.search }">
+			<!-- Update:&nbsp;<a href="#" onclick="stopUpdater();">stop</a>&nbsp;<a href="#" onclick="startUpdater();">start</a> -->	
+    	 </g:if>   
+			
 			<!-- This div is updated through the periodical updater -->
 			<div class="list" id="entry-list">
 				<g:include action="listSnippet" />
 			</div>
-		</div>
-		
 		<div id="legend">
 			<h1>
 				<a href="#">Hinweise zu den Statuscodes:</a>

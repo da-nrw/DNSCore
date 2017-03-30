@@ -21,13 +21,15 @@ package de.uzk.hki.da.repository;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import de.uzk.hki.da.utils.FolderUtils;
 
 /**
  * Implements a simple file system based repository
@@ -45,7 +47,7 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 			throws RepositoryException {
 		try {
 			if (objectExists(objectId, collection)) {
-				FileUtils.deleteDirectory(getFile(objectId, collection, null));
+				FolderUtils.deleteDirectorySafe(getFile(objectId, collection, null));
 				return true;
 			} else {
 				return false;
@@ -78,16 +80,23 @@ public class FakeRepositoryFacade implements RepositoryFacade {
 	}
 
 	@Override
-	public InputStream retrieveFile(String objectId, String collection,
+	public void retrieveTo(OutputStream outputStream, String objectId, String collection,
 			String fileId) throws RepositoryException {
 		logger.debug("retrieveFile");
 		try {
-			return new FileInputStream(getFile(objectId, collection, fileId));
-		} catch (FileNotFoundException e) {
-			return null;
+			InputStream inputStream =  new FileInputStream(getFile(objectId, collection, fileId));
+			org.apache.commons.io.IOUtils.copy(inputStream, outputStream);
+		} catch (IOException e) {
+			throw new RepositoryException("Unable to copy file "
+					+ collection + "/" + objectId + "/" + fileId , e);
 		}
 	}
 
+	@Override
+	public boolean fileExists(String objectId, String collection, String fileId)
+			throws RepositoryException {
+		return getFile(objectId, collection, fileId).exists();
+	}
 	@Override
 	public boolean objectExists(String objectId, String collection)
 			throws RepositoryException {

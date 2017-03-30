@@ -72,5 +72,12 @@
   <bean id="jmsMessageServiceHandler" class="de.uzk.hki.da.service.JmsMessageServiceHandler">
   	<property name="mqConnectionFactory" ref="mqConnectionFactory"/>
   </bean>
+  
+  <util:set id="testContractors">
+  		<value>TEST</value>
+  		<value>LVRInfoKom</value>
+  		<value>HBZ</value>
+  		<value>CIRegressionTEST</value>
+  	</util:set>
 
 </beans>

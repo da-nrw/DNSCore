@@ -14,9 +14,10 @@
     <modules>
         <module>DNSCommon</module>
         <module>ContentBroker</module>
-		<module>SIP-Builder</module>
-		<module>PasswordEncryptor</module>
-		<module>DAWeb</module>		
+	<module>SIP-Builder</module>
+	<module>PasswordEncryptor</module>
+	<module>DAWeb</module>
+	<module>RegressionTestCB</module>		
     </modules>
 
 	<repositories>
@@ -38,10 +39,6 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <configuration>
-                        <source>1.6</source>
-                        <target>1.6</target>
-                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

@@ -153,7 +153,7 @@
 		<dependency>
 			<groupId>gov.loc</groupId>
 			<artifactId>bagit</artifactId>
-			<version>4.4</version>
+			<version>4.8</version>
 		</dependency>
 		<dependency>
 			<groupId>xom</groupId>

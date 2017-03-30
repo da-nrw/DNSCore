@@ -32,8 +32,8 @@ import java.util.List;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.RightsSectionMetsXmlReader;
 import de.uzk.hki.da.model.PublicationRight.Audience;
+import de.uzk.hki.da.model.RightsSectionMetsXmlReader;
 import de.uzk.hki.da.model.RightsStatement;
 
 

@@ -30,7 +30,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
 import org.hibernate.Session;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -42,6 +41,7 @@ import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.service.CSVFileHandler;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 
 
 /**
@@ -68,7 +68,7 @@ public class ATCSVQueries extends AcceptanceTest {
 		ath.waitForJobToBeInErrorStatus(ORIGINAL_NAME_ERROR, C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
 		Object object=ath.getObject(ORIGINAL_NAME_ERROR);
 		createCSVFile(ORIGINAL_NAME_ERROR);
-		File csv = new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME_ERROR+".csv");
+		File csv = new File(localNode.getUserAreaRootPath()+"/"+testContractor.getUsername()+"/incoming/"+ORIGINAL_NAME_ERROR+".csv");
 		
 		assertTrue(csv.exists());
 		long lm = csv.lastModified();
@@ -83,7 +83,7 @@ public class ATCSVQueries extends AcceptanceTest {
 	public void testCSVStatusReport () throws IOException, InterruptedException {
 		
 		createCSVFile(ORIGINAL_NAME_ARCHIVED);
-		File csv = new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME_ARCHIVED+".csv");
+		File csv = new File(localNode.getUserAreaRootPath()+"/"+testContractor.getUsername()+"/incoming/"+ORIGINAL_NAME_ARCHIVED+".csv");
 		
 		assertTrue(csv.exists());
 		long lm = csv.lastModified();
@@ -98,7 +98,7 @@ public class ATCSVQueries extends AcceptanceTest {
 	public void testCSVRetrievalRequests () throws IOException, InterruptedException {
 		
 		createCSVFile(ORIGINAL_NAME_RETRIEVAL);
-		File csv = new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME_RETRIEVAL+".csv");
+		File csv = new File(localNode.getUserAreaRootPath()+"/"+testContractor.getUsername()+"/incoming/"+ORIGINAL_NAME_RETRIEVAL+".csv");
 		assertTrue(csv.exists());
 		createSystemEvent("CreateRetrievalRequestsEvent");
 		ath.waitForJobToBeInStatus(ORIGINAL_NAME_RETRIEVAL, "952");
@@ -107,16 +107,16 @@ public class ATCSVQueries extends AcceptanceTest {
 	
 	@AfterClass
 	public static void tearDown(){
-		distributedConversionAdapter.remove("aip/TEST/"+ORIGINAL_NAME_ARCHIVED); 
-		distributedConversionAdapter.remove("aip/TEST/"+ORIGINAL_NAME_RETRIEVAL); 
+		distributedConversionAdapter.remove("aip/"+testContractor.getUsername()+"/"+ORIGINAL_NAME_ARCHIVED); 
+		distributedConversionAdapter.remove("aip/"+testContractor.getUsername()+"/"+ORIGINAL_NAME_RETRIEVAL); 
 		
-		FileUtils.deleteQuietly(new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME_ARCHIVED+".csv"));
-		FileUtils.deleteQuietly(new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME_ERROR+".csv"));
-		FileUtils.deleteQuietly(new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+ORIGINAL_NAME_RETRIEVAL+".csv"));
+		FolderUtils.deleteQuietlySafe(new File(localNode.getUserAreaRootPath()+"/"+testContractor.getUsername()+"/incoming/"+ORIGINAL_NAME_ARCHIVED+".csv"));
+		FolderUtils.deleteQuietlySafe(new File(localNode.getUserAreaRootPath()+"/"+testContractor.getUsername()+"/incoming/"+ORIGINAL_NAME_ERROR+".csv"));
+		FolderUtils.deleteQuietlySafe(new File(localNode.getUserAreaRootPath()+"/"+testContractor.getUsername()+"/incoming/"+ORIGINAL_NAME_RETRIEVAL+".csv"));
 		
-		FileUtils.deleteQuietly(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+ORIGINAL_NAME_ARCHIVED+".csv"));
-		FileUtils.deleteQuietly(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+ORIGINAL_NAME_ERROR+".csv"));
-		FileUtils.deleteQuietly(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+ORIGINAL_NAME_RETRIEVAL+".csv"));
+		FolderUtils.deleteQuietlySafe(new File(localNode.getUserAreaRootPath()+"/"+testContractor.getUsername()+"/outgoing/"+ORIGINAL_NAME_ARCHIVED+".csv"));
+		FolderUtils.deleteQuietlySafe(new File(localNode.getUserAreaRootPath()+"/"+testContractor.getUsername()+"/outgoing/"+ORIGINAL_NAME_ERROR+".csv"));
+		FolderUtils.deleteQuietlySafe(new File(localNode.getUserAreaRootPath()+"/"+testContractor.getUsername()+"/outgoing/"+ORIGINAL_NAME_RETRIEVAL+".csv"));
 		
 	}
 
@@ -147,12 +147,9 @@ public class ATCSVQueries extends AcceptanceTest {
 		SystemEvent se = new SystemEvent();
 		se.setNode(localNode);
 		se.setType(eventName);
-		User user = new User();
-		user.setId(1);
-		user.setShort_name("TEST");
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
-		se.setOwner(user);
+		se.setOwner(testContractor);
 		session.save(se);
 		session.getTransaction().commit();
 		session.close();
@@ -165,7 +162,14 @@ public class ATCSVQueries extends AcceptanceTest {
 	private boolean readCSVFileStatusReporting(String origName, String field, String mustcontain) throws IOException {
 		CSVFileHandler csf = new CSVFileHandler();
 		System.out.println("search CSV Report field " + field + " value " + mustcontain);
-		csf.parseFile(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+origName+".csv"));
+		File targetFile=new File(localNode.getUserAreaRootPath()+"/"+testContractor.getUsername()+"/outgoing/"+origName+".csv");
+		
+		for(int i=0;i<5 && !targetFile.exists();i++){
+			FolderUtils.waitToCompleteNFSAwareFileOperation();
+			System.out.println("Target("+targetFile+") file doesnt exist yet, wait: "+i);
+		}
+		
+		csf.parseFile(targetFile);
 		for (Map<String, java.lang.Object> csvEntry :csf.getCsvEntries()) {
 			if (csvEntry.get("origName").equals(origName))
 			if (csvEntry.get(field).equals(mustcontain)) return true;
@@ -183,7 +187,7 @@ public class ATCSVQueries extends AcceptanceTest {
 		csvEntry.put("origName", (java.lang.Object) origName);
 		csvEntries.add(csvEntry);
 		csf.setCsvEntries(csvEntries);
-		csf.persistStates(new File(localNode.getUserAreaRootPath()+"/TEST/incoming/"+origName+".csv"));
+		csf.persistStates(new File(localNode.getUserAreaRootPath()+"/"+testContractor.getUsername()+"/incoming/"+origName+".csv"));
 		return csvEntries.size();
 	}
 		

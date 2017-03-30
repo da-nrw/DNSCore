@@ -28,18 +28,18 @@ import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
-import de.uzk.hki.da.convert.PublishVideoConversionStrategy;
 import de.uzk.hki.da.metadata.XPathUtils;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PublicationRight;
-import de.uzk.hki.da.model.VideoRestriction;
 import de.uzk.hki.da.model.PublicationRight.Audience;
+import de.uzk.hki.da.model.VideoRestriction;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 
@@ -71,8 +71,8 @@ public class PublishVideoConversionStrategyTests {
 	public void tearDown() throws IOException {
 		
 		if (new File(basePath + "dip").exists())
-			FileUtils.deleteDirectory(new File(basePath + "dip"));
-		FileUtils.deleteDirectory(new File(basePath + "/TEST"));
+			FolderUtils.deleteDirectorySafe(new File(basePath + "dip"));
+		FolderUtils.deleteDirectorySafe(new File(basePath + "/TEST"));
 	}
 	
 	

@@ -32,9 +32,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.action.ActionDescription;
-import de.uzk.hki.da.action.ActionRegistry;
 import de.uzk.hki.da.cb.NullAction;
 import de.uzk.hki.da.cb.TarAction;
 import de.uzk.hki.da.model.Job;
@@ -92,6 +89,7 @@ public class ActionRegistryTests {
 		job.setId(1);
 		AbstractAction tarAction = (AbstractAction) context.getBean("IngestTarAction");
 		tarAction.setJob(job);
+		tarAction.setObject(o);
 		registry.registerAction(tarAction);
 		
 		List<ActionDescription> list = registry.getCurrentActionDescriptions();

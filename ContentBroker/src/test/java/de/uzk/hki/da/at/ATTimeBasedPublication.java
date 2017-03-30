@@ -19,17 +19,20 @@
 
 package de.uzk.hki.da.at;
 
-import static de.uzk.hki.da.utils.C.*;
+import static de.uzk.hki.da.utils.C.CB_PACKAGETYPE_METS;
+import static de.uzk.hki.da.utils.C.FILE_EXTENSION_XML;
+import static de.uzk.hki.da.utils.C.PUBLISHEDFLAG_INSTITUTION;
+import static de.uzk.hki.da.utils.C.PUBLISHEDFLAG_NO_PUBLICATION;
+import static de.uzk.hki.da.utils.C.PUBLISHEDFLAG_PUBLIC;
+import static de.uzk.hki.da.utils.C.WORKFLOW_STATUS_START___TIME_BASED_PUBLICATION_OBJECT_TO_WORK_AREA_ACTION;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
 
 import org.jdom.Document;
@@ -79,14 +82,11 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		
 		assertNotNull(object);
 		
-		InputStream is1 = repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getOpenCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg");
-		InputStream is2 = repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getClosedCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg");
+		boolean exi1 = repositoryFacade.fileExists(object.getIdentifier(), preservationSystem.getOpenCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg");
+		boolean exi2 = repositoryFacade.fileExists(object.getIdentifier(), preservationSystem.getClosedCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg");
 		
-		assertNotNull(is1);
-		assertNotNull(is2);
-		
-		is1.close();
-		is2.close();
+		assertTrue(object.getIdentifier()+" "+preservationSystem.getOpenCollectionName()+" "+"_0c32b463b540e3fee433961ba5c491d6.jpg"+" existiert nicht",exi1);
+		assertTrue(object.getIdentifier()+" "+preservationSystem.getClosedCollectionName()+" "+"_0c32b463b540e3fee433961ba5c491d6.jpg"+" exisitert nicht",exi2);
 		
 		File publFile = Path.makeFile(localNode.getWorkAreaRootPath(),
 				WorkArea.PIPS,WorkArea.PUBLIC,object.getContractor().getShort_name(),
@@ -104,11 +104,16 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		mETS_NS = Namespace.getNamespace(METS_NAMESPACE);
 		xLINK_NS = Namespace.getNamespace(XLINK_NAMESPACE);
 		
+		String prefix = preservationSystem.getUrisFile() + File.separator + object.getIdentifier() + File.separator;
+		String should = prefix + "_0c32b463b540e3fee433961ba5c491d6.jpg"; 
+		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+
 		Document publDoc = builder.build(new FileInputStream(publFile));
-		assertEquals("_0c32b463b540e3fee433961ba5c491d6.jpg", getUrl(publDoc));
+		assertEquals(should, getUrl(publDoc));
+
 		Document instDoc = builder.build(new FileInputStream(instFile));
-		assertEquals("_0c32b463b540e3fee433961ba5c491d6.jpg", getUrl(instDoc));
+		assertEquals(should, getUrl(instDoc));
 	}
 
 	private String getUrl(Document doc) {
@@ -132,11 +137,10 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		Object object = ath.getObject(ORIG_NAME_PREFIX+name);
 		
 		assertNotNull(object);
-		InputStream is1 = repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getOpenCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg");
-		InputStream is2 = repositoryFacade.retrieveFile(object.getIdentifier(), preservationSystem.getClosedCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg");	
-		assertNull(is1);
-		assertNotNull(is2);
-		is2.close();
+		boolean exPubl = repositoryFacade.fileExists(object.getIdentifier(), preservationSystem.getOpenCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg");
+		boolean exInst = repositoryFacade.fileExists(object.getIdentifier(), preservationSystem.getClosedCollectionName(), "_0c32b463b540e3fee433961ba5c491d6.jpg");	
+		assertFalse(object.getIdentifier()+" "+ preservationSystem.getOpenCollectionName()+" "+ "_0c32b463b540e3fee433961ba5c491d6.jpg",exPubl);
+		assertTrue(object.getIdentifier()+" "+preservationSystem.getClosedCollectionName()+" "+ "_0c32b463b540e3fee433961ba5c491d6.jpg",exInst);
 		assertEquals(PUBLISHEDFLAG_INSTITUTION,object.getPublished_flag());
 	}
 	
@@ -188,7 +192,7 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		Thread.sleep(2000);
 		
 		assertNotNull(object);
-		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getOpenCollectionName()));
+		assertTrue(object.getIdentifier()+"doenst exist in Fedora Facade",repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getOpenCollectionName()));
 		assertTrue(repositoryFacade.objectExists(object.getIdentifier(), preservationSystem.getClosedCollectionName()));
 		assertEquals(PUBLISHEDFLAG_PUBLIC+
 				PUBLISHEDFLAG_INSTITUTION, object.getPublished_flag());

@@ -66,7 +66,7 @@ public interface FileFormatFacade {
 	 * @throws ConnectionException 
 	 * @throws IllegalArgumentException if parent folder of extracted Metadata does not exist.
 	 */
-	public boolean extract(File file, File extractedMetadata) throws ConnectionException, IOException;
+	public boolean extract(File file, File extractedMetadata, String expectedMimeType) throws ConnectionException, IOException;
 	
 	
 	/**

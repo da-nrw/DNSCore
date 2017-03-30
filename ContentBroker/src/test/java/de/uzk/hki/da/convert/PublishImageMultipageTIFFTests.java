@@ -54,14 +54,14 @@ public class PublishImageMultipageTIFFTests {
 		
 		String cmdPublic[] = new String[]{
 				"convert",
-				new File(workAreaRootPathPath+"/work/TEST/123/data/source/ALVR{}_Nr_4557_Aufn_249.tif").getAbsolutePath(),
+				new File(workAreaRootPathPath+"/work/TEST/123/data/source/ALVR{}_Nr_4557_Aufn_249.tif[0]").getAbsolutePath(),
 				new File(workAreaRootPathPath+"/work/TEST/123/data/"+WorkArea.TMP_PIPS+"/public/ALVR{}_Nr_4557_Aufn_249.jpg").getAbsolutePath()
 		};
 		when(cli.runCmdSynchronously(cmdPublic)).thenReturn(pi);
 		
 		String cmdInstitution[] = new String[]{
 				"convert",
-				new File(workAreaRootPathPath+"/work/TEST/123/data/source/ALVR{}_Nr_4557_Aufn_249.tif").getAbsolutePath(),
+				new File(workAreaRootPathPath+"/work/TEST/123/data/source/ALVR{}_Nr_4557_Aufn_249.tif[0]").getAbsolutePath(),
 				new File(workAreaRootPathPath+"/work/TEST/123/data/"+WorkArea.TMP_PIPS+"/institution/ALVR{}_Nr_4557_Aufn_249.jpg").getAbsolutePath()
 		};
 		when(cli.runCmdSynchronously(cmdInstitution)).thenReturn(pi);
@@ -79,7 +79,7 @@ public class PublishImageMultipageTIFFTests {
 		
 		cs.setObject(o);
 		List<Event> events = cs.convertFile(new WorkArea(n,o),ci);
-		assertEquals(4, events.size());
+		assertEquals(2, events.size());
 	}
 	
 }

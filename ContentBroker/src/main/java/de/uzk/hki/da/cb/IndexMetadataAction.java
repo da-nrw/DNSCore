@@ -20,7 +20,6 @@
 package de.uzk.hki.da.cb;
 
 import static de.uzk.hki.da.utils.C.EDM_FOR_ES_INDEX_METADATA_STREAM_ID;
-import static de.uzk.hki.da.utils.C.EDM_XSLT_METADATA_STREAM_ID;
 import static de.uzk.hki.da.utils.C.ENCODING_UTF_8;
 
 import java.io.FileInputStream;
@@ -32,11 +31,11 @@ import org.apache.commons.io.IOUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
+import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.MetadataIndex;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.util.ConfigurationException;
-import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.WorkArea;
 
 /**
  * This action fetches EDM/RDF-Metadata from the public PIP,  
@@ -70,7 +69,6 @@ public class IndexMetadataAction extends AbstractAction {
 			throw new ConfigurationException("metadataIndex");
 	}
 	
-
 	@Override
 	public void checkPreconditions() {
 		if (indexName == null) 
@@ -79,8 +77,6 @@ public class IndexMetadataAction extends AbstractAction {
 			throw new PreconditionsNotMetException("testContractors not set");
 		if (! wa.pipMetadataFile(WorkArea.PUBLIC, EDM_FOR_ES_INDEX_METADATA_STREAM_ID).exists())
 			throw new PreconditionsNotMetException("Missing file: "+wa.pipMetadataFile(WorkArea.PUBLIC, EDM_FOR_ES_INDEX_METADATA_STREAM_ID));
-		if (! wa.pipMetadataFile(WorkArea.PUBLIC, EDM_XSLT_METADATA_STREAM_ID).exists())
-			throw new PreconditionsNotMetException("Missing file: "+wa.pipMetadataFile(WorkArea.PUBLIC, EDM_XSLT_METADATA_STREAM_ID));
 	}
 	
 	@Override
@@ -125,7 +121,7 @@ public class IndexMetadataAction extends AbstractAction {
 		String contractorShortName = o.getContractor().getShort_name();
 		String adjustedIndexName = indexName;
 		if(testContractors != null && testContractors.contains(contractorShortName)) {
-			adjustedIndexName += "_test";
+			adjustedIndexName += MetadataIndex.TEST_INDEX_SUFFIX;
 		}
 		return adjustedIndexName;
 	}

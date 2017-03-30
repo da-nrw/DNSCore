@@ -26,22 +26,27 @@ import grails.transaction.Transactional
 class UserController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
-
+	static CharacterEncodingUtils  ceu = new CharacterEncodingUtils()
+	
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
+		ceu.setEncoding(response)
         respond User.list(params), model:[userInstanceCount: User.count()]
     }
 
     def show(User userInstance) {
+		ceu.setEncoding(response)
         respond userInstance
     }
 
     def create() {
+		ceu.setEncoding(response)
         respond new User(params)
     }
 
     @Transactional
     def save(User userInstance) {
+		ceu.setEncoding(response)
         if (userInstance == null) {
             notFound()
             return
@@ -64,11 +69,13 @@ class UserController {
     }
 
     def edit(User userInstance) {
+		ceu.setEncoding(response)
         respond userInstance
     }
 
     @Transactional
     def update(User userInstance) {
+		ceu.setEncoding(response)
         if (userInstance == null) {
             notFound()
             return

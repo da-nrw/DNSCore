@@ -95,7 +95,8 @@ public class MailContents {
 		checkObject(obj);
 		
 		String subject = "[" + PRESERVATION_SYSTEM_NAME + "] Entscheidung erforderlich für "+obj.getIdentifier();
-		String msg = "Bitte treffen Sie eine Entscheidung in der DAWeb-Maske \"Entscheidungsübersicht\"" + obj.getIdentifier();
+		// DANRW-1523: Mailtext korrogoert
+		String msg = "Bitte treffen Sie eine Entscheidung in der DAWeb-Maske \"Entscheidungsübersicht\" zu dem Paket mit Identifier " + obj.getIdentifier();
 		
 		try {
 			this.queueMail(preservationSystem.getAdmin(), obj.getContractor(), subject, msg);
@@ -156,7 +157,7 @@ public class MailContents {
 		String delta = "";
 		if (object.isDelta()) delta = "Delta-"; 
 		String subject = "[" + PRESERVATION_SYSTEM_NAME + "] Entfernung von SIP aus Workflow für " + object.getIdentifier();
-		String msg = "Ihr abgegebenes SIP " + delta + "Paket dem Namen \""+ object.getOrig_name() + "\" wurde aus der Verarbeitungswarteschlange "+
+		String msg = "Ihr abgegebenes SIP " + delta + "Paket mit dem Namen \""+ object.getLatestPackage().getContainerName() + "\" wurde aus der Verarbeitungswarteschlange "+
 				"entfernt. Die Datei kann so nicht vom DNS verarbeitet werden. Korrigieren Sie ggfs. das Paket und bitte versuchen "
 						+ "Sie eine erneute Ablieferung. Das Paket wurde nicht archiviert. ";
 		try {
@@ -181,12 +182,12 @@ public class MailContents {
 		{
 			subject = "[" + PRESERVATION_SYSTEM_NAME + "] Einlieferungsbeleg für Ihr Delta zum Objekt " + obj.getIdentifier();
 			msg = "Ihrem archivierten Objekt mit dem Identifier " + obj.getIdentifier() + " und der URN " + obj.getUrn() +
-					" wurde erfolgreich ein Delta mit dem Paketnamen \"" + obj.getOrig_name() + "\" hinzugefügt.";
+					" wurde erfolgreich ein Delta mit dem Paketnamen \"" + obj.getLatestPackage().getContainerName() + "\" hinzugefügt.";
 		}
 		else
 		{
 			subject = "[" + PRESERVATION_SYSTEM_NAME + "] Einlieferungsbeleg für " + obj.getIdentifier();
-			msg = "Ihr eingeliefertes Paket mit dem Namen \""+ obj.getOrig_name() + "\" wurde erfolgreich im DA-NRW archiviert.\n\n" +
+			msg = "Ihr eingeliefertes Paket mit dem Namen \""+ obj.getLatestPackage().getContainerName() + "\" wurde erfolgreich im DA-NRW archiviert.\n\n" +
 			"Identifier: " + obj.getIdentifier() + "\n" +
 			"URN: " + obj.getUrn();
 		}
@@ -214,7 +215,7 @@ public class MailContents {
 		
 		String subject = "[" + PRESERVATION_SYSTEM_NAME + "] Fehlende Referenzen in den Metadaten des Objekts " + obj.getIdentifier();
 		String msg = "Ihr archiviertes Objekt mit dem Identifier " + obj.getIdentifier() + " und der URN " + obj.getUrn() +
-					" ist nicht konsistent. Folgende Files sind nicht in den mitgelieferten Metadaten referenziert: "
+					" ist nicht konsistent. SIP Paketname ist: " + obj.getLatestPackage().getContainerName() +". Folgende Files sind nicht in den mitgelieferten Metadaten referenziert: "
 					+ missingReferences+". Die Verarbeitung findet dennoch statt.";
 		
 		logger.info(subject);

@@ -38,6 +38,7 @@ import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 
@@ -83,8 +84,9 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 		
 		new File(CONF).mkdir();
 		FileUtils.copyDirectory(Path.makeFile(workAreaRootPath,"ingest_"), Path.makeFile(workAreaRootPath,"ingest"));
-		FileUtils.copyFileToDirectory(C.PREMIS_XSD, new File(CONF));
-		FileUtils.copyFileToDirectory(C.XLINK_XSD, new File(CONF));
+		FileUtils.copyFileToDirectory(C.PREMIS_XSD_TEST, new File(CONF));
+		FileUtils.copyFileToDirectory(C.XLINK_XSD_TEST, new File(CONF));
+		FileUtils.copyFileToDirectory(C.CONTRACT_XSD_TEST, new File(CONF));
 		
 		gate.setWorkAreaRootPath(workAreaRootPath.toString());
 		gate.setFreeDiskSpacePercent(5);
@@ -101,9 +103,9 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 	 */
 	@After
 	public void tearDown() throws IOException{
-		FileUtils.deleteQuietly(new File(CONF));
-		FileUtils.deleteDirectory(Path.makeFile(workAreaRootPath,"ingest"));
-		FileUtils.deleteDirectory(Path.makeFile(csnPath,o.getIdentifier()));
+		FolderUtils.deleteQuietlySafe(new File(CONF));
+		FolderUtils.deleteDirectorySafe(Path.makeFile(workAreaRootPath,"ingest"));
+		FolderUtils.deleteDirectorySafe(Path.makeFile(csnPath,o.getIdentifier()));
 	}
 
 	/**

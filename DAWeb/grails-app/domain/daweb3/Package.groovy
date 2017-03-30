@@ -41,8 +41,9 @@ class Package {
 	Date last_checked
 	String checksum
 	String status
+	String container_name
 	
 	String toString() {
-		return "Paket Nr. " + name + "(ID: "+id+")" ;
+		return "Paket Nr. " + name + "(ID: "+id+" : " + container_name + ")" ;
 	}
 }

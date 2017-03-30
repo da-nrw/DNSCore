@@ -7,17 +7,43 @@
 		<g:set var="entityName" value="${message(code: 'object.label', default: 'Object')}" />
 		<title>DA-NRW Objekt</title>
 	</head>
-	<r:script>
-		function toggle(source) {
-			  checkboxes = document.getElementsByName('currentPackages');
-			  for(var i in checkboxes) {
-			    checkboxes[i].checked = source.checked;}
-				}
-	</r:script>
 	<body>
-		<a href="#show-object" class="skip" tabindex="-1">
-			<g:message code="default.link.skip.label" default="Skip to content&hellip;"/>
-		</a>
+		<script type="text/javascript" >
+			function toggle(source) {
+				checkboxes = document.getElementsByName('currentPackages');
+				for(var i in checkboxes) {
+				  checkboxes[i].checked = source.checked;
+				}
+			}
+			function deselect(source) {
+				if (document.getElementById('waehlen').checked) {
+					if (source.checked ) {
+					} else {
+						document.getElementById('waehlen').checked = false;
+					}
+				} else {
+					checkboxes = document.getElementsByName('currentPackages');
+					var i= 0;
+ 					while ( i < checkboxes.length) {  
+					 	if( checkboxes[i].checked) {
+						 	check = true;
+						 	i++;
+						 } else {
+						 	check = false;
+						 	i++;
+						 	break;
+						}
+					}
+					if (check) {
+						document.getElementById('waehlen').checked = true;
+					} else {
+						document.getElementById('waehlen').checked = false;
+					}
+				}
+			}
+		</script>
+	
+		<a href="#show-object" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div class="nav" role="navigation">
 			<ul>
 				<li>
@@ -45,14 +71,31 @@
 					</li>
 				</g:if>
 				<g:if test="${objectInstance?.origName}">
-					<li class="fieldcontain">
-						<span id="origName-label" class="property-label">
-							<g:message code="object.origName.label" default="Orig Name" />
-						</span>
-						<span class="property-value" aria-labelledby="origName-label">
-							<g:fieldValue bean="${objectInstance}" field="origName"/>
-						</span>
-					</li>
+				<li class="fieldcontain">
+					<span id="origName-label" class="property-label"><g:message code="object.origName.label" default="Orig Name" /></span>
+					
+						<span class="property-value" aria-labelledby="origName-label"><g:fieldValue bean="${objectInstance}" field="origName"/></span>
+					
+				</li>
+				</g:if><li class="fieldcontain">
+				<span id="packages-label" class="property-label"><g:message code="object.packages.label" default="Packages" /></span>
+				<g:form controller="package" action="retrievePackages">
+				<g:hiddenField name="oid" value="${objectInstance?.id}" />			
+				
+				<span class="property-value" ><input type="checkbox" name="waehlen" value="" id="waehlen" onClick="toggle(this)"/> Alle an-/abwählen</span><br>
+				<g:if test="${sortedPackages}">
+					<g:each in="${sortedPackages}" var="p" status="i">
+							<span class="property-value" >
+								<g:if test="${!objectInstance.isInWorkflowButton()}">
+									<g:checkBox name="currentPackages" value="${p.getId()}" checked="false" onClick="deselect(this)"/>
+								</g:if>${p?.encodeAsHTML()}
+							</span>
+					</g:each>	<br>
+					<span class="property-value" >
+						<g:if test="${!objectInstance.isInWorkflowButton()}">
+							<g:actionSubmit value="Versioniertes Retrieval starten" controller="package" action="retrievePackages"/>
+						</g:if>
+					</span>
 				</g:if>
 				<li class="fieldcontain">
 					<span id="packages-label" class="property-label">
@@ -122,7 +165,9 @@
 						<span class="property-value" aria-labelledby="urn-label">${objectInstance?.identifier}</span>
 					</li>
 				</g:if>
-				<g:if test="${objectInstance?.created}">
+				
+				
+				<g:if test="${objectInstance?.createdAt}">
 					<li class="fieldcontain">
 						<span id="origName-label" class="property-label">
 							<g:message code="object.created.label" default="Datum erstellt" />
@@ -130,7 +175,7 @@
 						<span class="property-value" aria-labelledby="origName-label">${objectInstance.getFormattedCreatedDate()}</span>
 					</li>
 				</g:if>
-				<g:if test="${objectInstance?.modified}">
+					<g:if test="${objectInstance?.modifiedAt}">
 					<li class="fieldcontain">
 						<span id="origName-label" class="property-label">
 							<g:message code="object.modified.label" default="Datum geändert" />
@@ -159,40 +204,68 @@
 				<g:if test="${objectInstance?.original_formats}">
 					<li class="fieldcontain">
 						<span id="origName-label" class="property-label">Enthaltene Formate aller zu diesem Objekt eingelieferten SIP</span>
-						<g:each in="${objectInstance.original_formats?.split(",")}">
-							   	<g:if test="${!it.startsWith("danrw")}">
-								<g:link url="http://www.nationalarchives.gov.uk/PRONOM/${it}" target="_blank">
-									<span class="property-value" aria-labelledby="urn-label">${it}</span>
-								</g:link>
-							</g:if>
-							<g:else>
-								<span class="property-value" aria-labelledby="urn-label">${it}</span>
-							</g:else>
+						<g:each in="${objectInstance.original_formats?.split(",")}"> 
+							<span class="property-value" aria-labelledby="urn-label">
+						  		<g:each in="${extensionSip.keySet().toString().replace('[', '').replace(']','').split(",")}" var="keySIP">
+									<g:if test="${keySIP.trim() == it.trim()}">
+										${extensionSip.getAt(keySIP.trim()).toString().replace('[', '').replace(']','')} -- 
+									</g:if> 
+								</g:each>
+						  	 	<g:if test="${!it.startsWith("danrw")}">
+						  			<g:link url="http://www.nationalarchives.gov.uk/PRONOM/${it}" target="_blank">
+								   		${it}
+							  		</g:link>
+						   		</g:if>
+						   		<g:else>
+						   			<span class="property-value" aria-labelledby="urn-label">
+							   			<g:each in="${extensionSip.keySet().toString().replace('[', '').replace(']','').split(",")}" var="keySIP">
+											<g:if test="${keySIP.trim() == it.trim()}">
+												${extensionSip.getAt(keySIP.trim()).toString().replace('[', '').replace(']','')} -- 
+											</g:if> 
+										</g:each>	
+						   				${it}
+						   			</span>
+						   		</g:else>
+						   	</span>
 						</g:each>
 					</li>
 				</g:if>
 				<g:if test="${objectInstance?.most_recent_formats}">
 					<li class="fieldcontain">
 						<span id="origName-label" class="property-label">Formate der aktuellsten Repräsentation (DIP)</span>
-					 	<g:each in="${objectInstance.most_recent_formats?.split(",")}">
-						  	 <g:if test="${!it.startsWith("danrw")}">
-						  	 	<g:link url="http://www.nationalarchives.gov.uk/PRONOM/${it}" target="pronom">
-						  	 		<span class="property-value" aria-labelledby="urn-label">${it}</span>
-						  	 	</g:link>
-						   	</g:if>
-						   	<g:else>
-						   		<span class="property-value" aria-labelledby="origName-label">${it}</span>
-						   	</g:else>
+						<g:each in="${objectInstance.most_recent_formats?.split(",")}">
+							<span class="property-value" aria-labelledby="urn-label">
+						  		<g:each in="${extensionDip.keySet().toString().replace('[', '').replace(']','').split(",")}" var="keyDIP">
+									<g:if test="${keyDIP.trim() == it.trim()}">
+										${extensionDip.getAt(keyDIP.trim()).toString().replace('[', '').replace(']','')} -- 
+									</g:if> 
+								</g:each>
+								<g:if test="${!it.startsWith("danrw")}">
+							  		<g:link url="http://www.nationalarchives.gov.uk/PRONOM/${it}" target="pronom">
+							  			${it}
+							  		</g:link>
+							    </g:if>
+							    <g:else>
+							      <span class="property-value" aria-labelledby="urn-label">
+								 	 <g:each in="${extensionDip.keySet().toString().replace('[', '').replace(']','').split(",")}" var="keyDIP">
+								        <g:if test="${keyDIP.trim() == it.trim()}">
+										  ${extensionDip.getAt(keyDIP.trim()).toString().replace('[', '').replace(']','')} -- 
+									    </g:if> 
+								  	</g:each>	
+							   		${it}
+							   	  </span>
+						   		</g:else>
+						  	 </span>
 						</g:each>
 					</li>
 				</g:if>
 				<g:if test="${objectInstance?.most_recent_secondary_attributes}">
-					<li class="fieldcontain">
-						<span id="origName-label" class="property-label">Codecs der Oberflächenansicht</span>
-						<g:each in="${objectInstance.most_recent_secondary_attributes?.split(",")}">
+				   <li class="fieldcontain">
+					<span id="origName-label" class="property-label">Codecs der Oberflächenansicht</span>
+						  <g:each in="${objectInstance.most_recent_secondary_attributes?.split(",")}">
 						  	 <span class="property-value" aria-labelledby="origName-label">${it}</span>
-						</g:each>
-					</li>
+						  </g:each>
+				   </li>
 				</g:if>
 				<g:if test="${objectInstance?.ddb_exclusion!=null}">
 					<li class="fieldcontain">

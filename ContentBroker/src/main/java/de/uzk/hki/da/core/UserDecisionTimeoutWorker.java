@@ -40,10 +40,11 @@ public class UserDecisionTimeoutWorker extends Worker {
 	protected void updateTimedOut(Session session) {
 		logger.debug("updateTimedOut");
 
-		String dateBefore = String.valueOf(new Date().getTime() / 1000L - 86400 * 30);
+		long thirtyDays = 86400L * 30L * 1000L;
+		Date dateBefore = new Date(new Date().getTime() - thirtyDays);
 
 		String queryStr = "SELECT j FROM Job j LEFT JOIN j.obj o "
-				+ "where j.status=?1 and j.date_modified < ?2 and j.responsibleNodeName=?3";
+				+ "where j.status=?1 and j.modifiedAt < ?2 and j.responsibleNodeName=?3";
 
 		String waitUserDecStatus = C.WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION;
 		Query query = session.createQuery(queryStr);
@@ -66,7 +67,7 @@ public class UserDecisionTimeoutWorker extends Worker {
 			
 			jobbi.setStatus(newStatus);
 			jobbi.setAnswer(C.ANSWER_TO);
-			jobbi.setDate_modified(String.valueOf(new Date().getTime() / 1000L));
+			jobbi.setModifiedAt(new Date());
 			session.save(jobbi);
 
 			logger.debug("found identifier: " + jobbi.getObject().getIdentifier()

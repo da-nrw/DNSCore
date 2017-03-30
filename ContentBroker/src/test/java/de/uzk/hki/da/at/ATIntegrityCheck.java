@@ -32,12 +32,14 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.hibernate.Session;
+import org.junit.Before;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Copy;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectNamedQueryDAO;
 import de.uzk.hki.da.service.HibernateUtil;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 
@@ -48,9 +50,13 @@ import de.uzk.hki.da.utils.Path;
  */
 public class ATIntegrityCheck extends AcceptanceTest{
 	
-
-	private static final Path archiveStoragePath = Path.make("/ci/archiveStorage/aip/TEST/");
+	private static Path archiveStoragePath = null;
 	
+	@Before
+	public void beforeTest(){
+		System.out.println("ArchivePath: "+archiveStoragePath);
+		archiveStoragePath = Path.make(getCI_ARCHIVE_STORAGE());//it have to be setted after AcceptanceTest::setUpAcceptanceTest()
+	}
 	@Test 
 	public void testInitialSetOfChecksum() throws IOException {
 		Object object = null;
@@ -64,65 +70,53 @@ public class ATIntegrityCheck extends AcceptanceTest{
 	}
 	
 	@Test
-	public void localCopyModifiedTest()  {
+	public void localCopyModifiedTest() {
 		try {
-			
 			Object object = null;
-		
-	    String ORIGINAL_NAME = "ATIntegrityCheckLocalCopyModified";
-	    
-		ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
-		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
-		object=ath.getObject(ORIGINAL_NAME);
-		
-	    changeLastCheckedObjectDate(object, -25);
-		
-		
-		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
 
-		setChecksumSecondaryCopy(object, object.getLatestPackage().getChecksum(),-1);
-		Thread.sleep(2000L);
-		// We'll destroy it physically now, if we 're on CI
-		// on dev machines FakeGridFacade will find special file in ATUseCaseAudit
-		// On other systems (DEV) the fake adapter will do that for us!
-		if (System.getProperty("env") != null && System.getProperty("env").equals("ci")) {
+			String ORIGINAL_NAME = "ATIntegrityCheckLocalCopyModified";
+
+			ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
+			ath.awaitObjectState(ORIGINAL_NAME, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+			object = ath.getObject(ORIGINAL_NAME);
+
+			changeLastCheckedObjectDate(object, -25);
+
+			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, testContractor.getUsername());
+
+			setChecksumSecondaryCopy(object, object.getLatestPackage().getChecksum(), -1);
 			destroyFileInCIEnvironment(object.getIdentifier());
-		} else System.out.println(".. not detected CI Environment!");
-		
-		changeLastCheckedObjectDate(object, -25);
-		Thread.sleep(2000L);
-		
-		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.Error);
-		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
-		assertSame(object.getObject_state(), Object.ObjectStatus.Error);
+			changeLastCheckedObjectDate(object, -25);
+
+			ath.awaitObjectState(ORIGINAL_NAME, Object.ObjectStatus.Error);
+			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, testContractor.getUsername());
+			assertSame(object.getObject_state(), Object.ObjectStatus.Error);
 		} catch (Exception e) {
 			e.printStackTrace();
-			fail();
+			fail(e.getMessage()+"\n"+e.toString());
 		}
 	}
 	
 	@Test
 	public void remoteCopyDestroyed()  {
-try {
-		String ORIGINAL_NAME = "ATIntegrityRemoteCopyDestroyed";
-		Object object = null;
-		ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
-		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
-		object=ath.getObject(ORIGINAL_NAME);
+		try {
+			String ORIGINAL_NAME = "ATIntegrityRemoteCopyDestroyed";
+			Object object = null;
+			ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
+			ath.awaitObjectState(ORIGINAL_NAME, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 
-		changeLastCheckedObjectDate(object, -25);
-		Thread.sleep(2000L);
-		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
-		setChecksumSecondaryCopy(object, "abcedde5",-31);
-		//assertTrue(waitForObjectInStatus(ORIGINAL_NAME,Object.ObjectStatus.Error));
-		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.Error);
-		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
-		assertSame(Integer.valueOf(object.getObject_state()), Integer.valueOf(Object.ObjectStatus.Error));
-} catch (Exception e) {
-	e.printStackTrace();
-	fail();
-}
-}
+			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, testContractor.getUsername());
+			setChecksumSecondaryCopy(object, "abcedde5", -31);
+			changeLastCheckedObjectDate(object, -25);
+
+			ath.awaitObjectState(ORIGINAL_NAME, Object.ObjectStatus.Error);
+			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, testContractor.getUsername());
+			assertSame(Integer.valueOf(object.getObject_state()), Integer.valueOf(Object.ObjectStatus.Error));
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage()+"\n"+e.toString());
+		}
+	}
 	
 	@Test
 	public void allCopiesOKTest()  {
@@ -133,17 +127,17 @@ try {
 		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		object=ath.getObject(ORIGINAL_NAME);
 		
-		changeLastCheckedObjectDate(object, -25);
 		setChecksumSecondaryCopy(object, object.getLatestPackage().getChecksum(),-31);
-		Thread.sleep(2000L);
+		changeLastCheckedObjectDate(object, -25);
+		
 		assertSame(Integer.valueOf(object.getObject_state()),Integer.valueOf(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow));
 		
 		waitForObjectChecked(object, ORIGINAL_NAME);
-		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, testContractor.getUsername());
 		assertSame(Integer.valueOf(object.getObject_state()),Integer.valueOf(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow));
 		} catch (Exception e) {
 			e.printStackTrace();
-			fail();
+			fail(e.getMessage()+"\n"+e.toString());
 		}
 	}
 	
@@ -159,82 +153,78 @@ try {
 		changeLastCheckedObjectDate(object, -25);
 		Thread.sleep(2000L);
 		
-		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
-		// We'll destroy it physically now, if we 're on CI
-		// on dev machines FakeGridFacade will find special file in ATUseCaseAudit
-		// On other systems (DEV) the fake adapter will do that for us!
-		if (System.getProperty("env") != null && System.getProperty("env").equals("ci")) {
-			destroyFileInCIEnvironment(object.getIdentifier());
-		} else System.out.println(".. not detected CI Environment!");
+		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, testContractor.getUsername());
+		destroyFileInCIEnvironment(object.getIdentifier());
 		
 		setChecksumSecondaryCopy(object, "abcd77",-31);
 		changeLastCheckedObjectDate(object, -25);
 		//assertTrue(waitForObjectInStatus(ORIGINAL_NAME,Object.ObjectStatus.Error));
 		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.Error);
-		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, testContractor.getUsername());
 		assertSame(Integer.valueOf(object.getObject_state()), Integer.valueOf(Object.ObjectStatus.Error));
 		} catch (Exception e) {
 			e.printStackTrace();
-			fail();
+			fail(e.getMessage()+"\n"+e.toString());
 		}
 	}
 	
-	@Test 
+	@Test
 	public void secondaryCopiesTooOld() {
 		try {
-		
-		String ORIGINAL_NAME = "ATIntegritySecondaryCopiesCheckTooOld";
-		Object object = null;
-		ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
-		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
-		object=ath.getObject(ORIGINAL_NAME);
 
-		setChecksumSecondaryCopy(object, object.getLatestPackage().getChecksum(),-8761);
-		
-		assertSame(Integer.valueOf(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow),Integer.valueOf(object.getObject_state()));
-		Thread.sleep(2000L);
-		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");;
-		changeLastCheckedObjectDate(object, -25);
-		
-		//assertTrue(waitForObjectInStatus(ORIGINAL_NAME,Object.ObjectStatus.Error));
-		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.Error);
-		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
-		assertSame(Integer.valueOf(object.getObject_state()), Integer.valueOf(Object.ObjectStatus.Error));
+			String ORIGINAL_NAME = "ATIntegritySecondaryCopiesCheckTooOld";
+			Object object = null;
+			ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
+			ath.awaitObjectState(ORIGINAL_NAME, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+			object = ath.getObject(ORIGINAL_NAME);
+
+			setChecksumSecondaryCopy(object, object.getLatestPackage().getChecksum(), -8761);
+
+			assertSame(Integer.valueOf(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow), Integer.valueOf(object.getObject_state()));
+			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, testContractor.getUsername());
+
+			changeLastCheckedObjectDate(object, -25);
+
+			ath.awaitObjectState(ORIGINAL_NAME, Object.ObjectStatus.Error);
+			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, testContractor.getUsername());
+			assertSame(Integer.valueOf(object.getObject_state()), Integer.valueOf(Object.ObjectStatus.Error));
 		} catch (Exception e) {
 			e.printStackTrace();
-			fail();
+			fail(e.getMessage()+"\n"+e.toString());
 		}
-		}
-	@Test 
-	public void primaryCopyTooOld()  {
+	}
+
+	@Test
+	public void primaryCopyTooOld() {
 		try {
 			String ORIGINAL_NAME = "ATIntegrityCheckPrimaryCopyTooOld";
-		
-		Object object = null;
-		ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
-		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
-		object=ath.getObject(ORIGINAL_NAME);
 
-		assertSame(Integer.valueOf(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow),Integer.valueOf(object.getObject_state()));
-		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");;
-		changeLastCheckedObjectDate(object, -8761);
-		Thread.sleep(2000L);
-		//assertTrue(waitForObjectInStatus(ORIGINAL_NAME,Object.ObjectStatus.Error));
-		ath.awaitObjectState(ORIGINAL_NAME,Object.ObjectStatus.Error);
-		object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
-		assertSame(Integer.valueOf(object.getObject_state()), Integer.valueOf(Object.ObjectStatus.Error));
+			Object object = null;
+			ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
+			ath.awaitObjectState(ORIGINAL_NAME, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+			object = ath.getObject(ORIGINAL_NAME);
+
+			assertSame(Integer.valueOf(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow), Integer.valueOf(object.getObject_state()));
+			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, testContractor.getUsername());
+			;
+			changeLastCheckedObjectDate(object, -8761);
+			Thread.sleep(2000L);
+			// assertTrue(waitForObjectInStatus(ORIGINAL_NAME,Object.ObjectStatus.Error));
+			ath.awaitObjectState(ORIGINAL_NAME, Object.ObjectStatus.Error);
+			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, testContractor.getUsername());
+			assertSame(Integer.valueOf(object.getObject_state()), Integer.valueOf(Object.ObjectStatus.Error));
 		} catch (Exception e) {
-		e.printStackTrace();
+			e.printStackTrace();
+			fail(e.getMessage()+"\n"+e.toString());
+		}
 	}
-	}
-	
 	
 	private void waitForObjectChecked(Object object,String ORIGINAL_NAME) {
 		Date old = object.getLast_checked();
 		System.out.println("last check was : " + old);
 		Date neu = old;
 		while (neu.compareTo(old)<=0) {
-			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, "TEST");
+			object = new ObjectNamedQueryDAO().getUniqueObject(ORIGINAL_NAME, testContractor.getUsername());
 			neu = object.getLast_checked();	
 		}
 		System.out.println("new check was on : " + neu + " object state " + object.getObject_state());
@@ -269,6 +259,11 @@ try {
 
 		System.out.println("Trying to destroy file on the archive storage path now!");
 		File file = Path.makeFile(archiveStoragePath,identifier,identifier+".pack_1.tar");
+		for(int i=0;i<30 && !file.exists();i++){
+			FolderUtils.waitToCompleteNFSAwareFileOperation();
+			System.out.println("Target("+file+") file is not created yet, wait: "+i);
+		}
+		
 		if (!file.exists()) {	
 			fail(file  + " does not exist!" );
 		}
@@ -280,7 +275,7 @@ try {
 		} catch (IOException ex) {
 		  fail("writing to file " + file + " failed");
 		} finally {
-		   try {writer.close();} catch (Exception ex) { fail();}
+		   try {writer.close();} catch (Exception ex) { fail(ex.getMessage()+"\n"+ex.toString());}
 		}
 		
 	}

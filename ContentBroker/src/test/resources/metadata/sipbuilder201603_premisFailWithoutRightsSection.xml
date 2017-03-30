@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<premis xmlns="info:lc/xmlns/premis-v2" xmlns:premis="info:lc/xmlns/premis-v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-2.xsd" version="2.2">
+    <object xsi:type="representation">
+        <objectIdentifier>
+            <objectIdentifierType>PACKAGE_NAME</objectIdentifierType>
+            <objectIdentifierValue>TESTPremisRights</objectIdentifierValue>
+        </objectIdentifier>
+    </object>
+    <event>
+        <eventIdentifier>
+            <eventIdentifierType>SIP_CREATION_ID</eventIdentifierType>
+            <eventIdentifierValue>Sip_Creation_2016-03-09T16:26:35.659+01:00</eventIdentifierValue>
+        </eventIdentifier>
+        <eventType>SIP_CREATION</eventType>
+        <eventDateTime>2016-03-09T16:26:35.659+01:00</eventDateTime>
+        <linkingAgentIdentifier>
+            <linkingAgentIdentifierType>APPLICATION_NAME</linkingAgentIdentifierType>
+            <linkingAgentIdentifierValue>DA NRW SIP-Builder Build: 123</linkingAgentIdentifierValue>
+        </linkingAgentIdentifier>
+        <linkingObjectIdentifier>
+            <linkingObjectIdentifierType>PACKAGE_NAME</linkingObjectIdentifierType>
+            <linkingObjectIdentifierValue>TESTPremisRights</linkingObjectIdentifierValue>
+        </linkingObjectIdentifier>
+    </event>
+    <agent>
+        <agentIdentifier>
+            <agentIdentifierType>APPLICATION_NAME</agentIdentifierType>
+            <agentIdentifierValue>DA NRW SIP-Builder 123</agentIdentifierValue>
+        </agentIdentifier>
+        <agentType>APPLICATION</agentType>
+    </agent>
+</premis>

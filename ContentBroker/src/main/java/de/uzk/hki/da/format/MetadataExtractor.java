@@ -29,7 +29,7 @@ import java.io.IOException;
  */
 public interface MetadataExtractor{
 
-	public void extract(File file, File extractedMetadata) 
+	public void extract(File file, File extractedMetadata, String expectedPUID) 
 			throws ConnectionException, FileNotFoundException, IOException;
 
 	public boolean isConnectable();

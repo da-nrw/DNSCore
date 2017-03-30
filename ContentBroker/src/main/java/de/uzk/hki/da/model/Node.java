@@ -18,18 +18,30 @@
 */
 
 package de.uzk.hki.da.model;
-import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import de.uzk.hki.da.utils.Path;
-
 import java.lang.Object;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -63,6 +75,10 @@ public class Node{
 	/** The urn_index. */
 	private int urn_index=-1;
 	
+	/** The remain time before retrieval is deleted after creation*/
+	@Column(name="retrieval_remain_time",nullable=false, columnDefinition="INTEGER DEFAULT 2")
+	private int retrieval_remain_time;
+
 	/** The repl_destinations. */
 	@Transient private String repl_destinations;
 	
@@ -446,4 +462,11 @@ public class Node{
 		this.identifier = identifier;
 	}
 	
+	public int getRetrieval_remain_time() {
+		return retrieval_remain_time;
+	}
+
+	public void setRetrieval_remain_time(int retrieval_remain_time) {
+		this.retrieval_remain_time = retrieval_remain_time;
+	}
 }

@@ -33,7 +33,6 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.IngestGate;
-import de.uzk.hki.da.core.MailContents;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
@@ -41,19 +40,28 @@ import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.format.FileFormatException;
 import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
+import de.uzk.hki.da.format.UserFileFormatException;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.DocumentsGenService;
+import de.uzk.hki.da.model.Event;
+import de.uzk.hki.da.model.Event.IdType;
+import de.uzk.hki.da.model.KnownError;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
+import de.uzk.hki.da.utils.ProcessInformation;
 
 /**
  * <li>Creates a new Representation and copies the contents of the submission into it.
  * <li>Tests if it is a delta package (detected through orig_name=already existing orig_name of an object).
  * <li>If that's the case, the previous representations of the original packages get loaded, so that all 
  * reps including the new one are accessible under fork/[csn]/[orig_name]/data/[repnames]
+ * <li>Tests if the incoming sip contains a virus (Gaby Bender 18.07.2016)
  * 
  * @author Daniel M. de Oliveira
  */
@@ -69,7 +77,7 @@ public class RestructureAction extends AbstractAction{
 	private IngestGate ingestGate;
 	private GridFacade gridRoot;
 	private DocumentsGenService dgs = new DocumentsGenService();
-	
+		
 	public RestructureAction(){
 		SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;
 	}
@@ -90,14 +98,32 @@ public class RestructureAction extends AbstractAction{
 			throw new PreconditionsNotMetException("object path for object on WorkArea does not exist: "+wa.objectPath());
 		if (!wa.dataPath().toFile().exists()) 
 			throw new PreconditionsNotMetException("data path for object on WorkArea does not exist: "+wa.dataPath());
+		
 	}
 	
 	
-	
-	
+
 	@Override
 	public boolean implementation() throws FileNotFoundException, IOException,
 			UserException, RepositoryException, SubsystemNotAvailableException {
+		
+		/*
+		 *  G. Bender 29.11.2016
+		 *  DANRW-1472: Virenscanner ein-, ausschalten über Tabelle user
+		 */
+		if (o.getContractor().isUseVirusScan()) {
+			if (!scanWithClamAV()) {
+				
+				//Event e = createEvent( "Virus im Paket mit Identifier ", Event.IdType.VIRUS_DETECTED_ID);
+				Event e = createEvent( "Virus im Paket mit Identifier ");
+				o.getLatestPackage().getEvents().add(e);
+				
+				throw new UserException(UserExceptionId.VIRUS_DETECTED, " virus is detected! " );
+			} else {
+				Event e = createEvent("KEIN Virus im Paket mit Identifier ");
+				o.getLatestPackage().getEvents().add(e);
+			}
+		}
 		
 		listAllFiles();
 		
@@ -134,6 +160,72 @@ public class RestructureAction extends AbstractAction{
 		return true;
 	}
 
+	/**
+	 * scanWithClamAV: reads the incoming-directory and checks it 
+	 * @author Gaby Bender
+	 * @return true: no virus detected, otherwise false 
+	 * @throws IOException
+	 */
+	private boolean scanWithClamAV(){
+		ProcessInformation pi = null;
+		
+		try {
+		pi = new CommandLineConnector().runCmdSynchronously(new String[] {
+				"clamscan" , "-r", "--quiet",wa.objectPath().toFile().toString()}, 0);
+		if (pi.getExitValue() > 0) {
+			if (pi.getExitValue() == 1)  {
+				return false;
+			} else {
+				logger.error( pi.getStdErr());
+				return false;
+			}
+		}
+		return true;
+		} catch (IOException e){
+			logger.error( e.toString() );
+			return false;
+		}
+	}
+	
+	/**
+	 * createCreateEvent: creates an event if a virus is detected
+	 * @author Gaby Bender
+	 * @param virusTimeout 
+	 * @param clamVersion: version of the virus-db
+	 * @return
+	 */
+	private Event createEvent(String detail) {
+		
+		Event virusEventElement = new Event();
+
+		virusEventElement.setType(C.EVENT_TYPE_VIRUS_SCAN);
+		virusEventElement.setIdentifier(o.getIdentifier() + "+" + o.getLatestPackage().getName());
+		virusEventElement.setIdType(IdType.VIRUS_SCAN_ID);
+		virusEventElement.setAgent_type("CONTRACTOR");
+		virusEventElement.setAgent_name(o.getContractor().getShort_name());
+		virusEventElement.setDate(new Date());
+		virusEventElement.setDetail( detail + o.getIdentifier() + 
+					" gefunden! Gescannt mit " + getClamVersion());
+		return virusEventElement;
+	}
+	
+	/**
+	 * getClamVersion: clamscan -V
+	 * @return
+	 */
+	private String getClamVersion() {
+		String clamVersion;
+		try {
+			ProcessInformation pi = new CommandLineConnector().runCmdSynchronously(new String[] {
+						"clamscan" , "-V"}, 0);
+			clamVersion = "'" + pi.getStdOut().trim()  + "'";
+			
+		} catch (IOException ioe) {
+			clamVersion = " 'not found'";
+			logger.error(ioe.toString());
+		}
+		return clamVersion;
+	}
 	
 	private void makeCopyOfDeltaPremis() throws IOException {
 		FileUtils.copyFile(Path.makeFile(wa.dataPath(),o.getNameOfLatestBRep(),PREMIS),
@@ -155,9 +247,6 @@ public class RestructureAction extends AbstractAction{
 			for (DAFile daf:p.getFiles())
 				logger.debug(""+daf);
 	}
-	
-	
-	
 	
 	private boolean checkIfOnWorkAreaIsSpaceAvailabeForDeltaPackages(RetrievePackagesHelper retrievePackagesHelper) {
 		try {
@@ -203,20 +292,25 @@ public class RestructureAction extends AbstractAction{
 		}
 		logger.info("Listing all identified file formats (and ErrorCodes, if any):");
 		StringBuffer message = new StringBuffer();
-		UserExceptionId last = null;
+		KnownError last = null;
 		for (FileWithFileFormat f:scannedFiles){
 			String line = f+":"+f.getFormatPUID()+":"+f.getSubformatIdentifier();
 			String err = "";
-			if (f.getUserExceptionId()!=null) {
-				err = f.getUserExceptionId().toString();
+			if (f.getKnownErrors()!=null) {
+				for (KnownError ke: f.getKnownErrors()) {
+				err = ke.getDescription() + " " + ke.getError_name();
 				message.append(line + err + "\n");
-				last = f.getUserExceptionId();
-			}
+				last = ke;
+				}
+			} else err = "<NONE>";
 			logger.info(line + err);
 		}
-		if (message.length()>0)
-		new MailContents(preservationSystem,n).informUserAboutPendingDecision(o,message.toString());
-		if (last!=null) throw new UserException(last,"Entscheidungen erforderlich!");
+		if (last!=null && !o.getLatestPackage().isPruneExceptions()) {
+			if (last.getAdvice()!=null) {
+				message.append(last.getAdvice() + "\n");
+			}
+			throw new UserFileFormatException(last,message.toString(), o.getLatestPackage().isPruneExceptions());
+		}
 	}
 	
 	@Override
@@ -239,7 +333,7 @@ public class RestructureAction extends AbstractAction{
 			Path.makeFile( dataPath, repName + A ), 
 			Path.makeFile( objectPath, DATA_TMP ));
 			
-		FileUtils.deleteDirectory( dataPath.toFile() );
+		FolderUtils.deleteDirectorySafe( dataPath.toFile() );
 			
 		FileUtils.moveDirectory(
 			Path.makeFile( objectPath, DATA_TMP ), 

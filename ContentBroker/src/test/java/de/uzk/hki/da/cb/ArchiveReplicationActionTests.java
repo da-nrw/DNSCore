@@ -28,11 +28,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.grid.GridFacade;
-import de.uzk.hki.da.model.PreservationSystem;
-import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -50,6 +50,7 @@ public class ArchiveReplicationActionTests {
 		workAreaRootPath = "src/test/resources/cb/ArchiveReplicationTests/fork/";
 		node.setWorkAreaRootPath(Path.make(workAreaRootPath));
 		node.setName("ci");
+		node.setIdentifier("LN");
 	}
 	
 	@Before

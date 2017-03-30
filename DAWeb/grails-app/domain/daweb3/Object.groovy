@@ -32,6 +32,8 @@ class Object {
 		dynamic_nondisclosure_limit nullable : true
 		static_nondisclosure_limit nullable: true
     }
+	
+	static hasMany = [packages: Package]
     
     static mapping = {
 		table 'objects'
@@ -39,12 +41,9 @@ class Object {
 		id column:'data_pk'
 		user column: 'user_id'
 		packages joinTable: [key: 'objects_data_pk', column: 'packages_id']
-		created column: 'date_created'
-		modified column: 'date_modified'
-    }
-	
-	static hasMany = [ packages:Package ]
-	
+		createdAt column: 'created_at'
+		modifiedAt column: 'modified_at'
+    }	
 	int id
 	String urn
 	String identifier
@@ -55,8 +54,8 @@ class Object {
 	
 	// due to now unused iRODS functions these fields are still strings, should be 
 	// refactored to normal Dates
-	String created
-	String modified
+	Date createdAt
+	Date modifiedAt
 	
 	Date static_nondisclosure_limit
 	String dynamic_nondisclosure_limit
@@ -150,8 +149,8 @@ class Object {
 
 	def getFormattedCreatedDate() {
 		
-	if (created!=null && created!="" && created!="NULL" && created.length()>5) {
-		String sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date(Long.valueOf(created).longValue() ))
+	if (createdAt!=null) {
+		String sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(createdAt)
 		return sdf
 	}
 	return "";
@@ -159,14 +158,28 @@ class Object {
 
 	def getFormattedModifiedDate() {
 	
-	if (modified!=null && modified!="" && modified!="NULL" && modified.length()>5) {
-		String sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(new Date(Long.valueOf(modified).longValue()) )
+	if (modifiedAt) {
+		String sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(modifiedAt)
 		return sdf
 	}
 	return ""
 	
 	}
 	
+	static Date convertDateIntoDate(String sDate) {
+
+		if (sDate!=null && sDate!="") {
+		try {
+				SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss")
+				Date dt = df.parse(sDate)
+				return dt
+			} catch (Exception ex) { 
+				return null;
+			}
+		}
+		return null;
+	}
+
 	static String convertDateIntoStringDate(String sDate) {
 
 		if (sDate!=null && sDate!="") {

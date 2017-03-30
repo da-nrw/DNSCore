@@ -19,6 +19,8 @@
 
 package de.uzk.hki.da.grid;
 
+import de.uzk.hki.da.model.Node;
+
 /**
  * @author Daniel M. de Oliveira
  */
@@ -41,7 +43,7 @@ public interface DistributedConversionAdapter {
 	 * 
 	 * @param relativePath from work 
 	 */
-	public void replicateToLocalNode(String relativePath);
+	public void replicateToLocalNode(String relativePath, Node node);
 	
 	
 	/**

@@ -18,7 +18,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -35,6 +38,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import de.uzk.hki.da.model.StoragePolicy;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.MD5Checksum;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.PropertiesUtils;
@@ -86,10 +90,10 @@ public class CTIrodsFacade {
 		
 		sp = new StoragePolicy();
 		sp.setMinNodes(1);
-		sp.setReplDestinations("ciArchiveResource");
+		sp.setReplDestinations("ciArchiveRescGroup");
 		sp.setWorkingResource("ciWorkingResource");
 		sp.setGridCacheAreaRootPath(properties.getProperty(PROP_GRID_CACHE_AREA_ROOT_PATH));
-		sp.setCommonStorageRescName("ciArchiveResource");
+		sp.setCommonStorageRescName("ciArchiveRescGroup");
 
 	}
 	
@@ -100,7 +104,7 @@ public class CTIrodsFacade {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-		FileUtils.deleteDirectory(new File(tmpDir));
+		FolderUtils.deleteDirectorySafe(new File(tmpDir));
 		removeConfDir();
 	}
 	
@@ -121,8 +125,8 @@ public class CTIrodsFacade {
 	 */
 	@After
 	public void tearDown() throws Exception {
-		FileUtils.deleteQuietly(new File(testCollPhysicalPathOnGridCache));
-		FileUtils.deleteQuietly(new File(testCollPhysicalPathOnLTA));
+		FolderUtils.deleteQuietlySafe(new File(testCollPhysicalPathOnGridCache));
+		FolderUtils.deleteQuietlySafe(new File(testCollPhysicalPathOnLTA));
 		isc.removeCollectionAndEatException(testCollLogicalPath);
 	}
 	
@@ -149,19 +153,6 @@ public class CTIrodsFacade {
 	
 	
 	
-	
-	/**
-	 * Put file and test replications
-	 *
-	 * @throws Exception the exception
-	 * @author Jens Peters
-	 */
-	@Test 
-	public void putFileAndTestReplications() throws Exception {
-		putFileAndWaitUntilReplicatedAccordingToStoragePolicy();
-	
-		assertTrue(ig.isValid(testColl + "/urn.tar"));
-	}
 	
 	
 	
@@ -217,10 +208,10 @@ public class CTIrodsFacade {
 	public void storagePolicyIsNotAchievedDueToCopiesNotReached() throws IOException {
 		StoragePolicy sp2 = new StoragePolicy();
 		sp2.setMinNodes(10);
-		sp2.setReplDestinations("ciArchiveResource");
+		sp2.setReplDestinations("lza");
 		sp2.setWorkingResource("ciWorkingResource");
 		sp2.setGridCacheAreaRootPath(sp.getGridCacheAreaRootPath());
-		sp2.setCommonStorageRescName("ciArchiveResource");
+		sp2.setCommonStorageRescName("ciArchiveRescGroup");
 		String aip = testColl + "/urn.tar";
 		sp2.setMinNodes(10);
 		assertTrue(ig.put(temp, aip, sp2, md5sum));
@@ -250,7 +241,7 @@ public class CTIrodsFacade {
 	 * 
 	 * @author Jens Peters
 	 * @author Daniel M. de Oliveira
-	 */
+	
 	@Test
 	public void destroyChecksumInStorage() throws Exception {
 		
@@ -259,7 +250,7 @@ public class CTIrodsFacade {
 		destroyTestFileOnLongTermStorage();
 		assertFalse(ig.isValid(testColl + "/urn.tar"));
 	}
-
+	 */
 	//-----------------------------------------------------------------
 	
 	
@@ -274,6 +265,7 @@ public class CTIrodsFacade {
 	
 	
 	private void putFileAndWaitUntilReplicatedAccordingToStoragePolicy() throws InterruptedException, IOException {
+		
 		assertTrue(ig.put(temp, testColl + "/urn.tar", sp, null));
 		
 		while (true) {
@@ -328,7 +320,7 @@ public class CTIrodsFacade {
 	}
 
 	private static void removeConfDir() {
-		FileUtils.deleteQuietly(new File("conf")); 
+		FolderUtils.deleteQuietlySafe(new File("conf")); 
 	}
 
 	private File createTestFile() throws IOException {

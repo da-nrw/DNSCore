@@ -41,6 +41,7 @@ import javax.persistence.Transient;
  * @author Daniel M. de Oliveira
  */
 
+
 @Entity
 @Table(name="events")
 public class Event {
@@ -53,6 +54,7 @@ public class Event {
 	/** The id type. */
 	@Transient
 	private IdType idType;
+	//TODO: idType, id, type are redundant attributes. In mostcases 'type' is used, but it should have 'IdType'(or later 'EventType') as type not String 
 
 	/** The identifier. */
 	@Transient
@@ -104,10 +106,12 @@ public class Event {
 		
 		/** The target file path. */
 		TARGET_FILE_PATH, 
- /** The ingest id. */
- INGEST_ID, 
- /** The sip creation id. */
- SIP_CREATION_ID
+		/** The ingest id. */
+		INGEST_ID, 
+		/** The sip creation id. */
+		SIP_CREATION_ID,
+		/** Virus scan */
+		VIRUS_SCAN_ID
 	}
 	
 	/**

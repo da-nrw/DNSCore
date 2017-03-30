@@ -30,7 +30,7 @@ public class ATMailQueue extends AcceptanceTest {
 		
 		Session session = HibernateUtil.openSession();
 
-		String msgBegin = "Ihr eingeliefertes Paket mit dem Namen \"ATMailQueue\" wurde erfolgreich im DA-NRW archiviert%";
+		String msgBegin = "Ihr eingeliefertes Paket mit dem Namen \"ATMailQueue.tgz\" wurde erfolgreich im DA-NRW archiviert%";
 
 		Query query = session.createQuery("SELECT o FROM PendingMail o where message like ?1");
 

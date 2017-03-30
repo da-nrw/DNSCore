@@ -26,26 +26,24 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.convert.PublishPDFConversionStrategy;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
-import de.uzk.hki.da.model.MigrationRight;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PublicationRight;
-import de.uzk.hki.da.model.TextRestriction;
 import de.uzk.hki.da.model.PublicationRight.Audience;
+import de.uzk.hki.da.model.TextRestriction;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 
@@ -80,7 +78,7 @@ public class PublishPDFConversionStrategyTests {
 	
 	@After
 	public void tearDown() throws IOException {
-		FileUtils.deleteQuietly(dipPath.toFile());
+		FolderUtils.deleteQuietlySafe(dipPath.toFile());
 	}
 	
 	/**

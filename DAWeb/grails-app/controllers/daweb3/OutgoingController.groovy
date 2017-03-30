@@ -71,16 +71,17 @@ class OutgoingController {
 			
 			//it.setStatus("960")
 			
-			def dateCode = Math.round(new Date().getTime()/1000L)
-			log.debug("dateCode:"+dateCode)
-			log.debug("String Value of:"+String.valueOf(dateCode))
+			def modi = new Date()
+			log.debug("Modified at:" + modi)
 			
-			it.setModified(String.valueOf(dateCode))
+			it.setModifiedAt(modi)
 			it.save();
 		}
-		
-		def webdavurl = grailsApplication.config.transferNode.downloadLinkPrefix +"/"+   user.getShortName()  + "/outgoing"
-		redirect(url:webdavurl + "/" + params.filename)
+		def redirecturl = request.getHeader('referer');
+		if (grailsApplication.config.transferNode.downloadLinkPrefix && grailsApplication.config.transferNode.downloadLinkPrefix.trim().length() > 0) {
+			redirecturl = grailsApplication.config.transferNode.downloadLinkPrefix +"/"+   user.getShortName()  + "/outgoing/" + params.filename
+		}
+		redirect(url:redirecturl)
 	}
 
 }

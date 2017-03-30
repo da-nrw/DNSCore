@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.utils.C;
 
 /**
+ * @author Eugen Trebunski
  * @author Polina Gubaidullina
  */
 
@@ -32,6 +33,7 @@ public class MetsParser{
 	private final Namespace XLINK_NS = 	Namespace.getNamespace("http://www.w3.org/1999/xlink");
 	private final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 	private final List<Element> fileElements;
+	public static final String titleSparator=" : ";
 
 	public MetsParser(Document doc) throws JDOMException {
 		this.metsDoc = doc;
@@ -70,6 +72,55 @@ public class MetsParser{
 			logger.error("Unable to find urn.");
 		}
 		return urn;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private List<String> getTitlePageReferencesFromFrontimage() {
+		List<String> ret = new ArrayList<String>();
+		
+		List<Element> fileSecs = metsDoc.getRootElement().getChildren("fileSec", METS_NS);
+		if (fileSecs == null){
+			return ret;
+		}
+		List<Element> fileGrps = null;
+		for (Element fileSec : fileSecs){
+			fileGrps = fileSec.getChildren("fileGrp", METS_NS);
+			if (fileGrps != null){
+				break;
+			}
+		}
+		if (fileGrps == null){
+			return ret;
+		}
+		List<Element> files = null;
+		for (Element fileGrp : fileGrps) {
+			String usi = fileGrp.getAttributeValue("USE");
+			if ("FRONTIMAGE".equals(usi)) {
+				files = fileGrp.getChildren("file", METS_NS);
+				if (files != null) {
+					break;
+				}
+			}
+		}
+		if (files == null){
+			return ret;
+		}
+		
+		for (Element file : files){
+			List<Element> fLocs = file.getChildren("FLocat", METS_NS);
+			if (fLocs == null){
+				continue;
+			}
+			
+			for (Element fLoc : fLocs){
+				String href = fLoc.getAttributeValue("href", XLINK_NS);
+				if (href != null && href.length() > 0){
+					ret.add(href);
+				}
+			}
+		}
+		
+		return ret;
 	}
 	
 	private List<String> getTitlePageReferencesFromDmdId(String dmdID, String objectId) {
@@ -337,12 +388,22 @@ public class MetsParser{
 		return nameElements;
 	}
 	
-	private String getCreator(Element name) {
+	private String getContributor(Element name) {
 		String namePartValue = "";
 		try {
-			String role = name.getChild("role", C.MODS_NS).getValue();
-			if(role.equals("aut")||role.equals("creator")) {
-				namePartValue = getName(name);
+			String roleCode="",roleText="";
+			Element roleElem=name.getChild("role", C.MODS_NS);
+			List<Element> roleTermElem=roleElem.getChildren("roleTerm", C.MODS_NS);
+			for(Element e:roleTermElem){
+				String type=e.getAttribute("type").getValue();
+				if(type.equals("code")){
+					roleCode=e.getValue();
+				}else if(type.equals("text")){
+					roleText=e.getValue();
+				}
+			}
+			if(!roleCode.equals("aut")&&!roleCode.equals("cre")) {
+				namePartValue = roleText+(roleText.trim().isEmpty()?"":": ")+getName(name);
 			}
 		} catch (Exception e) {
 			logger.debug("No creator found!");
@@ -350,13 +411,30 @@ public class MetsParser{
 		return namePartValue;
 	}
 	
-	private String getContributor(Element name) {
+	private String getCreator(Element name) {
 		String namePartValue = "";
 		try {
-			String role = name.getChild("role", C.MODS_NS).getValue();
-			if(!(role.equals("aut") && !role.equals("creator"))) {
-				namePartValue = role+": "+getName(name);
+			String roleCode="",roleText="";
+			Element roleElem=name.getChild("role", C.MODS_NS);
+			List<Element> roleTermElem=roleElem.getChildren("roleTerm", C.MODS_NS);
+			for(Element e:roleTermElem){
+				String type=e.getAttribute("type").getValue();
+				if(type.equals("code")){
+					roleCode=e.getValue();
+				}else if(type.equals("text")){
+					roleText=e.getValue();
+				}
 			}
+			
+			/*if(roleCode.equals("aut"))
+				namePartValue = "Verfasser: "+getName(name);
+			else if(roleCode.equals("cre"))
+				namePartValue = "Autor: "+getName(name);*/
+			
+			if(roleCode.equals("aut")||roleCode.equals("cre")) {
+				namePartValue = roleText+(roleText.trim().isEmpty()?"":": ")+getName(name);
+			}
+			
 		} catch (Exception e) {
 			logger.debug("No contributor found!");
 		}
@@ -461,15 +539,21 @@ public class MetsParser{
 					titleValue = nonSortValue + " " + titleValue;
 				}
 				MainTitleValue = titleValue;
-			} else {
+			}
+			else if(!nonSortValue.equals("")) {
+				MainTitleValue = nonSortValue;
+			}
+			else {
 				MainTitleValue = displayLabelValue;
 			}
 		} catch(Exception e) {
 			logger.error("Element titleInfo does not exist!!!");
 		}
-		title.add(MainTitleValue);
+		
 		if(!subTitleValue.equals("")) {
-			title.add(subTitleValue);
+			title.add(MainTitleValue+titleSparator+ subTitleValue);
+		}else{
+			title.add(MainTitleValue);
 		}
 		return title;
 	}
@@ -585,7 +669,11 @@ public class MetsParser{
 			dmdSecInfo.put(C.EDM_PUBLISHER, publishers);
 			
 //			TitlePage
-			List<String> titlePageRefs = getTitlePageReferencesFromDmdId(id, ObjectId);
+			List<String> titlePageRefs = getTitlePageReferencesFromFrontimage();
+			if (titlePageRefs.isEmpty()) {
+				titlePageRefs = getTitlePageReferencesFromDmdId(id, ObjectId);
+			}
+			
 			List<String> allReferences = getReferencesFromDmdId(id, ObjectId);
 			
 //			LAV

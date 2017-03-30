@@ -40,6 +40,7 @@ import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.pkg.BagitUtils;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 
@@ -96,6 +97,7 @@ public class RetrievalAction extends AbstractAction {
 		cleanupFS();
 		o.setObject_state(100);
 		new MailContents(preservationSystem,n).retrievalReport(o);
+		clearNonpersistentObjectProperties(o);
 		return true;
 	}
 
@@ -192,7 +194,7 @@ public class RetrievalAction extends AbstractAction {
 		
 		// cleanup
 		
-		FileUtils.deleteDirectory(wa.objectPath().toFile());
+		FolderUtils.deleteDirectorySafe(wa.objectPath().toFile());
 	}
 	
 	

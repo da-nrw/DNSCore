@@ -21,6 +21,7 @@ package de.uzk.hki.da.grid;
 
 import java.io.File;
 
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.utils.Path;
 
@@ -40,25 +41,15 @@ public class IrodsDistributedConversionAdapter implements DistributedConversionA
 		if (irodsSystemConnector==null) throw new ConfigurationException("irodsSystemConnector");
 		if (zone==null||zone.toString().isEmpty()) throw new ConfigurationException("zonePath not set");
 		if (getWorkingResource()==null||getWorkingResource().isEmpty()) throw new ConfigurationException("working resource not set");
-		
-		irodsSystemConnector.establishConnect();
-		
-		try {
-			
-			irodsSystemConnector.registerFilesInCollection(
-					Path.make(zone,relativePath).toString(),
-					new File(physicalPath),
-					workingResource
-					);
-		} finally
-		{
-			irodsSystemConnector.logoff();
+		IrodsCommandLineConnector icl = new IrodsCommandLineConnector();
+		if (icl.exists(Path.make(zone,relativePath).toString())) {
+			icl.unregColl(Path.make(zone,relativePath).toString());
 		}
-		
+		icl.ireg(new File(physicalPath), workingResource, Path.make(zone,relativePath).toString(), true);
 	}
 
 	@Override
-	public void replicateToLocalNode(String relativePath) {
+	public void replicateToLocalNode(String relativePath, Node node) {
 		
 		irodsSystemConnector.establishConnect();
 		

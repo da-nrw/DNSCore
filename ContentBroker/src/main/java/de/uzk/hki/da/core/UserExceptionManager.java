@@ -5,11 +5,6 @@ import java.util.HashMap;
 
 import javax.xml.parsers.SAXParserFactory;
 
-import nu.xom.Builder;
-import nu.xom.Document;
-import nu.xom.Element;
-import nu.xom.Elements;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.ErrorHandler;
@@ -18,6 +13,10 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
 import de.uzk.hki.da.core.UserException.UserExceptionId;
+import nu.xom.Builder;
+import nu.xom.Document;
+import nu.xom.Element;
+import nu.xom.Elements;
 
 /**
  * 

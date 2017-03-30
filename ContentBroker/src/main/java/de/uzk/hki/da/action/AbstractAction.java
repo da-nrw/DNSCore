@@ -36,11 +36,12 @@ import de.uzk.hki.da.core.MailContents;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserExceptionManager;
-import de.uzk.hki.da.core.UserException.UserExceptionId;
+import de.uzk.hki.da.format.UserFileFormatException;
 import de.uzk.hki.da.model.Copy;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.RepositoryException;
@@ -49,6 +50,7 @@ import de.uzk.hki.da.service.JmsMessage;
 import de.uzk.hki.da.service.JmsMessageServiceHandler;
 import de.uzk.hki.da.util.TimeStampLogging;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.StringUtilities;
 
 
 /**
@@ -174,16 +176,20 @@ public abstract class AbstractAction implements Runnable {
 				return;
 			}
 			
-		} catch (UserException e) {
-			if (e.getUserExceptionId().equals(UserExceptionId.WRONG_DATA_TYPE_IPTC)) {
-				j.setQuestion(C.QUESTION_STORE_ALLOWED_IPTC_ERROR);
-			}
+		} catch (UserFileFormatException e) {
+			j.setQuestion(e.getKnownError().getQuestion());
+			new MailContents(preservationSystem,n).informUserAboutPendingDecision(o,e.getMessage());
+			
+			updateStatus(C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
+			resetModifiers();
+			return;	
+		 } catch (UserException e) {
 			reportUserError(e);
 			updateStatus(C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
 			resetModifiers();
 			return;
 			
-		} catch (SubsystemNotAvailableException e) {
+		}catch (SubsystemNotAvailableException e) {
 			
 			actionFactory.setOnHalt(true,e.getMessage());
 			reportTechnicalError(e);
@@ -201,7 +207,7 @@ public abstract class AbstractAction implements Runnable {
 	
 	
 	private void updateStatus(String endDigit) {
-		j.setDate_modified(String.valueOf(new Date().getTime()/1000L));
+		j.setModifiedAt(new Date());
 		j.setStatus(getStartStatus().substring(0, getStartStatus().length() - 1) + endDigit);
 	}
 	
@@ -234,7 +240,7 @@ public abstract class AbstractAction implements Runnable {
 			j.setStatus(startStatus);
 			resetModifiers();
 		} else {
-			j.setDate_modified(String.valueOf(new Date().getTime()/1000L));
+			j.setModifiedAt(new Date());
 			baseLogger.info(this.getClass().getName()+" finished working on job: "+j.getId()+". Now commiting changes to database.");
 			if (kILLATEXIT)	{
 				baseLogger.info("Set the job status to the end status "+endStatus+" .");
@@ -397,7 +403,7 @@ public abstract class AbstractAction implements Runnable {
 		sendJMSException(e);
 	}
 
-	private void reportTechnicalError(Exception e){
+	protected void reportTechnicalError(Exception e){
 		logger.error(this.getClass().getName()+": Exception in action: ",e);
 		new MailContents(preservationSystem,n).abstractActionCreateAdminReport(e, o, this);
 		sendJMSException(e);
@@ -411,10 +417,12 @@ public abstract class AbstractAction implements Runnable {
 	 */
 	private void sendJMSException(Exception e) {
 	
-		String txt =  e.getMessage(); 	
-		if  (e.getMessage().equals("null")) txt = "-keine weiteren Details- (NPE)"; 	
-		JmsMessage jms = new JmsMessage(C.QUEUE_TO_CLIENT,C.QUEUE_TO_SERVER,o.getIdentifier() +" : "+ txt);
-		jmsMessageServiceHandler.sendJMSMessage(jms);
+		String txt =  e.getMessage(); 
+		if (StringUtilities.isSet(txt)) {
+			if  (e.getMessage().equals("null")) txt = "-keine weiteren Details- (NPE)"; 	
+			JmsMessage jms = new JmsMessage(C.QUEUE_TO_CLIENT,C.QUEUE_TO_SERVER,o.getIdentifier() +" : "+ txt);
+			jmsMessageServiceHandler.sendJMSMessage(jms);
+		}
 	}
 
 	public void synchronizeObjectDatabaseAndFileSystemState() {
@@ -423,6 +431,15 @@ public abstract class AbstractAction implements Runnable {
 			if ((!wa.isDBtoFSconsistent())||(!wa.isFStoDBconsistent())){
 				reportTechnicalError(new RuntimeException("Object DB is not consistent with data on FS."));
 			}
+		}
+	}
+	
+	protected static void clearNonpersistentObjectProperties(Object o) {
+		
+		o.getDocuments().clear();
+		for (Package pkg : o.getPackages()){
+			pkg.getEvents().clear();
+			pkg.getFiles().clear();
 		}
 	}
 

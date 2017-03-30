@@ -1,10 +1,13 @@
 package de.uzk.hki.da.at;
 
 import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import de.uzk.hki.da.model.Object;
 
 /**

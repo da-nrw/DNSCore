@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jhove xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://hul.harvard.edu/ois/xml/ns/jhove" xsi:schemaLocation="http://hul.harvard.edu/ois/xml/ns/jhove http://hul.harvard.edu/ois/xml/xsd/jhove/1.6/jhove.xsd" name="Jhove" release="1.9b3" date="2012-12-08">
+ <date>2016-05-24T20:54:35+02:00</date>
+ <repInfo uri="/ci/DNSCore/ContentBroker/src/test/resources/format/JhoveMetadataExtractor/ValidPDF.pdf">
+  <reportingModule release="1.7" date="2012-08-12">PDF-hul</reportingModule>
+  <lastModified>2016-05-24T20:46:45+02:00</lastModified>
+  <size>7920</size>
+  <format>PDF</format>
+  <version>1.4</version>
+  <status>Well-Formed and valid</status>
+  <sigMatch>
+  <module>PDF-hul</module>
+  </sigMatch>
+  <mimeType>application/pdf</mimeType>
+  <profiles>
+   <profile>ISO PDF/A-1, Level B</profile>
+  </profiles>
+  <properties>
+   <property>
+    <name>PDFMetadata</name>
+    <values arity="List" type="Property">
+    <property>
+     <name>Objects</name>
+     <values arity="Scalar" type="Integer">
+      <value>10</value>
+     </values>
+    </property>
+    <property>
+     <name>FreeObjects</name>
+     <values arity="Scalar" type="Integer">
+      <value>1</value>
+     </values>
+    </property>
+    <property>
+     <name>IncrementalUpdates</name>
+     <values arity="Scalar" type="Integer">
+      <value>0</value>
+     </values>
+    </property>
+    <property>
+     <name>DocumentCatalog</name>
+     <values arity="List" type="Property">
+     <property>
+      <name>PageLayout</name>
+      <values arity="Scalar" type="String">
+       <value>SinglePage</value>
+      </values>
+     </property>
+     <property>
+      <name>PageMode</name>
+      <values arity="Scalar" type="String">
+       <value>UseNone</value>
+      </values>
+     </property>
+     </values>
+    </property>
+    <property>
+     <name>Info</name>
+     <values arity="List" type="Property">
+     <property>
+      <name>Title</name>
+      <values arity="Scalar" type="String">
+       <value>ごぅこごぐいう</value>
+      </values>
+     </property>
+        <property>
+         <name>Creator</name>
+         <values arity="Scalar" type="String">
+          <value>ぐいうぃひづちぴはひ〠ざづひびどはの〠〱〮〷〮〳</value>
+         </values>
+        </property>
+        <property>
+         <name>Producer</name>
+         <values arity="Scalar" type="String">
+          <value>GPL Ghostscript 9.10</value>
+         </values>
+        </property>
+        <property>
+         <name>CreationDate</name>
+         <values arity="Scalar" type="Date">
+          <value>Fri May 20 13:48:08 CEST 2016</value>
+         </values>
+        </property>
+        <property>
+         <name>ModDate</name>
+         <values arity="Scalar" type="Date">
+          <value>Fri May 20 13:48:08 CEST 2016</value>
+         </values>
+        </property>
+     </values>
+    </property>
+       <property>
+        <name>ID</name>
+        <values arity="Array" type="String">
+         <value>0x84c87e0a9c01d4d25f237ea1ac0fdbc1</value>
+         <value>0x84c87e0a9c01d4d25f237ea1ac0fdbc1</value>
+        </values>
+       </property>
+       <property>
+        <name>Filters</name>
+        <values arity="List" type="Property">
+        <property>
+         <name>FilterPipeline</name>
+         <values arity="Scalar" type="String">
+          <value>FlateDecode</value>
+         </values>
+        </property>
+        </values>
+       </property>
+       <property>
+        <name>Images</name>
+        <values arity="List" type="Property">
+        <property>
+         <name>Image</name>
+         <values arity="List" type="Property">
+         <property>
+          <name>NisoImageMetadata</name>
+          <values arity="Scalar" type="NISOImageMetadata">
+           <value>
+         <mix:mix xmlns:mix="http://www.loc.gov/mix/v20" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/mix/v20 http://www.loc.gov/standards/mix/mix20/mix20.xsd">
+          <mix:BasicDigitalObjectInformation>
+           <mix:ObjectIdentifier>
+            <mix:objectIdentifierType>JHOVE</mix:objectIdentifierType>
+           </mix:ObjectIdentifier>
+          </mix:BasicDigitalObjectInformation>
+          <mix:BasicImageInformation>
+           <mix:BasicImageCharacteristics>
+            <mix:imageWidth>159</mix:imageWidth>
+            <mix:imageHeight>59</mix:imageHeight>
+            <mix:PhotometricInterpretation>
+             <mix:colorSpace>RGB</mix:colorSpace>
+            </mix:PhotometricInterpretation>
+           </mix:BasicImageCharacteristics>
+          </mix:BasicImageInformation>
+          <mix:ImageAssessmentMetadata>
+           <mix:ImageColorEncoding>
+            <mix:BitsPerSample>
+             <mix:bitsPerSampleUnit>integer</mix:bitsPerSampleUnit>
+            </mix:BitsPerSample>
+           </mix:ImageColorEncoding>
+          </mix:ImageAssessmentMetadata>
+         </mix:mix>
+           </value>
+          </values>
+         </property>
+         <property>
+          <name>Filter</name>
+          <values arity="Scalar" type="String">
+           <value>FlateDecode</value>
+          </values>
+         </property>
+         </values>
+        </property>
+        </values>
+       </property>
+       <property>
+        <name>XMP</name>
+        <values arity="Scalar" type="String">
+         <value>&lt;?adobe-xap-filters esc="CRLF"?&gt;
+&lt;x:xmpmeta xmlns:x='adobe:ns:meta/' x:xmptk='XMP toolkit 2.9.1-13, framework 1.6'&gt;
+&lt;rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' xmlns:iX='http://ns.adobe.com/iX/1.0/'&gt;
+&lt;rdf:Description rdf:about='uuid:49073609-20dc-11e6-0000-3ad9acd4b682' xmlns:pdf='http://ns.adobe.com/pdf/1.3/'&gt;&lt;pdf:Producer&gt;GPL Ghostscript 9.10&lt;/pdf:Producer&gt;
+&lt;pdf:Keywords&gt;()&lt;/pdf:Keywords&gt;
+&lt;/rdf:Description&gt;
+&lt;rdf:Description rdf:about='uuid:49073609-20dc-11e6-0000-3ad9acd4b682' xmlns:xmp='http://ns.adobe.com/xap/1.0/'&gt;&lt;xmp:ModifyDate&gt;2016-05-20T13:48:08+02:00&lt;/xmp:ModifyDate&gt;
+&lt;xmp:CreateDate&gt;2016-05-20T13:48:08+02:00&lt;/xmp:CreateDate&gt;
+&lt;xmp:CreatorTool&gt;PDFCreator Version 1.7.3&lt;/xmp:CreatorTool&gt;&lt;/rdf:Description&gt;
+&lt;rdf:Description rdf:about='uuid:49073609-20dc-11e6-0000-3ad9acd4b682' xmlns:xapMM='http://ns.adobe.com/xap/1.0/mm/' xapMM:DocumentID='uuid:49073609-20dc-11e6-0000-3ad9acd4b682'/&gt;
+&lt;rdf:Description rdf:about='uuid:49073609-20dc-11e6-0000-3ad9acd4b682' xmlns:dc='http://purl.org/dc/elements/1.1/' dc:format='application/pdf'&gt;&lt;dc:title&gt;&lt;rdf:Alt&gt;&lt;rdf:li xml:lang='x-default'&gt;TESTPDF&lt;/rdf:li&gt;&lt;/rdf:Alt&gt;&lt;/dc:title&gt;&lt;dc:creator&gt;&lt;rdf:Seq&gt;&lt;rdf:li&gt;()&lt;/rdf:li&gt;&lt;/rdf:Seq&gt;&lt;/dc:creator&gt;&lt;dc:description&gt;&lt;rdf:Seq&gt;&lt;rdf:li&gt;()&lt;/rdf:li&gt;&lt;/rdf:Seq&gt;&lt;/dc:description&gt;&lt;/rdf:Description&gt;
+&lt;/rdf:RDF&gt;
+&lt;/x:xmpmeta&gt;</value>
+        </values>
+       </property>
+       <property>
+        <name>Pages</name>
+        <values arity="List" type="Property">
+        <property>
+         <name>Page</name>
+         <values arity="List" type="Property">
+         <property>
+          <name>Sequence</name>
+          <values arity="Scalar" type="Integer">
+           <value>1</value>
+          </values>
+         </property>
+         </values>
+        </property>
+        </values>
+       </property>
+    </values>
+   </property>
+  </properties>
+ </repInfo>
+   </jhove>

@@ -34,9 +34,9 @@ public class ATDetectUnreferencedFilesMETS extends AcceptanceTest{
 	@Test
 	public void test() throws IOException {
 		assertTrue(contentbrokerLogfile.exists());
-		assertTrue(targetFileStr.contains("ist nicht konsistent. Folgende Files sind nicht in den mitgelieferten Metadaten referenziert: "
+		assertTrue(targetFileStr.contains("ist nicht konsistent. SIP Paketname ist: ATDetectUnreferencedFilesMets.tgz. Folgende Files sind nicht in den mitgelieferten Metadaten referenziert: "
 				+ "[image/2.bmp, image/1.bmp]. Die Verarbeitung findet dennoch statt.") || 
-				targetFileStr.contains("ist nicht konsistent. Folgende Files sind nicht in den mitgelieferten Metadaten referenziert: "
+				targetFileStr.contains("ist nicht konsistent. SIP Paketname ist: ATDetectUnreferencedFilesMets.tgz. Folgende Files sind nicht in den mitgelieferten Metadaten referenziert: "
 						+ "[image/1.bmp, image/2.bmp]. Die Verarbeitung findet dennoch statt."));
 	}
 }

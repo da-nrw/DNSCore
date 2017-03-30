@@ -21,8 +21,8 @@ package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -50,6 +50,7 @@ import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.service.JmsMessageServiceHandler;
 import de.uzk.hki.da.test.TC;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -111,7 +112,7 @@ public class RestructureActionTests extends ConcreteActionUnitTest{
 	
 	@After
 	public void tearDown(){
-		FileUtils.deleteQuietly(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER));
+		FolderUtils.deleteQuietlySafe(Path.makeFile(TEST_CONTRACTOR_WORK_FOLDER,IDENTIFIER));
 	}
 	
 	

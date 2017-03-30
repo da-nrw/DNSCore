@@ -22,8 +22,8 @@
 
 package de.uzk.hki.da.model;
 
-import static de.uzk.hki.da.utils.C.*;
-import static de.uzk.hki.da.utils.StringUtilities.*;
+import static de.uzk.hki.da.utils.C.FILE_EXTENSION_XML;
+import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -124,7 +124,9 @@ public class WorkArea {
 	 */
 	public void ingestSIP(File sip) throws IOException {
 		if (!sip.exists()) throw new IllegalArgumentException("Missing file: "+sip);
+		if (sip.isFile())
 		FileUtils.copyFile(sip, sipFile());
+		else FileUtils.copyDirectory(sip, sipFile());
 	}
 	
 	public File sipFile() {
@@ -132,7 +134,13 @@ public class WorkArea {
 	}
 	
 	public Path objectPath() {
-		return Path.make(n.getWorkAreaRootPath(),WorkArea.WORK,o.getContractor().getShort_name(),o.getIdentifier());
+		return this.objectPathFor(o);
+	}
+	
+	public Path objectPathFor(Object object) {
+		String contracorName = object.getContractor().getShort_name();
+		String identifier = object.getIdentifier();
+		return Path.make(n.getWorkAreaRootPath(), WorkArea.WORK, contracorName, identifier);
 	}
 	
 	public Path replPath() {

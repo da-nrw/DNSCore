@@ -25,6 +25,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
@@ -51,21 +53,26 @@ public class TarGZArchiveBuilder implements ArchiveBuilder {
 		GzipCompressorInputStream gzIn = new GzipCompressorInputStream(in);
 		TarArchiveInputStream tIn = new TarArchiveInputStream(gzIn);
 
+		HashMap<String, Long> modDateMap = new HashMap<String, Long>(); 
 		TarArchiveEntry entry;
 		do{
 			entry = tIn.getNextTarEntry();
 			if (entry==null) break;
 			logger.debug(entry.getName());
 			
-			File entryFile = new File(destFolder.getAbsolutePath()+"/"+entry.getName());
-			if (entry.isDirectory()) 
+			String dstName = destFolder.getAbsolutePath()+"/"+entry.getName();
+			File entryFile = new File(dstName);
+			if (entry.isDirectory()) {
 				entryFile.mkdirs();
+				modDateMap.put(dstName, new Long(entry.getModTime().getTime()));
+			}
 			else {
 				new File(entryFile.getAbsolutePath().substring(0, entryFile.getAbsolutePath().lastIndexOf('/'))).mkdirs();
 
 				FileOutputStream out = new FileOutputStream(entryFile);
 				IOUtils.copy(tIn, out);
 				out.close();
+				entryFile.setLastModified(entry.getModTime().getTime());
 			}
 		}while(true);
 		
@@ -73,6 +80,12 @@ public class TarGZArchiveBuilder implements ArchiveBuilder {
 		gzIn.close();
 		in.close();
 		fin.close();
+		
+		for (Map.Entry<String, Long> moddi : modDateMap.entrySet()) {
+			String key = moddi.getKey();
+			Long value = moddi.getValue();
+			(new File(key)).setLastModified(value);
+		}
 	}
 
 	public void archiveFolder(File srcFolder, File destFile, boolean includeFolder)

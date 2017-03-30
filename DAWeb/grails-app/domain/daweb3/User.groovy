@@ -31,6 +31,11 @@ class User {
 	 boolean accountExpired 
 	 boolean accountLocked 
 	 boolean passwordExpired
+	 boolean mailsPooled
+	 boolean usePublicMets
+	 boolean useVirusScan = true //DANRW-1511: standardmäßig wird gescannt
+	 boolean deltaOnUrn
+	 
 	 String description
 	 String email_contact
 	 String forbidden_nodes
@@ -51,6 +56,10 @@ class User {
 		accountExpired column: 'accountexpired'
 		accountLocked column: 'accountlocked'
 		passwordExpired column: 'passwordexpired'
+		mailsPooled column: 'mails_pooled'
+		usePublicMets column: 'use_public_mets'
+		useVirusScan column: 'use_virus_scan'//DANRW-1511
+		deltaOnUrn column: 'delta_on_urn'
 		}
 
 	 Set<Role> getAuthorities() { UserRole.findAllByUser(this).collect { it.role } as Set }

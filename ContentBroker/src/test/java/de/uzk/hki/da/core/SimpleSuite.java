@@ -75,13 +75,13 @@ import de.uzk.hki.da.format.JhoveMetadataExtractorTests;
 import de.uzk.hki.da.format.SubformatScanServiceTests;
 import de.uzk.hki.da.format.XMLSubformatIdentifierTests;
 import de.uzk.hki.da.grid.FederationExecutorTest;
-import de.uzk.hki.da.grid.IrodsGridFacadeTest;
+//import de.uzk.hki.da.grid.IrodsGridFacadeTest;
 import de.uzk.hki.da.grid.ReplicationExecutorTest;
 import de.uzk.hki.da.metadata.MetadataStructureGetIndexInfoTests;
 import de.uzk.hki.da.metadata.MetsRightsSectionXmlReaderTest;
-import de.uzk.hki.da.metadata.ReadUrnFromMetsTests;
 import de.uzk.hki.da.metadata.PremisXmlReaderTests;
 import de.uzk.hki.da.metadata.PremisXmlWriterTest;
+import de.uzk.hki.da.metadata.ReadUrnFromMetsTests;
 import de.uzk.hki.da.metadata.XsltEDMGeneratorTests;
 import de.uzk.hki.da.model.DocumentTests;
 import de.uzk.hki.da.model.GetNewestFilesFromAllRepresentationsTests;
@@ -89,10 +89,10 @@ import de.uzk.hki.da.model.JobCascadingTest;
 import de.uzk.hki.da.model.ModelTest;
 import de.uzk.hki.da.model.ObjectPremisXmlReaderTests;
 import de.uzk.hki.da.model.ObjectTests;
-import de.uzk.hki.da.model.WorkAreaFSTest;
 import de.uzk.hki.da.model.PackageTests;
 import de.uzk.hki.da.model.PreservationSystemTests;
 import de.uzk.hki.da.model.SaveConversionInstructionsByJob;
+import de.uzk.hki.da.model.WorkAreaFSTest;
 import de.uzk.hki.da.model.WorkAreaTests;
 import de.uzk.hki.da.pkg.ArchiveBuilderTests;
 import de.uzk.hki.da.service.RetrievePackagesHelperTest;
@@ -129,7 +129,7 @@ import de.uzk.hki.da.service.XPathUtilsTests;
 	GetNewestFilesFromAllRepresentationsTests.class,
 	RetrievalActionTests.class,
 	PremisXmlWriterTest.class,
-	IrodsGridFacadeTest.class,
+//	IrodsGridFacadeTest.class,
 	PublishImageConversionStrategyTest.class,
 //	PublishVideoConversionStrategyTests.class, XXX should not be dependent on handbrake installation
 	PublishXsltConversionStrategyTests.class,

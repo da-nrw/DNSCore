@@ -100,7 +100,7 @@ public class PublishPDFConversionStrategy extends PublishConversionStrategyBase 
 					e.setDetail("Copied PDF");
 					e.setSource_file(ci.getSource_file());
 					e.setTarget_file(target);
-					e.setType("COPY");
+					e.setType("CONVERT");
 					e.setDate(new Date());
 					results.add(e);
 				} catch (IOException e) {

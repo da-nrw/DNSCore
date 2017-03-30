@@ -22,11 +22,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
-
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.MailContents;
 import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -64,7 +63,7 @@ public class DeleteObjectAction extends AbstractAction {
 			o.getPackages().remove(o.getLatestPackage());
 		}
 		logger.info("Deleting object from WorkArea: "+wa.objectPath());
-		FileUtils.deleteDirectory(wa.objectPath().toFile());
+		FolderUtils.deleteDirectorySafe(wa.objectPath().toFile());
 		
 		if (fileInWorkArea().exists()) {
 			logger.info("Delete container from WorkArea: " + fileInWorkArea() );

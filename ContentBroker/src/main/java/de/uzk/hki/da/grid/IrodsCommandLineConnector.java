@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
+import de.uzk.hki.da.utils.StringUtilities;
 
 
 /**
@@ -65,9 +66,9 @@ public class IrodsCommandLineConnector {
 		}
 		if (pi.getExitValue()!=0) {
 			logger.error("Icommand did not succeed: " + Arrays.toString(commandAsArray) + " returned " +pi.getStdErr() );
-			return "ERROR";
-		}	
-		logger.debug (pi.getStdOut());
+			throw new RuntimeException("Icommand did not succeed" + Arrays.toString(commandAsArray) + pi.getStdErr());
+		}
+		logger.debug (pi.getStdOut().trim());
 		return pi.getStdOut();
 	}
 
@@ -114,8 +115,12 @@ public class IrodsCommandLineConnector {
 		commandAsList.add(file.getAbsoluteFile().toString());
 		String[] commandAsArray = new String[commandAsList.size()];
 		commandAsArray = commandAsList.toArray(commandAsArray);
-		String out = executeIcommand(commandAsArray);
-		if (out.indexOf("ERROR")>=0) return false;
+		
+		try {
+			executeIcommand(commandAsArray);
+		} catch (RuntimeException e) {
+			return false;
+		}
 		if (!file.exists()) return false;
 		return true;
 	}
@@ -128,6 +133,7 @@ public class IrodsCommandLineConnector {
 	 * @param resourceName
 	 * @return
 	 */
+	
 	public boolean put(File file, String dest, String resourceName) {
 		ArrayList<String>  commandAsList = new ArrayList<String>();
 		commandAsList.add("iput");
@@ -140,9 +146,11 @@ public class IrodsCommandLineConnector {
 		commandAsList.add(dest);
 		String[] commandAsArray = new String[commandAsList.size()];
 		commandAsArray = commandAsList.toArray(commandAsArray);
-		String out = executeIcommand(commandAsArray);
-		if (out.indexOf("ERROR")>=0) return false;
-		return true;
+		try {
+		executeIcommand(commandAsArray);
+		}catch (RuntimeException e) {
+			return false;
+		} return true;
 	}
 	
 	/**
@@ -155,8 +163,11 @@ public class IrodsCommandLineConnector {
 		String commandAsArray[] = new String[]{
 				"irm", "-rf" , dest 
 		}; 
-		String out = executeIcommand(commandAsArray);
-		if (out.indexOf("ERROR")>=0) return false;
+		try {
+			executeIcommand(commandAsArray);
+		} catch (RuntimeException e) {
+			return false;
+		}
 		return true;
 	}
 	
@@ -170,8 +181,12 @@ public class IrodsCommandLineConnector {
 		String commandAsArray[] = new String[]{
 				"ils", dest 
 		}; 
-		String out = executeIcommand(commandAsArray);
-		if (out.indexOf("ERROR")>=0) return false;
+		try {
+			executeIcommand(commandAsArray);
+		} catch (RuntimeException e) {
+
+			 return false;
+		}
 		return true;
 	}
 	
@@ -269,19 +284,25 @@ public class IrodsCommandLineConnector {
 		String commandAsArray[] = new String[]{
 				"ichksum","-Ka",dao
 		};	
-		String result = executeIcommand(commandAsArray);
-		if (result.indexOf("-314000")>0) {
+		try {
+			executeIcommand(commandAsArray);
+		} catch (RuntimeException r) {
 			return false;
 		}
-		if (result.indexOf("-808000")>0) {
-			return false;
-		}
-		if (result.indexOf("Failed checksum = 0")>0) {
-			return true;
-		}
-		return false;
+		return true;
 	}
 	
+	/**
+	 * Creates Collection 
+	 * @author Jens Peters
+	 * @param destColl
+	 */
+	public void unregColl(String destColl) {
+		String mKcommandAsArray[] = new String[]{
+				"irm","-rU",destColl
+		};
+		executeIcommand(mKcommandAsArray);	
+	}
 	/**
 	 * Creates Collection 
 	 * @author Jens Peters
@@ -298,18 +319,42 @@ public class IrodsCommandLineConnector {
 	 * irsyncs Dataobject to destination on given resource
 	 * @author Jens Peters
 	 * @param dao
-	 * @param destDaoif (!resourceName.equals("")) {
-			commandAsList.add("-R");
-			commandAsList.add(resourceName);
-		}
 	 * @param destRescName
 	 * @return
 	 */
 	public String rsync(String dao, String destDao, String destRescName) {
-		String commandAsArray[] = new String[]{
-				"irsync","-KVR",destRescName, "i:"  + dao,"i:"+ destDao
-		};	
-		return executeIcommand(commandAsArray);	
+		if (StringUtilities.isSet(destRescName)) {
+			String commandAsArray[] = new String[]{
+					"irsync","-KVR",destRescName, "i:"  + dao,"i:"+ destDao
+			};	
+			return executeIcommand(commandAsArray);	
+		} else {
+			String commandAsArray[] = new String[]{
+					"irsync","-KV","i:"  + dao,"i:"+ destDao
+			};	
+			return executeIcommand(commandAsArray);
+		}
+	}
+	
+	/**
+	 * irsyncs whole subtree to destination on given resource
+	 * @author Jens Peters
+	 * @param dao
+	 * @param destRescName
+	 * @return
+	 */
+	public String rsyncDir(String sourceColl, String destColl, String destRescName) {
+		if (StringUtilities.isSet(destRescName)) {
+			String commandAsArray[] = new String[]{
+					"irsync","-rKVR",destRescName, "i:"  + sourceColl,"i:"+ destColl
+			};	
+			return executeIcommand(commandAsArray);	
+		} else {
+			String commandAsArray[] = new String[]{
+					"irsync","-rKV","i:"  + sourceColl,"i:"+ destColl
+			};	
+			return executeIcommand(commandAsArray);
+		}
 	}
 	
 	/**
@@ -476,6 +521,7 @@ public class IrodsCommandLineConnector {
 		}
 		if (isDirectory) {
 			commandAsList.add("-C");
+			
 		}
 		commandAsList.add(source.getAbsoluteFile().toString());
 		commandAsList.add(dao);

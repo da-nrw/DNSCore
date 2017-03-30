@@ -3,3 +3,14 @@
 .classpath
 /lib/
 /plugins/
+/target/
+/target-eclipse/
+/application.properties
+/.settings/
+.DS_Store
+.thumbs_db
+*.bluej
+*.prefs
+*.project
+*.classpath
+*.DS_Store

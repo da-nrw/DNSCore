@@ -33,12 +33,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.grid.IrodsSystemConnector;
-import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.WorkArea;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 
@@ -121,7 +122,7 @@ public class BuildAIPActionTests {
 	 */
 	@After
 	public void tearDown() throws IOException{
-		if (packageForkPath.toFile().exists()) FileUtils.deleteDirectory(packageForkPath.toFile()); 
+		if (packageForkPath.toFile().exists()) FolderUtils.deleteDirectorySafe(packageForkPath.toFile()); 
 	}
 	
 	/**
