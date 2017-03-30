@@ -633,6 +633,7 @@ public class MetsParser{
 //			Title
 			dmdSecInfo.put(C.EDM_TITLE, getTitle(e));
 			
+			dmdSecInfo.put(C.EDM_RIGHTS, getAccessConditions(e));
 //			identifier
 			dmdSecInfo.put(C.EDM_IDENTIFIER, getIdentifier(e));
 			
@@ -722,6 +723,33 @@ public class MetsParser{
 	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  SETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
+	public  List<String> getAccessConditions(Element modsXmlData) {
+		String link=null;
+		String displayLabel=null;
+		String text=null;
+		//String ret="";
+		List<String> retList = new ArrayList<String>();
+		
+		try {
+			Element accessCondition = modsXmlData.getChild("accessCondition", C.MODS_NS);
+			
+			text=accessCondition.getText();
+			link=accessCondition.getAttributeValue("xlink:href");
+			displayLabel=accessCondition.getAttributeValue("displayLabel");
+			
+			if(link==null || link.trim().isEmpty()){			
+				retList.add(displayLabel+this.titleSparator+text);
+			}else{
+				retList.add(link);
+			}
+			return retList;
+		} catch(Exception e) {
+			logger.error("Element titleInfo does not exist!!!");
+		}
+		return null;
+	}
+
+
 	public void setMimetype(Element fileElement, String mimetype) {
 		if(fileElement.getAttribute("MIMETYPE")!=null) {
 			fileElement.getAttribute("MIMETYPE").setValue(mimetype);

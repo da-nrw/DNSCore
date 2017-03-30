@@ -61,7 +61,7 @@ public class ContractRights {
 	public enum ConversionCondition { NONE, NOTIFY, CONFIRM };
 	
 	public enum CCLicense {
-		Cc0("https://creativecommons.org/publicdomain/zero/1.0/","CC0-Lizenz (1.0)","CC0 1.0 Public Domain Dedication"),
+		Cc0("https://creativecommons.org/publicdomain/zero/1.0/","CC0-Lizenz (v1.0)","CC0 1.0 Public Domain Dedication"),
 		
 		/*By3("https://creativecommons.org/licenses/by/3.0/","CC-BY-Lizenz (3.0)","cc-by_3.0"),
 		ByNd3("https://creativecommons.org/licenses/by-nd/3.0/","CC-BY-ND-Lizenz (3.0)","cc-by-nd_3.0"),
@@ -70,12 +70,12 @@ public class ContractRights {
 		ByNcSa3("https://creativecommons.org/licenses/by-nc-sa/3.0/","CC-BY-NC-SA-Lizenz (3.0)","cc-by-nc-sa_3.0"),
 		BySa3("https://creativecommons.org/licenses/by-sa/3.0/","CC-BY-SA-Lizenz (3.0)","cc-by-sa_3.0"),*/
 		
-		By4("https://creativecommons.org/licenses/by/4.0/","CC-BY-Lizenz (4.0)","CC v4.0 International Lizenz: Namensnennung"),
-		ByNd4("https://creativecommons.org/licenses/by-nd/4.0/","CC-BY-ND-Lizenz (4.0)","CC v4.0 International Lizenz: Namensnennung - Keine Bearbeitungen"),
-		ByNc4("https://creativecommons.org/licenses/by-nc/4.0/","CC-BY-NC-Lizenz (4.0)","CC v4.0 International Lizenz: Namensnennung - Nicht kommerziell"),
-		ByNcNd4("https://creativecommons.org/licenses/by-nc-nd/4.0/","CC-BY-NC-ND-Lizenz (4.0)","CC v4.0 International Lizenz: Namensnennung - Nicht kommerziell - Keine Bearbeitungen"),
-		ByNcSa4("https://creativecommons.org/licenses/by-nc-sa/4.0/","CC-BY-NC-SA-Lizenz (4.0)","CC v4.0 International Lizenz: Namensnennung - Nicht-kommerziell - Weitergabe unter gleichen Bedingungen"),
-		BySa4("https://creativecommons.org/licenses/by-sa/4.0/","CC-BY-SA-Lizenz (4.0)","CC v4.0 International Lizenz: Namensnennung - Weitergabe unter gleichen Bedingungen"),
+		By4("https://creativecommons.org/licenses/by/4.0/","CC-BY-Lizenz (v4.0)","CC v4.0 International Lizenz: Namensnennung"),
+		ByNd4("https://creativecommons.org/licenses/by-nd/4.0/","CC-BY-ND-Lizenz (v4.0)","CC v4.0 International Lizenz: Namensnennung - Keine Bearbeitungen"),
+		ByNc4("https://creativecommons.org/licenses/by-nc/4.0/","CC-BY-NC-Lizenz (v4.0)","CC v4.0 International Lizenz: Namensnennung - Nicht kommerziell"),
+		ByNcNd4("https://creativecommons.org/licenses/by-nc-nd/4.0/","CC-BY-NC-ND-Lizenz (v4.0)","CC v4.0 International Lizenz: Namensnennung - Nicht kommerziell - Keine Bearbeitungen"),
+		ByNcSa4("https://creativecommons.org/licenses/by-nc-sa/4.0/","CC-BY-NC-SA-Lizenz (v4.0)","CC v4.0 International Lizenz: Namensnennung - Nicht-kommerziell - Weitergabe unter gleichen Bedingungen"),
+		BySa4("https://creativecommons.org/licenses/by-sa/4.0/","CC-BY-SA-Lizenz (v4.0)","CC v4.0 International Lizenz: Namensnennung - Weitergabe unter gleichen Bedingungen"),
 		;
 		
 
