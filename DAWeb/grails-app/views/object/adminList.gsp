@@ -180,37 +180,6 @@
 						</tr>
 					</thead>
 					<tbody>
-					<g:each in="${objectInstanceList}" status="i" var="objectInstance">
-											
-						<g:set var="statusCode" value="100" />
-						<g:if test="${admin}">				
-						<g:set var="statusCode" value="${objectInstance.getStatusCode()}" />
-						</g:if>
-						<tr class="${ ((i % 2) == 0 ? 'odd' : 'even') + ' status-type-' + statusCode}">
-								<td>${fieldValue(bean: objectInstance, field: "identifier")}</td>
-						
-							<td><g:link action="show" id="${objectInstance.id}">${objectInstance.getFormattedUrn()}</g:link></td>
-						
-							<td>${fieldValue(bean: objectInstance, field: "user")}</td>
-						
-							<td>${fieldValue(bean: objectInstance, field: "origName")}</td>
-							<td>${objectInstance.getFormattedCreatedDate()}</td>
-							<td>${objectInstance.getFormattedModifiedDate()}</td>
-							
-							<td style="text-align: center">
-								<g:if test="${statusCode == 1}">
-									<g:img style="width:16px; height:16px" uri="/images/icons/warning32.png"/>
-								</g:if>
-									<th style="text-align: center">Publ.</th>
-								<th style="text-align: center">Anfordern				
-									<g:if test="${!paginate}">
-										<g:actionSubmitImage value="submit" action="submit" src="${resource(dir: 'images/icons', file: 'boxdownload32.png')}" />
-									</g:if>
-								</th>
-								<th style="text-align: center">Entnahme</th>			
-							</tr>
-						</thead>
-						<tbody>
 						<g:each in="${objectInstanceList}" status="i" var="objectInstance">					
 							<g:set var="statusCode" value="100" />
 							<g:if test="${admin}">				
@@ -253,11 +222,41 @@
 										</g:remoteLink>
 									</td>
 								</g:if>
-							</td>
-						</tr>
-					</g:each>
-					</tbody>
-				</table>(AdministartorView)
+								<g:else>
+									<td colspan="3" text-align: center">Objekt in der Verarbeitung</td>
+								</g:else>
+								<td>	
+									<g:if test="${objectInstance.getPublished_flag()==1}">
+										<g:link url="${objectInstance.getPublicPresLink()}" target="_blank"><g:img style="width:16px; height:16px" uri="/images/icons/globe.png"/></g:link>
+									</g:if>
+									<g:if test="${objectInstance.getPublished_flag()==2}">
+										<g:link url="${objectInstance.getInstPresLink()}" target="_blank"><g:img style="width:16px; height:16px" uri="/images/icons/globe.png"/></g:link>
+									</g:if>
+									<g:if test="${objectInstance.getPublished_flag()==3}">
+										<g:img style="width:16px; height:16px" uri="/images/icons/globe.png"/>
+									</g:if>
+								</td>
+								<g:if test="${!objectInstance.isInWorkflowButton()}">
+									<td style="text-align: center">
+										<g:remoteLink action="queueForRetrieval" onLoaded="queuedFor(data)" id="${objectInstance.id}">
+											<g:img style="width:16px; height:16px" uri="/images/icons/boxdownload32.png"/>
+										</g:remoteLink>
+									</td>
+								</g:if>
+								<g:else>
+									<td></td>
+								</g:else>
+								<td style="text-align: center">
+									<g:if test="${new File(baseFolder+ "/"+ objectInstance.identifier +".tar").exists()}">
+										 <g:link controller="outgoing" action="download" params="['filename':objectInstance.identifier +'.tar']">
+											<g:img style="width:16px; height:16px" uri="/images/icons/delivery.png"/>
+										</g:link>
+									</g:if>
+								</td>
+							</tr>
+						</g:each>
+						</tbody>
+					</table>(AdministartorView)
 			  </div>
 			</g:formRemote>
 			<g:if test="${paginate}" >

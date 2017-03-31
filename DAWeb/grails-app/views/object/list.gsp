@@ -156,7 +156,7 @@
               url="[controller: 'object', action:'queueAllForRetrieval']" 
               onLoaded="queuedFor(data)">
 			   <div style="overflow:auto; height: 600px">
-				<table>
+				<table class="table">
 					<thead>
 						<tr>
 							<th>

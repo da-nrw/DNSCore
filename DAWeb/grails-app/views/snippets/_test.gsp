@@ -57,47 +57,63 @@
 
 	<div class="bs-example">
 		<ul class="nav nav-tabs">
-			<li class="active"><a data-toggle="tab" href="#sectionA">Bearbeitungsübersicht</a></li>
-			<li><a data-toggle="tab" href="#sectionB">Entscheidungsübersicht</a></li>
-			<li><a data-toggle="tab" href="#sectionC">Eingelieferte Objekte (AIP)</a></li>
-			<li><a data-toggle="tab" href="#sectionD">Verarbeitung für abgelieferte SIP starten</a></li>
-			<li><a data-toggle="tab" href="#sectionE">Objekt entnehmen (DIP)</a></li>
+			<li class="active"><a data-toggle="tab" href="#sectionQueueEntryList">Bearbeitungsübersicht</a></li>
+			<g:if test="${ admin==1}">
+					<li><a data-toggle="tab" href="#sectionObjectListObject">Auswahl Objekte nach Formaten</a></li>
+			</g:if>
+			<li><a data-toggle="tab" href="#sectionQueueEntryListRequests">Entscheidungsübersicht</a></li>
+			<li><a data-toggle="tab" href="#sectionObjectList">Eingelieferte Objekte (AIP)</a></li>
+			<li><a data-toggle="tab" href="#sectionIncomingIndex">Verarbeitung für abgelieferte SIP starten</a></li>
+			<li><a data-toggle="tab" href="#sectionOutgoingIndex">Objekt entnehmen (DIP)</a></li>
 			<li class="dropdown">
-				<a data-toggle="dropdown" class="dropdown-toggle" href="#">Hinweise zur Ansteuerung überexterne Systeme<b class="caret"></b></a>
+				<a data-toggle="dropdown" class="dropdown-toggle" href="#">Hinweise zur Ansteuerung über externe Systeme<b class="caret"></b></a>
 				<ul class="dropdown-menu">
-					<li><a style="background-color: white;" data-toggle="tab" href="#dropdown1">Erstellung von Retrievalanfragen </a></li>
-					<li><a style="background-color: white;" data-toggle="tab" href="#dropdown2">Abfrage der Verarbeitung und Archivierung</a></li>
+					<li><a style="background-color: white;" data-toggle="tab" href="#dropdownAutomatedRetrieval">Erstellung von Retrievalanfragen </a></li>
+					<li><a style="background-color: white;" data-toggle="tab" href="#dropdownStatus">Abfrage der Verarbeitung und Archivierung</a></li>
 				</ul>
-			<li><a data-toggle="tab" href="#sectionF">Konfigurierte Konversionen</a></li>
-			<li><a data-toggle="tab" href="#sectionG">Abfragen verarbeiten</a></li>
+			<li><a data-toggle="tab" href="#sectionConversionPolicies">Konfigurierte Konversionen</a></li>
+			<li><a data-toggle="tab" href="#sectionReport">Abfragen verarbeiten</a></li>
+			<li><a data-toggle="tab" href="#sectionSystemEvent">System-Eventsteuerung</a></li>
+			<g:if test="${ admin==1}">
+				<li><a data-toggle="tab" href="#sectionCbtalk">Adminfunktionen</a></li>
+			</g:if>
 		</ul>
 		<div class="tab-content">
-			<div id="sectionA" class="tab-pane fade in active">
+			<div id="sectionQueueEntryList" class="tab-pane fade in active">
 				<g:include controller="queueEntry" action="list" />
 			</div>
-			<div id="sectionB" class="tab-pane fade">
+			<div id="sectionObjectListObject" class="tab-pane fade">
+				<g:include controller="object" action="listObjects" />
+			</div>
+			<div id="sectionQueueEntryListRequests" class="tab-pane fade">
 				<g:include controller="queueEntry" action="listRequests" />
 			</div>
-			<div id="sectionC" class="tab-pane fade">
+			<div id="sectionObjectList" class="tab-pane fade">
 				<g:include controller="object" action="list" />
 			</div>
-			<div id="sectionD" class="tab-pane fade">
+			<div id="sectionIncomingIndex" class="tab-pane fade">
 				<g:include controller="incoming" action="index" />
 			</div>
-			<div id="sectionE" class="tab-pane fade">
+			<div id="sectionOutgoingIndex" class="tab-pane fade">
 				<g:include controller="outgoing" action="index" />
 			</div>
-			<div id="dropdown1" class="tab-pane fade">
+			<div id="dropdownAutomatedRetrieval" class="tab-pane fade">
 				<g:include controller="automatedRetrieval" action="index" />
 			</div>
-			<div id="dropdown2" class="tab-pane fade">
+			<div id="dropdownStatus" class="tab-pane fade">
 				<g:include controller="status" action="teaser" />
 			</div>
-			<div id="sectionF" class="tab-pane fade">
-				<g:include controller="conversionPolicies" action="list" params="[conversionPoliciesInstanceTotal: 100]"/>
+			<div id="sectionConversionPolicies" class="tab-pane fade">
+				<g:include controller="conversionPolicies" action="list"/>
 			</div>
-			<div id="sectionG" class="tab-pane fade">
+			<div id="sectionReport" class="tab-pane fade">
 				<g:include controller="report" action="index" />
+			</div>
+			<div id="sectionSystemEvent" class="tab-pane fade">
+				<g:include controller="systemEvent" action="index" />
+			</div>
+			<div id="sectionCbtalk" class="tab-pane fade">
+				<g:include controller="cbtalk" action="index" />
 			</div>
 		</div>
 	</div>

@@ -23,7 +23,7 @@
 				<div class="message" role="status">${flash.message}</div>
 			</g:if>
 			 <div style="overflow:auto; height: 600px">
-			<table>
+			<table class="table">
 				<thead>
 					<tr>
 					

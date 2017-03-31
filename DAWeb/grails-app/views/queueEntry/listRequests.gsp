@@ -20,9 +20,11 @@
 				</div>
 			</g:if>
 			<!-- This div is updated through the periodical updater -->
+		
 		 <div class="list" id="entry-list">
 		  <div style="overflow:auto; height: 300px">
-		   <table>
+		  <!-- <div class="table-responsive"> -->
+		  <table class="table">
 			<thead>
 				<tr>
 					

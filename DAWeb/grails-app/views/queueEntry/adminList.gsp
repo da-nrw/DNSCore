@@ -55,21 +55,7 @@
 			function test(field) {
 				console.log(field);
 				return false;
-			}
-			
-				function sortQueue(field) {
-					console.log("sortQueue: "+field);
-					if (field == sort && order == "asc") order = "desc";
-					else order = "asc";
-					sort = field;
-					console.log("sortQueue - sort: "+sort+", order: "+order);
-					return false;
-				}
-				function test(field) {
-					console.log(field);
-					return false;
-				}
-				
+			}	
 			</r:script>
 	</head>
 	<body>
@@ -117,7 +103,8 @@
 	    	</g:if> 
 		  </a></h1> 
           <g:form name="searchForm" id="filterform" action="list">
-             <table>
+			<div class="table-responsive">
+			 <table class="table">
             	<tr>
             		<td>Status:</td>
             			<td><g:textField name="search.status" value="${params.search?.status}" size="5"/></td>
@@ -186,6 +173,7 @@
            			});</script>
             		</tr>
             	</table>     
+            	</div> 
           </g:form>
         </div>
            

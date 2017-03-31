@@ -6,9 +6,10 @@
 					});
 			</g:if>
 </script>
+<!-- <div class="table-responsive"> -->
 <div style="overflow:auto; height: 600px">
 
-<table>
+	<table class="table">
 	<thead>
 		<tr>
 			
