@@ -75,8 +75,10 @@ public class IngestAreaNoBagitScannerWorker extends Worker{
 		@Override
 		public boolean accept(File dir, String name) {
 
-			return (name.endsWith(".xml")
-					||name.endsWith(".jpg"));
+			return (!name.endsWith(".tgz") || !name.endsWith(".tar") || dir.isDirectory());
+			
+//			return (name.endsWith(".xml")
+//					||name.endsWith(".jpg"));
 //					||name.endsWith(".tgz")
 //					||name.endsWith(".tar"));
 		}
@@ -184,14 +186,9 @@ public class IngestAreaNoBagitScannerWorker extends Worker{
 	
 	private List<String> scanContractorFolderForReadySips(String short_name,
 			long currentTimeStamp) {
-		List<String> childrenWhichAreReadyFiles = new ArrayList<String>();
 		List<String> childrenWhichAreReadyDirs = new ArrayList<String>();
 		List<String> childrenWhichAreReadySips = new ArrayList<String>();		
-		childrenWhichAreReadyFiles = scanContractorFolderForReadyFiles(short_name, currentTimeStamp);
-//		childrenWhichAreReadyDirs = scanContractorFolderForReadyFiles(short_name, currentTimeStamp);
 		childrenWhichAreReadyDirs = scanContractorFolderForReadyDirs(short_name, currentTimeStamp);
-		if (childrenWhichAreReadyFiles!=null)
-		childrenWhichAreReadySips.addAll(childrenWhichAreReadyFiles);
 		if (childrenWhichAreReadyDirs!=null)
 		childrenWhichAreReadySips.addAll(childrenWhichAreReadyDirs);
 		return childrenWhichAreReadySips;
@@ -200,7 +197,7 @@ public class IngestAreaNoBagitScannerWorker extends Worker{
 	
 	private List<String> scanContractorFolderForReadyDirs(String short_name,
 			long currentTimeStamp) {
-File file = Path.makeFile(ingestAreaNoBagitRootPath, short_name);
+        File file = Path.makeFile(ingestAreaNoBagitRootPath, short_name);
 		
 		File[] files =  file.listFiles();
 		String children[] = null;
@@ -218,12 +215,11 @@ File file = Path.makeFile(ingestAreaNoBagitRootPath, short_name);
 		
 		List<String> childrenWhichAreReady = new ArrayList<String>();
 		if (children!=null && isDirectory){
-//			for (int i=0;i<directories.length;i++){
-//				if (isDirectory) {
-				//	if (Path.makeFile(directory,children[i]).isFile())
+			for (int i=0;i<directories.length();i++){
+				if (isDirectory) {
 						childrenWhichAreReady = addToList(directories,short_name,currentTimeStamp,childrenWhichAreReady);
-//				}//
-//			} 
+				}
+			} 
 		}
 		return childrenWhichAreReady;
 	}
@@ -248,7 +244,6 @@ File file = Path.makeFile(ingestAreaNoBagitRootPath, short_name);
 		
 		Job job = new Job();
 		job.setObject(object);
-		
 		job.setStatus(C.WORKFLOW_STATUS_START___INGEST_UNPACK_NO_BAGIT_ACTION);
 		job.setResponsibleNodeName(node.getName());
 		job.setCreatedAt(new Date());
@@ -400,18 +395,15 @@ File file = Path.makeFile(ingestAreaNoBagitRootPath, short_name);
 		return input.replaceAll("%2F", "/");
 	} 
 	
-	/**
-	 */
-	public Path getingestAreaNoBagitRootPath() {
+
+	public Path getIngestAreaNoBagitRootPath() {
 		return ingestAreaNoBagitRootPath;
 	}
 
-	/**
-	 */
-	public void setingestAreaNoBagitRootPath(Path ingestAreaNoBagitRootPath) {
+	public void setIngestAreaNoBagitRootPath(Path ingestAreaNoBagitRootPath) {
 		this.ingestAreaNoBagitRootPath = ingestAreaNoBagitRootPath;
 	}
-	
+
 	/**
 	 * Sets the min age.
 	 *

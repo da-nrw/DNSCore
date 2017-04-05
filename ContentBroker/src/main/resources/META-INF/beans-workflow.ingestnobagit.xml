@@ -11,140 +11,140 @@
           
 	<bean id="IngestUnpackNoBagitAction" class="de.uzk.hki.da.cb.UnpackNoBagitAction"
 		scope="prototype">
-		<property name="startStatus" value="110" />
-		<property name="endStatus" value="120" />
-		<property name="name" value="IngestUnpackAction" />
-		<property name="ingestGate" ref="ingestGate" />
+		<property name="startStatus" value="1110" />
+		<property name="endStatus" value="1120" />
+		<property name="name" value="IngestUnpackNoBagitAction" />
+		<property name="ingestGateNoBagit" ref="ingestGate" />
 	</bean>
 	
-<!-- 	<bean id="IngestDeltaOnURNAction" class="de.uzk.hki.da.cb.DeltaOnURNAction" -->
-<!-- 		scope="prototype"> -->
-<!-- 		<property name="startStatus" value="120" /> -->
-<!-- 		<property name="endStatus" value="130" /> -->
-<!-- 		<property name="name" value="IngestDeltaOnURNAction" /> -->
-<!-- 		<property name="fileFormatFacade" ref="fileFormatFacade" /> -->
-<!-- 	</bean> -->
-<!-- 	<bean id="IngestRestructureAction" class="de.uzk.hki.da.cb.RestructureAction" -->
-<!-- 		scope="prototype"> -->
-<!-- 		<property name="startStatus" value="130" /> -->
-<!-- 		<property name="endStatus" value="140" /> -->
-<!-- 		<property name="name" value="IngestRestructureAction" /> -->
-<!-- 		<property name="ingestGate" ref="ingestGate" /> -->
-<!-- 		<property name="gridRoot" ref="${cb.implementation.grid:fakeGridFacade}"/> -->
-<!-- 		<property name="fileFormatFacade" ref="fileFormatFacade" /> -->
-<!-- 	</bean> -->
-<!-- 	<bean id="IngestValidateMetadataAction" class="de.uzk.hki.da.cb.ValidateMetadataAction" -->
-<!-- 		scope="prototype"> -->
-<!-- 		<property name="startStatus" value="140" /> -->
-<!-- 		<property name="endStatus" value="150" /> -->
-<!-- 		<property name="name" value="IngestValidateMetadataAction" /> -->
-<!-- 	</bean>	 -->
-<!-- 	<bean id="IngestScanAction" class="de.uzk.hki.da.cb.ScanAction" scope="prototype"> -->
-<!-- 		<property name="startStatus" value="150" /> -->
-<!-- 		<property name="endStatus" value="160" /> -->
-<!-- 		<property name="name" value="IngestScanAction" /> -->
-<!-- 		<property name="description" value="Format Scan Service" /> WTF?? -->
-<!-- 		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" /> -->
-<!-- 	</bean> -->
-<!-- 	<bean id="IngestRegisterURNAction" class="de.uzk.hki.da.cb.RegisterURNAction" scope="prototype"> -->
-<!-- 		<property name="startStatus" value="160" /> -->
-<!-- 		<property name="endStatus" value="230" /> -->
-<!-- 		<property name="name" value="IngestRegisterURNAction" /> -->
-<!-- 	</bean> -->
-<!-- 	<bean id="IngestConvertAction" class="de.uzk.hki.da.cb.ConvertAction" -->
-<!-- 		scope="prototype"> -->
-<!-- 		<property name="startStatus" value="230" /> -->
-<!-- 		<property name="endStatus" value="250" /> -->
-<!-- 		<property name="knownFormatCmdLineErrors" ref="knownErrors" /> -->
-<!-- 		<property name="name" value="IngestConvertAction" /> -->
-<!-- 		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" /> -->
-<!-- 	</bean> -->
-<!-- 	<bean id="IngestUpdateMetadataAction" class="de.uzk.hki.da.cb.UpdateMetadataAction" scope="prototype"> -->
-<!-- 		<property name="startStatus" value="250" /> -->
-<!-- 		<property name="endStatus" value="260" /> -->
-<!-- 		<property name="name" value="IngestUpdateMetadataAction" /> -->
-<!-- 		<property name="mtds" ref="mtds" /> -->
-<!-- 		<property name="namespaces" ref="updateMetadataNamespaces" /> -->
-<!-- 		<property name="xpathsToUrls" ref="updateMetadataXpathsForUrls" /> -->
-<!-- 	</bean> -->
-<!-- 	<bean id="IngestCheckFormatsAction" class="de.uzk.hki.da.cb.CheckFormatsAction" scope="prototype"> -->
-<!-- 		<property name="startStatus" value="260" /> -->
-<!-- 		<property name="endStatus" value="270" /> -->
-<!-- 		<property name="name" value="IngestCheckFormatsAction" /> -->
-<!-- 		<property name="fileFormatFacade" ref="fileFormatFacade" /> -->
-<!-- 	</bean> -->
-<!-- 	<bean id="IngestCreatePremisAction" class="de.uzk.hki.da.cb.CreatePremisAction" scope="prototype"> -->
-<!-- 		<property name="startStatus" value="270" /> -->
-<!-- 		<property name="endStatus" value="310" /> -->
-<!-- 		<property name="name" value="IngestCreatePremisAction" /> -->
-<!-- 		<property name="fileFormatFacade" ref="fileFormatFacade" /> -->
-<!-- 	</bean> -->
-<!-- 	<bean id="IngestScanForPresentationAction" class="de.uzk.hki.da.cb.ScanForPresentationAction" scope="prototype"> -->
-<!-- 		<property name="startStatus" value="310" /> -->
-<!-- 		<property name="endStatus" value="320" /> -->
-<!-- 		<property name="name" value="IngestScanForPresentationAction" /> -->
-<!-- 		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" /> -->
-<!-- 		<property name="fileFormatFacade" ref="fileFormatFacade" /> -->
-<!-- 	</bean> -->
-<!-- 	<bean id="IngestConvertForPresentationAction" class="de.uzk.hki.da.cb.ConvertAction" -->
-<!-- 		scope="prototype"> -->
-<!-- 		<property name="startStatus" value="320" /> -->
-<!-- 		<property name="endStatus" value="340" /> -->
-<!-- 		<property name="knownFormatCmdLineErrors" ref="knownErrors" /> -->
-<!-- 		<property name="name" value="IngestConvertForPresentationAction" /> -->
-<!-- 		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" /> -->
-<!-- 	</bean> -->
-<!-- 	<bean id="IngestShortenFileNamesAction" class="de.uzk.hki.da.cb.ShortenFileNamesAction" -->
-<!-- 		scope="prototype"> -->
-<!-- 		<property name="startStatus" value="340" /> -->
-<!-- 		<property name="endStatus" value="350" /> -->
-<!-- 		<property name="name" value="IngestShortenFileNamesAction" /> -->
-<!-- 	</bean> -->
-<!-- 	<bean id="IngestPresUpdateMetadataAction" class="de.uzk.hki.da.cb.UpdateMetadataAction" scope="prototype"> -->
-<!-- 		<property name="startStatus" value="350" /> -->
-<!-- 		<property name="endStatus" value="360" /> -->
-<!-- 		<property name="name" value="IngestUpdateMetadataAction" /> -->
-<!-- 		<property name="namespaces" ref="updateMetadataNamespaces" /> -->
-<!-- 		<property name="xpathsToUrls" ref="updateMetadataXpathsForUrls" /> -->
-<!-- 		<property name="mtds" ref="mtds" /> -->
-<!-- 		<property name="presMode" value="true"/> -->
-<!-- 		<property name="repNames"> -->
-<!-- 			<util:list> -->
-<!-- 				<value>temp_pips/public</value> -->
-<!-- 				<value>temp_pips/institution</value> -->
-<!-- 			</util:list> -->
-<!-- 		</property>		 -->
-<!-- 	</bean> -->
-<!-- 	<bean id="IngestPrepareSendToPresenterAction" class="de.uzk.hki.da.cb.PrepareSendToPresenterAction" scope="prototype"> -->
-<!-- 		<property name="startStatus" value="360" /> -->
-<!-- 		<property name="endStatus" value="370" /> -->
-<!-- 		<property name="name" value="IngestPrepareSendToPresenterAction" /> -->
-<!-- 		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" /> -->
-<!-- 	</bean> -->
-<!-- 	<bean id="IngestBuildAIPAction" class="de.uzk.hki.da.cb.BuildAIPAction" scope="prototype"> -->
-<!-- 		<property name="startStatus" value="370" /> -->
-<!-- 		<property name="endStatus" value="380" /> -->
-<!-- 		<property name="name" value="IngestBuildAIPAction" /> -->
-<!-- 	</bean> -->
-<!-- 	<bean id="IngestTarAction" class="de.uzk.hki.da.cb.TarAction" scope="prototype"> -->
-<!-- 		<property name="startStatus" value="380" /> -->
-<!-- 		<property name="endStatus" value="400" /> -->
-<!-- 		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" /> -->
-<!-- 		<property name="name" value="IngestTarAction" /> -->
-<!-- 	</bean> -->
-<!-- 	<bean id="IngestArchiveReplicationAction" class="de.uzk.hki.da.cb.ArchiveReplicationAction" -->
-<!-- 		scope="prototype"> -->
-<!-- 		<property name="startStatus" value="400" /> -->
-<!-- 		<property name="endStatus" value="440" /> -->
-<!-- 		<property name="name" value="IngestArchiveReplicationAction" /> -->
-<!-- 		<property name="gridRoot" ref="${cb.implementation.grid:fakeGridFacade}"/> -->
-<!-- 	</bean> -->
-<!-- 	<bean id="IngestArchiveReplicationCheckAction" class="de.uzk.hki.da.cb.ArchiveReplicationCheckAction" -->
-<!-- 		scope="prototype"> -->
-<!-- 		<property name="startStatus" value="440" /> -->
-<!-- 		<property name="endStatus" value="500" /> -->
-<!-- 		<property name="timeOut" value="20000" /> -->
-<!-- 		<property name="gridRoot" ref="${cb.implementation.grid:fakeGridFacade}"/> -->
-<!-- 		<property name="name" value="IngestArchiveReplicationCheckAction" /> -->
-<!-- 	</bean> -->
+	<bean id="IngestDeltaOnURNAction" class="de.uzk.hki.da.cb.DeltaOnURNAction"
+		scope="prototype">
+		<property name="startStatus" value="1120" />
+		<property name="endStatus" value="130" />
+		<property name="name" value="IngestDeltaOnURNAction" />
+		<property name="fileFormatFacade" ref="fileFormatFacade" />
+	</bean>
+	<bean id="IngestRestructureAction" class="de.uzk.hki.da.cb.RestructureAction"
+		scope="prototype">
+		<property name="startStatus" value="130" />
+		<property name="endStatus" value="140" />
+		<property name="name" value="IngestRestructureAction" />
+		<property name="ingestGate" ref="ingestGate" />
+		<property name="gridRoot" ref="${cb.implementation.grid:fakeGridFacade}"/>
+		<property name="fileFormatFacade" ref="fileFormatFacade" />
+	</bean>
+	<bean id="IngestValidateMetadataAction" class="de.uzk.hki.da.cb.ValidateMetadataAction"
+		scope="prototype">
+		<property name="startStatus" value="140" />
+		<property name="endStatus" value="150" />
+		<property name="name" value="IngestValidateMetadataAction" />
+	</bean>	
+	<bean id="IngestScanAction" class="de.uzk.hki.da.cb.ScanAction" scope="prototype">
+		<property name="startStatus" value="150" />
+		<property name="endStatus" value="160" />
+		<property name="name" value="IngestScanAction" />
+		<property name="description" value="Format Scan Service" /> <!--  WTF?? -->
+		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" />
+	</bean>
+	<bean id="IngestRegisterURNAction" class="de.uzk.hki.da.cb.RegisterURNAction" scope="prototype">
+		<property name="startStatus" value="160" />
+		<property name="endStatus" value="230" />
+		<property name="name" value="IngestRegisterURNAction" />
+	</bean>
+	<bean id="IngestConvertAction" class="de.uzk.hki.da.cb.ConvertAction"
+		scope="prototype">
+		<property name="startStatus" value="230" />
+		<property name="endStatus" value="250" />
+		<property name="knownFormatCmdLineErrors" ref="knownErrors" />
+		<property name="name" value="IngestConvertAction" />
+		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" />
+	</bean>
+	<bean id="IngestUpdateMetadataAction" class="de.uzk.hki.da.cb.UpdateMetadataAction" scope="prototype">
+		<property name="startStatus" value="250" />
+		<property name="endStatus" value="260" />
+		<property name="name" value="IngestUpdateMetadataAction" />
+		<property name="mtds" ref="mtds" />
+		<property name="namespaces" ref="updateMetadataNamespaces" />
+		<property name="xpathsToUrls" ref="updateMetadataXpathsForUrls" />
+	</bean>
+	<bean id="IngestCheckFormatsAction" class="de.uzk.hki.da.cb.CheckFormatsAction" scope="prototype">
+		<property name="startStatus" value="260" />
+		<property name="endStatus" value="270" />
+		<property name="name" value="IngestCheckFormatsAction" />
+		<property name="fileFormatFacade" ref="fileFormatFacade" />
+	</bean>
+	<bean id="IngestCreatePremisAction" class="de.uzk.hki.da.cb.CreatePremisAction" scope="prototype">
+		<property name="startStatus" value="270" />
+		<property name="endStatus" value="310" />
+		<property name="name" value="IngestCreatePremisAction" />
+		<property name="fileFormatFacade" ref="fileFormatFacade" />
+	</bean>
+	<bean id="IngestScanForPresentationAction" class="de.uzk.hki.da.cb.ScanForPresentationAction" scope="prototype">
+		<property name="startStatus" value="310" />
+		<property name="endStatus" value="320" />
+		<property name="name" value="IngestScanForPresentationAction" />
+		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" />
+		<property name="fileFormatFacade" ref="fileFormatFacade" />
+	</bean>
+	<bean id="IngestConvertForPresentationAction" class="de.uzk.hki.da.cb.ConvertAction"
+		scope="prototype">
+		<property name="startStatus" value="320" />
+		<property name="endStatus" value="340" />
+		<property name="knownFormatCmdLineErrors" ref="knownErrors" />
+		<property name="name" value="IngestConvertForPresentationAction" />
+		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" />
+	</bean>
+	<bean id="IngestShortenFileNamesAction" class="de.uzk.hki.da.cb.ShortenFileNamesAction"
+		scope="prototype">
+		<property name="startStatus" value="340" />
+		<property name="endStatus" value="350" />
+		<property name="name" value="IngestShortenFileNamesAction" />
+	</bean>
+	<bean id="IngestPresUpdateMetadataAction" class="de.uzk.hki.da.cb.UpdateMetadataAction" scope="prototype">
+		<property name="startStatus" value="350" />
+		<property name="endStatus" value="360" />
+		<property name="name" value="IngestUpdateMetadataAction" />
+		<property name="namespaces" ref="updateMetadataNamespaces" />
+		<property name="xpathsToUrls" ref="updateMetadataXpathsForUrls" />
+		<property name="mtds" ref="mtds" />
+		<property name="presMode" value="true"/>
+		<property name="repNames">
+			<util:list>
+				<value>temp_pips/public</value>
+				<value>temp_pips/institution</value>
+			</util:list>
+		</property>		
+	</bean>
+	<bean id="IngestPrepareSendToPresenterAction" class="de.uzk.hki.da.cb.PrepareSendToPresenterAction" scope="prototype">
+		<property name="startStatus" value="360" />
+		<property name="endStatus" value="370" />
+		<property name="name" value="IngestPrepareSendToPresenterAction" />
+		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" />
+	</bean>
+	<bean id="IngestBuildAIPAction" class="de.uzk.hki.da.cb.BuildAIPAction" scope="prototype">
+		<property name="startStatus" value="370" />
+		<property name="endStatus" value="380" />
+		<property name="name" value="IngestBuildAIPAction" />
+	</bean>
+	<bean id="IngestTarAction" class="de.uzk.hki.da.cb.TarAction" scope="prototype">
+		<property name="startStatus" value="380" />
+		<property name="endStatus" value="400" />
+		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" />
+		<property name="name" value="IngestTarAction" />
+	</bean>
+	<bean id="IngestArchiveReplicationAction" class="de.uzk.hki.da.cb.ArchiveReplicationAction"
+		scope="prototype">
+		<property name="startStatus" value="400" />
+		<property name="endStatus" value="440" />
+		<property name="name" value="IngestArchiveReplicationAction" />
+		<property name="gridRoot" ref="${cb.implementation.grid:fakeGridFacade}"/>
+	</bean>
+	<bean id="IngestArchiveReplicationCheckAction" class="de.uzk.hki.da.cb.ArchiveReplicationCheckAction"
+		scope="prototype">
+		<property name="startStatus" value="440" />
+		<property name="endStatus" value="500" />
+		<property name="timeOut" value="20000" />
+		<property name="gridRoot" ref="${cb.implementation.grid:fakeGridFacade}"/>
+		<property name="name" value="IngestArchiveReplicationCheckAction" />
+	</bean>
 </beans>
