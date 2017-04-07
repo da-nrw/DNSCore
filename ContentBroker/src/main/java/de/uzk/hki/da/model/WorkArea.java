@@ -65,6 +65,7 @@ public class WorkArea {
 	public static final String PIPS = "pips";
 	public static final String DATA = "data";
 	public static final String AIP = "aip";
+	public static final String FEDERATED = "federated";
 	// WorkArea organization
 	public static final String TMP_PIPS = "temp_pips";
 	

@@ -113,6 +113,7 @@ public class TESTHelper {
 		o.setContractor(contractor);
 		o.setIdentifier(identifier);
 		o.getPackages().add(pkg);
+		o.setInitial_node(node.getName());
 		
 		return o;
 	}
