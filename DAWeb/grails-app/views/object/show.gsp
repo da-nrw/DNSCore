@@ -77,25 +77,6 @@
 						<span class="property-value" aria-labelledby="origName-label"><g:fieldValue bean="${objectInstance}" field="origName"/></span>
 					
 				</li>
-				</g:if><li class="fieldcontain">
-				<span id="packages-label" class="property-label"><g:message code="object.packages.label" default="Packages" /></span>
-				<g:form controller="package" action="retrievePackages">
-				<g:hiddenField name="oid" value="${objectInstance?.id}" />			
-				
-				<span class="property-value" ><input type="checkbox" name="waehlen" value="" id="waehlen" onClick="toggle(this)"/> Alle an-/abwählen</span><br>
-				<g:if test="${sortedPackages}">
-					<g:each in="${sortedPackages}" var="p" status="i">
-							<span class="property-value" >
-								<g:if test="${!objectInstance.isInWorkflowButton()}">
-									<g:checkBox name="currentPackages" value="${p.getId()}" checked="false" onClick="deselect(this)"/>
-								</g:if>${p?.encodeAsHTML()}
-							</span>
-					</g:each>	<br>
-					<span class="property-value" >
-						<g:if test="${!objectInstance.isInWorkflowButton()}">
-							<g:actionSubmit value="Versioniertes Retrieval starten" controller="package" action="retrievePackages"/>
-						</g:if>
-					</span>
 				</g:if>
 				<li class="fieldcontain">
 					<span id="packages-label" class="property-label">
