@@ -20,7 +20,6 @@
 package de.uzk.hki.da.core;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -64,27 +63,23 @@ import de.uzk.hki.da.utils.Path;
 public class IngestAreaNoBagitScannerWorker extends Worker{
 
 	
-	/**
-	 * To rule everything out except containers of valid formats.
-	 */
-	private class AcceptedContainerFormatsFilter implements FilenameFilter {
-
-		/* (non-Javadoc)
-		 * @see java.io.FilenameFilter#accept(java.io.File, java.lang.String)
-		 */
-		@Override
-		public boolean accept(File dir, String name) {
-
-			return (!name.endsWith(".tgz") || !name.endsWith(".tar") || dir.isDirectory());
-			
-//			return (name.endsWith(".xml")
-//					||name.endsWith(".jpg"));
-//					||name.endsWith(".tgz")
-//					||name.endsWith(".tar"));
-		}
-		
-		
-	}
+//	/**
+//	 * To rule everything out except containers of valid formats.
+//	 */
+//	private class AcceptedContainerFormatsFilter implements FilenameFilter {
+//
+//		/* (non-Javadoc)
+//		 * @see java.io.FilenameFilter#accept(java.io.File, java.lang.String)
+//		 */
+//		@Override
+//		public boolean accept(File dir, String name) {
+//
+//			return dir.isDirectory();
+//		
+//		}
+//		
+//		
+//	}
 
 	
 	/** The min age. */
@@ -157,7 +152,6 @@ public class IngestAreaNoBagitScannerWorker extends Worker{
 				for (String child:scanContractorFolderForReadySips(contractor.getShort_name(), currentTimeStamp)){
 					
 					logger.info("Found file \""+child+"\" in ingestNoBagit Area. Creating job for \""+contractor.getShort_name()+"\"");
-					System.out.println("Found file \""+child+"\" in ingestNoBagit Area. Creating job for \""+contractor.getShort_name()+"\"");
 					Object object=null;
 					try {
 						object = registerObjectService.registerObject( child, contractor);	
@@ -202,25 +196,21 @@ public class IngestAreaNoBagitScannerWorker extends Worker{
 		File[] files =  file.listFiles();
 		String children[] = null;
 		boolean isDirectory = false;
-		String directories = null;
+		String directory = null;
+		List<String> childrenWhichAreReady = new ArrayList<String>();
 		
 		for (int i = 0; i < files.length; i++) {
 			if (files[i].isDirectory()) 
 			{
-				children = files[i].list(new AcceptedContainerFormatsFilter());
+				children = files[i].list();
 				isDirectory = true;
-				directories = files[i].getName();
+ 				directory = files[i].getName();
 			} 
+			if (children!=null && isDirectory) {
+				childrenWhichAreReady = addToList(directory,short_name,currentTimeStamp,childrenWhichAreReady);
+			}
 		}
 		
-		List<String> childrenWhichAreReady = new ArrayList<String>();
-		if (children!=null && isDirectory){
-			for (int i=0;i<directories.length();i++){
-				if (isDirectory) {
-						childrenWhichAreReady = addToList(directories,short_name,currentTimeStamp,childrenWhichAreReady);
-				}
-			} 
-		}
 		return childrenWhichAreReady;
 	}
 
@@ -278,54 +268,6 @@ public class IngestAreaNoBagitScannerWorker extends Worker{
 		return (User) list.get(0);
 	}
 	
-		
-	/**
-	 * Tells us which files are inside a contractor specific stage folder are ready to move.
-	 * Two conditions must be met in order two be moved
-	 * <li>The file must be old enough
-	 * <li>The file must pass the AcceptedContainerFormatsFilter
-	 *
-	 * @param contractorShortName the contractor short name
-	 * @param currentTimeStamp the current time stamp
-	 * @return list of files which meet the above mentioned conditions.
-	 */
-	private List<String> scanContractorFolderForReadyFiles(String contractorShortName, long currentTimeStamp){
-		
-		
-		File file = Path.makeFile(ingestAreaNoBagitRootPath, contractorShortName);
-		
-		File[] files =  file.listFiles();
-		String children[] = null;
-		boolean isDirectory = false;
-		String directory = "";
-		
-		for (int i = 0; i < files.length; i++) {
-			if (files[i].isDirectory()) 
-			{
-				children = files[i].list(new AcceptedContainerFormatsFilter());
-				isDirectory = true;
-				directory = files[i].toString();
-			} else {
-				children = Path.makeFile(ingestAreaNoBagitRootPath,contractorShortName).list(new AcceptedContainerFormatsFilter());
-				isDirectory = false;
-			}
-		}
-		
-		List<String> childrenWhichAreReady = new ArrayList<String>();
-		if (children!=null){
-			for (int i=0;i<children.length;i++){
-				if (isDirectory) {
-					if (Path.makeFile(directory,children[i]).isFile())
-						childrenWhichAreReady = addToList(children[i],contractorShortName,currentTimeStamp,childrenWhichAreReady);
-				} else {
-					if (Path.makeFile(ingestAreaNoBagitRootPath,contractorShortName,children[i]).isFile())
-						childrenWhichAreReady = addToList(children[i],contractorShortName,currentTimeStamp,childrenWhichAreReady);
-				}
-			} 
-		}
-		return childrenWhichAreReady;
-	} 
-	
 	private List<String> addToList(String sipname,  String csn, long currentTimeStamp,List<String> childrenWhichAreReady) {
 		if (!sips.containsKey(sipname)){
 			Job job = getJob( convertMaskedSlashes(FilenameUtils.removeExtension(sipname)),
@@ -381,10 +323,7 @@ public class IngestAreaNoBagitScannerWorker extends Worker{
 			return null;
 		}
 	}
-	
-	
 
-	// TODO factor out
 	/**
 	 * Replaces %2F inside a string to /.
 	 *
@@ -395,7 +334,6 @@ public class IngestAreaNoBagitScannerWorker extends Worker{
 		return input.replaceAll("%2F", "/");
 	} 
 	
-
 	public Path getIngestAreaNoBagitRootPath() {
 		return ingestAreaNoBagitRootPath;
 	}

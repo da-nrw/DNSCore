@@ -105,7 +105,8 @@ public class UnpackNoBagitAction extends AbstractAction {
 		
 		
 		wa.ingestSIP(sipContainerInIngestAreaNoBagit());
-			moveSipDir();
+		
+		moveSipDir();
 
 		throwUserExceptionIfDuplicatesExist();
 		throwUserExceptionIfNotPremisConsistent();
@@ -118,11 +119,6 @@ public class UnpackNoBagitAction extends AbstractAction {
 		return true;
 	}	
 	
-	private void moveSipDir() throws IOException {
-		FileUtils.moveDirectoryToDirectory(wa.sipFile(), wa.objectPath().toFile(), true);
-	}
-
-	
 	private File sipContainerInIngestAreaNoBagit() {
 		return sipContainerInIngestAreaNoBagitPath().toFile();
 	}
@@ -131,9 +127,44 @@ public class UnpackNoBagitAction extends AbstractAction {
 		return sipContainerInIngestAreaNoBagitPath().toFile().isDirectory();
 	}
 	
+	private void moveSipDir() throws IOException {
+		
+		if (!wa.dataPath().toFile().mkdirs()) {
+			throw new RuntimeException("couldn't create directory: " + wa.dataPath().toFile());
+		}
+		
+		 File[] files = wa.sipFile().listFiles();
+			if (files.length == 1) {
+				File[] folderFiles = files[0].listFiles();
+				for (File f : folderFiles) {
+					if (f.isFile()) {
+						try {
+							FileUtils.moveFileToDirectory(f, wa.dataPath().toFile(), false);
+						} catch (IOException e) {
+							throw new RuntimeException("couldn't move file " + f.getAbsolutePath() +
+									" to folder " + wa.dataPath().toFile(), e);
+						}
+					}
+					if (f.isDirectory()) {
+						try {
+							FileUtils.moveDirectoryToDirectory(f, wa.dataPath().toFile(), false);
+						} catch (IOException e) {
+							throw new RuntimeException("couldn't move folder " + f.getAbsolutePath() +
+									" to folder " + wa.dataPath().toFile(), e);
+						}
+					}
+				}
+				
+				try {
+					FolderUtils.deleteDirectorySafe(files[0]);
+				} catch (IOException e) {
+					throw new RuntimeException("couldn't delete folder " + files[0].getAbsolutePath());
+				}
+			}		
+		 
+	}
 	
 	private Path sipContainerInIngestAreaNoBagitPath() {
-		System.out.println("Pfad: " + Path.make(n.getIngestAreaNoBagitRootPath(),o.getContractor().getShort_name(),	o.getLatestPackage().getContainerName()));
 		return Path.make(
 				n.getIngestAreaNoBagitRootPath(),
 				o.getContractor().getShort_name(), 
@@ -211,8 +242,6 @@ public class UnpackNoBagitAction extends AbstractAction {
 		}
 	}
 
-	
-	
 	/**
 	 * purges documentsToFiles and returns the reference
 	 * @param
@@ -255,32 +284,8 @@ public class UnpackNoBagitAction extends AbstractAction {
 				documentsToFiles.get(document).add(file);
 			}
 		}
-		
 		return documentsToFiles;
 	}
-	
-	/**
-	 * Check if package is premis.
-	 * 
-	 * @param package PATH
-	 * @return Either PackageType.METS or PackageType.BAGIT or null if package type can't be determined.
-	 * @throws RuntimeException if cannot determine package type.
-	 */
-	private boolean isBagItPackage(File pkg_path){
-		logger.debug("determine package type for "+pkg_path);
-		String files[] = pkg_path.list();
-		for (String f:files){
-			logger.debug("-- "+f);
-		}
-		
-		if (isStandardPackage(pkg_path)) {
-			logger.debug("Package is BagIt style, baby!");
-		} else {
-			return false;
-		}
-		return true;
-	}
-	
 	
 	boolean isStandardPackage(File packageContent){
 		
@@ -292,11 +297,9 @@ public class UnpackNoBagitAction extends AbstractAction {
 		return is;
 	}
 
-
 	public IngestGate getIngestGateNoBagit() {
 		return ingestGateNoBagit;
 	}
-
 
 	public void setIngestGateNoBagit(IngestGate ingestGateNoBagit) {
 		this.ingestGateNoBagit = ingestGateNoBagit;
