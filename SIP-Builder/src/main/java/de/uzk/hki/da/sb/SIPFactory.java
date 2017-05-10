@@ -241,11 +241,14 @@ public class SIPFactory {
 			return feedback;
 		}
 
-		if ((feedback = createBag(jobId, packageFolder)) != Feedback.SUCCESS) {
-			rollback(tempFolder);
-			return feedback;
+		// DANRW-1352
+		if (bagit) {
+			if ((feedback = createBag(jobId, packageFolder)) != Feedback.SUCCESS) {
+				rollback(tempFolder);
+				return feedback;
+			}
 		}
-
+		
 		// DANRW-1416
 		if (tar) {
 			String archiveFileName = packageName;
