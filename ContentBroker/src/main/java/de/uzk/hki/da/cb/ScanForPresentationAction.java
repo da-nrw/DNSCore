@@ -76,7 +76,7 @@ public class ScanForPresentationAction extends AbstractAction{
 		
 		List<? extends FileWithFileFormat> fffl=null;
 		try {
-			fffl = fileFormatFacade.identify(wa.dataPath(),o.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions()),o.getLatestPackage().isPruneExceptions());
+			fffl = fileFormatFacade.identify(wa.dataPath(),o.getNewestFilesFromAllRepresentations(o.getFriendlyFileExtensions()),o.getLatestPackage().isPruneExceptions());
 		} catch (FileFormatException e) {
 			throw new RuntimeException(C.ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION,e);
 		} catch (IOException e) {

@@ -47,7 +47,7 @@ import de.uzk.hki.da.pkg.NestedContentStructure;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Utilities;
-import de.uzk.hki.da.utils.formatDetectionService;
+import de.uzk.hki.da.utils.FormatDetectionService;
 
 /**
  * The central SIP production class
@@ -131,7 +131,7 @@ public class SIPFactory {
 		case NESTED_FOLDERS:
 			NestedContentStructure ncs;
 			try {
-				TreeMap<File, String> metadataFileWithType = new formatDetectionService(
+				TreeMap<File, String> metadataFileWithType = new FormatDetectionService(
 						sourceFolder).getMetadataFileWithType();
 				if (!metadataFileWithType.isEmpty()
 						&& (!metadataFileWithType.get(
@@ -845,17 +845,13 @@ public class SIPFactory {
 				for (File f : folderListWithNames.keySet()) {
 					String metadataType = "";
 					try {
-						TreeMap<File, String> metadataFileWithType = new formatDetectionService(
+						TreeMap<File, String> metadataFileWithType = new FormatDetectionService(
 								f).getMetadataFileWithType();
 						if (!metadataFileWithType.isEmpty()) {
 							File file = metadataFileWithType.firstKey();
 							metadataType = metadataFileWithType.get(file);
-							if (metadataType != C.CB_PACKAGETYPE_XMP) {
-								if (!duplicateFileNames(f,
-										tmpFolderListWithNames)) {
-									Utilities.validateFileReferencesInMetadata(
-											file, metadataType);
-								}
+							if (!duplicateFileNames(f, tmpFolderListWithNames)) {
+								Utilities.validateFileReferencesInMetadata(file, metadataType);
 							}
 						} else {
 							duplicateFileNames(f, tmpFolderListWithNames);
