@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -40,14 +41,15 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 
 import de.uzk.hki.da.metadata.ContractRights;
+import de.uzk.hki.da.metadata.FileExtensions;
 import de.uzk.hki.da.metadata.PremisXmlWriter;
-import de.uzk.hki.da.pkg.SipArchiveBuilder;
 import de.uzk.hki.da.pkg.CopyUtility;
 import de.uzk.hki.da.pkg.NestedContentStructure;
+import de.uzk.hki.da.pkg.SipArchiveBuilder;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.FolderUtils;
-import de.uzk.hki.da.utils.Utilities;
 import de.uzk.hki.da.utils.FormatDetectionService;
+import de.uzk.hki.da.utils.Utilities;
 
 /**
  * The central SIP production class
@@ -69,6 +71,10 @@ public class SIPFactory {
 	private String collectionName = null;
 	private File collectionFolder = null;
 	private ContractRights contractRights = new ContractRights();
+	// DANRW-1515
+	private FileExtensions fileExtensions = new FileExtensions();
+	private HashMap<String, List<String>> fileExtensionsList = new HashMap<String, List<String>>();
+
 	private File rightsSourcePremisFile = null;
 	private SipBuildingProcess sipBuildingProcess;
 
@@ -80,6 +86,9 @@ public class SIPFactory {
 	// DANRW-1416: Extension for disable tar - function
 	private boolean tar = true;
 	private String destDir = null;
+	
+	// DANRW-1515: Extension for allowDuplicateFilename
+	private boolean allowDuplicateFilename = false;
 
 	private List<String> forbiddenFileExtensions = null;
 
@@ -789,6 +798,31 @@ public class SIPFactory {
 		this.destDir = destDir;
 	}
 
+	public boolean isAllowDuplicateFilename() {
+		return allowDuplicateFilename;
+	}
+
+	public void setAllowDuplicateFilename(boolean allowDuplicateFilename) {
+		this.allowDuplicateFilename = allowDuplicateFilename;
+	}
+
+	public FileExtensions getFileExtensions() {
+		return fileExtensions;
+	}
+
+	public void setFileExtensions(FileExtensions fileExtensions) {
+		this.fileExtensions = fileExtensions;
+	}
+	
+	// DANRW-1515
+	public HashMap<String, List<String>> getFileExtensionsList() {
+		return fileExtensionsList;
+	}
+
+	public void setFileExtensionsList(HashMap<String, List<String>> hashMap) {
+		this.fileExtensionsList = hashMap;
+	}
+
 	/**
 	 * The SIP building procedure is run in its own thread to prevent GUI
 	 * freezing
@@ -850,7 +884,7 @@ public class SIPFactory {
 						if (!metadataFileWithType.isEmpty()) {
 							File file = metadataFileWithType.firstKey();
 							metadataType = metadataFileWithType.get(file);
-							if (!duplicateFileNames(f, tmpFolderListWithNames)) {
+							if (!duplicateFileNames(f,	tmpFolderListWithNames)) {
 								Utilities.validateFileReferencesInMetadata(file, metadataType);
 							}
 						} else {
@@ -1027,30 +1061,79 @@ public class SIPFactory {
 			return abortRequested;
 		}
 
+		/**
+		 * duplicateFileNames:
+		 * @param f
+		 * @param tmpFolderListWithNames
+		 * @return
+		 */
 		private boolean duplicateFileNames(File f,
 				HashMap<File, String> tmpFolderListWithNames) {
 			Boolean dfn = false;
 			HashMap<String, List<File>> duplicateFileNames = getFilesWithDuplicateFileNames(f);
 			if (!duplicateFileNames.isEmpty()) {
-				dfn = true;
-				String msg = "Aus dem Verzeichnis "
-						+ f
-						+ " wird kein SIP erstellt. \nDer Ordner enthält gleichnamige Dateien: \n"
-						+ duplicateFileNames;
-				messageWriter.showLongErrorMessage(msg);
-				tmpFolderListWithNames.remove(f);
-				returnCode = Feedback.DUPLICATE_FILENAMES;
+				if (!allowDuplicateFilename) {
+			 
+					dfn = true;
+					String msg = "Aus dem Verzeichnis "
+							+ f
+							+ " wird kein SIP erstellt. \nDer Ordner enthält gleichnamige Dateien: \n"
+							+ duplicateFileNames;
+					messageWriter.showLongErrorMessage(msg);
+					tmpFolderListWithNames.remove(f);
+					returnCode = Feedback.DUPLICATE_FILENAMES;
+				} else {
+					// DANRW-1515: erlauben von doppelten Dateiname für unterschiedliche Formate (z.B. xml und Image)
+					Iterator<String> it = duplicateFileNames.keySet().iterator();
+//					String keyOld = "";
+					List<String> oldKeys = new ArrayList<String>();
+					while (it.hasNext()) {
+						String key = (it.next());
+						logger.debug(key + " --> " +  duplicateFileNames.get(key));
+						List<File> listDupFileNames = duplicateFileNames.get(key);
+						for (int i = 0; listDupFileNames.size() > i; i++) {
+							String extOfFile = FilenameUtils.getExtension(listDupFileNames.get(i)
+									.getAbsolutePath());
+							
+							Iterator<String> itExtensions = getFileExtensionsList().keySet().iterator();
+							while(itExtensions.hasNext()) {
+								String keyExtensions = (itExtensions.next());
+								if (getFileExtensionsList().get(keyExtensions).contains(extOfFile)) {
+									if (oldKeys.contains(keyExtensions)) {
+										dfn = true;
+									} else {
+										oldKeys.add(keyExtensions);
+										break;
+									}
+								}
+							}
+						}
+						if (dfn) {
+							String msg = "Aus dem Verzeichnis "
+									+ f
+									+ " wird kein SIP erstellt. \nDer Ordner enthält gleichnamige Dateien: \n"
+									+  duplicateFileNames.get(key);
+							messageWriter.showLongErrorMessage(msg);
+							tmpFolderListWithNames.remove(f);
+							returnCode = Feedback.DUPLICATE_FILENAMES;
+							break;
+						}
+					}
+					
+				}
 			}
 			return dfn;
 		}
 
 		private HashMap<String, List<File>> getFilesWithDuplicateFileNames(
 				File folder) {
-			logger.debug("Search for duplicate file names in folde " + folder);
+			logger.debug("Search for duplicate file names in folder " + folder);
+			
 			HashMap<String, List<File>> duplicateFilenamesWithFiles = new HashMap<String, List<File>>();
 			HashMap<String, File> filenamesWithFiles = new HashMap<String, File>();
+		
 			for (File f : folder.listFiles()) {
-				logger.debug("Check file " + f);
+				logger.debug("getFilesWithDuplicateFileNames: Check file " + f);
 				if (f.isDirectory()) {
 					HashMap<String, List<File>> rekursivResult = getFilesWithDuplicateFileNames(f);
 					for (String rekf : rekursivResult.keySet())
@@ -1106,8 +1189,8 @@ public class SIPFactory {
 						}
 					}
 				}
-			}
+			}	
 			return duplicateFilenamesWithFiles;
 		}
-	};
+	}
 }

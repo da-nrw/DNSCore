@@ -75,6 +75,7 @@ public class Cli {
 		this.confFolderPath = confFolderPath;
 		this.args = args;
 		sipFactory = new SIPFactory();
+		
 	}
 
 	/**
@@ -119,6 +120,8 @@ public class Cli {
 	private Feedback configureSipFactory() {
 		
 		boolean contractRightsLoaded = false;
+		boolean allowDuplicateFilename = false; // DANRW-1515
+		
 		CliMessageWriter messageWriter = new CliMessageWriter();
 		
 		// Default settings
@@ -246,6 +249,13 @@ public class Cli {
     			continue;
     		} 
     		
+    		// DANRW-1515: Extension to disable checking for duplicate filename
+    		if (arg.equals("-allowDuplicateFilename")) {
+    			sipFactory.setAllowDuplicateFilename(true);
+    			allowDuplicateFilename = true;
+    			continue;
+    		}
+    		
     		if (arg.startsWith("-destDir")) {
     			sipFactory.setDestinationPath(sipFactory.getDestinationPath() + File.separator + extractParameter(arg));
     			continue;
@@ -275,6 +285,18 @@ public class Cli {
     							   "standardRights.xml\" geladen werden.");
     			return Feedback.STANDARD_RIGHTS_FILE_READ_ERROR;
     		}
+    	// DANRW-1515
+    	if (allowDuplicateFilename) {
+			try {
+				sipFactory.setFileExtensionsList(sipFactory.getFileExtensions().loadFileExtensionsFromFile(
+						new File(confFolderPath + File.separator + "fileExtensions.xml")));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return Feedback.FILE_EXTENSIONS_READ_ERROR;
+			}
+			
+    	}
     	
     	return Feedback.SUCCESS;
 	}
@@ -746,6 +768,8 @@ public class Cli {
 		System.out.println("");
 		System.out.println("   -noTar                    SIPs als Verzeichnis erstellen");
 		System.out.println("   -destDir=\"[Name]\"         Verzeichnisname, in dem das SIP erstellt werden soll (abhängig vom gewählten Zielordner). Darf nur in Kombination mit -noTar verwendet werden");
+		System.out.println("");
+		System.out.println("   -allowDuplicateFilename    SIP erstellen, auch wenn Metadaten und Daten den gleichen Dateinamen haben");
 		System.out.println("");
 		System.out.println("   -neverOverwrite           SIPs nicht erstellen, wenn sich im Zielordner bereits ein SIP gleichen Namens befindet (Standard)");
 		System.out.println("   -alwaysOverwrite          Bereits existierende SIPs/Lieferungen gleichen Namens im Zielordner ohne Nachfrage überschreiben");
