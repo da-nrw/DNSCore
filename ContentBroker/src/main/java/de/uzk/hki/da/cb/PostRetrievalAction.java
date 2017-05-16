@@ -93,6 +93,7 @@ public class PostRetrievalAction extends AbstractAction {
 			Thread.sleep(PAUSE_DELAY); // to prevent unnecessary small intervals when checking
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+			logger.debug("Exception in PostRetrievalAction: " + e.getMessage());
 		}
 	}
 	private void modifyObject(Object obj) {
