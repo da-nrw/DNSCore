@@ -136,7 +136,7 @@
 				</g:if>
 				
 				
-				<g:if test="${objectInstance?.created}">
+				<g:if test="${objectInstance?.createdAt}">
 					<li class="fieldcontain">
 					<span id="origName-label" class="property-label"><g:message code="object.created.label" default="Datum erstellt" /></span>
 					
@@ -144,7 +144,7 @@
 				</li>
 			
 				</g:if>
-					<g:if test="${objectInstance?.modified}">
+					<g:if test="${objectInstance?.modifiedAt}">
 					<li class="fieldcontain">
 					<span id="origName-label" class="property-label"><g:message code="object.modified.label" default="Datum geändert" /></span>
 					

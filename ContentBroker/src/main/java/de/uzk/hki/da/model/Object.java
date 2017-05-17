@@ -124,12 +124,12 @@ public class Object {
 	private String orig_name;
 	
 	/** The date_created. */
-	@Column(columnDefinition="varchar(100)")
-	private String date_created;
+	@Column(name="created_at")
+	private Date createdAt;
 	
 	/** The date_modified. */
-	@Column(columnDefinition="varchar(100)")
-	private String date_modified;
+	@Column(name="modified_at")
+	private Date modifiedAt;
 	
 	@Column(columnDefinition="varchar(50)")
 	private String package_type;
@@ -365,42 +365,21 @@ public class Object {
 		return initial_node;
 	}
 	
-	/**
-	 * Sets the date_created.
-	 *
-	 * @param date_created the new date_created
-	 */
-	public void setDate_created(String date_created) {
-		this.date_created = date_created;
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
 	}
 	
-	/**
-	 * Gets the date_created.
-	 *
-	 * @return the date_created
-	 */
-	public String getDate_created() {
-		return date_created;
+	public Date getCreatedAt() {
+		return createdAt;
 	}
 	
-	/**
-	 * Sets the date_modified.
-	 *
-	 * @param date_modified the new date_modified
-	 */
-	public void setDate_modified(String date_modified) {
-		this.date_modified = date_modified;
+	public void setModifiedAt(Date modifiedAt) {
+		this.modifiedAt = modifiedAt;
 	}
 	
-	/**
-	 * Gets the date_modified.
-	 *
-	 * @return the date_modified
-	 */
-	public String getDate_modified() {
-		return date_modified;
+	public Date getModifiedAt() {
+		return modifiedAt;
 	}
-	
 
 	/**
 	 * @return the path to the newest b representation.
@@ -412,13 +391,6 @@ public class Object {
 		String newestRep = getReps().get(getReps().size()-1);
 		return newestRep.replace("+a", "+b");
 	}
-	
-	
-	
-	
-	
-	
-	
 	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()

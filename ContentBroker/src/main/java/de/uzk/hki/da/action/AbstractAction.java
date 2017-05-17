@@ -41,6 +41,7 @@ import de.uzk.hki.da.model.Copy;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.RepositoryException;
@@ -206,7 +207,7 @@ public abstract class AbstractAction implements Runnable {
 	
 	
 	private void updateStatus(String endDigit) {
-		j.setDate_modified(String.valueOf(new Date().getTime()/1000L));
+		j.setModifiedAt(new Date());
 		j.setStatus(getStartStatus().substring(0, getStartStatus().length() - 1) + endDigit);
 	}
 	
@@ -239,7 +240,7 @@ public abstract class AbstractAction implements Runnable {
 			j.setStatus(startStatus);
 			resetModifiers();
 		} else {
-			j.setDate_modified(String.valueOf(new Date().getTime()/1000L));
+			j.setModifiedAt(new Date());
 			baseLogger.info(this.getClass().getName()+" finished working on job: "+j.getId()+". Now commiting changes to database.");
 			if (kILLATEXIT)	{
 				baseLogger.info("Set the job status to the end status "+endStatus+" .");
@@ -430,6 +431,15 @@ public abstract class AbstractAction implements Runnable {
 			if ((!wa.isDBtoFSconsistent())||(!wa.isFStoDBconsistent())){
 				reportTechnicalError(new RuntimeException("Object DB is not consistent with data on FS."));
 			}
+		}
+	}
+	
+	protected static void clearNonpersistentObjectProperties(Object o) {
+		
+		o.getDocuments().clear();
+		for (Package pkg : o.getPackages()){
+			pkg.getEvents().clear();
+			pkg.getFiles().clear();
 		}
 	}
 

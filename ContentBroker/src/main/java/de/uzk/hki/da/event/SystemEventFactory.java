@@ -43,20 +43,22 @@ public class SystemEventFactory  {
 	private String eventsPackage = "de.uzk.hki.da.event.";
 	
 	public void buildStoredEvents() {
-			List<SystemEvent> ses =  getEventsPerNode();
-			if (ses!=null) {
+		List<SystemEvent> ses = getEventsPerNode();
+		if (ses != null) {
 			for (SystemEvent se : ses) {
-				if (se.getType()==null) continue;
+				if (se.getType() == null)
+					continue;
 				AbstractSystemEvent ase = null;
 				try {
-					ase = (AbstractSystemEvent)Class.forName(eventsPackage + se.getType()).newInstance();
+					ase = (AbstractSystemEvent) Class.forName(eventsPackage + se.getType()).newInstance();
+					injectProperties(ase, se);
+					ase.run();
 				} catch (Exception e) {
 					logger.error("could not instantiate " + se.getType());
 				}
-				injectProperties(ase, se);
-				ase.run();
 			}
-			} else logger.debug("no events to perform");
+		} else
+			logger.debug("no events to perform");
 	}
 	
 	private void injectProperties(AbstractSystemEvent ase, SystemEvent se) {

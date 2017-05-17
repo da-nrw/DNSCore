@@ -65,6 +65,11 @@ public class FakeGridFacade implements GridFacade {
 		return true;	
 
 	}
+	
+	@Override
+	public void getFederated(String zone, File destination, String gridFileAdress) throws IOException {
+		get(destination, gridFileAdress);
+	}
 
 	@Override
 	public void get(File destination, String sourceFileAdress)
@@ -183,5 +188,7 @@ public class FakeGridFacade implements GridFacade {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+
 
 }

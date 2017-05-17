@@ -9,7 +9,7 @@
 		 <jqui:resources/>
 		<r:script>
 			var order = "desc";
-			var sort = "created";
+			var sort = "createdAt";
 			$(function() {
 				$("#legend").accordion({ collapsible: true, active: false, autoHeight: false });
 			});

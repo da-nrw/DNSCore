@@ -55,8 +55,8 @@
 		    		</g:if> 
 		    		<div>
 						<g:if test="${params.searchDateType != null } ">
-	    					<g:if test="${params.searchDateType == 'created'}">Datumsbereich erstellt</g:if>
-	    					<g:if test="${params.searchDateType == 'modified'}">Datumsbereich geändert</g:if>
+	    					<g:if test="${params.searchDateType == 'createdAt'}">Datumsbereich erstellt</g:if>
+	    					<g:if test="${params.searchDateType == 'modifiedAt'}">Datumsbereich geändert</g:if>
 			    		</g:if>   
 			    		<g:if test="${!params.searchDateStart.isEmpty()}">
 			    			<span style="margin-right: 25px"><i>Von Datum: </i>${params.searchDateStart}</span>
@@ -86,7 +86,7 @@
 	            		<tr>
 	            		<td>Datumsbereich:</td>
 	            		<td>
-	            			<g:select id="datetype" name="searchDateType" from="${['Datum erstellt','Datum geändert']}" keys="${['created','modified']}" value="${params.searchDateType}" noSelection="[null:'Bitte auswählen']" />
+	            			<g:select id="datetype" name="searchDateType" from="${['Datum erstellt','Datum geändert']}" keys="${['createdAt','modifiedAt']}" value="${params.searchDateType}" noSelection="[null:'Bitte auswählen']" />
 	            		</td>
 					</tr>
             		<tr>
@@ -153,8 +153,8 @@
 							
 							<g:sortableColumn property="urn" title="${message(code: 'object.urn.label', default: 'Urn')}" />						
 							<g:sortableColumn property="origName" title="${message(code: 'object.origName.label', default: 'Orig Name')}" />
-							<g:sortableColumn property="created" title="${message(code: 'object.created.label', default: 'Erstellt')}" />
-							<g:sortableColumn property="modified" title="${message(code: 'object.modified.label', default: 'Geändert')}" />
+							<g:sortableColumn property="createdAt" title="${message(code: 'object.created.label', default: 'Erstellt')}" />
+							<g:sortableColumn property="modifiedAt" title="${message(code: 'object.modified.label', default: 'Geändert')}" />
 							<th style="text-align: center">Publ.</th>
 							<th style="text-align: center">Anfordern				
 								<g:if test="${!paginate}">

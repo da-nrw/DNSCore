@@ -71,11 +71,10 @@ class OutgoingController {
 			
 			//it.setStatus("960")
 			
-			def dateCode = Math.round(new Date().getTime()/1000L)
-			log.debug("dateCode:"+dateCode)
-			log.debug("String Value of:"+String.valueOf(dateCode))
+			def modi = new Date()
+			log.debug("Modified at:" + modi)
 			
-			it.setModified(String.valueOf(dateCode))
+			it.setModifiedAt(modi)
 			it.save();
 		}
 		def redirecturl = request.getHeader('referer');

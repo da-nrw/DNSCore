@@ -58,6 +58,13 @@ public class ATIngestLav extends AcceptanceTest {
 	
 	}
 	
+	@Test
+	public void testDDBExclusion() throws IOException, JDOMException {
+		assertTrue("ddbExcluded have to be false",!ath.getObject(urn1).ddbExcluded());
+		assertTrue("ddbExcluded have to be false",!ath.getObject(urn2).ddbExcluded());
+		assertTrue("ddbExcluded have to be false",!ath.getObject(urn3).ddbExcluded());
+	}
+	
 	@AfterClass
 	public static void tearDownAfterClass() throws IOException{
 	}

@@ -23,7 +23,7 @@ public class ATMultipageTiff extends AcceptanceTest {
 		
 		String hash = DigestUtils.md5Hex("Best/A1_456789_A2_456789_A3_456789_A4_456789_A5_456789_A6_456789_A7_456789_A8_456789_.jpg");
 		File file = Path.makeFile(localNode.getWorkAreaRootPath(),"pips","public",
-				C.TEST_USER_SHORT_NAME, idiName, '_' + hash + ".jpg");
+				testContractor.getUsername(), idiName, '_' + hash + ".jpg");
 
 		assertTrue(file.exists());
 	}

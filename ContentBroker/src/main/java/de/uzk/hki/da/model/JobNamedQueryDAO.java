@@ -56,7 +56,7 @@ public class JobNamedQueryDAO {
 			
 			joblist = session
 					.createQuery("SELECT j FROM Job j LEFT JOIN j.obj as o where j.status=?1 and "
-							+ "j.responsibleNodeName=?2 and o.object_state IN (100, 50, 40) and o.orig_name!=?3 order by j.date_modified asc ")
+							+ "j.responsibleNodeName=?2 and o.object_state IN (100, 50, 40) and o.orig_name!=?3 order by j.modifiedAt asc ")
 					.setParameter("1", status).setParameter("2", node.getName()).setParameter("3","integrationTest").setCacheable(false).setMaxResults(1).list();
 
 			if ((joblist == null) || (joblist.isEmpty())){
@@ -78,7 +78,7 @@ public class JobNamedQueryDAO {
 			//-
 			
 			job.setStatus(workingStatus);
-			job.setDate_modified(String.valueOf(new Date().getTime()/1000L));
+			job.setModifiedAt(new Date());
 			session.merge(job);
 			session.getTransaction().commit();
 			session.close();

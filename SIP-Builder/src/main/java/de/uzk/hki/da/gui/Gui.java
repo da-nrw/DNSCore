@@ -1885,10 +1885,10 @@ public class Gui extends JFrame{
 		helpIconButton.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e){
+				// DANRW-1524: Infotext korrigiert
 				messageWriter.showMessage(SIPBuilder.getProperties().getProperty("ARCHIVE_NAME") + " SIP-Builder v" + buildNumber + "\n\n" +
-										  "Copyright (C) 2014 Historisch-Kulturwissenschaftliche\n" +
-										  "Informationsverarbeitung Universität zu Köln\n\n" +
-										  "www.danrw.de");
+						  "LVR-InfoKom (ab 2014). HKI, Universität zu Köln 2011-2014.\n\n" +
+						  "www.danrw.de");
 			}
 
 		});

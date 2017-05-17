@@ -69,7 +69,7 @@ import de.uzk.hki.da.utils.StringUtilities;
 public class AcceptanceTestHelper {
 	public static final String TEST_RESOURCES_PATH_PROPERTY="WorkaroundToPathTestCaseFilesPathToJUNITTests"; //Name for a system property to pass the testfiles directory
 	public static final String NO_DIRTY_CLEANUP_AFTER_EACH_TEST_PROPERTY="WorkaroundNoCleanupCompleteDB"; //Name for a system property to avoid cleanups, because they cleanup all data, not only testdata
-	
+
 	private static final String MSG_READY = "ready";
 	private static final String MSG_ERROR_WHEN_TIMEOUT_REACHED = "waited to long. test considered failed";
 	private static final String TEMP_FOLDER = "/tmp/";
@@ -78,7 +78,7 @@ public class AcceptanceTestHelper {
 	
 	
 	private static final int INTERVAL=2000; // in ms
-	private static final int TIMEOUT=1200000; // ins ms
+	private int TIMEOUT=1200000; // ins ms
 	
 	private GridFacade gridFacade;
 	private Node localNode;
@@ -349,11 +349,7 @@ public class AcceptanceTestHelper {
 				System.out.println("Awaiting job (OriginalName: "+originalName+") to be in state "+status+". Job is NULL ");		
 			}
 		}
-	}
-
-	
-	
-	
+	}	
 	
 	
 	public Job getJob(String originalName) {
@@ -364,7 +360,6 @@ public class AcceptanceTestHelper {
 		session.close();
 		return job;
 	}
-
 
 
 	void waitForObjectToBeIndexed(MetadataIndex mi,String indexName,String identifier) {
@@ -432,14 +427,7 @@ public class AcceptanceTestHelper {
 		}
 		throw new RuntimeException(msg);
 	}
-	
-	
-	
 
-	
-	
-	
-	
 	
 	/**
 	 * Makes a copy of a file from src/test/resources/at/[sourcePackagename].[ext]
@@ -467,17 +455,10 @@ public class AcceptanceTestHelper {
 	}
 	
 	
-
-		
-
-	
-	
 	Object putAIPToLongTermStorage(String identifier,String originalName, Date createddate, int object_state) throws IOException{
 		return putAIPToLongTermStorage(identifier, originalName, createddate, object_state, null, null);
 	}
 	
-
-
 
 	/**
 	 * @throws IOException 
@@ -493,9 +474,9 @@ public class AcceptanceTestHelper {
 		if (createddate==null) createddate = new Date();
 		String urn =   URN_NBN_DE_DANRW+identifier;
 		gridFacade.put(Path.makeFile(TC.TEST_ROOT_AT,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR), 
-				new RelativePath(C.TEST_USER_SHORT_NAME,identifier,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR).toString(), sp, null);
+				new RelativePath(testContractor.getUsername(),identifier,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR).toString(), sp, null);
 		int i = 0;
-		while (!gridFacade.storagePolicyAchieved(new RelativePath(C.TEST_USER_SHORT_NAME,identifier,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR).toString(), sp, null, null)) {
+		while (!gridFacade.storagePolicyAchieved(new RelativePath(testContractor.getUsername(),identifier,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR).toString(), sp, null, null)) {
 			try {
 				Thread.sleep(timeout);
 			} catch (InterruptedException e) {} // no problem
@@ -511,8 +492,8 @@ public class AcceptanceTestHelper {
 		object.setIdentifier(identifier);
 		object.setObject_state(object_state);
 		object.setUrn(urn);
-		object.setDate_created(String.valueOf(createddate.getTime()));
-		object.setDate_modified(String.valueOf(createddate.getTime()));
+		object.setCreatedAt(createddate);
+		object.setModifiedAt(createddate);
 		object.setLast_checked(createddate);
 		object.setOrig_name(originalName);
 		Package pkg = new Package();
@@ -539,9 +520,10 @@ public class AcceptanceTestHelper {
 
 	
 	void createJob(String origName,String jobStatus) {
-		createJob(origName, jobStatus,String.valueOf(new Date().getTime()/1000L));
+		createJob(origName, jobStatus, new Date());
 	}
-	void createJob(String origName,String jobStatus, String createDate) {
+	
+	void createJob(String origName,String jobStatus, Date createdAt) {
 		Object o = getObject(origName);
 		
 		Session session = HibernateUtil.openSession();
@@ -552,8 +534,8 @@ public class AcceptanceTestHelper {
 		Job j = new Job();
 		j.setResponsibleNodeName(node.getName());
 		j.setObject(o);
-		j.setDate_created(createDate);
-		j.setDate_modified(createDate);
+		j.setCreatedAt(createdAt);
+		j.setModifiedAt(createdAt);
 		j.setStatus(jobStatus);
 	
 		session.save(j);
@@ -562,9 +544,6 @@ public class AcceptanceTestHelper {
 		session.close();
 	}
 
-	
-
-
 	private boolean isInErrorState(Job job){
 		if (job.getStatus().endsWith(C.WORKFLOW_STATUS_DIGIT_ERROR_BAD_ROLLBACK) || 
 				job.getStatus().endsWith(C.WORKFLOW_STATUS_DIGIT_ERROR_PROPERLY_HANDLED)
@@ -572,25 +551,27 @@ public class AcceptanceTestHelper {
 		return false;
 	}
 
-
-
 	public void setLogPath(String newLogPath) {
 		logPath=newLogPath;
 	}
+
+
+	public void setTIMEOUT(int tIMEOUT) {
+		TIMEOUT = tIMEOUT;
+	}
+
 
 
 	public void setFedoraUrlTemplate(String fedoraUrlTemplate) {
 		this.fedoraUrlTemplate = fedoraUrlTemplate;
 	}
 
-
-
 	public File loadDefaultMetsFileFromPip(String identifier) throws IOException {
 		return loadFileFromPip(identifier, C.CB_PACKAGETYPE_METS + C.FILE_EXTENSION_XML);
 	}
 
 	public File loadFileFromPip(String identifier, String fileName) throws IOException {
-		Path contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(), WorkArea.PIPS, WorkArea.PUBLIC,	C.TEST_USER_SHORT_NAME);
+		Path contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(), WorkArea.PIPS, WorkArea.PUBLIC,	testContractor.getUsername());
 
 		Path targetDir = Path.make(contractorsPipsPublic, identifier);
 		Path filePath = Path.make(targetDir, fileName);
@@ -598,8 +579,8 @@ public class AcceptanceTestHelper {
 
 		if (localNode.getName().equals(preservationSystem.getPresServer())) {
 			if (!tmpFile.exists()) {
-				//throw new IOException("File: " + tmpFile + "doesnt exists");
-				System.out.println("File: " + tmpFile + "doesnt exists");
+				//throw new IOException("File: " + tmpFile + " doesn't exists");
+				System.out.println("File: " + tmpFile + " doesn't exists");
 			}
 		} else {
 			if (tmpFile.exists()) {

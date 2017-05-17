@@ -15,6 +15,7 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -30,10 +31,8 @@ import de.uzk.hki.da.utils.XMLUtils;
 public class ATMetadataTitleAndRoleTerm extends AcceptanceTest {
 	
 	private static final String sip = "ATMetadataRoleTermNonSortTitle";
-	private static final String urn2 = "urn+nbn+de+danrw+de2189-89532c28-d082-4c38-8783-21b9019225988";
-	private static final String urn3 = "urn+nbn+de+danrw+de2189-0c6ab310-f2f6-4f66-80e2-a138bd4db6938";
 	
-	Path contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
+	Path contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, testContractor.getUsername());
 	private static Object object1;
 	
 	private  String PORTAL_CI_TEST =getTestIndex();
@@ -54,29 +53,26 @@ public class ATMetadataTitleAndRoleTerm extends AcceptanceTest {
 	public static void tearDownAfterClass() throws IOException{
 	}
 	
+	@Test
+	public void testDDBExclusion() throws IOException, JDOMException {
+		assertTrue("ddbExcluded have to be true",ath.getObject(sip).ddbExcluded());
+	}
 
 	@Test
 	public void testPIPEdm1() throws IOException, JDOMException {
 
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		File edmFile1 = Path.make(contractorsPipsPublic, object1.getIdentifier(), "EDM.xml").toFile();
-		Document edmDoc1 = builder.build
-				(new FileReader(edmFile1));
+		
+		File edmFile1 = ath.loadFileFromPip(object1.getIdentifier(), "EDM.xml");
+
 		for(int i=0;i<30 && !edmFile1.exists();i++){
 			FolderUtils.waitToCompleteNFSAwareFileOperation();
 			System.out.println("Target("+edmFile1+") file is not created yet, wait: "+i);
 		}
-		assertTrue(edmFile1.exists());
-		
-//		File edmFile2 = Path.make(contractorsPipsPublic, object2.getIdentifier(), "EDM.xml").toFile();
-//		Document edmDoc2 = builder.build
-//				(new FileReader(edmFile2));
-//		
-//		File edmFile3 = Path.make(contractorsPipsPublic, object3.getIdentifier(), "EDM.xml").toFile();
-//		Document edmDoc3 = builder.build
-//				(new FileReader(edmFile3));		
+		assertTrue(edmFile1.exists());	
+		Document edmDoc1 = builder.build
+				(new FileReader(edmFile1));
 	
-		assertTrue(edmFile1.exists());
 		@SuppressWarnings("unchecked")
 		List<Element> providetCho = edmDoc1.getRootElement().getChildren("ProvidedCHO", C.EDM_NS);
 		for(Element pcho : providetCho) {
@@ -139,7 +135,5 @@ public class ATMetadataTitleAndRoleTerm extends AcceptanceTest {
 		JSONArray jsonTitelArray=jsonObj.getJSONArray("dc:title");
 		assertEquals(jsonTitelArray.length(),1);
 		assertEquals(jsonTitelArray.getString(0),"Brief an Mutter, Möhn, Schwester, Robert Etmund, Sophie Trinchen [Katharina Bauchmüller] etc.");
-
-
 	}
 }

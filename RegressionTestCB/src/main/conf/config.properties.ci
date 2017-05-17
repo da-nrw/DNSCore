@@ -45,3 +45,9 @@ checksumWorker.endTime=3
 
 timeBasedPublicationWorker.pollForCi=true
 mailWorker.smtpHost=mail.lvrintern.lvr.de
+
+
+regression.fedoraUrlTemplateForDownload=http://localhost:8080/fedora/objects/collection-open:IDENTIFIER/datastreams/FILENAME/content
+regression.archiveStorage=/ci/archiveStorage/aip/TEST/
+regression.maxWaitTime=10
+regression.TestCSN=TEST

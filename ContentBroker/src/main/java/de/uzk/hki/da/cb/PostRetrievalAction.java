@@ -39,7 +39,7 @@ import de.uzk.hki.da.utils.StringUtilities;
 public class PostRetrievalAction extends AbstractAction {
 
 	private static final String OUTGOING = "outgoing";
-	public static int PAUSE_DELAY = 20000;
+	public static int PAUSE_DELAY = 20000; //
 	
 	public PostRetrievalAction(){
 		SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;
@@ -65,7 +65,6 @@ public class PostRetrievalAction extends AbstractAction {
 	
 	@Override
 	public boolean implementation() {
-		logger.debug("PostRetrievalAction called! ");
 		Path outgoingFolder = Path.make(n.getUserAreaRootPath(), o.getContractor().getShort_name(), OUTGOING);
 		File toDel = Path.makeFile(outgoingFolder, o.getIdentifier() + C.FILE_EXTENSION_TAR);
 		if (!toDel.exists()) {// For the use case the File has been
@@ -73,7 +72,7 @@ public class PostRetrievalAction extends AbstractAction {
 			logger.debug("Retrieval is already deleted by other software, modify Object status");
 			modifyObject(o);
 		} else {
-			if (System.currentTimeMillis() / 1000 <= (Long.parseLong(j.getDate_created()) + (86400L * n.getRetrieval_remain_time()))) {
+			if (System.currentTimeMillis() <= (j.getCreatedAt().getTime() + (86400000L * n.getRetrieval_remain_time()))) {
 				delay();
 				logger.debug("CB not yet able to delete that item yet!");
 				return false;
@@ -98,7 +97,7 @@ public class PostRetrievalAction extends AbstractAction {
 	}
 	private void modifyObject(Object obj) {
 		o.setObject_state(100);
-		o.setDate_modified(String.valueOf(new Date().getTime()));
+		o.setModifiedAt(new Date());
 	}
 
 	@Override

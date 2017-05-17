@@ -19,7 +19,6 @@
 
 package de.uzk.hki.da.cb;
 
-import static de.uzk.hki.da.cb.ArchiveReplicationCheckAction.clearNonpersistentObjectProperties;
 import static de.uzk.hki.da.cb.BuildAIPAction.deleteBagitFiles;
 import static de.uzk.hki.da.cb.RestructureAction.makeRepOfSIPContent;
 import static de.uzk.hki.da.cb.RestructureAction.revertToSIPContent;
