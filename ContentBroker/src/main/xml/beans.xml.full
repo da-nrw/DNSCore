@@ -20,8 +20,8 @@
 	<import resource="classpath*:META-INF/beans-infrastructure.irodsdistributedconversionadapter.xml"/>
 
 	<import resource="classpath*:META-INF/beans-workflow.presentation.xml"/>
-	<import resource="classpath*:META-INF/beans-workflow.ingest.xml"/>
 	<import resource="classpath*:META-INF/beans-workflow.ingestnobagit.xml"/>
+	<import resource="classpath*:META-INF/beans-workflow.ingest.xml"/>
 	<import resource="classpath*:META-INF/beans-workflow.retrieval.xml"/>
 	<import resource="classpath*:META-INF/beans-workflow.pipgen.xml"/>
 	<import resource="classpath*:META-INF/beans-workflow.other.xml"/>
@@ -63,6 +63,7 @@
 		<entry key="IngestUnpackAction" value="3" />
 		<entry key="IngestUnpackNoBagitAction" value="1" /> <!-- Workaround DANRW-1352 -->
 		<entry key="IngestDeltaOnURNAction" value="3" />
+		<entry key="IngestDeltaOnURNActionNoBagit" value="3" /><!-- Workaround DANRW-1352 -->
 		<entry key="IngestConvertAction" value="3" />
 		<entry key="IngestScanAction" value="3" />
 		<entry key="IngestCreatePremisAction" value="3" />
@@ -118,6 +119,7 @@
 		<value>IngestValidateMetadataAction</value>
 		<value>IngestRestructureAction</value>
 		<value>IngestDeltaOnURNAction</value>
+		<value>IngestDeltaOnURNActionNoBagit</value>
 		<value>IngestUnpackAction</value>
 		<value>IngestUnpackNoBagitAction</value>
 		<value>AuditAction</value>

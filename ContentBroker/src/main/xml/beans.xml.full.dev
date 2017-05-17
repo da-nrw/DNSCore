@@ -14,8 +14,8 @@
 	<import resource="classpath*:META-INF/beans-infrastructure.common.xml"/>
 
 	<import resource="classpath*:META-INF/beans-workflow.presentation.xml"/>
-	<import resource="classpath*:META-INF/beans-workflow.ingest.xml"/>
 	<import resource="classpath*:META-INF/beans-workflow.ingestnobagit.xml"/>
+	<import resource="classpath*:META-INF/beans-workflow.ingest.xml"/>
 	<import resource="classpath*:META-INF/beans-workflow.retrieval.xml"/>
 	<import resource="classpath*:META-INF/beans-workflow.pipgen.xml"/>
 	<import resource="classpath*:META-INF/beans-workflow.other.xml"/>
@@ -64,6 +64,7 @@
 		<entry key="IngestShortenFileNamesAction" value="3" />
 		<entry key="IngestUpdateMetadataAction" value="3" />
 		<entry key="IngestArchiveReplicationAction" value="3" />
+		<entry key="IngestDeltaOnURNActionNoBagit" value="3" /><!-- Workaround DANRW-1352 -->
 		<entry key="IngestArchiveReplicationCheckAction" value="3" />
 		<entry key="RetrievalAction" value="3" />			
 		<entry key="RetrievalObjectToWorkAreaAction" value="3" />			
@@ -108,6 +109,7 @@
 		<value>IngestValidateMetadataAction</value>
 		<value>IngestRestructureAction</value>
 		<value>IngestDeltaOnURNAction</value>
+		<value>IngestDeltaOnURNActionNoBagit</value>
 		<value>IngestUnpackAction</value>
 		<value>IngestUnpackNoBagitAction</value>
 		<value>AuditAction</value>

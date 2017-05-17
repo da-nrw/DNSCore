@@ -17,11 +17,11 @@
 		<property name="ingestGateNoBagit" ref="ingestGate" />
 	</bean>
 	
-	<bean id="IngestDeltaOnURNAction" class="de.uzk.hki.da.cb.DeltaOnURNAction"
+	<bean id="IngestDeltaOnURNActionNoBagit" class="de.uzk.hki.da.cb.DeltaOnURNAction"
 		scope="prototype">
 		<property name="startStatus" value="1120" />
 		<property name="endStatus" value="130" />
-		<property name="name" value="IngestDeltaOnURNAction" />
+		<property name="name" value="IngestDeltaOnURNActionNoBagit" />
 		<property name="fileFormatFacade" ref="fileFormatFacade" />
 	</bean>
 	<bean id="IngestRestructureAction" class="de.uzk.hki.da.cb.RestructureAction"
