@@ -38,6 +38,7 @@ import javax.swing.JOptionPane;
 import org.apache.commons.io.FileExistsException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import de.uzk.hki.da.metadata.ContractRights;
@@ -1069,12 +1070,9 @@ public class SIPFactory {
 		 */
 		private boolean duplicateFileNames(File f,
 				HashMap<File, String> tmpFolderListWithNames) {
-			Boolean dfn = false;
 			HashMap<String, List<File>> duplicateFileNames = getFilesWithDuplicateFileNames(f);
 			if (!duplicateFileNames.isEmpty()) {
 				if (!allowDuplicateFilename) {
-			 
-					dfn = true;
 					String msg = "Aus dem Verzeichnis "
 							+ f
 							+ " wird kein SIP erstellt. \nDer Ordner enthält gleichnamige Dateien: \n"
@@ -1082,14 +1080,13 @@ public class SIPFactory {
 					messageWriter.showLongErrorMessage(msg);
 					tmpFolderListWithNames.remove(f);
 					returnCode = Feedback.DUPLICATE_FILENAMES;
+					return true;
 				} else {
 					// DANRW-1515: erlauben von doppelten Dateiname für unterschiedliche Formate (z.B. xml und Image)
 					Iterator<String> it = duplicateFileNames.keySet().iterator();
-//					String keyOld = "";
-					List<String> oldKeys = new ArrayList<String>();
 					while (it.hasNext()) {
+						List<String> oldKeysExtension = new ArrayList<String>();
 						String key = (it.next());
-						logger.debug(key + " --> " +  duplicateFileNames.get(key));
 						List<File> listDupFileNames = duplicateFileNames.get(key);
 						for (int i = 0; listDupFileNames.size() > i; i++) {
 							String extOfFile = FilenameUtils.getExtension(listDupFileNames.get(i)
@@ -1099,30 +1096,27 @@ public class SIPFactory {
 							while(itExtensions.hasNext()) {
 								String keyExtensions = (itExtensions.next());
 								if (getFileExtensionsList().get(keyExtensions).contains(extOfFile)) {
-									if (oldKeys.contains(keyExtensions)) {
-										dfn = true;
+									if (oldKeysExtension.contains(keyExtensions)) {
+										String msg = "Aus dem Verzeichnis "
+												+ f
+												+ " wird kein SIP erstellt. \nDer Ordner enthält gleichnamige Dateien: \n"
+												+  duplicateFileNames.get(key);
+										messageWriter.showLongErrorMessage(msg);
+										tmpFolderListWithNames.remove(f);
+										returnCode = Feedback.DUPLICATE_FILENAMES;
+										return true;
 									} else {
-										oldKeys.add(keyExtensions);
+										oldKeysExtension.add(keyExtensions);
 										break;
 									}
 								}
 							}
 						}
-						if (dfn) {
-							String msg = "Aus dem Verzeichnis "
-									+ f
-									+ " wird kein SIP erstellt. \nDer Ordner enthält gleichnamige Dateien: \n"
-									+  duplicateFileNames.get(key);
-							messageWriter.showLongErrorMessage(msg);
-							tmpFolderListWithNames.remove(f);
-							returnCode = Feedback.DUPLICATE_FILENAMES;
-							break;
-						}
 					}
 					
 				}
 			}
-			return dfn;
+			return false;
 		}
 
 		private HashMap<String, List<File>> getFilesWithDuplicateFileNames(
