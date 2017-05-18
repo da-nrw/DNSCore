@@ -38,7 +38,6 @@ import javax.swing.JOptionPane;
 import org.apache.commons.io.FileExistsException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import de.uzk.hki.da.metadata.ContractRights;
@@ -90,7 +89,8 @@ public class SIPFactory {
 	
 	// DANRW-1515: Extension for allowDuplicateFilename
 	private boolean allowDuplicateFilename = false;
-
+	private boolean checkFileExtensionOn = false;
+	
 	private List<String> forbiddenFileExtensions = null;
 
 	private File listCreationTempFolder = null;
@@ -798,13 +798,21 @@ public class SIPFactory {
 	public void setDestDir(String destDir) {
 		this.destDir = destDir;
 	}
-
+	// DANRW-1515
 	public boolean isAllowDuplicateFilename() {
 		return allowDuplicateFilename;
 	}
 
 	public void setAllowDuplicateFilename(boolean allowDuplicateFilename) {
 		this.allowDuplicateFilename = allowDuplicateFilename;
+	}
+	
+	public boolean isCheckFileExtensionOn() {
+		return checkFileExtensionOn;
+	}
+
+	public void setCheckFileExtensionOn(boolean checkFileExtensionOn) {
+		this.checkFileExtensionOn = checkFileExtensionOn;
 	}
 
 	public FileExtensions getFileExtensions() {
@@ -815,7 +823,6 @@ public class SIPFactory {
 		this.fileExtensions = fileExtensions;
 	}
 	
-	// DANRW-1515
 	public HashMap<String, List<String>> getFileExtensionsList() {
 		return fileExtensionsList;
 	}
@@ -823,6 +830,8 @@ public class SIPFactory {
 	public void setFileExtensionsList(HashMap<String, List<String>> hashMap) {
 		this.fileExtensionsList = hashMap;
 	}
+ 
+	// End of DANRW-1515
 
 	/**
 	 * The SIP building procedure is run in its own thread to prevent GUI
@@ -1091,29 +1100,38 @@ public class SIPFactory {
 						for (int i = 0; listDupFileNames.size() > i; i++) {
 							String extOfFile = FilenameUtils.getExtension(listDupFileNames.get(i)
 									.getAbsolutePath());
-							
-							Iterator<String> itExtensions = getFileExtensionsList().keySet().iterator();
-							while(itExtensions.hasNext()) {
-								String keyExtensions = (itExtensions.next());
-								if (getFileExtensionsList().get(keyExtensions).contains(extOfFile)) {
-									if (oldKeysExtension.contains(keyExtensions)) {
-										String msg = "Aus dem Verzeichnis "
-												+ f
-												+ " wird kein SIP erstellt. \nDer Ordner enthält gleichnamige Dateien: \n"
-												+  duplicateFileNames.get(key);
-										messageWriter.showLongErrorMessage(msg);
-										tmpFolderListWithNames.remove(f);
-										returnCode = Feedback.DUPLICATE_FILENAMES;
-										return true;
-									} else {
-										oldKeysExtension.add(keyExtensions);
-										break;
+							if (checkFileExtensionOn) {
+								Iterator<String> itExtensions = getFileExtensionsList().keySet().iterator();
+								while(itExtensions.hasNext()) {
+									String keyExtensions = (itExtensions.next());
+									if (getFileExtensionsList().get(keyExtensions).contains(extOfFile)) {
+										if (oldKeysExtension.contains(keyExtensions)) {
+											String msg = "Aus dem Verzeichnis "
+													+ f
+													+ " wird kein SIP erstellt. \nDer Ordner enthält gleichnamige Dateien: \n"
+													+  duplicateFileNames.get(key);
+											messageWriter.showLongErrorMessage(msg);
+											tmpFolderListWithNames.remove(f);
+											returnCode = Feedback.DUPLICATE_FILENAMES;
+											return true;
+										} else {
+											oldKeysExtension.add(keyExtensions);
+											break;
+										}
 									}
 								}
+							} else {
+								String msg = "Aus dem Verzeichnis "
+										+ f
+										+ " wird kein SIP erstellt. \nDer Ordner enthält gleichnamige Dateien: \n"
+										+  duplicateFileNames.get(key);
+								messageWriter.showLongErrorMessage(msg);
+								tmpFolderListWithNames.remove(f);
+								returnCode = Feedback.DUPLICATE_FILENAMES;
+								return true;
 							}
 						}
 					}
-					
 				}
 			}
 			return false;
