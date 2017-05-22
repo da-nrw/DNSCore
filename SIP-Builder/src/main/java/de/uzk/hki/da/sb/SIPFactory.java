@@ -89,7 +89,7 @@ public class SIPFactory {
 	
 	// DANRW-1515: Extension for allowDuplicateFilename
 	private boolean allowDuplicateFilename = false;
-	private boolean checkFileExtensionOn = false;
+	private boolean checkFileExtensionOff = false;
 	
 	private List<String> forbiddenFileExtensions = null;
 
@@ -807,12 +807,12 @@ public class SIPFactory {
 		this.allowDuplicateFilename = allowDuplicateFilename;
 	}
 	
-	public boolean isCheckFileExtensionOn() {
-		return checkFileExtensionOn;
+	public boolean isCheckFileExtensionOff() {
+		return checkFileExtensionOff;
 	}
 
-	public void setCheckFileExtensionOn(boolean checkFileExtensionOn) {
-		this.checkFileExtensionOn = checkFileExtensionOn;
+	public void setCheckFileExtensionOff(boolean checkFileExtensionOff) {
+		this.checkFileExtensionOff = checkFileExtensionOff;
 	}
 
 	public FileExtensions getFileExtensions() {
@@ -1100,7 +1100,7 @@ public class SIPFactory {
 						for (int i = 0; listDupFileNames.size() > i; i++) {
 							String extOfFile = FilenameUtils.getExtension(listDupFileNames.get(i)
 									.getAbsolutePath());
-							if (checkFileExtensionOn) {
+							if (!checkFileExtensionOff) {
 								Iterator<String> itExtensions = getFileExtensionsList().keySet().iterator();
 								while(itExtensions.hasNext()) {
 									String keyExtensions = (itExtensions.next());
@@ -1120,15 +1120,15 @@ public class SIPFactory {
 										}
 									}
 								}
-							} else {
-								String msg = "Aus dem Verzeichnis "
-										+ f
-										+ " wird kein SIP erstellt. \nDer Ordner enthält gleichnamige Dateien: \n"
-										+  duplicateFileNames.get(key);
-								messageWriter.showLongErrorMessage(msg);
-								tmpFolderListWithNames.remove(f);
-								returnCode = Feedback.DUPLICATE_FILENAMES;
-								return true;
+//							} else {
+//								String msg = "Aus dem Verzeichnis "
+//										+ f
+//										+ " wird kein SIP erstellt. \nDer Ordner enthält gleichnamige Dateien: \n"
+//										+  duplicateFileNames.get(key);
+//								messageWriter.showLongErrorMessage(msg);
+//								tmpFolderListWithNames.remove(f);
+//								returnCode = Feedback.DUPLICATE_FILENAMES;
+//								return true;
 							}
 						}
 					}

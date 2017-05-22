@@ -122,7 +122,7 @@ public class Cli {
 		boolean contractRightsLoaded = false;
 		// DANRW-1515
 		boolean allowDuplicateFilename = false; 
-		boolean checkFileExtensionOn = false;
+		boolean checkFileExtensionOff = false;
 		
 		CliMessageWriter messageWriter = new CliMessageWriter();
 		
@@ -258,14 +258,14 @@ public class Cli {
     			allowDuplicateFilename = true;
     			continue;
     		}
-    		if (arg.equals("-checkFileExtensionOn")) {
-    			sipFactory.setCheckFileExtensionOn(true);
-    			checkFileExtensionOn = true;
+    		if (arg.equals("-checkFileExtensionOff")) {
+    			sipFactory.setCheckFileExtensionOff(true);
+    			checkFileExtensionOff = true;
     			continue;
     		}
     		
-    		if (!allowDuplicateFilename && checkFileExtensionOn) {
-    			System.out.println("-checkFileExtensionOn ist nicht ohne den Parameter -allowDuplicateFilename gültig. Starten Sie den SipBuilder " 
+    		if (!allowDuplicateFilename && checkFileExtensionOff) {
+    			System.out.println("-checkFileExtensionOff ist nicht ohne den Parameter -allowDuplicateFilename gültig. Starten Sie den SipBuilder " 
     					+ "mit dem Parameter -help, um eine Liste aller möglichen Parameter anzuzeigen.");
     			return Feedback.INVALID_PARAMETER_COMBINATION;
     		}
@@ -300,7 +300,7 @@ public class Cli {
     			return Feedback.STANDARD_RIGHTS_FILE_READ_ERROR;
     		}
     	// DANRW-1515
-    	if (allowDuplicateFilename && checkFileExtensionOn) {
+    	if (allowDuplicateFilename && !checkFileExtensionOff) {
 			try {
 				sipFactory.setFileExtensionsList(sipFactory.getFileExtensions().loadFileExtensionsFromFile(
 						new File(confFolderPath + File.separator + "fileExtensions.xml")));
