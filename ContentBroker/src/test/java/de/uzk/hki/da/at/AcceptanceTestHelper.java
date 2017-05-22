@@ -69,7 +69,7 @@ import de.uzk.hki.da.utils.StringUtilities;
 public class AcceptanceTestHelper {
 	public static final String TEST_RESOURCES_PATH_PROPERTY="WorkaroundToPathTestCaseFilesPathToJUNITTests"; //Name for a system property to pass the testfiles directory
 	public static final String NO_DIRTY_CLEANUP_AFTER_EACH_TEST_PROPERTY="WorkaroundNoCleanupCompleteDB"; //Name for a system property to avoid cleanups, because they cleanup all data, not only testdata
-	
+
 	private static final String MSG_READY = "ready";
 	private static final String MSG_ERROR_WHEN_TIMEOUT_REACHED = "waited to long. test considered failed";
 	private static final String TEMP_FOLDER = "/tmp/";
@@ -474,9 +474,9 @@ public class AcceptanceTestHelper {
 		if (createddate==null) createddate = new Date();
 		String urn =   URN_NBN_DE_DANRW+identifier;
 		gridFacade.put(Path.makeFile(TC.TEST_ROOT_AT,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR), 
-				new RelativePath(C.TEST_USER_SHORT_NAME,identifier,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR).toString(), sp, null);
+				new RelativePath(testContractor.getUsername(),identifier,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR).toString(), sp, null);
 		int i = 0;
-		while (!gridFacade.storagePolicyAchieved(new RelativePath(C.TEST_USER_SHORT_NAME,identifier,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR).toString(), sp, null, null)) {
+		while (!gridFacade.storagePolicyAchieved(new RelativePath(testContractor.getUsername(),identifier,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR).toString(), sp, null, null)) {
 			try {
 				Thread.sleep(timeout);
 			} catch (InterruptedException e) {} // no problem
@@ -571,7 +571,7 @@ public class AcceptanceTestHelper {
 	}
 
 	public File loadFileFromPip(String identifier, String fileName) throws IOException {
-		Path contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(), WorkArea.PIPS, WorkArea.PUBLIC,	C.TEST_USER_SHORT_NAME);
+		Path contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(), WorkArea.PIPS, WorkArea.PUBLIC,	testContractor.getUsername());
 
 		Path targetDir = Path.make(contractorsPipsPublic, identifier);
 		Path filePath = Path.make(targetDir, fileName);

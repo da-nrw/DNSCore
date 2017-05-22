@@ -25,17 +25,21 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
+import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Job;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.SystemEvent;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
+import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.FolderUtils;
 
 
@@ -145,8 +149,11 @@ public class RetrievePackagesHelper {
 		File targetFile = new File(targetDir.getAbsolutePath() +"/"+object.getIdentifier() + ".pack_" + pkg.getName() + ".tar");
 
 		logger.debug("Retrieving from lza to temp resource: "+data_name);
-		grid.get(targetFile,
-				data_name);
+		if(wa.getNode().getName().equals(object.getInitial_node())){
+			grid.get(targetFile,data_name);
+		}else{ //Package have to be retrieved from federated zone
+			grid.getFederated(getInitialNodeByObject(object).getIdentifier(),targetFile,data_name);
+		}
 		
 		return targetFile;
 	}
@@ -269,7 +276,36 @@ public class RetrievePackagesHelper {
 		}
 	}
 
-	
+
+	private Node getInitialNodeByObject(Object obj) {
+		String name=obj.getInitial_node();
+		Session session = HibernateUtil.openSession();
+		List<Node> node=null;
+		try{				
+			node = session
+					.createQuery("from Node n where n.name = ?1")
+					.setParameter("1", name).setCacheable(false).list();
+
+			if ((node == null) || (node.isEmpty())){
+				logger.trace("No nodes found for name: " + name);
+				session.close();
+				return null;
+			}else if (node.size()!=1 ){
+				logger.trace("More as 1 node found for name: " + name);
+				session.close();
+				return null;
+			}
+				
+			session.close();
+			
+		}catch(Exception e){
+			session.close();
+			logger.error("Caught error in getNodeByName name: " + name + " " + e.getMessage(),e);
+			
+			throw new RuntimeException(e.getMessage(), e);
+		}
+		return node.get(0);
+}
 	
 	
 	private void removeBagitFilesAndPremis(String pathToBagRoot){

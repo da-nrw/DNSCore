@@ -95,7 +95,8 @@ public class MailContents {
 		checkObject(obj);
 		
 		String subject = "[" + PRESERVATION_SYSTEM_NAME + "] Entscheidung erforderlich für "+obj.getIdentifier();
-		String msg = "Bitte treffen Sie eine Entscheidung in der DAWeb-Maske \"Entscheidungsübersicht\" für das Paket mit dem Identifier " + obj.getIdentifier();
+		// DANRW-1523: Mailtext korrogiert
+		String msg = "Bitte treffen Sie eine Entscheidung in der DAWeb-Maske \"Entscheidungsübersicht\" zu dem Paket mit Identifier " + obj.getIdentifier();
 		
 		try {
 			this.queueMail(preservationSystem.getAdmin(), obj.getContractor(), subject, msg);
