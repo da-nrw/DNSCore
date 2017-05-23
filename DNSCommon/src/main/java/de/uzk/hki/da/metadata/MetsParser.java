@@ -34,6 +34,7 @@ public class MetsParser{
 	private final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 	private final List<Element> fileElements;
 	public static final String titleSparator=" : ";
+	public static final String dateIssuedCreatedCondition="[Electronic ed.]";
 
 	public MetsParser(Document doc) throws JDOMException {
 		this.metsDoc = doc;
@@ -74,19 +75,20 @@ public class MetsParser{
 		return urn;
 	}
 	
-	private List<String> getPhysicalDescriptionFromDmdId(String dmdId) {
+	private List<String> getPhysicalDescriptionFromDmdId(String dmdID,String objectId) {
 		List<String> extent = new ArrayList<String>();
+		String logicalId = dmdID.replace(objectId+"-", "");
 		try {
 			@SuppressWarnings("unchecked")
 			List<Element> dmdSecs = metsDoc.getRootElement().getChildren("dmdSec", METS_NS);
 			for(Element dmdSec : dmdSecs) {
-				if(dmdSec.getAttributeValue("ID").equals(dmdId)) {
+				if(dmdSec.getAttributeValue("ID").equals(logicalId)) {
 					Element rootDmdSec = dmdSec;
 					@SuppressWarnings("unchecked")
-					List<Element> elements = getModsXmlData(rootDmdSec).getChildren();
+					List<Element> elements = getModsXmlData(rootDmdSec).getChildren("physicalDescription",C.MODS_NS);
 					for (Element e : elements) {
-						if(e.getName().equals("physicalDescription") && !e.getChildren("extent", METS_NS).isEmpty()) {
-							List<Element> childElements=e.getChildren("extent", METS_NS);
+						if(e.getName().equals("physicalDescription") && !e.getChildren("extent", C.MODS_NS).isEmpty()) {
+							List<Element> childElements=e.getChildren("extent", C.MODS_NS);
 							for(Element eChild:childElements){
 								if(!eChild.getValue().trim().isEmpty())
 									extent.add(eChild.getValue());
@@ -96,7 +98,7 @@ public class MetsParser{
 				}
 			}
 		} catch (Exception e) {
-			logger.error("Unable to find urn.");
+			logger.error("Unable to process xml element: "+e.getMessage());
 		}
 		return extent;
 		}
@@ -397,9 +399,11 @@ public class MetsParser{
 	private String getDateIssued(Element originInfo) {
 		String date = "";
 			try {
-				date = originInfo.getChild("dateIssued", C.MODS_NS).getValue(); 
+				Element edition=originInfo.getChild("edition", C.MODS_NS); 
+				if(edition==null||!edition.getValue().equals(dateIssuedCreatedCondition))
+					date = originInfo.getChild("dateIssued", C.MODS_NS).getValue(); 
 			} catch (Exception e) {
-				logger.debug("Element dateIssued does not exist!");
+				logger.debug("Element dateIssued does not exist! : "+e.toString());
 			}
 		return date;
 	}
@@ -407,9 +411,11 @@ public class MetsParser{
 	private String getDateCreated(Element originInfo) {
 		String date = "";
 			try {
-				date = originInfo.getChild("dateCreated", C.MODS_NS).getValue(); 
+				Element edition=originInfo.getChild("edition", C.MODS_NS); 
+				if(edition!=null&&edition.getValue().equals(dateIssuedCreatedCondition))
+					date = originInfo.getChild("dateIssued", C.MODS_NS).getValue(); 
 			} catch (Exception e) {
-				logger.debug("Element dateIssued does not exist!");
+				logger.debug("Element dateIssued does not exist! : "+e.toString());
 			}
 		return date;
 	}
@@ -713,7 +719,7 @@ public class MetsParser{
 			dmdSecInfo.put(C.EDM_PUBLISHER, publishers);
 			
 			
-			List<String> allPhysicalDescr = getPhysicalDescriptionFromDmdId(id);
+			List<String> allPhysicalDescr = getPhysicalDescriptionFromDmdId(id, ObjectId);
 			if (!allPhysicalDescr.isEmpty()) {
 				dmdSecInfo.put(C.EDM_EXTENT, allPhysicalDescr);
 			}
