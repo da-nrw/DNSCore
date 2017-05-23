@@ -133,7 +133,8 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 		for(Element pcho : providetCho) {
 			if(pcho.getChild("title", C.DC_NS).getValue().equals("nonSortText"+" "+"Text// mahels///Titel"+" : "+"Untertitel")) {
 				testProvidetChoExists = true;
-				assertTrue(pcho.getChild("date", C.DC_NS).getValue().equals("1523"));
+				assertTrue(pcho.getChild("issued", C.DCTERMS_NS).getValue().equals("1523"));
+				assertTrue(pcho.getChild("created", C.DCTERMS_NS).getValue().equals("2011"));
 				assertTrue(pcho.getChild("hasType", C.EDM_NS).getValue().equals("is root element"));
 			}
 			@SuppressWarnings("unchecked")
