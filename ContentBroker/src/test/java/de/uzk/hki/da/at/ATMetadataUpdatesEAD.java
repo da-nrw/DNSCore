@@ -163,7 +163,7 @@ public class ATMetadataUpdatesEAD extends AcceptanceTest{
 		for(Element pcho : providetCho) {
 			if(pcho.getChild("title", C.DC_NS).getValue().equals("Schriftwechsel Holländisch Limburg")) {
 				testProvidetChoExists = true;
-				assertTrue(pcho.getChild("date", C.DC_NS).getValue().equals("1938-01-01/1939-12-31"));
+				assertTrue(pcho.getChild("created", C.DCTERMS_NS).getValue().equals("1938-01-01/1939-12-31"));
 				testId = pcho.getAttributeValue("about", C.RDF_NS);
 			}
 		}
@@ -259,7 +259,7 @@ public class ATMetadataUpdatesEAD extends AcceptanceTest{
 //			testIndex
 		String cho = "/cho/";
 		String ID = testId.substring(testId.lastIndexOf(cho)+cho.length());
-		assertTrue(metadataIndex.getIndexedMetadata(getTestIndex(), ID).contains("\"dc:date\":[\"1938-01-01/1939-12-31\"]"));
+		assertTrue(metadataIndex.getIndexedMetadata(getTestIndex(), ID).contains("\""+C.EDM_DATE_CREATED+"\":[\"1938-01-01/1939-12-31\"]"));
 		
 		frEdm.close();
 	}

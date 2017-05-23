@@ -181,7 +181,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 	void setNodeInfoAndChildeElements(Element child, HashMap<String, List<String>> nodeInfo, String nextLevel, HashMap<Element, String> childElements, String uniqueID) {
 		if(child.getName().equals("did")) {
 			nodeInfo.put(C.EDM_TITLE, eadParser.getTitle(child));
-			nodeInfo.put(C.EDM_DATE, eadParser.getDate(child));
+			nodeInfo.put(C.EDM_DATE_CREATED, eadParser.getDate(child));
 			nodeInfo.put(C.EDM_IDENTIFIER, eadParser.getUnitIDs(child));
 		} else if(child.getName().equals("daogrp")) {
 			List<String> references = eadParser.getHref(child);

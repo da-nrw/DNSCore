@@ -129,7 +129,8 @@ public class C {
 	public static final String EDM_AGGREGATED_CHO= "edm:aggregatedCHO";
 	public static final String EDM_CONTRIBUTOR = "dc:contributor";
 	public static final String EDM_CREATOR = "dc:creator";
-	public static final String EDM_DATE = "dc:date";
+	public static final String EDM_DATE_ISSUED = "dcterms:issued";
+	public static final String EDM_DATE_CREATED = "dcterms:created";
 	public static final String EDM_PUBLISHER = "dc:publisher";
 	public static final String EDM_IS_PART_OF = "dcterms:isPartOf";
 	public static final String EDM_HAS_PART = "dcterms:hasPart";
@@ -143,6 +144,7 @@ public class C {
 	public static final String EDM_OBJECT = "edm:object";
 	public static final String EDM_PROVIDER = "edm:provider";
 	public static final String EDM_HAS_TYPE = "edm:hasType";
+	public static final String EDM_EXTENT = "dcterms:extent";
 	
 	// Other
 	public static final String LOCAL_NODE_BEAN_NAME = "localNode";
@@ -189,6 +191,8 @@ public class C {
 	public static final String KIND_OF_SIPBUILDING_SINGLE_WITH_TARGET_FOLDER_NAME="Einzelnes SIP mit dem angegebenen Namen aus dem Quellordner erstellen";
 	public static final String KIND_OF_SIPBUILDING_MULTIPLE="SIPs aus Unterordnern des Quellverzeichnisses erstellen";
 	public static final String KIND_OF_SIPBUILDING_NESTED="SIPs aus verzweigter Ordnerstruktur erstellen (nur METS)";
+
+	
 
 
 	
