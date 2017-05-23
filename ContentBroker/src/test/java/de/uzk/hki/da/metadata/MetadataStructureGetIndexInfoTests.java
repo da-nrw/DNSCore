@@ -100,9 +100,9 @@ public class MetadataStructureGetIndexInfoTests {
 
 		assertEquals(content.get(C.EDM_TITLE).get(0), "Chronik der Stadt Hoerde"+" : "+"und der größeren evangelischen Gemeinde in derselben");
 			
-		
+		assertTrue(content.get(C.EDM_EXTENT).get(0).equals("VI, 115 S."));
 		assertTrue(content.get(C.EDM_DATE_ISSUED).contains("1836")
-				&&content.get(C.EDM_DATE_ISSUED).contains("2011"));
+				&&content.get(C.EDM_DATE_CREATED).contains("2011"));
 		
 		assertTrue(content.get(C.EDM_PUBLISHER).contains("Hoerde")
 				&&content.get(C.EDM_PUBLISHER).contains("Universitäts- und Landesbibliothek (Münster)"));
@@ -129,7 +129,7 @@ public class MetadataStructureGetIndexInfoTests {
 		
 		assertTrue(content.get(C.EDM_TITLE).contains("[Atlas von Europa]"));	
 		assertTrue(content.get(C.EDM_DATE_ISSUED).contains("1794")
-				&&content.get(C.EDM_DATE_ISSUED).contains("2012"));
+				&&content.get(C.EDM_DATE_CREATED).contains("2012"));
 		assertTrue(content.get(C.EDM_PUBLISHER).contains("Otto (Wien)")
 				&&content.get(C.EDM_PUBLISHER).contains("Univ.- und Landesbibliothek (Münster)"));
 
