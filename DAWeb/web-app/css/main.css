@@ -227,7 +227,7 @@ img {
 }
 
 .nav a:focus, .nav a:hover {
-	background-color: #7a4274;
+	background-color: #1094d4;
 	color: #ffffff;
 	outline: none;
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
