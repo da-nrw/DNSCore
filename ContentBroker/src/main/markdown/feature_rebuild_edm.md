@@ -9,9 +9,6 @@ wodurch eine neue EDM erzeugt wird (570-Status) und in den ES-Index republiziert
 
 * [ATRecreateEDM](../../test/java/de/uzk/hki/da/at/ATRecreateEDM.java)
 
-## Hintergrund:
-
-Gilt für alle nachfolgenden Szenarien!
 
 #### Testpakete:
 
