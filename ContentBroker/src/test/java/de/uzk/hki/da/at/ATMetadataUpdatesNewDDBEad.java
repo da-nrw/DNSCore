@@ -94,11 +94,11 @@ public class ATMetadataUpdatesNewDDBEad extends AcceptanceTest{
 			Element title = pcho.getChild("title", C.DC_NS);
 			if(title!=null) {
 				if(pcho.getChild("title", C.DC_NS).getValue().equals("Titel 1. Ebene")) {
-					assertTrue(pcho.getChild("date", C.DC_NS).getValue().equals("2000-01-01/2005-12-31"));
+					assertTrue(pcho.getChild("created", C.DCTERMS_NS).getValue().equals("2000-01-01/2005-12-31"));
 					firstID = pcho.getAttributeValue("about", C.RDF_NS);
 					assertTrue(pcho.getChildren("hasPart", C.DCTERMS_NS).size()==1);
 				} else if(pcho.getChild("title", C.DC_NS).getValue().equals("Titel 2. Ebene")) {
-					assertTrue(pcho.getChild("date", C.DC_NS).getValue().equals("2000-01-01/2005-12-31"));
+					assertTrue(pcho.getChild("created", C.DCTERMS_NS).getValue().equals("2000-01-01/2005-12-31"));
 					secondID = pcho.getAttributeValue("about", C.RDF_NS);
 				}
 			}
@@ -138,7 +138,7 @@ public class ATMetadataUpdatesNewDDBEad extends AcceptanceTest{
 //			testIndex
 		String cho = "/cho/";
 		String ID = firstID.substring(firstID.lastIndexOf(cho)+cho.length());
-		assertTrue(metadataIndex.getIndexedMetadata(getTestIndex(), ID).contains("\"dc:date\":[\"2000-01-01/2005-12-31\"]"));
+		assertTrue(metadataIndex.getIndexedMetadata(getTestIndex(), ID).contains("\""+C.EDM_DATE_CREATED+"\":[\"2000-01-01/2005-12-31\"]"));
 		
 		frEdm.close();
 	}
