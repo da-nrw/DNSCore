@@ -20,7 +20,7 @@ then
 	rm -r /ci/storage/IngestArea/TEST
 	mkdir /ci/storage/IngestArea/TEST
 	rm -r /ci/storage/IngestArea/noBagit/TEST
-	mkdir /ci/storage/IngestArea/noBagit/TEST
+	mkdir -p /ci/storage/IngestArea/noBagit/TEST
 	rm -rf /ci/archiveStorage/aip
 	mkdir /ci/archiveStorage/aip
 	src/main/bash/rebuildIndex.sh
