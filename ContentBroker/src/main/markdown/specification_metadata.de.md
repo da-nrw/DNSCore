@@ -15,7 +15,7 @@ Im Rahmen des DNS werden derzeit grundsätzlich vier Metadatenformate akzeptiert
 * EAD + METS/MODS (s. [offizielle EAD Spezifikation](http://www.loc.gov/ead/index.html), oder spezielle [DDB-EAD-Spezifikation](http://www.dlib.indiana.edu/services/metadata/activities/EADManual.pdf))
 * METS (s. [offizielle METS Spezifikation](http://www.loc.gov/standards/mets/))
 * LIDO ([Schema v1.0](http://lido-schema.org/schema/v1.0/lido-v1.0-schema-listing.html))
-* XMP (auslaufend!)
+
 
 Die genannten Formate enthalten jeweils alle vier Arten von Metadaten. 
 Lebensweg der Metadaten im DNSCore
@@ -245,10 +245,6 @@ data/Bilder/bild.tif
 ```
 
 
-### XMP
-
-#### Allgemeine Informationen 
-#### Verarbeitung in DNSCore
 
 
 

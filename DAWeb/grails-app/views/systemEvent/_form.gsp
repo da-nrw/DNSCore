@@ -8,7 +8,7 @@
 	<g:hiddenField name="user.id" value="${ systemEventInstance?.user?.id} " />
 	<g:hiddenField name="node.id" value="${ systemEventInstance?.node?.id} " />
 	
-	<g:select id="node" name="type" from="${['AutomaticCheckIPTCErrorEvent']}" required="" value="${{systemEventInstance?.type}}" class="many-to-one"/>
+	<g:select id="node" name="type" from="${['AutomaticCheckIPTCErrorEvent','RecreateEDMAndReindexEvent']}" required="" value="${{systemEventInstance?.type}}" class="many-to-one"/>
 </div>
 
 

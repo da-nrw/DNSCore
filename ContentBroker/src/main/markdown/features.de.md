@@ -30,3 +30,5 @@
 * Leistungsmerkmal [Publikation Delta](feature_publication_delta.md)
 * Leistungsmerkmal [Automatisierte Abfragen (Status und Retrieval)](feature_automated_queries.md) 
 * Leistungsmerkmal [Archivierung von Multipage-Tiffs](feature_multipagetiff.md) 
+* Leistungsmerkmal [Starten der Neuanlage der EDM-Daten und des ElasticSearch-Suchindexes](feature_rebuild_edm.md) 
+
