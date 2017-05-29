@@ -18,7 +18,7 @@ import de.uzk.hki.da.utils.C;
 public class RecreateEDMAndReindexEvent extends AbstractSystemEvent {
 	
 	static final int OBJECTAMOUNT_FOR_EXECTUION=60;
-	static final int WAIT_TIME=15; //sec
+	static final int WAIT_TIME=10; //sec
 	
 	public RecreateEDMAndReindexEvent(){
 		setkILLATEXIT(true); 
