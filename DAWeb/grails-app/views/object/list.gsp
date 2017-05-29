@@ -41,6 +41,8 @@
 		</script>
 		<div id="filter" style="margin: 0.8em 0 0.3em">
 			<h1><a href="#">Filter
+			<g:if test="${filterOn==1}">
+			 
 				<g:if test="${params.search}"><br>
 		    		<g:if test="${!params.search?.origName.isEmpty()}">
 		    			<span style="margin-right: 25px"><i>Originalname: </i>${params.search?.origName}</span>
@@ -52,14 +54,10 @@
 		    			<span style="margin-right: 25px"><i>Identifier: </i>${params.search?.identifier}</span>
 		    		</g:if> 
 		    		<div>
-						<g:if test="${params.searchDateType != null}">
-			    			<g:if test="${params.searchDateType == 'created'}" >
-			    				<span style="margin-right: 25px"><i>Datumsbereich: </i>Datum erstellt</span>
-			    			</g:if>
-			    			<g:if test="${params.searchDateType == 'modified'}" >
-			    				<span style="margin-right: 25px"><i>Datumsbereich: </i>Datum ändern</span>
-			    			</g:if>
-			    		</g:if>    	
+						<g:if test="${params.searchDateType != null } ">
+	    					<g:if test="${params.searchDateType == 'createdAt'}">Datumsbereich erstellt</g:if>
+	    					<g:if test="${params.searchDateType == 'modifiedAt'}">Datumsbereich geändert</g:if>
+			    		</g:if>   
 			    		<g:if test="${!params.searchDateStart.isEmpty()}">
 			    			<span style="margin-right: 25px"><i>Von Datum: </i>${params.searchDateStart}</span>
 			    		</g:if> 	
@@ -68,6 +66,7 @@
 			    		</g:if> 
 			    	</div>
 		    	</g:if> 
+		   		</g:if>
 			</a></h1>
             <g:form name="searchForm" action="list">
             <g:hiddenField name="filterOn" value="${filterOn}" />
@@ -87,7 +86,7 @@
 	            		<tr>
 	            		<td>Datumsbereich:</td>
 	            		<td>
-	            			<g:select id="datetype" name="searchDateType" from="${['Datum erstellt','Datum geändert']}" keys="${['created','modified']}" value="${params.searchDateType}" noSelection="[null:'Alle auswählen']" />
+	            			<g:select id="datetype" name="searchDateType" from="${['Datum erstellt','Datum geändert']}" keys="${['createdAt','modifiedAt']}" value="${params.searchDateType}" noSelection="[null:'Bitte auswählen']" />
 	            		</td>
 					</tr>
             		<tr>
@@ -154,8 +153,8 @@
 							
 							<g:sortableColumn property="urn" title="${message(code: 'object.urn.label', default: 'Urn')}" />						
 							<g:sortableColumn property="origName" title="${message(code: 'object.origName.label', default: 'Orig Name')}" />
-							<g:sortableColumn property="created" title="${message(code: 'object.created.label', default: 'Erstellt')}" />
-							<g:sortableColumn property="modified" title="${message(code: 'object.modified.label', default: 'Geändert')}" />
+							<g:sortableColumn property="createdAt" title="${message(code: 'object.created.label', default: 'Erstellt')}" />
+							<g:sortableColumn property="modifiedAt" title="${message(code: 'object.modified.label', default: 'Geändert')}" />
 							<th style="text-align: center">Publ.</th>
 							<th style="text-align: center">Anfordern				
 								<g:if test="${!paginate}">

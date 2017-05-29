@@ -13,7 +13,6 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Appender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -22,7 +21,6 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
-
 import de.uzk.hki.da.at.AcceptanceTestHelper;
 import de.uzk.hki.da.utils.FolderUtils;
 
@@ -33,11 +31,19 @@ import de.uzk.hki.da.utils.FolderUtils;
  */
 public class RegressTesterMain {
 	public static final File LOCAL_RESOURCE=new File("./src/test/resources/");
+	static int counterFailedWithhoutStart=0;
 	
 	static RunListener myJUnitListener=new RunListener(){
 		String currentTestClass="";
 		int counter=0;
-
+		long lastTime=0;
+		
+		@Override
+		public void testRunFinished(Result result) throws Exception {
+			System.out.println(">>>>>testRunFinished("+currentTestClass+"):\tRunCount: "+result.getRunCount()+"\t RunTime: "+Math.round(result.getRunTime()/1000.0)+" sec");
+			super.testRunFinished(result);
+		}
+		
 		@Override
 		public void testStarted(Description description) throws Exception {
 			if(!currentTestClass.equals(description.getTestClass().toString())){
@@ -58,6 +64,9 @@ public class RegressTesterMain {
 		@Override
 		public void testFailure(Failure failure) throws Exception {
 			System.out.println(">>>>>TestFailure: "+failure.toString());
+			if(!currentTestClass.equals(failure.getDescription().getTestClass().toString())){
+				counterFailedWithhoutStart++;
+			}
 			super.testFailure(failure);
 		}
 	};
@@ -80,7 +89,8 @@ public class RegressTesterMain {
 		Option testResourceOption  = new Option ("r","test-resources",true, "Path to the AT test resources directory. Default setting is '"+testResourcesPath+"'");
 		Option verboseLoggingOption  = new Option ("v","verbose",false, "Activate verbose logging");
 		Option testNameOption  = new Option ("n","test-name",true, "AT test name. To execute all AT use 'CompleteATSuite'. Default setting is '"+testName+"'");
-
+		
+		
 		options.addOption(helpOption);
 		options.addOption(testResourceOption);
 		options.addOption(testNameOption);
@@ -100,7 +110,7 @@ public class RegressTesterMain {
 	        if(line.hasOption( testNameOption.getOpt() )||line.hasOption( testNameOption.getLongOpt() )){
 	        	testName=line.getOptionValue(testNameOption.getOpt());
 	        }
-	        
+	       
 	        if(!line.hasOption( verboseLoggingOption.getOpt() )&& !line.hasOption( verboseLoggingOption.getLongOpt() )){
 	        	setLoggerOff();
 	        }
@@ -113,9 +123,10 @@ public class RegressTesterMain {
 	        }
 	        
 	        
-
+	        System.out.println();
 			System.out.println("Used Parameter: TestSuite: "+testName+"\t Test-Resources dir:"+testResourcesPath); 
-	        
+			System.out.println();
+			
 	        if(testName.equals("CompleteATSuite"))
 	        	testName="de.uzk.hki.main.CompleteATSuite";
 	        else
@@ -154,8 +165,6 @@ public class RegressTesterMain {
 		JUnitCore junit = new JUnitCore();
 		junit.addListener(myJUnitListener);
 		Result result = junit.run(testClass); //SuiteMetadataUpdates.class) ATMigrationRight.class CompleteATSuite.class
-		System.out.println("Junit Result: "+(result.wasSuccessful()?"SUCCESSFUL":"FAIL")+"\nFailureCount: "+result.getFailureCount()+" | IgnoreCount: "+result.getIgnoreCount());
-		System.out.println("RunCount:"+result.getRunCount());
 		
 		
 		for(Failure fail: result.getFailures()){
@@ -166,6 +175,15 @@ public class RegressTesterMain {
 			System.out.println("Description: "+fail.getDescription());
 			System.out.println("Execution: "+fail.getException());
 		}
+		int totalRunCount=result.getRunCount()+counterFailedWithhoutStart;
+		double failRatio=1.0*result.getFailureCount()/(totalRunCount<result.getFailureCount()?result.getFailureCount():totalRunCount);
+		double sucessRatio=1-failRatio;
+		System.out.println("\n\n");
+		System.out.println("Junit Result: "+(result.wasSuccessful()?"SUCCESSFUL":(sucessRatio>0.8?"80%-TOLLERANCE-SUCCESSFUL":"FAIL")));
+		System.out.println("RunCount: "+totalRunCount+" | FailureCount: "+result.getFailureCount()+" | IgnoreCount: "+result.getIgnoreCount()+ " | FailedWithoutStart:"+counterFailedWithhoutStart);
+		System.out.println("RunTime: "+result.getRunTime()+" sec");
+		System.out.println("Successratio: "+Math.round((100.0*sucessRatio))+"%");
+		
 
 		LOCAL_RESOURCE.delete();
 		System.exit(0); //otherwise application control is gained by junit threads and application doesn't stop at the end of main

@@ -14,6 +14,7 @@ irods.trustStorePath=
 
 localNode.userAreaRootPath=/ci/storage/UserArea
 localNode.ingestAreaRootPath=/ci/storage/IngestArea
+localNode.ingestAreaNoBagitRootPath=/ci/storage/IngestArea/noBagit
 localNode.workAreaRootPath=/ci/storage/WorkArea
 localNode.gridCacheAreaRootPath=/ci/storage/GridCacheArea
 localNode.workingResource=ciWorkingResource
@@ -24,7 +25,7 @@ localNode.logFolder=/ci/ContentBroker/log
 localNode.auditSleepFor=10000
 
 elasticsearch.index=portal_ci
-elasticsearch.hosts=localhost
+elasticsearch.hosts=http://localhost:9200
 elasticsearch.cluster=cluster_ci
 
 cb.serverSocketNumber=4455
@@ -35,7 +36,6 @@ cb.implementation.index=esMetadataIndex
 cb.implementation.metadataExtractor=jhoveMetadataExtractor
 cb.implementation.formatScanService=fidoFormatScanService
 cb.implementation.subformatScanService=subformatScanService
-
 
 cb.bin.python=/ci/python/python
 

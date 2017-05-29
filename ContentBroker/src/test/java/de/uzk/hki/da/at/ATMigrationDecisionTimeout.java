@@ -45,15 +45,14 @@ public class ATMigrationDecisionTimeout extends AcceptanceTest {
 				C.WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION);
 
 		Job jobbi = ath.getJob(ORIG_NAME_NOTALLOWED);
-		String notRealyLongAgo = String
-				.valueOf(new Date().getTime() / 1000L - 86400 * 30);
+		Date notRealyLongAgo = new Date(new Date().getTime() - 86400L * 30L * 1000L);
 
 		Session session = HibernateUtil.openSession();
 		session.refresh(jobbi);
 
 		Object obbi = jobbi.getObject();
 		Transaction trans = session.beginTransaction();
-		jobbi.setDate_modified(notRealyLongAgo);
+		jobbi.setModifiedAt(notRealyLongAgo);
 		session.save(jobbi);
 		trans.commit();
 		session.close();

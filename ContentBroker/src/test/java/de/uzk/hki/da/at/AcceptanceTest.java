@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import org.hibernate.Session;
 import org.junit.AfterClass;
@@ -51,10 +52,10 @@ import de.uzk.hki.da.utils.PropertiesUtils;
  * @author Daniel M. de Oliveira
  */
 public class AcceptanceTest {
-	
 	private static final String CONF_BEANS_XML = "conf/beans.xml";
 	private static String CI_WORKING_RESOURCE = "ciWorkingResource";
 	private static String CI_ARCHIVE_RESOURCE = "ciArchiveRescGroup";
+	private static String CI_ARCHIVE_STORAGE = "/ci/archiveStorage/aip/TEST/";
 	private static final String BEAN_NAME_FAKE_REPOSITORY_FACADE = "fakeRepositoryFacade";
 	private static final String BEAN_NAME_FAKE_METADATA_INDEX = "fakeMetadataIndex";
 	protected static Node localNode;
@@ -181,6 +182,7 @@ public class AcceptanceTest {
 		System.out.println("localnode: "+localNode.getName());
 		
 		Properties properties = PropertiesUtils.read(new File("conf/config.properties"));
+		
 		instantiateGrid(properties);
 		if (gridFacade==null) throw new IllegalStateException("gridFacade could not be instantiated");
 		
@@ -192,19 +194,65 @@ public class AcceptanceTest {
 	
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
-		testContractor = getContractor(session, "TEST");
-	
+		
+		if(properties.getProperty("regression.archiveStorage")!=null)
+			CI_ARCHIVE_STORAGE=properties.getProperty("regression.archiveStorage"); 
+		
+		if(properties.getProperty("regression.TestCSN")!=null){
+			String csn=properties.getProperty("regression.TestCSN");
+			testContractor = getContractor(session, csn);
+			if(testContractor==null)
+				throw new IllegalStateException("regression.TestCSN: "+csn+" is not defined in DNS (No etry in DBMS) ");
+			
+		}else
+			testContractor = getContractor(session, C.TEST_USER_SHORT_NAME);
+		
+		if(testContractor==null)
+			throw new IllegalStateException("regression.TestCSN: "+testContractor+" is not defined in DNS (No etry in DBMS) ");
+		
+		ciPathConsistencyTest();
+			
 		preservationSystem = (PreservationSystem) session.get(PreservationSystem.class, 1);
 		session.close();
 		instantiateStoragePolicy();
-		ath = new AcceptanceTestHelper(gridFacade,localNode,testContractor,sp);
+		ath = new AcceptanceTestHelper(gridFacade,localNode,testContractor,sp,preservationSystem);
 		if(properties.getProperty("localNode.logFolder")!=null) 
 			ath.setLogPath(properties.getProperty("localNode.logFolder"));
+		
+		if(properties.getProperty("regression.fedoraUrlTemplateForDownload")!=null) 
+			ath.setFedoraUrlTemplate(properties.getProperty("regression.fedoraUrlTemplateForDownload"));
+		
+		if(properties.getProperty("regression.maxWaitTime")!=null) {
+			int maxTimeout=Integer.parseInt(properties.getProperty("regression.maxWaitTime"));
+        	if(maxTimeout<1 || maxTimeout>30)
+        		throw new IllegalStateException("Parameter max-waittime have to be between 1-30 minutes");
+			ath.setTIMEOUT(maxTimeout*60*1000);
+		}
+		
+		
 		
 //		new CommandLineConnector().runCmdSynchronously(new String[] {"src/main/bash/rebuildIndex.sh"});
 		//If the previous test execution not cleaned 
 			cleanStorage();
 			clearDB();
+	}
+	
+	public static void ciPathConsistencyTest(){
+		//check if testContractor is contained in the testContractors-Set
+		AbstractApplicationContext context = new FileSystemXmlApplicationContext(CONF_BEANS_XML);
+		Set<String> testContractors=(Set<String>) context.getBean("testContractors");
+		
+		if(!testContractors.contains(testContractor.getUsername())){
+			testContractor=null;// Prevent removing wrong data in @AfterClass 
+			throw new IllegalStateException("regression.TestCSN: "+testContractor+" is not in Set of testContractors: "+testContractors.toString());
+		}
+		
+		
+		//test path CI_ARCHIVE_STORAGE, it have to contain testContractor-CSN
+		String[] tmpArr=CI_ARCHIVE_STORAGE.replace('/', ' ').trim().split(" ");
+		if(!tmpArr[tmpArr.length-1].equals(testContractor.getUsername()))
+			throw new IllegalStateException("Der Pfad: "+CI_ARCHIVE_STORAGE+" scheint nicht von dem User: "+testContractor+" zu sein");
+		
 	}
 
 	@AfterClass
@@ -221,27 +269,27 @@ public class AcceptanceTest {
 	
 
 	private static void cleanStorage(){
-		FolderUtils.deleteQuietlySafe(Path.makeFile(localNode.getWorkAreaRootPath(),"work",C.TEST_USER_SHORT_NAME));
-		FolderUtils.deleteQuietlySafe(Path.makeFile(localNode.getWorkAreaRootPath(),"repl",C.TEST_USER_SHORT_NAME));
-		FolderUtils.deleteQuietlySafe(Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME));
-		FolderUtils.deleteQuietlySafe(Path.makeFile(localNode.getGridCacheAreaRootPath(),WorkArea.AIP,C.TEST_USER_SHORT_NAME));
-		FolderUtils.deleteQuietlySafe(Path.makeFile(localNode.getWorkAreaRootPath(),"pips","institution",C.TEST_USER_SHORT_NAME));
-		FolderUtils.deleteQuietlySafe(Path.makeFile(localNode.getWorkAreaRootPath(),"pips","public",C.TEST_USER_SHORT_NAME));
-		FolderUtils.deleteQuietlySafe(Path.makeFile(localNode.getUserAreaRootPath(),C.TEST_USER_SHORT_NAME,"outgoing"));
+		FolderUtils.deleteQuietlySafe(Path.makeFile(localNode.getWorkAreaRootPath(),"work",testContractor.getUsername()));
+		FolderUtils.deleteQuietlySafe(Path.makeFile(localNode.getWorkAreaRootPath(),"repl",testContractor.getUsername()));
+		FolderUtils.deleteQuietlySafe(Path.makeFile(localNode.getIngestAreaRootPath(),testContractor.getUsername()));
+		FolderUtils.deleteQuietlySafe(Path.makeFile(localNode.getGridCacheAreaRootPath(),WorkArea.AIP,testContractor.getUsername()));
+		FolderUtils.deleteQuietlySafe(Path.makeFile(localNode.getWorkAreaRootPath(),"pips","institution",testContractor.getUsername()));
+		FolderUtils.deleteQuietlySafe(Path.makeFile(localNode.getWorkAreaRootPath(),"pips","public",testContractor.getUsername()));
+		FolderUtils.deleteQuietlySafe(Path.makeFile(localNode.getUserAreaRootPath(),testContractor.getUsername(),"outgoing"));
 		
 	
 		IrodsCommandLineConnector icl = new IrodsCommandLineConnector();
-		icl.remove("/"+localNode.getIdentifier() + "/work/TEST");
-		icl.remove("/"+localNode.getIdentifier() + "/aip/TEST");
-		icl.remove("/"+localNode.getIdentifier() + "/repl/TEST");
-		icl.remove("/"+localNode.getIdentifier() + "/pips/institution/TEST");
-		icl.remove("/"+localNode.getIdentifier() + "/pips/public/TEST");
+		icl.remove("/"+localNode.getIdentifier() + "/work/"+testContractor.getUsername());
+		icl.remove("/"+localNode.getIdentifier() + "/aip/"+testContractor.getUsername());
+		icl.remove("/"+localNode.getIdentifier() + "/repl/"+testContractor.getUsername());
+		icl.remove("/"+localNode.getIdentifier() + "/pips/institution/"+testContractor.getUsername());
+		icl.remove("/"+localNode.getIdentifier() + "/pips/public/"+testContractor.getUsername());
 		
-		icl.mkCollection("/"+localNode.getIdentifier() + "/work/TEST");
-		icl.mkCollection("/"+localNode.getIdentifier() + "/aip/TEST");
-		icl.mkCollection("/"+localNode.getIdentifier() + "/repl/TEST");
-		icl.mkCollection("/"+localNode.getIdentifier() + "/pips/institution/TEST");
-		icl.mkCollection("/"+localNode.getIdentifier() + "/pips/public/TEST");
+		icl.mkCollection("/"+localNode.getIdentifier() + "/work/"+testContractor.getUsername());
+		icl.mkCollection("/"+localNode.getIdentifier() + "/aip/"+testContractor.getUsername());
+		icl.mkCollection("/"+localNode.getIdentifier() + "/repl/"+testContractor.getUsername());
+		icl.mkCollection("/"+localNode.getIdentifier() + "/pips/institution/"+testContractor.getUsername());
+		icl.mkCollection("/"+localNode.getIdentifier() + "/pips/public/"+testContractor.getUsername());
 		
 		/**distributedConversionAdapter.remove("work/TEST");
 		distributedConversionAdapter.remove("aip/TEST");
@@ -253,21 +301,31 @@ public class AcceptanceTest {
 		distributedConversionAdapter.create("pips/institution/TEST");
 		distributedConversionAdapter.create("pips/public/TEST");
 		*/
-		Path.makeFile(localNode.getUserAreaRootPath(),C.TEST_USER_SHORT_NAME,"outgoing").mkdirs();
-		Path.makeFile(localNode.getGridCacheAreaRootPath(),"aip",C.TEST_USER_SHORT_NAME).mkdirs();
-		Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME).mkdirs();
-		Path.make(localNode.getWorkAreaRootPath(),"work",C.TEST_USER_SHORT_NAME).toFile().mkdirs();
-		Path.make(localNode.getWorkAreaRootPath(),"repl",C.TEST_USER_SHORT_NAME).toFile().mkdirs();
-		Path.makeFile(localNode.getWorkAreaRootPath(),"pips","public",C.TEST_USER_SHORT_NAME).mkdirs();
-		Path.makeFile(localNode.getWorkAreaRootPath(),"pips","institution",C.TEST_USER_SHORT_NAME).mkdirs();
+		Path.makeFile(localNode.getUserAreaRootPath(),testContractor.getUsername(),"outgoing").mkdirs();
+		Path.makeFile(localNode.getGridCacheAreaRootPath(),"aip",testContractor.getUsername()).mkdirs();
+		Path.makeFile(localNode.getIngestAreaRootPath(),testContractor.getUsername()).mkdirs();
+		Path.make(localNode.getWorkAreaRootPath(),"work",testContractor.getUsername()).toFile().mkdirs();
+		Path.make(localNode.getWorkAreaRootPath(),"repl",testContractor.getUsername()).toFile().mkdirs();
+		Path.makeFile(localNode.getWorkAreaRootPath(),"pips","public",testContractor.getUsername()).mkdirs();
+		Path.makeFile(localNode.getWorkAreaRootPath(),"pips","institution",testContractor.getUsername()).mkdirs();
 	}
 	
 	private static void clearDB() {
-		TESTHelper.clearDBOnlyTestUser();
+		TESTHelper.clearDBOnlyTestUser(testContractor);
 	}
 
 	public static String getTestIndex() {
 		return testIndex;
 	}
+
+	public static Node getLocalNode() {
+		return localNode;
+	}
+
+	public static String getCI_ARCHIVE_STORAGE() {
+		return CI_ARCHIVE_STORAGE;
+	}
+	
+	
 	
 }

@@ -30,6 +30,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.core.task.TaskExecutor;
 
+import de.uzk.hki.da.action.ActionDescription;
 import de.uzk.hki.da.action.ActionFactory;
 import de.uzk.hki.da.action.ActionInformation;
 import de.uzk.hki.da.action.Controller;
@@ -138,6 +139,7 @@ public class ContentBroker {
 			context.registerShutdownHook();
 			logger.info("ContentBroker is up and running");
 		} catch (Exception e) {
+			System.out.println(e);
 			logger.error("Exception in main!",e);
 			System.exit(1);
 		}
@@ -171,10 +173,14 @@ public class ContentBroker {
 		      public void handle(Signal sig) {
 		    	  logger.info("ContentBrocker is killed by SIGTERM try to execute a 'bit gracefully shutdown'");
 		        actionFactory.setPaused(true);
-		        List tmpList=actionFactory.getActionRegistry().getCurrentActionDescriptions();
+		        List<ActionDescription> tmpList=actionFactory.getActionRegistry().getCurrentActionDescriptions();
 
 		        for(int maxTry=25;tmpList.size()>0 &&maxTry>=0;maxTry-=5){
 		        	logger.info("Give a chance for running actions ("+tmpList.size()+") to exit themself");
+		        	for(int i=0;i<tmpList.size();i++){
+		        		ActionDescription ac=tmpList.get(i);
+		        		logger.info("Give a chance for Action("+i+"): "+" ActionType: "+ac.getActionType()+"("+ac.getStartStatus()+"-"+ac.getEndStatus()+") jobId: "+ac.getJobId()+" "+ac.getDescription()+" package: "+ac.getPackageId());
+		        	}
 		        	tmpList=actionFactory.getActionRegistry().getCurrentActionDescriptions();
 		        	try {
 						Thread.sleep(5000);

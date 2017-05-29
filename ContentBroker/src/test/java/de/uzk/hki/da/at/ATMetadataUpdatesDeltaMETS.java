@@ -34,16 +34,13 @@ import de.uzk.hki.da.utils.XMLUtils;
 public class ATMetadataUpdatesDeltaMETS extends AcceptanceTest{
 
 	private static final String ORIG_NAME_ORIG = "ATMetadataUpdatesDeltaMETS";
-	private static final String DATA_DANRW_DE = "http://data.danrw.de";
+	private final String DATA_DANRW_DE = preservationSystem.getUrisFile();
 	private static final File retrievalFolder = new File("/tmp/unpackedMetsMods");
-	private static Path contractorsPipsPublic;
 	private static Object object;
 	private static MetadataHelper mh = new MetadataHelper();
 	
 	@BeforeClass
 	public static void setUp() throws IOException, InterruptedException {
-		
-		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
 		
 		ath.putSIPtoIngestArea(ORIG_NAME_ORIG, "tgz", ORIG_NAME_ORIG);
 		ath.awaitObjectState(ORIG_NAME_ORIG,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
@@ -225,12 +222,8 @@ public class ATMetadataUpdatesDeltaMETS extends AcceptanceTest{
 	public void testPres() throws FileNotFoundException, JDOMException, IOException{
 		
 		object = ath.getObject(ORIG_NAME_ORIG);
-		
-		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, "TEST");
-		
-		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		FileReader fr = new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), C.CB_PACKAGETYPE_METS+C.FILE_EXTENSION_XML).toFile());
+		FileReader fr = new FileReader(ath.loadDefaultMetsFileFromPip(object.getIdentifier()));
 		Document doc = builder.build(fr);
 		
 		List<Element> metsFileElements = mh.getMetsFileElements(doc);

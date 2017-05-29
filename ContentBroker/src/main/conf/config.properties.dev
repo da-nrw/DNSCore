@@ -1,5 +1,6 @@
 localNode.userAreaRootPath=CONTENTBROKER_ROOT/storage/UserArea
 localNode.ingestAreaRootPath=CONTENTBROKER_ROOT/storage/IngestArea
+localNode.ingestAreaNoBagitRootPath=CONTENTBROKER_ROOT/storage/IngestArea/noBagit
 localNode.workAreaRootPath=CONTENTBROKER_ROOT/storage/WorkArea
 localNode.gridCacheAreaRootPath=CONTENTBROKER_ROOT/storage/GridCacheArea
 localNode.workingResource=ciWorkingResource

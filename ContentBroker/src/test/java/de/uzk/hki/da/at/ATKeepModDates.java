@@ -35,7 +35,7 @@ public class ATKeepModDates extends AcceptanceTest {
 
 	@After
 	public void tearDown(){
-		distributedConversionAdapter.remove("aip/TEST/"+idiName); 
+		distributedConversionAdapter.remove("aip/"+testContractor.getUsername()+"/"+idiName); 
 		new File("/tmp/"+idiName+".tar").delete();
 		FolderUtils.deleteQuietlySafe(new File("/tmp/"+idiName));
 	}
@@ -57,8 +57,8 @@ public class ATKeepModDates extends AcceptanceTest {
 		Job j = new Job();
 		j.setResponsibleNodeName(node.getName());
 		j.setObject(o);
-		j.setDate_created(String.valueOf(new Date().getTime()/1000L));
-		j.setDate_modified(String.valueOf(new Date().getTime()/1000L));
+		j.setCreatedAt(new Date());
+		j.setModifiedAt(new Date());
 		j.setQuestion("RETRIEVE:1");
 		j.setStatus("900");
 	
@@ -69,7 +69,7 @@ public class ATKeepModDates extends AcceptanceTest {
 
 		ath.waitForJobToBeInStatus(ORIG_NAME, "952");
 
-		String archName = localNode.getUserAreaRootPath()+"/TEST/outgoing/"+idiName+".tar";
+		String archName = localNode.getUserAreaRootPath()+"/"+testContractor.getUsername()+"/outgoing/"+idiName+".tar";
 		assertTrue(new File(archName).exists());
 		
 		

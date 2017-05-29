@@ -51,11 +51,10 @@ import de.uzk.hki.da.utils.XMLUtils;
 
 public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 
-	private static final String DATA_DANRW_DE = "http://data.danrw.de";
+	private final String DATA_DANRW_DE = preservationSystem.getUrisFile();
 	private static final String origName = "ATMetadataUpdatesLIDO";
 	private static final File retrievalFolder = new File("/tmp/LIDOunpacked");
 	private static Object object;
-	private static Path contractorsPipsPublic;
 	private static MetadataHelper mh = new MetadataHelper();
 	
 	@BeforeClass
@@ -66,8 +65,6 @@ public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 		ath.waitForDefinedPublishedState(origName);
 		object=ath.getObject(origName);
 		ath.waitForObjectToBeIndexed(metadataIndex,getTestIndex(),object.getIdentifier());
-		
-		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	
 	@AfterClass
@@ -119,7 +116,7 @@ public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 	@Test
 	public void testPres() throws FileNotFoundException, JDOMException, IOException{
 		
-		FileReader frLido = new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "LIDO.xml").toFile());
+		FileReader frLido = new FileReader(ath.loadFileFromPip(object.getIdentifier(), "LIDO.xml"));
 		SAXBuilder lidoSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = lidoSaxBuilder.build(frLido);
 		
@@ -138,7 +135,7 @@ public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 	@Test
 	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
 		
-		FileReader frLido = new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(),"EDM.xml").toFile());
+		FileReader frLido = new FileReader(ath.loadFileFromPip(object.getIdentifier(), "EDM.xml"));
 		SAXBuilder lidoSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
 		Document doc = lidoSaxBuilder.build(frLido);
 	
@@ -149,12 +146,13 @@ public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 			if(pcho.getAttributeValue("about", C.RDF_NS).contains(object.getIdentifier()+"-ISIL/lido/Inventarnummer-1")) {
 				testProvidetCho1Exists = true;
 				assertTrue(pcho.getChild("title", C.DC_NS).getValue().equals("Nudelmaschine in Originalverpackung"));
-				assertTrue(pcho.getChild("date", C.DC_NS).getValue().equals("01.01.1970-31.12.1989"));
+				assertTrue(pcho.getChild("issued", C.DCTERMS_NS).getValue().equals("01.01.1970-31.12.1989"));
 				assertTrue(pcho.getChild("hasType", C.EDM_NS).getValue().equals("is root element"));
 			} else if(pcho.getAttributeValue("about", C.RDF_NS).contains(object.getIdentifier()+"-ISIL/lido/Inventarnummer-2")){
 				testProvidetCho2Exists = true;
 				assertTrue(pcho.getChild("title", C.DC_NS).getValue().equals("Küchenmaschine"));
-				assertTrue(pcho.getChild("date", C.DC_NS).getValue().contains("01.01.1950-31.12.1959"));
+				String issuedDate=pcho.getChild("issued", C.DCTERMS_NS).getValue();
+				assertTrue(issuedDate.equals("01.01.1950-31.12.1959")||issuedDate.equals("01.01.1950-31.12.1969"));
 				assertTrue(pcho.getChild("hasType", C.EDM_NS).getValue().equals("is root element"));
 			}
 			
@@ -178,15 +176,15 @@ public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 			if(a.getAttributeValue("about", C.RDF_NS).contains(object.getIdentifier()+"-ISIL/lido/Inventarnummer-1")) {
 				testAggr1Exists = true;
 				assertTrue(a.getChild("isShownBy", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
-						.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_c8079103e5eecf45d2978a396e1839a9.jpg"));
+						.contains(preservationSystem.getUrisFile()+"/"+object.getIdentifier()+"/_c8079103e5eecf45d2978a396e1839a9.jpg"));
 				assertTrue(a.getChild("object", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
-						.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_c8079103e5eecf45d2978a396e1839a9.jpg"));
+						.contains(preservationSystem.getUrisFile()+"/"+object.getIdentifier()+"/_c8079103e5eecf45d2978a396e1839a9.jpg"));
 			} else if(a.getAttributeValue("about", C.RDF_NS).contains(object.getIdentifier()+"-ISIL/lido/Inventarnummer-2")){
 				testAggr2Exists = true;
 				assertTrue(a.getChild("isShownBy", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
-						.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_c3836acf068a9b227834e0adda226ac2.jpg"));
+						.contains(preservationSystem.getUrisFile()+"/"+object.getIdentifier()+"/_c3836acf068a9b227834e0adda226ac2.jpg"));
 				assertTrue(a.getChild("object", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
-						.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_c3836acf068a9b227834e0adda226ac2.jpg"));
+						.contains(preservationSystem.getUrisFile()+"/"+object.getIdentifier()+"/_c3836acf068a9b227834e0adda226ac2.jpg"));
 			}
 		}
 		

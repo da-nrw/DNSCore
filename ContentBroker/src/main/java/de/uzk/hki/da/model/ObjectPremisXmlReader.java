@@ -382,7 +382,7 @@ public class ObjectPremisXmlReader{
 				right.setMigrationRight(migrationRight);
 			}
 			
-			Element ddbExclusionEl = rightsEl.getFirstChildElement("DDBexclusion", C.CONTRACT_NS);
+			Element ddbExclusionEl = rightsExtEl.getFirstChildElement("DDBexclusion", C.CONTRACT_NS);
 			object.setDdbExclusion(ddbExclusionEl != null);
 			
 			Elements publicationRightEls = rightsExtEl

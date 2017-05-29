@@ -4,20 +4,27 @@ In bestimmten Fällen kann es zu einzelnen Paketfehlern kommen, die sich durch e
 In besonderen Ausahmesituationen kann es passieren, dass das System scheinbar "hängt" und nicht den erwarteten Durchsatz zeigt.
 Starten Sie in diesem Zusammenhang nicht einfach "neu" - bitte analysieren Sie zunächst das Fehlerbild. 
 
+Achtung: Bitte löschen Sie nicht auf "eigene Faust" von der WorkArea, vor allem nicht bei laufendem ContentBroker mit Jobs auf diesem Objekten - ein hängender CB ist die Folge. 
+
 **Überlick gewinnen:**
 
 Einsicht in die [DA-Web Adminoberfläche](../../../../DAWeb/doc/contentBroker_administration.md), Anmeldung als Knotenadmin. Dort laufen alle Systemmeldungen auf.
 
 ## Das ganze System "hängt" scheinbar
 
-Der CB hat eine ganze Reihe an Sicherungsfunktionalitäten, die seine Arbeit automatisch stoppen. 
+Der CB hat eine ganze Reihe an Sicherungsfunktionalitäten, die seine Arbeit automatisch stoppen. **Ein Abbruch ist in soweit ein "erwartetes" Verhalten! Es stellt noch keinen Programmfehler dar**
 
 Bitte untersuchen Sie, ob die folgenden Bedingungen zutreffen:
 
-1. Zuviele 2er Actions: Das System hat eine Konfiguration (s. Ihre beans.xml!), nicht zu viele Actions des gleichen Typs zu verarbeiten. Üblicherweise sind dies max. drei des gleichen Typs.
-2. Der CB läuft grundsätzlich. Prüfen Sie ob der CB noch Logmeldungen schreibt.
-3. Noch genügend Speicherplatz auf WorkingArea? Üblicherweise stoppt der CB seine Verabreitung wenn nicht ausreichend Speicherplatz frei ist. Den Wert dafür legt der Knotenadmin fest siehe beans.xml.
+1. Zuviele 2er Actions: Das System hat eine Konfiguration (s. Ihre beans.xml!), nicht zu viele Actions des gleichen Typs zu verarbeiten. Üblicherweise sind dies max. drei des gleichen Typs. Manchmal steht der Wert auch systemmäßig auf 1. 
+2. Der CB läuft grundsätzlich. Prüfen Sie ob der CB noch Logmeldungen schreibt. Hat sich ggf. die ActionFactory abgeschaltet? (S.u. ActionFactory abgeschaltet?)
+3. Noch genügend Speicherplatz auf WorkingArea? Üblicherweise stoppt der CB seine Verarbeitung wenn nicht ausreichend Speicherplatz frei ist. Den Wert dafür legt der Knotenadmin fest siehe beans.xml.
 4. Diagnostics läuft?
+5. Der Knoten kann ins Netz zugreifen?
+6. Es wurden keine Pakete unzulässig (d.h. z.B. per Konsole) aus der WorkArea entfernt, die noch Einträge in der Queue-Tabelle aufweisen? 
+7. Es gibt hängende Prozesse von Dritt-Modulen, die noch arbeiten?
+8. stdout.log und stderr.log prüfen 
+9. Stellen Sie bitte nicht "wild" Job-Einträge auf die Recovery & Delete Status (600,800). Diese gelten nur für den Bereich in der die Weboberfläche dies auch anbietet.
 
 ### Diagnostics durchführen
 
@@ -73,8 +80,8 @@ Grundsätzlich sind Status <=400 immer im Gesamten rücksetzbar. Bei Status >440
 
 |Status| Aktion | Beschreibung |Fehlerbehandlung|
 |---|---|---|---|
-110 |IngestUnpackAction | Auspacken & Vollständigkeitstests | Rücksetzung auf 110 |
-120 |IngestRestructureObjectAction |Objekt- oder Deltaerkennung, Typerkennung | Rücksetzung auf 120 |
+110 |IngestUnpackAction | Auspacken & Vollständigkeitstests | Rücksetzung auf 118 , Ggfs. bei Abbruch beim Auspacken: WorkArea des Jobs löschen |
+120 |IngestRestructureObjectAction |Objekt- oder Deltaerkennung, Typerkennung | Rücksetzung auf 128 |
 130 |IngestValidateMetadataAction |	Validierung der Metadaten | Rücksetzung auf 600, Löschung 800 |
 140 |IngestScanAction | Formaterkennung |  Rücksetzung auf 600, Löschung auf 800
 150 |RegisterURNAction | Register URN in DNS |	Rücksetzung auf 600, Löschung auf 800
@@ -123,7 +130,8 @@ Grundsätzlich sind Status <=400 immer im Gesamten rücksetzbar. Bei Status >440
 Das Betätigen des Buttons vom Admin führt zur Löschung des Objekts sowohl aus der Datenbank als auch vom Speicher. 
 Der Orig_name kann somit wieder verwendet werden.
 Sollte es sich beim eingelieferten Paket um ein Delta handeln, wird nur das neuste Paket gelöscht. Das Originalobjekt bleibt erhalten.
-Der Contractor bekommt eine EMail vom System
+Der Contractor bekommt eine EMail vom System. 
+Dieser Status darf nicht in einem Bereich >400 gesetzt werden! Die Weboberfläche bietet den Button nur im gültigen Spektrum an.
 
 ## Der "Gesamter Workflow zurücksetzen"-Button - Rollback (Status 600)
 

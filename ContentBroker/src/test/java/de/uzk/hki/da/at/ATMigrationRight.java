@@ -26,7 +26,7 @@ import java.io.IOException;
 
 import org.apache.commons.io.FilenameUtils;
 import org.junit.After;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
@@ -44,8 +44,8 @@ public class ATMigrationRight extends AcceptanceTest {
 	private static final String ORIG_NAME_NOTALLOWED = "ATMigrationRightNotAllowed";
 	private static Object o;
 	
-	@Before
-	public void setUp() throws IOException{
+	@BeforeClass
+	public static void setUp() throws IOException{
 		ath.putSIPtoIngestArea(ORIG_NAME, C.FILE_EXTENSION_TGZ, ORIG_NAME);		
 		ath.putSIPtoIngestArea(ORIG_NAME_NOTALLOWED, C.FILE_EXTENSION_TGZ, ORIG_NAME_NOTALLOWED);
 	}
@@ -60,11 +60,16 @@ public class ATMigrationRight extends AcceptanceTest {
 		ath.waitForJobToBeInStatus(ORIG_NAME_NOTALLOWED, C.WORKFLOW_STATUS_WAIT___PROCESS_FOR_USER_DECISION_ACTION);
 		o=ath.getObject(ORIG_NAME_NOTALLOWED);
 	}
-	
-	
+
 	@Test
 	public void test() throws IOException{
 		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+
+		ath.putSIPtoIngestArea(ORIG_NAME, C.FILE_EXTENSION_TGZ, ORIG_NAME);		
+
+		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.InWorkflow);
+		ath.awaitObjectState(ORIG_NAME,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+
 		o=ath.getObject(ORIG_NAME);
 		ath.retrieveAIP(o, UNPACKED_DIP, "1");
 		

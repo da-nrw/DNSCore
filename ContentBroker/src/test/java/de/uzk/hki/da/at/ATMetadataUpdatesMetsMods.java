@@ -58,7 +58,6 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 	
 	private String PORTAL_CI_TEST = getTestIndex();
 	private static final File retrievalFolder = new File("/tmp/unpackedMetsMods");
-	private static Path contractorsPipsPublic;
 	private static final String origName = "ATMetadataUpdates_METS";
 	private static Object object;
 	private static Document metsDoc;
@@ -72,7 +71,6 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 		ath.waitForDefinedPublishedState(origName);
 		object=ath.getObject(origName);
 		ath.waitForObjectToBeIndexed(metadataIndex,getTestIndex(),object.getIdentifier());
-		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	
 	@AfterClass
@@ -112,19 +110,15 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 		assertEquals(C.CB_PACKAGETYPE_METS,object.getPackage_type());
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		metsDoc = builder.build
-			(new FileReader(
-				Path.make(contractorsPipsPublic, 
-					object.getIdentifier(), C.CB_PACKAGETYPE_METS+C.FILE_EXTENSION_XML).toFile()));
+		metsDoc = builder.build(new FileReader(ath.loadDefaultMetsFileFromPip(object.getIdentifier())));
 		List<Element> elements = mh.getMetsFileElements(metsDoc);
 		for(Element e : elements) {
-			assertTrue(mh.getMetsHref(e).contains("http://data.danrw.de/"));
+			assertTrue(mh.getMetsHref(e).contains(preservationSystem.getUrisFile()));
 			assertTrue(mh.getMimetypeInMets(e).equals(C.MIMETYPE_IMAGE_JPEG));
 			assertTrue(mh.getMetsLoctype(e).equals("URL"));
-			assertTrue(Path.make(contractorsPipsPublic, 
-					object.getIdentifier(), FilenameUtils.getName(mh.getMetsHref(e))).toFile().exists());
 			
-		
+			assertTrue(ath.loadFileFromPip(object.getIdentifier(), FilenameUtils.getName(mh.getMetsHref(e))).exists());
+
 		}
 	}
 	
@@ -132,15 +126,15 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
 
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		Document doc = builder.build
-				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "EDM.xml").toFile()));
+		Document doc = builder.build(new FileReader(ath.loadFileFromPip(object.getIdentifier(), "EDM.xml")));
 		@SuppressWarnings("unchecked")
 		List<Element> providetCho = doc.getRootElement().getChildren("ProvidedCHO", C.EDM_NS);
 		Boolean testProvidetChoExists = false;
 		for(Element pcho : providetCho) {
 			if(pcho.getChild("title", C.DC_NS).getValue().equals("nonSortText"+" "+"Text// mahels///Titel"+" : "+"Untertitel")) {
 				testProvidetChoExists = true;
-				assertTrue(pcho.getChild("date", C.DC_NS).getValue().equals("1523"));
+				assertTrue(pcho.getChild("issued", C.DCTERMS_NS).getValue().equals("1523"));
+				assertTrue(pcho.getChild("created", C.DCTERMS_NS).getValue().equals("2011"));
 				assertTrue(pcho.getChild("hasType", C.EDM_NS).getValue().equals("is root element"));
 			}
 			@SuppressWarnings("unchecked")
@@ -171,9 +165,9 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 		
 		assertTrue(testProvidetChoExists);
 		assertTrue(doc.getRootElement().getChild("Aggregation", C.ORE_NS).getChild("isShownBy", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
-				.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_bee84f142bba34a1036ecc4667b54615.jpg"));
+				.contains(preservationSystem.getUrisFile()+"/"+object.getIdentifier()+"/_bee84f142bba34a1036ecc4667b54615.jpg"));
 		assertTrue(doc.getRootElement().getChild("Aggregation", C.ORE_NS).getChild("object", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
-				.contains("http://data.danrw.de/file/"+object.getIdentifier()+"/_bee84f142bba34a1036ecc4667b54615.jpg"));
+				.contains(preservationSystem.getUrisFile()+"/"+object.getIdentifier()+"/_bee84f142bba34a1036ecc4667b54615.jpg"));
 		
 //		testIndex
 		assertTrue(metadataIndex.getIndexedMetadata(PORTAL_CI_TEST, object.getIdentifier()+"-md801613").contains("nonSortText Text// mahels///Titel : Untertitel"));

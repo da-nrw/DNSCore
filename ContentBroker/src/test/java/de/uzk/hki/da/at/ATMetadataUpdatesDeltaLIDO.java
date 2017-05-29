@@ -33,10 +33,9 @@ import de.uzk.hki.da.utils.XMLUtils;
 public class ATMetadataUpdatesDeltaLIDO extends AcceptanceTest{
 	
 	private static final String ORIG_NAME_ORIG = "ATMetadataUpdatesDeltaLIDO";
-	private static final String DATA_DANRW_DE = "http://data.danrw.de";
+	private final String DATA_DANRW_DE = preservationSystem.getUrisFile();
 	private static Object object;
 	private static final File retrievalFolder = new File("/tmp/LIDOunpacked");
-	private static Path contractorsPipsPublic;
 	private static MetadataHelper mh = new MetadataHelper();
 	
 	@BeforeClass
@@ -51,8 +50,6 @@ public class ATMetadataUpdatesDeltaLIDO extends AcceptanceTest{
 		
 		ath.waitForDefinedPublishedState(ORIG_NAME_ORIG);
 		object = ath.getObject(ORIG_NAME_ORIG);
-		
-		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	
 	@AfterClass
@@ -102,8 +99,7 @@ public class ATMetadataUpdatesDeltaLIDO extends AcceptanceTest{
 	public void testPres() throws FileNotFoundException, JDOMException, IOException{
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		Document doc = builder.build
-				(new FileReader(Path.make(contractorsPipsPublic, object.getIdentifier(), "LIDO.xml").toFile()));
+		Document doc = builder.build(new FileReader(ath.loadFileFromPip(object.getIdentifier(), "LIDO.xml")));
 		
 		List<String> lidoUrls =  mh.getLIDOURL(doc);
 		int danrwRewritings = 0;

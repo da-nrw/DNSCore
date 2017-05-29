@@ -28,7 +28,6 @@ import de.uzk.hki.da.utils.XMLUtils;
 public class ATMetsGenTest extends AcceptanceTest{
 	private static String origName = "MetsGenTest";
 	private static Object object;
-	private static Path contractorsPipsPublic;
 	private static final File retrievalFolder = new File("/tmp/unpackedMetsMods");
 	MetadataHelper mh = new MetadataHelper();
 	
@@ -39,7 +38,6 @@ public class ATMetsGenTest extends AcceptanceTest{
 		ath.waitForDefinedPublishedState(origName);
 		object=ath.getObject(origName);
 		ath.waitForObjectToBeIndexed(metadataIndex,getTestIndex(),object.getIdentifier());
-		contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, C.TEST_USER_SHORT_NAME);
 	}
 	
 	@AfterClass
@@ -88,10 +86,7 @@ public class ATMetsGenTest extends AcceptanceTest{
 		assertEquals(C.CB_PACKAGETYPE_METS,object.getPackage_type());
 		
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		Document pipMets = builder.build
-			(new FileReader(
-				Path.make(contractorsPipsPublic, 
-					object.getIdentifier(), C.CB_PACKAGETYPE_METS+C.FILE_EXTENSION_XML).toFile()));
+		Document pipMets = builder.build(new FileReader(ath.loadDefaultMetsFileFromPip(object.getIdentifier())));
 		List<Element> fileElements = mh.getMetsFileElements(pipMets);
 		Boolean _3b91a3c29a50f62d23bd395e5fa3103c_exists = false;
 		Boolean _a39342aa7817e8a8d3fa924b0a0b51fc_exists = false;
@@ -99,9 +94,9 @@ public class ATMetsGenTest extends AcceptanceTest{
 			assertTrue(mh.getMimetypeInMets(e).equals("image/jpeg"));
 			assertTrue(mh.getMetsLoctype(e).equals("URL"));
 			if(mh.getMetsHref(e)
-					.equals("http://data.danrw.de/file/"+object.getIdentifier()+"/_3b91a3c29a50f62d23bd395e5fa3103c.jpg")) {
+					.equals(preservationSystem.getUrisFile()+"/"+object.getIdentifier()+"/_3b91a3c29a50f62d23bd395e5fa3103c.jpg")) {
 				_3b91a3c29a50f62d23bd395e5fa3103c_exists = true;
-			} else if(mh.getMetsHref(e).equals("http://data.danrw.de/file/"+object.getIdentifier()+"/_a39342aa7817e8a8d3fa924b0a0b51fc.jpg")) {
+			} else if(mh.getMetsHref(e).equals(preservationSystem.getUrisFile()+"/"+object.getIdentifier()+"/_a39342aa7817e8a8d3fa924b0a0b51fc.jpg")) {
 				_a39342aa7817e8a8d3fa924b0a0b51fc_exists = true;
 			}
 		}

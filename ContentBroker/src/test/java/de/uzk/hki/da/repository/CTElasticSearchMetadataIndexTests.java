@@ -70,9 +70,9 @@ public class CTElasticSearchMetadataIndexTests {
 	@Before
 	public void setUp() throws MalformedURLException, ProtocolException, IOException{
 		Properties properties = PropertiesUtils.read(propertiesFile);
-		String[] hosts=new String[]{properties.getProperty("elasticsearch.hosts")};
+		String[] hosts=properties.getProperty("elasticsearch.hosts").replaceAll(",", " ").replaceAll("\\s+"," ").split(" ");
 		portal = properties.getProperty("elasticsearch.index");
-		url = "http://"+hosts[0]+":9200/"+portal+"/test_collection/test_object_1";
+		url = hosts[0]+"/"+portal+"/test_collection/test_object_1";
 		
 		index = new ElasticsearchMetadataIndex();
 		index.setCluster(properties.getProperty("elasticsearch.cluster"));

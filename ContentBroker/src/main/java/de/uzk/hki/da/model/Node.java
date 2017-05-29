@@ -91,6 +91,9 @@ public class Node{
 	/** The ingest area root path. */
 	@Transient private Path ingestAreaRoot;
 	
+	/** The ingest area noBagit root path. */
+	@Transient private Path ingestAreaNoBagitRoot;
+	
 	/** The grid cache area root path. */
 	@Transient private Path gridCacheArea;
 	
@@ -374,6 +377,25 @@ public class Node{
 		this.ingestAreaRoot = ingestAreaRoot;
 	}
 	
+	
+	/**
+	 * Gets ingestNoBagit area root path
+	 * 
+	 * @return ingestNoBagit area root path
+	 */
+	public Path getIngestAreaNoBagitRootPath() {
+		return ingestAreaNoBagitRoot;
+	}
+
+	/**
+	 * Sets the ingestNoBagit area root path
+	 * 
+	 * @param ingestAreaNoBagitRoot the new ingestNoBagit area root path
+	 */
+	public void setIngestAreaNoBagitRootPath(Path ingestAreaNoBagitRoot) {
+		this.ingestAreaNoBagitRoot = ingestAreaNoBagitRoot;
+	}
+
 	/**
 	 * Sets the grid cache area root path.
 	 *

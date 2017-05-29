@@ -136,22 +136,9 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		result = new Job (parent, C.WORKFLOW_STATUS_START___FETCH_PIPS_ACTION);
 		result.setResponsibleNodeName(presServerName);
 		result.setObject(o);
-		result.setDate_created(String.valueOf(new Date().getTime()/1000L));
+		result.setCreatedAt(new Date());
 		
 		return result;
-	}
-
-	
-	
-	
-	static void clearNonpersistentObjectProperties(Object o) {
-		
-		o.getDocuments().clear();
-		for (Package pkg : o.getPackages()){
-			pkg.getEvents().clear();
-			pkg.getFiles().clear();
-	
-		}
 	}
 
 	
@@ -178,7 +165,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 		
 		
 		o.setLast_checked(new Date());
-		o.setDate_modified(String.valueOf(new Date().getTime()));
+		o.setModifiedAt(new Date());
 
 		o.setStatic_nondisclosure_limit(j.getStatic_nondisclosure_limit());
 		o.setDynamic_nondisclosure_limit(j.getDynamic_nondisclosure_limit());
@@ -201,7 +188,7 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 	
 		o.setObject_state(Object.ObjectStatus.InWorkflow);
 		o.setLast_checked(null);
-		o.setDate_modified(null);
+		o.setModifiedAt(null);
 		o.setStatic_nondisclosure_limit(null);
 		o.setDynamic_nondisclosure_limit(null);
 	}

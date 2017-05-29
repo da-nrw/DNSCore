@@ -192,7 +192,7 @@ public class ATPremisCreation extends PREMISBase{
 //				assertEquals("7654321", e.getChild("eventIdentifier", ns).getChild("eventIdentifierValue", ns).
 //						getValue());
 				try {dateFormat.parse(e.getChild("eventDateTime", ns).getValue());} catch (ParseException ex) {	fail();	}	
-				assertThat(e.getChild("linkingAgentIdentifier", ns).getChildText("linkingAgentIdentifierValue", ns)).isEqualTo("TEST");
+				assertThat(e.getChild("linkingAgentIdentifier", ns).getChildText("linkingAgentIdentifierValue", ns)).isEqualTo(testContractor.getUsername());
 				assertThat(e.getChild("linkingObjectIdentifier", ns).getChildText("linkingObjectIdentifierValue", ns)).isEqualTo(objectIdentifier+".pack_1.tar");
 				checkedEvents++;
 			}

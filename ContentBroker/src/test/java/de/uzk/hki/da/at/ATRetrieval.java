@@ -37,6 +37,7 @@ import org.junit.Test;
 import de.uzk.hki.da.cb.PostRetrievalAction;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.C;
@@ -65,7 +66,7 @@ public class ATRetrieval extends AcceptanceTest{
 	
 	@AfterClass
 	public static void tearDown(){
-		distributedConversionAdapter.remove("aip/TEST/"+identifier); // TODO does it work?
+		distributedConversionAdapter.remove("aip/"+testContractor.getUsername()+"/"+identifier); // TODO does it work?
 		removeTMPFiles();
 	}
 	
@@ -74,19 +75,24 @@ public class ATRetrieval extends AcceptanceTest{
 		FolderUtils.deleteQuietlySafe(new File("/tmp/"+identifier));
 	}
 	
+	private static boolean nonPersistPropertiesExist(Object o){
+		return !o.getDocuments().isEmpty();
+	}
 	@Test
 	public void testHappyPath() throws Exception{
 		ath.createJob(originalName, "900");
 		ath.waitForJobToBeInStatus(originalName, "952");
 		
-		System.out.println(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+identifier+".tar").getAbsolutePath());
-		assertTrue(new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+identifier+".tar").exists());
+		assertTrue("Temp Daten aus der Datenbank noch nicht bereinigt",!nonPersistPropertiesExist(ath.getObject(originalName)));
+		
+		System.out.println(new File(localNode.getUserAreaRootPath()+"/"+testContractor.getUsername()+"/outgoing/"+identifier+".tar").getAbsolutePath());
+		assertTrue(new File(localNode.getUserAreaRootPath()+"/"+testContractor.getUsername()+"/outgoing/"+identifier+".tar").exists());
 		
 		FileUtils.moveFileToDirectory(
-				new File(localNode.getUserAreaRootPath()+"/TEST/outgoing/"+identifier+".tar"), 
+				new File(localNode.getUserAreaRootPath()+"/"+testContractor.getUsername()+"/outgoing/"+identifier+".tar"), 
 				new File("/tmp"), false);
 		//after moving the retrieval-file, PostRetrievalAction(952) have to end the workflow
-		Thread.sleep((int)(PostRetrievalAction.PAUSE_DELAY * 1.5));
+		Thread.sleep((int)(PostRetrievalAction.PAUSE_DELAY * 1.2));
 		ath.awaitObjectState(originalName, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow); 
 		ArchiveBuilderFactory.getArchiveBuilderForFile(new File("/tmp/"+identifier+".tar"))
 			.unarchiveFolder(new File("/tmp/"+identifier+".tar"), new File ("/tmp/"));
@@ -106,20 +112,23 @@ public class ATRetrieval extends AcceptanceTest{
 	@Test
 	public void testTimebasedRemoveRetrievalAfter14DayBeforeTimeout() throws Exception {
 		int usualRetrievalTime = localNode.getRetrieval_remain_time();
+		
+		long subHours =  (usualRetrievalTime * 24L - 12L);
 
-		String createTime = String.valueOf(new Date().getTime() / 1000L - ((usualRetrievalTime * 24 - 12) * 60 * 60));// - 1/2 Day for timeout
+		Date createTime = new Date(new Date().getTime() - subHours * 3600L * 1000L);
+		
 		ath.createJob(originalName, "900", createTime);
 		ath.waitForJobToBeInStatus(originalName, "952");
 
 		System.out.println(
-				new File(localNode.getUserAreaRootPath() + "/TEST/outgoing/" + identifier + ".tar").getAbsolutePath());
-		assertTrue(new File(localNode.getUserAreaRootPath() + "/TEST/outgoing/" + identifier + ".tar").exists());
+				new File(localNode.getUserAreaRootPath() + "/"+testContractor.getUsername()+"/outgoing/" + identifier + ".tar").getAbsolutePath());
+		assertTrue(new File(localNode.getUserAreaRootPath() + "/"+testContractor.getUsername()+"/outgoing/" + identifier + ".tar").exists());
 
-		Thread.sleep((int)(PostRetrievalAction.PAUSE_DELAY * 1.5));
+		Thread.sleep((int)(PostRetrievalAction.PAUSE_DELAY * 1.2));
 		ath.waitForJobToBeInStatus(originalName, "952");
-		assertTrue(new File(localNode.getUserAreaRootPath() + "/TEST/outgoing/" + identifier + ".tar").exists());
-		new File(localNode.getUserAreaRootPath() + "/TEST/outgoing/" + identifier + ".tar").delete();
-		Thread.sleep((int)(PostRetrievalAction.PAUSE_DELAY * 1.5));
+		assertTrue(new File(localNode.getUserAreaRootPath() + "/"+testContractor.getUsername()+"/outgoing/" + identifier + ".tar").exists());
+		new File(localNode.getUserAreaRootPath() + "/"+testContractor.getUsername()+"/outgoing/" + identifier + ".tar").delete();
+		Thread.sleep((int)(PostRetrievalAction.PAUSE_DELAY * 1.2));
 		assertTrue(ath.getJob(originalName) == null);
 	}
 
@@ -128,14 +137,17 @@ public class ATRetrieval extends AcceptanceTest{
 	public void testTimebasedRemoveRetrievalAfter14DayAfterTimeout() throws Exception {
 		int usualRetrievalTime = localNode.getRetrieval_remain_time();
 
-		String createTime = String.valueOf(new Date().getTime() / 1000L - ((usualRetrievalTime * 24 + 12) * 60 * 60));// +1/2 Day after timeout
+		long subHours =  (usualRetrievalTime * 24L + 12L);
+
+		Date createTime = new Date(new Date().getTime() - subHours * 3600L * 1000L);
+
 		ath.createJob(originalName, "900", createTime);
 		//ath.waitForJobToBeInStatus(originalName, "952");
 
-		Thread.sleep((int)(PostRetrievalAction.PAUSE_DELAY * 1.5));
+		Thread.sleep((int)(PostRetrievalAction.PAUSE_DELAY * 1.2));
 		ath.awaitObjectState(originalName, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		assertTrue(ath.getJob(originalName) == null);
-		assertTrue(!new File(localNode.getUserAreaRootPath() + "/TEST/outgoing/" + identifier + ".tar").exists());
+		assertTrue(!new File(localNode.getUserAreaRootPath() + "/"+testContractor.getUsername()+"/outgoing/" + identifier + ".tar").exists());
 
 	}
 }

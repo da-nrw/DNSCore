@@ -251,6 +251,12 @@ public class Cli {
     			continue;
     		} 
 
+    		// DANRW-1352: Extension to disable bagit - function
+    		if (arg.startsWith("-noBagit")) {
+    			sipFactory.setBagit(false);
+    			continue;
+    		}
+    		
     		if (arg.equals("-default") || arg.equals("-multiple") || arg.equals("-neverOverwrite") || arg.equals("-compression") || arg.equals("-nested"))
     			continue;
     		
@@ -746,6 +752,8 @@ public class Cli {
 		System.out.println("");
 		System.out.println("   -noTar                    SIPs als Verzeichnis erstellen");
 		System.out.println("   -destDir=\"[Name]\"         Verzeichnisname, in dem das SIP erstellt werden soll (abhängig vom gewählten Zielordner). Darf nur in Kombination mit -noTar verwendet werden");
+		System.out.println("");
+		System.out.println("	-noBagit				  SIP ohne bagit erstellen");
 		System.out.println("");
 		System.out.println("   -neverOverwrite           SIPs nicht erstellen, wenn sich im Zielordner bereits ein SIP gleichen Namens befindet (Standard)");
 		System.out.println("   -alwaysOverwrite          Bereits existierende SIPs/Lieferungen gleichen Namens im Zielordner ohne Nachfrage überschreiben");

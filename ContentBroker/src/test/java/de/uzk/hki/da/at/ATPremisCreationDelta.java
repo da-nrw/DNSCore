@@ -28,12 +28,14 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Namespace;
@@ -240,14 +242,14 @@ public class ATPremisCreationDelta extends PREMISBase {
 				String ingestId = e.getChild("eventIdentifier", ns).getChildText("eventIdentifierValue", ns);
 				if (ingestId.equals("1-20140718220" + "+1")) { // the object id is different from our test object id because it was generated in the run for creating the test tar package
 					try {dateFormat.parse(e.getChild("eventDateTime", ns).getValue());} catch (ParseException ex) {	fail();	}	
-					assertThat(e.getChild("linkingAgentIdentifier", ns).getChildText("linkingAgentIdentifierValue", ns)).isEqualTo("TEST");
+					assertThat(e.getChild("linkingAgentIdentifier", ns).getChildText("linkingAgentIdentifierValue", ns)).isEqualTo(testContractor.getUsername());
 					assertThat(e.getChild("linkingObjectIdentifier", ns).getChildText("linkingObjectIdentifierValue", ns)).isEqualTo(objectIdentifier + ".pack_1.tar");
 					System.out.println("checked INGEST event: "+objectIdentifier+"1");
 					checkedEvents++;
 				}
 				if (ingestId.equals(objectIdentifier + "+2")) {
 					try {dateFormat.parse(e.getChild("eventDateTime", ns).getValue());} catch (ParseException ex) {	fail();	}	
-					assertThat(e.getChild("linkingAgentIdentifier", ns).getChildText("linkingAgentIdentifierValue", ns)).isEqualTo("TEST");
+					assertThat(e.getChild("linkingAgentIdentifier", ns).getChildText("linkingAgentIdentifierValue", ns)).isEqualTo(testContractor.getUsername());
 					assertThat(e.getChild("linkingObjectIdentifier", ns).getChildText("linkingObjectIdentifierValue", ns)).isEqualTo(objectIdentifier + ".pack_2.tar");
 					System.out.println("checked INGEST event: "+objectIdentifier+"2");
 					checkedEvents++;
@@ -262,12 +264,11 @@ public class ATPremisCreationDelta extends PREMISBase {
 		for (Element e : agentElements){
 			Element agentIdentifier = e.getChild("agentIdentifier", ns);
 			String agentName = agentIdentifier.getChildText("agentIdentifierValue", ns);			
-			System.out.println("checked AGENT: "+agentName);
 			if (agentName.startsWith("DA NRW SIP-Builder")){
 				assertEquals("APPLICATION", e.getChildText("agentType", ns));
 				assertEquals("APPLICATION_NAME", agentIdentifier.getChildText("agentIdentifierType", ns));
 				checkedAgents++;
-			}else if ("TEST".equals(agentName)){
+			}else if (testContractor.getUsername().equals(agentName)){
 				assertEquals("CONTRACTOR", e.getChildText("agentType", ns));
 				assertEquals("CONTRACTOR_SHORT_NAME", agentIdentifier.getChildText("agentIdentifierType", ns));
 				checkedAgents++;
@@ -276,6 +277,7 @@ public class ATPremisCreationDelta extends PREMISBase {
 				assertEquals("NODE_NAME", agentIdentifier.getChildText("agentIdentifierType", ns));
 				checkedAgents++;
 			}
+			System.out.println("checked AGENT: "+agentName);
 		}
 		assertEquals(4, checkedAgents);	// change to 3 if both packages are build with the same SIPBuilder
 	}

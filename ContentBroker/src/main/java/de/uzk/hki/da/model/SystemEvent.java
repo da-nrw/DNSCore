@@ -98,5 +98,9 @@ public class SystemEvent {
 	public void setParameter(String parameter) {
 		this.parameter = parameter;
 	}
+	public int getId() {
+		return id;
+	}
+	
 	
 }

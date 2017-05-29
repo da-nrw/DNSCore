@@ -53,7 +53,7 @@ public class RetrievePackagesHelperTest {
 	public void setUp(){
 		Node n = new Node();
 		n.setWorkAreaRootPath(workAreaRootPath);
-		
+		n.setName("testnode");
 		Path.make(workAreaRootPath,"work/TEST/id/data").toFile().mkdir();
 		
 		object = TESTHelper.setUpObject("id", workAreaRootPath);

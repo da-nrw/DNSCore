@@ -56,7 +56,7 @@ public class ATIngestValidation extends AcceptanceTest{
 		
 		ath.putAIPToLongTermStorage(IDENTIFIER,ORIG_NAME,null,100);
 		FileUtils.copyFile(Path.makeFile(TC.TEST_ROOT_AT,CONTAINER_NAME), 
-				Path.makeFile(localNode.getIngestAreaRootPath(),C.TEST_USER_SHORT_NAME,CONTAINER_NAME));
+				Path.makeFile(localNode.getIngestAreaRootPath(),testContractor.getUsername(),CONTAINER_NAME));
 		
 		
 		ath.putSIPtoIngestArea(ORIG_NAME,"tgz",

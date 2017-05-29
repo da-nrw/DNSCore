@@ -9,7 +9,7 @@
 		 <jqui:resources/>
 		<r:script>
 			var order = "desc";
-			var sort = "created";
+			var sort = "createdAt";
 			$(function() {
 				$("#legend").accordion({ collapsible: true, active: false, autoHeight: false });
 			});
@@ -21,8 +21,8 @@
 					var obj = $.PeriodicalUpdater("./listSnippet",
 						{
 							method: "get",
-							minTimeout: 1000,
-							maxTimeout: 1000,
+							minTimeout: 5000,
+							maxTimeout: 5000,
 							data: function() {
 								return { order: order, sort: sort}
 							},
@@ -36,6 +36,12 @@
 			</g:if>
 			function stopUpdater() {		
 				obj.stop();
+				document.getElementById("starter").disabled=false;
+			}
+			
+			function startUpdater() {
+				obj.restart();
+				document.getElementById("stopper").disabled=false;
 			}
 		
 			function sortQueue(field) {
@@ -64,7 +70,13 @@
 			</ul>
 		</div>
 		
-		<h1>Bearbeitungsübersicht</h1>			
+		<h1>Bearbeitungsübersicht</h1>		
+		<g:if test="${  !params.search }">
+			<i>Aktualieseren der Seite:&nbsp; </i>
+			<input id="stopper" type="button" onclick="stopUpdater();disabled=true;" value="stoppen"/>
+			 &nbsp;
+			<input id="starter" type="button" onclick="startUpdater();disabled=true;" disabled  value="starten"/>
+    	</g:if> 
 		<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
 		</g:if>

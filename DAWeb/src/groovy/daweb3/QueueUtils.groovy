@@ -57,8 +57,8 @@ class QueueUtils {
 		if (additionalQuestion!=null || additionalQuestion!= "")
 			job.setQuestion(additionalQuestion)
 			
-		job.setCreated(String.valueOf(Math.round(new Date().getTime()/1000L)))
-		job.setModified(String.valueOf(Math.round(new Date().getTime()/1000L)))
+		job.setCreatedAt(new Date())
+		job.setModifiedAt(new Date())
 		
 		job.setInitialNode(responsibleNodeName)
 		
@@ -94,7 +94,7 @@ class QueueUtils {
 			if (additionalAnswer!=null && additionalAnswer!="")
 			queueEntryInstance.answer = additionalAnswer
 			queueEntryInstance.setStatus(newStatus)
-			queueEntryInstance.modified = Math.round(new Date().getTime()/1000L)
+			queueEntryInstance.modifiedAt = new Date()
 			def errorMsg = ""
 			if( !queueEntryInstance.save()  ) {
 				queueEntryInstance.errors.each { 
