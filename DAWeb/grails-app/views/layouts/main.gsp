@@ -14,7 +14,6 @@
 		<link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
 		<link rel="stylesheet" href="${resource(dir: 'css', file: grailsApplication.config.main.css)}" type="text/css">
 		<link rel="stylesheet" href="${resource(dir: 'css', file: grailsApplication.config.mobile.css)}" type="text/css">
-		<link rel="stylesheet" href="${resource(dir: 'css', file: 'bootstrap.css')}" type="text/css">
 		<g:layoutHead/>
 		<r:require modules="jquery, application" />
         <r:layoutResources />
