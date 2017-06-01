@@ -33,12 +33,9 @@ import de.uzk.hki.da.utils.C;
 
 /**
  * 
- * @author Jens Peters
- * Deletes objects already retrieved by Contentbroker and read by user (via daweb) 
- * on the given outgoing path
+ * @author trebunski
  *
  */
-
 public class QualityLevelCheckAction extends AbstractAction {
 /*
 	private static final String OUTGOING = "outgoing";
@@ -69,39 +66,39 @@ public class QualityLevelCheckAction extends AbstractAction {
 	public boolean implementation() {
 		logger.debug("QualityLevelCheckAction called! ");
 		List<Event> events = o.getLatestPackage().getEvents();
-		List<Event> validationEvents = new ArrayList<Event>();
-		List<Event> conversionEvents = new ArrayList<Event>();
+		List<Event> validationFailEvents = new ArrayList<Event>();
+		List<Event> conversionFailEvents = new ArrayList<Event>();
 		for (Event e : events) {
 			if (e.getType().equals(C.EVENT_TYPE_QUALITY_FAULT_CONVERSION)) {
-				conversionEvents.add(e);
+				conversionFailEvents.add(e);
 			} else if (e.getType().equals(C.EVENT_TYPE_QUALITY_FAULT_VALIDATION)) {
-				validationEvents.add(e);
+				validationFailEvents.add(e);
 			}
 		}
 		
 		
-		Collections.sort(conversionEvents, eventComparator);
-		Collections.sort(validationEvents, eventComparator);
-		if(validationEvents.isEmpty()&&conversionEvents.isEmpty()){
+		Collections.sort(conversionFailEvents, eventComparator);
+		Collections.sort(validationFailEvents, eventComparator);
+		if(validationFailEvents.isEmpty()&&conversionFailEvents.isEmpty()){
 			extendObject(C.QUALITYFLAG_LEVEL_4,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4,o.getLatestPackage().getFiles().get(0),"NO CRITICAL QUALITY_LEVEL EVENTS"));
 			
-		}else if(!validationEvents.isEmpty()&&conversionEvents.isEmpty()){
-			extendObject(C.QUALITYFLAG_LEVEL_3,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_3,validationEvents.get(0).getSource_file(),generateQualityEventDetail("ONLY VALIDATION QUALITY_LEVEL EVENTS",validationEvents)));
-		}else if(validationEvents.isEmpty()&&!conversionEvents.isEmpty()){
-			extendObject(C.QUALITYFLAG_LEVEL_2,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2,conversionEvents.get(0).getSource_file(),generateQualityEventDetail("ONLY CONVERSION QUALITY_LEVEL EVENTS",conversionEvents)));
+		}else if(!validationFailEvents.isEmpty()&&conversionFailEvents.isEmpty()){
+			extendObject(C.QUALITYFLAG_LEVEL_3,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_3,validationFailEvents.get(0).getSource_file(),generateQualityEventDetail("ONLY "+C.EVENT_TYPE_QUALITY_FAULT_VALIDATION+" EVENTS",validationFailEvents)));
+		}else if(validationFailEvents.isEmpty()&&!conversionFailEvents.isEmpty()){
+			extendObject(C.QUALITYFLAG_LEVEL_2,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2,conversionFailEvents.get(0).getSource_file(),generateQualityEventDetail("ONLY "+C.EVENT_TYPE_QUALITY_FAULT_CONVERSION+" EVENTS",conversionFailEvents)));
 		}else{
 			List<Event> commonConversionEvents=new ArrayList<Event>();
-			Event[] validationEventsArray=new Event[validationEvents.size()];
-			validationEventsArray=validationEvents.toArray(validationEventsArray);
+			Event[] validationEventsArray=new Event[validationFailEvents.size()];
+			validationEventsArray=validationFailEvents.toArray(validationEventsArray);
 			
-			for(Event e:conversionEvents){
+			for(Event e:conversionFailEvents){
 				int index=Arrays.binarySearch(validationEventsArray, e, eventComparator);
 					if (index>=0)
 						commonConversionEvents.add(validationEventsArray[index]);
 			}
 			if(commonConversionEvents.isEmpty()){//there is no validation and conversion events on same files
-				conversionEvents.addAll(validationEvents);
-				extendObject(C.QUALITYFLAG_LEVEL_2,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2,conversionEvents.get(0).getSource_file(),generateQualityEventDetail("CONVERSION AND VALIDATION QUALITY_LEVEL EVENTS ON DIFFERENT FILES",conversionEvents)));
+				conversionFailEvents.addAll(validationFailEvents);
+				extendObject(C.QUALITYFLAG_LEVEL_2,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2,conversionFailEvents.get(0).getSource_file(),generateQualityEventDetail("CONVERSION AND VALIDATION QUALITY_LEVEL EVENTS ON DIFFERENT FILES",conversionFailEvents)));
 			}else{
 				extendObject(C.QUALITYFLAG_LEVEL_1,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1,commonConversionEvents.get(0).getSource_file(),generateQualityEventDetail("CONVERSION AND VALIDATION QUALITY_LEVEL EVENTS ON SAME FILES",commonConversionEvents)));
 			}
@@ -124,8 +121,8 @@ public class QualityLevelCheckAction extends AbstractAction {
 			sb.append("]");
 		}
 		String msg=sb.toString();
-		if(msg.length()>1000)
-			msg=msg.substring(0,1000);
+		if(msg.length()>Event.MAX_DETAIL_STR_LEN)
+			msg=msg.substring(0,Event.MAX_DETAIL_STR_LEN);
 		
 		return msg;
 	}
@@ -139,7 +136,7 @@ public class QualityLevelCheckAction extends AbstractAction {
 	}*/
 	private void extendObject(int qualityFlag,Event qualityEvent) {
 		//o.setObject_state(100);
-		o.setDate_modified(String.valueOf(new Date().getTime()));
+		o.setModifiedAt(new Date());
 		//TODO: Object set Quality Level
 		o.setQuality_flag(qualityFlag);
 		o.getLatestPackage().getEvents().add(qualityEvent);

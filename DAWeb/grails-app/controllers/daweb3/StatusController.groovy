@@ -166,6 +166,7 @@ class StatusController {
 				result.contractor = instance.user.shortName
 				result.origName = instance.origName
 				result.identifier = instance.identifier
+				result.qualityLevel = instance.quality_flag
 				def packages = []
 				result.packages = packages;
 				

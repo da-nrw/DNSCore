@@ -74,33 +74,13 @@ public class ATQualityLevel extends AcceptanceTest {
  		assertEquals("Object Level: "+obbi.getQuality_flag(),obbi.getQuality_flag(),2);
 		assertEquals("Package count: "+obbi.getPackages().size(),obbi.getPackages().size(),5);
 		
-		
+		idiName = obbi.getIdentifier();
  		
- 		/*
- 		
-		obbi = ath.getObject(ORIG_NAME);
-		idiName = obbi.getIdentifier(); 
-		
-		assertTrue(obbi.getPackages().size() == 3);
-
-		TreeMap<String, de.uzk.hki.da.model.Package> packNames = new TreeMap<String, de.uzk.hki.da.model.Package>();
-	
-		for (de.uzk.hki.da.model.Package pack : obbi.getPackages()){
-			packNames.put(pack.getName(), pack);
-		}
-		
-		for (int nnn=1; nnn<4; nnn++){
-			String packName = Integer.toString(nnn);
-			de.uzk.hki.da.model.Package pack = packNames.get(packName);
-			assertTrue(pack != null);
-			String contName = "ATDeltaOnURN_" + packName + ".tgz"; 
-			assertTrue(pack.getContainerName().equals(contName));
-		}*/
 	}
 
 	@After
 	public void tearDown() {
-		distributedConversionAdapter.remove("aip/TEST/" + idiName);
+		distributedConversionAdapter.remove("aip/"+testContractor.getUsername()+"/" + idiName);
 	}
 
 }

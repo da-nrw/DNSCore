@@ -46,6 +46,8 @@ import javax.persistence.Transient;
 @Table(name="events")
 public class Event {
 	
+	public static final int MAX_DETAIL_STR_LEN=1000;
+	
 	/** The id. */
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

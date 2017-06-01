@@ -64,10 +64,7 @@ import de.uzk.hki.da.utils.Path;
  * @author Daniel M. de Oliveira
  */
 public class CheckFormatsAction extends AbstractAction {
-
-
 	private FileFormatFacade fileFormatFacade;
-
 
 	@Override
 	public void checkConfiguration() {
@@ -143,29 +140,34 @@ public class CheckFormatsAction extends AbstractAction {
 			String fileName = DigestUtils.md5Hex(f.getRelative_path());
 			
 			if (!new File(dir).exists()) new File(dir).mkdirs();
-			if (f.getRelative_path().toLowerCase().equals("premis.xml") || !f.getRelative_path().toLowerCase().endsWith(".xml")) {
-				File target = Path.makeFile(dir,fileName);
-				logger.debug("will write jhove output to: "+target);
-				
+			if (f.getRelative_path().toLowerCase().equals("premis.xml")
+					|| !f.getRelative_path().toLowerCase().endsWith(".xml")) {
+				File target = Path.makeFile(dir, fileName);
+				logger.debug("will write jhove output to: " + target);
+
 				try {
-					if (!fileFormatFacade.extract(wa.toFile(f), target,f.getFormatPUID())) 
+					if (!fileFormatFacade.extract(wa.toFile(f), target, f.getFormatPUID()))
 						throw new RuntimeException("Unknown error during metadata file extraction.");
 				} catch (ConnectionException e) {
-					throw new SubsystemNotAvailableException("fileFormatFacade.extract() could not connect.",e);
-				}catch(QualityLevelException e){ //execution won't be interrupted, just quality level 
-					logger.debug("Validation failed by QualityLevelException: "+e);
-					Event qualityEvent = new Event();
-					qualityEvent.setAgent_name(n.getName());
-					qualityEvent.setAgent_type(C.AGENT_TYPE_NODE);
-					qualityEvent.setDate(new Date());
-					qualityEvent.setType(C.EVENT_TYPE_QUALITY_FAULT_VALIDATION);
-					qualityEvent.setSource_file(f);
-					String msg=e.getType()+" "+e.getMessage();
-					if(msg.length()>1000)
-						msg=msg.substring(0,1000);
-					qualityEvent.setDetail(msg);
-					logger.debug("QualityEvent created: "+qualityEvent);
-					o.getLatestPackage().getEvents().add(qualityEvent);
+					throw new SubsystemNotAvailableException("fileFormatFacade.extract() could not connect.", e);
+				} catch (QualityLevelException e) { // execution won't be interrupted, just quality level
+					logger.debug("Validation failed by QualityLevelException: " + e);
+					if (!o.getLatestPackage().getFiles().contains(f)) {
+						logger.debug("QualityLevelException is not for Latest Package: " + e);
+					} else {
+						Event qualityEvent = new Event();
+						qualityEvent.setAgent_name(n.getName());
+						qualityEvent.setAgent_type(C.AGENT_TYPE_NODE);
+						qualityEvent.setDate(new Date());
+						qualityEvent.setType(C.EVENT_TYPE_QUALITY_FAULT_VALIDATION);
+						qualityEvent.setSource_file(f);
+						String msg = e.getType() + " " + e.getMessage();
+						if (msg.length() > Event.MAX_DETAIL_STR_LEN)
+							msg = msg.substring(0, Event.MAX_DETAIL_STR_LEN);
+						qualityEvent.setDetail(msg);
+						logger.debug("QualityEvent created: " + qualityEvent);
+						o.getLatestPackage().getEvents().add(qualityEvent);
+					}
 				}
 			} else logger.debug("Skipping jhove validation for xml file "+f.getRelative_path());
 		}

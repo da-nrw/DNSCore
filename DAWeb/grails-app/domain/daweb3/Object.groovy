@@ -51,6 +51,7 @@ class Object {
 	String origName
 	int object_state
 	int published_flag
+	int quality_flag
 	
 	// due to now unused iRODS functions these fields are still strings, should be 
 	// refactored to normal Dates
@@ -139,6 +140,13 @@ class Object {
 		if (urn!=null && urn!="" && urn!="NULL") {
 			def formurn = urn.replaceAll(~"\\+",":")
 			return formurn
+		}
+		return ""
+	}
+	
+	def getFormattedQualityLevel() {
+		if (quality_flag!=null && quality_flag!="" && quality_flag!="NULL" && quality_flag!="-1") {
+			return quality_flag
 		}
 		return ""
 	}

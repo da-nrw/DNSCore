@@ -98,9 +98,9 @@ public class ConverterService {
 				qualityEvent.setAgent_type(C.AGENT_TYPE_NODE);
 				qualityEvent.setType(C.EVENT_TYPE_QUALITY_FAULT_CONVERSION);
 				qualityEvent.setSource_file(ci.getSource_file());
-				String msg=QualityLevelException.Type.CONVERSION+" "+e.getMessage();
-				if(msg.length()>1000)
-					msg=msg.substring(0,1000);
+				String msg=QualityLevelException.Type.CONVERSION+" | "+ci.getConversion_routine()+" | "+e.getMessage();
+				if(msg.length()>Event.MAX_DETAIL_STR_LEN)
+					msg=msg.substring(0,Event.MAX_DETAIL_STR_LEN);
 				qualityEvent.setDetail(msg);
 
 				logger.debug("QualityEvent created: "+qualityEvent);

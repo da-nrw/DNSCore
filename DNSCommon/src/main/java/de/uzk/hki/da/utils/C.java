@@ -188,7 +188,7 @@ public class C {
 	public static final int PUBLISHEDFLAG_PUBLIC = 1;
 	public static final int PUBLISHEDFLAG_UNDEFINED = -1;
 	
-	public static final int QUALITYFLAG_UNDEFINED = -1;
+	public static final int QUALITYFLAG_DEFAULT = 0;
 	public static final int QUALITYFLAG_LEVEL_1 = 1;
 	public static final int QUALITYFLAG_LEVEL_2 = 2;
 	public static final int QUALITYFLAG_LEVEL_3 = 3;
@@ -207,10 +207,6 @@ public class C {
 	public static final String KIND_OF_SIPBUILDING_SINGLE_WITH_TARGET_FOLDER_NAME="Einzelnes SIP mit dem angegebenen Namen aus dem Quellordner erstellen";
 	public static final String KIND_OF_SIPBUILDING_MULTIPLE="SIPs aus Unterordnern des Quellverzeichnisses erstellen";
 	public static final String KIND_OF_SIPBUILDING_NESTED="SIPs aus verzweigter Ordnerstruktur erstellen (nur METS)";
-
-	
-
-
 	
 }
 

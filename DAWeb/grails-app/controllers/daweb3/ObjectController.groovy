@@ -181,6 +181,13 @@ class ObjectController {
 				lt(st,de)
 			}
 
+			/*if (params.searchQualityLevel!=null) {
+				filterOn=1
+				//createAlias( "user", "c" )
+				//eq("quality_flag", params.searchQualityLevel)
+				//between("quality_flag", params.searchQualityLevel,params.searchQualityLevel+1)
+				//eq("user.id", user.id)
+			}*/
 
 			if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 				admin = 1;

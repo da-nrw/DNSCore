@@ -145,8 +145,8 @@ public class Object {
 	/** The published_flag. */
 	private int published_flag=C.PUBLISHEDFLAG_UNDEFINED;
 	
-	@Column(name="quality_flag", columnDefinition="INTEGER DEFAULT "+C.QUALITYFLAG_UNDEFINED)
-	private int quality_flag=C.QUALITYFLAG_UNDEFINED;
+	@Column(name="quality_flag", columnDefinition="INTEGER DEFAULT "+C.QUALITYFLAG_DEFAULT)
+	private int quality_flag=C.QUALITYFLAG_DEFAULT;
 	
 	
 	/** The last_checked. */

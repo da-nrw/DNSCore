@@ -228,7 +228,9 @@ public class ObjectPremisXmlReader{
 		
 		event.setDate(readDate(el.getFirstChildElement("eventDateTime", PREMIS_NS).getValue()));
 		
-		if (eventType.equals("CONVERT"))
+		/*if (eventType.equals("CONVERT"))
+			event.setDetail(el.getFirstChildElement("eventDetail", PREMIS_NS).getValue());*/
+		if (el.getFirstChildElement("eventDetail", PREMIS_NS)!=null && el.getFirstChildElement("eventDetail", PREMIS_NS).getValue()!=null)
 			event.setDetail(el.getFirstChildElement("eventDetail", PREMIS_NS).getValue());
 		
 		event.setAgent_type(Agent.getTypeForIdType(el.getFirstChildElement("linkingAgentIdentifier", PREMIS_NS)
