@@ -32,6 +32,7 @@ public class ATQualityLevel extends AcceptanceTest {
 	public void test() throws IOException {
 		ath.putSIPtoIngestArea(SOURCE_NAME_2, C.FILE_EXTENSION_TGZ, ORIG_NAME);
 		ath.awaitObjectState(ORIG_NAME, Object.ObjectStatus.InWorkflow);
+ 		ath.waitForObjectPublishedState(ORIG_NAME,0);
  		ath.awaitObjectState(ORIG_NAME, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
  		
  		Object obbi = ath.getObject(ORIG_NAME);
@@ -40,6 +41,7 @@ public class ATQualityLevel extends AcceptanceTest {
 
 		ath.putSIPtoIngestArea(SOURCE_NAME_3, C.FILE_EXTENSION_TGZ, ORIG_NAME);
 		ath.awaitObjectState(ORIG_NAME, Object.ObjectStatus.InWorkflow);
+		ath.waitForDefinedPublishedState(ORIG_NAME);
 		ath.awaitObjectState(ORIG_NAME, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		
 		obbi = ath.getObject(ORIG_NAME);
@@ -48,6 +50,7 @@ public class ATQualityLevel extends AcceptanceTest {
 		
 		ath.putSIPtoIngestArea(SOURCE_NAME_4, C.FILE_EXTENSION_TGZ, ORIG_NAME);
 		ath.awaitObjectState(ORIG_NAME, Object.ObjectStatus.InWorkflow);
+		ath.waitForDefinedPublishedState(ORIG_NAME);
 		ath.awaitObjectState(ORIG_NAME, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		
 		obbi = ath.getObject(ORIG_NAME);
@@ -59,6 +62,7 @@ public class ATQualityLevel extends AcceptanceTest {
 		
 		ath.putSIPtoIngestArea(SOURCE_NAME_3, C.FILE_EXTENSION_TGZ, ORIG_NAME);
 		ath.awaitObjectState(ORIG_NAME, Object.ObjectStatus.InWorkflow);
+		ath.waitForDefinedPublishedState(ORIG_NAME);
 		ath.awaitObjectState(ORIG_NAME, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		
 		obbi = ath.getObject(ORIG_NAME);
@@ -68,6 +72,7 @@ public class ATQualityLevel extends AcceptanceTest {
 		
 		ath.putSIPtoIngestArea(SOURCE_NAME_2, C.FILE_EXTENSION_TGZ, ORIG_NAME);
 		ath.awaitObjectState(ORIG_NAME, Object.ObjectStatus.InWorkflow);
+		ath.waitForDefinedPublishedState(ORIG_NAME);
 		ath.awaitObjectState(ORIG_NAME, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		
 		obbi = ath.getObject(ORIG_NAME);
