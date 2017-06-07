@@ -74,6 +74,7 @@ public class ATRecreateEDM extends AcceptanceTest {
 		ath.awaitObjectState(sip,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		
 		//assert edm file and index entry exists
+		edmFile1 = ath.loadFileFromPip(object1.getIdentifier(), "EDM.xml");
 		assertTrue(edmFile1.exists());	
 		assertTrue(indexHasObj(object1.getIdentifier()));
 	}
