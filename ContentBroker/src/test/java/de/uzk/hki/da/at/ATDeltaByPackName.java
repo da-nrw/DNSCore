@@ -45,6 +45,7 @@ public class ATDeltaByPackName extends AcceptanceTest {
 		idiName = obbi.getIdentifier(); 
 		
 		assertTrue(obbi.getPackages().size() == COUNT);
+		assertTrue(obbi.getLatestPackage().getName().equals(""+COUNT));
 
 		TreeMap<String, de.uzk.hki.da.model.Package> packNames = new TreeMap<String, de.uzk.hki.da.model.Package>();
 	
