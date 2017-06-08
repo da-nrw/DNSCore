@@ -438,6 +438,7 @@ public class AcceptanceTestHelper {
 	 */
 	void putSIPtoIngestArea(String sourcePackageName,String ext,String originalName) throws IOException {
 		
+		System.out.println("putSIPtoIngestArea(" + sourcePackageName + ", "+ext+", "+originalName+")");
 		if (localNode==null) throw new IllegalStateException();
 		if (localNode.getIngestAreaRootPath()==null) throw new IllegalStateException();
 		File source;
@@ -488,7 +489,7 @@ public class AcceptanceTestHelper {
 		object.setPackage_type(packageType);
 		object.setMetadata_file(metadataFile);
 		object.setContractor(testContractor);
-		object.setInitial_node("localnode");
+		object.setInitial_node(localNode.getName());
 		object.setIdentifier(identifier);
 		object.setObject_state(object_state);
 		object.setUrn(urn);

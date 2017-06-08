@@ -139,6 +139,7 @@ public class ContentBroker {
 			context.registerShutdownHook();
 			logger.info("ContentBroker is up and running");
 		} catch (Exception e) {
+			System.out.println(e);
 			logger.error("Exception in main!",e);
 			System.exit(1);
 		}

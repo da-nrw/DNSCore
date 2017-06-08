@@ -25,7 +25,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.hibernate.Session;
@@ -47,7 +49,9 @@ import de.uzk.hki.da.grid.IrodsSystemConnector;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.SubformatIdentificationStrategyPuidMapping;
 import de.uzk.hki.da.model.WorkArea;
+import de.uzk.hki.da.repository.ElasticsearchMetadataIndex;
 import de.uzk.hki.da.repository.Fedora3RepositoryFacade;
+import de.uzk.hki.da.repository.MetadataIndexException;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.C;
@@ -92,11 +96,12 @@ public class Diagnostics {
 	private static final String BEAN_NAME_IRODS_GRID_FACADE = "federatedGridFacade";
 	private static final String BEAN_NAME_IRODS_SYSTEM_CONNECTOR = "irodsSystemConnector";
 	private static final String BEAN_NAME_FEDORA_REPOSITORY_FACADE = "fedoraRepositoryFacade";
-//	private static final String BEAN_NAME_METADATA_INDEX_FACADE = "esMetadataIndex";
+	private static final String BEAN_NAME_METADATA_INDEX_FACADE = "esMetadataIndex";
 	
 	private static final String PROP_GRID_CACHE_AREA_ROOT_PATH = "localNode.gridCacheAreaRootPath";
 	private static final String PROP_USER_AREA_ROOT_PATH = "localNode.userAreaRootPath";
 	private static final String PROP_INGEST_AREA_ROOT_PATH = "localNode.ingestAreaRootPath";
+	private static final String PROP_INGEST_AREA_NO_BAGIT_ROOT_PATH = "localNode.ingestAreaNoBagitRootPath";
 	private static final String PROP_WORK_AREA_ROOT_PATH = "localNode.workAreaRootPath";
 	private static final String PROP_REPL_DESTINATIONS = "localNode.replDestinations";
 	private static final String PROP_IRODS_ZONE = BEAN_NAME_IRODS_ZONE;
@@ -105,6 +110,7 @@ public class Diagnostics {
 	private static final String MSG_GRID_CACHE_AREA_NOT_EXISTS = "ERROR (path configured by localNode.gridCacheAreaRootPath does not exist)";
 	private static final String MSG_WORK_AREA_NOT_EXISTS = "ERROR (path configured by localNode.workAreaRootPath does not exist)";
 	private static final String MSG_INGEST_AREA_NOT_EXISTS = "ERROR (path configured by localNode.ingestAreaRootPath does not exist)";
+	private static final String MSG_INGEST_AREA_NO_BAGIT_NOT_EXISTS = "ERROR (path configured by localNode.ingestAreaNoBagitRootPath does not exist)";
 
 	
 	
@@ -197,28 +203,28 @@ public class Diagnostics {
 		int errorCount=0;
 		AbstractApplicationContext context =
 				new ClassPathXmlApplicationContext(BEANS_DIAGNOSTICS_ELASTICSEARCH);
-//		ElasticsearchMetadataIndex es = (ElasticsearchMetadataIndex) context.getBean(BEAN_NAME_METADATA_INDEX_FACADE);		
+		ElasticsearchMetadataIndex es = (ElasticsearchMetadataIndex) context.getBean(BEAN_NAME_METADATA_INDEX_FACADE);		
 		context.close();
 		
 		System.out.print(INFO+"CHECKING - ELASTICSEARCH CONNECTIVITY .... ");
-//		try {
-//		
-//		String getIndexedMetadata(String indexName, String objectId);
+		try {
 		
-//			String portal = properties.getProperty("elasticsearch.index");
-//			
-//			Map<String,Object> data;
-//			data = new HashMap<String,Object>();
-//			data.put("@title","The Godfather");
-//			data.put("@director","Francis Ford Coppola");
-//			data.put("@year","1972");
-//			
-//			es.indexMetadata(portal, "test_object_1", "test_collection", data);
-//			System.out.println(OK);
-//		} catch (MetadataIndexException e) {
-//			errorCount++;
-//			System.out.println(WARN+"connection to elasticsearch cannot be established: "+e);
-//		}
+		//String getIndexedMetadata(String indexName, String objectId);
+		
+			String portal = properties.getProperty("elasticsearch.index");
+			
+			Map<String,Object> data;
+			data = new HashMap<String,Object>();
+			data.put("@title","The Godfather");
+			data.put("@director","Francis Ford Coppola");
+			data.put("@year","1972");
+			
+			es.indexMetadata(portal, "test_object_1", "test_collection", data);
+			System.out.println(OK);
+		} catch (MetadataIndexException e) {
+			errorCount++;
+			System.out.println(WARN+"connection to elasticsearch cannot be established: "+e);
+		}
 		
 		return errorCount;
 	}
@@ -447,6 +453,18 @@ public class Diagnostics {
 				errorCount++;
 			}
 		}
+		
+		if ((properties.getProperty(PROP_INGEST_AREA_NO_BAGIT_ROOT_PATH)==null) ||
+				((String)properties.getProperty(PROP_INGEST_AREA_NO_BAGIT_ROOT_PATH)).isEmpty())
+				
+				logger.warn(INFO+PROP_INGEST_AREA_NO_BAGIT_ROOT_PATH+" is empty. will not check for path");
+		else {
+			if (!new File(properties.getProperty(PROP_INGEST_AREA_NO_BAGIT_ROOT_PATH)).exists()){
+				System.out.println(MSG_INGEST_AREA_NO_BAGIT_NOT_EXISTS);
+				errorCount++;
+			}
+		}
+		
 		
 		if ((properties.getProperty(PROP_GRID_CACHE_AREA_ROOT_PATH)==null) ||
 				((String)properties.getProperty(PROP_GRID_CACHE_AREA_ROOT_PATH)).isEmpty())

@@ -2,9 +2,13 @@ package de.uzk.hki.main;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Enumeration;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -125,6 +129,7 @@ public class RegressTesterMain {
 	        
 	        System.out.println();
 			System.out.println("Used Parameter: TestSuite: "+testName+"\t Test-Resources dir:"+testResourcesPath); 
+			printVersionInformation();
 			System.out.println();
 			
 	        if(testName.equals("CompleteATSuite"))
@@ -146,7 +151,7 @@ public class RegressTesterMain {
 	        formatter.printHelp( "ant", options );
 	        System.exit(1);
 	    }
-	    
+	    getManifestAttributes();
 	    //create link to resource dir. Some test cases access the location LOCAL_RESOURCE and expect to find some test resources there
 	    try {
 	    	if(LOCAL_RESOURCE.exists()){
@@ -157,6 +162,8 @@ public class RegressTesterMain {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	    
+	    
 	    
 	    //set important properties, to control junit testcases execution 
 		System.setProperty(AcceptanceTestHelper.TEST_RESOURCES_PATH_PROPERTY, testResourcesPath);
@@ -212,5 +219,30 @@ public class RegressTesterMain {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}*/
+	}
+	
+	private static Attributes getManifestAttributes() {
+		URLClassLoader cl = (URLClassLoader) RegressTesterMain.class.getClassLoader();
+		URL url = null;
+		try {
+			url = cl.findResource("META-INF/MANIFEST.MF");
+			Manifest manifest = new Manifest(url.openStream());
+			Attributes attr = manifest.getMainAttributes();
+			return attr;
+		} catch (IOException E) {
+			System.out.println("No ManifestFile found");
+		}
+		return null;
+	}
+
+	private static void printVersionInformation() {
+		Attributes attr = getManifestAttributes();
+		if (attr != null) {
+			if (attr.getValue("buildNumber") != null && !attr.getValue("buildNumber").equals("123")) {
+				System.out.println("Build-Number: " + attr.getValue("buildNumber"));
+			} else if (attr.getValue("timeStamp") != null){
+				System.out.println("Build-TimeStamp: " + attr.getValue("timeStamp"));
+			}
+		}
 	}
 }

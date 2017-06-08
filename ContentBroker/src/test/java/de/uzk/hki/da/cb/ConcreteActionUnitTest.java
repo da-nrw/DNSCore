@@ -101,6 +101,7 @@ public class ConcreteActionUnitTest {
 		o.setIdentifier(IDENTIFIER);
 		o.getPackages().add(pkg);
 		o.setUrn(URN);
+		o.setInitial_node("testnode");
 		
 		j = new Job();
 		j.setObject(o);

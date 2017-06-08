@@ -64,6 +64,13 @@
         <property name="minAge" value="2000" />
         <property name="registerObjectService" ref="registerObjectService" />
     </bean>
+
+    <bean id="ingestAreaNoBagitScannerWorker" class="de.uzk.hki.da.core.IngestAreaNoBagitScannerWorker" init-method="init">
+        <property name="ingestAreaNoBagitRootPath" value="${localNode.ingestAreaNoBagitRootPath}" />
+        <property name="localNodeId" value="${localNode.id}" />
+        <property name="minAge" value="2000" />
+        <property name="registerObjectService" ref="registerObjectService" />
+    </bean>
     
     <bean id="userDecisionTimeoutWorker" class="de.uzk.hki.da.core.UserDecisionTimeoutWorker" init-method="init">
         <property name="localNode" ref="localNode" />

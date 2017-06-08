@@ -21,13 +21,13 @@
 	<body>
 		
 		<div id="header" role="banner">
-			<g:link controller="home"><img src="${resource(dir: 'images', file: grailsApplication.config.daweb3.logo)}" alt="Grails"/></g:link>
+			<g:link controller="home"><img class="img-logo" src="${resource(dir: 'images', file: grailsApplication.config.daweb3.logo)}" alt="Grails"/></g:link>
 			<h1>Web Konsole</h1>
 			<div id="header-menu">
-					<form name="submitForm" method="POST" action="${createLink(controller: 'logout')}">
-<input type="hidden" name="" value="">
-<a HREF="javascript:document.submitForm.submit()">Logout</a>
-</form> 
+				<form name="submitForm" method="POST" action="${createLink(controller: 'logout')}">
+				<input type="hidden" name="" value="">
+				<a HREF="javascript:document.submitForm.submit()">Logout</a>
+				</form> 
 			</div>
 		</div>
 		

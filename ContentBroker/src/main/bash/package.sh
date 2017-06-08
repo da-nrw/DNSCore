@@ -24,6 +24,7 @@ function createStorageFolder(){
 	mkdir -p $CBTAR_SRC/storage/UserArea/TEST/outgoing
 	mkdir -p $CBTAR_SRC/storage/WorkArea/TEST
 	mkdir -p $CBTAR_SRC/storage/IngestArea/TEST
+	mkdir -p $CBTAR_SRC/storage/IngestArea/noBagit/TEST
 }
 
 mkdir $INSTALLER
