@@ -62,6 +62,7 @@ import org.apache.log4j.Logger;
 
 import de.uzk.hki.da.main.SIPBuilder;
 import de.uzk.hki.da.metadata.ContractRights;
+import de.uzk.hki.da.metadata.ContractRights.CCLicense;
 import de.uzk.hki.da.metadata.ContractSettings;
 import de.uzk.hki.da.metadata.PremisXmlWriter;
 import de.uzk.hki.da.metadata.PublicationRights;
@@ -350,7 +351,7 @@ public class Gui extends JFrame{
 	JComboBox publicVideoDurationDropDown;
 	JComboBox migrationDropDown;
 
-	JComboBox<String> licenceDropDown;
+	JComboBox licenceDropDownInPublication;
 	
 
 	// ProgressBar
@@ -970,7 +971,7 @@ public class Gui extends JFrame{
 		licenseAreaOne.setWrapStyleWord(true);
 		licenseAreaOne.setFocusable(false);
 		licenseAreaOne.setFont(standardFont.deriveFont(12.0f));
-		licenseAreaOne.setText("In den folgenden Schritten können Sie auf wunsch die Lizenzrechte für " +
+		licenseAreaOne.setText("In den folgenden Schritten können Sie die Lizenzrechte für " +
 				"Ihre SIPs festlegen. Die Lizenzangabe gilt für die Veröffentlichungsportale.\n\n" +
 				"Hiterlegen Sie diese Lizenzangaben nur wenn diese nicht " +
 				"bereits in den METS-Metadaten hiterlegt sind!!! ");	     
@@ -1487,7 +1488,7 @@ public class Gui extends JFrame{
 		migrationDropDown.addItem("Zustimmung für Migration einholen");
 		
 		
-		licenceDropDown = new JComboBox<String>();
+		/*licenceDropDown = new JComboBox<String>();
 		licenceDropDown.setFont(standardFont.deriveFont(12.0f));
 		licenceDropDown.addItem("Keine");
 		licenceDropDown.addItem("pdm - Public Domain");
@@ -1498,7 +1499,12 @@ public class Gui extends JFrame{
 		licenceDropDown.addItem("cc-by-nc");
 		licenceDropDown.addItem("cc-by-nc-sa");
 		licenceDropDown.addItem("cc-by-nc-nd");
-		licenceDropDown.addItem("reserved");
+		licenceDropDown.addItem("reserved");*/
+		licenceDropDownInPublication = new JComboBox();
+		
+		licenceDropDownInPublication.setFont(standardFont.deriveFont(11.0f));
+		for(ContractRights.CCLicense tmp:ContractRights.CCLicense.values())
+			licenceDropDownInPublication.addItem(tmp);
 	}
 
 	/**
@@ -1665,7 +1671,7 @@ public class Gui extends JFrame{
 		
 		// TODO BEG
  		licenceLabel.setBounds(251, 320, 200, 20);
-		licenceDropDown.setBounds(251, 350, 200, 20);
+		licenceDropDownInPublication.setBounds(251, 350, 200, 20);
 		
 		goBackToInstitutionRestrictionOrTempButton.setBounds(450, 445, 90, 20);
 		goToPublicTempButton.setBounds(575, 445, 90, 20);
@@ -1852,7 +1858,7 @@ public class Gui extends JFrame{
 		
 		// TODO
 		publicPanel.add(licenceLabel);
-		publicPanel.add(licenceDropDown);
+		publicPanel.add(licenceDropDownInPublication);
 		
 		publicPanel.add(goToPublicTempButton);
 		publicPanel.add(backgroundPublicImageLabel);
@@ -2489,7 +2495,7 @@ public class Gui extends JFrame{
 				publicDDBArea.setEnabled(true);
 				publicDDBCheckBox.setEnabled(true);
 				// TODO BEG
-				licenceDropDown.setEnabled(true);
+				licenceDropDownInPublication.setEnabled(true);
 			}
 		});
 		
@@ -2499,7 +2505,7 @@ public class Gui extends JFrame{
 				publicDDBArea.setEnabled(false);
 				publicDDBCheckBox.setEnabled(false);
 				// TODO BEG
-				licenceDropDown.setEnabled(false);
+				licenceDropDownInPublication.setEnabled(false);
 			}
 		});
 		
@@ -3605,6 +3611,10 @@ public class Gui extends JFrame{
 		publicRights.setVideoDuration(contractSettings.getDuration(publicVideoDurationDropDown.getSelectedIndex()));
 		contractRights.setConversionCondition((String) migrationDropDown.getSelectedItem());
 		contractRights.setDdbExclusion(!publicDDBCheckBox.isSelected());
+		if(licenseUseCheckBox.isSelected())
+			contractRights.setCclincense((CCLicense) licenseDropDown.getSelectedItem());
+		else
+			contractRights.setCclincense(null);
 	}
 
 	/**
@@ -3889,12 +3899,12 @@ public class Gui extends JFrame{
 			publicDDBArea.setEnabled(true);
 			publicDDBCheckBox.setEnabled(true);
 			// TODO BEG
-			licenceDropDown.setEnabled(true);
+			licenceDropDownInPublication.setEnabled(true);
 		} else {
 			publicDDBArea.setEnabled(false);
 			publicDDBCheckBox.setEnabled(false);
 			// TODO BEG
-			licenceDropDown.setEnabled(false);
+			licenceDropDownInPublication.setEnabled(false);
 		}
 		
 		publicNoTempRestrictionRadioButton.setSelected(true);
@@ -3926,6 +3936,21 @@ public class Gui extends JFrame{
 
 		migrationDropDown.setSelectedItem(Utilities.translateConversionCondition(contractRights.getConversionCondition()));
 		publicDDBCheckBox.setSelected(!contractRights.getDdbExclusion());
+		
+		licenseUseCheckBox.setSelected(contractRights.getCclincense()!=null);
+		if(contractRights.getCclincense()!=null){
+			licenseDropDown.setEditable(true);
+			licenseDropDown.setEnabled(true);
+			//licenseTextField.setEnabled(true);
+			licenseTextField.setVisible(true);
+			licenseDropDown.setSelectedItem(contractRights.getCclincense());
+		}else{	
+			licenseDropDown.setEditable(false);
+			licenseDropDown.setEnabled(false);
+			//licenseTextField.setEnabled(false);
+			licenseTextField.setVisible(false);
+			licenseDropDown.setSelectedItem(0);
+		}
 	}
 	
 	/**
@@ -4009,6 +4034,8 @@ public class Gui extends JFrame{
 			settingsOverview += "Nein\n";
 		
 		settingsOverview += "\nMigrationsbedingung: " + (String) migrationDropDown.getSelectedItem();
+		if(licenseUseCheckBox.isSelected())
+			settingsOverview += "\nLizenzangaben durch SIP-Builder: " +  licenseDropDown.getSelectedItem().toString();
 			
 		return settingsOverview;
 	}

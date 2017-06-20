@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import javax.management.RuntimeErrorException;
 import javax.xml.parsers.SAXParserFactory;
 
 import nu.xom.Builder;
@@ -56,8 +57,10 @@ public class ContractRights {
 	
 	private ConversionCondition conversionCondition;
 	boolean ddbExclusion;
-	CCLicense cclincense;
+	private CCLicense cclincense;
 	
+
+
 	public enum ConversionCondition { NONE, NOTIFY, CONFIRM };
 	
 	public enum CCLicense {
@@ -82,15 +85,15 @@ public class ContractRights {
 		private CCLicense(String href, String displayLabel, String defaultText) {
 			this.displayLabel = displayLabel;
 			this.href = href;
-			this.defaultText = defaultText;
+			this.text = defaultText;
 		}
 
 		private String displayLabel;
 		private String href;
-		private String defaultText;
+		private String text;
 		public String getDisplayLabel() {return displayLabel;	}
 		public String getHref() {return href;	}
-		public String getDefaultText() {return defaultText;	}
+		public String getText() {return text;	}
 		@Override
 		public String toString() {
 			return displayLabel;
@@ -156,6 +159,24 @@ public class ContractRights {
 			ddbExclusion = Boolean.parseBoolean(ddbExclusionEl.getValue());
 		else
 			ddbExclusion = false;
+		
+		Element publicationLicenseEl = root.getFirstChildElement("publicationLicense");
+		if(publicationLicenseEl!=null){
+			String linkAttribute=publicationLicenseEl.getAttribute("link").getValue();
+			//publicationLicenseEl.getAttribute("displayLabel");
+			//publicationLicenseEl.getValue();
+			for(CCLicense cl:CCLicense.values())
+				if(cl.getHref().equals(linkAttribute)){
+					cclincense = cl;
+					break;
+				}
+			if(cclincense==null)
+				throw new RuntimeException("Reading ContractRights from file failed to load license");
+		}else{
+			cclincense=null;
+		}
+		
+		
 	}
 	
 	private void readPublicationRights(PublicationRights pubRights, Element pubRightEl) throws Exception {
@@ -251,5 +272,15 @@ public class ContractRights {
 	public void setDdbExclusion(boolean ddbExclusion) {
 		this.ddbExclusion = ddbExclusion;
 	}
+	
+	public CCLicense getCclincense() {
+		return cclincense;
+	}
+
+	public void setCclincense(CCLicense cclincense) {
+		this.cclincense = cclincense;
+	}
+	
+	
 	
 }

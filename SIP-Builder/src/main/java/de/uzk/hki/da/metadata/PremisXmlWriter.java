@@ -149,6 +149,8 @@ public class PremisXmlWriter {
 					createTextElement("condition", contractRights.getConversionCondition().toString(), 2);
 				createCloseElement(1);
 				createTextElement("ddbExclusion", String.valueOf(contractRights.getDdbExclusion()), 1);
+				if(contractRights.getCclincense()!=null)
+					generatePublicationLicenseElement(contractRights.getCclincense());
 			createCloseElement(0);
 
 			writer.writeDTD("\n");
@@ -160,6 +162,23 @@ public class PremisXmlWriter {
 	    	throw new IOException("Failed to serialize contract rights", e);
 		}
 	
+	}
+	
+	private void generatePublicationLicenseElement(ContractRights.CCLicense license)throws Exception {
+		
+		
+		createOpenElement("publicationLicense ", 1);
+	  		createAttribute("link", license.getHref());
+	  		createAttribute("displayLabel", license.getDisplayLabel());
+	  		//createTextElement("allowed", String.valueOf(license), 2);
+	  		writer.writeCharacters(license.getText());
+			writer.writeEndElement();			   	
+		
+	  		//generateObjectElement(packageName);
+	  		//generateEventElement(packageName);
+	  		//generateAgentElement();
+	  	
+	 // createCloseElement(1);
 	}
 	
 	/**

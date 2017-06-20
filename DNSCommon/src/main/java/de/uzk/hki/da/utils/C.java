@@ -100,7 +100,7 @@ public class C {
 	// The availability of the flowing *_TEST resources is only important for JUnit-Test step
 	public static final File XLINK_XSD_TEST = new File("src/main/xsd/xlink.xsd");
 	public static final File PREMIS_XSD_TEST = new File("src/main/xsd/premis.xsd");
-	public static final File CONTRACT_XSD_TEST = new File("src/main/xsd/v1/danrw-contract-1.xsd");
+	public static final File CONTRACT_XSD_TEST = new File("src/main/xsd/v2/danrw-contract-1.xsd");
 	public static final String FIDO_GLUE_SCRIPT = "fido.sh";
 	public static final Path FIDO_INSTALLATION = new RelativePath("fido");
 	public static final String CONFIGURE_SCRIPT = "configure.sh"; 
@@ -111,7 +111,7 @@ public class C {
 	public static final String XSI_NS = "http://www.w3.org/2001/XMLSchema-instance";
 	public static final String CONTRACT_NS = "http://www.danrw.de/contract/v1";
 	public static final String CONTRACT_V1_URL = "http://www.danrw.de/contract/v1";
-	public static final String CONTRACT_V1_SCHEMA_LOCATION = "http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd";
+	public static final String CONTRACT_V1_SCHEMA_LOCATION = "http://www.danrw.de/schemas/contract/v2/danrw-contract-1.xsd";
 	public static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 	public static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
 	public static final Namespace MODS_NS = Namespace.getNamespace("http://www.loc.gov/mods/v3");
