@@ -74,6 +74,7 @@ public class C {
 	public static final String EVENT_TYPE_CREATE = "CREATE";
 	public static final String EVENT_TYPE_COPY = "COPY";
 	public static final String EVENT_TYPE_CONVERT = "CONVERT";
+	public static final String EVENT_TYPE_CONVERSION_SUPRESSED = "CONVERSION_SUPRESSED";
 	public static final String EVENT_TYPE_VIRUS_SCAN = "VIRUS_SCAN";
 	public static final String AGENT_TYPE_NODE = "NODE";
 	

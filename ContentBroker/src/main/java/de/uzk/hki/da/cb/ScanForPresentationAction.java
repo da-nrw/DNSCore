@@ -23,6 +23,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
+
+import org.apache.commons.io.FilenameUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
@@ -30,6 +33,7 @@ import de.uzk.hki.da.format.FileFormatException;
 import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
+import de.uzk.hki.da.metadata.EadMetsMetadataStructure;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionInstructionBuilder;
 import de.uzk.hki.da.model.ConversionPolicy;
@@ -37,6 +41,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.FriendlyFilesUtils;
 import de.uzk.hki.da.utils.StringUtilities;
 
 
@@ -46,6 +51,7 @@ import de.uzk.hki.da.utils.StringUtilities;
  */
 public class ScanForPresentationAction extends AbstractAction{
 	
+	private static final String PREMIS_XML = "premis.xml";
 	private FileFormatFacade fileFormatFacade;
 	private final ConversionInstructionBuilder ciB = new ConversionInstructionBuilder();
 	private DistributedConversionAdapter distributedConversionAdapter;
@@ -121,33 +127,77 @@ public class ScanForPresentationAction extends AbstractAction{
 			Package pkg, List<DAFile> files ){
 		
 		List<ConversionInstruction> cis = new ArrayList<ConversionInstruction>();
-		
-		for (DAFile file : files){
-		
+
+		TreeSet<String> neverConverted = this.neverConverted();
+		for (DAFile file : files) {
+
 			// get cps for fileanduser. do with cps: assemble
-			
-			logger.trace("Generating ConversionInstructions for PRESENTER");
-			List<ConversionPolicy> policies = preservationSystem.getApplicablePolicies(file, true);
-			if ( o.grantsRight("PUBLICATION")
-					&& !wa.toFile(file).getName().toLowerCase().endsWith(".xml")
-					&& !wa.toFile(file).getName().toLowerCase().endsWith(".rdf")
-					&& !wa.toFile(file).getName().toLowerCase().endsWith(".xmp")
-					&& (policies == null || policies.isEmpty()) ) {
-				throw new RuntimeException("No policy found for file "+wa.toFile(file).getAbsolutePath()
-						+"("+file.getFormatPUID()+")! Package can not be published because it would be incomplete.");
-			} else for (ConversionPolicy p : policies)	{
-				logger.info("Found applicable Policy for FileFormat "+p.getSource_format()+" -> "+p.getConversion_routine().getName() + "("+ file.getRelative_path()+ ")");
-				ConversionInstruction ci = ciB.assembleConversionInstruction(wa,file, p);
-				ci.setTarget_folder(ci.getTarget_folder());
-				ci.setSource_file(file);
-				
-				cis.add(ci);
+
+			String relPath = file.getRelative_path();
+			logger.debug("File: " + relPath);
+
+			if (neverConverted.contains(relPath)) {
+				logger.debug("Skipping file: " + relPath);
+			} else {
+				logger.trace("Generating ConversionInstructions for PRESENTER: " + relPath);
+				List<ConversionPolicy> policies = preservationSystem.getApplicablePolicies(file, true);
+				if (o.grantsRight("PUBLICATION") && !wa.toFile(file).getName().toLowerCase().endsWith(".xml") && !wa.toFile(file).getName().toLowerCase().endsWith(".rdf")
+						&& !wa.toFile(file).getName().toLowerCase().endsWith(".xmp") && (policies == null || policies.isEmpty())) {
+					throw new RuntimeException("No policy found for file " + wa.toFile(file).getAbsolutePath() + "(" + file.getFormatPUID()
+							+ ")! Package can not be published because it would be incomplete.");
+				} else {
+					if (FriendlyFilesUtils.isFriendlyFile(relPath, o.getFriendlyFileExtensions())) {
+						logger.debug("Friendly file: " + relPath);
+					} else {
+						for (ConversionPolicy p : policies) {
+							logger.info("Found applicable Policy for FileFormat " + p.getSource_format() + " -> " + p.getConversion_routine().getName() + "("
+									+ file.getRelative_path() + ")");
+							ConversionInstruction ci = ciB.assembleConversionInstruction(wa, file, p);
+							ci.setTarget_folder(ci.getTarget_folder());
+							ci.setSource_file(file);
+
+							cis.add(ci);
+						}
+					}
+				}
 			}
 		}
 		return cis;
 	}
 	
-	
+	protected TreeSet<String> neverConverted()
+	{
+		TreeSet<String> ret = new TreeSet<String>();
+		ret.add(PREMIS_XML);
+
+		if (o.getMetadata_file() != null) {
+			ret.add(o.getMetadata_file());
+			String packageType = o.getPackage_type();
+
+			if ("EAD".equals(packageType)) {
+				String mfPathSrc = o.getLatest(o.getMetadata_file()).getPath().toString();
+				EadMetsMetadataStructure emms = null;
+				try {
+					emms = new EadMetsMetadataStructure(wa.dataPath(), new File(mfPathSrc), o.getDocuments());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				if (emms != null) {
+					List<String> metse = emms.getMetsRefsInEad();
+					for (int mmm = 0; mmm < metse.size(); mmm++) {
+						String mets = metse.get(mmm);
+						String normMets = FilenameUtils.normalize(mets);
+						if (normMets != null){
+							mets = normMets; 
+						}
+						ret.add(mets);
+					}
+				}
+			}
+		}
+		
+		return ret;
+	}
 	
 	
 	boolean isSemanticsPackage(File packageContent, String origName) {

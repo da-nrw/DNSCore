@@ -266,7 +266,8 @@ public class ObjectPremisXmlReader{
 		boolean eventAdded = false;		
 		if (eventType.toUpperCase().equals(C.EVENT_TYPE_CONVERT)
 				|| eventType.toUpperCase().equals(C.EVENT_TYPE_COPY)
-				|| eventType.toUpperCase().equals(C.EVENT_TYPE_CREATE)) {
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_CREATE)
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_CONVERSION_SUPRESSED)) {
 			for (Package pkg : object.getPackages()) {
 				for (DAFile f : pkg.getFiles()) {
 					if (sourceFile.equals("") && outcomeFile.equals("")
@@ -284,6 +285,11 @@ public class ObjectPremisXmlReader{
 							eventAdded = true;
 							break;
 						}
+						else if (eventType.toUpperCase().equals(C.EVENT_TYPE_CONVERSION_SUPRESSED)) {
+							pkg.getEvents().add(event);
+							eventAdded = true;
+							break;
+						}
 					}
 					
 					if (outcomeFile.equals(f.getRep_name() + "/" + f.getRelative_path())) {
@@ -294,6 +300,7 @@ public class ObjectPremisXmlReader{
 							break;
 						}
 					}
+
 				}
 			}
 		}
