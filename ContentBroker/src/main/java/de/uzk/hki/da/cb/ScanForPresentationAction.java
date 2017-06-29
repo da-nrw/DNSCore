@@ -169,6 +169,7 @@ public class ScanForPresentationAction extends AbstractAction{
 	{
 		TreeSet<String> ret = new TreeSet<String>();
 		ret.add(PREMIS_XML);
+		ret.add(C.PUBLIC_METS);
 
 		if (o.getMetadata_file() != null) {
 			ret.add(o.getMetadata_file());

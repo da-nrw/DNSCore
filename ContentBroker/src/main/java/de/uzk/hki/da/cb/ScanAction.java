@@ -162,6 +162,7 @@ public class ScanAction extends AbstractAction{
 	protected TreeSet<String> neverConverted(){
 		TreeSet<String> ret = new TreeSet<String>();
 		ret.add(PREMIS_XML);
+		ret.add(C.PUBLIC_METS);
 
 		if (o.getMetadata_file() != null) {
 			ret.add(o.getMetadata_file());
