@@ -37,6 +37,7 @@ class User {
 	 boolean deltaOnUrn
 	 
 	 String description
+	 String friendly_file_exts
 	 String email_contact
 	 String forbidden_nodes
 
@@ -47,6 +48,7 @@ class User {
 		 password blank: false 
 		 description(nullable:true)
 		 forbidden_nodes(nullable:true)
+		 friendly_file_exts(nullable:true)
 		 }
 
 	 static mapping = { 
@@ -60,6 +62,7 @@ class User {
 		usePublicMets column: 'use_public_mets'
 		useVirusScan column: 'use_virus_scan'//DANRW-1511
 		deltaOnUrn column: 'delta_on_urn'
+		friendly_file_exts column: 'friendly_file_exts'
 		}
 
 	 Set<Role> getAuthorities() { UserRole.findAllByUser(this).collect { it.role } as Set }

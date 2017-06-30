@@ -105,18 +105,6 @@ public class CTFileFormatFacadeTests {
 		
 
 	@Test
-	public void xmpFormatIdentification() throws IOException{
-		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.XMLSubformatIdentifier", 
-				FFConstants.FMT_101);
-		files.add(new SimpleFileWithFileFormat(Path.makeFile("a.xmp")));
-		
-		sfff.identify(testPath,files,false);
-		assertEquals(FFConstants.XML_PUID,files.get(0).getFormatPUID());
-		assertEquals(C.SUBFORMAT_IDENTIFIER_XMP,files.get(0).getSubformatIdentifier());
-	}
-	
-	
-	@Test
 	public void ffmpegStrategySubformatIdentification() throws IOException {
 		sfff.registerSubformatIdentificationStrategyPuidMapping("de.uzk.hki.da.format.FFmpegSubformatIdentifier", 
 				FFConstants.FMT_5);
