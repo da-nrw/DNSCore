@@ -22,6 +22,7 @@ package de.uzk.hki.da.action;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -92,7 +93,6 @@ public abstract class AbstractAction implements Runnable {
 	
 	protected Node n;                        // Implementations should never alter the state of this object to ensure thread safety
 	protected PreservationSystem preservationSystem; // Implementations should never alter the state of this object to ensure thread safety
-
 	
 	
 	
@@ -137,22 +137,22 @@ public abstract class AbstractAction implements Runnable {
 	
 	@Override
 	public void run() {
-		
-		setupObjectLogging(o.getIdentifier());
-		synchronizeObjectDatabaseAndFileSystemState();
-		
-		Date start = new Date();
-		executeConcreteAction();
-		Date stop = new Date();
-		long duration = stop.getTime()-start.getTime(); // in milliseconds
-		new TimeStampLogging().log(o.getIdentifier(), this.getClass().getName(), duration);
-		
-		// The order of the next two statements must not be changed.
-		// The object logging must be> unset in order to prevent another appender to start
-		// its lifecycle before the current one has stop its lifecycle.
-		
-		unsetObjectLogging(); 
 		try {
+			setupObjectLogging(o.getIdentifier());
+			synchronizeObjectDatabaseAndFileSystemState();
+		
+			Date start = new Date();
+			executeConcreteAction();
+			Date stop = new Date();
+			long duration = stop.getTime()-start.getTime(); // in milliseconds
+			new TimeStampLogging().log(o.getIdentifier(), this.getClass().getName(), duration);
+		
+			// The order of the next two statements must not be changed.
+			// The object logging must be> unset in order to prevent another appender to start
+			// its lifecycle before the current one has stop its lifecycle.
+		
+			unsetObjectLogging(); 
+		
 			upateObjectAndJob(n, o, j, DELETEOBJECT, kILLATEXIT, getToCreate());
 		} catch (Exception e) {
 			resetModifiers();
@@ -168,7 +168,6 @@ public abstract class AbstractAction implements Runnable {
 
 	
 	private void executeConcreteAction() {
-
 		try {
 			
 			if (!rOLLBACKONLY) {
@@ -200,7 +199,7 @@ public abstract class AbstractAction implements Runnable {
 		} finally {
 			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
 		}
-		
+
 		resetModifiers();
 		execAndPostProcessRollback(o,j);
 	}
@@ -557,6 +556,7 @@ public abstract class AbstractAction implements Runnable {
 	public void setPSystem(PreservationSystem pSystem) {
 		this.preservationSystem = pSystem;
 	}
+
 	
 	
 	@Override
@@ -616,4 +616,5 @@ public abstract class AbstractAction implements Runnable {
 	public void setWorkArea(WorkArea wa) {
 		this.wa = wa;
 	}
+	
 }
