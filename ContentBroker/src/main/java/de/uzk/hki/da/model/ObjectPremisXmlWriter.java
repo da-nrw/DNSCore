@@ -653,7 +653,15 @@ public class ObjectPremisXmlWriter {
 		
 		if (object.ddbExcluded())
 			createEmptyElement("DDBexclusion", 4);
-		
+		if (right.getPremisLicense()!=null){
+			PremisLicense pl=right.getPremisLicense();
+			createOpenElement("publicationLicense ", 4);
+		  	createAttribute("href", pl.getHref());
+		  	createAttribute("displayLabel", pl.getDisplayLabel());
+		  	//createTextElement("allowed", String.valueOf(license), 2);
+		  	writer.writeCharacters(pl.getText());
+			writer.writeEndElement();		
+		}
 		createCloseElement(3);
 		
 		logger.trace("Serialized rights granted element");	

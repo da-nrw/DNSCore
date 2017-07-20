@@ -45,6 +45,7 @@ import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.pkg.BagitConsistencyChecker;
 import de.uzk.hki.da.pkg.ConsistencyChecker;
 import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.SidecarUtils;
@@ -73,7 +74,6 @@ public class UnpackAction extends AbstractAction {
 	private static final String SIP_SPEC_URL = "https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/sip_specification.md";
 	private static final String HELP_SUMMARY = "Make sure there exists always only one file with the same document name (which is the file path relative from the SIPs data path, excluding the file extension). "
 			+ "For help refer to the SIP-Specification page at "+ SIP_SPEC_URL + ".";
-	private static final String PREMIS_XML = "premis.xml";
 	
 	public UnpackAction(){SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;}
 	
@@ -167,7 +167,7 @@ public class UnpackAction extends AbstractAction {
 	private void throwUserExceptionIfNotPremisConsistent() throws IOException {
 		
 		try {
-			if (!PremisXmlValidator.validatePremisFile(Path.make(wa.dataPath(),PREMIS_XML).toFile()))
+			if (!PremisXmlValidator.validatePremisFile(Path.make(wa.dataPath(),C.PREMIS_XML).toFile()))
 				throw new UserException(UserExceptionId.INVALID_SIP_PREMIS, "PREMIS Datei nicht valide.");
 		} catch (FileNotFoundException e1) {
 			throw new UserException(UserExceptionId.SIP_PREMIS_NOT_FOUND, "PREMIS Datei nicht gefunden.", e1);
@@ -177,7 +177,7 @@ public class UnpackAction extends AbstractAction {
 		}		
 		try {
 			//just test: parse values and do xml to object mapping
-			new ObjectPremisXmlReader().deserialize(Path.makeFile(wa.dataPath(),PREMIS_XML));
+			new ObjectPremisXmlReader().deserialize(Path.makeFile(wa.dataPath(),C.PREMIS_XML));
 		} catch (Exception e) {
 			throw new UserException(UserExceptionId.READ_SIP_PREMIS_ERROR,
 					"Konnte PREMIS Datei nicht erfolgreich einlesen.", e);

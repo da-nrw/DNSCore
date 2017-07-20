@@ -98,6 +98,7 @@ public class C {
 	public static final String XLINK_XSD_PATH = "conf/xlink.xsd";
 	public static final File HIBERNATE_CFG = new RelativePath(CONF,"hibernateCentralDB.cfg.xml").toFile();
 	// The availability of the flowing *_TEST resources is only important for JUnit-Test step
+	public static final String PREMIS_XML = "premis.xml";
 	public static final File XLINK_XSD_TEST = new File("src/main/xsd/xlink.xsd");
 	public static final File PREMIS_XSD_TEST = new File("src/main/xsd/premis.xsd");
 	public static final File CONTRACT_XSD_TEST = new File("src/main/xsd/v2/danrw-contract-1.xsd");
@@ -113,7 +114,7 @@ public class C {
 	public static final String CONTRACT_V1_URL = "http://www.danrw.de/contract/v1";
 	public static final String CONTRACT_V1_SCHEMA_LOCATION = "http://www.danrw.de/schemas/contract/v2/danrw-contract-1.xsd";
 	public static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
-	public static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
+	public static final Namespace XLINK_NS = Namespace.getNamespace("xlink","http://www.w3.org/1999/xlink");
 	public static final Namespace MODS_NS = Namespace.getNamespace("http://www.loc.gov/mods/v3");
 	public static final Namespace LIDO_NS = Namespace.getNamespace("http://www.lido-schema.org");
 	public static final Namespace ORE_NS = Namespace.getNamespace("http://www.openarchives.org/ore/terms/");
@@ -179,6 +180,12 @@ public class C {
 	public static final int PUBLISHEDFLAG_INSTITUTION = 2;
 	public static final int PUBLISHEDFLAG_PUBLIC = 1;
 	public static final int PUBLISHEDFLAG_UNDEFINED = -1;
+	
+	public static final int LICENSEFLAG_UNDEFINED = -1;
+	public static final int LICENSEFLAG_NO_LICENSE = 0;
+	public static final int LICENSEFLAG_PREMIS = 1;
+	public static final int LICENSEFLAG_METS = 2;
+	public static final int LICENSEFLAG_PUBLIC_METS = 3;
 
 	
 	public static final String ORE_AGGREGATION = "ore:Aggregation";
@@ -193,12 +200,6 @@ public class C {
 	public static final String KIND_OF_SIPBUILDING_SINGLE_WITH_TARGET_FOLDER_NAME="Einzelnes SIP mit dem angegebenen Namen aus dem Quellordner erstellen";
 	public static final String KIND_OF_SIPBUILDING_MULTIPLE="SIPs aus Unterordnern des Quellverzeichnisses erstellen";
 	public static final String KIND_OF_SIPBUILDING_NESTED="SIPs aus verzweigter Ordnerstruktur erstellen (nur METS)";
-
-	
-
-
-
-
 	
 }
 

@@ -24,12 +24,15 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
+import de.uzk.hki.da.action.ActionFactory;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.grid.IrodsCommandLineConnector;
@@ -160,13 +163,29 @@ public class AcceptanceTest {
 		@SuppressWarnings("rawtypes")
 		List list;	
 		list = session.createQuery("from User where short_name=?1")
-	
 				.setParameter("1",contractorShortName).setReadOnly(true).list();
 		
 		if (list.isEmpty())
 			return null;
 	
 		return (User) list.get(0);
+	}
+	
+	public static Boolean setUserPublicMets(Boolean usePublicMets) {
+		Session session = HibernateUtil.openSession();
+		Transaction transaction = session.beginTransaction();
+		Query query = session.createQuery("SELECT u FROM User u where username = '"+testContractor.getUsername()+"'");
+
+		@SuppressWarnings("unchecked")
+		List<User> users = query.list();
+		User testUser = users.get(0);
+		Boolean oldUsePublicMets = testUser.isUsePublicMets();
+		testUser.setUsePublicMets(usePublicMets);
+		session.save(testUser);
+		transaction.commit();
+		session.close();
+
+		return oldUsePublicMets;
 	}
 	
 	
@@ -210,9 +229,8 @@ public class AcceptanceTest {
 		if(testContractor==null)
 			throw new IllegalStateException("regression.TestCSN: "+testContractor+" is not defined in DNS (No etry in DBMS) ");
 		
-		ciPathConsistencyTest();
-			
 		preservationSystem = (PreservationSystem) session.get(PreservationSystem.class, 1);
+		ciPathConsistencyTest();
 		session.close();
 		instantiateStoragePolicy();
 		ath = new AcceptanceTestHelper(gridFacade,localNode,testContractor,sp,preservationSystem);
@@ -235,6 +253,17 @@ public class AcceptanceTest {
 		//If the previous test execution not cleaned 
 			cleanStorage();
 			clearDB();
+			deactivateLicenseValidation();
+	}
+	
+	public static void setLicenseInPreservationSystem(PreservationSystem preservationSystem ,int lflag){
+			Session session = HibernateUtil.openSession();
+			Transaction transaction = session.beginTransaction();
+			preservationSystem = (PreservationSystem) session.get(PreservationSystem.class, 1);
+			preservationSystem.setLicenseValidationFlag(lflag);
+			session.save(preservationSystem);
+			transaction.commit();
+			session.close();
 	}
 	
 	public static void ciPathConsistencyTest(){
@@ -254,10 +283,21 @@ public class AcceptanceTest {
 			throw new IllegalStateException("Der Pfad: "+CI_ARCHIVE_STORAGE+" scheint nicht von dem User: "+testContractor+" zu sein");
 		
 	}
+	synchronized static protected void activateLicenseValidation(){
+		setLicenseInPreservationSystem(preservationSystem,1);
+	}
+	
+	synchronized static protected void deactivateLicenseValidation(){
+		setLicenseInPreservationSystem(preservationSystem,0);
+	}
+	
+	
 
 	@AfterClass
 	public static void tearDownAcceptanceTest() throws IOException{
 //		new CommandLineConnector().runCmdSynchronously(new String[] {"src/main/bash/rebuildIndex.sh"});
+		activateLicenseValidation();
+		
 		cleanStorage();
 		//If the at tests are running on systems with important data, then hard reset of the db is not allowed
 		if(System.getProperty(AcceptanceTestHelper.NO_DIRTY_CLEANUP_AFTER_EACH_TEST_PROPERTY)!=null){

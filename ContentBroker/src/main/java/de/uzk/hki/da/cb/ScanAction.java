@@ -38,6 +38,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectPremisXmlReader;
 import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.utils.C;
 
 
 /**
@@ -48,8 +49,7 @@ import de.uzk.hki.da.util.ConfigurationException;
  * @author Daniel M. de Oliveira
  */
 public class ScanAction extends AbstractAction{
-	
-	private static final String PREMIS_XML = "premis.xml";
+
 	private static final String XMP_RDF = "XMP.rdf";
 	private static final String MIGRATION = "MIGRATION";
 	private final ConversionInstructionBuilder ciB = new ConversionInstructionBuilder();
@@ -64,8 +64,8 @@ public class ScanAction extends AbstractAction{
 
 	@Override
 	public void checkPreconditions() {
-		if (o.getLatest(PREMIS_XML)==null) throw new PreconditionsNotMetException("Must exist: "+PREMIS_XML);
-	    if (!wa.toFile(o.getLatest(PREMIS_XML)).exists()) throw new PreconditionsNotMetException("Must exist: "+PREMIS_XML);
+		if (o.getLatest(C.PREMIS_XML)==null) throw new PreconditionsNotMetException("Must exist: "+C.PREMIS_XML);
+	    if (!wa.toFile(o.getLatest(C.PREMIS_XML)).exists()) throw new PreconditionsNotMetException("Must exist: "+C.PREMIS_XML);
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class ScanAction extends AbstractAction{
 				generateConversionInstructions(o.getLatestPackage().getFiles()));
 		
 		Object premisObject = parsePremisToMetadata(wa.toFile(o.
-				getLatest(PREMIS_XML)));
+				getLatest(C.PREMIS_XML)));
 		o.setDdbExclusion(premisObject.ddbExcluded());
 		if (!premisObject.grantsRight(MIGRATION))
 		{
@@ -89,8 +89,6 @@ public class ScanAction extends AbstractAction{
 		
 		return true;
 	}
-
-	
 	
 	
 	@Override
@@ -137,14 +135,11 @@ public class ScanAction extends AbstractAction{
 	}
 	
 	
-	
-	
-	private Object parsePremisToMetadata(File premis) throws IOException {
+	public static Object parsePremisToMetadata(File premis) throws IOException {
 		Object o = null;
 				
 		try {
-			o = new ObjectPremisXmlReader()
-			.deserialize(premis);
+			o = new ObjectPremisXmlReader().deserialize(premis);
 		} catch (Exception e) {
 			// do not throw userexception here since ability to deserialize should already have been checked in UnpackAction.
 			throw new RuntimeException("Error while deserializing PREMIS", e);
@@ -153,14 +148,10 @@ public class ScanAction extends AbstractAction{
 	}
 	
 	
-	
-	
 	public DistributedConversionAdapter getDistributedConversionAdapter() {
 		return distributedConversionAdapter;
 	}
 
-	
-	
 
 	public void setDistributedConversionAdapter(
 			DistributedConversionAdapter distributedConversionAdapter) {

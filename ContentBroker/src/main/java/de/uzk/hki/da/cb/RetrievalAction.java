@@ -40,6 +40,7 @@ import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.pkg.BagitUtils;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
@@ -61,9 +62,7 @@ import de.uzk.hki.da.utils.Path;
  */
 
 public class RetrievalAction extends AbstractAction {
-	
 
-	private static final String PREMIS_XML = "premis.xml";
 	private Path newTar;
 
 	@Override
@@ -74,7 +73,7 @@ public class RetrievalAction extends AbstractAction {
 	@Override
 	public void checkPreconditions() {
 		if (!wa.objectPath().toFile().exists()) throw new IllegalStateException("object data path on fs doesn't exist on fs");
-		if (!wa.toFile(o.getLatest(PREMIS_XML)).exists()) throw new RuntimeException("CRITICAL ERROR: premis file could has not been found");
+		if (!wa.toFile(o.getLatest(C.PREMIS_XML)).exists()) throw new RuntimeException("CRITICAL ERROR: premis file could has not been found");
 	}
 	
 	@Override
@@ -158,8 +157,8 @@ public class RetrievalAction extends AbstractAction {
 
 
 	private void moveNewestPremisToDIP(Path tempFolder) throws IOException {
-		File dest = Path.makeFile(tempFolder,WorkArea.DATA,PREMIS_XML);
-		FileUtils.copyFile(wa.toFile(o.getLatest(PREMIS_XML)), dest);
+		File dest = Path.makeFile(tempFolder,WorkArea.DATA,C.PREMIS_XML);
+		FileUtils.copyFile(wa.toFile(o.getLatest(C.PREMIS_XML)), dest);
 	}
 
 
@@ -214,7 +213,7 @@ public class RetrievalAction extends AbstractAction {
 		List<DAFile> files = o.getNewestFilesFromAllRepresentations(sce);
 		for (DAFile f : files)
 		{
-			if (wa.toFile(f).getName().equals(PREMIS_XML)) continue;
+			if (wa.toFile(f).getName().equals(C.PREMIS_XML)) continue;
 				
 			File dest = Path.makeFile(tempFolder,WorkArea.DATA,f.getRelative_path());
 			logger.info("file will be part of pip: "+dest.getAbsolutePath());

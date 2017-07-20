@@ -92,6 +92,9 @@ public class PreservationSystem {
 	
 	@Column(name="pres_server")
 	private String presServer;
+	
+	@Column(name="license_validation",columnDefinition="INTEGER DEFAULT 1")
+	private int licenseValidationFlag;
 
 	@Column(name="urn_name_space")
 	private String urnNameSpace;
@@ -104,6 +107,7 @@ public class PreservationSystem {
 	
 	@Column(name="uris_aggr")
 	private String urisAggr;
+	
 	
 	@Column(name="uris_local")
 	private String urisLocal;
@@ -245,4 +249,10 @@ public class PreservationSystem {
 		this.subformatIdentificationPolicies = subformatIdentificationPolicies;
 	}
 	
+	public int getLicenseValidationFlag() {
+		return licenseValidationFlag;
+	}
+	public void setLicenseValidationFlag(int licenseValidationFlag) {
+		this.licenseValidationFlag = licenseValidationFlag;
+	}
 }

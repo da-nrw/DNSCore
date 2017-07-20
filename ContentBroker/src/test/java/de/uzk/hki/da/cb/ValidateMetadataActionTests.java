@@ -65,6 +65,7 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 	private static final String METS_2_998_XML = "mets_2_998.xml";
 	private static final String VDA03_XML = "vda03.xml";
 	private static final String METS_2_99_XML = "mets_2_99.xml";
+	private static final String METS_LICENSE_XML = "mets.xml";
 	private static final Path WORK_AREA_ROOT = Path.make(TC.TEST_ROOT_CB,"ValidateMetadataAction");
 	private static final String XMP1_XML = "xmp1.xmp";
 	private static final String LIDO_XML = "lido1.xml";
@@ -75,11 +76,13 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 	
 	DAFile f_ead1 = new DAFile(REP_A,VDA03_XML);
 	DAFile f_ead2 = new DAFile(REP_B,EAD_XML);
-	DAFile f_mets1 = new DAFile("",METS_2_99_XML); 
-	DAFile f_mets2 = new DAFile("",METS_2_998_XML);
+	DAFile f_lic_mets = new DAFile("1+a",METS_LICENSE_XML);
+	DAFile f_mets1 = new DAFile("1+a",METS_2_99_XML); 
+	DAFile f_mets2 = new DAFile("1+a",METS_2_998_XML);
 	DAFile f_xmp1 = new DAFile("1+a",XMP1_XML);
 	DAFile f_lido1 = new DAFile("",LIDO_XML);
 	DAFile f_lido2 = new DAFile("",LIDO2_XML);
+	DAFile f_premis = new DAFile("1+a",C.PREMIS_XML);
 	
 	DAFile f_subfolder_ead1 = new DAFile(REP_A,"subfolder/"+VDA03_XML);
 
@@ -102,6 +105,7 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 
 		f_ead1.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_EAD);
 		f_ead2.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_EAD);
+		f_lic_mets.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_METS);
 		f_mets1.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_METS);
 		f_mets2.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_METS);
 		f_xmp1.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_XMP);
@@ -147,10 +151,11 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 		o.getLatestPackage().getFiles().add(f_ead1);
 		o.getLatestPackage().getFiles().add(f_mets1);
 		o.getLatestPackage().getFiles().add(f_mets2);
-		
+		o.getLatestPackage().getFiles().add(f_premis);
 		action.implementation();
 		
 		assertEquals(C.CB_PACKAGETYPE_EAD,o.getPackage_type());
+		assertEquals(C.LICENSEFLAG_NO_LICENSE,o.getLicense_flag());
 		assertEquals(VDA03_XML,o.getMetadata_file());
 	}
 
@@ -171,22 +176,24 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 	@Test 
 	public void testDetectMETS() throws FileNotFoundException, UserException, IOException, RepositoryException{
 		
-		o.getLatestPackage().getFiles().add(f_mets1);
-		
+		o.getLatestPackage().getFiles().add(f_lic_mets);
+		o.getLatestPackage().getFiles().add(f_premis);
 		action.implementation();
 		
 		assertEquals(C.CB_PACKAGETYPE_METS,o.getPackage_type());
-		assertEquals(METS_2_99_XML,o.getMetadata_file());
+		assertEquals(C.LICENSEFLAG_METS,o.getLicense_flag());
+		assertEquals(METS_LICENSE_XML,o.getMetadata_file());
 	}
 
 	@Test
 	public void testLido() throws FileNotFoundException, UserException, IOException, RepositoryException{
 		
 		o.getLatestPackage().getFiles().add(f_lido1);
-		
+		o.getLatestPackage().getFiles().add(f_premis);
 		action.implementation();
 		
 		assertEquals(C.CB_PACKAGETYPE_LIDO,o.getPackage_type());
+		assertEquals(C.LICENSEFLAG_NO_LICENSE,o.getLicense_flag());
 		assertEquals(LIDO_XML,o.getMetadata_file());
 	}
 	
@@ -210,10 +217,11 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 	public void testXMPWithoutRDF() throws FileNotFoundException, UserException, IOException, RepositoryException{
 		
 		o.getLatestPackage().getFiles().add(f_xmp1);
-		
+		o.getLatestPackage().getFiles().add(f_premis);
 		action.implementation();
 		
 		assertEquals(C.CB_PACKAGETYPE_XMP,o.getPackage_type());
+		assertEquals(C.LICENSEFLAG_NO_LICENSE,o.getLicense_flag());
 		assertEquals(C.METADATA_FILE_XMP,o.getMetadata_file());
 	}
 	

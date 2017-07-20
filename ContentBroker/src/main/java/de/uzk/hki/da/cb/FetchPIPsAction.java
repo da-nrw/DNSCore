@@ -32,6 +32,7 @@ import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
@@ -72,15 +73,19 @@ public class FetchPIPsAction extends AbstractAction {
 		distributedConversionAdapter.replicateToLocalNode(
 				makeRelativePIPSourceFolder(WorkArea.WA_INSTITUTION).toString(),n);
 		
+		boolean validLicense=( canIgnoreLicenseValidation() || 
+				(o.getLicense_flag()!=C.LICENSEFLAG_NO_LICENSE && o.getLicense_flag()!=C.LICENSEFLAG_UNDEFINED));
 		
-		if (makePIPSourceFolder(WorkArea.PUBLIC).exists()) {
-			logger.info(INFO_MSG_REPLICATED_SUCESSFULLY+makePIPSourceFolder(WorkArea.PUBLIC));
-
-//          The rename is necessary because at the moment we donl't have another possibility to delete or trim the irods
-//          collections on specific resources.
-			FileUtils.moveDirectory(
-					makePIPSourceFolder(WorkArea.PUBLIC), 
-					makePIPFolder(WorkArea.PUBLIC));
+		if(validLicense){ //create and fill WorkArea.PUBLIC-Dir only if license metadata is acceptable
+			if (makePIPSourceFolder(WorkArea.PUBLIC).exists()) {
+				logger.info(INFO_MSG_REPLICATED_SUCESSFULLY+makePIPSourceFolder(WorkArea.PUBLIC));
+	
+	//          The rename is necessary because at the moment we donl't have another possibility to delete or trim the irods
+	//          collections on specific resources.
+				FileUtils.moveDirectory(
+						makePIPSourceFolder(WorkArea.PUBLIC), 
+						makePIPFolder(WorkArea.PUBLIC));
+			}
 		}
 		if (makePIPSourceFolder(WorkArea.WA_INSTITUTION).exists()) {
 			logger.info(INFO_MSG_REPLICATED_SUCESSFULLY+makePIPSourceFolder(WorkArea.WA_INSTITUTION));

@@ -93,6 +93,7 @@ public abstract class AbstractAction implements Runnable {
 	
 	protected Node n;                        // Implementations should never alter the state of this object to ensure thread safety
 	protected PreservationSystem preservationSystem; // Implementations should never alter the state of this object to ensure thread safety
+	protected Set<String> testContractors;
 	
 	
 	
@@ -556,7 +557,16 @@ public abstract class AbstractAction implements Runnable {
 	public void setPSystem(PreservationSystem pSystem) {
 		this.preservationSystem = pSystem;
 	}
-
+	
+	/**
+	 * License validation can be ignored if specific flag in preservationSystem is set and if the current contractor belongs to test contractor amount.
+	 * Primary use case are JUnit-/Acceptance-Tests.
+	 * 
+	 * @return
+	 */
+	public boolean canIgnoreLicenseValidation(){
+		return preservationSystem.getLicenseValidationFlag()==0 && testContractors.contains(o.getContractor().getUsername());
+	}
 	
 	
 	@Override
@@ -616,5 +626,26 @@ public abstract class AbstractAction implements Runnable {
 	public void setWorkArea(WorkArea wa) {
 		this.wa = wa;
 	}
+
+	/**
+	 * Get the set of contractors that are considered test users.
+	 * Objects ingested by these users will be indexed in the
+	 * test index (index_name + "test").
+	 * @return the set of test users
+	 */
+	public Set<String> getTestContractors() {
+		return testContractors;
+	}
+
+	/**
+	 * Set the set of contractors that are considered test users.
+	 * Objects ingested by these users will be indexed in the
+	 * test index (index_name + "test").
+	 * @param the set of test users
+	 */
+	public void setTestContractors(Set<String> testContractors) {
+		this.testContractors = testContractors;
+	}
+	
 	
 }

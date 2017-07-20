@@ -68,7 +68,7 @@ public class ATRecreateEDM extends AcceptanceTest {
 		//initiate recreation of edm file and index entry
 		SystemEvent se=createReindexSystemEvent();
 		while(systemEventExists(se)){
-			Thread.sleep(1000);
+			Thread.sleep(5000);
 			System.out.println("SystemEvent is not finished (yet). ");
 		}
 		ath.awaitObjectState(sip,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);

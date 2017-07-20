@@ -265,7 +265,7 @@ public class AcceptanceTestHelper {
 			
 			if (publishedFlag==0 && o.getPublished_flag()==0) break;
 			else
-				if (o.getPublished_flag()>0) break;
+				if ((o.getPublished_flag() & publishedFlag) >0) break; // Binary and operator!!!
 		}
 	}
 

@@ -22,6 +22,7 @@ package de.uzk.hki.da.cb;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -38,6 +39,7 @@ import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
 import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.action.AbstractAction;
@@ -47,11 +49,14 @@ import de.uzk.hki.da.metadata.EadMetsMetadataStructure;
 import de.uzk.hki.da.metadata.LidoMetadataStructure;
 import de.uzk.hki.da.metadata.MetadataStructure;
 import de.uzk.hki.da.metadata.MetsMetadataStructure;
+import de.uzk.hki.da.metadata.MetsParser;
 import de.uzk.hki.da.metadata.XMPMetadataStructure;
 import de.uzk.hki.da.metadata.XmpCollector;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
+import de.uzk.hki.da.model.ObjectPremisXmlReader;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.PremisLicense;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.FileIdGenerator;
@@ -102,7 +107,7 @@ public class UpdateMetadataAction extends AbstractAction {
 	}
 
 	@Override
-	public boolean implementation() throws IOException, JDOMException, ParserConfigurationException, SAXException {
+	public boolean implementation() throws IOException, JDOMException, ParserConfigurationException, SAXException, NullPointerException {
 		
 		logger.debug("UpdateMetadataAction ...");
 		
@@ -175,6 +180,25 @@ public class UpdateMetadataAction extends AbstractAction {
 					}
 				}
 				
+				if(presMode && "METS".equals(packageType)&&o.getLicense_flag()==C.LICENSEFLAG_PREMIS){//append accessCondition-Element to PIP-Mets 
+						PremisLicense pLicense;
+						try {
+							MetsMetadataStructure mms = new MetsMetadataStructure(wa.dataPath(),metadataFile, documents);
+							pLicense = (new ObjectPremisXmlReader()).deserialize(wa.toFile(o.getLatest(C.PREMIS_XML))).getRights().getPremisLicense();
+							mms.appendAccessCondition(metadataFile, pLicense.getHref(), pLicense.getDisplayLabel(), pLicense.getText());
+						} catch (ParseException  e) {
+							logger.error("Exception: "+e);
+							e.printStackTrace();
+							throw new IOException(e);
+						}catch ( org.jdom.IllegalNameException e) {
+							logger.error("Exception: "+e);
+							e.printStackTrace();
+							throw new IOException(e);
+						}
+						
+					
+				}
+				
 				if(!replacements.isEmpty() && replacements!=null) {
 					for(String sourceHref : fileName_convertRewritingCount.keySet()) {
 						logger.debug((Integer)fileName_convertRewritingCount.get(sourceHref)+" convert replacements for "+sourceHref);
@@ -216,7 +240,7 @@ public class UpdateMetadataAction extends AbstractAction {
 		
 		return true;
 	}
-	
+
 	private void updatePathsInRDF(XMPMetadataStructure xms, Map<DAFile,DAFile> replacements) throws IOException {
 		logger.debug("Update paths in XMP file "+xms.getMetadataFile().getAbsolutePath());
 		Map<String, String> replacementsMap = new HashMap<String, String>();
@@ -320,7 +344,7 @@ public class UpdateMetadataAction extends AbstractAction {
 					loctype = "URL";
 				}
 				logger.debug("New mets replacement: "+href+" by "+targetValue);
-				mms.makeReplacementsInMetsFile(metsFile, href, targetValue, mimetype, loctype);
+				mms.makeReplacementsFileHrefInMetsFile(metsFile, href, targetValue, mimetype, loctype);
 			} else {
 				logger.error("No dafile found for href "+href);
 			}

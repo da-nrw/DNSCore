@@ -23,6 +23,9 @@ import static de.uzk.hki.da.test.TC.URN;
 import static de.uzk.hki.da.utils.C.TEST_USER_SHORT_NAME;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Before;
 
@@ -34,6 +37,7 @@ import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.WorkArea;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -102,7 +106,7 @@ public class ConcreteActionUnitTest {
 		o.getPackages().add(pkg);
 		o.setUrn(URN);
 		o.setInitial_node("testnode");
-		
+		o.setLicense_flag(C.LICENSEFLAG_METS);
 		j = new Job();
 		j.setObject(o);
 		
@@ -110,6 +114,7 @@ public class ConcreteActionUnitTest {
 		Field f = parser.parse(this.getClass());
 		AbstractAction a = (AbstractAction) f.get(this);
 		
+		a.setTestContractors(new HashSet<String>(){{this.add(TEST_USER_SHORT_NAME);}});
 		a.setObject(o);
 		a.setLocalNode(n);
 		a.setJob(j);

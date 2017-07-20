@@ -22,9 +22,14 @@ package de.uzk.hki.da.cb;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import org.jdom.input.SAXBuilder;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.UserException;
@@ -32,14 +37,22 @@ import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.format.FFConstants;
 import de.uzk.hki.da.metadata.MetadataStructure;
 import de.uzk.hki.da.metadata.MetadataStructureFactory;
+import de.uzk.hki.da.metadata.MetsLicense;
+import de.uzk.hki.da.metadata.MetsParser;
 import de.uzk.hki.da.metadata.XmpCollector;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.model.Event;
+import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.ObjectPremisXmlReader;
+import de.uzk.hki.da.model.PublicationRight;
+import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.StringUtilities;
+import de.uzk.hki.da.utils.XMLUtils;
+import nu.xom.ValidityException;
 
 /**
  * Detects the package type of an object and validates the metadata structure.
@@ -100,10 +113,124 @@ public class ValidateMetadataAction extends AbstractAction {
 		}
 		
 		o.setMetadata_file(detectedMetadataFile.getRelative_path());
+		try {
+			if( !canIgnoreLicenseValidation())
+				checkLicenses();
+		} catch (UserException e) {
+			logger.debug("Fehler bei Lizenzauswertung: "+e.getMessage());
+			throw e;
+		}catch (Exception e) {
+			logger.debug("Fehler bei Lizenzauswertung: "+e.getMessage());
+			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,"Fehler bei Lizenzenauswertung: "+e);
+		}
 		return true;
 	}
 	
 	
+	private void checkLicenses() throws Exception {
+		boolean wantPublication = false;
+		boolean hasPremisLicense = false;
+		boolean hasMetsLicense = false;
+		boolean hasPublicMetsLicense = false;
+		boolean usePublicMets = false;
+		//validate premis
+		Object premisObject = parsePremisToMetadata(wa.toFile(o.getLatest(C.PREMIS_XML)));
+		for (PublicationRight pr : premisObject.getRights().getPublicationRights())
+			if (pr.getAudience().equals(Audience.PUBLIC))
+				wantPublication = true;
+
+		if (!detectedPackageType.equals(C.CB_PACKAGETYPE_METS) && wantPublication)
+			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
+					"Publikation ist nur mithilfe von METS-Metadaten erlaubt.");
+
+		if (premisObject.getRights().getPremisLicense() != null)
+			hasPremisLicense = true;
+		
+		if(hasPremisLicense){
+			try{
+				new URL(premisObject.getRights().getPremisLicense().getHref());
+			}catch(MalformedURLException e){
+				throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
+						"Invalid Premis: publicationLicense-Element in Premis has not valid href attribute("+e.getMessage()+")");
+			}
+		}
+
+		//validate mets
+		if (detectedPackageType.equals(C.CB_PACKAGETYPE_METS)){
+			List<DAFile> metsFiles = getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_METS);
+			MetsLicense licenseMetsFile =null;
+			MetsLicense licensePublicMetsFile = null;
+			for (DAFile f : metsFiles) {//over all mets-files (max 2)
+				SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+				MetsParser mp = new MetsParser(builder.build(wa.toFile(f).getAbsolutePath()));
+				if(f.getRelative_path().equalsIgnoreCase(C.PUBLIC_METS)){
+					usePublicMets=true;
+					licensePublicMetsFile=mp.getLicenseForWholeMets();
+					hasPublicMetsLicense=(licensePublicMetsFile!=null);
+				}
+				else{
+					licenseMetsFile=mp.getLicenseForWholeMets();
+					hasMetsLicense=(licenseMetsFile!=null);
+				}
+				
+			}
+			
+			if(hasPublicMetsLicense){
+				try{
+					new URL(licensePublicMetsFile.getHref());
+				}catch(MalformedURLException e){
+					throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
+							"Invalid License in "+C.PUBLIC_METS+": accessCondition-Element has not valid href attribute("+e.getMessage()+")");
+				}
+			}else if(!hasPublicMetsLicense && hasMetsLicense){
+				try{
+					new URL(licenseMetsFile.getHref());
+				}catch(MalformedURLException e){
+					throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
+							"Invalid License in mets metadata: accessCondition-Element has not valid href attribute("+e.getMessage()+")");
+				}
+			}
+			if ((licenseMetsFile!=null && !licenseMetsFile.equals(licensePublicMetsFile)) ||
+					(licensePublicMetsFile!=null && !licensePublicMetsFile.equals(licenseMetsFile))) // mets and public mets are different
+				logger.warn("Lizenzangaben in den METS-Metadaten sind unterschiedlich: e.g.:" + licenseMetsFile+" "	+ licensePublicMetsFile);
+		}
+		//check license compatibility
+		if(usePublicMets && !hasPublicMetsLicense)
+			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
+					"Keine Lizenzangaben in der Public-METS-Metadatei vorhanden.");
+		if (hasPremisLicense && (hasMetsLicense || hasPublicMetsLicense))
+			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
+					"Lizenzangaben in den METS-Metadaten und in der Premis-Datei vorhanden.");
+
+		if (wantPublication && !hasPremisLicense && !(hasMetsLicense || hasPublicMetsLicense))
+			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
+					"Keine Lizenzangaben für eine Publikation vorhanden.");
+		
+		if(hasPremisLicense)
+			o.setLicense_flag(C.LICENSEFLAG_PREMIS);
+		else if(hasMetsLicense && !usePublicMets)
+			o.setLicense_flag(C.LICENSEFLAG_METS);
+		else if(hasPublicMetsLicense && o.getContractor().isUsePublicMets())
+			o.setLicense_flag(C.LICENSEFLAG_PUBLIC_METS);
+		else if(!hasPremisLicense && !hasMetsLicense && !hasPublicMetsLicense)
+			o.setLicense_flag(C.LICENSEFLAG_NO_LICENSE);
+		else
+			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,"Invalide Lizenzangaben.");
+	}
+
+	public static Object parsePremisToMetadata(File premis) throws IOException {
+		Object o = null;
+
+		try {
+			o = new ObjectPremisXmlReader().deserialize(premis);
+		} catch (Exception e) {
+			// do not throw userexception here since ability to deserialize
+			// should already have been checked in UnpackAction.
+			throw new RuntimeException("Error while deserializing PREMIS", e);
+		}
+		return o;
+	}
+
 	private MetadataStructure createMetadataStructure() {
 		MetadataStructure ms=null;
 		try {
