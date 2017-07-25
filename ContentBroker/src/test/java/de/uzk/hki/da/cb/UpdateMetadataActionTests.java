@@ -19,6 +19,7 @@
 
 package de.uzk.hki.da.cb;
 
+import static de.uzk.hki.da.utils.C.TEST_USER_SHORT_NAME;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyObject;
@@ -30,6 +31,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -51,9 +53,11 @@ import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.test.TESTHelper;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
@@ -101,6 +105,7 @@ public class UpdateMetadataActionTests {
 	public void setUp() throws IOException {
 		PreservationSystem pSystem = new PreservationSystem();
 		pSystem.setUrisFile("http://data.danrw.de/file");
+		pSystem.setLicenseValidationFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_YES);		
 		
 		action = new UpdateMetadataAction();		
 		node = new Node();
@@ -112,6 +117,8 @@ public class UpdateMetadataActionTests {
 		
 		
 		obj = TESTHelper.setUpObject("23",workAreaPath);
+
+		action.setTestContractors(new HashSet<String>(){{this.add(obj.getContractor().getShort_name());}});
 		WorkArea wa = new WorkArea(node,obj);
 		action.setWorkArea(wa);
 		
@@ -128,6 +135,7 @@ public class UpdateMetadataActionTests {
 		FolderUtils.deleteDirectorySafe(new File(workAreaPath + "/TEST/42/data/pips"));
 		FolderUtils.deleteDirectorySafe(new File("conf/xslt"));
 	}
+	
 	
 	
 	

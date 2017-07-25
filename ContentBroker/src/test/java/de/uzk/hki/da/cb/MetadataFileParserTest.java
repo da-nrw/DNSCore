@@ -121,31 +121,31 @@ public class MetadataFileParserTest {
 			File metsFile = mms.getMetadataFile();
 			
 			if(metsFile.getName().equals("mets_2_32044.xml")) {
-				mms.makeReplacementsFileHrefInMetsFile(mms.getMetadataFile(), "mets_361/ALVR_Nr_4547_Aufn_002.tif", "https://bla/ALVR_Nr_4547_Aufn_002.jpg", mimetype, loctype);
+				mms.makeReplacementsHrefInMetsFile(mms.getMetadataFile(), "mets_361/ALVR_Nr_4547_Aufn_002.tif", "https://bla/ALVR_Nr_4547_Aufn_002.jpg", mimetype, loctype);
 				Document metsDoc = builder.build(new FileReader(mms.getMetadataFile()));
 				assertEquals( "https://bla/ALVR_Nr_4547_Aufn_002.jpg", getMetsURL(metsDoc));
 				assertEquals( "url", getMetsLoctype(metsDoc));
 				assertEquals( "image/jpeg", getMetsMimetype(metsDoc));
 			} else if(metsFile.getName().equals("mets_2_32045.xml")) {
-				mms.makeReplacementsFileHrefInMetsFile(mms.getMetadataFile(), "mets_361/ALVR_Nr_4547_Aufn_003.tif", "https://bla/ALVR_Nr_4547_Aufn_003.jpg", mimetype, loctype);
+				mms.makeReplacementsHrefInMetsFile(mms.getMetadataFile(), "mets_361/ALVR_Nr_4547_Aufn_003.tif", "https://bla/ALVR_Nr_4547_Aufn_003.jpg", mimetype, loctype);
 				Document metsDoc = builder.build(new FileReader(mms.getMetadataFile()));
 				assertEquals( "https://bla/ALVR_Nr_4547_Aufn_003.jpg", getMetsURL(metsDoc));
 				assertEquals( "url", getMetsLoctype(metsDoc));
 				assertEquals( "image/jpeg", getMetsMimetype(metsDoc));
 			} else if(metsFile.getName().equals("mets_2_32046.xml")) {
-				mms.makeReplacementsFileHrefInMetsFile(mms.getMetadataFile(), "mets_361/ALVR_Nr_4547_Aufn_004.tif", "https://bla/ALVR_Nr_4547_Aufn_004.jpg", mimetype, loctype);
+				mms.makeReplacementsHrefInMetsFile(mms.getMetadataFile(), "mets_361/ALVR_Nr_4547_Aufn_004.tif", "https://bla/ALVR_Nr_4547_Aufn_004.jpg", mimetype, loctype);
 				Document metsDoc = builder.build(new FileReader(mms.getMetadataFile()));
 				assertEquals( "https://bla/ALVR_Nr_4547_Aufn_004.jpg", getMetsURL(metsDoc));
 				assertEquals( "url", getMetsLoctype(metsDoc));
 				assertEquals( "image/jpeg", getMetsMimetype(metsDoc));
 			} else if(metsFile.getName().equals("mets_2_32047.xml")) {
-				mms.makeReplacementsFileHrefInMetsFile(mms.getMetadataFile(), "mets_361/ALVR_Nr_4547_Aufn_005.tif", "https://bla/ALVR_Nr_4547_Aufn_005.jpg", mimetype, loctype);
+				mms.makeReplacementsHrefInMetsFile(mms.getMetadataFile(), "mets_361/ALVR_Nr_4547_Aufn_005.tif", "https://bla/ALVR_Nr_4547_Aufn_005.jpg", mimetype, loctype);
 				Document metsDoc = builder.build(new FileReader(mms.getMetadataFile()));
 				assertEquals( "https://bla/ALVR_Nr_4547_Aufn_005.jpg", getMetsURL(metsDoc));
 				assertEquals( "url", getMetsLoctype(metsDoc));
 				assertEquals( "image/jpeg", getMetsMimetype(metsDoc));
 			} else {
-				mms.makeReplacementsFileHrefInMetsFile(mms.getMetadataFile(), "mets_361/ALVR_Nr_4547_Aufn_006.tif", "https://bla/ALVR_Nr_4547_Aufn_006.jpg", mimetype, loctype);
+				mms.makeReplacementsHrefInMetsFile(mms.getMetadataFile(), "mets_361/ALVR_Nr_4547_Aufn_006.tif", "https://bla/ALVR_Nr_4547_Aufn_006.jpg", mimetype, loctype);
 				Document metsDoc = builder.build(new FileReader(mms.getMetadataFile()));
 				assertEquals( "https://bla/ALVR_Nr_4547_Aufn_006.jpg", getMetsURL(metsDoc));
 				assertEquals( "url", getMetsLoctype(metsDoc));

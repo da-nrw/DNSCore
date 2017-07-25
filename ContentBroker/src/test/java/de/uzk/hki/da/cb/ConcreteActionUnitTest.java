@@ -93,6 +93,7 @@ public class ConcreteActionUnitTest {
 		
 		c = new User();
 		c.setShort_name(TEST_USER_SHORT_NAME);
+		c.setUsername(c.getShort_name());
 		c.setEmailAddress("noreply");
 		
 		Package pkg = new Package();
@@ -114,7 +115,7 @@ public class ConcreteActionUnitTest {
 		Field f = parser.parse(this.getClass());
 		AbstractAction a = (AbstractAction) f.get(this);
 		
-		a.setTestContractors(new HashSet<String>(){{this.add(TEST_USER_SHORT_NAME);}});
+		a.setTestContractors(new HashSet<String>(){{this.add(c.getUsername());}});
 		a.setObject(o);
 		a.setLocalNode(n);
 		a.setJob(j);

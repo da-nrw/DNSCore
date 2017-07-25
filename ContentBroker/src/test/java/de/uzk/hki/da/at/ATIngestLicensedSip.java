@@ -68,7 +68,7 @@ public class ATIngestLicensedSip extends AcceptanceTest {
 
 	@Test
 	public void testLicenseInMets() throws IOException, JDOMException {
-		assertTrue("preservationSystem.getLicenseValidationFlag()==0", preservationSystem.getLicenseValidationFlag()!=0);
+		assertTrue("preservationSystem.getLicenseValidationFlag()==0", preservationSystem.getLicenseValidationFlag()!=C.PRESERVATIONSYS_LICENSE_VALIDATION_NO);
 		ath.putSIPtoIngestArea(sipLicenseInMets, "tgz", sipLicenseInMets);
 		ath.awaitObjectState(sipLicenseInMets,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForDefinedPublishedState(sipLicenseInMets);

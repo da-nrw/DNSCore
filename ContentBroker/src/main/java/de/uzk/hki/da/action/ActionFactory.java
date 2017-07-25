@@ -100,7 +100,7 @@ public class ActionFactory implements ApplicationContextAware {
 	private Set<String> testContractors;
 	
 	
-	public static void refreshLicenseInPreservationSystem(PreservationSystem preservationSystem ){
+	public static void refreshLicenseFlagInPreservationSystem(PreservationSystem preservationSystem ){
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		PreservationSystem psTMP=(PreservationSystem) session.load(PreservationSystem.class, preservationSystem.getId());
@@ -145,7 +145,7 @@ public class ActionFactory implements ApplicationContextAware {
 	
 	
 	private void injectProperties(AbstractAction action, Job job){
-		refreshLicenseInPreservationSystem(getPreservationSystem());
+		refreshLicenseFlagInPreservationSystem(getPreservationSystem());
 		action.setUserExceptionManager(userExceptionManager);
 		action.setJmsMessageServiceHandler(jmsMessageServiceHandler);
 		action.setLocalNode(localNode);

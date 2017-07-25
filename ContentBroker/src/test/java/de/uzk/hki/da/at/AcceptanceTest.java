@@ -284,11 +284,11 @@ public class AcceptanceTest {
 		
 	}
 	synchronized static protected void activateLicenseValidation(){
-		setLicenseInPreservationSystem(preservationSystem,1);
+		setLicenseInPreservationSystem(preservationSystem,C.PRESERVATIONSYS_LICENSE_VALIDATION_YES);
 	}
 	
 	synchronized static protected void deactivateLicenseValidation(){
-		setLicenseInPreservationSystem(preservationSystem,0);
+		setLicenseInPreservationSystem(preservationSystem,C.PRESERVATIONSYS_LICENSE_VALIDATION_NO);
 	}
 	
 	

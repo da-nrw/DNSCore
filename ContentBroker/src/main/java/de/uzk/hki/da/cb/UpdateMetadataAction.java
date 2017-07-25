@@ -344,7 +344,7 @@ public class UpdateMetadataAction extends AbstractAction {
 					loctype = "URL";
 				}
 				logger.debug("New mets replacement: "+href+" by "+targetValue);
-				mms.makeReplacementsFileHrefInMetsFile(metsFile, href, targetValue, mimetype, loctype);
+				mms.makeReplacementsHrefInMetsFile(metsFile, href, targetValue, mimetype, loctype);
 			} else {
 				logger.error("No dafile found for href "+href);
 			}
