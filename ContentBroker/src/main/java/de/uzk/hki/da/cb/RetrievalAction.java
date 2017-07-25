@@ -207,8 +207,8 @@ public class RetrievalAction extends AbstractAction {
 			throws RuntimeException, IOException {
 		
 		String sce = "";
-		if (preservationSystem.getSidecarExtensions()!=null) 
-			sce = preservationSystem.getSidecarExtensions();
+		if (o.getFriendlyFileExtensions()!=null) 
+			sce = o.getFriendlyFileExtensions();
 		
 		List<DAFile> files = o.getNewestFilesFromAllRepresentations(sce);
 		for (DAFile f : files)

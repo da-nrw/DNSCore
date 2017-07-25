@@ -159,7 +159,8 @@ public class ObjectPremisXmlWriter {
 
 			if (e.getType().toUpperCase().equals(C.EVENT_TYPE_CONVERT)
 					|| e.getType().toUpperCase().equals(C.EVENT_TYPE_COPY)
-					|| e.getType().toUpperCase().equals(C.EVENT_TYPE_CREATE)){
+					|| e.getType().toUpperCase().equals(C.EVENT_TYPE_CREATE)
+					|| e.getType().toUpperCase().equals(C.EVENT_TYPE_CONVERSION_SUPRESSED)){
 				logger.debug("Serializing convert event: "+e);
 				createConvertEventElement(e);
 			} else
@@ -350,13 +351,23 @@ public class ObjectPremisXmlWriter {
 	 */
 	private void createConvertEventElement(Event e) throws XMLStreamException{
 		createOpenElement("event", 1);
+		
+		DAFile evIdFile;
+		if (e.getTarget_file() != null) {
+			evIdFile = e.getTarget_file();
+		} else {
+			evIdFile = e.getSource_file();
+		}
+
 		createOpenElement("eventIdentifier", 2);
-			createTextElement("eventIdentifierType", "TARGET_FILE_PATH", 3);
-			createTextElement("eventIdentifierValue", e.getTarget_file().getRep_name() + "/" + e.getTarget_file().getRelative_path(), 3);
+		createTextElement("eventIdentifierType", "TARGET_FILE_PATH", 3);
+		createTextElement("eventIdentifierValue", evIdFile.getRep_name() + "/" + evIdFile.getRelative_path(), 3);
 		createCloseElement(2);
+
 		createTextElement("eventType", e.getType(), 2);
-		if (e.getDate() != null)
+		if (e.getDate() != null) {
 			createTextElement("eventDateTime", formatDate(e.getDate()), 2);
+		}
 		
 		if (e.getDetail() != null)
 			createTextElement("eventDetail", e.getDetail(), 2);
@@ -379,7 +390,9 @@ public class ObjectPremisXmlWriter {
 		createTextElement("linkingAgentIdentifierValue", a.getName(), 3);
 		createCloseElement(2);
 		
-		if (e.getType().equals(C.EVENT_TYPE_CONVERT) || e.getType().equals(C.EVENT_TYPE_COPY)) {
+		if (e.getType().equals(C.EVENT_TYPE_CONVERT) 
+		 || e.getType().equals(C.EVENT_TYPE_COPY) 
+		 || e.getType().equals(C.EVENT_TYPE_CONVERSION_SUPRESSED)) {
 			createOpenElement("linkingObjectIdentifier", 2);
 			createTextElement("linkingObjectIdentifierType", "FILE_PATH", 3);
 			createTextElement("linkingObjectIdentifierValue", e.getSource_file().getRep_name() + "/" + e.getSource_file().getRelative_path(), 3);
@@ -387,11 +400,13 @@ public class ObjectPremisXmlWriter {
 			createCloseElement(2);
 		}
 		
-		createOpenElement("linkingObjectIdentifier", 2);
-		createTextElement("linkingObjectIdentifierType", "FILE_PATH", 3);
-		createTextElement("linkingObjectIdentifierValue", e.getTarget_file().getRep_name() + "/" + e.getTarget_file().getRelative_path(), 3);
-		createTextElement("linkingObjectRole", "outcome", 3);
-		createCloseElement(2);
+		if (e.getTarget_file() != null) {
+			createOpenElement("linkingObjectIdentifier", 2);
+			createTextElement("linkingObjectIdentifierType", "FILE_PATH", 3);
+			createTextElement("linkingObjectIdentifierValue", e.getTarget_file().getRep_name() + "/" + e.getTarget_file().getRelative_path(), 3);
+			createTextElement("linkingObjectRole", "outcome", 3);
+			createCloseElement(2);
+		}
 
 		createCloseElement(1);
 	}

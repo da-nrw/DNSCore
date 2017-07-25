@@ -98,6 +98,7 @@ public class Cli {
 		this.confFolderPath = confFolderPath;
 		this.args = args;
 		sipFactory = new SIPFactory();
+		
 	}
 
 	/**
@@ -170,6 +171,10 @@ public class Cli {
 	private Feedback configureSipFactory() {
 		
 		boolean contractRightsLoaded = false;
+		// DANRW-1515
+		boolean allowDuplicateFilename = false; 
+		boolean checkFileExtensionOff = false;
+		
 		CliMessageWriter messageWriter = new CliMessageWriter();
 		
 		// Default settings
@@ -297,6 +302,25 @@ public class Cli {
     			continue;
     		} 
     		
+    		// DANRW-1515: Extension to disable checking for duplicate filename
+    		// configurable, if the file extension may be checked
+    		if (arg.equals("-allowDuplicateFilename")) {
+    			sipFactory.setAllowDuplicateFilename(true);
+    			allowDuplicateFilename = true;
+    			continue;
+    		}
+    		if (arg.equals("-checkFileExtensionOff")) {
+    			sipFactory.setCheckFileExtensionOff(true);
+    			checkFileExtensionOff = true;
+    			continue;
+    		}
+    		
+    		if (!allowDuplicateFilename && checkFileExtensionOff) {
+    			System.out.println("-checkFileExtensionOff ist nicht ohne den Parameter -allowDuplicateFilename gültig. Starten Sie den SipBuilder " 
+    					+ "mit dem Parameter -help, um eine Liste aller möglichen Parameter anzuzeigen.");
+    			return Feedback.INVALID_PARAMETER_COMBINATION;
+    		}
+    		
     		if (arg.startsWith("-destDir")) {
     			sipFactory.setDestinationPath(sipFactory.getDestinationPath() + File.separator + extractParameter(arg));
     			continue;
@@ -332,6 +356,17 @@ public class Cli {
     							   "standardRights.xml\" geladen werden.");
     			return Feedback.STANDARD_RIGHTS_FILE_READ_ERROR;
     		}
+    	// DANRW-1515
+    	if (allowDuplicateFilename && !checkFileExtensionOff) {
+			try {
+				sipFactory.setFileExtensionsList(sipFactory.getFileExtensions().loadFileExtensionsFromFile(
+						new File(confFolderPath + File.separator + "fileExtensions.xml")));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return Feedback.FILE_EXTENSIONS_READ_ERROR;
+			}
+    	}
     	
     	return Feedback.SUCCESS;
 	}
@@ -801,9 +836,12 @@ public class Cli {
 		System.out.println("   -noCompression            SIPs als unkomprimierte tar-Files erstellen");
 		System.out.println("");
 		System.out.println("   -noTar                    SIPs als Verzeichnis erstellen");
+		System.out.println("");
 		System.out.println("   -destDir=\"[Name]\"         Verzeichnisname, in dem das SIP erstellt werden soll (abhängig vom gewählten Zielordner). Darf nur in Kombination mit -noTar verwendet werden");
 		System.out.println("");
 		System.out.println("	-noBagit				  SIP ohne bagit erstellen");
+		System.out.println("   -allowDuplicateFilename   SIP erstellen, auch wenn Metadaten und Daten den gleichen Dateinamen haben");
+		System.out.println("   -checkFileExtensionOff	 SIP erstellen, auch wenn Metadaten und Daten den gleichen Dateinamen haben ohne Prüfung auf die Dateiendung, Nur in Verbindung mit dem Parameter -allowDuplicateFilename"); 
 		System.out.println("");
 		System.out.println("   -neverOverwrite           SIPs nicht erstellen, wenn sich im Zielordner bereits ein SIP gleichen Namens befindet (Standard)");
 		System.out.println("   -alwaysOverwrite          Bereits existierende SIPs/Lieferungen gleichen Namens im Zielordner ohne Nachfrage überschreiben");

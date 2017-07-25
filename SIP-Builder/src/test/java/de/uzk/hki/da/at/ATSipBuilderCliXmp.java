@@ -1,5 +1,6 @@
 package de.uzk.hki.da.at;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
@@ -7,7 +8,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,7 +60,7 @@ public class ATSipBuilderCliXmp {
 	    System.out.println("Here is the standard output of the command:\n");
 	    while ((s = stdInput.readLine()) != null) {
 	         System.out.println(s);
-	         if(s.contains("Identified metadata file {=XMP}")) {
+	         if(s.contains("Im Verzeichnis ATBuildSingleXmpSip wurde keine Metadatendatei gefunden")) {
 	        	 identifiedMetadataType = true;
 	         }
 	    }
@@ -71,7 +71,7 @@ public class ATSipBuilderCliXmp {
 	        System.out.println(s);
 	    }
 	    
-	    assertTrue(new File("target/atTargetDir/"+singleSip).exists());
+	    assertFalse(new File("target/atTargetDir/"+singleSip).exists());
 	    assertTrue(identifiedMetadataType);
 	}
 }

@@ -43,8 +43,8 @@ import de.uzk.hki.da.model.PremisXmlValidator;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.FolderUtils;
+import de.uzk.hki.da.utils.FriendlyFilesUtils;
 import de.uzk.hki.da.utils.Path;
-import de.uzk.hki.da.utils.SidecarUtils;
 
 /**
  * If there is sufficient space on the WorkArea, fetches the container (named object.package.containername)
@@ -223,7 +223,8 @@ public class UnpackNoBagitAction extends AbstractAction {
 			
 			boolean isOKWhenSidecarFilesAreSubtracted = false;
 			for (File file:duplicates.get(duplicate)){
-				if (SidecarUtils.hasSidecarExtension(file.getAbsolutePath(),preservationSystem.getSidecarExtensions())&&(duplicates.get(duplicate).size()-1)==1) {
+				if (FriendlyFilesUtils.isFriendlyFile(file.getAbsolutePath(),o.getFriendlyFileExtensions())
+						&&(duplicates.get(duplicate).size()-1)==1) {
 					isOKWhenSidecarFilesAreSubtracted=true;
 					break;
 				}

@@ -20,7 +20,7 @@ import org.xml.sax.InputSource;
 import de.uzk.hki.da.metadata.MetsParser;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.XMLUtils;
-import de.uzk.hki.da.utils.formatDetectionService;
+import de.uzk.hki.da.utils.FormatDetectionService;
 
 /**
  * @author Polina Gubaidullina
@@ -61,7 +61,7 @@ public class NestedContentStructure {
 			if(f.isDirectory() && getIncludedDirs(f).isEmpty()) { 
 				logger.info("Current folder "+f+" is leaf");
 				TreeMap<File, String> metadataFileWithType;
-				metadataFileWithType = new formatDetectionService(f).getMetadataFileWithType();
+				metadataFileWithType = new FormatDetectionService(f).getMetadataFileWithType();
 				if(!metadataFileWithType.isEmpty()) {
 					File metadataFile = metadataFileWithType.firstKey();
 					String metadataType = metadataFileWithType.get(metadataFile);
@@ -101,7 +101,7 @@ public class NestedContentStructure {
 	private List<File> getMetsFileFromDir(File dir) throws IOException {
 		List<File> metsFiles = new ArrayList<File>();
 		for(File f : dir.listFiles()) {
-			formatDetectionService fds = new formatDetectionService(f);
+			FormatDetectionService fds = new FormatDetectionService(f);
 			if(fds.isXml(f) && fds.getMetadataTypeXml(f).equals(C.CB_PACKAGETYPE_METS)) {
 				metsFiles.add(f);
 			}

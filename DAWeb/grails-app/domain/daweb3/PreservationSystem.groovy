@@ -23,7 +23,6 @@ class PreservationSystem {
 	int id
 	
 	int minRepls
-	String sidecarExtensions
 	String presServer
 	
 	String closedCollectionName
@@ -42,7 +41,6 @@ class PreservationSystem {
 		version false
 		id column: 'id'
 		minRepls column: 'min_repls'
-		sidecarExtensions column: 'sidecar_extensions'
 		presServer column: 'pres_server'
 		closedCollectionName column: 'closed_collection_name'
 		openCollectionName column: 'open_collection_name'

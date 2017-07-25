@@ -11,7 +11,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	ATMetadataUpdatesEAD.class,
 	ATMetadataUpdatesLIDO.class,
 	ATMetadataUpdatesMetsMods.class,
-	ATMetadataUpdatesXMP.class,
 	
 	ATMetadataUpdatesRheinlaender.class,
 	

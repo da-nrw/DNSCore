@@ -18,10 +18,11 @@ cp target/SipBuilder-1.0-SNAPSHOT-jar-with-dependencies.jar $INSTALLATION/SipBui
 cp src/main/bash/SipBuilder-Unix.sh $INSTALLATION/
 cp src/main/binary/SipBuilder-Windows.exe $INSTALLATION/
 
-
 cp src/main/xml/standardRightsLicense.xml $INSTALLATION/conf/standardRightsLicense.xml
 cp src/main/xml/standardRights.xml $INSTALLATION/conf/standardRightsNonLicense.xml
 cp src/main/xml/standardRights.xml $INSTALLATION/conf/standardRights.xml
+
+cp src/main/xml/fileExtensions.xml $INSTALLATION/conf
 
 wget $URL$CONTRACT -O $INSTALLATION/conf/schemas/contract/v1/$CONTRACT
 rc=$?; if [[ $rc != 0 ]]; then 

@@ -38,7 +38,6 @@ public class C {
 	public static final String FILE_EXTENSION_ZIP = "zip";
 	public static final String FILE_EXTENSION_TGZ = "tgz";
 	public static final String FILE_EXTENSION_XML = ".xml";
-	public static final String FILE_EXTENSION_XMP = ".xmp";
 	public static final String FILE_EXTENSION_JPG = ".jpg";
 	public static final String FILE_EXTENSION_TAR = ".tar";
 	
@@ -47,16 +46,12 @@ public class C {
 	
 	
 	// Presentation Metadata related 	
-	public static final String CB_PACKAGETYPE_XMP  = "XMP";
 	public static final String CB_PACKAGETYPE_LIDO = "LIDO";
 	public static final String CB_PACKAGETYPE_METS = "METS";
 	public static final String CB_PACKAGETYPE_EAD  = "EAD"; 
 	public static final String PUBLIC_METS = "public_mets.xml"; 
 	
-		/** common metadata file for all XMP type packages */
-	public static final String METADATA_FILE_XMP = "XMP.xml";
 		/** Fedora datastream id for EDM. */
-
 	public static final String EDM_FOR_ES_INDEX_METADATA_STREAM_ID = "EDM"; 
 	public static final String METADATA_STREAM_ID_DC = "DC";
 	public static final String METADATA_STREAM_ID_EPICUR = "epicur";
@@ -79,6 +74,7 @@ public class C {
 	public static final String EVENT_TYPE_CREATE = "CREATE";
 	public static final String EVENT_TYPE_COPY = "COPY";
 	public static final String EVENT_TYPE_CONVERT = "CONVERT";
+	public static final String EVENT_TYPE_CONVERSION_SUPRESSED = "CONVERSION_SUPRESSED";
 	public static final String EVENT_TYPE_VIRUS_SCAN = "VIRUS_SCAN";
 	public static final String AGENT_TYPE_NODE = "NODE";
 	

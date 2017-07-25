@@ -32,8 +32,6 @@
 					
 						<g:sortableColumn property="presServer" title="${message(code: 'preservationSystem.presServer.label', default: 'Pres Server')}" />
 					
-						<g:sortableColumn property="sidecarExtensions" title="${message(code: 'preservationSystem.sidecarExtensions.label', default: 'Sidecar Extensions')}" />
-					
 						<g:sortableColumn property="urisAggr" title="${message(code: 'preservationSystem.urisAggr.label', default: 'Uris Aggr')}" />
 					
 					</tr>
@@ -49,8 +47,6 @@
 						<td>${fieldValue(bean: preservationSystemInstance, field: "openCollectionName")}</td>
 					
 						<td>${fieldValue(bean: preservationSystemInstance, field: "presServer")}</td>
-					
-						<td>${fieldValue(bean: preservationSystemInstance, field: "sidecarExtensions")}</td>
 					
 						<td>${fieldValue(bean: preservationSystemInstance, field: "urisAggr")}</td>
 					

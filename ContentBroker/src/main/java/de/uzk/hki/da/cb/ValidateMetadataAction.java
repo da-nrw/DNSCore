@@ -25,8 +25,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import org.jdom.input.SAXBuilder;
@@ -34,25 +32,20 @@ import org.jdom.input.SAXBuilder;
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
-import de.uzk.hki.da.format.FFConstants;
 import de.uzk.hki.da.metadata.MetadataStructure;
 import de.uzk.hki.da.metadata.MetadataStructureFactory;
 import de.uzk.hki.da.metadata.MetsLicense;
 import de.uzk.hki.da.metadata.MetsParser;
-import de.uzk.hki.da.metadata.XmpCollector;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Document;
-import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectPremisXmlReader;
 import de.uzk.hki.da.model.PublicationRight;
 import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.C;
-import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.StringUtilities;
 import de.uzk.hki.da.utils.XMLUtils;
-import nu.xom.ValidityException;
 
 /**
  * Detects the package type of an object and validates the metadata structure.
@@ -234,9 +227,6 @@ public class ValidateMetadataAction extends AbstractAction {
 	private MetadataStructure createMetadataStructure() {
 		MetadataStructure ms=null;
 		try {
-			if(o.getPackage_type().equals(C.CB_PACKAGETYPE_XMP)) {
-				collectXMP();
-			}
 			List<Document> documents = o.getDocuments();
 			ms = msf.create(wa.dataPath(),detectedPackageType, detectedMetadataFile.getPath().toFile(), documents);
 		} catch (Exception e){
@@ -312,13 +302,6 @@ public class ValidateMetadataAction extends AbstractAction {
 			}  
 		}  
 				
-		if ((getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_XMP)).size()>=1){
-			detectedMetadataFile=new DAFile(
-					o.getNameOfLatestBRep(),C.METADATA_FILE_XMP);
-			detectedPackageType=C.CB_PACKAGETYPE_XMP;
-			ptypeCount++;
-		}
-		
 		if ((getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_LIDO)).size()==1){
 			detectedMetadataFile=getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_LIDO).get(0);
 			detectedPackageType=C.CB_PACKAGETYPE_LIDO;
@@ -351,46 +334,4 @@ public class ValidateMetadataAction extends AbstractAction {
 	public void setMsf(MetadataStructureFactory msf) {
 		this.msf = msf;
 	}
-	
-	/**
-	 * Copy xmp sidecar files and collect them into one "XMP manifest"
-	 * @author Sebastian Cuy
-	 * @author Daniel M. de Oliveira
-	 * @author Thomas Kleinke
-	 * @throws IOException
-	 */
-	private void collectXMP() throws IOException {
-		
-		logger.trace("collectXMP");
-		
-		String repPath = Path.make(wa.dataPath(),o.getNameOfLatestBRep()).toString();
-			
-		List<DAFile> newestFiles = o.getNewestFilesFromAllRepresentations(XMP_SIDECAR);
-		List<DAFile> newestXmpFiles = new ArrayList<DAFile>();
-		for (DAFile dafile : newestFiles) {
-			if (dafile.getRelative_path().toLowerCase().endsWith(C.FILE_EXTENSION_XMP))
-				newestXmpFiles.add(dafile);
-		}
-			
-		logger.debug("found {} xmp files", newestXmpFiles.size());
-		File rdfFile = new File(repPath + "/"+C.METADATA_FILE_XMP);
-		XmpCollector.collect(wa,newestXmpFiles, rdfFile);	
-		logger.debug("collecting files in path: {}", rdfFile.getAbsolutePath());
-		DAFile xmpFile = new DAFile(o.getNameOfLatestBRep(),C.METADATA_FILE_XMP);
-		xmpFile.setFormatPUID(FFConstants.FMT_101);
-		o.getLatestPackage().getFiles().add(xmpFile);
-		o.getLatestPackage().getEvents().add(createCreateEvent(xmpFile));		
-	}
-	
-	private Event createCreateEvent(DAFile targetFile) {
-		
-		Event e = new Event();
-		e.setTarget_file(targetFile);
-		e.setType(C.EVENT_TYPE_CREATE);
-		e.setDate(new Date());
-		e.setAgent_type(C.AGENT_TYPE_NODE);
-		e.setAgent_name(n.getName());
-		return e;
-	}
-	
 }

@@ -67,7 +67,6 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 	private static final String METS_2_99_XML = "mets_2_99.xml";
 	private static final String METS_LICENSE_XML = "mets.xml";
 	private static final Path WORK_AREA_ROOT = Path.make(TC.TEST_ROOT_CB,"ValidateMetadataAction");
-	private static final String XMP1_XML = "xmp1.xmp";
 	private static final String LIDO_XML = "lido1.xml";
 	private static final String LIDO2_XML = "lido2.xml";
 	
@@ -79,7 +78,6 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 	DAFile f_lic_mets = new DAFile("1+a",METS_LICENSE_XML);
 	DAFile f_mets1 = new DAFile("1+a",METS_2_99_XML); 
 	DAFile f_mets2 = new DAFile("1+a",METS_2_998_XML);
-	DAFile f_xmp1 = new DAFile("1+a",XMP1_XML);
 	DAFile f_lido1 = new DAFile("",LIDO_XML);
 	DAFile f_lido2 = new DAFile("",LIDO2_XML);
 	DAFile f_premis = new DAFile("1+a",C.PREMIS_XML);
@@ -108,7 +106,6 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 		f_lic_mets.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_METS);
 		f_mets1.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_METS);
 		f_mets2.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_METS);
-		f_xmp1.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_XMP);
 		f_lido1.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_LIDO);
 		f_lido2.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_LIDO);
 		
@@ -212,32 +209,7 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 		}
 	}
 	
-	
-	@Test
-	public void testXMPWithoutRDF() throws FileNotFoundException, UserException, IOException, RepositoryException{
-		
-		o.getLatestPackage().getFiles().add(f_xmp1);
-		o.getLatestPackage().getFiles().add(f_premis);
-		action.implementation();
-		
-		assertEquals(C.CB_PACKAGETYPE_XMP,o.getPackage_type());
-		assertEquals(C.LICENSEFLAG_NO_LICENSE,o.getLicense_flag());
-		assertEquals(C.METADATA_FILE_XMP,o.getMetadata_file());
-	}
-	
 
-	@Test
-	public void testRollback() throws Exception{
-		
-		o.setMetadata_file(VDA03_XML);
-		o.setPackage_type(C.CB_PACKAGETYPE_XMP);
-		
-		action.rollback();
-		
-		assertEquals(null, o.getMetadata_file());
-		assertEquals(null, o.getPackage_type());
-	}
-	
 	@Test
 	public void testDetectedPackageTypeCollidesWithPackageTypeOfObject() throws FileNotFoundException, UserException, IOException, RepositoryException{
 		
@@ -272,49 +244,6 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 		
 		assertEquals(VDA03_XML,o.getMetadata_file());
 		assertEquals(C.CB_PACKAGETYPE_EAD,o.getPackage_type());
-	}
-	
-	
-	@Test
-	public void testRejectLIDOAndXMP() throws FileNotFoundException, IOException, RepositoryException{
-		o.getLatestPackage().getFiles().add(f_xmp1);
-		o.getLatestPackage().getFiles().add(f_lido1);
-		
-		try{
-			action.implementation();
-			fail();
-		}catch(UserException e){
-			System.out.println(e.getMessage());
-			assertTrue(e.getMessage().contains(METADATA));
-		}
-	}
-	
-	@Test
-	public void testRejectMETSAndXMP() throws FileNotFoundException, IOException, RepositoryException{
-		o.getLatestPackage().getFiles().add(f_mets1);
-		o.getLatestPackage().getFiles().add(f_lido1);
-		
-		try{
-			action.implementation();
-			fail();
-		}catch(UserException e){
-			System.out.println(e.getMessage());
-			assertTrue(e.getMessage().contains(METADATA));
-		}
-	}
-	
-	@Test
-	public void testRejectEADAndXMP() throws FileNotFoundException, IOException, RepositoryException{
-		o.getLatestPackage().getFiles().add(f_ead1);
-		o.getLatestPackage().getFiles().add(f_xmp1);
-		
-		try{
-			action.implementation();
-			fail();
-		}catch(UserException e){
-			System.out.println(e.getMessage());
-			assertTrue(e.getMessage().contains(METADATA));
-		}
 	}
 	
 	@Test
@@ -360,22 +289,6 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 		}
 	}
 
-	@Test
-	public void testRejectEADwithMETSAndXMP() throws FileNotFoundException, IOException, RepositoryException{
-		o.getLatestPackage().getFiles().add(f_ead1);
-		o.getLatestPackage().getFiles().add(f_mets1);
-		o.getLatestPackage().getFiles().add(f_xmp1);
-		
-		try{
-			action.implementation();
-			fail();
-		}catch(UserException e){
-			System.out.println(e.getMessage());
-			assertTrue(e.getMessage().contains(METADATA));
-		}
-	}
-	
-	
 	@Test
 	public void testRejectDuplicateEADWhichComesWithDelta() throws FileNotFoundException, IOException, RepositoryException{
 		
