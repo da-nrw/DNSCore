@@ -28,6 +28,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
@@ -38,15 +40,21 @@ import org.apache.commons.io.FileExistsException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
+import org.jdom.Document;
+import org.jdom.input.SAXBuilder;
 
 import de.uzk.hki.da.metadata.ContractRights;
+import de.uzk.hki.da.metadata.MetsLicense;
+import de.uzk.hki.da.metadata.MetsParser;
 import de.uzk.hki.da.metadata.PremisXmlWriter;
 import de.uzk.hki.da.pkg.SipArchiveBuilder;
+import de.uzk.hki.da.sb.SIPFactory.SipBuildingProcess;
 import de.uzk.hki.da.pkg.CopyUtility;
 import de.uzk.hki.da.pkg.NestedContentStructure;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.XMLUtils;
 import de.uzk.hki.da.utils.formatDetectionService;
 
 /**
@@ -58,7 +66,7 @@ import de.uzk.hki.da.utils.formatDetectionService;
 
 public class SIPFactory {
 
-	private Logger logger = Logger.getLogger(SIPFactory.class);
+	private static Logger logger = Logger.getLogger(SIPFactory.class);
 
 	private String sourcePath = null;
 	private String destinationPath = null;
@@ -235,6 +243,12 @@ public class SIPFactory {
 			rollback(tempFolder);
 			return feedback;
 		}
+		
+		
+		if ((feedback = checkMetadataForLicense(jobId, sourceFolder, packageFolder)) != Feedback.SUCCESS) {
+			rollback(tempFolder);
+			return feedback;
+		}
 
 		if ((feedback = createPremisFile(jobId, packageFolder, packageName)) != Feedback.SUCCESS) {
 			rollback(tempFolder);
@@ -249,7 +263,11 @@ public class SIPFactory {
 			}
 		}
 		
-		// DANRW-1416
+		return packageFolder(jobId,sourceFolder,packageFolder,tempFolder,packageName);		
+	}
+
+	public Feedback packageFolder(int jobId, File sourceFolder, File packageFolder, File tempFolder, String packageName){// DANRW-1416
+		Feedback feedback;
 		if (tar) {
 			String archiveFileName = packageName;
 			if (compress)
@@ -314,7 +332,8 @@ public class SIPFactory {
 			if ((feedback = deleteTempFolder(jobId, tempFolder)) != Feedback.SUCCESS)
 				return feedback;
 		}
-		return Feedback.SUCCESS;
+		return feedback;
+		
 	}
 
 	private Feedback moveFile(File tmpArchiveFile, File archiveFile) {
@@ -367,6 +386,55 @@ public class SIPFactory {
 			return Feedback.COPY_ERROR;
 		}
 
+		return Feedback.SUCCESS;
+	}
+	
+	private Feedback checkMetadataForLicense(int jobId, File sourceFolder, File packageFolder) {
+		boolean guiLicenseBool=contractRights.getCclincense()!=null;
+		boolean metsLicenseBool;
+		boolean publicationBool=contractRights.getPublicRights().getAllowPublication();
+		
+		TreeMap<File, String> metadataFileWithType;
+		try {
+			metadataFileWithType = new formatDetectionService(sourceFolder).getMetadataFileWithType();
+
+			if (!metadataFileWithType.containsValue(C.CB_PACKAGETYPE_METS)) {
+				metsLicenseBool = false;
+			} else {
+				ArrayList<File> metsFiles = new ArrayList<File>();
+
+				ArrayList<MetsLicense> licenseMetsFile = new ArrayList<MetsLicense>();
+				for (File f : metadataFileWithType.keySet())
+					if (metadataFileWithType.get(f).equals(C.CB_PACKAGETYPE_METS))
+						metsFiles.add(f);
+				if (metsFiles.size() > 2)// assuming not more as usual mets and publicMets is allowed
+					return Feedback.INVALID_LICENSE_DATA;
+				for (File f : metsFiles) {
+					SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+					Document metsDoc = builder.build(f);
+					MetsParser mp = new MetsParser(metsDoc);
+					licenseMetsFile.add(mp.getLicenseForWholeMets());
+				}
+				Collections.sort(licenseMetsFile, MetsLicense.LicenseNullLastComparator);
+				if (licenseMetsFile.get(0) == null) // all licenses are null
+					metsLicenseBool = false;
+				else if (!licenseMetsFile.get(0).equals(licenseMetsFile.get(licenseMetsFile.size() - 1))) // first and last lic have to be same in sorted array
+					return Feedback.INVALID_LICENSE_DATA;
+				else
+					metsLicenseBool = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Feedback.INVALID_LICENSE_DATA;
+		}
+		//publicationBool=false;
+		//guiLicenseBool=false;
+		if(guiLicenseBool && metsLicenseBool)
+			return Feedback.INVALID_LICENSE_DATA;
+		
+		if(publicationBool && !guiLicenseBool && !metsLicenseBool)
+			return Feedback.INVALID_LICENSE_DATA;
+		
 		return Feedback.SUCCESS;
 	}
 
@@ -425,7 +493,7 @@ public class SIPFactory {
 	 *            The temp folder
 	 * @return The method result as a Feedback enum
 	 */
-	private Feedback createBag(int jobId, File folder) {
+	public Feedback createBag(int jobId, File folder) {
 
 		progressManager.bagitProgress(jobId, 0.0);
 
@@ -466,7 +534,7 @@ public class SIPFactory {
 	 *            The target archive file
 	 * @return The method result as a Feedback enum
 	 */
-	private Feedback buildArchive(int jobId, File folder, File archiveFile) {
+	public Feedback buildArchive(int jobId, File folder, File archiveFile) {
 
 		progressManager.setJobFolderSize(jobId,
 				FileUtils.sizeOfDirectory(folder));
@@ -762,6 +830,10 @@ public class SIPFactory {
 	public Feedback getReturnCode() {
 		return returnCode;
 	}
+	
+	public ProgressManager getProgressManager(){
+		return progressManager;
+	}
 
 	public boolean getCompress() {
 		return compress;
@@ -998,6 +1070,15 @@ public class SIPFactory {
 											+ "\" konnte der Lieferung nicht hinzugefügt werden.",
 									JOptionPane.ERROR_MESSAGE);
 					return;
+				case INVALID_LICENSE_DATA:
+					messageWriter
+					.showMessage(
+							"Das SIP \""
+									+ folder.getName()
+									+ "\" konnte der Lieferung nicht hinzugefügt werden.\n"+
+									"Die Lizenzangaben sind ungültig.",
+							JOptionPane.ERROR_MESSAGE);
+			return;
 				case ABORT:
 					return;
 				default:
@@ -1127,5 +1208,9 @@ public class SIPFactory {
 			}
 			return duplicateFilenamesWithFiles;
 		}
+	}
+
+	public void setSipBuildingProcess(SipBuildingProcess sipBuildingProcess2) {
+		this.sipBuildingProcess=sipBuildingProcess2;
 	};
 }

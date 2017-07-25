@@ -1829,9 +1829,6 @@ public class Gui extends JFrame{
 		publicPanel.add(publicDDBArea);
 		publicPanel.add(publicDDBCheckBox);
 		
-		// TODO
-		//publicPanel.add(licenceLabel);
-		//publicPanel.add(licenceDropDownInPublication);
 		
 		publicPanel.add(goToPublicTempButton);
 		publicPanel.add(backgroundPublicImageLabel);

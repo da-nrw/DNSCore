@@ -371,7 +371,7 @@ public class SIPFactoryTest {
 		rights.getPublicRights().setAllowPublication(true);
 		rights.getPublicRights().setTempPublication(true);
 		rights.getPublicRights().setStartDate("15.05.2016");
-		
+		rights.setCclincense(ContractRights.CCLicense.Cc0);
 				
 		sipFactory.setSourcePath(pathToResourcesFolder + "singleFolder");
 		sipFactory.setDestinationPath(pathToResourcesFolder + "destination");
@@ -421,6 +421,7 @@ public class SIPFactoryTest {
 		rights.getPublicRights().setAllowPublication(true);
 		rights.getPublicRights().setTempPublication(true);
 		rights.getPublicRights().setStartDate("15.01.2016");
+		rights.setCclincense(ContractRights.CCLicense.Cc0);
 		
 		sipFactory.setSourcePath(pathToResourcesFolder + "singleFolder");
 		sipFactory.setDestinationPath(pathToResourcesFolder + "destination");

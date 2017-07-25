@@ -150,7 +150,7 @@ public class PremisXmlWriter {
 				createCloseElement(1);
 				createTextElement("ddbExclusion", String.valueOf(contractRights.getDdbExclusion()), 1);
 				if(contractRights.getCclincense()!=null)
-					generatePublicationLicenseElement(contractRights.getCclincense());
+					generatePublicationLicenseElement(contractRights.getCclincense(),1);
 			createCloseElement(0);
 
 			writer.writeDTD("\n");
@@ -164,21 +164,13 @@ public class PremisXmlWriter {
 	
 	}
 	
-	private void generatePublicationLicenseElement(ContractRights.CCLicense license)throws Exception {
-		
-		
-		createOpenElement("publicationLicense ", 1);
-	  		createAttribute("link", license.getHref());
+	private void generatePublicationLicenseElement(ContractRights.CCLicense license, int level)throws XMLStreamException {		
+		createOpenElement("publicationLicense", level);
+	  		createAttribute("href", license.getHref());
 	  		createAttribute("displayLabel", license.getDisplayLabel());
-	  		//createTextElement("allowed", String.valueOf(license), 2);
 	  		writer.writeCharacters(license.getText());
-			writer.writeEndElement();			   	
-		
-	  		//generateObjectElement(packageName);
-	  		//generateEventElement(packageName);
-	  		//generateAgentElement();
-	  	
-	 // createCloseElement(1);
+			writer.writeEndElement();			   		  	
+	 // createCloseElement(1);		
 	}
 	
 	/**
@@ -550,6 +542,9 @@ public class PremisXmlWriter {
 					// DDB exclusion option
 					if (publicRights.getAllowPublication() && contractRights.getDdbExclusion())
 						createEmptyElement("DDBexclusion", 4);
+					if(contractRights.getCclincense()!=null){
+						generatePublicationLicenseElement(contractRights.getCclincense(),4);
+					}
 			
 				createCloseElement(3);
 			createCloseElement(2);

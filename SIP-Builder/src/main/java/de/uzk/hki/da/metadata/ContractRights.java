@@ -162,11 +162,11 @@ public class ContractRights {
 		
 		Element publicationLicenseEl = root.getFirstChildElement("publicationLicense");
 		if(publicationLicenseEl!=null){
-			String linkAttribute=publicationLicenseEl.getAttribute("link").getValue();
+			String hrefAttribute=publicationLicenseEl.getAttribute("href").getValue();
 			//publicationLicenseEl.getAttribute("displayLabel");
 			//publicationLicenseEl.getValue();
 			for(CCLicense cl:CCLicense.values())
-				if(cl.getHref().equals(linkAttribute)){
+				if(cl.getHref().equals(hrefAttribute)){
 					cclincense = cl;
 					break;
 				}
