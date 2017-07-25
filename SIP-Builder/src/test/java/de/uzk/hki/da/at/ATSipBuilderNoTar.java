@@ -50,7 +50,7 @@ public class ATSipBuilderNoTar {
 
 		File source = new File(sourceDir, "ATSipBuilderNoTar/ATSipBuilderNoTarSingle");
 		
- 		String cmd = "./SipBuilder-Unix.sh -source=\""+source.getAbsolutePath()+ "/\" -destination=\""+
+ 		String cmd = "./SipBuilder-Unix.sh -rights=\""+ATWorkingDirectory.CONTRACT_RIGHT_LICENSED.getAbsolutePath()+"\" -source=\""+source.getAbsolutePath()+ "/\" -destination=\""+
  						targetDir.getAbsolutePath()+"/\" -noTar";
  		
  		p=Runtime.getRuntime().exec(cmd, null, new File("target/installation"));
@@ -101,7 +101,7 @@ public class ATSipBuilderNoTar {
 
 		File source = new File(sourceDir, "ATSipBuilderNoTar/ATSipBuilderNoTarMultiple");
 		
- 		String cmd = "./SipBuilder-Unix.sh -source=\""+source.getAbsolutePath()+"/\" -destination=\""+
+ 		String cmd = "./SipBuilder-Unix.sh -rights=\""+ATWorkingDirectory.CONTRACT_RIGHT_LICENSED.getAbsolutePath()+"\" -source=\""+source.getAbsolutePath()+"/\" -destination=\""+
  						targetDir.getAbsolutePath()+"/\" -noTar";
  		
  		p=Runtime.getRuntime().exec(cmd, null, new File("target/installation"));
@@ -151,7 +151,7 @@ public class ATSipBuilderNoTar {
 	public void testDestDir() throws IOException {
 			File source = new File(sourceDir, "ATSipBuilderNoTar/ATSipBuilderNoTarDestDir");
 		
- 		String cmd = "./SipBuilder-Unix.sh -source=\""+source.getAbsolutePath()+"/\" -destination=\""+
+ 		String cmd = "./SipBuilder-Unix.sh -rights=\""+ATWorkingDirectory.CONTRACT_RIGHT_LICENSED.getAbsolutePath()+"\" -source=\""+source.getAbsolutePath()+"/\" -destination=\""+
  						targetDir.getAbsolutePath()+"/\" -noTar" + " -destDir=\"test";
  		
  		p=Runtime.getRuntime().exec(cmd, null, new File("target/installation"));

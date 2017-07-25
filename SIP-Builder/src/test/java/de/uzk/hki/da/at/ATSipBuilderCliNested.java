@@ -39,7 +39,7 @@ import de.uzk.hki.da.utils.FolderUtils;
  *
  */
 
-public class ATSipBuilderCliNested {
+public class ATSipBuilderCliNested {	
 
 	private static String nestedSip1 = "urn+nbn+de+hbz+42.tgz";
 	private static String nestedSip2 = "urn+nbn+de+hbz+6+1-3602.tgz";
@@ -63,7 +63,7 @@ public class ATSipBuilderCliNested {
 	@Test
 	public void testNestedStructureIgnoreWrongReferences() throws IOException {
 		
-		String cmd = "./SipBuilder-Unix.sh -source=\""+sourceDir.getAbsolutePath()+"/\" -destination=\""+targetDir.getAbsolutePath()+"/\" -nested -alwaysOverwrite -alwaysIgnoreWrongReferencesInMetadata";
+		String cmd = "./SipBuilder-Unix.sh -rights=\""+ATWorkingDirectory.CONTRACT_RIGHT_LICENSED.getAbsolutePath()+"\" -source=\""+sourceDir.getAbsolutePath()+"/\" -destination=\""+targetDir.getAbsolutePath()+"/\" -nested -alwaysOverwrite -alwaysIgnoreWrongReferencesInMetadata";
 		
 		p=Runtime.getRuntime().exec(cmd,
 		        null, new File("target/installation"));

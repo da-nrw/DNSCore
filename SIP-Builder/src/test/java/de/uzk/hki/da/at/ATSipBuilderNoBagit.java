@@ -44,7 +44,7 @@ public class ATSipBuilderNoBagit {
 
 		File source = new File(sourceDir, "ATSipBuilderNoBagit");
 		
- 		String cmd = "./SipBuilder-Unix.sh -source=\""+source.getAbsolutePath()+ "/\" -destination=\""+
+ 		String cmd = "./SipBuilder-Unix.sh -rights=\""+ATWorkingDirectory.CONTRACT_RIGHT_LICENSED.getAbsolutePath()+"\" -source=\""+source.getAbsolutePath()+ "/\" -destination=\""+
  						targetDir.getAbsolutePath()+"/\" -noTar" +  " -noBagit";
  		
  		p=Runtime.getRuntime().exec(cmd, null, new File("target/installation"));
