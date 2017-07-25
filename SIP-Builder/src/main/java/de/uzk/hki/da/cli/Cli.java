@@ -21,12 +21,19 @@ package de.uzk.hki.da.cli;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.ZipEntry;
 
 import javax.xml.parsers.SAXParserFactory;
 
@@ -35,6 +42,14 @@ import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Elements;
 
+import org.apache.commons.compress.archivers.ArchiveException;
+import org.apache.commons.compress.archivers.ArchiveStreamFactory;
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipFile;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
+import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.xml.sax.ErrorHandler;
@@ -43,14 +58,22 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
 import de.uzk.hki.da.main.SIPBuilder;
+import de.uzk.hki.da.metadata.ContractRights;
 import de.uzk.hki.da.sb.Feedback;
 import de.uzk.hki.da.sb.MessageWriter;
+import de.uzk.hki.da.sb.ProgressManager;
 import de.uzk.hki.da.sb.SIPFactory;
 import de.uzk.hki.da.sb.UserInputValidator;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.ExistingSIPModifier;
 import de.uzk.hki.da.utils.FolderUtils;
+import de.uzk.hki.da.utils.SimpleLicenseAppender;
 import de.uzk.hki.da.utils.StringUtilities;
 import de.uzk.hki.da.utils.Utilities;
+import gov.loc.repository.bagit.Bag;
+import gov.loc.repository.bagit.BagFactory;
+import gov.loc.repository.bagit.PreBag;
+import gov.loc.repository.bagit.utilities.SimpleResult;
 
 /**
  * Runs the SIP-Builder in CLI mode
@@ -85,17 +108,8 @@ public class Cli {
 	public int start() {
 		
 		Feedback returnValue;
-		
-    	if ((returnValue = configureSipFactory()) != Feedback.SUCCESS)
-    		return returnValue.toInt();
-    	
-    	if ((returnValue = checkConfiguration()) != Feedback.SUCCESS)
-    		return returnValue.toInt();
 
-    	if ((returnValue = copyFilesFromList()) != Feedback.SUCCESS)
-    		return returnValue.toInt();
-    	
-    	if ((returnValue = checkSourceFolder()) != Feedback.SUCCESS)
+    	if((returnValue = configureCLI())!=Feedback.SUCCESS)
     		return returnValue.toInt();
     	
     	sipFactory.startSIPBuilding();
@@ -110,6 +124,43 @@ public class Cli {
     	
     	return sipFactory.getReturnCode().toInt();
 	}
+	
+	private Feedback configureCLI(){
+		Feedback returnValue;
+		if ((returnValue = configureSipFactory()) != Feedback.SUCCESS)
+    		return returnValue;
+    	
+    	if ((returnValue = checkConfiguration()) != Feedback.SUCCESS)
+    		return returnValue;
+
+    	if ((returnValue = copyFilesFromList()) != Feedback.SUCCESS)
+    		return returnValue;
+    	
+    	if ((returnValue = checkSourceFolder()) != Feedback.SUCCESS)
+    		return returnValue;
+    	return returnValue;
+	}
+	
+	public int startAppendLicense() {
+		Feedback returnValue;
+		if((returnValue = configureCLI())!=Feedback.SUCCESS)
+			if(returnValue.equals(Feedback.SOURCE_FOLDER_NOT_FOUND)){
+				returnValue=Feedback.SUCCESS;
+				System.out.println("Für Lizenzergänzung ist der angegebene Quellordner eigentliche eine Quelldatei");
+			}else
+				return returnValue.toInt();
+
+		ExistingSIPModifier licenser=new SimpleLicenseAppender();
+		try {
+			returnValue=licenser.startModifyExistingSip(sipFactory.getSourcePath(), sipFactory.getDestinationPath());
+		} catch (IOException e) {
+			e.printStackTrace();
+			returnValue=Feedback.PREMIS_ERROR;
+		}
+
+		return returnValue.toInt();
+	}
+
 	
 	/**
 	 * Sets the values in the SIPFactory depending on the arguments passed to the SIP-Builder
@@ -257,7 +308,7 @@ public class Cli {
     			continue;
     		}
     		
-    		if (arg.equals("-default") || arg.equals("-multiple") || arg.equals("-neverOverwrite") || arg.equals("-compression") || arg.equals("-nested"))
+    		if (arg.equals("-onlyAddLicense") || arg.equals("-default") || arg.equals("-multiple") || arg.equals("-neverOverwrite") || arg.equals("-compression") || arg.equals("-nested"))
     			continue;
     		
     		System.out.println(arg + " ist kein gültiger Parameter. Starten Sie den SipBuilder mit dem Parameter " +
@@ -457,7 +508,7 @@ public class Cli {
 	 * @return The parameter value
 	 */
     private String extractParameter(String arg) {
-    	
+    	System.out.println();
     	int index = arg.indexOf('=');
     	
     	if (index == -1)
@@ -467,8 +518,7 @@ public class Cli {
     	if (parameter.startsWith("\""))
     		parameter = parameter.substring(1);
     	if (parameter.endsWith("\""))
-    		parameter = parameter.substring(0, parameter.length() - 2);
-    	
+    		parameter = parameter.substring(0, parameter.length() - 1);
     	return parameter;
     }
     
