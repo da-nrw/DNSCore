@@ -58,15 +58,6 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${preservationSystemInstance?.sidecarExtensions}">
-				<li class="fieldcontain">
-					<span id="sidecarExtensions-label" class="property-label"><g:message code="preservationSystem.sidecarExtensions.label" default="Sidecar Extensions" /></span>
-					
-						<span class="property-value" aria-labelledby="sidecarExtensions-label"><g:fieldValue bean="${preservationSystemInstance}" field="sidecarExtensions"/></span>
-					
-				</li>
-				</g:if>
-			
 				<g:if test="${preservationSystemInstance?.urisAggr}">
 				<li class="fieldcontain">
 					<span id="urisAggr-label" class="property-label"><g:message code="preservationSystem.urisAggr.label" default="Uris Aggr" /></span>

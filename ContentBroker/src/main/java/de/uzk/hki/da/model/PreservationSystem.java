@@ -87,9 +87,6 @@ public class PreservationSystem {
 	@Column(name="min_repls",nullable=false)
 	private Integer minRepls;
 
-	@Column(name="sidecar_extensions")
-	private String sidecarExtensions="";
-	
 	@Column(name="pres_server")
 	private String presServer;
 
@@ -119,12 +116,6 @@ public class PreservationSystem {
 	}
 	public void setMinRepls(Integer minRepls) {
 		this.minRepls = minRepls;
-	}
-	public String getSidecarExtensions() {
-		return sidecarExtensions;
-	}
-	public void setSidecarExtensions(String sidecarExtensions) {
-		this.sidecarExtensions = sidecarExtensions;
 	}
 	public String getPresServer() {
 		return presServer;

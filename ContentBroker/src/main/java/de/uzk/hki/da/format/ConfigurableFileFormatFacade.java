@@ -27,12 +27,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import de.uzk.hki.da.action.AbstractAction;
-import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -102,10 +98,6 @@ public class ConfigurableFileFormatFacade implements FileFormatFacade{
 				f.setFormatPUID(FFConstants.XML_PUID);
 				f.setSubformatIdentifier(
 						new XMLSubformatIdentifier().identify(Path.makeFile(workPath,f.getPath()),pruneExceptions));
-			}else
-			if (f.getFormatPUID().equals(FFConstants.XMP_PUID)) {
-				f.setFormatPUID(FFConstants.XML_PUID);
-				f.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_XMP);
 			}
 		}
 	}

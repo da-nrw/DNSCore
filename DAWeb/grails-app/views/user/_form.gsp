@@ -34,6 +34,14 @@
 	<g:textField name="password" required="" value="${userInstance?.password}"/>
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'friendly_file_exts', 'error')} ">
+	<label for="friendly_file_exts">
+		<g:message code="user.friendly_file_exts.label" default="Friendly extensions" />
+		
+	</label>
+	<g:textField name="friendly_file_exts" value="${userInstance?.friendly_file_exts}"/>
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'description', 'error')} ">
 	<label for="description">
 		<g:message code="user.description.label" default="Description" />

@@ -34,14 +34,6 @@
 	<g:textField name="presServer" value="${preservationSystemInstance?.presServer}"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: preservationSystemInstance, field: 'sidecarExtensions', 'error')} ">
-	<label for="sidecarExtensions">
-		<g:message code="preservationSystem.sidecarExtensions.label" default="Sidecar Extensions" />
-		
-	</label>
-	<g:textField name="sidecarExtensions" value="${preservationSystemInstance?.sidecarExtensions}"/>
-</div>
-
 <div class="fieldcontain ${hasErrors(bean: preservationSystemInstance, field: 'urisAggr', 'error')} ">
 	<label for="urisAggr">
 		<g:message code="preservationSystem.urisAggr.label" default="Uris Aggr" />

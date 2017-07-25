@@ -35,7 +35,6 @@ import org.junit.Test;
 
 import de.uzk.hki.da.core.IngestGate;
 import de.uzk.hki.da.core.UserException;
-import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.FolderUtils;
@@ -70,9 +69,6 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 
 	private IngestGate gate = new IngestGate();
 
-	private static final PreservationSystem pSystem = new PreservationSystem();
-	
-	
 	/**
 	 * Sets the up.
 	 * @throws IOException Signals that an I/O exception has occurred.
@@ -93,7 +89,7 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 		gate.setFileSizeFactor(3);
 		action.setIngestGate(gate);
 		
-		ps.setSidecarExtensions(SIDECAR_EXTENSIONS);
+		this.o.getContractor().setFriendlyFileExtensions(SIDECAR_EXTENSIONS);
 	}
 
 	/**
@@ -162,7 +158,7 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 		
 		o.getPackages().get(0).setContainerName(SIDECAR_FILES_PACKAGE);
 	
-		pSystem.setSidecarExtensions(SIDECAR_EXTENSIONS);
+		this.o.getContractor().setFriendlyFileExtensions(SIDECAR_EXTENSIONS);
 		try{
 			action.implementation();
 		}catch(UserException e){
@@ -183,7 +179,7 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 		final String SIDECAR_FILES_PACKAGE_WHICH_BROKE = "LVR_ILR_4_PDF_TF18.tar";
 		o.getPackages().get(0).setContainerName(SIDECAR_FILES_PACKAGE_WHICH_BROKE);
 	
-		pSystem.setSidecarExtensions(SIDECAR_EXTENSIONS);
+		this.o.getContractor().setFriendlyFileExtensions(SIDECAR_EXTENSIONS);
 		try{
 			action.implementation();
 		}catch(UserException e){
@@ -198,7 +194,7 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 		
 		o.getPackages().get(0).setContainerName(SIDECAR_UPPERCASE_PACKAGE);
 		
-		pSystem.setSidecarExtensions(SIDECAR_EXTENSIONS);
+		this.o.getContractor().setFriendlyFileExtensions(SIDECAR_EXTENSIONS);
 		try{
 			action.implementation();
 		}catch(UserException e){
@@ -213,7 +209,7 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 		
 		o.getPackages().get(0).setContainerName(SIDECAR_FILES_PACKAGE);
 	
-		pSystem.setSidecarExtensions(SIDECAR_EXTENSIONS_COMMA_SPLIT);
+		this.o.getContractor().setFriendlyFileExtensions(SIDECAR_EXTENSIONS_COMMA_SPLIT);
 		try{
 			action.implementation();
 		}catch(UserException e){
@@ -228,7 +224,7 @@ public class UnpackActionTests extends ConcreteActionUnitTest {
 		
 		o.getPackages().get(0).setContainerName(SIDECAR_FILES_PACKAGE);
 	
-		pSystem.setSidecarExtensions(SIDECAR_EXTENSIONS_SEMIKOLON_SPLIT);
+		this.o.getContractor().setFriendlyFileExtensions(SIDECAR_EXTENSIONS_SEMIKOLON_SPLIT);
 		try{
 			action.implementation();
 		}catch(UserException e){

@@ -261,9 +261,6 @@ public class Event {
 	 * @author Daniel M. de Oliveira
 	 */
 	public DAFile getSource_file() {
-		if ((getType()==null)||getType().equals("")) throw new IllegalStateException("Type for Event not set");
-		//if (!getType().equals("CONVERT") && !getType().equals("COPY")) throw new RuntimeException("Operation not allowed for non CONVERT/COPY events");
-		
 		return source_file;
 	}
 
@@ -281,13 +278,8 @@ public class Event {
 	 *
 	 * @return the target_file
 	 * @author Daniel M. de Oliveira
-	 * @throws IllegalStateException if called and event type not set 
-	 * @throws IllegalStateException if called and event is not of type CONVERT or COPY
 	 */
 	public DAFile getTarget_file() {
-		if ((getType()==null)||getType().equals("")) throw new IllegalStateException("Type for Event not set");
-		//if (!getType().equals("CONVERT") && !getType().equals("COPY") && !getType().equals("CREATE")) throw new IllegalStateException("Operation not allowed for non CONVERT/COPY/CREATE events");
-		
 		return target_file;
 	}
 

@@ -174,7 +174,7 @@ public class CheckFormatsAction extends AbstractAction {
 	}
 
 	private List<DAFile> getNewestFilesOfObject(){
-		return o.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
+		return o.getNewestFilesFromAllRepresentations(o.getFriendlyFileExtensions());
 	}
 
 	private List<DAFile> getAllFilesOfObject(){

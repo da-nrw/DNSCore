@@ -56,7 +56,6 @@ import de.uzk.hki.da.cb.UpdateMetadataActionEADMultilevelPackagesTest;
 import de.uzk.hki.da.cb.UpdateMetadataActionEADTests;
 import de.uzk.hki.da.cb.UpdateMetadataActionLIDOTests;
 import de.uzk.hki.da.cb.UpdateMetadataActionTests;
-import de.uzk.hki.da.cb.UpdateMetadataActionXMPTests;
 import de.uzk.hki.da.cb.UpdateMetadataRheinlaender;
 import de.uzk.hki.da.cb.ValidateMetadataActionTests;
 import de.uzk.hki.da.convert.CLIConversionStrategyTests;
@@ -152,7 +151,6 @@ import de.uzk.hki.da.service.XPathUtilsTests;
 	ArchiveReplicationActionTests.class,
 	UpdateMetadataActionEADTests.class,
 	DeleteObjectActionTests.class,
-	UpdateMetadataActionXMPTests.class,
 	AbstractActionTests.class,
 	ReplicationExecutorTest.class,
 	PathTypeEditorSupportTests.class,
