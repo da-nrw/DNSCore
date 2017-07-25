@@ -85,6 +85,7 @@ public class ConcreteActionUnitTest {
 		ps.setUrisAggr("aggr");
 		ps.setUrisLocal("local");
 		ps.setMinRepls(3);
+		ps.setLicenseValidationFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_YES);
 		n = new Node();
 		n.setName("testnode");
 		n.setAdmin(psadmin);
