@@ -5,25 +5,6 @@ Diese Tabelle enthält die Spezifikationen für das Metadaten-Mapping
 
 | METS/Mods | EDM/Index | Format | Bemerkung | Portal | Status |
 | --------- | --------- | ------ | --------- | ------ | ------ |
-| titleinfo | dc:title  | String |           | Titel  | Umgesetzt für Build 1856 | 
-  displayLabel
-  subTitle
-| titleinfo | dc:title  | String |           | Titel  | Umgesetzt für Build 1856 | 
-| titleinfo | dc:title  | String |           | Titel  | Umgesetzt für Build 1856 | 
-| titleinfo | dc:title  | String |           | Titel  | Umgesetzt für Build 1856 | 
-| titleinfo | dc:title  | String |           | Titel  | Umgesetzt für Build 1856 | 
-| titleinfo | dc:title  | String |           | Titel  | Umgesetzt für Build 1856 | 
-| titleinfo | dc:title  | String |           | Titel  | Umgesetzt für Build 1856 | 
-| titleinfo | dc:title  | String |           | Titel  | Umgesetzt für Build 1856 | 
-
-
-Direkte Tabellenübernahme
-
-Legende:
-
-Status: In Planung, In Arbeit, Umgesetzt für Build Nr.
-
-|| MODS \\ || EDM / Index \\ || Format \\ || Bemerkung \\ || Portal \\ || Status ||
 | titleInfo \\
 displayLabel \\
 subTitle \\ | dc:title | String \\ | | Titel | {color:#008000}Umgesetzt für Build&nbsp;{color}{color:#008000}1856{color} |
