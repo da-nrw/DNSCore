@@ -129,7 +129,7 @@ Regeln für das Mergen der Felder
 Zusatz ", [Elektr. Ed.]" wird benötigt, um Publisher zuordnen zu können. Soll im Portal nicht angezeigt werden.
 
 ### Status
-Zusatz offen
+[ ] Zusatz offen
 
 ## Mapping für edmDataProvider
 Wird aktuell im Portal nicht angezeigt. Ggf. für Suche wichtig
@@ -147,6 +147,23 @@ Wird aktuell im Portal nicht angezeigt. Ggf. für Suche wichtig
 
 
 ### Status
-Umgesetzt
+[x] Umgesetzt
+
+## Mapping für Nutzungslizenz im Portal
+
+### Mods
+
+* mods.accessCondition(type=use and reproduction) Inhalt des Attributs xlink:href
+
+
+### Mapping zu EDM / Index
+
+* edm.ProvidedCHO.dc.rights
+
+### Bemerkung:  
+Nutr die URL der Lizenz soll übernommen werden!
+
+### Status
+
 
 
