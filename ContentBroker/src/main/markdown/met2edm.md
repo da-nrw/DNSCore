@@ -17,7 +17,6 @@ Diese Tabelle enthält die Spezifikationen für das Metadaten-Mapping
 | titleinfo | dc:title  | String |           | Titel  | Umgesetzt für Build 1856 | 
 
 
-
 Direkte Tabellenübernahme
 
 Legende:
@@ -55,3 +54,4 @@ Thumbnail \\ | {color:#008000}Umgesetzt für Build&nbsp;{color}{color:#008000}18
 | physicalDescription/extent | dcterms:extent | String | | Umfang \\ | {color:#008000}Umgesetzt für Build&nbsp;{color}{color:#008000}1888{color}\\ |
 | originInfo/edition | dc:publisher ? | String | eine eigene EDM-Kategorie für edition scheint es nicht zu geben \\ | Ort / Verlag, Jahr | {color:#ff6600}In Planung{color} |
 | mods/accessCondition(type=use and reproduction)xlink:href | edm:ProvidedCHO/dc:rights | String(URL) | Nur die URL aus dem mods lesen\! | Nutzungsrechte | {color:#ff0000}In Planung: Wichtig für nächsten Build{color}\\ | 
+
