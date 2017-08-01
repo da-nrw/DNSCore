@@ -100,7 +100,7 @@ Regeln für das Mergen der Felder
 ### Status
 Umgesetzt in Build 1856
 
-## Mapping auf *Elektronische Edition* im Portal
+## Mapping auf Elektronische Edition im Portal
 
 ### Mods
 
