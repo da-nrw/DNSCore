@@ -37,6 +37,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import de.uzk.hki.da.utils.C;
+
 
 
 
@@ -103,6 +105,8 @@ public class User{
 	@Cascade({CascadeType.SAVE_UPDATE,CascadeType.DELETE})
 	private List<Message> messages = new ArrayList<Message>();
 	
+	@Column(name="required_ingest_quality", columnDefinition="INTEGER DEFAULT "+C.QUALITYFLAG_DEFAULT)
+	private int requiredIngestQuality;
 	
 	
 	/**
@@ -215,6 +219,12 @@ public class User{
 		this.usePublicMets = usePublicMets;
 	}
 	
+	
+	
+	public int getRequiredIngestQuality() {
+		return requiredIngestQuality;
+	}
+
 	public boolean isUseVirusScan() {
 		return useVirusScan;
 	}

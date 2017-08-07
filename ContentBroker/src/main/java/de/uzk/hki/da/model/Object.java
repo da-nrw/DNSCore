@@ -194,6 +194,9 @@ public class Object {
 	@Transient
 	private Set<Agent> agents = new HashSet<Agent>();
 	
+	@Transient
+	private int requiredIngestQLevel;
+	
 	/** The contractor. */
 	@ManyToOne
 	@JoinColumn(name = "user_id")
@@ -897,6 +900,9 @@ public class Object {
 	public void setQuality_flag(int quality_flag) {
 		this.quality_flag = quality_flag;
 	}
-	
+
+	public int getRequiredIngestQLevel() {
+		return requiredIngestQLevel;
+	}
 	
 }

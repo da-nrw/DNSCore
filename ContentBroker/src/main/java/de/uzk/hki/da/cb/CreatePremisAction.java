@@ -260,7 +260,7 @@ public class CreatePremisAction extends AbstractAction {
 		return ingestEventElement;		
 	}
 	
-	private Object parsePremisFile(File premisFile) {
+	public static Object parsePremisFile(File premisFile) {
 		
 		Object premisData;
 		

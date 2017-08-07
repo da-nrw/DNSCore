@@ -19,6 +19,7 @@
 
 package de.uzk.hki.da.cb;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,9 +28,13 @@ import java.util.Date;
 import java.util.List;
 
 import de.uzk.hki.da.action.AbstractAction;
+import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
+import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.Path;
 
 /**
  * 
@@ -65,6 +70,7 @@ public class QualityLevelCheckAction extends AbstractAction {
 	@Override
 	public boolean implementation() {
 		logger.debug("QualityLevelCheckAction called! ");
+		int qualityLevel=-1;
 		List<Event> events = o.getLatestPackage().getEvents();
 		List<Event> validationFailEvents = new ArrayList<Event>();
 		List<Event> conversionFailEvents = new ArrayList<Event>();
@@ -81,11 +87,13 @@ public class QualityLevelCheckAction extends AbstractAction {
 		Collections.sort(validationFailEvents, eventComparator);
 		if(validationFailEvents.isEmpty()&&conversionFailEvents.isEmpty()){
 			extendObject(C.QUALITYFLAG_LEVEL_4,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4,o.getLatestPackage().getFiles().get(0),"NO CRITICAL QUALITY_LEVEL EVENTS"));
-			
+			qualityLevel=C.QUALITYFLAG_LEVEL_4;
 		}else if(!validationFailEvents.isEmpty()&&conversionFailEvents.isEmpty()){
 			extendObject(C.QUALITYFLAG_LEVEL_3,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_3,validationFailEvents.get(0).getSource_file(),generateQualityEventDetail("ONLY "+C.EVENT_TYPE_QUALITY_FAULT_VALIDATION+" EVENTS",validationFailEvents)));
+			qualityLevel=C.QUALITYFLAG_LEVEL_3;
 		}else if(validationFailEvents.isEmpty()&&!conversionFailEvents.isEmpty()){
 			extendObject(C.QUALITYFLAG_LEVEL_2,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2,conversionFailEvents.get(0).getSource_file(),generateQualityEventDetail("ONLY "+C.EVENT_TYPE_QUALITY_FAULT_CONVERSION+" EVENTS",conversionFailEvents)));
+			qualityLevel=C.QUALITYFLAG_LEVEL_2;
 		}else{
 			List<Event> commonConversionEvents=new ArrayList<Event>();
 			Event[] validationEventsArray=new Event[validationFailEvents.size()];
@@ -99,14 +107,28 @@ public class QualityLevelCheckAction extends AbstractAction {
 			if(commonConversionEvents.isEmpty()){//there is no validation and conversion events on same files
 				conversionFailEvents.addAll(validationFailEvents);
 				extendObject(C.QUALITYFLAG_LEVEL_2,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2,conversionFailEvents.get(0).getSource_file(),generateQualityEventDetail("CONVERSION AND VALIDATION QUALITY_LEVEL EVENTS ON DIFFERENT FILES",conversionFailEvents)));
+				qualityLevel=C.QUALITYFLAG_LEVEL_2;
 			}else{
 				extendObject(C.QUALITYFLAG_LEVEL_1,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1,commonConversionEvents.get(0).getSource_file(),generateQualityEventDetail("CONVERSION AND VALIDATION QUALITY_LEVEL EVENTS ON SAME FILES",commonConversionEvents)));
+				qualityLevel=C.QUALITYFLAG_LEVEL_1;
 			}
 		}
 		
+		int requiredIngestQualityPremis=getRequiredIngestLevelFromPremis();
+		if(requiredIngestQualityPremis>0){
+			if(qualityLevel<requiredIngestQualityPremis)
+				throw new UserException(UserExceptionId.QUALITY_BELOW_REQUIRED, "Current Quality("+qualityLevel+") is below "+requiredIngestQualityPremis +" ");
+		}else if(qualityLevel< this.o.getContractor().getRequiredIngestQuality())
+			throw new UserException(UserExceptionId.QUALITY_BELOW_REQUIRED, "Current Quality("+qualityLevel+") is below "+this.o.getContractor().getRequiredIngestQuality() +" ");
 		
 		return true;
 
+	}
+	
+	private int getRequiredIngestLevelFromPremis(){
+		Object sipPREMISObject = CreatePremisAction.parsePremisFile(
+				new File(Path.make(wa.dataPath(),o.getNameOfLatestBRep(),C.PREMIS).toString().replace("+b", "+a")));
+		return sipPREMISObject.getRequiredIngestQLevel();
 	}
 	
 	private String generateQualityEventDetail(String prefix, List<Event> eList) {

@@ -203,6 +203,8 @@ public class C {
 	public static final String KIND_OF_SIPBUILDING_SINGLE_WITH_TARGET_FOLDER_NAME="Einzelnes SIP mit dem angegebenen Namen aus dem Quellordner erstellen";
 	public static final String KIND_OF_SIPBUILDING_MULTIPLE="SIPs aus Unterordnern des Quellverzeichnisses erstellen";
 	public static final String KIND_OF_SIPBUILDING_NESTED="SIPs aus verzweigter Ordnerstruktur erstellen (nur METS)";
+
+	public static final java.lang.Object PREMIS = "premis.xml";
 	
 }
 
