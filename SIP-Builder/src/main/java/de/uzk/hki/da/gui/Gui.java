@@ -189,8 +189,7 @@ public class Gui extends JFrame{
 	JLabel createLabel;
 	JLabel sipProgressDisplayLabel;
 	JLabel sipProgressStepLabel;
-	
-	
+
 
 	// TextAreas
 	JTextArea welcomeArea;
@@ -347,7 +346,6 @@ public class Gui extends JFrame{
 	JComboBox publicVideoQualityDropDown;
 	JComboBox publicVideoDurationDropDown;
 	JComboBox migrationDropDown;
-	
 
 	// ProgressBar
 	JProgressBar progressBar;
@@ -605,7 +603,6 @@ public class Gui extends JFrame{
 		sipProgressStepLabel = new JLabel();
 		sipProgressStepLabel.setFont(standardFont.deriveFont(12.0f));
 		sipProgressStepLabel.setHorizontalAlignment(JLabel.CENTER);
-		
 	}
 
 	/**
@@ -1483,7 +1480,6 @@ public class Gui extends JFrame{
 		migrationDropDown.addItem("Keine");
 		migrationDropDown.addItem("Über Migration informieren");
 		migrationDropDown.addItem("Zustimmung für Migration einholen");
-		
 	}
 
 	/**
@@ -1644,10 +1640,9 @@ public class Gui extends JFrame{
 		publicAllowRadioButton.setBounds(251, 150, 40, 20);
 		publicDenyRadioButton.setBounds(251, 175, 60, 20);
 		publicDDBArea.setBounds(255, 215, 400, 60);
- 		publicDDBCheckBox.setBounds(251, 285, 190, 20);
-		
 
-		
+ 		publicDDBCheckBox.setBounds(251, 285, 190, 20);
+
 		goBackToInstitutionRestrictionOrTempButton.setBounds(450, 445, 90, 20);
 		goToPublicTempButton.setBounds(575, 445, 90, 20);
 		backgroundPublicImageLabel.setBounds(0, 0, 750, 526);
@@ -1832,8 +1827,7 @@ public class Gui extends JFrame{
 		publicPanel.add(goBackToLicenseButton);
 		publicPanel.add(publicDDBArea);
 		publicPanel.add(publicDDBCheckBox);
-		
-		
+
 		publicPanel.add(goToPublicTempButton);
 		publicPanel.add(backgroundPublicImageLabel);
 		publicPanel.setLayout(null);
