@@ -58,20 +58,49 @@ public class ContractRights {
 	private ConversionCondition conversionCondition;
 	boolean ddbExclusion;
 	private CCLicense cclincense;
-	
+	private LicenseCondition licenseCondition;
 
 
 	public enum ConversionCondition { NONE, NOTIFY, CONFIRM };
+
+	public enum LicenseCondition {
+		//NOLICENSE("NOLICENSE"), 
+		METADALICENSE("METADALICENSE"), 
+		PREMISLICENSE("PREMISLICENSE");
+
+		private LicenseCondition(String text) {	this.text = text;}
+		private String text;
+		public String getText() {return text;}
+		@Override public String toString() {	return text;}
+	};
+
 	
 	public enum CCLicense {
+		PDM("https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","Public Domain Mark 1.0"),
 		Cc0("https://creativecommons.org/publicdomain/zero/1.0/","CC0-Lizenz (v1.0)","CC0 1.0 Public Domain Dedication"),
+		/*
+		By3("https://creativecommons.org/licenses/by/3.0/","CC-BY-Lizenz (v3.0)","cc-by_3.0"),
+		ByNd3("https://creativecommons.org/licenses/by-nd/3.0/","CC-BY-ND-Lizenz (v3.0)","cc-by-nd_3.0"),
+		ByNc3("https://creativecommons.org/licenses/by-nc/3.0/","CC-BY-NC-Lizenz (v3.0)","cc-by-nc_3.0"),
+		ByNcNd3("https://creativecommons.org/licenses/by-nc-nd/3.0/","CC-BY-NC-ND-Lizenz (v3.0)","cc-by-nc-nd_3.0"),
+		ByNcSa3("https://creativecommons.org/licenses/by-nc-sa/3.0/","CC-BY-NC-SA-Lizenz (v3.0)","cc-by-nc-sa_3.0"),
+		BySa3("https://creativecommons.org/licenses/by-sa/3.0/","CC-BY-SA-Lizenz (v3.0)","cc-by-sa_3.0"),
 		
-		/*By3("https://creativecommons.org/licenses/by/3.0/","CC-BY-Lizenz (3.0)","cc-by_3.0"),
-		ByNd3("https://creativecommons.org/licenses/by-nd/3.0/","CC-BY-ND-Lizenz (3.0)","cc-by-nd_3.0"),
-		ByNc3("https://creativecommons.org/licenses/by-nc/3.0/","CC-BY-NC-Lizenz (3.0)","cc-by-nc_3.0"),
-		ByNcNd3("https://creativecommons.org/licenses/by-nc-nd/3.0/","CC-BY-NC-ND-Lizenz (3.0)","cc-by-nc-nd_3.0"),
-		ByNcSa3("https://creativecommons.org/licenses/by-nc-sa/3.0/","CC-BY-NC-SA-Lizenz (3.0)","cc-by-nc-sa_3.0"),
-		BySa3("https://creativecommons.org/licenses/by-sa/3.0/","CC-BY-SA-Lizenz (3.0)","cc-by-sa_3.0"),*/
+		By4("https://creativecommons.org/licenses/by/4.0/","CC-BY-Lizenz (v4.0)","cc-by_4.0"),
+		ByNd4("https://creativecommons.org/licenses/by-nd/4.0/","CC-BY-ND-Lizenz (v4.0)","cc-by-nd_4.0"),
+		ByNc4("https://creativecommons.org/licenses/by-nc/4.0/","CC-BY-NC-Lizenz (v4.0)","cc-by-nc_4.0"),
+		ByNcNd4("https://creativecommons.org/licenses/by-nc-nd/4.0/","CC-BY-NC-ND-Lizenz (v4.0)","cc-by-nc-nd_4.0"),
+		ByNcSa4("https://creativecommons.org/licenses/by-nc-sa/4.0/","CC-BY-NC-SA-Lizenz (v4.0)","cc-by-nc-sa_4.0"),
+		BySa4("https://creativecommons.org/licenses/by-sa/4.0/","CC-BY-SA-Lizenz (v4.0)","cc-by-sa_4.0"),
+		*/
+		
+		By3("https://creativecommons.org/licenses/by/3.0/","CC-BY-Lizenz (v3.0)","CC v3.0 International Lizenz: Namensnennung"),
+		ByNd3("https://creativecommons.org/licenses/by-nd/3.0/","CC-BY-ND-Lizenz (v3.0)","CC v3.0 International Lizenz: Namensnennung - Keine Bearbeitungen"),
+		ByNc3("https://creativecommons.org/licenses/by-nc/3.0/","CC-BY-NC-Lizenz (v3.0)","CC v3.0 International Lizenz: Namensnennung - Nicht kommerziell"),
+		ByNcNd3("https://creativecommons.org/licenses/by-nc-nd/3.0/","CC-BY-NC-ND-Lizenz (v3.0)","CC v3.0 International Lizenz: Namensnennung - Nicht kommerziell - Keine Bearbeitungen"),
+		ByNcSa3("https://creativecommons.org/licenses/by-nc-sa/3.0/","CC-BY-NC-SA-Lizenz (v3.0)","CC v3.0 International Lizenz: Namensnennung - Nicht-kommerziell - Weitergabe unter gleichen Bedingungen"),
+		BySa3("https://creativecommons.org/licenses/by-sa/3.0/","CC-BY-SA-Lizenz (v3.0)","CC v3.0 International Lizenz: Namensnennung - Weitergabe unter gleichen Bedingungen"),
+		
 		
 		By4("https://creativecommons.org/licenses/by/4.0/","CC-BY-Lizenz (v4.0)","CC v4.0 International Lizenz: Namensnennung"),
 		ByNd4("https://creativecommons.org/licenses/by-nd/4.0/","CC-BY-ND-Lizenz (v4.0)","CC v4.0 International Lizenz: Namensnennung - Keine Bearbeitungen"),
@@ -263,6 +292,14 @@ public class ContractRights {
 
 	public void setConversionCondition(String conversionCondition) {
 		this.conversionCondition = Utilities.translateConversionCondition(conversionCondition);
+	}
+	
+	public LicenseCondition getLicenseCondition() {
+		return licenseCondition;
+	}
+
+	public void setLicenseCondition(LicenseCondition licenseCondition) {
+		this.licenseCondition = licenseCondition;
 	}
 
 	public boolean getDdbExclusion() {

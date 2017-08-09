@@ -157,7 +157,6 @@ public class Gui extends JFrame{
 	JLabel sourceLabel;
 	JLabel destinationLabel;
 	JLabel workingLabel;
-	//JLabel licenseTextLabel;  //TODO keep in mind for later
 	JLabel rightsLabel;
 	JLabel institutionLabel;
 	JLabel institutionStartLabel;
@@ -293,6 +292,8 @@ public class Gui extends JFrame{
 	JRadioButton publicTempRadioButton;
 	JRadioButton publicLawRadioButton;
 	JRadioButton publicNoTempRestrictionRadioButton;
+    JRadioButton metadataLicenseRadioButton;
+    JRadioButton premisLicenseRadioButton;
 
 
 	// Checkboxes
@@ -304,7 +305,6 @@ public class Gui extends JFrame{
 	JCheckBox institutionVideoRestrictionCheckBox;
 	JCheckBox institutionVideoDurationCheckBox;
 	JCheckBox publicDDBCheckBox;
-	JCheckBox licenseUseCheckBox;
 	JCheckBox publicTextRestrictionCheckBox;
 	JCheckBox publicImageRestrictionCheckBox;
 	JCheckBox publicImageTextCheckBox;
@@ -312,13 +312,12 @@ public class Gui extends JFrame{
 	JCheckBox publicVideoRestrictionCheckBox;
 	JCheckBox publicVideoDurationCheckBox;
 	JCheckBox compressionCheckBox;
-
-
+	
 	// Textfields     
 	JTextField sourcePathTextField;
 	JTextField destinationPathTextField;
 	JTextField workingPathTextField;
-	JTextField licenseTextField; //TODO keep in mind for later
+	JTextField licenseTextField; 
 	JTextField collectionNameTextField;
 	JTextField institutionTempStartDateTextField;
 	JTextField institutionRestrictionTextPagesTextField;
@@ -526,8 +525,6 @@ public class Gui extends JFrame{
 		rightsLabel.setFont(boldFont.deriveFont(12.0f));
 		licenseLabel= new JLabel("Lizenzangaben");
 		licenseLabel.setFont(boldFont.deriveFont(12.0f));
-		//licenseTextLabel = new JLabel("Lizenzinfo");
-		//licenseTextLabel.setFont(standardFont.deriveFont(10.0f));
 		institutionLabel = new JLabel("Publikation für die eigene Institution");
 		institutionLabel.setFont(boldFont.deriveFont(12.0f));
 		institutionStartLabel = new JLabel("Startzeitpunkt der Publikation");
@@ -966,7 +963,8 @@ public class Gui extends JFrame{
 		licenseAreaOne.setFont(standardFont.deriveFont(12.0f));
 		licenseAreaOne.setText("In den folgenden Schritten können Sie die Lizenzrechte für " +
 				"Ihre SIPs festlegen. Die Lizenzangabe gilt für die Veröffentlichungsportale.\n\n" +
-				"Hiterlegen Sie diese Lizenzangaben nur wenn diese nicht " +
+				"Für eine Publikation ist eine Lizenz zwingend erforderlich!\n\n"+
+				"Hiterlegen Sie im SIP-Builder eine Lizenz nur wenn diese nicht " +
 				"bereits in den METS-Metadaten hiterlegt sind!!! ");	     
 
 		rightsAreaTwo = new JTextArea();
@@ -1248,9 +1246,18 @@ public class Gui extends JFrame{
 		publicDDBCheckBox = new JCheckBox("DDB-Harvesting erlauben", true);
 		publicDDBCheckBox.setOpaque(false);
 		publicDDBCheckBox.setFont(standardFont.deriveFont(12.0f));
-		licenseUseCheckBox = new JCheckBox("Nutzen einer CC-Lizenz", false);
-		licenseUseCheckBox.setOpaque(false);
-		licenseUseCheckBox.setFont(standardFont.deriveFont(12.0f));
+		ButtonGroup licenseRadioButtonGroup = new ButtonGroup();
+		metadataLicenseRadioButton = new JRadioButton("Lizenz aus Metadaten übernehmen.");
+	    metadataLicenseRadioButton.setOpaque(false);
+	    metadataLicenseRadioButton.setFont(standardFont.deriveFont(12.0f));
+	    
+	    premisLicenseRadioButton = new JRadioButton("Lizenz festlegen");
+	    premisLicenseRadioButton.setOpaque(false);
+	    premisLicenseRadioButton.setFont(standardFont.deriveFont(12.0f));
+	    
+	    licenseRadioButtonGroup.add(metadataLicenseRadioButton);
+	    licenseRadioButtonGroup.add(premisLicenseRadioButton);
+		
 		publicTextRestrictionCheckBox = new JCheckBox("Einsehbare Seiten festlegen", false);
 		publicTextRestrictionCheckBox.setOpaque(false);
 		publicTextRestrictionCheckBox.setFont(standardFont.deriveFont(12.0f));
@@ -1294,10 +1301,7 @@ public class Gui extends JFrame{
 		licenseTextField = new JTextField();
 		licenseTextField.setEditable(true);
 		licenseTextField.setOpaque(false);
-		//licenseTextField.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.gray));
 		licenseTextField.setBorder(null);
-		//licenseTextField.setBackground(new Color(Color.OPAQUE));
-		//licenseTextField.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		licenseTextField.setFont(standardFont.deriveFont(12.0f));
 
 		collectionNameTextField = new JTextField();
@@ -1558,14 +1562,12 @@ public class Gui extends JFrame{
 		licenseLabel.setBounds(255, 70, 300, 20);
 		licenseDropDown.setEditable(false);
 		licenseDropDown.setEnabled(false);
-		//licenseTextField.setEnabled(false);
-		//licenseTextLabel.setEnabled(false);
 		licenseTextField.setEditable(false);
-		licenseAreaOne.setBounds(255, 100, 430, 95);
-		licenseUseCheckBox.setBounds(255, 200, 430, 20);
-		licenseDropDown.setBounds(255, 225, 230, 20);
-		//licenseTextLabel.setBounds(255, 255, 230, 20);
-		licenseTextField.setBounds(255, 255, 430, 20);
+		licenseAreaOne.setBounds(255, 100, 430, 115);
+	    metadataLicenseRadioButton.setBounds(255, 220, 430, 20);
+	    premisLicenseRadioButton.setBounds(255, 245, 430, 20);
+		licenseDropDown.setBounds(275, 270, 230, 20);
+		licenseTextField.setBounds(275, 295, 430, 20);
 		goBackToLoadStandardButton.setBounds(450, 445, 90, 20);
 		goToInstitutionButton.setBounds(575, 445, 90, 20);
 		backgroundLicenseImageLabel.setBounds(0, 0, 750, 526);
@@ -1811,13 +1813,15 @@ public class Gui extends JFrame{
 		getContentPane().add(licensePanel);
 		licensePanel.add(licenseLabel);
 		licensePanel.add(licenseAreaOne);
-		licensePanel.add(licenseUseCheckBox);
+		licensePanel.add(metadataLicenseRadioButton);
+		licensePanel.add(premisLicenseRadioButton);
+		
+		
 		licensePanel.add(licenseDropDown);
-		//licensePanel.add(licenseTextLabel);
 		licensePanel.add(licenseTextField);
-		licensePanel.add(backgroundLicenseImageLabel);
 		licensePanel.add(goToPublicButton);
 		licensePanel.add(goBackToLoadStandardButton);
+		licensePanel.add(backgroundLicenseImageLabel);
 		licensePanel.setLayout(null);
 
 		getContentPane().add(publicPanel);
@@ -2535,30 +2539,24 @@ public class Gui extends JFrame{
 				}     
 			}
 		});
-		
-		licenseUseCheckBox.addActionListener(new ActionListener(){
-			
-			public void actionPerformed(ActionEvent e){	     
-				if(licenseUseCheckBox.isSelected()){
+		ActionListener licenseRadioButtonListener = new ActionListener(){
+			public void actionPerformed(ActionEvent e){	  
+				JRadioButton btn = (JRadioButton) e.getSource();
+				if(btn==premisLicenseRadioButton){
 					licenseDropDown.setEditable(true);
 					licenseDropDown.setEnabled(true);
-					//licenseTextField.setEnabled(true);
 					licenseTextField.setVisible(true);
-					//licenseTextField.setEditable(true);
-					//licenseTextLabel.setEnabled(true);
 					licenseDropDown.setSelectedIndex(0);
 				}
 				else{	
 					licenseDropDown.setEditable(false);
 					licenseDropDown.setEnabled(false);
-					//licenseTextField.setEnabled(false);
 					licenseTextField.setVisible(false);
-					//licenseTextLabel.setEnabled(false);
-					//licenseTextField.setText("");
-					//licenseTextField.setEditable(false);
 				}     
 			}
-		});
+		};
+		metadataLicenseRadioButton.addActionListener(licenseRadioButtonListener);
+	    premisLicenseRadioButton.addActionListener(licenseRadioButtonListener);
 
 		institutionImageRestrictionCheckBox.addActionListener(new ActionListener(){
 			
@@ -2834,7 +2832,6 @@ public class Gui extends JFrame{
 		licenseDropDown.addActionListener(new ActionListener(){	
 			public void actionPerformed(ActionEvent e){
 				licenseTextField.setText(((ContractRights.CCLicense)licenseDropDown.getSelectedItem()).getHref());
-				//licenseTextField.setText(((ContractRights.CCLicense)licenseDropDown.getSelectedItem()).getDefaultText());
 			}
 
 		});
@@ -3577,10 +3574,18 @@ public class Gui extends JFrame{
 		publicRights.setVideoDuration(contractSettings.getDuration(publicVideoDurationDropDown.getSelectedIndex()));
 		contractRights.setConversionCondition((String) migrationDropDown.getSelectedItem());
 		contractRights.setDdbExclusion(!publicDDBCheckBox.isSelected());
-		if(licenseUseCheckBox.isSelected())
+		
+		if(premisLicenseRadioButton.isSelected()){
 			contractRights.setCclincense((CCLicense) licenseDropDown.getSelectedItem());
-		else
+			contractRights.setLicenseCondition(ContractRights.LicenseCondition.PREMISLICENSE);
+		}/*else if(noLicenseRadioButton.isSelected()){
 			contractRights.setCclincense(null);
+			contractRights.setLicenseCondition(ContractRights.LicenseCondition.NOLICENSE);
+		}*/
+		else if(metadataLicenseRadioButton.isSelected()){
+			contractRights.setCclincense(null);
+			contractRights.setLicenseCondition(ContractRights.LicenseCondition.METADALICENSE);
+		}
 	}
 
 	/**
@@ -3898,18 +3903,23 @@ public class Gui extends JFrame{
 
 		migrationDropDown.setSelectedItem(Utilities.translateConversionCondition(contractRights.getConversionCondition()));
 		publicDDBCheckBox.setSelected(!contractRights.getDdbExclusion());
-		
-		licenseUseCheckBox.setSelected(contractRights.getCclincense()!=null);
+		if (contractRights.getLicenseCondition() != null) {
+			if (contractRights.getLicenseCondition().equals(ContractRights.LicenseCondition.PREMISLICENSE)) {
+				premisLicenseRadioButton.setSelected(true);
+			} else if (contractRights.getLicenseCondition().equals(ContractRights.LicenseCondition.METADALICENSE)) {
+				metadataLicenseRadioButton.setSelected(true);
+			}
+		}else{
+			metadataLicenseRadioButton.setSelected(true);
+		}
 		if(contractRights.getCclincense()!=null){
 			licenseDropDown.setEditable(true);
 			licenseDropDown.setEnabled(true);
-			//licenseTextField.setEnabled(true);
 			licenseTextField.setVisible(true);
 			licenseDropDown.setSelectedItem(contractRights.getCclincense());
 		}else{	
 			licenseDropDown.setEditable(false);
 			licenseDropDown.setEnabled(false);
-			//licenseTextField.setEnabled(false);
 			licenseTextField.setVisible(false);
 			licenseDropDown.setSelectedItem(0);
 		}
@@ -3996,9 +4006,11 @@ public class Gui extends JFrame{
 			settingsOverview += "Nein\n";
 		
 		settingsOverview += "\nMigrationsbedingung: " + (String) migrationDropDown.getSelectedItem();
-		if(licenseUseCheckBox.isSelected())
-			settingsOverview += "\nLizenzangaben durch SIP-Builder: " +  licenseDropDown.getSelectedItem().toString();
-			
+		if(premisLicenseRadioButton.isSelected()){
+			settingsOverview += "\nLizenzangaben: Im SIP-Builder festgelegt : " +  licenseDropDown.getSelectedItem().toString();
+		}else if(metadataLicenseRadioButton.isSelected()){
+			settingsOverview += "\nLizenzangaben: Aus den Metadaten übernehmen " ;
+		}
 		return settingsOverview;
 	}
 
