@@ -181,10 +181,7 @@ public class Gui extends JFrame{
 	JLabel createLabel;
 	JLabel sipProgressDisplayLabel;
 	JLabel sipProgressStepLabel;
-	
-	// TODO BEG
-	JLabel licenceLabel;
-	
+
 
 	// TextAreas
 	JTextArea welcomeArea;
@@ -334,8 +331,6 @@ public class Gui extends JFrame{
 	JComboBox publicVideoDurationDropDown;
 	JComboBox migrationDropDown;
 
-	JComboBox<String> licenceDropDown;
-	
 
 	// ProgressBar
 	JProgressBar progressBar;
@@ -588,10 +583,6 @@ public class Gui extends JFrame{
 		sipProgressStepLabel = new JLabel();
 		sipProgressStepLabel.setFont(standardFont.deriveFont(12.0f));
 		sipProgressStepLabel.setHorizontalAlignment(JLabel.CENTER);
-		
-		// TODO BEG
-		licenceLabel = new JLabel("Lizenzangaben: ");
-		licenceLabel.setFont(standardFont.deriveFont(12.0f));
 	}
 
 	/**
@@ -1413,20 +1404,6 @@ public class Gui extends JFrame{
 		migrationDropDown.addItem("Keine");
 		migrationDropDown.addItem("Über Migration informieren");
 		migrationDropDown.addItem("Zustimmung für Migration einholen");
-		
-		
-		licenceDropDown = new JComboBox<String>();
-		licenceDropDown.setFont(standardFont.deriveFont(12.0f));
-		licenceDropDown.addItem("Keine");
-		licenceDropDown.addItem("pdm - Public Domain");
-		licenceDropDown.addItem("cc0");
-		licenceDropDown.addItem("cc-by");
-		licenceDropDown.addItem("cc-by-sa");
-		licenceDropDown.addItem("cc-by-nd");
-		licenceDropDown.addItem("cc-by-nc");
-		licenceDropDown.addItem("cc-by-nc-sa");
-		licenceDropDown.addItem("cc-by-nc-nd");
-		licenceDropDown.addItem("reserved");
 	}
 
 	/**
@@ -1568,12 +1545,7 @@ public class Gui extends JFrame{
 		publicAllowRadioButton.setBounds(251, 150, 40, 20);
 		publicDenyRadioButton.setBounds(251, 175, 60, 20);
 		publicDDBArea.setBounds(255, 215, 400, 60);
- 		publicDDBCheckBox.setBounds(251, 285, 190, 20);
-		
-		// TODO BEG
- 		licenceLabel.setBounds(251, 320, 200, 20);
-		licenceDropDown.setBounds(251, 350, 200, 20);
-		
+		publicDDBCheckBox.setBounds(251, 285, 190, 20);
 		goBackToInstitutionRestrictionOrTempButton.setBounds(450, 445, 90, 20);
 		goToPublicTempButton.setBounds(575, 445, 90, 20);
 		backgroundPublicImageLabel.setBounds(0, 0, 750, 526);
@@ -1743,11 +1715,6 @@ public class Gui extends JFrame{
 		publicPanel.add(goBackToLoadStandardButton);
 		publicPanel.add(publicDDBArea);
 		publicPanel.add(publicDDBCheckBox);
-		
-		// TODO
-		publicPanel.add(licenceLabel);
-		publicPanel.add(licenceDropDown);
-		
 		publicPanel.add(goToPublicTempButton);
 		publicPanel.add(backgroundPublicImageLabel);
 		publicPanel.setLayout(null);
@@ -2361,8 +2328,6 @@ public class Gui extends JFrame{
 			public void actionPerformed(ActionEvent e){
 				publicDDBArea.setEnabled(true);
 				publicDDBCheckBox.setEnabled(true);
-				// TODO BEG
-				licenceDropDown.setEnabled(true);
 			}
 		});
 		
@@ -2371,8 +2336,6 @@ public class Gui extends JFrame{
 			public void actionPerformed(ActionEvent e){
 				publicDDBArea.setEnabled(false);
 				publicDDBCheckBox.setEnabled(false);
-				// TODO BEG
-				licenceDropDown.setEnabled(false);
 			}
 		});
 		
@@ -3688,13 +3651,9 @@ public class Gui extends JFrame{
 		if (publicRights.getAllowPublication()) {
 			publicDDBArea.setEnabled(true);
 			publicDDBCheckBox.setEnabled(true);
-			// TODO BEG
-			licenceDropDown.setEnabled(true);
 		} else {
 			publicDDBArea.setEnabled(false);
 			publicDDBCheckBox.setEnabled(false);
-			// TODO BEG
-			licenceDropDown.setEnabled(false);
 		}
 		
 		publicNoTempRestrictionRadioButton.setSelected(true);
