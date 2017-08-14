@@ -7,7 +7,7 @@
 		
  	<r:require modules="periodicalupdater, jqueryui"/>
  	<jqui:resources/>
-		<r:script>
+		<g:javascript>
 			var order = "desc";
 			var sort = "created";
 			$(function() {
@@ -26,13 +26,12 @@
 					}
 				}
 			);
-		</r:script>
+		</g:javascript>
 	</head>
 	<body>
 		<a href="#list-formatMapping" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div class="nav" role="navigation">
 			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
 				<li><a class="listl" href="${createLink(uri: '/cbtalk/index')}"><g:message message="zurück zur Administrationsseite"/></a></li>
 			</ul>
 		</div><br>

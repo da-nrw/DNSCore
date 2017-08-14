@@ -5,7 +5,7 @@
     <title>Administrative Funktionen</title>         
   </head>
   <r:require modules="periodicalupdater, jqueryui"/>
-		<r:script>
+		<g:javascript>
 			$(function() {
 				$("#legend").accordion({ collapsible: true, active: false, autoHeight: false });
 			});
@@ -23,19 +23,8 @@
 					}
 				}
 			);
-		</r:script>
+		</g:javascript>
   <body>
-  <div class="nav" role="navigation">
-			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><a class="list" href="${createLink(controller: 'conversionPolicies', action: 'index')}">Conversion Policies</a></li>
-				<li><a class="list" href="${createLink(controller: 'user', action: 'index')}">Users</a></li>
-				<li><a class="list" href="${createLink(controller: 'role', action: 'index')}">Roles</a></li>
-				<li><a class="list" href="${createLink(controller: 'userRole', action: 'index')}">UserRoles</a></li>
-				<li><a class="list" href="${createLink(controller: 'PreservationSystem', action: 'index')}">PreservationSystem</a></li>
-				<li><a class="list" href="${createLink(controller: 'formatMapping', action: 'map')}">Format-Mapping</a></li>
-			</ul>
-		</div>
     <div class="body">
       <h1>CbTalk</h1>
       <g:if test="${flash.message}">

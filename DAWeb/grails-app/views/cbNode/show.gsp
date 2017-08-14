@@ -11,7 +11,6 @@
 		<a href="#show-cbNode" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div class="nav" role="navigation">
 			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
 				<g:if test="${params.sysid}" >
  					<li><g:link class="show" controller="SystemEvent" action="show" id="${params.sysid}">SystemEvent anzeigen</g:link></li>
 				</g:if>

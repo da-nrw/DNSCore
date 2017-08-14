@@ -7,7 +7,6 @@
 <body>
 	<div class="nav" role="navigation">
 		<ul>
-			<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
 			<li><a class="list" href="<g:createLink controller="info" action="index" />">REST Funktionen</a></li>
 		</ul>
 	</div>
@@ -25,7 +24,7 @@
 				<span class="property-value"><li>Als Antwort erhalten Sie ein maschinenlesbares Ergebnis (JSON) über die Erstellung eines Abfragevorgangs<br></li>
 				</span>
 			</ul>
-			<r:script>
+			<g:javascript>
 			$('form').submit(function(e) {
 				 e.preventDefault();
 			    var identifier = $('#identifier').val();
@@ -49,7 +48,7 @@
 						}
 			   });
 			});
-			</r:script>
+			</g:javascript>
 			<form method="POST" action="">
 				Identifier:<input id="identifier" name="identifier" type="text" value="">
 				<input type="submit" value="Als JSON senden (testweise)" class="button"/> 

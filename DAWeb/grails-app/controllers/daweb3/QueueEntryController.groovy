@@ -25,27 +25,27 @@ package daweb3
  * @Author Jens Peters
  * @Author Sebastian Cuy 
  */
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
 import grails.plugin.springsecurity.annotation.Secured
-import org.hibernate.criterion.CriteriaSpecification;
-
-import org.springframework.aop.TrueClassFilter;
-import org.springframework.dao.DataIntegrityViolationException
+//import org.hibernate.criterion.CriteriaSpecification;
+//
+//import org.springframework.aop.TrueClassFilter;
+//import org.springframework.dao.DataIntegrityViolationException
 
 class QueueEntryController {
-
 	
-	def springSecurityService
+	static navigationScope = 'admin'
+	
+	def springSecurityService 
 	def cberrorService
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 	static QueueUtils que = new QueueUtils();
-	
-    def index() {
+   
+	 def index() {
         redirect(action: "list", params: params)
     }
 
     def list() {
-		
 		def contractorList
 		def cbNodeList = CbNode.list()
 		User user = springSecurityService.currentUser
@@ -160,6 +160,8 @@ class QueueEntryController {
 	 * Generates detailed view for one item (SIP) in workflow
 	 */
     def show() {
+		
+		print("QueEntryController: show")
         def queueEntryInstance = QueueEntry.get(params.id)
         if (!queueEntryInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'queueEntry.label', default: 'QueueEntry'), params.id])
@@ -181,6 +183,8 @@ class QueueEntryController {
 	 */
 	@Secured(['ROLE_NODEADMIN'])
 	def queueRetry() {
+		
+		print("QueEntryController: queueEntry")
 		def queueEntryInstance = QueueEntry.get(params.id)
 		if (queueEntryInstance) {
 			def status = queueEntryInstance.getStatus()
@@ -202,6 +206,8 @@ class QueueEntryController {
 	 */
 	@Secured(['ROLE_NODEADMIN'])
 	def queueRetryAll() {
+		
+		print("QueEntryController: queueRetryAll")
 		
 				def modifyIds = params.list("modifyIds")
 				def msg = ""
@@ -231,6 +237,9 @@ class QueueEntryController {
 	 */
 	@Secured(['ROLE_NODEADMIN'])
 	def queueRecover() {
+		
+		print("QueEntryController: queueRecover")
+		
 		try {
 			def res = que.modifyJob(params.id, "600")
 			flash.message = "Paket zurückgesetzt! " + res 
@@ -246,6 +255,9 @@ class QueueEntryController {
 	 */
 	@Secured(['ROLE_NODEADMIN'])
 	def queueRecoverAll() {
+		
+		print("QueEntryController: queueRecoverAll")
+		
 		try {
 			def modifyIds = params.list("modifyIds");
 					def msg = ""
@@ -267,6 +279,9 @@ class QueueEntryController {
 	 */
 	@Secured(['ROLE_NODEADMIN'])
 	def queueDelete() {
+		
+		print("QueEntryController: queueDelete")
+		
 		try {
 			def res = que.modifyJob(params.id, "800")
 			flash.message = "Paket zur Löschung vorgesehen! " + res
@@ -282,6 +297,9 @@ class QueueEntryController {
 	 */
 	@Secured(['ROLE_NODEADMIN'])
 	def queueDeleteAll() {
+		
+		print("QueEntryController: queueDeleteAll")
+		
 		try {
 			
 			def modifyIds = params.list("modifyIds")
@@ -306,6 +324,9 @@ class QueueEntryController {
 	 * @return
 	 */
 	def listRequests () {
+		
+		print("QueEntryController: listRequest")
+		
 		User user = springSecurityService.currentUser
 		def queueEntries
 		def admin = 0;
@@ -330,6 +351,8 @@ class QueueEntryController {
 	 */
 	def performRequestYes() {
 		
+		print("QueEntryController: performRequestYes")
+		
 		try {
 			def res = que.modifyJob(params.id, "640", "YES")
 			flash.message = "Antwort Ja! " + res
@@ -345,6 +368,8 @@ class QueueEntryController {
 	 * Applies status and functionality to answer with yes on migration requests
 	 */
 	def performRequestNo() {
+		
+		print("QueEntryController: performRequestNo")
 		try {
 			def res = que.modifyJob(params.id, "640", "NO")
 			flash.message = "Antwort Nein! " + res

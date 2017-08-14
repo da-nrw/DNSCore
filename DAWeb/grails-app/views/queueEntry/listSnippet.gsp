@@ -1,13 +1,13 @@
-<script type="text/javascript"><g:if test="${ periodical }">
+<script type="text/javascript">
+	<g:if test="${ periodical }">
 			// comment out next line to stop periodical updater on page load.		
 			$( document ).ready(
 					function() {
 		//			startUpdater()
 					});
-			</g:if>
+	</g:if>
 </script>
-<div style="overflow:auto; height: 600px">
-
+<div style="overflow:auto; height: float; margin-top: 10px">
 <table>
 	<thead>
 		<tr>

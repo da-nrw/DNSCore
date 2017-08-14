@@ -1,6 +1,7 @@
-package daweb3
-import java.text.SimpleDateFormat;
+package daweb3 
 
+import java.text.DateFormat
+import java.text.SimpleDateFormat;
 
 /*
  DA-NRW Software Suite | ContentBroker
@@ -34,7 +35,7 @@ class Object {
     }
 	
 	static hasMany = [packages: Package]
-    
+	
     static mapping = {
 		table 'objects'
 		version false
@@ -43,7 +44,8 @@ class Object {
 		packages joinTable: [key: 'objects_data_pk', column: 'packages_id']
 		createdAt column: 'created_at'
 		modifiedAt column: 'modified_at'
-    }	
+    }
+		
 	int id
 	String urn
 	String identifier
@@ -64,7 +66,6 @@ class Object {
 	String most_recent_formats;
 	String most_recent_secondary_attributes
 	Boolean ddb_exclusion
-	
 	
 	String getIdAsString() {
 		return id.toString();
@@ -88,9 +89,9 @@ class Object {
 	def getPublicPresLink() {
 		
 		if (identifier!=null && identifier!="" && identifier!="NULL") {
-			def grailsApplication = new Object().domainClass.grailsApplication
-			def ctx = grailsApplication.mainContext
-			def config = grailsApplication.config
+			def grailsAppl =  new ObjectController().grailsApplication //.getDomainClass("Object").grailsAppl
+			def ctx = grailsAppl.mainContext
+			def config = grailsAppl.config
 			
 			def preslink = config.fedora.urlPrefix + "danrw:"+ identifier
 			return preslink
@@ -100,7 +101,7 @@ class Object {
 	def getInstPresLink() {
 		
 		if (identifier!=null && identifier!="" && identifier!="NULL") {
-			def grailsApplication = new Object().domainClass.grailsApplication
+			def grailsApplication = new ObjectController().grailsApplication
 			def ctx = grailsApplication.mainContext
 			def config = grailsApplication.config
 			
@@ -167,13 +168,13 @@ class Object {
 	}
 	
 	static Date convertDateIntoDate(String sDate) {
-
-		if (sDate!=null && sDate!="") {
+		if (sDate!=null && sDate!="") { 
 		try {
-				SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss")
+				SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm")
 				Date dt = df.parse(sDate)
 				return dt
 			} catch (Exception ex) { 
+				println ("convertDateIntoDate: " + ex);
 				return null;
 			}
 		}
@@ -181,7 +182,6 @@ class Object {
 	}
 
 	static String convertDateIntoStringDate(String sDate) {
-
 		if (sDate!=null && sDate!="") {
 		try {
 				SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss")
@@ -191,6 +191,7 @@ class Object {
 				return null;
 			}
 		}
+		
 		return null;
 	}
 }

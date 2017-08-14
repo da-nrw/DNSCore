@@ -3,7 +3,7 @@
 	<title>Bericht verarbeiten</title>
 	<meta name="layout" content="main">
 	 <r:require modules="periodicalupdater, jqueryui"/>
-		<r:script>
+		<g:javascript>
 			$(function() {
 				$("#legend").accordion({ collapsible: true, active: false, autoHeight: false });
 			});
@@ -31,17 +31,12 @@
 					}
 				}
 			);
-		</r:script>
+		</g:javascript>
 </head>
 
 <g:if test="${msg}">
 			<div class="message" role="status">${msg}</div>
 			</g:if>
-		<div class="nav" role="navigation">
-			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-			</ul>
-		</div>
 	<div id="items">	
 <h2>Bericht hochladen</h2>
 <g:form controller="report" method="POST" action="save" enctype="multipart/form-data">

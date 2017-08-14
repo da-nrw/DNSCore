@@ -7,7 +7,7 @@
 		<title>Status der Verarbeitung - Admin</title>
 		<r:require modules="periodicalupdater, jqueryui"/>
 		 <jqui:resources/>
-		<r:script>
+		<g:javascript>
 			var order = "desc";
 			var sort = "createdAt";
 			$(function() {
@@ -57,18 +57,12 @@
 				return false;
 			}
 			
-		</r:script>
+		</g:javascript>
 	</head>
 	<body>
 	
 
 		<a href="#list-queueEntry" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		
-		<div class="nav" role="navigation">
-			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-			</ul>
-		</div>
 		
 		<h1>Bearbeitungsübersicht</h1>		
 		<g:if test="${  !params.search }">

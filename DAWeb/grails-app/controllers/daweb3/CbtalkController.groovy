@@ -21,7 +21,7 @@ package daweb3
 /**
  * @Author Jens Peters
  */
-import de.uzk.hki.da.core.ActionDescription
+//import de.uzk.hki.da.core.ActionDescription
 import javax.jms.ObjectMessage
 import javax.jms.TextMessage
 
@@ -91,8 +91,5 @@ class CbtalkController {
 		redirect(action: "index")
 		
 	} 
-	
-	
-		
 		
 }

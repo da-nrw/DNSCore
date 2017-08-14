@@ -1,4 +1,3 @@
-
 <%@ page import="daweb3.Object" %>
 <!doctype html>
 <html>
@@ -43,13 +42,6 @@
 			}
 		</script>
 	
-		<a href="#show-object" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
-			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><a class="list" href="<g:createLink controller="object" action="list" />">Liste der AIP</a></li>
-			</ul>
-		</div>
 		<div id="show-object" class="content scaffold-show" role="main">
 			<h1>Objektdetail</h1>
 			<g:if test="${flash.message}">
@@ -100,16 +92,14 @@
 				<li class="fieldcontain">
 					<span id="packages-label" class="property-label">Status:</span>
 					<g:if test="${statusCode == 1}">
-									<g:img style="width:16px; height:16px" uri="/images/icons/warning32.png"/>
-								</g:if>
-								<g:elseif test="${statusCode == 2}">
-									<g:img style="width:16px; height:16px" uri="/images/icons/clock32.png"/>
-								</g:elseif>
-								<g:elseif test="${statusCode == 0}">
-									<g:img style="width:16px; height:16px" uri="/images/icons/check32.png"/>
-								</g:elseif>
-							
-					
+						<asset:image width="16px" height="16px" src="/icons/warning32.png"/>
+					</g:if>
+					<g:elseif test="${statusCode == 2}">
+						<asset:image  width="16px" height="16px" src="/icons/clock32.png"/>
+					</g:elseif>
+					<g:elseif test="${statusCode == 0}">
+						<asset:image  width="16px" height="16px" src="/icons/check32.png"/>
+					</g:elseif>
 				</li>
 				</g:if>			
 				<g:if test="${objectInstance?.urn}">

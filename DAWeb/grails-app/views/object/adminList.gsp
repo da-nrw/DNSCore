@@ -6,7 +6,7 @@
 		<g:set var="entityName" value="${message(code: 'object.label', default: 'Object')}" />
 		<title>DA-NRW Objekte</title>
 		<r:require module="messagebox"/>
-		<r:script>
+		<g:javascript>
 			$(function() {
 				$("#filter").accordion({ collapsible: true, active: false });
 			});
@@ -19,15 +19,10 @@
 					type: type, message: result.msg
 				});
 			}
-		</r:script>
+		</g:javascript>
 	</head>
 	<body>
 		<a href="#list-object" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
-			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-			</ul>
-		</div>
 		<div id="filter" style="margin: 0.8em 0 0.3em">
 			<h1><a href="#">Filter
 				<g:if test="${params.search}"><br>

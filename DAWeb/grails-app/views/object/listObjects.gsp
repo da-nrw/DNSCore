@@ -6,21 +6,8 @@
 		<g:set var="entityName" value="${message(code: 'object.label', default: 'Object')}" />
 		<title>Liste der Objekte</title>
 	</head>
-<%--	<r:script>--%>
-<%--		function toggle(source) {--%>
-<%--		  checkboxes = document.getElementsByName('konvertieren');--%>
-<%--		  for(var i in checkboxes) {--%>
-<%--		    checkboxes[i].checked = source.checked;--%>
-<%--			}--%>
-<%--		}--%>
-<%--	</r:script>--%>
 	<body>
 		<a href="#listFormat-queueEntry" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
-			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-			</ul>
-		</div>
 		 <div id="list-queueEntry" class="content scaffold-list" role="main">			
 			<table>
 			    <g:form controller="object" action="listObjects">
@@ -42,7 +29,6 @@
              <table>
 				 <thead>							
 					<tr>
-<%--					   <td><input type="checkbox"  onClick="toggle(this)"/>  Alle an-/abwählen</span><br></td>--%>
   					   <g:sortableColumn property="identifier" title="${message(code: 'object.identifier', default: 'Identifier')}" />
 					   <g:sortableColumn property="urn" title="${message(code: 'object.urn.label', default: 'Urn')}"  />	
 					   <g:sortableColumn property="origName" title="${message(code: 'object.origName.label', default: 'Orig Name')}" />
@@ -55,7 +41,6 @@
 				 <tbody>
         		    <g:each in="${objects}" var="object" status="i">
         		       <tr class="${ ((i % 2) == 0 ? 'odd' : 'even') }">
-<%--        		            <td><g:checkBox name="konvertieren"/></td>--%>
         		        	<td>${object.identifier}</td>
 							<td>${object.getFormattedUrn()}</td>
         		    	    <td>${object.origName}</td>
@@ -66,7 +51,6 @@
         		      </tr>
         		    </g:each>
         		    <tr><td>${sqlLeer}</td></tr>
-<%--        		    <tr><td><g:actionSubmit value="scannen und konvertieren" action="scanAndConvert" /></td></tr>--%>
              	</tbody>
              </table>
 		   </div>

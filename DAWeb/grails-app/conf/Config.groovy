@@ -73,6 +73,7 @@ environments {
 }
 
 grails.plugins.activemq.active=false
+grails.plugins.activemq.port=4455
 environments {
 	test {
 		// set per-environment irods config in classpath file!
@@ -84,37 +85,44 @@ environments {
 	}
 	development {
 		// running this on vm3 would cause a lot of catalina.out stuff!!		
-		//log4j = {
-		//		debug   'grails.app'
-		//}
+		log4j = {
+				debug   'grails.app',
+						'grails.plugin.springsecurity',
+						'grails.app.controllers.grails.plugin.springsecurity',
+						'grails.app.services.grails.plugin.springsecurity',
+						'org.pac4j',
+						'org.springframework.security'
+		}
 		grails.config.locations = ["file:${userHome}/.grails/${appName}_properties.groovy"]		
 	}
 }
 
-// log4j configuration
-log4j = {
-
-    error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
-           'org.codehaus.groovy.grails.web.pages', //  GSP
-           'org.codehaus.groovy.grails.web.sitemesh', //  layouts
-           'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-           'org.codehaus.groovy.grails.web.mapping', // URL mapping
-           'org.codehaus.groovy.grails.commons', // core / classloading
-           'org.codehaus.groovy.grails.plugins', // plugins
-           'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
-           'org.springframework',
-           'org.hibernate',
-           'net.sf.ehcache.hibernate'
-	
-	warn   'grails.app'	
-}
+//// log4j configuration
+//log4j = {
+//
+//    error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
+//           'org.codehaus.groovy.grails.web.pages', //  GSP
+//           'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+//           'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+//           'org.codehaus.groovy.grails.web.mapping', // URL mapping
+//           'org.codehaus.groovy.grails.commons', // core / classloading
+//           'org.codehaus.groovy.grails.plugins', // plugins
+//           'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
+//           'org.springframework',
+//           'org.hibernate',
+//           'net.sf.ehcache.hibernate'
+//	
+//	warn   'grails.app'	
+//}
 
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'daweb3.User'
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'daweb3.UserRole'
 grails.plugin.springsecurity.authority.className = 'daweb3.Role'
 // if all components are secured true should be the default
 grails.plugin.springsecurity.rejectIfNoRule = true
+
 grails.plugin.springsecurity.fii.rejectPublicInvocations = false
+
 grails.plugin.springsecurity.useSecurityEventListener = true
 grails.plugin.springsecurity.successHandler.defaultTargetUrl = '/'
 // Basic auth is needed for REST style interface to DNS
@@ -127,38 +135,38 @@ grails.plugin.springsecurity.filterChain.chainMap = [
 grails.plugin.springsecurity.onAbstractAuthenticationFailureEvent = { e, appCtx ->
    println "\nERROR auth failed for user $e.authentication.name: $e.exception.message\n"
 }
-grails.plugin.springsecurity.securityConfigType = "InterceptUrlMap"
-grails.plugin.springsecurity.interceptUrlMap = [
-	'/':                  ['ROLE_CONTRACTOR'],
-	'/index':             ['ROLE_CONTRACTOR'],
-	'/index.gsp':         ['ROLE_CONTRACTOR'],
-	'/**/js/**':          ['permitAll'],
-	'/**/css/**':         ['permitAll'],
-	'/**/images/**':      ['permitAll'],
-	'/**/favicon.ico':    ['permitAll'],
-	'/login/**':          ['permitAll'],
-	'/logout/**':         ['permitAll'],
-	'/contractor/**':         ['permitAll'],
-	'/queueEntry/**':     ['ROLE_CONTRACTOR'],
-	'/automatedRetrieval/**':     ['ROLE_CONTRACTOR'],
-	'/object/**':    	  ['ROLE_CONTRACTOR'],
-	'/incoming/**':       ['ROLE_CONTRACTOR'],
-	'/outgoing/**':       ['ROLE_CONTRACTOR'],
-	'/status/**':       ['ROLE_CONTRACTOR'],
-	'/package/**':       ['ROLE_CONTRACTOR'],
-	'/info/**':       ['ROLE_CONTRACTOR'],
-	'/conversionPolicies/**':       ['ROLE_CONTRACTOR'],
-	'/cbtalk/**':       ['ROLE_NODEADMIN'],
-	'/user/**':         ['ROLE_PSADMIN'],
-	'/userRole/**':         ['ROLE_PSADMIN'],
-	'/role/**':         ['ROLE_PSADMIN'],
-	'/preservationSystem/**':         ['ROLE_PSADMIN'],
-	'/formatMapping/**': ['ROLE_PSADMIN'],
-	'/cbNode/**':         ['ROLE_PSADMIN'],
-	'/report/**':         ['ROLE_CONTRACTOR'],
-	'/systemEvent/**':         ['ROLE_CONTRACTOR']
-	
- ]
+//grails.plugin.springsecurity.securityConfigType = "InterceptUrlMap"
+//grails.plugin.springsecurity.interceptUrlMap = [
+//	'/':                  ['ROLE_CONTRACTOR'],
+//	'/index':             ['ROLE_CONTRACTOR'],
+//	'/index.gsp':         ['ROLE_CONTRACTOR'],
+//	'/**/js/**':          ['permitAll'],
+//	'/**/css/**':         ['permitAll'],
+//	'/**/images/**':      ['permitAll'],
+//	'/**/favicon.ico':    ['permitAll'],
+//	'/login/**':          ['permitAll'],
+//	'/logout/**':         ['permitAll'],
+//	'/contractor/**':         ['permitAll'],
+//	'/queueEntry/**':     ['ROLE_CONTRACTOR'],
+//	'/automatedRetrieval/**':     ['ROLE_CONTRACTOR'],
+//	'/object/**':    	  ['ROLE_CONTRACTOR'],
+//	'/incoming/**':       ['ROLE_CONTRACTOR'],
+//	'/outgoing/**':       ['ROLE_CONTRACTOR'],
+//	'/status/**':       ['ROLE_CONTRACTOR'],
+//	'/package/**':       ['ROLE_CONTRACTOR'],
+//	'/info/**':       ['ROLE_CONTRACTOR'],
+//	'/conversionPolicies/**':       ['ROLE_CONTRACTOR'],
+//	'/cbtalk/**':       ['ROLE_NODEADMIN'],
+//	'/user/**':         ['ROLE_PSADMIN'],
+//	'/userRole/**':         ['ROLE_PSADMIN'],
+//	'/role/**':         ['ROLE_PSADMIN'],
+//	'/preservationSystem/**':         ['ROLE_PSADMIN'],
+//	'/formatMapping/**': ['ROLE_PSADMIN'],
+//	'/cbNode/**':         ['ROLE_PSADMIN'],
+//	'/report/**':         ['ROLE_CONTRACTOR'],
+//	'/systemEvent/**':         ['ROLE_CONTRACTOR']
+//	
+// ]
 
 jqueryDateTimePicker {
 	format {

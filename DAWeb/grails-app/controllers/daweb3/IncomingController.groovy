@@ -40,6 +40,7 @@ class IncomingController {
 		def baseDir;
 		def filelist = []
 		try {
+			
 			baseDir = new File(baseFolder)
 			if (!baseDir.exists()) {
 				msg = "Benutzerordner nicht gefunden"

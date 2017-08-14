@@ -7,7 +7,6 @@
 
 <div class="nav" role="navigation">
 	<ul>
-		<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
 		<li><a class="list" href="<g:createLink controller="info" action="index" />">REST Funktionen</a></li>
 	</ul>
 </div>

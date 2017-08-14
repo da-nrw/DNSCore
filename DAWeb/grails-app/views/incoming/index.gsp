@@ -43,11 +43,6 @@
 		<g:if test="${msg}">
 			<div class="message" role="status">${msg}</div>
 		</g:if>
-		<div class="nav" role="navigation">
-			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-			</ul>
-		</div><br>
 		<g:form controller="incoming" >
 			<div><input type="checkbox" name="waehlen" value="" id="waehlen" onClick="toggle(this)"/> Alle an-/abwählen</div><br>
 			<g:each in="${filelist}" var="currentFile" status="i">

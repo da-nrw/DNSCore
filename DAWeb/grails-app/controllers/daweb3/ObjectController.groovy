@@ -22,6 +22,7 @@ package daweb3
 
 
 import grails.converters.*
+import grails.core.GrailsApplication
 
 
 class ObjectController {
@@ -146,10 +147,13 @@ class ObjectController {
 				if (value!="") filterOn=1
 				like(key, "%" + value + "%")
 			}
-
+			
 			log.debug("Date as Strings " + params.searchDateStart + " and " + params.searchDateEnd)
-			def ds = daweb3.Object.convertDateIntoDate(params.searchDateStart)
-			def de = daweb3.Object.convertDateIntoDate(params.searchDateEnd)
+			
+//			def ds = daweb3.Object.convertDateIntoDate(params.searchDateStart)
+//			def de = daweb3.Object.convertDateIntoDate(params.searchDateEnd)
+			def ds = params.searchDateStart
+			def de = params.searchDateEnd
 
 			def st = "createdAt"; 
 			String searchDateType = params.searchDateType;
@@ -261,7 +265,7 @@ class ObjectController {
 		}
 		def urn = objectInstance.urn
 		urn = urn.replaceAll(~"\\+",":")
-		def sortedPackages = objectInstance.packages.sort{it.id}
+		def sortedPackages = objectInstance.packages.sort{ it.id }
 		def preslink = grailsApplication.config.fedora.urlPrefix +urn.replaceAll(~"urn:nbn:de:danrw-", "")
 		
 		/*
