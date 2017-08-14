@@ -1,0 +1,8 @@
+<!DOCTYPE hibernate-configuration SYSTEM
+  "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <mapping package="daweb3" />
+        <mapping class="daweb3.User" />
+    </session-factory>
+</hibernate-configuration>
