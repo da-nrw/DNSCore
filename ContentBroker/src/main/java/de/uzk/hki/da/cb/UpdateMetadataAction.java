@@ -178,16 +178,18 @@ public class UpdateMetadataAction extends AbstractAction {
 				}
 				
 				if(presMode && "METS".equals(packageType)&&o.getLicense_flag()==C.LICENSEFLAG_PREMIS){//append accessCondition-Element to PIP-Mets 
-						PremisLicense pLicense;
+					logger.debug("Insert License from Premis to Metadata file ");	
+					PremisLicense pLicense;
 						try {
 							MetsMetadataStructure mms = new MetsMetadataStructure(wa.dataPath(),metadataFile, documents);
 							pLicense = (new ObjectPremisXmlReader()).deserialize(wa.toFile(o.getLatest(C.PREMIS_XML))).getRights().getPremisLicense();
+							logger.debug("Recognized License from Premis: "+pLicense);
 							mms.appendAccessCondition(metadataFile, pLicense.getHref(), pLicense.getDisplayLabel(), pLicense.getText());
 						} catch (ParseException  e) {
 							logger.error("Exception: "+e);
 							e.printStackTrace();
 							throw new IOException(e);
-						}catch ( org.jdom.IllegalNameException e) {
+						}catch (IllegalArgumentException e) {
 							logger.error("Exception: "+e);
 							e.printStackTrace();
 							throw new IOException(e);

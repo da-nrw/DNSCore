@@ -42,9 +42,9 @@ public class ATIngestLicensedSip extends AcceptanceTest {
 	private static final String sipPublicMetsNoLicenseNoPublication = "PublicMetsNoLicenseNoPublication";
 	private static final String sipPublicMetsNoLicensePublication = "PublicMetsNoLicensePublication";
 	
-	private static final MetsLicense LICENSE_PREMIS = new MetsLicense("use and reproduction","CC-BY-SA-Lizenz (v4.0)", "https://creativecommons.org/licenses/by-sa/4.0/", "CC v4.0 International Lizenz: Namensnennung - Weitergabe unter gleichen Bedingungen");
-	private static final MetsLicense LICENSE_METS = new MetsLicense("use and reproduction","CC-BY-NC-SA-Lizenz (4.0)", "http://creativecommons.org/licenses/by-nc-sa/4.0", "cc-by-nc-sa_4.0");
-	private static final MetsLicense LICENSE_PUBLIC_METS = new MetsLicense("use and reproduction","Public Domain Mark 1.0", "http://creativecommons.org/publicdomain/mark/1.0/", "pdm");
+	private static final MetsLicense LICENSE_PREMIS = new MetsLicense("use and reproduction","https://creativecommons.org/licenses/by-sa/4.0/","CC-BY-SA-Lizenz (v4.0)",  "CC v4.0 International Lizenz: Namensnennung - Weitergabe unter gleichen Bedingungen");
+	private static final MetsLicense LICENSE_METS = new MetsLicense("use and reproduction","http://creativecommons.org/licenses/by-nc-sa/4.0","CC-BY-NC-SA-Lizenz (4.0)",  "cc-by-nc-sa_4.0");
+	private static final MetsLicense LICENSE_PUBLIC_METS = new MetsLicense("use and reproduction","http://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0",  "pdm");
 	
 	Path contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(),WorkArea.PIPS, WorkArea.PUBLIC, testContractor.getUsername());
 	private static Object object1;

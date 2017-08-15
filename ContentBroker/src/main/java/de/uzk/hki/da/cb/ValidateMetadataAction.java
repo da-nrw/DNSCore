@@ -144,7 +144,7 @@ public class ValidateMetadataAction extends AbstractAction {
 				new URL(premisObject.getRights().getPremisLicense().getHref());
 			}catch(MalformedURLException e){
 				throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
-						"Invalid Premis: publicationLicense-Element in Premis has not valid href attribute("+e.getMessage()+")");
+						"Invalide Lizenz: publicationLicense-Element in der Premis hat ein ungueltiges href-Attribut("+e.getMessage()+")");
 			}
 		}
 
@@ -153,19 +153,17 @@ public class ValidateMetadataAction extends AbstractAction {
 			List<DAFile> metsFiles = getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_METS);
 			MetsLicense licenseMetsFile =null;
 			MetsLicense licensePublicMetsFile = null;
-			for (DAFile f : metsFiles) {//over all mets-files (max 2)
+			for (DAFile f : metsFiles) {//over all mets-files (max 2), amount checked by previous actions
 				SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 				MetsParser mp = new MetsParser(builder.build(wa.toFile(f).getAbsolutePath()));
 				if(f.getRelative_path().equalsIgnoreCase(C.PUBLIC_METS)){
 					usePublicMets=true;
 					licensePublicMetsFile=mp.getLicenseForWholeMets();
 					hasPublicMetsLicense=(licensePublicMetsFile!=null);
-				}
-				else{
+				}else{
 					licenseMetsFile=mp.getLicenseForWholeMets();
 					hasMetsLicense=(licenseMetsFile!=null);
 				}
-				
 			}
 			
 			if(hasPublicMetsLicense){
@@ -173,14 +171,14 @@ public class ValidateMetadataAction extends AbstractAction {
 					new URL(licensePublicMetsFile.getHref());
 				}catch(MalformedURLException e){
 					throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
-							"Invalid License in "+C.PUBLIC_METS+": accessCondition-Element has not valid href attribute("+e.getMessage()+")");
+							"Invalide Lizenzangaben in "+C.PUBLIC_METS+": accessCondition-Element hat ein ungueltiges href-Attribut("+e.getMessage()+")");
 				}
 			}else if(!hasPublicMetsLicense && hasMetsLicense){
 				try{
 					new URL(licenseMetsFile.getHref());
 				}catch(MalformedURLException e){
 					throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
-							"Invalid License in mets metadata: accessCondition-Element has not valid href attribute("+e.getMessage()+")");
+							"Invalide Lizenzangaben in mets metadaten: accessCondition-Element hat ein ungueltiges href-Attribut("+e.getMessage()+")");
 				}
 			}
 			if ((licenseMetsFile!=null && !licenseMetsFile.equals(licensePublicMetsFile)) ||
@@ -188,6 +186,8 @@ public class ValidateMetadataAction extends AbstractAction {
 				logger.warn("Lizenzangaben in den METS-Metadaten sind unterschiedlich: e.g.:" + licenseMetsFile+" "	+ licensePublicMetsFile);
 		}
 		//check license compatibility
+		logger.debug("Detected license information wantPublication:"+wantPublication+", hasPremisLicense:"+hasPremisLicense+", hasMetsLicense:"+hasMetsLicense+", usePublicMets:"+usePublicMets+", hasPublicMetsLicense:"+hasPublicMetsLicense);
+		
 		if(usePublicMets && !hasPublicMetsLicense)
 			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
 					"Keine Lizenzangaben in der Public-METS-Metadatei vorhanden.");
@@ -199,6 +199,7 @@ public class ValidateMetadataAction extends AbstractAction {
 			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
 					"Keine Lizenzangaben für eine Publikation vorhanden.");
 		
+
 		if(hasPremisLicense)
 			o.setLicense_flag(C.LICENSEFLAG_PREMIS);
 		else if(hasMetsLicense && !usePublicMets)
@@ -209,6 +210,7 @@ public class ValidateMetadataAction extends AbstractAction {
 			o.setLicense_flag(C.LICENSEFLAG_NO_LICENSE);
 		else
 			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,"Invalide Lizenzangaben.");
+		logger.debug("Object License_flag is setted to: "+o.getLicense_flag());
 	}
 
 	public static Object parsePremisToMetadata(File premis) throws IOException {

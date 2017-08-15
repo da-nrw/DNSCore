@@ -81,7 +81,7 @@ public class MetsParser{
 	
 	/**
 	 * 
-	 * Method search in each dmdSec for license and return one license instance only if each dmdSec contains same license, otherwise method causes exceptions.
+	 * Method search in each dmdSec for license and return one license instance, only if each dmdSec contains same license, otherwise method causes exceptions.
 	 * @return
 	 */
 	public MetsLicense getLicenseForWholeMets() {
@@ -116,7 +116,7 @@ public class MetsParser{
 		try {
 			accessCondition = getModsXmlData(dmdSec).getChildren("accessCondition", C.MODS_NS);
 			if(accessCondition.size()>1)
-				throw new RuntimeException("dmdSec contains multiple licenses");
+				throw new RuntimeException("dmdSec contains multiple licenses, unsuported");
 			if(accessCondition.size()==1){
 				metsLicense=new MetsLicense();
 				metsLicense.setText(accessCondition.get(0).getValue());
@@ -852,6 +852,7 @@ public class MetsParser{
 		
 		try {
 			Element modsXmlData = getModsXmlData(dmdSec);
+			//gibt nur das erste lizenz element zurueck
 			Element accessCondition = modsXmlData.getChild("accessCondition", C.MODS_NS);
 			
 			text=accessCondition.getText();
@@ -859,6 +860,7 @@ public class MetsParser{
 			displayLabel=accessCondition.getAttributeValue("displayLabel");
 			
 			if(link==null || link.trim().isEmpty()){			
+				logger.error("Attribute accessCondition.href does not exist!!!");
 				retList.add(displayLabel+this.titleSparator+text);
 			}else{
 				retList.add(link);
@@ -878,7 +880,7 @@ public class MetsParser{
 	 * @param text
 	 * @return
 	 */
-	public Element generateAccessCondition(String href, String displayLabel, String text) {
+	public static Element generateAccessCondition(String href, String displayLabel, String text) {
 		Element newAccessCondition=new Element("accessCondition",C.MODS_NS);
 		newAccessCondition.setAttribute("type", "use and reproduction");
 		newAccessCondition.setAttribute(new Attribute("href", href,C.XLINK_NS));

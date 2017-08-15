@@ -138,13 +138,16 @@ public class SIPBuilder {
     
     	Cli cli = new Cli(confFolderPath, dataFolderPath, args);
     	int exitCode = 0;
-    	if(Arrays.asList(args).contains("-onlyAddLicense")){
+    	/**
+    	 * Hidden Developer Feature: Ergänzung älterer SIPs um eine default Lizenzangabe in Premis.
+    	 */
+    	if(false && Arrays.asList(args).contains("-onlyAddLicense")){
     		//Only to add a default license to existing SIP(e.g. old TestSIPs)
     		//StartSipBuilder.sh -onlyAddLicense -source=".../OLDSIPFILE.tgz" -destination=".../DIRECTORYForLicensedSIPs/"
     		exitCode = cli.startAppendLicense();
-    	}else{
+    	}else
     		exitCode = cli.start();
-    	}
+    	
     	   	
     	if (exitCode < 0)
     		exitCode = 0;

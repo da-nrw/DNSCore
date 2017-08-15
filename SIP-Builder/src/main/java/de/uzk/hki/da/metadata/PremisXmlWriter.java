@@ -164,6 +164,13 @@ public class PremisXmlWriter {
 	
 	}
 	
+	/**
+	 * Convert CCLicense to XMLElement and write it at specific identation-Level
+	 * 
+	 * @param license
+	 * @param level
+	 * @throws XMLStreamException
+	 */
 	private void generatePublicationLicenseElement(ContractRights.CCLicense license, int level)throws XMLStreamException {		
 		createOpenElement("publicationLicense", level);
 	  		createAttribute("href", license.getHref());

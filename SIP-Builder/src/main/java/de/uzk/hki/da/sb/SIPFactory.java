@@ -397,7 +397,7 @@ public class SIPFactory {
 	}
 	
 	private Feedback checkMetadataForLicense(int jobId, File sourceFolder, File packageFolder) {
-		boolean guiLicenseBool=contractRights.getCclincense()!=null;
+		boolean premisLicenseBool=contractRights.getCclincense()!=null;
 		boolean metsLicenseBool;
 		boolean publicationBool=contractRights.getPublicRights().getAllowPublication();
 		
@@ -414,9 +414,7 @@ public class SIPFactory {
 				for (File f : metadataFileWithType.keySet())
 					if (metadataFileWithType.get(f).equals(C.CB_PACKAGETYPE_METS))
 						metsFiles.add(f);
-				if (metsFiles.size() > 2)// assuming not more as usual mets and publicMets is allowed
-					return Feedback.INVALID_LICENSE_DATA;
-				for (File f : metsFiles) {
+				for (File f : metsFiles) {// assuming more as usual mets is allowed (check is done by FormatDetectionService) e.g. publicMets for testcase-creation
 					SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 					Document metsDoc = builder.build(f);
 					MetsParser mp = new MetsParser(metsDoc);
@@ -436,10 +434,10 @@ public class SIPFactory {
 		}
 		//publicationBool=false;
 		//guiLicenseBool=false;
-		if(guiLicenseBool && metsLicenseBool)
+		if(premisLicenseBool && metsLicenseBool)
 			return Feedback.INVALID_LICENSE_DATA;
 		
-		if(publicationBool && !guiLicenseBool && !metsLicenseBool)
+		if(publicationBool && !premisLicenseBool && !metsLicenseBool)
 			return Feedback.INVALID_LICENSE_DATA;
 		
 		return Feedback.SUCCESS;

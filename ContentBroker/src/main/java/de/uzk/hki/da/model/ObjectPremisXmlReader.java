@@ -389,6 +389,7 @@ public class ObjectPremisXmlReader{
 				Attribute displayLabel=licenseEl.getAttribute("displayLabel");
 				pl.setDisplayLabel(displayLabel!=null?displayLabel.getValue().trim():"");
 				pl.setText(licenseEl.getValue()!=null?licenseEl.getValue().trim():"");
+				logger.debug("Recognized PremisLicense: " + pl);
 				right.setPremisLicense(pl);
 			}
 			

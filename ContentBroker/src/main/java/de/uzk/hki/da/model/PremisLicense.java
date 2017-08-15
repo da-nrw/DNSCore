@@ -23,4 +23,10 @@ public class PremisLicense {
 	public void setHref(String href) {
 		this.href = href;
 	}
+	@Override
+	public String toString() {
+		return "PremisLicense [href=" + href + ", displayLabel=" + displayLabel + ", text=" + text + "]";
+	}
+	
+	
 }

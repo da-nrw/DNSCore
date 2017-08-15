@@ -21,35 +21,15 @@ package de.uzk.hki.da.cli;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.Reader;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.ZipEntry;
 
 import javax.xml.parsers.SAXParserFactory;
 
-import nu.xom.Builder;
-import nu.xom.Document;
-import nu.xom.Element;
-import nu.xom.Elements;
-
-import org.apache.commons.compress.archivers.ArchiveException;
-import org.apache.commons.compress.archivers.ArchiveStreamFactory;
-import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
-import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.apache.commons.compress.archivers.zip.ZipFile;
-import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
-import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.xml.sax.ErrorHandler;
@@ -58,10 +38,8 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
 import de.uzk.hki.da.main.SIPBuilder;
-import de.uzk.hki.da.metadata.ContractRights;
 import de.uzk.hki.da.sb.Feedback;
 import de.uzk.hki.da.sb.MessageWriter;
-import de.uzk.hki.da.sb.ProgressManager;
 import de.uzk.hki.da.sb.SIPFactory;
 import de.uzk.hki.da.sb.UserInputValidator;
 import de.uzk.hki.da.utils.C;
@@ -70,10 +48,10 @@ import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.SimpleLicenseAppender;
 import de.uzk.hki.da.utils.StringUtilities;
 import de.uzk.hki.da.utils.Utilities;
-import gov.loc.repository.bagit.Bag;
-import gov.loc.repository.bagit.BagFactory;
-import gov.loc.repository.bagit.PreBag;
-import gov.loc.repository.bagit.utilities.SimpleResult;
+import nu.xom.Builder;
+import nu.xom.Document;
+import nu.xom.Element;
+import nu.xom.Elements;
 
 /**
  * Runs the SIP-Builder in CLI mode

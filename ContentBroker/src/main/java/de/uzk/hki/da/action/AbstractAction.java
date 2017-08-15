@@ -559,13 +559,14 @@ public abstract class AbstractAction implements Runnable {
 	}
 	
 	/**
-	 * License validation can be ignored if specific flag in preservationSystem is set and if the current contractor belongs to test contractor amount.
+	 * License validation can be ignored if specific flag in preservationSystem is set
 	 * Primary use case are JUnit-/Acceptance-Tests.
 	 * 
 	 * @return
 	 */
 	public boolean canIgnoreLicenseValidation(){
-		return preservationSystem.getLicenseValidationFlag()==C.PRESERVATIONSYS_LICENSE_VALIDATION_NO && testContractors.contains(o.getContractor().getShort_name());
+		return preservationSystem.getLicenseValidationFlag()==C.PRESERVATIONSYS_LICENSE_VALIDATION_NO ;
+				//&& testContractors.contains(o.getContractor().getShort_name());
 	}
 	
 	

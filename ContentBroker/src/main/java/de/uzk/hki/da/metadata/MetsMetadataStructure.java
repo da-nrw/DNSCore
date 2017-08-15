@@ -52,7 +52,7 @@ import de.uzk.hki.da.utils.XMLUtils;
 public class MetsMetadataStructure extends MetadataStructure {
 
 	/** The logger. */
-	public Logger logger = LoggerFactory
+	public static Logger logger = LoggerFactory
 			.getLogger(MetsMetadataStructure.class);
 	
 	private File metsFile;
@@ -174,7 +174,7 @@ public class MetsMetadataStructure extends MetadataStructure {
 	 */
 	public void appendAccessCondition(File targetMetsFile, String licenseHref, String displayLabel, String text) throws IOException, JDOMException {
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();	
-		logger.debug(":::"+workPath+":::"+targetMetsFile.getPath());
+		
 		FileInputStream fileInputStream = new FileInputStream(Path.makeFile(workPath,targetMetsFile.getPath()));
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
 		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
@@ -183,11 +183,12 @@ public class MetsMetadataStructure extends MetadataStructure {
 		Document metsDoc = builder.build(is);
 		
 		List<Element> dmdSections= metsDoc.getRootElement().getChildren("dmdSec", C.METS_NS);
-		Element newAccessConditionE=metsParser.generateAccessCondition(licenseHref,displayLabel,text);
 		
 		for (int i=0; i<dmdSections.size(); i++) { 
+			Element newAccessConditionE=MetsParser.generateAccessCondition(licenseHref,displayLabel,text);
+			logger.debug("Append to Mets new LicenseElement: "+newAccessConditionE.toString());
 			Element dmdSecElement = (Element) dmdSections.get(i);
-			Element modsXmlData = metsParser.getModsXmlData(dmdSecElement);
+			Element modsXmlData = MetsParser.getModsXmlData(dmdSecElement);
 			modsXmlData.addContent(newAccessConditionE);
 		}
 		fileInputStream.close();
@@ -198,6 +199,7 @@ public class MetsMetadataStructure extends MetadataStructure {
 	}
 	
 	private void writeDocumentToFile(Document metsDoc,File metsFile) throws IOException{
+		logger.debug("Write Mets Document : "+metsFile.getAbsolutePath());
 		XMLOutputter outputter = new XMLOutputter();
 		outputter.setFormat(Format.getPrettyFormat());
 		FileWriter fw=new FileWriter(metsFile);
