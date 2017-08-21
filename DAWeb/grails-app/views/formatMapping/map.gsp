@@ -28,16 +28,13 @@
 		</g:javascript>
 	</head>
 	<body>
-		<a href="#list-formatMapping" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
-			<ul>
-				<li><a class="listl" href="${createLink(uri: '/cbtalk/index')}"><g:message message="zurück zur Administrationsseite"/></a></li>
-			</ul>
-		</div> 
-		<h1 class="page-header">Format-Mapping</h1> 
-		<!-- This div is updated through the periodical updater -->
-		<div class="list" id="entry-list">
-			<g:include action="mapSnippet" />
+		<div id="page-body">
+			<a href="#list-formatMapping" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
+			<h1 class="page-header">Format-Mapping</h1> 
+			<!-- This div is updated through the periodical updater -->
+			<div class="list" id="entry-list">
+				<g:include action="mapSnippet" />
+			</div>
 		</div>
   </body>
 </html>

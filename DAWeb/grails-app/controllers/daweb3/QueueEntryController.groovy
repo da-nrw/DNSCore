@@ -27,10 +27,6 @@ package daweb3
  */
 //import java.util.logging.Logger;
 import grails.plugin.springsecurity.annotation.Secured
-//import org.hibernate.criterion.CriteriaSpecification;
-//
-//import org.springframework.aop.TrueClassFilter;
-//import org.springframework.dao.DataIntegrityViolationException
 
 class QueueEntryController {
 	
@@ -61,11 +57,18 @@ class QueueEntryController {
 		}
 		
 		[contractorList:contractorList,
-		cbNodeList:cbNodeList]
+		cbNodeList:cbNodeList,
+		user:user]
+		
 		// different List View per Role
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			
 		render(view:"adminList", model:[contractorList:contractorList,
-		cbNodeList:cbNodeList]);
+		cbNodeList:cbNodeList, user:user, admin: admin ]);
+		} else {
+			render (view:"list", model:[contractorList:contractorList,
+						cbNodeList:cbNodeList,
+						user:user, admin: admin]);
 		}
 	}
     
@@ -81,7 +84,6 @@ class QueueEntryController {
 		}
 
 		if (!params.search){
-
 				
 			if (admin != 1) {
 				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn "
@@ -96,10 +98,15 @@ class QueueEntryController {
 			}
 			[queueEntryInstanceList: queueEntries,
 				admin:admin, periodical:periodical,
-				contractorList:contractorList ]
+				contractorList:contractorList, user:us ]
 			if (us.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
-					render(view:"adminListSnippet", model:[queueEntryInstanceList: queueEntries, admin:admin, periodical:periodical, contractorList:contractorList]);
-			} else render(view:"listSnippet", model:[queueEntryInstanceList: queueEntries, admin:admin, periodical:periodical, contractorList:contractorList]);
+					render(view:"adminListSnippet", model:[
+						queueEntryInstanceList: queueEntries, 
+						admin:admin, periodical:periodical, 
+						contractorList:contractorList, user:us]);
+			} else render(view:"listSnippet", model:[queueEntryInstanceList: queueEntries, 
+						admin:admin, periodical:periodical, 
+						contractorList:contractorList, user:us]);
 			
 		} else {
 			
@@ -152,8 +159,12 @@ class QueueEntryController {
 			
 		}
 		if (us.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
-				render(view:"adminListSnippet", model:[queueEntryInstanceList: queueEntries, admin:admin, periodical:periodical, contractorList:contractorList]);
-		} else render(view:"listSnippet", model:[queueEntryInstanceList: queueEntries, admin:admin, periodical:periodical, contractorList:contractorList]);
+				render(view:"adminListSnippet", model:[queueEntryInstanceList: queueEntries, 
+						admin:admin, periodical:periodical, 
+						contractorList:contractorList, user:us, admin: admin]);
+		} else render(view:"listSnippet", model:[queueEntryInstanceList: queueEntries, 
+						admin:admin, periodical:periodical,
+						contractorList:contractorList, user:us, admin: admin]);
     }
 	
 	/** 
@@ -325,26 +336,27 @@ class QueueEntryController {
 	 */
 	def listRequests () {
 		
-		print("QueEntryController: listRequest")
-		
 		User user = springSecurityService.currentUser
 		def queueEntries
 		def admin = 0;
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			admin = 1;
-		}
+		} 
+		if (user.authorities.any { it.authority == "ROLE_PSADMIN"}) {
+			admin = 1;
+		} 
 		if (params.search==null){
 			if (admin != 1) {
 				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn and q.question is not null and q.question !='' and (q.status like '%5' OR q.status like '%4')",
 				 [csn: user.shortName])
 			} else {
-				admin = true;
+//				admin = true;
 				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.question is not null and q.question !='' and (q.status like '%5' OR q.status like '%4')")
 				
 			}
 			[queueEntryInstanceList: queueEntries,
-				admin:admin ]
-	}
+				admin:admin, user:user ]
+		}
 	}
 	/**
 	 * Applies status and functionality to answer with yes on migration requests

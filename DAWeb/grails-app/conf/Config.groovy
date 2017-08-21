@@ -118,6 +118,7 @@ environments {
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'daweb3.User'
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'daweb3.UserRole'
 grails.plugin.springsecurity.authority.className = 'daweb3.Role'
+grails.plugins.springsecurity.logout.afterLogoutUrl = 'login/auth'
 // if all components are secured true should be the default
 grails.plugin.springsecurity.rejectIfNoRule = true
 

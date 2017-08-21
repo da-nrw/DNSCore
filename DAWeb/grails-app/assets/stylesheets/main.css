@@ -142,6 +142,7 @@ img {
 	padding: 1em;
 	margin-left: 100px;
 	margin-top: float;
+	
 }
 
 .welcome{
@@ -196,6 +197,7 @@ img {
 	-webkit-box-shadow: 0 0 3px 1px #aaaaaa;
 	        box-shadow: 0 0 3px 1px #aaaaaa;
 	zoom: 1;
+	height: 50px;
 }
 
 .nav ul {

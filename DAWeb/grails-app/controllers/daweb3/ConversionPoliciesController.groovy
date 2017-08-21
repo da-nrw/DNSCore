@@ -38,6 +38,12 @@ class ConversionPoliciesController {
     }
 
     def list(Integer max) {
+		def admin = 0;
+		User user = springSecurityService.currentUser
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
+		
         params.max = Math.min(max ?: 30, 100)
 		
 		/*
@@ -61,7 +67,7 @@ class ConversionPoliciesController {
 		
         [conversionPoliciesInstanceList: ConversionPolicies.list(params), 
 			conversionPoliciesInstanceTotal: ConversionPolicies.count(),
-			formatMappList : fmMap]
+			formatMappList : fmMap, user:user, admin: admin]
     }
 
 	@Secured(['ROLE_PSADMIN'])

@@ -25,28 +25,53 @@ import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
 class RoleController {
-
+	
+	def springSecurityService
+	
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 	static CharacterEncodingUtils ceu = new CharacterEncodingUtils()
 	
     def index(Integer max) {
+		def user = springSecurityService.currentUser
+		def admin = 0;
+		
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
         params.max = Math.min(max ?: 10, 100)
 		ceu.setEncoding(response)
-        respond Role.list(params), model:[roleInstanceCount: Role.count()]
+        respond Role.list(params), model:[roleInstanceCount: Role.count(), user: user, admin: admin]
     }
 
     def show(Role roleInstance) {
+		def user = springSecurityService.currentUser
+		def admin = 0;
+		
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
 		ceu.setEncoding(response)
-        respond roleInstance
+        respond roleInstance, model: [user:user, admin: admin]
     }
 
     def create() {
+		def user = springSecurityService.currentUser
+		def admin = 0;
+		
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
 		ceu.setEncoding(response)
-        respond new Role(params)
+        respond new Role(params), model:[user: user, admin: admin] 
     }
+	
+	def cancel() {
+		redirect(action: "show",  id: params.id)
+	}
 
     @Transactional
     def save(Role roleInstance) {
+		
 		ceu.setEncoding(response)
         if (roleInstance == null) {
             notFound()
@@ -70,8 +95,14 @@ class RoleController {
     }
 
     def edit(Role roleInstance) {
+		def user = springSecurityService.currentUser
+		def admin = 0;
+		
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
 		ceu.setEncoding(response)
-        respond roleInstance
+        respond roleInstance, model: [user:user, admin:admin]
     }
 
     @Transactional

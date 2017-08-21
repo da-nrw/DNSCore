@@ -64,9 +64,9 @@ class UserRole implements Serializable {
 
 	static UserRole get(long userId, long roleId) {
 		print "BEGIN UserRole: get: "
-		criteriaFor(userId, roleId).get()
+//		criteriaFor(userId, roleId).get()
+		UserRole.where { user == User.load(userId) && role == Role.load(roleId) }.get()
 		print "END UserRole: get: "
-//		UserRole.where { user == User.load(userId) && role == Role.load(roleId) }.get()
 	}
 
 	static boolean exists(long userId, long roleId) {

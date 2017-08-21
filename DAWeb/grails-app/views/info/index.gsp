@@ -15,13 +15,14 @@
 		</style>
 </head>
 <body>
-
-	<div id="controller-list" role="navigation"  style="margin: 0.8em 0 0.3em">
-		<h2>REST Funktionen:</h2>
-		<ul>
-			<li class="controller"><g:link controller="automatedRetrieval">Erstellung von Retrievalanfragen </g:link></li>
-			<li class="controller"><g:link controller="status" action="teaser">Abfrage der Verarbeitung und Archivierung</g:link></li>
-		</ul>
+	<div id="page-body">
+		<div id="controller-list" role="navigation"  style="margin: 0.8em 0 0.3em">
+			<h2>REST Funktionen:</h2>
+			<ul>
+				<li class="controller"><g:link controller="automatedRetrieval">Erstellung von Retrievalanfragen </g:link></li>
+				<li class="controller"><g:link controller="status" action="teaser">Abfrage der Verarbeitung und Archivierung</g:link></li>
+			</ul>
+		</div>
 	</div>
 </body>
 </html>

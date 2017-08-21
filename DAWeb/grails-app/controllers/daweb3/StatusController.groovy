@@ -192,8 +192,12 @@ class StatusController {
 		return
 	}
 	def teaser() {
-		
-		
+		def admin = 0
+		User user = springSecurityService.currentUser
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
+		[user: user, admin: admin]
 	}
 	
 	

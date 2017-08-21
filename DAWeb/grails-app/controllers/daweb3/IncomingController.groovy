@@ -39,6 +39,12 @@ class IncomingController {
 		def msg = ""
 		def baseDir;
 		def filelist = []
+		def admin = 0;
+		 
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
+		
 		try {
 			
 			baseDir = new File(baseFolder)
@@ -60,7 +66,8 @@ class IncomingController {
 	
 		}
 			[filelist:filelist,
-			 msg:msg]
+			 msg:msg,
+			 user: user, admin: admin]
 	}
 	
 	def save = {

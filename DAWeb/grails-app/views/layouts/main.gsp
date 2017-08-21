@@ -24,15 +24,18 @@
 
    <div id="header" role="banner">
 		<g:link controller="home"> 
-			    <asset:image  src="DANRW-Logo_small.png" alt="DANRW"/> 
+			<asset:image  src="DANRW-Logo_small.png" alt="DANRW"/> 
 		</g:link> 
 		<h1>Web Konsole</h1>
-		<div id="header-menu">
-			<form name="submitForm" method="POST" action="${createLink(controller: 'logout')}">
-			<input type="hidden" name="" value="">
-			<a HREF="javascript:document.submitForm.submit()">Logout</a>
-			</form> 
-		</div>
+		<g:if test="${actionName=='auth'}" />
+		<g:else>
+			<div id="header-menu">
+				<form name="submitForm" method="POST" action="${createLink(controller: 'logout')}">
+					<input type="hidden" name="" value="" >
+					<a HREF="javascript:document.submitForm.submit()">Logout</a>
+				</form> 
+			</div>
+		</g:else>
 	</div>
 	
 	<g:if test="${actionName=='auth'}" />

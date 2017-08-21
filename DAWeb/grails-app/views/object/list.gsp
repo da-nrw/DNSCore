@@ -84,11 +84,11 @@
 	            			<tr>
 	            			<td>Bis Datum: </td>
 	            			<td>	
-	            				<g:if test="${params.search?.searchDateStart != null}" >
+	            				<g:if test="${params.search?.searchDateEnd != null}" >
 	            					<g:datePicker name="searchDateEnd" value="${params.search?.searchDateEnd.date.format('dd.MM.yyyy HH:mm')}"/>
 	            				</g:if>
 	            				<g:else>
-	            					<g:datePicker name="searchDateEnd" value="${params.search?.searchDateEnd}"/>(TT.MM.JJJJ HH:mm)
+	            					<g:datePicker name="searchDateEnd" value="${params.search?.searchDateEnd}"/>
 	            				</g:else>
 	            				<% // fix for https://github.com/zoran119/grails-jquery-date-time-picker/issues/12 %>
 	            			<script type="text/javascript">
@@ -102,7 +102,8 @@
 	            		<tr>
 	            			<td></td>
 	            			<td><g:submitButton name="submit" value="Filter anwenden"/>
-	            				<g:submitButton name="loeschen" type="submit" value="Filter löschen"/></td>
+	            				<g:submitButton name="loeschen" type="submit" value="Filter löschen"/>
+	            			</td>
 	            			<script type="text/javascript">
 	            				$(document).ready(function(){
 	            				 	$("#loeschen").click(function() {                				 
@@ -181,7 +182,7 @@
 												
 							<g:set var="statusCode" value="100" />
 							<g:if test="${admin}">				
-							<g:set var="statusCode" value="${objectInstance.getStatusCode()}" />
+								<g:set var="statusCode" value="${objectInstance.getStatusCode()}" />
 							</g:if>
 							<tr class="${ ((i % 2) == 0 ? 'odd' : 'even') + ' status-type-' + statusCode}">
 									<td>${fieldValue(bean: objectInstance, field: "identifier")}</td>

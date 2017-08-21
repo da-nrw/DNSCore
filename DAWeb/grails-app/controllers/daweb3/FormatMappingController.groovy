@@ -47,7 +47,7 @@ class FormatMappingController {
 		// list of results
 		[formatMappings : formatMappings, msg:msg]
 				
-		render (view: 'map', model: [formatMappings : formatMappings, msg:msg]);
+		render (view: 'map', model: [formatMappings : formatMappings, msg:msg, user:springSecurityService.currentUser]);
 		
 	}
 	

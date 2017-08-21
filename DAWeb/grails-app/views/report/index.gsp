@@ -1,8 +1,8 @@
 <html>
-<head>
-	<title>Bericht verarbeiten</title>
-	<meta name="layout" content="main">
-	 <r:require modules="periodicalupdater, jqueryui"/>
+	<head>
+		<title>Bericht verarbeiten</title>
+		<meta name="layout" content="main">
+		<r:require modules="periodicalupdater, jqueryui"/>
 		<g:javascript>
 			$(function() {
 				$("#legend").accordion({ collapsible: true, active: false, autoHeight: false });
@@ -32,38 +32,41 @@
 				}
 			);
 		</g:javascript>
-</head>
-
-<g:if test="${msg}">
-			<div class="message" role="status">${msg}</div>
+	</head>
+	<body>
+		<div id="page-body">
+			<g:if test="${msg}">
+				<div class="message" role="status">${msg}</div>
 			</g:if>
-	<div id="items">	
-<h2>Bericht hochladen</h2>
-<g:form controller="report" method="POST" action="save" enctype="multipart/form-data">
-				<input type="file" name="file"/>
-<input type="submit" value="Hochladen" />
-</g:form><br>
-(Spaltenkopf: identifier;origName;statuscode;createddate;updateddate;erfolg;bemerkung; semikolongetrennt, EXCEL)	
-<p>
-<script language="JavaScript">
-function toggle(source) {
-	  checkboxes = document.getElementsByName('currentFiles');
-	  for(var i in checkboxes)
-	    checkboxes[i].checked = source.checked;
-}
-</script>
-<h2>Wartend auf Aktion</h2>	
-<form id="form2" action="decider" >
-	<!-- This div is updated through the periodical updater -->
-			<div class="list" id="entry-list1">
-				<g:include action="snippetIncoming" />
+			<div id="items" >	
+				<h2>Bericht hochladen</h2>
+				<g:uploadForm controller="report" method="POST" action="save" enctype="multipart/form-data">
+					<input type="file" name="file" />
+		       		<input type="submit" value="Hochladen" />
+				</g:uploadForm><br>
+				(Spaltenkopf: identifier;origName;statuscode;createddate;updateddate;erfolg;bemerkung; semikolongetrennt, EXCEL)	
+				<script language="JavaScript">
+				function toggle(source) {
+					  checkboxes = document.getElementsByName('currentFiles');
+					  for(var i in checkboxes)
+					    checkboxes[i].checked = source.checked;
+				}
+				</script>
+				<h2>Wartend auf Aktion</h2>	
+				<form id="form2" action="decider" >
+					<!-- This div is updated through the periodical updater -->
+					<div class="list" id="entry-list1">
+						<g:include action="snippetIncoming" />
+					</div>
+					<g:select name="answer" from="${['start': 'Bericht generieren', 'retrieval': 'Retrieval']}" optionKey="key" optionValue="value"/>
+					<g:actionSubmit value="Starten" action="decider"/>
+				</form>
+				<h2>Bereits erstellte Berichte:</h2>
+				<!-- This div is updated through the periodical updater -->
+				<div class="list" id="entry-list2">
+					<g:include action="snippetOutgoing" />
+				</div>
 			</div>
-<g:select name="answer" from="${['start': 'Bericht generieren', 'retrieval': 'Retrieval']}" optionKey="key" optionValue="value"/>
-<g:actionSubmit value="Starten" action="decider"/></form>
-<h2>Bereits erstellte Berichte:</h2>
-	<!-- This div is updated through the periodical updater -->
-			<div class="list" id="entry-list2">
-				<g:include action="snippetOutgoing" />
-			</div>
-</div>
-</body>
+		</div>
+	</body>
+</html>

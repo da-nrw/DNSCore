@@ -25,6 +25,13 @@
 package daweb3
 
 class InfoController {
-
-    def index() { }
+	def springSecurityService
+    def index() { 
+		def admin = 0;
+		User user = springSecurityService.currentUser
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
+		[user: user, admin:admin]
+	}
 }

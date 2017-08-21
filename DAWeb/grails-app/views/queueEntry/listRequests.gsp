@@ -8,19 +8,17 @@
 	</head>
 	<body>
 		<div id="page-body">
-<!-- 			<a href="#list-queueEntry" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a> -->
-<!-- 			<div id="list-queueEntry" class="content scaffold-list" role="main">			 -->
-				<h1>Anfragenübersicht</h1>			
-				<g:if test="${flash.message}">
-					<div class="message" role="status">${flash.message}</div>
-				</g:if>			
-				<!-- This div is updated through the periodical updater -->
+			<h1>Anfragenübersicht</h1>			
+			admin: ${admin}
+			<g:if test="${flash.message}">
+				<div class="message" role="status">${flash.message}</div>
+			</g:if>			
+			<!-- This div is updated through the periodical updater -->
 			 <div class="list" id="entry-list">
 			  <div style="overflow:auto; height: 300px">
 			   <table>
 				<thead>
 					<tr>
-						
 						<th class="sortable field-id">
 							<a href="#" onClick="return sortQueue('queueEntry.obj.identifier');">${message(code: 'queueEntry.obj.identifier.label', default: 'Identifier')}</a>
 						</th>
@@ -66,15 +64,15 @@
 							</td>
 							<td>
 							<g:link onclick="return confirm('Antwort Nein - Sind Sie sicher?');" action="performRequestNo" id="${queueEntryInstance.id}">
-									<g:img style="width:16px; height:16px" uri="/images/icons/list_remove.png" 
-												title="${message(code: 'default.workflow.icon.no', default: 'Antwort Nein')}" 
-												alt="${message(code: 'default.workflow.icon.no', default: 'Antwort Nein')}"/>
-								</g:link>
+								<asset:image style="width:16px; height:16px" src="/icons/list_remove.png" 
+											title="${message(code: 'default.workflow.icon.no', default: 'Antwort Nein')}" 
+											alt="${message(code: 'default.workflow.icon.no', default: 'Antwort Nein')}"/>
+							</g:link>
 							<g:link onclick="return confirm('Antwort Ja - Sind Sie sicher?');" action="performRequestYes" id="${queueEntryInstance.id}">
-									<g:img style="width:16px; height:16px" uri="/images/icons/check32.png" 
-												title="${message(code: 'default.workflow.icon.yes', default: 'Antwort Ja')}" 
-												alt="${message(code: 'default.workflow.icon.yes', default: 'Antwort Ja')}"/>
-								</g:link>
+								<asset:image style="width:16px; height:16px" src="/icons/check32.png" 
+											title="${message(code: 'default.workflow.icon.yes', default: 'Antwort Ja')}" 
+											alt="${message(code: 'default.workflow.icon.yes', default: 'Antwort Ja')}"/>
+							</g:link>
 								
 							</td>
 							<td>

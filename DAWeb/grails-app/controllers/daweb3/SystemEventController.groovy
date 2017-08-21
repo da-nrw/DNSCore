@@ -30,6 +30,7 @@ import grails.transaction.Transactional
 class SystemEventController {
 	
 	def springSecurityService
+	
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"] 
 	
@@ -37,26 +38,43 @@ class SystemEventController {
 	
     def index(Integer max) {
 		User user = springSecurityService.currentUser
+		def admin = 0;
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
+		
 		CbNode node = CbNode.findById(grailsApplication.config.localNode.id);
         params.max = Math.min(max ?: 10, 100)
 		ceu.setEncoding(response)
-        respond SystemEvent.findAllByUserAndNode(user,node), model:[systemEventInstanceCount: SystemEvent.count()] 
+        respond SystemEvent.findAllByUserAndNode(user,node), 
+				model:[systemEventInstanceCount: SystemEvent.count(), 
+						user: user, admin: admin] 
 		
     }
 
     def show(SystemEvent systemEventInstance) {
+		User user = springSecurityService.currentUser
+		def admin = 0;
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
 		ceu.setEncoding(response)
-        respond systemEventInstance
+		
+        respond systemEventInstance, model:[user:user, admin:admin]
     }
 
     def create() {
 		User user = springSecurityService.currentUser
+		def admin = 0;
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
 		CbNode node = CbNode.findById(grailsApplication.config.localNode.id);
 		def se = new SystemEvent(params)
 		se.setNode(node)
 		se.setUser(user)
 		ceu.setEncoding(response)
-        respond se
+        respond se, model:[user:user, admin: admin]
     }
 
     @Transactional
@@ -92,12 +110,22 @@ class SystemEventController {
     }
 
     def edit(SystemEvent systemEventInstance) {
+		User user = springSecurityService.currentUser
+		def admin = 0;
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
 		ceu.setEncoding(response)
-        respond systemEventInstance
+        respond systemEventInstance, model:[user:user, admin:admin]
     }
 
     @Transactional
     def update(SystemEvent systemEventInstance) {
+		User user = springSecurityService.currentUser
+		def admin = 0;
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
 		ceu.setEncoding(response)
         if (systemEventInstance == null) {
             notFound()
@@ -132,9 +160,16 @@ class SystemEventController {
 		redirect(action: "show",  id: params.id)
 	}
 	
+	def cancelCreate() {
+		redirect(action: "index",  id: params.id)
+	}
+	
     @Transactional
     def delete(SystemEvent systemEventInstance) {
-		
+		def admin = 0;
+		if (springSecurityService.currentUser.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
 		if (systemEventInstance == null) {
 			notFound()
 			return

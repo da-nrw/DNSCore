@@ -59,7 +59,10 @@ class ObjectController {
 		 def List<String> extList = new ArrayList<String>()
 		 def String name = ""
 		 def List<String> nameList = new ArrayList<String>();
-		
+		 User user = springSecurityService.currentUser
+		 if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			 admin = 1;
+		 }
 		 // access table objects
 		 objects = Object.findAll("from Object as o where o.most_recent_formats like :formats " +
 			 " or o.most_recent_secondary_attributes like :attributes)"   ,
@@ -110,7 +113,7 @@ class ObjectController {
 				 nameList.add(name)
 				 
 			 } // end of object - list
-			 render (view:'listObjects', model:[objects:objects, extension:extList, name:nameList]);
+			 render (view:'listObjects', model:[objects:objects, extension:extList, name:nameList, user:user, admin:admin]);
 		 }
  	} 
 	 
@@ -226,7 +229,8 @@ class ObjectController {
 				paginate: true,
 				admin: admin,
 				baseFolder: baseFolder,
-				contractorList: contractorList
+				contractorList: contractorList,
+				user: user, admin: admin
 			]);
 		} else render(view:"list", model:[	objectInstanceList: objects,
 				objectInstanceTotal: objects.getTotalCount(),
@@ -237,7 +241,8 @@ class ObjectController {
 				admin: 0,
 				totalObjs: totalObjs,
 				baseFolder: baseFolder,
-				contractorList: contractorList
+				contractorList: contractorList,
+				user: user,admin: admin
 			]);
 	}
 
@@ -300,7 +305,13 @@ class ObjectController {
 			} // end of object - list
 		}
 		[objectInstance: objectInstance,
-			urn:urn,preslink:preslink,sortedPackages:sortedPackages, extensionSip:extListSip, extensionDip:extListDip]
+			urn:urn,
+			preslink:preslink,
+			sortedPackages:sortedPackages, 
+			extensionSip:extListSip, 
+			extensionDip:extListDip,
+			user: user, admin: admin
+		]
 	
 	}
 

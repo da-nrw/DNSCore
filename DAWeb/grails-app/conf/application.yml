@@ -4,7 +4,23 @@ grails:
         springsecurity:
             adh:
                 errorPage: null
+            userLookup:
+              userDomainClassName: 'daweb3.User'
+              authorityJoinClassName: 'daweb3.UserRole'
+            authority:
+              className: 'daweb3.Role'
+            logoff:
+              afterLogoutUrl: '/login/auth'
             rejectIfNoRule: false
+            fii:
+              rejectPublicInvocations: false
+            useSecurityEventListener: true
+            successHandler:
+              defaultTargetUrl: '/'
+              alwaysUseDefault: true
+            useBasicAuth: true
+            basic:
+              realmName: "DAWEB - DNSCORE"
 ---
 server:
   port: 8095

@@ -36,6 +36,9 @@ class HomeController {
 	def index() {
 		def username = springSecurityService.currentUser
 		def admin = 0;
+		
+		User us = springSecurityService.currentUser
+		
 		User user = User.findByUsername(username)
 		
 		if (user.authorities.any { it.authority == "ROLE_PSADMIN"}) {

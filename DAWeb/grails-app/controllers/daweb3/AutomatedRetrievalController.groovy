@@ -30,7 +30,15 @@ class AutomatedRetrievalController {
 	
 	def springSecurityService
 	
-    def index() { }
+	def index() {
+		def admin = 0;
+		User user = springSecurityService.currentUser
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
+		[user: user, admin:admin]
+	}
+    
 	
 	def queueForRetrievalJSON () {
 		User user = springSecurityService.currentUser

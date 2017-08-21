@@ -34,6 +34,10 @@ class ReportController {
 		
 		def msgN = ""
 		def baseDir;		
+		def admin = 0;
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
 		
 		def msg = null;
 		msg = params.get("msg");
@@ -41,7 +45,7 @@ class ReportController {
 		if (msg!=null) {
 		msg = msg + " " + msgN
 		} else msg = msgN
-			[msg:msg,httpurl:httpurl]
+			[msg:msg,httpurl:httpurl, user:user, admin: admin]
 	}
 	
 	def save() {

@@ -25,25 +25,38 @@
 			);
 		</g:javascript>
   <body>
-    <div class="body">
-      <h1>CbTalk</h1>
-      <g:if test="${flash.message}">
-        <div class="message">${flash.message}</div>
-      </g:if>
-      <g:form action="save" method="post">
-   <g:submitButton name="stopFactory" value="stop Factory" />
-   <g:submitButton name="startFactory" value="start Factory" /> 
-   <g:submitButton name="showActions" value="show Actions" /> 
-   <g:submitButton name="gracefulShutdown" value="ContentBroker graceful shutdown" />  
-   <g:submitButton name="showVersion" value="Show version of ContentBroker" />   
-   <g:submitButton name="stopDelayed" value="stop delayed Rules" />  
-   <g:submitButton name="startDelayed" value="start delayed Rules" />   
-</g:form>
-Rückmeldungen des ContentBroker (können verzögert eintreffen)
+<!-- 	<div class="body"> -->
+		<div id="page-body">
+	  		<div class="nav" role="navigation">
+				<ul>
+					<li><a class="list" href="${createLink(controller: 'conversionPolicies', action: 'index')}">Conversion Policies</a></li>
+					<li><a class="list" href="${createLink(controller: 'user', action: 'index')}">Users</a></li>
+					<li><a class="list" href="${createLink(controller: 'role', action: 'index')}">Roles</a></li>
+					<li><a class="list" href="${createLink(controller: 'userRole', action: 'index')}">UserRoles</a></li>
+					<li><a class="list" href="${createLink(controller: 'PreservationSystem', action: 'index')}">PreservationSystem</a></li>
+					<li><a class="list" href="${createLink(controller: 'formatMapping', action: 'map')}">Format-Mapping</a></li>
+				</ul>
+			</div>
+    
+		   	<h1>CbTalk</h1>
+		   	<g:if test="${flash.message}">
+		    	<div class="message">${flash.message}</div>
+		   	</g:if>
+		   	<g:form action="save" method="post">
+				<g:submitButton name="stopFactory" value="stop Factory" />
+				<g:submitButton name="startFactory" value="start Factory" /> 
+				<g:submitButton name="showActions" value="show Actions" /> 
+				<g:submitButton name="gracefulShutdown" value="ContentBroker graceful shutdown" />  
+				<g:submitButton name="showVersion" value="Show version of ContentBroker" />   
+				<g:submitButton name="stopDelayed" value="stop delayed Rules" />  
+				<g:submitButton name="startDelayed" value="start delayed Rules" />   
+			</g:form>
+			Rückmeldungen des ContentBroker (können verzögert eintreffen)
 			<!-- This div is updated through the periodical updater -->
 			<div class="list" id="entry-list">
 				<g:include action="messageSnippet" />
 			</div>
-     </div>
+		</div>
+<!--     </div> -->
   </body>
 </html>

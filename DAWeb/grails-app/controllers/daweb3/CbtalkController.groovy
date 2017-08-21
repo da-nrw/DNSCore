@@ -36,18 +36,34 @@ class CbtalkController {
 	def jmsService
 	def cbtalkService
 	def cberrorService
-
-	def index() { 	
+	def springSecurityService
+	
+	def index() { 
+		def user = springSecurityService.currentUser
+		def admin = 0;
+		
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
 		if (grailsApplication.config.localNode.id==null || grailsApplication.config.localNode.id=="")
 		flash.message = "LOCALNODE.ID not set!"
+		
+		[user:user, admin:admin]	
 	}
 	def messageSnippet() {
 		def messages = cbtalkService.getMessages()
 		def errors = cberrorService.getMessages()
 		def date = new Date();
+		def user = springSecurityService.currentUser
+		def admin = 0;
+		
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
 		[messages: messages,
 			errors: errors,
-			date: date]
+			date: date,
+			admin: admin]
 	}
 	
 	def save() {
