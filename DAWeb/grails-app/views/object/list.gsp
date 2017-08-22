@@ -149,8 +149,6 @@
 				<g:if test="${flash.message}">
 					<div class="message" role="status">${flash.message}</div>
 				</g:if>
-	
-				
 				<g:formRemote name="myForm" on404="alert('not found!')" 
 	              url="[controller: 'object', action:'queueAllForRetrieval']" 
 	              onLoaded="queuedFor(data)">

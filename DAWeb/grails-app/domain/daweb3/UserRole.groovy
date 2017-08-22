@@ -1,139 +1,93 @@
+/* 
+DA-NRW Software Suite | ContentBroker
+ Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
+ Universität zu Köln
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 package daweb3
+import org.apache.commons.lang.builder.HashCodeBuilder
 
-import grails.gorm.DetachedCriteria
-import groovy.transform.ToString
-
-import org.codehaus.groovy.util.HashCodeHelper
-
-//import grails.compiler.GrailsCompileStatic
-
-//@GrailsCompileStatic
-@ToString(cache=true, includeNames=true, includePackage=false)
 class UserRole implements Serializable {
 
 	private static final long serialVersionUID = 1
-
-	User user
+	
+	User user 
 	Role role
-	static constraints = {
+	
+	static constraints = { 
 		role validator: { Role r, UserRole ur ->
-			if (ur.user == null || ur.user.id == null) return
+			if (ur.user == null) return
 			boolean existing = false
-			if (ur.user?.id) {
-				UserRole.withNewSession {
-					existing = UserRole.exists(ur.user.id, r.id)
-				}		
-			}
-			if (existing) {
-				return 'userRole.exists'
-			}
-		}
+			UserRole.withNewSession { existing = UserRole.exists(ur.user.id, r.id) }
+			if (existing) { return 'userRole.exists' } 
+		} 
 	}
-
+	
 	static mapping = {
- 		id composite: ['user', 'role']
+		id composite: ['user', 'role']
 		version false
-	}
+	 }
 	
-	
-	@Override
-	boolean equals(other) {
-		print "UserRole: equals: "
+	boolean equals(other) { 
 		if (!(other instanceof UserRole)) {
-			return false
-	   }
-	   if (other instanceof UserRole)  {
-		   other.user?.id == user?.id &&
-		   other.role?.id == role?.id
-	   }
-
-	}
-
-	@Override
-	int hashCode() {
-		
-		print "UserRole: hashCode: "
-		int hashCode = HashCodeHelper.initHash()
-		if (user) {
-			hashCode = HashCodeHelper.updateHash(hashCode, user.id)
+			 return false 
 		}
-		if (role){
-			hashCode = HashCodeHelper.updateHash(hashCode, role.id)
-		}
+		other.user?.id == user?.id && 
+		other.role?.id == role?.id 
 	}
-
-	static UserRole get(long userId, long roleId) {
-		print "BEGIN UserRole: get: "
-//		criteriaFor(userId, roleId).get()
-		UserRole.where { user == User.load(userId) && role == Role.load(roleId) }.get()
-		print "END UserRole: get: "
+	
+	int hashCode() { 
+		def builder = new HashCodeBuilder() 
+		if (user) builder.append(user.id) 
+		if (role) builder.append(role.id) builder.toHashCode() 
 	}
-
-	static boolean exists(long userId, long roleId) {
-//		criteriaFor(userId, roleId).count()
-		print "Begin exists UserRole"
-		UserRole.where {
-			user == User.load(userId) && role == Role.load(roleId) }.count() > 0
+	
+	static UserRole get(long userId, long roleId) { 
+		UserRole.where { user == User.load(userId) && role == Role.load(roleId) }.get() 
 	}
-
-	private static DetachedCriteria criteriaFor(long userId, long roleId) {
-		print "Begin DetachedCriteria UserRole"
-		UserRole.where {
-			user == User.load(userId) &&
-			role == Role.load(roleId)
-		}
+	
+	static boolean exists(long userId, long roleId) { 
+		UserRole.where { 
+			user == User.load(userId) && role == Role.load(roleId) }.count() > 0 
 	}
-
-	static UserRole create(User user, Role role, boolean flush = false) {
-		print "UserRole: create: "
-		def instance = new UserRole(user: user, role: role)
-//		instance.save(flush: flush, insert: true, failOnError: true)
-		instance.save(flush: flush)
-		instance
+	
+	static UserRole create(User user, Role role, boolean flush = true) { 
+		def instance = new UserRole(user: user, role: role) 
+		instance.save(flush: flush, insert: true,failOnError: true) 
+		instance 
 	}
-
-	static boolean remove(User u, Role r, boolean flush = false) {
-		print "UserRole: remove: "
-//		if (u == null || r == null) return false
-//
-//		int rowCount = UserRole.where { user == u && role == r }.deleteAll()
-//
-//		if (flush) { UserRole.withSession { it.flush() } }
-//
-//		rowCount
-//	}
-//		if (u == null || r == null) return false
-//		int rowCount = UserRole.where { user == User.load(u.id) && role == Role.load(r.id) }.deleteAll()
-//		rowCount > 0
-		
-		if (u != null && r != null) {
-			UserRole.where { user == u && role == r }.deleteAll()
-		}
+	
+	static boolean remove(User u, Role r) { 
+		if (u == null || r == null) return false
+			int rowCount = UserRole.where { user == User.load(u.id) && role == Role.load(r.id) }.deleteAll()
+			rowCount > 0 
 	}
-
-	static void removeAll(User u, boolean flush = false) {
-		
-		print "UserRole: removeAll: "
+	
+	static void removeAll(User u) { 
 		if (u == null) return
-
-		UserRole.where { user == u }.deleteAll() as int
-//		UserRole.where { user == User.load(u.id) }.deleteAll()
-
-//		if (flush) { UserRole.withSession { it.flush() } }
+		UserRole.where { user == User.load(u.id) }.deleteAll() 
 	}
-
-	static void removeAll(Role r, boolean flush = false) {
+	
+	static void removeAll(Role r) { 
 		if (r == null) return
-
-		UserRole.where { role == r }.deleteAll() as int
-//		UserRole.where { role == Role.load(r.id) }.deleteAll()
-
-//		if (flush) { UserRole.withSession { it.flush() } }
+		UserRole.where { role == Role.load(r.id) }.deleteAll() 
 	}
 	
 	def getPKId() {
-		
-		print "UserRole: getPKId: "
 		return ['userId': user.id, 'roleId': role.id]
-		}
+	}
+
 }

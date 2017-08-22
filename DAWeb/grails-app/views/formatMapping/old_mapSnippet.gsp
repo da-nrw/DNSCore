@@ -1,4 +1,5 @@
-<div class="list" id="entry-list"> <br>
+ <div class="list" id="entry-list"> <br> 
+	<meta name="layout" content="main">
 	<g:form  name="mapSnippet" url="[controller: 'formatMapping', action:'deleteAndFill']"  update="refreshView" >
 			<g:actionSubmit value="Tabelle leeren und neu laden" action="deleteAndFill"  
 							onclick="return confirm('Tabelle wirklich aktualisieren?')"/>
@@ -6,7 +7,7 @@
 				<div class="message" role="status">${msg}</div> 
 			</g:if>		
 	</g:form>
-</div> <br>
+ </div> <br> 
 <div style="overflow:auto; height: 600px">
   <table>
 	 <thead>							

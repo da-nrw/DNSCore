@@ -4,7 +4,29 @@
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'formatMapping.label', default: 'Format-Mapping')}" />
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
- 		<r:require modules="periodicalupdater, jqueryui"/>		
+		
+ 	<r:require modules="periodicalupdater, jqueryui"/>
+ 	<jqui:resources/>
+		<g:javascript>
+			var order = "desc";
+			var sort = "created";
+			$(function() {
+				$("#legend").accordion({ collapsible: true, active: false, autoHeight: false });
+			});
+			$(function() {
+				$("#filter").accordion({ collapsible: true, active: false });
+			});
+			var obj = $.PeriodicalUpdater("./mapSnippet",
+				{
+					method: "get",
+					minTimeout: 10000,
+					maxTimeout: 10000,
+					success: function(data) {
+						$("#entry-list").html(data);
+					}
+				}
+			);
+		</g:javascript>
 	</head>
 	<body>
 		<div id="page-body">
@@ -43,4 +65,5 @@
 			</div>
 		</div>
 	</body>
+</body>
 </html>

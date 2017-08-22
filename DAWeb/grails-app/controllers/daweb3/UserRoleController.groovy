@@ -36,7 +36,8 @@ class UserRoleController {
 			admin = 1;
 		}
 		
-		def userRoleInstance = UserRole.get(userId, roleId)
+ 		def userRoleInstance = UserRole.get(userId, roleId)
+		
 		if (!userRoleInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'userRoleInstance.label', default: 'userRoleInstance not found'), id])
 			redirect(action: "list")

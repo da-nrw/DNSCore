@@ -598,11 +598,12 @@ th:hover, tr:hover {
 	-webkit-box-shadow: 0 0 3px 1px #AAAAAA;
 	        box-shadow: 0 0 3px 1px #AAAAAA;
 	background-color: #EFEFEF;
+	width: 100%;
+	
 }
 
 .pagination a,
-.pagination .currentStep {
-	color: #666666;
+.pagination .currentStl
 	display: inline-block;
 	margin: 0 0.1em;
 	padding: 0.25em 0.7em;
