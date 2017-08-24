@@ -861,7 +861,7 @@ public class MetsParser{
 			
 			if(link==null || link.trim().isEmpty()){			
 				logger.error("Attribute accessCondition.href does not exist!!!");
-				retList.add(displayLabel+this.titleSparator+text);
+				//retList.add(displayLabel+this.titleSparator+text);
 			}else{
 				retList.add(link);
 			}
