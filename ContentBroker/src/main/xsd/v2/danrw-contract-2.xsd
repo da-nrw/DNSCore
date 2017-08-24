@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.danrw.de/contract/v1" xmlns:danrw="http://www.danrw.de/contract/v1" targetNamespace="http://www.danrw.de/contract/v1" elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.danrw.de/contract/v2" xmlns:danrw="http://www.danrw.de/contract/v2" targetNamespace="http://www.danrw.de/contract/v2" elementFormDefault="qualified">
 	<xs:element name="rightsGranted" type="RightsGrantedType"/>
 	<xs:complexType name="RightsGrantedType">
 		<xs:choice maxOccurs="unbounded">

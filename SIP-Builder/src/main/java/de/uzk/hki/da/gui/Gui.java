@@ -3571,14 +3571,9 @@ public class Gui extends JFrame{
 		
 		if(premisLicenseRadioButton.isSelected()){
 			contractRights.setCclincense((CCLicense) licenseDropDown.getSelectedItem());
-			contractRights.setLicenseCondition(ContractRights.LicenseCondition.PREMISLICENSE);
-		}/*else if(noLicenseRadioButton.isSelected()){
-			contractRights.setCclincense(null);
-			contractRights.setLicenseCondition(ContractRights.LicenseCondition.NOLICENSE);
-		}*/
+		}
 		else if(metadataLicenseRadioButton.isSelected()){
 			contractRights.setCclincense(null);
-			contractRights.setLicenseCondition(ContractRights.LicenseCondition.METADALICENSE);
 		}
 	}
 
@@ -3897,25 +3892,19 @@ public class Gui extends JFrame{
 
 		migrationDropDown.setSelectedItem(Utilities.translateConversionCondition(contractRights.getConversionCondition()));
 		publicDDBCheckBox.setSelected(!contractRights.getDdbExclusion());
-		if (contractRights.getLicenseCondition() != null) {
-			if (contractRights.getLicenseCondition().equals(ContractRights.LicenseCondition.PREMISLICENSE)) {
-				premisLicenseRadioButton.setSelected(true);
-			} else if (contractRights.getLicenseCondition().equals(ContractRights.LicenseCondition.METADALICENSE)) {
-				metadataLicenseRadioButton.setSelected(true);
-			}
-		}else{
-			metadataLicenseRadioButton.setSelected(true);
-		}
+
 		if(contractRights.getCclincense()!=null){
 			licenseDropDown.setEditable(true);
 			licenseDropDown.setEnabled(true);
 			licenseTextField.setVisible(true);
 			licenseDropDown.setSelectedItem(contractRights.getCclincense());
+			premisLicenseRadioButton.setSelected(true);
 		}else{	
 			licenseDropDown.setEditable(false);
 			licenseDropDown.setEnabled(false);
 			licenseTextField.setVisible(false);
 			licenseDropDown.setSelectedItem(0);
+			metadataLicenseRadioButton.setSelected(true);
 		}
 	}
 	

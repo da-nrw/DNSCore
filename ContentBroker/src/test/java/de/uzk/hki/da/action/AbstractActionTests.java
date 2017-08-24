@@ -153,7 +153,9 @@ public class AbstractActionTests {
 		//not testuser and validation DEactivated in preservationsystem
 		action.getPreservationSystem().setLicenseValidationFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_NO);
 		action.getObject().setContractor(noTestUser);
-		Assert.assertEquals(false,action.canIgnoreLicenseValidation());
+		//Assert.assertEquals(false,action.canIgnoreLicenseValidation());
+		Assert.assertEquals(true,action.canIgnoreLicenseValidation()); //disabled to have real posiibility to deactivate license validation 
+		
 		
 		//testuser and validation DEactivated in preservationsystem
 		action.getPreservationSystem().setLicenseValidationFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_NO);

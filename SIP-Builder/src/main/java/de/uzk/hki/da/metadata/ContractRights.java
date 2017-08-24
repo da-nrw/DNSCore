@@ -58,11 +58,10 @@ public class ContractRights {
 	private ConversionCondition conversionCondition;
 	boolean ddbExclusion;
 	private CCLicense cclincense;
-	private LicenseCondition licenseCondition;
 
 
 	public enum ConversionCondition { NONE, NOTIFY, CONFIRM };
-
+/*
 	public enum LicenseCondition {
 		//NOLICENSE("NOLICENSE"), 
 		METADALICENSE("METADALICENSE"), 
@@ -72,7 +71,7 @@ public class ContractRights {
 		private String text;
 		public String getText() {return text;}
 		@Override public String toString() {	return text;}
-	};
+	};*/
 
 	
 	public enum CCLicense {
@@ -292,14 +291,6 @@ public class ContractRights {
 
 	public void setConversionCondition(String conversionCondition) {
 		this.conversionCondition = Utilities.translateConversionCondition(conversionCondition);
-	}
-	
-	public LicenseCondition getLicenseCondition() {
-		return licenseCondition;
-	}
-
-	public void setLicenseCondition(LicenseCondition licenseCondition) {
-		this.licenseCondition = licenseCondition;
 	}
 
 	public boolean getDdbExclusion() {

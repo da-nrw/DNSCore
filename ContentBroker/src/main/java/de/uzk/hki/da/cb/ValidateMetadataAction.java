@@ -114,7 +114,7 @@ public class ValidateMetadataAction extends AbstractAction {
 			throw e;
 		}catch (Exception e) {
 			logger.debug("Fehler bei Lizenzauswertung: "+e.getMessage());
-			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,"Fehler bei Lizenzenauswertung: "+e);
+			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,"Fehler bei Lizenzenauswertung: "+e,"Fehler bei Lizenzenauswertung");
 		}
 		return true;
 	}
@@ -134,7 +134,7 @@ public class ValidateMetadataAction extends AbstractAction {
 
 		if (!detectedPackageType.equals(C.CB_PACKAGETYPE_METS) && wantPublication)
 			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
-					"Publikation ist nur mithilfe von METS-Metadaten erlaubt.");
+					"Publikation ist nur mithilfe von METS-Metadaten erlaubt.","Publikation ist nur mithilfe von METS-Metadaten erlaubt.");
 
 		if (premisObject.getRights().getPremisLicense() != null)
 			hasPremisLicense = true;
@@ -144,7 +144,8 @@ public class ValidateMetadataAction extends AbstractAction {
 				new URL(premisObject.getRights().getPremisLicense().getHref());
 			}catch(MalformedURLException e){
 				throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
-						"Invalide Lizenz: publicationLicense-Element in der Premis hat ein ungueltiges href-Attribut("+e.getMessage()+")");
+						"Invalide Lizenz: publicationLicense-Element in der Premis hat ein ungueltiges href-Attribut("+premisObject.getRights().getPremisLicense().getHref()+")",
+						"Invalide Lizenz: publicationLicense-Element in der Premis hat ein ungueltiges href-Attribut("+premisObject.getRights().getPremisLicense().getHref()+")");
 			}
 		}
 
@@ -171,14 +172,16 @@ public class ValidateMetadataAction extends AbstractAction {
 					new URL(licensePublicMetsFile.getHref());
 				}catch(MalformedURLException e){
 					throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
-							"Invalide Lizenzangaben in "+C.PUBLIC_METS+": accessCondition-Element hat ein ungueltiges href-Attribut("+e.getMessage()+")");
+							"Invalide Lizenzangaben in "+C.PUBLIC_METS+": accessCondition-Element hat ein ungueltiges href-Attribut("+e.getMessage()+")",
+							"Invalide Lizenzangaben in "+C.PUBLIC_METS+": accessCondition-Element hat ein ungueltiges href-Attribut("+licensePublicMetsFile.getHref()+")");
 				}
 			}else if(!hasPublicMetsLicense && hasMetsLicense){
 				try{
 					new URL(licenseMetsFile.getHref());
 				}catch(MalformedURLException e){
 					throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
-							"Invalide Lizenzangaben in mets metadaten: accessCondition-Element hat ein ungueltiges href-Attribut("+e.getMessage()+")");
+							"Invalide Lizenzangaben in mets metadaten: accessCondition-Element hat ein ungueltiges href-Attribut("+e.getMessage()+")",
+							"Invalide Lizenzangaben in mets metadaten: accessCondition-Element hat ein ungueltiges href-Attribut("+licenseMetsFile.getHref()+")");
 				}
 			}
 			if ((licenseMetsFile!=null && !licenseMetsFile.equals(licensePublicMetsFile)) ||
@@ -188,15 +191,18 @@ public class ValidateMetadataAction extends AbstractAction {
 		//check license compatibility
 		logger.debug("Detected license information wantPublication:"+wantPublication+", hasPremisLicense:"+hasPremisLicense+", hasMetsLicense:"+hasMetsLicense+", usePublicMets:"+usePublicMets+", hasPublicMetsLicense:"+hasPublicMetsLicense);
 		
-		if(usePublicMets && !hasPublicMetsLicense)
+		if(usePublicMets && wantPublication && !hasPublicMetsLicense)
 			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
+					"Keine Lizenzangaben in der Public-METS-Metadatei vorhanden.",
 					"Keine Lizenzangaben in der Public-METS-Metadatei vorhanden.");
 		if (hasPremisLicense && (hasMetsLicense || hasPublicMetsLicense))
 			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
+					"Lizenzangaben in den METS-Metadaten und in der Premis-Datei vorhanden.",
 					"Lizenzangaben in den METS-Metadaten und in der Premis-Datei vorhanden.");
 
 		if (wantPublication && !hasPremisLicense && !(hasMetsLicense || hasPublicMetsLicense))
 			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
+					"Keine Lizenzangaben für eine Publikation vorhanden.",
 					"Keine Lizenzangaben für eine Publikation vorhanden.");
 		
 
@@ -209,7 +215,7 @@ public class ValidateMetadataAction extends AbstractAction {
 		else if(!hasPremisLicense && !hasMetsLicense && !hasPublicMetsLicense)
 			o.setLicense_flag(C.LICENSEFLAG_NO_LICENSE);
 		else
-			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,"Invalide Lizenzangaben.");
+			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,"Invalide Lizenzangaben.","Invalide Lizenzangaben.");
 		logger.debug("Object License_flag is setted to: "+o.getLicense_flag());
 	}
 

@@ -424,21 +424,26 @@ public class SIPFactory {
 				if (licenseMetsFile.get(0) == null) // all licenses are null
 					metsLicenseBool = false;
 				else if (!licenseMetsFile.get(0).equals(licenseMetsFile.get(licenseMetsFile.size() - 1))) // first and last lic have to be same in sorted array
-					return Feedback.INVALID_LICENSE_DATA;
+					return Feedback.INVALID_LICENSE_DATA_IN_METADATA;
 				else
 					metsLicenseBool = true;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return Feedback.INVALID_LICENSE_DATA;
+			return Feedback.INVALID_LICENSE_DATA_IN_METADATA;
 		}
 		//publicationBool=false;
-		//guiLicenseBool=false;
-		if(premisLicenseBool && metsLicenseBool)
-			return Feedback.INVALID_LICENSE_DATA;
+		//premisLicenseBool=false;
+		if(premisLicenseBool && metsLicenseBool){
+			return Feedback.DUPLICATE_LICENSE_DATA;
+		}
 		
-		if(publicationBool && !premisLicenseBool && !metsLicenseBool)
-			return Feedback.INVALID_LICENSE_DATA;
+		if(publicationBool && !premisLicenseBool && !metsLicenseBool){
+			return Feedback.PUBLICATION_NO_LICENSE;
+		}
+		
+		logger.info("License is satisfiable: Premis-License:"+premisLicenseBool+" Metadata-License:"+metsLicenseBool+ " Publication-Decision:"+publicationBool);
+		
 		
 		return Feedback.SUCCESS;
 	}
@@ -1105,15 +1110,33 @@ public class SIPFactory {
 											+ "\" konnte der Lieferung nicht hinzugefügt werden.",
 									JOptionPane.ERROR_MESSAGE);
 					return;
-				case INVALID_LICENSE_DATA:
+				case INVALID_LICENSE_DATA_IN_METADATA:
 					messageWriter
 					.showMessage(
 							"Das SIP \""
 									+ folder.getName()
 									+ "\" konnte der Lieferung nicht hinzugefügt werden.\n"+
-									"Die Lizenzangaben sind ungültig.",
+									"Die Lizenzangaben in den Metadaten sind ungültig: Lizenzen nicht eindeutig interpretierbar.",
 							JOptionPane.ERROR_MESSAGE);
-			return;
+					return;
+				case DUPLICATE_LICENSE_DATA:
+					messageWriter
+					.showMessage(
+							"Das SIP \""
+									+ folder.getName()
+									+ "\" konnte der Lieferung nicht hinzugefügt werden.\n"+
+									"Die Lizenzangaben sind nicht eindeutig: Lizenangaben dürfen nicht gleichzeitig im SIP-Builder und in den Metadaten angegeben werden.",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				case PUBLICATION_NO_LICENSE:
+					messageWriter
+					.showMessage(
+							"Das SIP \""
+									+ folder.getName()
+									+ "\" konnte der Lieferung nicht hinzugefügt werden.\n"+
+									"Die Lizenzangaben sind nicht vorhanden: Um publizieren zu können, muss eine gültige Lizenz angegeben werden.",
+							JOptionPane.ERROR_MESSAGE);
+					return;
 				case ABORT:
 					return;
 				default:

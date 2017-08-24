@@ -37,6 +37,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 import de.uzk.hki.da.main.SIPBuilder;
 import de.uzk.hki.da.sb.SIPFactory;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Utilities;
 
 /**
@@ -46,7 +47,6 @@ import de.uzk.hki.da.utils.Utilities;
  */
 public class PremisXmlWriter {
 
-	private static final String XSI_NS = "http://www.w3.org/2001/XMLSchema-instance";
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 	private static final SimpleDateFormat dayDateFormat = new SimpleDateFormat("yyyy-MM-dd'T00:00:00.000+01:00'");
 
@@ -88,13 +88,13 @@ public class PremisXmlWriter {
 	    
 	    try {	    
 		   	  writer.writeStartDocument("UTF-8", "1.0");
-		   	  writer.setPrefix("xsi", XSI_NS);
+		   	  writer.setPrefix("xsi", C.XSI_NS);
 			  
 		   	  createOpenElement("premis", 0);
 		   	  		createAttribute("xmlns", "info:lc/xmlns/premis-v2");
 		   	  		createAttribute("xmlns:premis", "info:lc/xmlns/premis-v2");
 		   	  		createAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-		   	  		createAttribute(XSI_NS, "schemaLocation", "info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-2.xsd");
+		   	  		createAttribute(C.XSI_NS, "schemaLocation", "info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-2.xsd");
 		   	  		createAttribute("version", "2.2");
 		   	  				   	
 		   	  		generateObjectElement(packageName);
@@ -235,7 +235,7 @@ public class PremisXmlWriter {
 	private void generateObjectElement(String packageName) throws XMLStreamException {
 		
 		createOpenElement("object", 1);
-		createAttribute(XSI_NS, "type", "representation");
+		createAttribute(C.XSI_NS, "type", "representation");
 			createOpenElement("objectIdentifier", 2);
 				createTextElement("objectIdentifierType", "PACKAGE_NAME", 3);
 				createTextElement("objectIdentifierValue", packageName, 3);
@@ -356,9 +356,9 @@ public class PremisXmlWriter {
 			
 			createOpenElement("rightsExtension", 2);
 				createOpenElement("rightsGranted", 3);
-				createAttribute("xmlns", "http://www.danrw.de/contract/v1");
+				createAttribute("xmlns", C.CONTRACT_V1_URL);
 				createAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-				createAttribute("xsi:schemaLocation", "http://www.danrw.de/contract/v1 http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd");
+				createAttribute("xsi:schemaLocation", C.CONTRACT_V1_URL+" "+C.CONTRACT_V1_SCHEMA_LOCATION);
 					// Migration Right
 					createOpenElement("migrationRight", 4);
 						createTextElement("condition", contractRights.getConversionCondition().toString(), 5);
@@ -601,9 +601,9 @@ public class PremisXmlWriter {
 					if (name != null) {
 						writer.writeStartElement(name);
 						if (name.equals("rightsExtension")) {
-							createAttribute("xmlns", "http://www.danrw.de/contract/v1");
+							createAttribute("xmlns", C.CONTRACT_V1_URL);
 							createAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-							createAttribute("xsi:schemaLocation", "http://www.danrw.de/contract/v1 http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd");
+							createAttribute("xsi:schemaLocation", C.CONTRACT_V1_URL+" "+C.CONTRACT_V1_SCHEMA_LOCATION);
 						}
 
 						name = null;
