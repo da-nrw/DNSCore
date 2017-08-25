@@ -432,6 +432,7 @@ public class SIPFactory {
 			e.printStackTrace();
 			return Feedback.INVALID_LICENSE_DATA_IN_METADATA;
 		}
+		//activate to be able to create non licensed test sips
 		//publicationBool=false;
 		//premisLicenseBool=false;
 		if(premisLicenseBool && metsLicenseBool){
