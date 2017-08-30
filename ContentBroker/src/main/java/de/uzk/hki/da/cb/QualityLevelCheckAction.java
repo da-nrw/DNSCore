@@ -25,11 +25,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
+import de.uzk.hki.da.model.ConversionPolicy;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
@@ -74,6 +77,25 @@ public class QualityLevelCheckAction extends AbstractAction {
 		List<Event> events = o.getLatestPackage().getEvents();
 		List<Event> validationFailEvents = new ArrayList<Event>();
 		List<Event> conversionFailEvents = new ArrayList<Event>();
+		List<DAFile> unrecognizedPUIDFiles = new ArrayList<DAFile>();
+		List<DAFile> unknownPuidFile = new ArrayList<DAFile>();
+		Set<String> nonPresentationKnownPUID=new HashSet<String>();
+		
+		for(ConversionPolicy cp:this.preservationSystem.getConversion_policies())
+			if(!cp.isPresentation())
+				nonPresentationKnownPUID.add(cp.getSource_format());
+		for(DAFile df:o.getLatestPackage().getFiles()){
+			System.out.println(df+" "+df.getFormatPUID());
+			if(df.getFormatPUID().equals(C.UNRECOGNIZED_PUID))
+				unrecognizedPUIDFiles.add(df);
+			else if(!nonPresentationKnownPUID.contains(df.getFormatPUID()))
+				unknownPuidFile.add(df);
+		}
+		
+		for(Event ev:events){
+			System.out.println(ev+" "+ev.getSource_file()+" "+ev.getType());
+		}
+		o.getLatestPackage().getFiles().get(0).getFormatPUID();
 		for (Event e : events) {
 			if (e.getType().equals(C.EVENT_TYPE_QUALITY_FAULT_CONVERSION)) {
 				conversionFailEvents.add(e);
@@ -86,8 +108,13 @@ public class QualityLevelCheckAction extends AbstractAction {
 		Collections.sort(conversionFailEvents, eventComparator);
 		Collections.sort(validationFailEvents, eventComparator);
 		if(validationFailEvents.isEmpty()&&conversionFailEvents.isEmpty()){
-			extendObject(C.QUALITYFLAG_LEVEL_4,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4,o.getLatestPackage().getFiles().get(0),"NO CRITICAL QUALITY_LEVEL EVENTS"));
-			qualityLevel=C.QUALITYFLAG_LEVEL_4;
+			if(!unrecognizedPUIDFiles.isEmpty()){
+				extendObject(C.QUALITYFLAG_LEVEL_4,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4,o.getLatestPackage().getFiles().get(0),"NO CRITICAL QUALITY_LEVEL EVENTS, BUT HAS UNSUPPORTED FORMATS , e.g. FILE: "+unrecognizedPUIDFiles.get(0).getRelative_path()));
+				qualityLevel=C.QUALITYFLAG_LEVEL_4;
+			}else{ // if(unknownPuidFile.isEmpty() && unrecognizedPUIDFiles.isEmpty()){
+				extendObject(C.QUALITYFLAG_LEVEL_5,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_5,o.getLatestPackage().getFiles().get(0),"NO CRITICAL QUALITY_LEVEL EVENTS"));
+				qualityLevel=C.QUALITYFLAG_LEVEL_5;
+			}
 		}else if(!validationFailEvents.isEmpty()&&conversionFailEvents.isEmpty()){
 			extendObject(C.QUALITYFLAG_LEVEL_3,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_3,validationFailEvents.get(0).getSource_file(),generateQualityEventDetail("ONLY "+C.EVENT_TYPE_QUALITY_FAULT_VALIDATION+" EVENTS",validationFailEvents)));
 			qualityLevel=C.QUALITYFLAG_LEVEL_3;

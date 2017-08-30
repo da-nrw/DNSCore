@@ -27,6 +27,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.CommaSeparatedList;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.ProcessInformation;
@@ -79,7 +80,7 @@ public class ScriptWrappedPronomFormatIdentifier implements FormatIdentifier, Co
 			logger.warn("stdout from identification: "+pi.getStdErr());
 			logger.warn("FormatIdentifier with exit value: " + pi.getExitValue());
 			
-			return "UNDEFINED";
+			return C.UNRECOGNIZED_PUID;
 		}
 		
 		logger.debug("stdout from identification: "+pi.getStdOut());

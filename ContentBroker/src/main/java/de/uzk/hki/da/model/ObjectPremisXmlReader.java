@@ -276,6 +276,7 @@ public class ObjectPremisXmlReader{
 				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2)
 				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_3)
 				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4)
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_5)
 				|| eventType.toUpperCase().equals(C.EVENT_TYPE_CONVERSION_SUPRESSED)) {
 
 			for (Package pkg : object.getPackages()) {
@@ -295,7 +296,8 @@ public class ObjectPremisXmlReader{
 								|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1)
 								|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2)
 								|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_3)
-								|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4)) {
+								|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4)
+								||eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_5)) {
 							pkg.getEvents().add(event);
 							eventAdded = true;
 							break;

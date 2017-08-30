@@ -173,7 +173,8 @@ public class ObjectPremisXmlWriter {
 					e.getType().toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1) ||
 					e.getType().toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2) ||
 					e.getType().toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_3) ||
-					e.getType().toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4) ) {
+					e.getType().toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4) ||
+					e.getType().toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_5)) {
 				logger.debug("Serializing convert event: "+e);
 				createQualityLevelEventElement(object,pkg.getName(), e);
 			} else {
