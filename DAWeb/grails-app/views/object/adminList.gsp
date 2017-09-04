@@ -23,8 +23,8 @@
 		<div id="page-body">
 			<a href="#list-object" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 			<h1>eingelieferte AIP's</h1>
-			<button class="accordion">Filter</button>
-			<div class="panel">
+			<button class="accordion">Filter
+		
 				<g:if test="${params.search}"><br>
 		    		<g:if test="${!params.search?.origName.isEmpty()}">
 		    			<span style="margin-right: 25px"><i>Originalname: </i>${params.search?.origName}</span>
@@ -43,14 +43,16 @@
 	    					<g:if test="${params.searchDateType == 'createdAt'}">Datumsbereich erstellt</g:if>
 	    					<g:if test="${params.searchDateType == 'modifiedAt'}">Datumsbereich geändert</g:if>
 			    		</g:if>    
-			    		<g:if test="${!params.searchDateStart.isEmpty()}">
+			    		<g:if test="${!params.searchDateStart != null}">
 			    			<span style="margin-right: 25px"><i>Von Datum: </i>${params.searchDateStart}</span>
 			    		</g:if> 	
-			    		<g:if test="${!params.searchDateEnd.isEmpty()}">
+			    		<g:if test="${!params.searchDateEnd != null}">
 			    			<span style="margin-right: 25px"><i>Bis Datum: </i>${params.searchDateEnd}</span>
 			    		</g:if> 
 			    	</div>
 		    	</g:if> 
+		    </button>
+		    <div class="panel">
 	            <g:form name="searchForm" action="list">
 	            	<table>
 	            		<tr>
@@ -69,17 +71,17 @@
 	            		<tr>
 	            			<td>Datumsbereich:	</td>	
 		            		<td>
-		            			<g:select id="datetype" name="searchDateType" from="${['Datum erstellt','Datum geändert']}" keys="${['createdAt','modifiedAt']}" value="${params.searchDateType}" noSelection="[null:'Bitte auswählen']"/>
+		            			<g:select id="datetype" name="searchDateType" from="${['Datum erstellt','Datum geändert']}" keys="${['createdAt','modifiedAt']}" value="${params.searchDateType}" noSelection="[null:'-Bitte wählen-']"/>
 		            		</td>
 						</tr>
 	            		<tr>
 	            			<td>Von Datum: </td>
 	            			<td>
 	            			<g:if test="${params.search?.searchDateStart != null}" >
-	            					<g:datePicker name="searchDateStart" value="${params.search?.searchDateStart.date.format('TT.MM.JJJJ HH:mm')}"/>
+	            					<g:datePicker name="searchDateStart" default="none" noSelection="['':'']"  value="${params.search?.searchDateStart.date.format('TT.MM.JJJJ HH:mm')}"/>
 	            				</g:if>
 	            				<g:else>
-	            					<g:datePicker name="searchDateStart" value="${params.search?.searchDateStart}"/>
+	            					<g:datePicker name="searchDateStart" default="none" noSelection="['':'']"  value="${params.search?.searchDateStart}"/>
 	            				</g:else>
 							</td>
 	            		</tr>
@@ -87,10 +89,10 @@
 	            			<td>Bis Datum: </td>
 	            			<td>
 	            				<g:if test="${params.search?.searchDateEnd != null}" >
-	            					<g:datePicker name="searchDateEnd" value="${params.search?.searchDateEnd.date.format('dd.MM.yyyy HH:mm')}"/>
+	            					<g:datePicker name="searchDateEnd" default="none" noSelection="['':'']"  value="${params.search?.searchDateEnd.date.format('dd.MM.yyyy HH:mm')}"/>
 	            				</g:if>
 	            				<g:else>
-	            					<g:datePicker name="searchDateEnd" value="${params.search?.searchDateEnd}"/>
+	            					<g:datePicker name="searchDateEnd" default="none" noSelection="['':'']"  value="${params.search?.searchDateEnd}"/>
 	            				</g:else>
 	            				<% // fix for https://github.com/zoran119/grails-jquery-date-time-picker/issues/12 %>
 		            			<script type="text/javascript">
@@ -106,10 +108,10 @@
 		            			<td>Contractor:</td>
 		            			<td>
 		            				<g:if test="${params.searchContractorName  == null}" >
-		            					<g:select id="user" name="searchContractorName" from="${contractorList}" optionKey="shortName" noSelection="[null:'Bitte auswählen']" required="" value="${objectInstance?.contractorList?.shortName}" class="many-to-one"/>
+		            					<g:select id="user" name="searchContractorName" from="${contractorList}" optionKey="shortName" noSelection="['':'-Bitte wählen-']" value="${objectInstance?.contractorList?.shortName}" class="many-to-one"/>
 		            				</g:if>
 		            				<g:if test="${params.searchContractorName  != null && !params.searchContractorName.isEmpty()}" >
-		            					<g:select id="user" name="searchContractorName" from="${contractorList}" optionKey="shortName" noSelection="[null:'Bitte auswählen']" required="" value="${params.searchContractorName}" class="many-to-one"/>
+		            					<g:select id="user" name="searchContractorName" from="${contractorList}" optionKey="shortName" noSelection="['':'-Bitte wählen-']" value="${params.searchContractorName}" class="many-to-one"/>
 		            				</g:if>
 		            			</td>
 	            			</tr>

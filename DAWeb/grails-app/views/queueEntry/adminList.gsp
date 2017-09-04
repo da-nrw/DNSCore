@@ -66,8 +66,7 @@
 			<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 			</g:if><br>
-			<button class="accordion">Filter</button>
-			<div class="panel">
+			<button class="accordion">Filter
 			  	<g:if test="${params.search}"><br>
 		    		<g:if test="${!params.search?.status.isEmpty()}">
 		    		<span style="margin-right: 25px" ><i>Status: </i>${params.search?.status}</span>
@@ -88,7 +87,8 @@
 		    			<span style="margin-right: 25px"><i>Zuständiger Knoten: </i>${params.search?.initialNode}</span>
 		    		</g:if> 
 		    	</g:if> 
-			  </a></h1> 
+			</button>
+			<div class="panel">
 	          <g:form name="searchForm" id="filterform" action="list">
 	             <table>
 	            	<tr>

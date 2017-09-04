@@ -144,8 +144,8 @@ class ObjectController {
 		
 		def c = Object.createCriteria()
 		log.debug(params.toString())
+		
 		def objects = c.list(max: params.max, offset: params.offset ?: 0) {
-
 			if (params.search) params.search.each { key, value ->
 				if (value!="") filterOn=1
 				like(key, "%" + value + "%")
@@ -153,14 +153,12 @@ class ObjectController {
 			
 			log.debug("Date as Strings " + params.searchDateStart + " and " + params.searchDateEnd)
 			
-//			def ds = daweb3.Object.convertDateIntoDate(params.searchDateStart)
-//			def de = daweb3.Object.convertDateIntoDate(params.searchDateEnd)
 			def ds = params.searchDateStart
 			def de = params.searchDateEnd
 
 			def st = "createdAt"; 
 			String searchDateType = params.searchDateType;
-			if (ds!=null || de!=null) {
+			if (ds!=null || !ds.equals("0") || de!=null || !de.equals("0")) {
 				if ( params.searchDateType.equals("null") ) {
 					params.searchDateType = "createdAt"
 				} else {
@@ -188,7 +186,6 @@ class ObjectController {
 				lt(st,de)
 			}
 
-
 			if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 				admin = 1;
 			}
@@ -207,7 +204,7 @@ class ObjectController {
 			order(params.sort ?: "id", params.order ?: "desc")
 		}
 		log.debug("Search " + params.search)
-
+		println ("Search " +  params.search)
 		// workaround: make ALL params accessible for following http-requests
 		def paramsList = params.search?.collectEntries { key, value -> ['search.'+key, value]}
 		if(params.searchContractorName){

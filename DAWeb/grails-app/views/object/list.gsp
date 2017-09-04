@@ -24,8 +24,7 @@
 		<div id="page-body">
 			<a href="#list-object" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 			<h1>eingelieferte AIP's</h1>
-			<button class="accordion">Filter</button>
-			<div class="panel">
+			<button class="accordion">Filter
 				<g:if test="${params.search}"><br>
 		    		<g:if test="${!params.search?.origName.isEmpty()}">
 		    			<span style="margin-right: 25px"><i>Originalname: </i>${params.search?.origName}</span>
@@ -49,6 +48,8 @@
 			    		</g:if> 
 			    	</div>
 		    	</g:if> 
+		    </button>
+		    <div class="panel">
 	        	<g:form name="searchForm" action="list">
 	            	<g:hiddenField name="filterOn" value="${filterOn}" />
 	            	<table>
@@ -74,10 +75,10 @@
 	            			<td>Von Datum: </td>
 	            			<td>
 	            				<g:if test="${params.search?.searchDateStart != null}" >
-	            					<g:datePicker name="searchDateStart" value="${params.search?.searchDateStart.date.format('TT.MM.JJJJ HH:mm')}"/>
+	            					<g:datePicker name="searchDateStart" default="none" noSelection="['':'']" value="${params.search?.searchDateStart.date.format('TT.MM.JJJJ HH:mm')}"/>
 	            				</g:if>
 	            				<g:else>
-	            					<g:datePicker name="searchDateStart" value="${params.search?.searchDateStart}"/>
+	            					<g:datePicker name="searchDateStart" default="none" noSelection="['':'']" value="${params.search?.searchDateStart}"/>
 	            				</g:else>
 	            			</td>
 	            		</tr>
@@ -85,10 +86,10 @@
 	            			<td>Bis Datum: </td>
 	            			<td>	
 	            				<g:if test="${params.search?.searchDateEnd != null}" >
-	            					<g:datePicker name="searchDateEnd" value="${params.search?.searchDateEnd.date.format('dd.MM.yyyy HH:mm')}"/>
+	            					<g:datePicker name="searchDateEnd" default="none" noSelection="['':'']"  value="${params.search?.searchDateEnd.date.format('dd.MM.yyyy HH:mm')}"/>
 	            				</g:if>
 	            				<g:else>
-	            					<g:datePicker name="searchDateEnd" value="${params.search?.searchDateEnd}"/>
+	            					<g:datePicker name="searchDateEnd" default="none" noSelection="['':'']"  value="${params.search?.searchDateEnd}"/>
 	            				</g:else>
 	            				<% // fix for https://github.com/zoran119/grails-jquery-date-time-picker/issues/12 %>
 	            			<script type="text/javascript">
@@ -104,9 +105,9 @@
 	            			<td><g:submitButton name="submit" value="Filter anwenden"/>
 	            				<g:submitButton name="loeschen" type="submit" value="Filter löschen"/>
 	            			</td>
-	            			<script type="text/javascript">
+	            			<g:javascript>
 	            				$(document).ready(function(){
-	            				 	$("#loeschen").click(function() {                				 
+	            				 	$("#loeschen").click(function() {    
 				            			$('#searchForm').find(':input').each(function() {
 				            	            switch(this.type) {
 				                            case 'text':
@@ -116,7 +117,7 @@
 				                                $(this).val('');
 				                                break;
 				            			 	case 'hidden':
-				                                $(this).val('0');TT.MM.JJJJ HH:mm
+				                                $(this).val('0');
 				                                break;
 				            				case 'select-one':
 					                            $(this).val(null);
@@ -124,7 +125,8 @@
 				                            }
 				            			});
 	            				    });
-	            			});</script>
+	            			});
+	            			</g:javascript>
 	            		</tr>
 	            	</table>     
 	           </g:form>
@@ -149,6 +151,7 @@
 				<g:if test="${flash.message}">
 					<div class="message" role="status">${flash.message}</div>
 				</g:if>
+				
 				<g:formRemote name="myForm" on404="alert('not found!')" 
 	              url="[controller: 'object', action:'queueAllForRetrieval']" 
 	              onLoaded="queuedFor(data)">

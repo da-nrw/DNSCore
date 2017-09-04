@@ -38,14 +38,15 @@
 		</g:else>
 	</div>
 	
-	<g:if test="${actionName=='auth'}" />
+  	<g:if test="${actionName=='auth'}" />  
+	<g:elseif test="${controllerName=='logout'}"/>
 	<g:else>
 		<div class="welcome">
 			<h1>Willkommen  ${user} ! <g:if test="${admin==1}"> (Administrator)</g:if> </h1>
   			<div class="vertical-menu">
 				<ul>
 				 	<li class="controller"><g:link controller="queueEntry" action="index">Bearbeitungsübersicht</g:link></li> 
-					<g:if test="${ admin==1}">
+					<g:if test="${admin==1}">
 						<li class="controller"><g:link controller="object" action="listObjects">Auswahl Objekte nach Formaten</g:link></li>
 					</g:if>
 					<li class="controller"><g:link controller="queueEntry" action="listRequests">Entscheidungsübersicht</g:link></li>
@@ -56,7 +57,7 @@
 					<li class="controller"><g:link controller="conversionPolicies">Konfigurierte Konversionen</g:link></li>
 					<li class="controller"><g:link controller="report">Abfragen verarbeiten</g:link></li>
 					<li class="controller"><g:link controller="systemEvent">System-Eventsteuerung</g:link></li>
-					<g:if test="${ admin==1}">
+					<g:if test="${admin==1}">
 						<li class="controller"><g:link controller="cbtalk">Adminfunktionen</g:link></li>
 					</g:if>
 				</ul>
