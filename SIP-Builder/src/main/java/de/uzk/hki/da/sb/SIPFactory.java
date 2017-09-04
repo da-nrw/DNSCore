@@ -435,6 +435,7 @@ public class SIPFactory {
 		//activate to be able to create non licensed test sips
 		//publicationBool=false;
 		//premisLicenseBool=false;
+		//publicationBool=false;
 		if(premisLicenseBool && metsLicenseBool){
 			return Feedback.DUPLICATE_LICENSE_DATA;
 		}

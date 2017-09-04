@@ -198,8 +198,9 @@ public class ContractRights {
 					cclincense = cl;
 					break;
 				}
-			if(cclincense==null)
-				throw new RuntimeException("Reading ContractRights from file failed to load license");
+			if(cclincense==null){
+				throw new RuntimeException("Reading ContractRights from file failed, unknown license href: "+hrefAttribute);
+			}
 		}else{
 			cclincense=null;
 		}
