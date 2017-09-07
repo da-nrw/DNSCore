@@ -77,18 +77,19 @@ public class QualityLevelCheckAction extends AbstractAction {
 		List<Event> events = o.getLatestPackage().getEvents();
 		List<Event> validationFailEvents = new ArrayList<Event>();
 		List<Event> conversionFailEvents = new ArrayList<Event>();
+		
 		List<DAFile> unrecognizedPUIDFiles = new ArrayList<DAFile>();
 		List<DAFile> unknownPuidFile = new ArrayList<DAFile>();
-		Set<String> nonPresentationKnownPUID=new HashSet<String>();
+		Set<String> supportedFormatsForLZA=new HashSet<String>();
 		
 		for(ConversionPolicy cp:this.preservationSystem.getConversion_policies())
-			if(!cp.isPresentation())
-				nonPresentationKnownPUID.add(cp.getSource_format());
+			if(ConversionPolicy.FormatType.LZA.equals(cp.getFormat_type()))
+				supportedFormatsForLZA.add(cp.getSource_format());
 		for(DAFile df:o.getLatestPackage().getFiles()){
 			System.out.println(df+" "+df.getFormatPUID());
 			if(df.getFormatPUID().equals(C.UNRECOGNIZED_PUID))
 				unrecognizedPUIDFiles.add(df);
-			else if(!nonPresentationKnownPUID.contains(df.getFormatPUID()))
+			else if(!supportedFormatsForLZA.contains(df.getFormatPUID()))
 				unknownPuidFile.add(df);
 		}
 		
@@ -108,7 +109,7 @@ public class QualityLevelCheckAction extends AbstractAction {
 		Collections.sort(conversionFailEvents, eventComparator);
 		Collections.sort(validationFailEvents, eventComparator);
 		if(validationFailEvents.isEmpty()&&conversionFailEvents.isEmpty()){
-			if(!unrecognizedPUIDFiles.isEmpty()){
+			if(!unrecognizedPUIDFiles.isEmpty() || !unknownPuidFile.isEmpty()){
 				extendObject(C.QUALITYFLAG_LEVEL_4,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4,o.getLatestPackage().getFiles().get(0),"NO CRITICAL QUALITY_LEVEL EVENTS, BUT HAS UNSUPPORTED FORMATS , e.g. FILE: "+unrecognizedPUIDFiles.get(0).getRelative_path()));
 				qualityLevel=C.QUALITYFLAG_LEVEL_4;
 			}else{ // if(unknownPuidFile.isEmpty() && unrecognizedPUIDFiles.isEmpty()){
