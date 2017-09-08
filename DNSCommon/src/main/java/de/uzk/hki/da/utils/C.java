@@ -100,14 +100,15 @@ public class C {
 	// File system
 	public static final Path CONF = new RelativePath("conf");
 	public static final String PREMIS_XSD_PATH = "conf/premis.xsd";
-	public static final String CONTRACT_XSD_PATH = "conf/danrw-contract-1.xsd";
+	public static final String CONTRACT_XSD_PATH = "conf/danrw-contract-v1-01.xsd";
 	public static final String CONFIG_PROPS = "conf/config.properties";
 	public static final String XLINK_XSD_PATH = "conf/xlink.xsd";
 	public static final File HIBERNATE_CFG = new RelativePath(CONF,"hibernateCentralDB.cfg.xml").toFile();
 	// The availability of the flowing *_TEST resources is only important for JUnit-Test step
+	public static final String PREMIS_XML = "premis.xml";
 	public static final File XLINK_XSD_TEST = new File("src/main/xsd/xlink.xsd");
 	public static final File PREMIS_XSD_TEST = new File("src/main/xsd/premis.xsd");
-	public static final File CONTRACT_XSD_TEST = new File("src/main/xsd/v1/danrw-contract-1.xsd");
+	public static final File CONTRACT_XSD_TEST = new File("src/main/xsd/v1/danrw-contract-v1-01.xsd");
 	public static final String FIDO_GLUE_SCRIPT = "fido.sh";
 	public static final Path FIDO_INSTALLATION = new RelativePath("fido");
 	public static final String CONFIGURE_SCRIPT = "configure.sh"; 
@@ -118,9 +119,10 @@ public class C {
 	public static final String XSI_NS = "http://www.w3.org/2001/XMLSchema-instance";
 	public static final String CONTRACT_NS = "http://www.danrw.de/contract/v1";
 	public static final String CONTRACT_V1_URL = "http://www.danrw.de/contract/v1";
-	public static final String CONTRACT_V1_SCHEMA_LOCATION = "http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd";
+	public static final String CONTRACT_V1_SCHEMA_LOCATION = "http://www.danrw.de/schemas/contract/v1/danrw-contract-v1-01.xsd";
+
 	public static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
-	public static final Namespace XLINK_NS = Namespace.getNamespace("http://www.w3.org/1999/xlink");
+	public static final Namespace XLINK_NS = Namespace.getNamespace("xlink","http://www.w3.org/1999/xlink");
 	public static final Namespace MODS_NS = Namespace.getNamespace("http://www.loc.gov/mods/v3");
 	public static final Namespace LIDO_NS = Namespace.getNamespace("http://www.lido-schema.org");
 	public static final Namespace ORE_NS = Namespace.getNamespace("http://www.openarchives.org/ore/terms/");
@@ -151,6 +153,7 @@ public class C {
 	public static final String EDM_OBJECT = "edm:object";
 	public static final String EDM_PROVIDER = "edm:provider";
 	public static final String EDM_HAS_TYPE = "edm:hasType";
+	public static final String EDM_RIGHTS = "dc:rights";
 	public static final String EDM_EXTENT = "dcterms:extent";
 	
 	// Other
@@ -186,12 +189,22 @@ public class C {
 	public static final int PUBLISHEDFLAG_PUBLIC = 1;
 	public static final int PUBLISHEDFLAG_UNDEFINED = -1;
 	
+
 	public static final int QUALITYFLAG_DEFAULT = 0;
 	public static final int QUALITYFLAG_LEVEL_1 = 1;
 	public static final int QUALITYFLAG_LEVEL_2 = 2;
 	public static final int QUALITYFLAG_LEVEL_3 = 3;
 	public static final int QUALITYFLAG_LEVEL_4 = 4;
 	public static final int QUALITYFLAG_LEVEL_5 = 5;
+
+	public static final int LICENSEFLAG_UNDEFINED = -1;
+	public static final int LICENSEFLAG_NO_LICENSE = 0;
+	public static final int LICENSEFLAG_PREMIS = 1;
+	public static final int LICENSEFLAG_METS = 2;
+	public static final int LICENSEFLAG_PUBLIC_METS = 3;
+	public static final int PRESERVATIONSYS_LICENSE_VALIDATION_YES = 1;
+	public static final int PRESERVATIONSYS_LICENSE_VALIDATION_NO = 0;
+
 	
 	public static final String ORE_AGGREGATION = "ore:Aggregation";
 	
@@ -207,6 +220,7 @@ public class C {
 	public static final String KIND_OF_SIPBUILDING_NESTED="SIPs aus verzweigter Ordnerstruktur erstellen (nur METS)";
 
 	public static final java.lang.Object PREMIS = "premis.xml";
+
 	
 }
 

@@ -52,4 +52,5 @@
         <condition>NOTIFY</condition>
     </conversionRights>
     <ddbExclusion>false</ddbExclusion>
+    <publicationLicense  href="https://creativecommons.org/licenses/by-sa/4.0/" displayLabel="CC-BY-SA-Lizenz (v4.0)">CC v4.0 International Lizenz: Namensnennung - Weitergabe unter gleichen Bedingungen</publicationLicense >
 </contractRights>

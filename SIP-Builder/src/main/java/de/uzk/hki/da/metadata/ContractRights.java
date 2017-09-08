@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import javax.management.RuntimeErrorException;
 import javax.xml.parsers.SAXParserFactory;
 
 import nu.xom.Builder;
@@ -56,8 +57,76 @@ public class ContractRights {
 	
 	private ConversionCondition conversionCondition;
 	boolean ddbExclusion;
-	
+	private CCLicense cclincense;
+
+
 	public enum ConversionCondition { NONE, NOTIFY, CONFIRM };
+/*
+	public enum LicenseCondition {
+		//NOLICENSE("NOLICENSE"), 
+		METADALICENSE("METADALICENSE"), 
+		PREMISLICENSE("PREMISLICENSE");
+
+		private LicenseCondition(String text) {	this.text = text;}
+		private String text;
+		public String getText() {return text;}
+		@Override public String toString() {	return text;}
+	};*/
+
+	
+	public enum CCLicense {
+		PDM("https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","Public Domain Mark 1.0"),
+		Cc0("https://creativecommons.org/publicdomain/zero/1.0/","CC0-Lizenz (v1.0)","CC0 1.0 Public Domain Dedication"),
+		/*
+		By3("https://creativecommons.org/licenses/by/3.0/","CC-BY-Lizenz (v3.0)","cc-by_3.0"),
+		ByNd3("https://creativecommons.org/licenses/by-nd/3.0/","CC-BY-ND-Lizenz (v3.0)","cc-by-nd_3.0"),
+		ByNc3("https://creativecommons.org/licenses/by-nc/3.0/","CC-BY-NC-Lizenz (v3.0)","cc-by-nc_3.0"),
+		ByNcNd3("https://creativecommons.org/licenses/by-nc-nd/3.0/","CC-BY-NC-ND-Lizenz (v3.0)","cc-by-nc-nd_3.0"),
+		ByNcSa3("https://creativecommons.org/licenses/by-nc-sa/3.0/","CC-BY-NC-SA-Lizenz (v3.0)","cc-by-nc-sa_3.0"),
+		BySa3("https://creativecommons.org/licenses/by-sa/3.0/","CC-BY-SA-Lizenz (v3.0)","cc-by-sa_3.0"),
+		
+		By4("https://creativecommons.org/licenses/by/4.0/","CC-BY-Lizenz (v4.0)","cc-by_4.0"),
+		ByNd4("https://creativecommons.org/licenses/by-nd/4.0/","CC-BY-ND-Lizenz (v4.0)","cc-by-nd_4.0"),
+		ByNc4("https://creativecommons.org/licenses/by-nc/4.0/","CC-BY-NC-Lizenz (v4.0)","cc-by-nc_4.0"),
+		ByNcNd4("https://creativecommons.org/licenses/by-nc-nd/4.0/","CC-BY-NC-ND-Lizenz (v4.0)","cc-by-nc-nd_4.0"),
+		ByNcSa4("https://creativecommons.org/licenses/by-nc-sa/4.0/","CC-BY-NC-SA-Lizenz (v4.0)","cc-by-nc-sa_4.0"),
+		BySa4("https://creativecommons.org/licenses/by-sa/4.0/","CC-BY-SA-Lizenz (v4.0)","cc-by-sa_4.0"),
+		*/
+		
+		By3("https://creativecommons.org/licenses/by/3.0/","CC-BY-Lizenz (v3.0)","CC v3.0 International Lizenz: Namensnennung"),
+		ByNd3("https://creativecommons.org/licenses/by-nd/3.0/","CC-BY-ND-Lizenz (v3.0)","CC v3.0 International Lizenz: Namensnennung - Keine Bearbeitungen"),
+		ByNc3("https://creativecommons.org/licenses/by-nc/3.0/","CC-BY-NC-Lizenz (v3.0)","CC v3.0 International Lizenz: Namensnennung - Nicht kommerziell"),
+		ByNcNd3("https://creativecommons.org/licenses/by-nc-nd/3.0/","CC-BY-NC-ND-Lizenz (v3.0)","CC v3.0 International Lizenz: Namensnennung - Nicht kommerziell - Keine Bearbeitungen"),
+		ByNcSa3("https://creativecommons.org/licenses/by-nc-sa/3.0/","CC-BY-NC-SA-Lizenz (v3.0)","CC v3.0 International Lizenz: Namensnennung - Nicht-kommerziell - Weitergabe unter gleichen Bedingungen"),
+		BySa3("https://creativecommons.org/licenses/by-sa/3.0/","CC-BY-SA-Lizenz (v3.0)","CC v3.0 International Lizenz: Namensnennung - Weitergabe unter gleichen Bedingungen"),
+		
+		
+		By4("https://creativecommons.org/licenses/by/4.0/","CC-BY-Lizenz (v4.0)","CC v4.0 International Lizenz: Namensnennung"),
+		ByNd4("https://creativecommons.org/licenses/by-nd/4.0/","CC-BY-ND-Lizenz (v4.0)","CC v4.0 International Lizenz: Namensnennung - Keine Bearbeitungen"),
+		ByNc4("https://creativecommons.org/licenses/by-nc/4.0/","CC-BY-NC-Lizenz (v4.0)","CC v4.0 International Lizenz: Namensnennung - Nicht kommerziell"),
+		ByNcNd4("https://creativecommons.org/licenses/by-nc-nd/4.0/","CC-BY-NC-ND-Lizenz (v4.0)","CC v4.0 International Lizenz: Namensnennung - Nicht kommerziell - Keine Bearbeitungen"),
+		ByNcSa4("https://creativecommons.org/licenses/by-nc-sa/4.0/","CC-BY-NC-SA-Lizenz (v4.0)","CC v4.0 International Lizenz: Namensnennung - Nicht-kommerziell - Weitergabe unter gleichen Bedingungen"),
+		BySa4("https://creativecommons.org/licenses/by-sa/4.0/","CC-BY-SA-Lizenz (v4.0)","CC v4.0 International Lizenz: Namensnennung - Weitergabe unter gleichen Bedingungen"),
+		;
+		
+
+		private CCLicense(String href, String displayLabel, String defaultText) {
+			this.displayLabel = displayLabel;
+			this.href = href;
+			this.text = defaultText;
+		}
+
+		private String displayLabel;
+		private String href;
+		private String text;
+		public String getDisplayLabel() {return displayLabel;	}
+		public String getHref() {return href;	}
+		public String getText() {return text;	}
+		@Override
+		public String toString() {
+			return displayLabel;
+		}
+	};
 	
 
 	/**
@@ -118,6 +187,25 @@ public class ContractRights {
 			ddbExclusion = Boolean.parseBoolean(ddbExclusionEl.getValue());
 		else
 			ddbExclusion = false;
+		
+		Element publicationLicenseEl = root.getFirstChildElement("publicationLicense");
+		if(publicationLicenseEl!=null){
+			String hrefAttribute=publicationLicenseEl.getAttribute("href").getValue();
+			//publicationLicenseEl.getAttribute("displayLabel");
+			//publicationLicenseEl.getValue();
+			for(CCLicense cl:CCLicense.values())
+				if(cl.getHref().equals(hrefAttribute)){
+					cclincense = cl;
+					break;
+				}
+			if(cclincense==null){
+				throw new RuntimeException("Reading ContractRights from file failed, unknown license href: "+hrefAttribute);
+			}
+		}else{
+			cclincense=null;
+		}
+		
+		
 	}
 	
 	private void readPublicationRights(PublicationRights pubRights, Element pubRightEl) throws Exception {
@@ -213,5 +301,15 @@ public class ContractRights {
 	public void setDdbExclusion(boolean ddbExclusion) {
 		this.ddbExclusion = ddbExclusion;
 	}
+	
+	public CCLicense getCclincense() {
+		return cclincense;
+	}
+
+	public void setCclincense(CCLicense cclincense) {
+		this.cclincense = cclincense;
+	}
+	
+	
 	
 }

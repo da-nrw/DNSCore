@@ -185,6 +185,9 @@ public class Object {
 	/** last publication try (time based) */
 	@Column(name="last_publication_try")
 	private Date lastPublicationTry;
+	
+	@Column(name="license_flag")
+	private int license_flag=C.LICENSEFLAG_UNDEFINED;
 
 	/** The rights. */
 	@Transient
@@ -828,6 +831,15 @@ public class Object {
 		this.mostRecentSecondaryAttributes = most_recent_secondary_attributes;
 	}
 
+
+	
+	public int getLicense_flag() {
+		return license_flag;
+	}
+
+	public void setLicense_flag(int license_flag) {
+		this.license_flag = license_flag;
+	}
 
 	public boolean ddbExcluded() {
 		return ddbExclusion;

@@ -43,7 +43,7 @@ public class ATSipBuilderCliLido {
 		
 		File source = new File(sourceDir, "ATBuildSingleLidoSip");
 		
-		String cmd = "./SipBuilder-Unix.sh -source=\""+source.getAbsolutePath()+"/\" -destination=\""+targetDir.getAbsolutePath()+"/\" -single -alwaysOverwrite";
+		String cmd = "./SipBuilder-Unix.sh -rights=\""+ATWorkingDirectory.CONTRACT_RIGHT_LICENSED.getAbsolutePath()+"\" -source=\""+source.getAbsolutePath()+"/\" -destination=\""+targetDir.getAbsolutePath()+"/\" -single -alwaysOverwrite";
 		
 		p=Runtime.getRuntime().exec(cmd,
 		        null, new File("target/installation"));

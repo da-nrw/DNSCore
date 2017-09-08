@@ -51,6 +51,8 @@ public class RightsStatement {
 	/** The migration right. */
 	private MigrationRight migrationRight;
 	
+	private PremisLicense premisLicense;
+	
 	/**
 	 * Instantiates a new rights statement.
 	 */
@@ -159,4 +161,14 @@ public class RightsStatement {
 	public void setMigrationRight(MigrationRight migrationRight) {
 		this.migrationRight = migrationRight;
 	}
+
+	public PremisLicense getPremisLicense() {
+		return premisLicense;
+	}
+
+	public void setPremisLicense(PremisLicense premisLicense) {
+		this.premisLicense = premisLicense;
+	}
+	
+	
 }

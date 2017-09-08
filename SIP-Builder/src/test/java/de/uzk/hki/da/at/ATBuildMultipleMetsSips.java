@@ -49,7 +49,7 @@ public class ATBuildMultipleMetsSips {
 	@Test
 	public void test() throws IOException {
 		
-		String cmd = "./SipBuilder-Unix.sh -source=\""+sourceDir.getAbsolutePath()+"/\" -destination=\""+targetDir.getAbsolutePath()+"/\" -multiple";
+		String cmd = "./SipBuilder-Unix.sh -rights=\""+ATWorkingDirectory.CONTRACT_RIGHT_LICENSED.getAbsolutePath()+"\" -source=\""+sourceDir.getAbsolutePath()+"/\" -destination=\""+targetDir.getAbsolutePath()+"/\" -multiple";
 		
 		p=Runtime.getRuntime().exec(cmd,
 		        null, new File("target/installation"));

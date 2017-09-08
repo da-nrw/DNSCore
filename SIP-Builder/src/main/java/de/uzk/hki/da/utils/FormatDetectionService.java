@@ -135,6 +135,10 @@ public class FormatDetectionService {
 		} else if (eadFiles.size()==1 && metsFiles.size()>=0){
 			fileWithType.put(eadFiles.get(0), C.CB_PACKAGETYPE_EAD);
 		} else if(eadFiles.size()+metsFiles.size()+lidoFiles.size()>1) {
+			/*if(lidoFiles.size()==0&&eadFiles.size()==0&&metsFiles.size()==2){ //To create Public-Mets Test-Sip for CB
+				fileWithType.put(metsFiles.get(0), C.CB_PACKAGETYPE_METS);
+				fileWithType.put(metsFiles.get(1), C.CB_PACKAGETYPE_METS);
+			}else*/
 			throw new Exception("Im Verzeichnis "+folder.getName()+" wurde mehr als eine Metadatendatei gefunden. " +
 					"\nEAD: \n" + eadFiles +
 					"\nMETS: \n" + metsFiles + 

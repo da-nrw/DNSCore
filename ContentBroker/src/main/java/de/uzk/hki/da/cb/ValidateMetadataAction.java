@@ -19,21 +19,33 @@
 
 package de.uzk.hki.da.cb;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.jdom.input.SAXBuilder;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.metadata.MetadataStructure;
 import de.uzk.hki.da.metadata.MetadataStructureFactory;
+import de.uzk.hki.da.metadata.MetsLicense;
+import de.uzk.hki.da.metadata.MetsParser;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Document;
+import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.ObjectPremisXmlReader;
+import de.uzk.hki.da.model.PublicationRight;
+import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.StringUtilities;
+import de.uzk.hki.da.utils.XMLUtils;
 
 /**
  * Detects the package type of an object and validates the metadata structure.
@@ -94,10 +106,132 @@ public class ValidateMetadataAction extends AbstractAction {
 		}
 		
 		o.setMetadata_file(detectedMetadataFile.getRelative_path());
+		try {
+			if( !canIgnoreLicenseValidation())
+				checkLicenses();
+		} catch (UserException e) {
+			logger.debug("Fehler bei Lizenzauswertung: "+e.getMessage());
+			throw e;
+		}catch (Exception e) {
+			logger.debug("Fehler bei Lizenzauswertung: "+e.getMessage());
+			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,"Fehler bei Lizenzenauswertung: "+e,"Fehler bei Lizenzenauswertung");
+		}
 		return true;
 	}
 	
 	
+	private void checkLicenses() throws Exception {
+		boolean wantPublication = false;
+		boolean hasPremisLicense = false;
+		boolean hasMetsLicense = false;
+		boolean hasPublicMetsLicense = false;
+		boolean usePublicMets = false;
+		//validate premis
+		Object premisObject = parsePremisToMetadata(wa.toFile(o.getLatest(C.PREMIS_XML)));
+		for (PublicationRight pr : premisObject.getRights().getPublicationRights())
+			if (pr.getAudience().equals(Audience.PUBLIC))
+				wantPublication = true;
+
+		if (!detectedPackageType.equals(C.CB_PACKAGETYPE_METS) && wantPublication)
+			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
+					"Publikation ist nur mithilfe von METS-Metadaten erlaubt.","Publikation ist nur mithilfe von METS-Metadaten erlaubt.");
+
+		if (premisObject.getRights().getPremisLicense() != null)
+			hasPremisLicense = true;
+		
+		if(hasPremisLicense){
+			try{
+				new URL(premisObject.getRights().getPremisLicense().getHref());
+			}catch(MalformedURLException e){
+				throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
+						"Invalide Lizenz: publicationLicense-Element in der Premis hat ein ungueltiges href-Attribut("+premisObject.getRights().getPremisLicense().getHref()+")",
+						"Invalide Lizenz: publicationLicense-Element in der Premis hat ein ungueltiges href-Attribut("+premisObject.getRights().getPremisLicense().getHref()+")");
+			}
+		}
+
+		//validate mets
+		if (detectedPackageType.equals(C.CB_PACKAGETYPE_METS)){
+			List<DAFile> metsFiles = getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_METS);
+			MetsLicense licenseMetsFile =null;
+			MetsLicense licensePublicMetsFile = null;
+			for (DAFile f : metsFiles) {//over all mets-files (max 2), amount checked by previous actions
+				SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+				MetsParser mp = new MetsParser(builder.build(wa.toFile(f).getAbsolutePath()));
+				if(f.getRelative_path().equalsIgnoreCase(C.PUBLIC_METS)){
+					usePublicMets=true;
+					licensePublicMetsFile=mp.getLicenseForWholeMets();
+					hasPublicMetsLicense=(licensePublicMetsFile!=null);
+				}else{
+					licenseMetsFile=mp.getLicenseForWholeMets();
+					hasMetsLicense=(licenseMetsFile!=null);
+				}
+			}
+			
+			if(hasPublicMetsLicense){
+				try{
+					new URL(licensePublicMetsFile.getHref());
+				}catch(MalformedURLException e){
+					throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
+							"Invalide Lizenzangaben in "+C.PUBLIC_METS+": accessCondition-Element hat ein ungueltiges href-Attribut("+e.getMessage()+")",
+							"Invalide Lizenzangaben in "+C.PUBLIC_METS+": accessCondition-Element hat ein ungueltiges href-Attribut("+licensePublicMetsFile.getHref()+")");
+				}
+			}else if(!hasPublicMetsLicense && hasMetsLicense){
+				try{
+					new URL(licenseMetsFile.getHref());
+				}catch(MalformedURLException e){
+					throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
+							"Invalide Lizenzangaben in mets metadaten: accessCondition-Element hat ein ungueltiges href-Attribut("+e.getMessage()+")",
+							"Invalide Lizenzangaben in mets metadaten: accessCondition-Element hat ein ungueltiges href-Attribut("+licenseMetsFile.getHref()+")");
+				}
+			}
+			if ((licenseMetsFile!=null && !licenseMetsFile.equals(licensePublicMetsFile)) ||
+					(licensePublicMetsFile!=null && !licensePublicMetsFile.equals(licenseMetsFile))) // mets and public mets are different
+				logger.warn("Lizenzangaben in den METS-Metadaten sind unterschiedlich: e.g.:" + licenseMetsFile+" "	+ licensePublicMetsFile);
+		}
+		//check license compatibility
+		logger.debug("Detected license information wantPublication:"+wantPublication+", hasPremisLicense:"+hasPremisLicense+", hasMetsLicense:"+hasMetsLicense+", usePublicMets:"+usePublicMets+", hasPublicMetsLicense:"+hasPublicMetsLicense);
+		
+		if(usePublicMets && wantPublication && !hasPublicMetsLicense)
+			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
+					"Keine Lizenzangaben in der Public-METS-Metadatei vorhanden.",
+					"Keine Lizenzangaben in der Public-METS-Metadatei vorhanden.");
+		if (hasPremisLicense && (hasMetsLicense || hasPublicMetsLicense))
+			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
+					"Lizenzangaben in den METS-Metadaten und in der Premis-Datei vorhanden.",
+					"Lizenzangaben in den METS-Metadaten und in der Premis-Datei vorhanden.");
+
+		if (wantPublication && !hasPremisLicense && !(hasMetsLicense || hasPublicMetsLicense))
+			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
+					"Keine Lizenzangaben für eine Publikation vorhanden.",
+					"Keine Lizenzangaben für eine Publikation vorhanden.");
+		
+
+		if(hasPremisLicense)
+			o.setLicense_flag(C.LICENSEFLAG_PREMIS);
+		else if(hasMetsLicense && !usePublicMets)
+			o.setLicense_flag(C.LICENSEFLAG_METS);
+		else if(hasPublicMetsLicense && o.getContractor().isUsePublicMets())
+			o.setLicense_flag(C.LICENSEFLAG_PUBLIC_METS);
+		else if(!hasPremisLicense && !hasMetsLicense && !hasPublicMetsLicense)
+			o.setLicense_flag(C.LICENSEFLAG_NO_LICENSE);
+		else
+			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,"Invalide Lizenzangaben.","Invalide Lizenzangaben.");
+		logger.debug("Object License_flag is setted to: "+o.getLicense_flag());
+	}
+
+	public static Object parsePremisToMetadata(File premis) throws IOException {
+		Object o = null;
+
+		try {
+			o = new ObjectPremisXmlReader().deserialize(premis);
+		} catch (Exception e) {
+			// do not throw userexception here since ability to deserialize
+			// should already have been checked in UnpackAction.
+			throw new RuntimeException("Error while deserializing PREMIS", e);
+		}
+		return o;
+	}
+
 	private MetadataStructure createMetadataStructure() {
 		MetadataStructure ms=null;
 		try {

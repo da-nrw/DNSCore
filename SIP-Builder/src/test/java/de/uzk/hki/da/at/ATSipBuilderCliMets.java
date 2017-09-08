@@ -44,7 +44,7 @@ public class ATSipBuilderCliMets {
 
 		File source = new File(sourceDir, "ATBuildSingleMetsSip");
 
-		String cmd = "./SipBuilder-Unix.sh -source=\""
+		String cmd = "./SipBuilder-Unix.sh -rights=\""+ATWorkingDirectory.CONTRACT_RIGHT_LICENSED.getAbsolutePath()+"\" -source=\""
 				+ source.getAbsolutePath() + "/\" -destination=\""
 				+ targetDir.getAbsolutePath() + "/\" -single -alwaysOverwrite";
 

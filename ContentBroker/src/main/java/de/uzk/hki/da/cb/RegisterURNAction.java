@@ -50,9 +50,7 @@ import de.uzk.hki.da.utils.StringUtilities;
  */
 public class RegisterURNAction extends AbstractAction {
 	
-	private static final Logger logger = LoggerFactory.getLogger(RegisterURNAction.class);
-	private static final String PREMIS_XML = "premis.xml";
-	
+	private static final Logger logger = LoggerFactory.getLogger(RegisterURNAction.class);	
 	
 	@Override
 	public void checkConfiguration() {
@@ -61,8 +59,8 @@ public class RegisterURNAction extends AbstractAction {
 
 	@Override
 	public void checkPreconditions() {
-		if (o.getLatest(PREMIS_XML)==null) throw new PreconditionsNotMetException("Must be set: "+PREMIS_XML);
-		if (! premisFile().exists()) throw new PreconditionsNotMetException("Must exist: "+PREMIS_XML); 
+		if (o.getLatest(C.PREMIS_XML)==null) throw new PreconditionsNotMetException("Must be set: "+C.PREMIS_XML);
+		if (! premisFile().exists()) throw new PreconditionsNotMetException("Must exist: "+C.PREMIS_XML); 
 	}
 	
 	
@@ -154,7 +152,7 @@ public class RegisterURNAction extends AbstractAction {
 	
 
 	private File premisFile() {  
-		return wa.toFile(o.getLatest(PREMIS_XML));
+		return wa.toFile(o.getLatest(C.PREMIS_XML));
 	}
 	
 
