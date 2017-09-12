@@ -24,7 +24,6 @@
 			<a href="#list-object" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 			<h1>eingelieferte AIP's</h1>
 			<button class="accordion">Filter
-		
 				<g:if test="${params.search}"><br>
 		    		<g:if test="${!params.search?.origName.isEmpty()}">
 		    			<span style="margin-right: 25px"><i>Originalname: </i>${params.search?.origName}</span>
@@ -36,24 +35,31 @@
 		    			<span style="margin-right: 25px"><i>Identifier: </i>${params.search?.identifier}</span>
 		    		</g:if> 
 		    		<g:if test="${params.searchContractorName != null}">
-		    			<span style="margin-right: 25px"><i>Contractor: </i>${params.searchContractorName}</span>
+		    			<g:if test="${!params.searchContractorName.isEmpty()}">
+		    				<span style="margin-right: 25px"><i>Contractor: </i>${params.searchContractorName}</span>
+		    			</g:if>
 		    		</g:if> 
 					<div>
 						<g:if test="${params.searchDateType != null } ">
 	    					<g:if test="${params.searchDateType == 'createdAt'}">Datumsbereich erstellt</g:if>
 	    					<g:if test="${params.searchDateType == 'modifiedAt'}">Datumsbereich geändert</g:if>
 			    		</g:if>    
-			    		<g:if test="${!params.searchDateStart != null}">
-			    			<span style="margin-right: 25px"><i>Von Datum: </i>${params.searchDateStart}</span>
+			    		<g:if test="${params.searchDateStart != null}">
+			    			<g:if test="${params.searchDateStart != '0'}">
+			    				<span style="margin-right: 25px"><i>Von Datum: </i>${params.searchDateStart}</span>
+			    			</g:if>
 			    		</g:if> 	
-			    		<g:if test="${!params.searchDateEnd != null}">
-			    			<span style="margin-right: 25px"><i>Bis Datum: </i>${params.searchDateEnd}</span>
+			    		<g:if test="${params.searchDateEnd != null}">
+			    			<g:if test="${params.searchDateEnd != '0'}">
+			    				<span style="margin-right: 25px"><i>Bis Datum: </i>${params.searchDateEnd}</span>
+			    			</g:if>
 			    		</g:if> 
 			    	</div>
 		    	</g:if> 
 		    </button>
 		    <div class="panel">
 	            <g:form name="searchForm" action="list">
+				 	<g:hiddenField name="filterOn" value="${filterOn}" />
 	            	<table>
 	            		<tr>
 	            			<td>Original Name:</td>
@@ -103,11 +109,11 @@
 		            			</script>
 	            			</td>
 	            		</tr>
-	            		<g:if test="${admin}">
-	            			<tr>
+ 	            		<g:if test="${admin}"> 
+	            			<tr>	
 		            			<td>Contractor:</td>
 		            			<td>
-		            				<g:if test="${params.searchContractorName  == null}" >
+		            				<g:if test="${params.searchContractorName  == null || params.searchContractorName.isEmpty()}" >
 		            					<g:select id="user" name="searchContractorName" from="${contractorList}" optionKey="shortName" noSelection="['':'-Bitte wählen-']" value="${objectInstance?.contractorList?.shortName}" class="many-to-one"/>
 		            				</g:if>
 		            				<g:if test="${params.searchContractorName  != null && !params.searchContractorName.isEmpty()}" >
@@ -115,14 +121,14 @@
 		            				</g:if>
 		            			</td>
 	            			</tr>
-	            		</g:if>
+ 	            		</g:if> 
 	            		<tr>
 	            			<td></td>
 	            			<td>
 	            				<g:submitButton name="submit" value="Filter anwenden"/>
 	           					<g:submitButton name="loeschen" type="submit" value="Filter löschen"/>
 		           			</td>
-		           			<script type="text/javascript">
+		           			<g:javascript>
 			           			$(document).ready(function(){
 			           				 	$("#loeschen").click(function() {                				 
 					            			$('#searchForm').find(':input').each(function() {
@@ -139,11 +145,14 @@
 					            			 	case 'select-one':
 						                            $(this).val(null);
 						                            break;
+						                        case 'datePicker':
+					                        		$(this).val(null);
+					                        		break;
 					                            }
 					            			});
 			           				    });
 			           			});
-			           		</script>
+			           		</g:javascript>
 	            		</tr>
 	            	</table>     
 	            </g:form>
@@ -195,15 +204,14 @@
 	                     						src="${resource(dir: 'images/icons', file: 'boxdownload32.png')}" />
 									</g:if>
 								</th>
-								<th style="text-align: center">Entnahme	</th>			
+								<th style="text-align: center">Entnahme	</th>		
 							</tr>
 						</thead>
 						<tbody>
 						<g:each in="${objectInstanceList}" status="i" var="objectInstance">
-												
 							<g:set var="statusCode" value="100" />
 							<g:if test="${admin}">				
-							<g:set var="statusCode" value="${objectInstance.getStatusCode()}" />
+								<g:set var="statusCode" value="${objectInstance.getStatusCode()}" />
 							</g:if>
 							<tr class="${ ((i % 2) == 0 ? 'odd' : 'even') + ' status-type-' + statusCode}">
 									<td>${fieldValue(bean: objectInstance, field: "identifier")}</td>

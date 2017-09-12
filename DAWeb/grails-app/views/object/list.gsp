@@ -18,7 +18,6 @@
 				});
 			}
 		</g:javascript>
-		
 	</head>
 	<body>
 		<div id="page-body">
@@ -36,15 +35,19 @@
 		    			<span style="margin-right: 25px"><i>Identifier: </i>${params.search?.identifier}</span>
 		    		</g:if> 
 		    		<div>
-						<g:if test="${params.searchDateType != null} ">
+						<g:if test="${params.searchDateType != null} "> 
 		   					<g:if test="${params.searchDateType == 'createdAt'}">Datumsbereich erstellt</g:if>
 		   					<g:if test="${params.searchDateType == 'modifiedAt'}">Datumsbereich geändert</g:if>
 			    		</g:if>   
 			    		<g:if test="${params.searchDateStart != null}">
-			    			<span style="margin-right: 25px"><i>Von Datum: </i>${params.searchDateStart}</span>
+			    			<g:if test="${params.searchDateStart != '0'}">
+			    				<span style="margin-right: 25px"><i>Von Datum: </i>${params.searchDateStart}</span>
+			    			</g:if>
 			    		</g:if> 	
 			    		<g:if test="${params.searchDateEnd != null}">
-			    			<span style="margin-right: 25px"><i>Bis Datum: </i>${params.searchDateEnd}</span>
+			    			<g:if test="${params.searchDateEnd != '0'}">
+			    				<span style="margin-right: 25px"><i>Bis Datum: </i>${params.searchDateEnd}</span>
+			    			</g:if>
 			    		</g:if> 
 			    	</div>
 		    	</g:if> 
@@ -82,7 +85,7 @@
 	            				</g:else>
 	            			</td>
 	            		</tr>
-	            			<tr>
+	            		<tr>
 	            			<td>Bis Datum: </td>
 	            			<td>	
 	            				<g:if test="${params.search?.searchDateEnd != null}" >
@@ -92,12 +95,12 @@
 	            					<g:datePicker name="searchDateEnd" default="none" noSelection="['':'']"  value="${params.search?.searchDateEnd}"/>
 	            				</g:else>
 	            				<% // fix for https://github.com/zoran119/grails-jquery-date-time-picker/issues/12 %>
-	            			<script type="text/javascript">
-	            			 $(document).ready(function(){
-	            			$("#searchDateStart").val("${params.searchDateStart}")
-	            			$("#searchDateEnd").val("${params.searchDateEnd}")
-	            			 })
-	            			</script>
+		            			<script type="text/javascript">
+			            			$(document).ready(function(){
+			            			$("#searchDateStart").val("${params.searchDateStart}")
+			            			$("#searchDateEnd").val("${params.searchDateEnd}")
+			            			 })
+		            			</script>
 	            			</td>
 	            		</tr>
 	            		<tr>
@@ -122,6 +125,9 @@
 				            				case 'select-one':
 					                            $(this).val(null);
 					                            break;
+					                        case 'datePicker':
+					                        	$(this).val(null);
+					                        	break;
 				                            }
 				            			});
 	            				    });

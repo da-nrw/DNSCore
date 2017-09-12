@@ -27,6 +27,7 @@
 			<asset:image  src="DANRW-Logo_small.png" alt="DANRW"/> 
 		</g:link> 
 		<h1>Web Konsole</h1>
+		
 		<g:if test="${actionName=='auth'}" />
 		<g:else>
 			<div id="header-menu">

@@ -158,11 +158,14 @@ class ObjectController {
 
 			def st = "createdAt"; 
 			String searchDateType = params.searchDateType;
-			if (ds!=null || !ds.equals("0") || de!=null || !de.equals("0")) {
-				if ( params.searchDateType.equals("null") ) {
-					params.searchDateType = "createdAt"
-				} else {
-					st =  params.searchDateType;
+						
+			if (ds!=null || de!=null ) {
+				if (!ds.equals("0") || !de.equals("0")) {
+					if ( params.searchDateType.equals("null") ) {
+						params.searchDateType = "createdAt"
+					} else {
+						st =  params.searchDateType;
+					}
 				}
 			} else {
 				if ( params.searchDateType.equals("null") ) {
@@ -170,20 +173,26 @@ class ObjectController {
 				}
 			}
 			
-			if (ds!=null && de!=null) {
-				filterOn=1
-				log.debug("Objects between " + ds + " and " + de)
-				between(st, ds, de)
+			if (ds!=null  && de!=null)  {
+				if (!ds.equals("0") && !de.equals("0")) {
+					filterOn=1
+					log.debug("Objects between " + ds + " and " + de)
+					between(st, ds, de)
+				}
 			}
-			if (ds!=null && de==null) {
-				filterOn=1
-				log.debug("Objects greater than " + ds)
-				gt(st,ds)
+			if (ds!=null && de==null ) {
+				if (!ds.equals("0") && de.equals("0")) {
+					filterOn=1
+					log.debug("Objects greater than " + ds)
+					gt(st,ds)
+				}
 			}
-			if (ds==null && de!=null) {
-				filterOn=1
-				log.debug("Objects lower than " + de)
-				lt(st,de)
+			if (ds==null && de!=null ) {
+				if (ds.equals("0") || !de.equals("0")) {
+					filterOn=1
+					log.debug("Objects lower than " + de)
+					lt(st,de)
+				}
 			}
 
 			if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
@@ -195,16 +204,17 @@ class ObjectController {
 			}
 			if (admin==1) {
 				if (params.searchContractorName!=null) {
-					filterOn=1
-					createAlias( "user", "c" )
-					eq("c.shortName", params.searchContractorName)
+					if	( !params.searchContractorName.isEmpty() || params.searchContractorName != "") {
+						filterOn=1
+						createAlias( "user", "c" )
+						eq("c.shortName", params.searchContractorName)
+					}
 				}
 			}
 			between("object_state", 50,200)
 			order(params.sort ?: "id", params.order ?: "desc")
 		}
 		log.debug("Search " + params.search)
-		println ("Search " +  params.search)
 		// workaround: make ALL params accessible for following http-requests
 		def paramsList = params.search?.collectEntries { key, value -> ['search.'+key, value]}
 		if(params.searchContractorName){
@@ -218,6 +228,7 @@ class ObjectController {
 		}
 		
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			print ("Objects: " + objects);
 			render(view:"adminList", model:[	objectInstanceList: objects,
 				objectInstanceTotal: objects.getTotalCount(),
 				searchParams: params.search,
@@ -227,7 +238,7 @@ class ObjectController {
 				admin: admin,
 				baseFolder: baseFolder,
 				contractorList: contractorList,
-				user: user, admin: admin
+				user: user 
 			]);
 		} else render(view:"list", model:[	objectInstanceList: objects,
 				objectInstanceTotal: objects.getTotalCount(),
@@ -239,7 +250,7 @@ class ObjectController {
 				totalObjs: totalObjs,
 				baseFolder: baseFolder,
 				contractorList: contractorList,
-				user: user,admin: admin
+				user: user 
 			]);
 	}
 
