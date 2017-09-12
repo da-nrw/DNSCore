@@ -85,6 +85,7 @@ public class QualityLevelCheckAction extends AbstractAction {
 		for(ConversionPolicy cp:this.preservationSystem.getConversion_policies())
 			if(ConversionPolicy.FormatType.LZA.equals(cp.getFormat_type()))
 				supportedFormatsForLZA.add(cp.getSource_format());
+		logger.debug("QualityLevelCheckAction LatestFiles:"+Arrays.toString(o.getLatestPackage().getFiles().toArray()));
 		for(DAFile df:o.getLatestPackage().getFiles()){
 			System.out.println(df+" "+df.getFormatPUID());
 			if(df.getFormatPUID().equals(C.UNRECOGNIZED_PUID))
@@ -109,8 +110,15 @@ public class QualityLevelCheckAction extends AbstractAction {
 		Collections.sort(conversionFailEvents, eventComparator);
 		Collections.sort(validationFailEvents, eventComparator);
 		if(validationFailEvents.isEmpty()&&conversionFailEvents.isEmpty()){
-			if(!unrecognizedPUIDFiles.isEmpty() || !unknownPuidFile.isEmpty()){
-				extendObject(C.QUALITYFLAG_LEVEL_4,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4,o.getLatestPackage().getFiles().get(0),"NO CRITICAL QUALITY_LEVEL EVENTS, BUT HAS UNSUPPORTED FORMATS , e.g. FILE: "+unrecognizedPUIDFiles.get(0).getRelative_path()));
+			logger.debug("QualityLevelCheckAction LatestFiles:"+Arrays.toString(o.getLatestPackage().getFiles().toArray()));
+			logger.debug("QualityLevelCheckAction unrecognizedPUIDFiles:"+Arrays.toString(unrecognizedPUIDFiles.toArray()));
+
+			logger.debug("QualityLevelCheckAction unknownPuidFile:"+Arrays.toString(unknownPuidFile.toArray()));
+			if(!unrecognizedPUIDFiles.isEmpty()){
+				extendObject(C.QUALITYFLAG_LEVEL_4,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4,o.getLatestPackage().getFiles().get(0),"NO CRITICAL QUALITY_LEVEL EVENTS, BUT HAS UNKNOWN FORMATS , e.g. FILE: "+unrecognizedPUIDFiles.get(0).getRelative_path()));
+				qualityLevel=C.QUALITYFLAG_LEVEL_4;
+			} else if(!unknownPuidFile.isEmpty()){
+				extendObject(C.QUALITYFLAG_LEVEL_4,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4,o.getLatestPackage().getFiles().get(0),"NO CRITICAL QUALITY_LEVEL EVENTS, BUT HAS UNSUPPORTED FORMATS , e.g. FILE: "+unknownPuidFile.get(0).getRelative_path()));
 				qualityLevel=C.QUALITYFLAG_LEVEL_4;
 			}else{ // if(unknownPuidFile.isEmpty() && unrecognizedPUIDFiles.isEmpty()){
 				extendObject(C.QUALITYFLAG_LEVEL_5,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_5,o.getLatestPackage().getFiles().get(0),"NO CRITICAL QUALITY_LEVEL EVENTS"));
@@ -156,7 +164,7 @@ public class QualityLevelCheckAction extends AbstractAction {
 	private int getRequiredIngestLevelFromPremis(){
 		Object sipPREMISObject = CreatePremisAction.parsePremisFile(
 				new File(Path.make(wa.dataPath(),o.getNameOfLatestBRep(),C.PREMIS).toString().replace("+b", "+a")));
-		return sipPREMISObject.getRequiredIngestQLevel();
+		return sipPREMISObject.getMinimalIngestQLevel();
 	}
 	
 	private String generateQualityEventDetail(String prefix, List<Event> eList) {

@@ -198,7 +198,7 @@ public class Object {
 	private Set<Agent> agents = new HashSet<Agent>();
 	
 	@Transient
-	private int requiredIngestQLevel;
+	private int minimalIngestQLevel=-1;
 	
 	/** The contractor. */
 	@ManyToOne
@@ -913,8 +913,12 @@ public class Object {
 		this.quality_flag = quality_flag;
 	}
 
-	public int getRequiredIngestQLevel() {
-		return requiredIngestQLevel;
+	public int getMinimalIngestQLevel() {
+		return minimalIngestQLevel;
+	}
+
+	public void setMinimalIngestQLevel(int minimalIngestQLevel) {
+		this.minimalIngestQLevel = minimalIngestQLevel;
 	}
 	
 }

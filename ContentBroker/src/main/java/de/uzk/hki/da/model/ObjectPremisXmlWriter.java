@@ -46,6 +46,7 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.model.Event.IdType;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
+import nu.xom.Element;
 
 
 /**
@@ -734,6 +735,11 @@ public class ObjectPremisXmlWriter {
 		
 		if (object.ddbExcluded())
 			createEmptyElement("DDBexclusion", 4);
+		if(object.getMinimalIngestQLevel()>-1){
+			createOpenElement("minimalIngestQualityLevel", 4);
+			writer.writeCharacters(String.valueOf(object.getMinimalIngestQLevel()));
+			writer.writeEndElement();
+		}
 		if (right.getPremisLicense()!=null){
 			PremisLicense pl=right.getPremisLicense();
 			createOpenElement("publicationLicense ", 4);

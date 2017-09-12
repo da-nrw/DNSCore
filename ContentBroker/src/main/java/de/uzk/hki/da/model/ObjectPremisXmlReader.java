@@ -399,6 +399,12 @@ public class ObjectPremisXmlReader{
 			Element ddbExclusionEl = rightsExtEl.getFirstChildElement("DDBexclusion", C.CONTRACT_NS);
 			object.setDdbExclusion(ddbExclusionEl != null);
 			
+			Element minimalIngestQualityLevelEl = rightsExtEl.getFirstChildElement("minimalIngestQualityLevel", C.CONTRACT_NS);
+			if(minimalIngestQualityLevelEl!=null){
+				object.setMinimalIngestQLevel(Integer.parseInt(minimalIngestQualityLevelEl.getValue()));
+			}
+			
+			
 			Element licenseEl = rightsExtEl.getFirstChildElement("publicationLicense", C.CONTRACT_NS);
 			if(licenseEl!=null){
 				PremisLicense pl=new PremisLicense();
