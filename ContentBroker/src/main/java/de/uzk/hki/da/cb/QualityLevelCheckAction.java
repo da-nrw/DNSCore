@@ -79,7 +79,7 @@ public class QualityLevelCheckAction extends AbstractAction {
 		List<Event> conversionFailEvents = new ArrayList<Event>();
 		
 		List<DAFile> unrecognizedPUIDFiles = new ArrayList<DAFile>();
-		List<DAFile> unknownPuidFile = new ArrayList<DAFile>();
+		List<DAFile> unsupportedPuidFile = new ArrayList<DAFile>();
 		Set<String> supportedFormatsForLZA=new HashSet<String>();
 		
 		for(ConversionPolicy cp:this.preservationSystem.getConversion_policies())
@@ -88,10 +88,18 @@ public class QualityLevelCheckAction extends AbstractAction {
 		logger.debug("QualityLevelCheckAction LatestFiles:"+Arrays.toString(o.getLatestPackage().getFiles().toArray()));
 		for(DAFile df:o.getLatestPackage().getFiles()){
 			System.out.println(df+" "+df.getFormatPUID());
+			//exclude metadata files
+			if(df.getSubformatIdentifier().equals(C.SUBFORMAT_IDENTIFIER_EAD) || 
+					df.getSubformatIdentifier().equals(C.SUBFORMAT_IDENTIFIER_LIDO) || 
+					df.getSubformatIdentifier().equals(C.SUBFORMAT_IDENTIFIER_METS) || 
+					df.getSubformatIdentifier().equals(C.SUBFORMAT_IDENTIFIER_XMP) ||
+							df.getRelative_path().equals(C.PREMIS_XML)) 
+				continue;
+			//if puid scanner returns no puid 
 			if(df.getFormatPUID().equals(C.UNRECOGNIZED_PUID))
 				unrecognizedPUIDFiles.add(df);
-			else if(!supportedFormatsForLZA.contains(df.getFormatPUID()))
-				unknownPuidFile.add(df);
+			else if(!supportedFormatsForLZA.contains(df.getFormatPUID())) // if puid is not supported for lza
+				unsupportedPuidFile.add(df);
 		}
 		
 		for(Event ev:events){
@@ -113,14 +121,14 @@ public class QualityLevelCheckAction extends AbstractAction {
 			logger.debug("QualityLevelCheckAction LatestFiles:"+Arrays.toString(o.getLatestPackage().getFiles().toArray()));
 			logger.debug("QualityLevelCheckAction unrecognizedPUIDFiles:"+Arrays.toString(unrecognizedPUIDFiles.toArray()));
 
-			logger.debug("QualityLevelCheckAction unknownPuidFile:"+Arrays.toString(unknownPuidFile.toArray()));
+			logger.debug("QualityLevelCheckAction unknownPuidFile:"+Arrays.toString(unsupportedPuidFile.toArray()));
 			if(!unrecognizedPUIDFiles.isEmpty()){
 				extendObject(C.QUALITYFLAG_LEVEL_4,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4,o.getLatestPackage().getFiles().get(0),"NO CRITICAL QUALITY_LEVEL EVENTS, BUT HAS UNKNOWN FORMATS , e.g. FILE: "+unrecognizedPUIDFiles.get(0).getRelative_path()));
 				qualityLevel=C.QUALITYFLAG_LEVEL_4;
-			} else if(!unknownPuidFile.isEmpty()){
-				extendObject(C.QUALITYFLAG_LEVEL_4,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4,o.getLatestPackage().getFiles().get(0),"NO CRITICAL QUALITY_LEVEL EVENTS, BUT HAS UNSUPPORTED FORMATS , e.g. FILE: "+unknownPuidFile.get(0).getRelative_path()));
+			} else if(!unsupportedPuidFile.isEmpty()){
+				extendObject(C.QUALITYFLAG_LEVEL_4,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4,o.getLatestPackage().getFiles().get(0),"NO CRITICAL QUALITY_LEVEL EVENTS, BUT HAS UNSUPPORTED FORMATS , e.g. FILE: "+unsupportedPuidFile.get(0).getRelative_path()));
 				qualityLevel=C.QUALITYFLAG_LEVEL_4;
-			}else{ // if(unknownPuidFile.isEmpty() && unrecognizedPUIDFiles.isEmpty()){
+			}else if(unsupportedPuidFile.isEmpty() && unrecognizedPUIDFiles.isEmpty()){
 				extendObject(C.QUALITYFLAG_LEVEL_5,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_5,o.getLatestPackage().getFiles().get(0),"NO CRITICAL QUALITY_LEVEL EVENTS"));
 				qualityLevel=C.QUALITYFLAG_LEVEL_5;
 			}
