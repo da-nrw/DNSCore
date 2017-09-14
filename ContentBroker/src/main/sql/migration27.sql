@@ -1,0 +1,7 @@
+begin;
+
+/*ALTER TABLE preservation_system DROP COLUMN IF EXISTS license_validation;*/
+ALTER TABLE preservation_system ADD COLUMN license_validation_test_csn INTEGER;
+
+update preservation_system SET license_validation_test_csn=0 WHERE license_validation_test_csn IS NULL;
+commit;

@@ -259,9 +259,12 @@ public class AcceptanceTest {
 	public static void setLicenseInPreservationSystem(PreservationSystem preservationSystem ,int lflag){
 			Session session = HibernateUtil.openSession();
 			Transaction transaction = session.beginTransaction();
-			preservationSystem = (PreservationSystem) session.get(PreservationSystem.class, 1);
-			preservationSystem.setLicenseValidationFlag(lflag);
-			session.save(preservationSystem);
+			PreservationSystem preservationSystemPersist = (PreservationSystem) session.get(PreservationSystem.class,preservationSystem.getId());
+			//System.out.println("AcceptanceTest::setLicenseInPreservationSystem: "+preservationSystem.getLicenseValidationTestCSNFlag()+" "+lflag);
+			preservationSystemPersist.setLicenseValidationTestCSNFlag(lflag);
+			preservationSystem.setLicenseValidationTestCSNFlag(lflag);
+			session.save(preservationSystemPersist);
+			//session.update(preservationSystem);
 			transaction.commit();
 			session.close();
 	}

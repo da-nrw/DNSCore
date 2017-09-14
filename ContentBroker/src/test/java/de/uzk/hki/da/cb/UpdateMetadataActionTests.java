@@ -105,7 +105,7 @@ public class UpdateMetadataActionTests {
 	public void setUp() throws IOException {
 		PreservationSystem pSystem = new PreservationSystem();
 		pSystem.setUrisFile("http://data.danrw.de/file");
-		pSystem.setLicenseValidationFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_YES);		
+		pSystem.setLicenseValidationTestCSNFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_YES);		
 		
 		action = new UpdateMetadataAction();		
 		node = new Node();

@@ -92,6 +92,9 @@ public class PreservationSystem {
 	
 	@Column(name="license_validation",columnDefinition="INTEGER DEFAULT 1")
 	private int licenseValidationFlag;
+	
+	@Column(name="license_validation_test_csn",columnDefinition="INTEGER DEFAULT 0")
+	private int licenseValidationTestCSNFlag;
 
 	@Column(name="urn_name_space")
 	private String urnNameSpace;
@@ -246,4 +249,12 @@ public class PreservationSystem {
 	public void setLicenseValidationFlag(int licenseValidationFlag) {
 		this.licenseValidationFlag = licenseValidationFlag;
 	}
+	public int getLicenseValidationTestCSNFlag() {
+		return licenseValidationTestCSNFlag;
+	}
+	public void setLicenseValidationTestCSNFlag(int licenseValidationTestCSNFlag) {
+		this.licenseValidationTestCSNFlag = licenseValidationTestCSNFlag;
+	}
+	
+	
 }

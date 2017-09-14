@@ -117,6 +117,9 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 	public void ignoreMetadataFilesInSubfolders() throws FileNotFoundException, UserException, IOException, RepositoryException {
 		
 		o.getLatestPackage().getFiles().add(f_subfolder_ead1);
+
+		action.getPreservationSystem().setLicenseValidationTestCSNFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_NO);
+
 		action.implementation();
 		
 		assertEquals(null,o.getPackage_type());

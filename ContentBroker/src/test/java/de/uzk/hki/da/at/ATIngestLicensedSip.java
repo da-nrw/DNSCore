@@ -42,6 +42,11 @@ public class ATIngestLicensedSip extends AcceptanceTest {
 	private static final String sipPublicMetsNoLicenseNoPublication = "PublicMetsNoLicenseNoPublication";
 	private static final String sipPublicMetsNoLicensePublication = "PublicMetsNoLicensePublication";
 	
+	
+	private static final String sipNoMetsNoLicensePublication = "NoMetadataNoLicense";
+	private static final String sipNoMetsLicenseInPremisPublication = "NoMetadataLicense";
+	private static final String sipNoMetsNoLicenseNoPublication = "NoMetadataNoLicenseNoPublication";
+	
 	private static final String sipDeltaLicense = "SipDeltaLicense";
 	private static final String sipDeltaLicensePublicMets = "SipDeltaLicensePublicMets";
 	
@@ -68,10 +73,12 @@ public class ATIngestLicensedSip extends AcceptanceTest {
 	public static void tearDownAfterClass() throws IOException{
 		deactivateLicenseValidation();
 	}
-
+	
 	@Test
 	public void testLicenseInMets() throws IOException, JDOMException {
-		assertTrue("preservationSystem.getLicenseValidationFlag()==0", preservationSystem.getLicenseValidationFlag()!=C.PRESERVATIONSYS_LICENSE_VALIDATION_NO);
+		assertEquals("preservationSystem.getLicenseValidationFlag()!=YES", preservationSystem.getLicenseValidationFlag(),C.PRESERVATIONSYS_LICENSE_VALIDATION_YES);
+		assertEquals("preservationSystem.getLicenseValidationTestCSNFlag()!=YES", preservationSystem.getLicenseValidationTestCSNFlag(),C.PRESERVATIONSYS_LICENSE_VALIDATION_YES);
+		
 		ath.putSIPtoIngestArea(sipLicenseInMets, "tgz", sipLicenseInMets);
 		ath.awaitObjectState(sipLicenseInMets,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForDefinedPublishedState(sipLicenseInMets);
@@ -159,6 +166,79 @@ public class ATIngestLicensedSip extends AcceptanceTest {
 	
 	
 	@Test
+	public void testPublicMetsNoLicensePublicationDeactivatedLicenseValidation() throws IOException, JDOMException, InterruptedException {
+		setUserPublicMets(true);
+		deactivateLicenseValidation();
+		try{
+			String sipPublicMetsNoLicensePublicationValidationDeactivated=sipPublicMetsNoLicensePublication+"ValidationDeactivated";
+			ath.putSIPtoIngestArea(sipPublicMetsNoLicensePublication, "tgz", sipPublicMetsNoLicensePublicationValidationDeactivated);
+			ath.awaitObjectState(sipPublicMetsNoLicensePublicationValidationDeactivated,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+			ath.waitForDefinedPublishedState(sipPublicMetsNoLicensePublicationValidationDeactivated);
+			ath.waitForObjectPublishedState(sipPublicMetsNoLicensePublicationValidationDeactivated, C.PUBLISHEDFLAG_PUBLIC);
+			
+			object1=ath.getObject(sipPublicMetsNoLicensePublicationValidationDeactivated);
+			assertEquals(object1.getLicense_flag(), C.LICENSEFLAG_UNDEFINED);
+			assertTrue((object1.getPublished_flag() & C.PUBLISHEDFLAG_PUBLIC)!=0);
+			assertTrue((object1.getPublished_flag() & C.PUBLISHEDFLAG_INSTITUTION)!=0);
+			
+			checkLicenseInMetadata(object1,null);
+		}finally{
+			activateLicenseValidation();
+		}
+	}
+	
+
+	@Test
+	public void testNOMetsNoLicensePublication() throws IOException, JDOMException, InterruptedException {
+		
+		ath.putSIPtoIngestArea(sipNoMetsNoLicensePublication, "tgz", sipNoMetsNoLicensePublication);
+		ath.waitForJobToBeInErrorStatus(sipNoMetsNoLicensePublication, C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
+		
+		assertEquals(ath.getJob(sipNoMetsNoLicensePublication).getStatus(),"144");
+	}
+	
+	@Test
+	public void testNOMetsLicenseInPremisPublication() throws IOException, JDOMException, InterruptedException {
+		
+		ath.putSIPtoIngestArea(sipNoMetsLicenseInPremisPublication, "tgz", sipNoMetsLicenseInPremisPublication);
+		ath.waitForJobToBeInErrorStatus(sipNoMetsLicenseInPremisPublication, C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
+		
+		assertEquals(ath.getJob(sipNoMetsLicenseInPremisPublication).getStatus(),"144");
+	}
+	
+	@Test
+	public void testNOMetsNoLicenseNoPublication() throws IOException, JDOMException, InterruptedException {
+		
+		ath.putSIPtoIngestArea(sipNoMetsNoLicenseNoPublication, "tgz", sipNoMetsNoLicenseNoPublication);
+		ath.awaitObjectState(sipNoMetsNoLicenseNoPublication,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+		object1=ath.getObject(sipNoMetsNoLicenseNoPublication);
+		ath.waitForObjectPublishedState(sipNoMetsNoLicenseNoPublication, C.PUBLISHEDFLAG_INSTITUTION);
+		assertEquals(object1.getLicense_flag(), C.LICENSEFLAG_NO_LICENSE);
+		assertTrue(object1.getPublished_flag()!=C.PUBLISHEDFLAG_PUBLIC);
+	}
+	
+	@Test
+	public void testNOMetsNoLicenseNoPublicationLicenseValidationDeactivated() throws IOException, JDOMException, InterruptedException {
+		
+		deactivateLicenseValidation();
+		try{
+			String sipNoMetsNoLicensePublicationValidationDeactivated=sipNoMetsNoLicensePublication+"ValidationDeactivated";
+			//deactivateLicenseValidation
+			ath.putSIPtoIngestArea(sipNoMetsNoLicensePublication, "tgz",  sipNoMetsNoLicensePublicationValidationDeactivated);
+			ath.awaitObjectState(sipNoMetsNoLicensePublicationValidationDeactivated,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+			object1=ath.getObject(sipNoMetsNoLicensePublicationValidationDeactivated);
+			ath.waitForObjectPublishedState(sipNoMetsNoLicensePublicationValidationDeactivated, C.PUBLISHEDFLAG_PUBLIC);
+			assertEquals(object1.getLicense_flag(), C.LICENSEFLAG_UNDEFINED); // No license validation, therefore default value 'UNDEFINED'
+			assertTrue((object1.getPublished_flag() & C.PUBLISHEDFLAG_PUBLIC)!=0);
+			assertTrue((object1.getPublished_flag() & C.PUBLISHEDFLAG_INSTITUTION)!=0);
+		}finally{
+			activateLicenseValidation();
+		}
+	}
+	
+	
+	
+	@Test
 	public void testLicenseDeltaPublicMets() throws IOException, JDOMException, InterruptedException {
 
 		//Ingest 1 sipPublicMetsLicenseInMets
@@ -241,14 +321,16 @@ public class ATIngestLicensedSip extends AcceptanceTest {
 	public void checkLicenseInMetadata(Object obj,MetsLicense license) throws IOException, JDOMException{
 
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-		//testPIPMets
-		File metsFile1 = ath.loadDefaultMetsFileFromPip(obj.getIdentifier());
-		assertTrue(metsFile1.exists());
-		Document metsDoc1 = builder.build(new FileReader(metsFile1));
-		MetsParser mp = new MetsParser(metsDoc1);
-		MetsLicense lic=mp.getLicenseForWholeMets();
-		assertTrue(lic!=null);	
-		assertEquals(lic, license);
+		if(license!=null){
+			//testPIPMets
+			File metsFile1 = ath.loadDefaultMetsFileFromPip(obj.getIdentifier());
+			assertTrue(metsFile1.exists());
+			Document metsDoc1 = builder.build(new FileReader(metsFile1));
+			MetsParser mp = new MetsParser(metsDoc1);
+			MetsLicense lic=mp.getLicenseForWholeMets();
+			assertTrue(lic!=null);	
+			assertEquals(lic, license);
+		}
 		
 		//testEdm
 		File edmFile1 = ath.loadFileFromPip(obj.getIdentifier(), "EDM.xml");
@@ -259,7 +341,8 @@ public class ATIngestLicensedSip extends AcceptanceTest {
 		List<Element> providetCho = edmDoc1.getRootElement().getChildren("ProvidedCHO", C.EDM_NS);
 		assertTrue(providetCho.size()==1);
 		for(Element pcho : providetCho) {
-			assertTrue(pcho.getChild("rights", C.DC_NS).getValue().equals(license.getHref()));
+			//assertTrue(pcho.getChild("rights", C.DC_NS).getValue().equals(license.getHref()));
+			assertTrue(license==null? pcho.getChild("rights", C.DC_NS)==null : pcho.getChild("rights", C.DC_NS).getValue().equals(license.getHref()));
 		}
 		
 		////	testIndex
@@ -271,6 +354,11 @@ public class ATIngestLicensedSip extends AcceptanceTest {
 		//assertTrue(jsonObj.getString("_id").contains("Jh-Dussel"));
 		jsonObj = jsonObj.getJSONObject("_source");
 		jsonObj = jsonObj.getJSONObject("edm:aggregatedCHO");
-		assertTrue(jsonObj.getJSONArray("dc:rights").get(0).toString().equals(license.getHref()));
+		 try{
+			 assertTrue(jsonObj.getJSONArray("dc:rights").get(0).toString().equals(license.getHref()));
+		 }catch(JSONException e){
+			 assertTrue(license==null);
+         }
+
 	}
 }
