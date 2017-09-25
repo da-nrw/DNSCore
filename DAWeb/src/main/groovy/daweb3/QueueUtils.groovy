@@ -102,7 +102,7 @@ class QueueUtils {
 			queueEntryInstance.setStatus(newStatus)
 			queueEntryInstance.modifiedAt = new Date()
 			def errorMsg = ""
-			if( !queueEntryInstance.save()  ) {
+			if( !queueEntryInstance.save(flush: true)	 ) {
 				queueEntryInstance.errors.each { 
 					errorMsg += it 
  					LOG.error(it)

@@ -20,10 +20,8 @@
 					<b>https://Servername/<g:createLink controller="status" action="index" params="[containerName: 'IhrContainername']"/></b> <br>
 					
 					</span></li>
-					<span class="property-value"><li>Als Antwort erhalten Sie ein maschinenlesbares Ergebnis (JSON)<br></li></span>
-					<li><span class="property-value">
-					Sie müssen sich zum Abruf authentifizieren. 
-					</span></li>	
+					<li><span class="property-value">Als Antwort erhalten Sie ein maschinenlesbares Ergebnis (JSON)<br></span></li>
+					<li><span class="property-value">Sie müssen sich zum Abruf authentifizieren.</span></li>	
 				</ul>
 			</div>
 		</div>

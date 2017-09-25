@@ -161,19 +161,24 @@ class QueueEntryController {
 		if (us.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 				render(view:"adminListSnippet", model:[queueEntryInstanceList: queueEntries, 
 						admin:admin, periodical:periodical, 
-						contractorList:contractorList, user:us, admin: admin]);
+						contractorList:contractorList, user:us]);
 		} else render(view:"listSnippet", model:[queueEntryInstanceList: queueEntries, 
 						admin:admin, periodical:periodical,
-						contractorList:contractorList, user:us, admin: admin]);
+						contractorList:contractorList, user:us]);
     }
 	
 	/** 
 	 * Generates detailed view for one item (SIP) in workflow
 	 */
     def show() {
+        
+		User user = springSecurityService.currentUser
+		def admin = 0;
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
 		
-		print("QueEntryController: show")
-        def queueEntryInstance = QueueEntry.get(params.id)
+		def queueEntryInstance = QueueEntry.get(params.id)
         if (!queueEntryInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'queueEntry.label', default: 'QueueEntry'), params.id])
             redirect(action: "list")
@@ -186,7 +191,7 @@ class QueueEntryController {
 				error = it.toString()
 			}
 		}
-        [queueEntryInstance: queueEntryInstance, systemInfo:error]
+        [queueEntryInstance: queueEntryInstance, systemInfo:error, admin: admin, user: user]
     }
 	
 	/**
@@ -291,14 +296,13 @@ class QueueEntryController {
 	@Secured(['ROLE_NODEADMIN'])
 	def queueDelete() {
 		
-		print("QueEntryController: queueDelete")
-		
 		try {
 			def res = que.modifyJob(params.id, "800")
 			flash.message = "Paket zur Löschung vorgesehen! " + res
 		} catch (Exception e) {
 			log.error("Löschung aus Workflow fehlgeschlagen für " + params.id + " " + e.printStackTrace())
-			flash.message = "Löschung aus Workflow fehlgeschlagen!"
+			print("Löschung aus Workflow fehlgeschlagen für " + params.id + " " + e.printStackTrace())
+			flash.message = "Löschung aus Workflow fehlgeschlagen!" 
 		}
 		redirect(action: "list")
 	}
@@ -308,8 +312,6 @@ class QueueEntryController {
 	 */
 	@Secured(['ROLE_NODEADMIN'])
 	def queueDeleteAll() {
-		
-		print("QueEntryController: queueDeleteAll")
 		
 		try {
 			
@@ -350,7 +352,6 @@ class QueueEntryController {
 				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn and q.question is not null and q.question !='' and (q.status like '%5' OR q.status like '%4')",
 				 [csn: user.shortName])
 			} else {
-//				admin = true;
 				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.question is not null and q.question !='' and (q.status like '%5' OR q.status like '%4')")
 				
 			}
@@ -362,8 +363,6 @@ class QueueEntryController {
 	 * Applies status and functionality to answer with yes on migration requests
 	 */
 	def performRequestYes() {
-		
-		print("QueEntryController: performRequestYes")
 		
 		try {
 			def res = que.modifyJob(params.id, "640", "YES")
@@ -381,7 +380,6 @@ class QueueEntryController {
 	 */
 	def performRequestNo() {
 		
-		print("QueEntryController: performRequestNo")
 		try {
 			def res = que.modifyJob(params.id, "640", "NO")
 			flash.message = "Antwort Nein! " + res

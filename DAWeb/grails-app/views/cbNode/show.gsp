@@ -1,4 +1,3 @@
-
 <%@ page import="daweb3.CbNode" %>
 <!DOCTYPE html>
 <html>

@@ -168,7 +168,7 @@
 											alt="${message(code: 'default.workflow.icon.restart', default: 'Gesamten Workflow für Paket neu starten')}"/></a>
 					</g:if>
 					<g:if test="${ showDeleteAll == "true" }">
-						<a onClick="return subForm('Alle Pakete löschen. Sind Sie sicher?','../queueDeleteAll');" ><img src="${resource(dir: 'images/icons', file: 'list_remove.png')}" style="width:16px; height:16px"/ title="${message(code: 'default.workflow.icon.delete', default: 'Paket löschen')}" 
+						<a onClick="return subForm('Alle Pakete löschen. Sind Sie sicher?','../queueDeleteAll');" ><img src="${resource(dir: 'images/icons', file: 'list_remove.png')}" style="width:16px; height:16px" title="${message(code: 'default.workflow.icon.delete', default: 'Paket löschen')}" 
 											alt="${message(code: 'default.workflow.icon.delete', default: 'Paket löschen')}"></a>
 					</g:if>
 				</td>

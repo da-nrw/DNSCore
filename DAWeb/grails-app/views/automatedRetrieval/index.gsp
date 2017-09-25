@@ -17,8 +17,7 @@
 					Übergeben Sie dafür einen JSON Request im POST (Aufbau analog des Ergebnisses der Statusabfrage) an die folgende URL: 
 					<b>https://Servername<g:createLink controller="automatedRetrieval" action="queueForRetrievalJSON"/></b><br>
 					</span></li>
-					<span class="property-value"><li>Als Antwort erhalten Sie ein maschinenlesbares Ergebnis (JSON) über die Erstellung eines Abfragevorgangs<br></li>
-					</span>
+					<li><span class="property-value">Als Antwort erhalten Sie ein maschinenlesbares Ergebnis (JSON) über die Erstellung eines Abfragevorgangs<br></span></li>
 				</ul>
 				<g:javascript>
 				$('form').submit(function(e) {
