@@ -872,22 +872,7 @@ public class MetsParser{
 		return retList;
 	}
 	
-	/**
-	 * Method wraps given attributes into accessCondition-Element and returns it.
-	 * 
-	 * @param href
-	 * @param displayLabel
-	 * @param text
-	 * @return
-	 */
-	public static Element generateAccessCondition(String href, String displayLabel, String text) {
-		Element newAccessCondition=new Element("accessCondition",C.MODS_NS);
-		newAccessCondition.setAttribute("type", "use and reproduction");
-		newAccessCondition.setAttribute(new Attribute("href", href,C.XLINK_NS));
-		newAccessCondition.setAttribute("displayLabel", displayLabel!=null?displayLabel:"");
-		newAccessCondition.addContent(text!=null?text:"");
-		return newAccessCondition;
-	}
+	
 
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  SETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	

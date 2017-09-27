@@ -24,7 +24,8 @@ public class ATSipBuilderCliLido {
 	
 	private static File targetDir = new File("target/atTargetDir/");
 	private static File sourceDir = new File("src/test/resources/at/");
-	private static String singleSip = "ATBuildSingleLidoSip.tgz";
+	private static String singleSip = "ATBuildSingleLidoSip";
+	private static String singleSipLicensedName = "ATBuildSingleLidoSipLicense";
 	private static Process p;
 	
 	@Before
@@ -41,7 +42,7 @@ public class ATSipBuilderCliLido {
 	@Test
 	public void testBuildSingleSipCorrectReferences() throws IOException {
 		
-		File source = new File(sourceDir, "ATBuildSingleLidoSip");
+		File source = new File(sourceDir,singleSip);
 		
 		String cmd = "./SipBuilder-Unix.sh -rights=\""+ATWorkingDirectory.CONTRACT_RIGHT_LICENSED.getAbsolutePath()+"\" -source=\""+source.getAbsolutePath()+"/\" -destination=\""+targetDir.getAbsolutePath()+"/\" -single -alwaysOverwrite";
 		
@@ -60,7 +61,7 @@ public class ATSipBuilderCliLido {
 	    System.out.println("Here is the standard output of the command:\n");
 	    while ((s = stdInput.readLine()) != null) {
 	         System.out.println(s);
-	         if(s.contains("Identified metadata file") && s.contains("DNSCore/SIP-Builder/src/test/resources/at/ATBuildSingleLidoSip/LIDO-Testexport2014-07-04-FML-Auswahl.xml=LIDO}")) {
+	         if(s.contains("Identified metadata file") && s.contains("DNSCore/SIP-Builder/src/test/resources/at/"+singleSip+"/LIDO-Testexport2014-07-04-FML-Auswahl.xml=LIDO}")) {
 	        	 identifiedMetadataType = true;
 	         }
 	    }
@@ -71,7 +72,84 @@ public class ATSipBuilderCliLido {
 	        System.out.println(s);
 	    }
 	    
-	    assertTrue(new File("target/atTargetDir/"+singleSip).exists());
+	    assertTrue(new File("target/atTargetDir/"+singleSip+".tgz").exists());
 	    assertTrue(identifiedMetadataType);
 	}
+	
+	@Test
+	public void testBuildSingleSipLicenseInPremis() throws IOException {
+		
+		File source = new File(sourceDir, singleSip);
+		
+		String cmd = "./SipBuilder-Unix.sh -rights=\""+ATWorkingDirectory.CONTRACT_RIGHT_LICENSED.getAbsolutePath()+"\" -source=\""+source.getAbsolutePath()+"/\" -destination=\""+targetDir.getAbsolutePath()+"/\" -single -alwaysOverwrite";
+		
+		p=Runtime.getRuntime().exec(cmd,
+		        null, new File("target/installation"));
+		
+		BufferedReader stdInput = new BufferedReader(new
+        InputStreamReader(p.getInputStream()));
+
+		BufferedReader stdError = new BufferedReader(new
+        InputStreamReader(p.getErrorStream()));
+		 
+		boolean identifiedMetadataType = false;
+		String s = "";
+		// read the output from the command
+	    System.out.println("Here is the standard output of the command:\n");
+	    while ((s = stdInput.readLine()) != null) {
+	         System.out.println(s);
+	         if(s.contains("Identified metadata file") && s.contains("DNSCore/SIP-Builder/src/test/resources/at/"+singleSip+"/LIDO-Testexport2014-07-04-FML-Auswahl.xml=LIDO}")) {
+	        	 identifiedMetadataType = true;
+	         }
+	    }
+	    
+	    // read any errors from the attempted command
+	    System.out.println("Here is the standard error of the command (if any):\n");
+	    while ((s = stdError.readLine()) != null) {
+	        System.out.println(s);
+	    }
+	    
+	    assertTrue(new File("target/atTargetDir/"+singleSip+".tgz").exists());
+	    assertTrue(identifiedMetadataType);
+	}
+	
+	
+	@Test
+	public void testBuildSingleSipLicenseInLido() throws IOException {
+		
+		File source = new File(sourceDir, singleSipLicensedName);
+		
+		String cmd = "./SipBuilder-Unix.sh -rights=\""+ATWorkingDirectory.CONTRACT_RIGHT_NON_LICENSED.getAbsolutePath()+"\" -source=\""+source.getAbsolutePath()+"/\" -destination=\""+targetDir.getAbsolutePath()+"/\" -single -alwaysOverwrite";
+		
+		p=Runtime.getRuntime().exec(cmd,
+		        null, new File("target/installation"));
+		
+		BufferedReader stdInput = new BufferedReader(new
+        InputStreamReader(p.getInputStream()));
+
+		BufferedReader stdError = new BufferedReader(new
+        InputStreamReader(p.getErrorStream()));
+		 
+		boolean identifiedMetadataType = false;
+		String s = "";
+		// read the output from the command
+	    System.out.println("Here is the standard output of the command:\n");
+	    while ((s = stdInput.readLine()) != null) {
+	         System.out.println(s);
+	         if(s.contains("Identified metadata file") && s.contains("DNSCore/SIP-Builder/src/test/resources/at/"+singleSipLicensedName+"/LIDO-Testexport2014-07-04-FML-Auswahl.xml=LIDO}")) {
+	        	 identifiedMetadataType = true;
+	         }
+	    }
+	    
+	    // read any errors from the attempted command
+	    System.out.println("Here is the standard error of the command (if any):\n");
+	    while ((s = stdError.readLine()) != null) {
+	        System.out.println(s);
+	    }
+	    
+	    assertTrue(new File("target/atTargetDir/"+singleSipLicensedName+".tgz").exists());
+	    assertTrue(identifiedMetadataType);
+	}
+	
+	
 }

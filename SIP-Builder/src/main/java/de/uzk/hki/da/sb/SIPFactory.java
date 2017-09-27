@@ -40,6 +40,8 @@ import org.jdom.input.SAXBuilder;
 
 import de.uzk.hki.da.metadata.ContractRights;
 import de.uzk.hki.da.metadata.FileExtensions;
+import de.uzk.hki.da.metadata.LidoLicense;
+import de.uzk.hki.da.metadata.LidoParser;
 import de.uzk.hki.da.metadata.MetsLicense;
 import de.uzk.hki.da.metadata.MetsParser;
 import de.uzk.hki.da.metadata.PremisXmlWriter;
@@ -55,6 +57,7 @@ import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.BagFactory;
 import gov.loc.repository.bagit.PreBag;
 import gov.loc.repository.bagit.utilities.SimpleResult;
+import de.uzk.hki.da.metadata.NullLastComparator;
 
 /**
  * The central SIP production class
@@ -398,16 +401,15 @@ public class SIPFactory {
 	
 	private Feedback checkMetadataForLicense(int jobId, File sourceFolder, File packageFolder) {
 		boolean premisLicenseBool=contractRights.getCclincense()!=null;
-		boolean metsLicenseBool;
+		boolean metsLicenseBool=false;
+		boolean lidoLicenseBool=false;
 		boolean publicationBool=contractRights.getPublicRights().getAllowPublication();
 		
 		TreeMap<File, String> metadataFileWithType;
 		try {
 			metadataFileWithType = new FormatDetectionService(sourceFolder).getMetadataFileWithType();
 
-			if (!metadataFileWithType.containsValue(C.CB_PACKAGETYPE_METS)) {
-				metsLicenseBool = false;
-			} else {
+			if (metadataFileWithType.containsValue(C.CB_PACKAGETYPE_METS)) {
 				ArrayList<File> metsFiles = new ArrayList<File>();
 
 				ArrayList<MetsLicense> licenseMetsFile = new ArrayList<MetsLicense>();
@@ -427,6 +429,26 @@ public class SIPFactory {
 					return Feedback.INVALID_LICENSE_DATA_IN_METADATA;
 				else
 					metsLicenseBool = true;
+			}else if (metadataFileWithType.containsValue(C.CB_PACKAGETYPE_LIDO)) {
+				ArrayList<File> lidoFiles = new ArrayList<File>();
+
+				ArrayList<LidoLicense> licenseLidoFile = new ArrayList<LidoLicense>();
+				for (File f : metadataFileWithType.keySet())
+					if (metadataFileWithType.get(f).equals(C.CB_PACKAGETYPE_LIDO))
+						lidoFiles.add(f);
+				for (File f : lidoFiles) {// assuming more as usual mets is allowed (check is done by FormatDetectionService) e.g. publicMets for testcase-creation
+					SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+					Document metsDoc = builder.build(f);
+					LidoParser lp = new LidoParser(metsDoc);
+					licenseLidoFile.add(lp.getLicenseForWholeMets());
+				}
+				Collections.sort(licenseLidoFile, new NullLastComparator<LidoLicense>());
+				if (licenseLidoFile.get(0) == null) // all licenses are null
+					lidoLicenseBool = false;
+				else if (!licenseLidoFile.get(0).equals(licenseLidoFile.get(licenseLidoFile.size() - 1))) // first and last lic have to be same in sorted array
+					return Feedback.INVALID_LICENSE_DATA_IN_METADATA;
+				else
+					lidoLicenseBool = true;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -436,15 +458,15 @@ public class SIPFactory {
 		//publicationBool=false;
 		//premisLicenseBool=false;
 		//publicationBool=false;
-		if(premisLicenseBool && metsLicenseBool){
+		if(premisLicenseBool && (metsLicenseBool || lidoLicenseBool)){
 			return Feedback.DUPLICATE_LICENSE_DATA;
 		}
 		
-		if(publicationBool && !premisLicenseBool && !metsLicenseBool){
+		if(publicationBool && !premisLicenseBool && !metsLicenseBool&& !lidoLicenseBool){
 			return Feedback.PUBLICATION_NO_LICENSE;
 		}
 		
-		logger.info("License is satisfiable: Premis-License:"+premisLicenseBool+" Metadata-License:"+metsLicenseBool+ " Publication-Decision:"+publicationBool);
+		logger.info("License is satisfiable: Premis-License:"+premisLicenseBool+" Mets-License:"+metsLicenseBool+" Lido-License:"+lidoLicenseBool+ " Publication-Decision:"+publicationBool);
 		
 		
 		return Feedback.SUCCESS;

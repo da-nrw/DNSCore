@@ -32,6 +32,8 @@ import org.jdom.input.SAXBuilder;
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.core.UserException.UserExceptionId;
+import de.uzk.hki.da.metadata.LidoLicense;
+import de.uzk.hki.da.metadata.LidoParser;
 import de.uzk.hki.da.metadata.MetadataStructure;
 import de.uzk.hki.da.metadata.MetadataStructureFactory;
 import de.uzk.hki.da.metadata.MetsLicense;
@@ -126,15 +128,17 @@ public class ValidateMetadataAction extends AbstractAction {
 		boolean hasMetsLicense = false;
 		boolean hasPublicMetsLicense = false;
 		boolean usePublicMets = false;
+		boolean hasLidoLicense = false;
+		
 		//validate premis
 		Object premisObject = parsePremisToMetadata(wa.toFile(o.getLatest(C.PREMIS_XML)));
 		for (PublicationRight pr : premisObject.getRights().getPublicationRights())
 			if (pr.getAudience().equals(Audience.PUBLIC))
 				wantPublication = true;
 
-		if (!detectedPackageType.equals(C.CB_PACKAGETYPE_METS) && wantPublication)
+		if (wantPublication && !(detectedPackageType.equals(C.CB_PACKAGETYPE_LIDO)||detectedPackageType.equals(C.CB_PACKAGETYPE_METS)) )
 			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
-					"Publikation ist nur mithilfe von METS-Metadaten erlaubt.","Publikation ist nur mithilfe von METS-Metadaten erlaubt.");
+					"Publikation ist nur mithilfe von METS- oder LIDO-Metadaten erlaubt.","Publikation ist nur mithilfe von METS- oder LIDO-Metadaten erlaubt.");
 
 		if (premisObject.getRights().getPremisLicense() != null)
 			hasPremisLicense = true;
@@ -154,7 +158,7 @@ public class ValidateMetadataAction extends AbstractAction {
 			List<DAFile> metsFiles = getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_METS);
 			MetsLicense licenseMetsFile =null;
 			MetsLicense licensePublicMetsFile = null;
-			for (DAFile f : metsFiles) {//over all mets-files (max 2), amount checked by previous actions
+			for (DAFile f : metsFiles) {//over all mets-files (max 2), amount is checked by previous actions
 				SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 				MetsParser mp = new MetsParser(builder.build(wa.toFile(f).getAbsolutePath()));
 				if(f.getRelative_path().equalsIgnoreCase(C.PUBLIC_METS)){
@@ -180,39 +184,74 @@ public class ValidateMetadataAction extends AbstractAction {
 					new URL(licenseMetsFile.getHref());
 				}catch(MalformedURLException e){
 					throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
-							"Invalide Lizenzangaben in mets metadaten: accessCondition-Element hat ein ungueltiges href-Attribut("+e.getMessage()+")",
-							"Invalide Lizenzangaben in mets metadaten: accessCondition-Element hat ein ungueltiges href-Attribut("+licenseMetsFile.getHref()+")");
+							"Invalide Lizenzangaben in METS-Metadaten: accessCondition-Element hat ein ungueltiges href-Attribut("+e.getMessage()+")",
+							"Invalide Lizenzangaben in METS-Metadaten: accessCondition-Element hat ein ungueltiges href-Attribut("+licenseMetsFile.getHref()+")");
 				}
 			}
 			if ((licenseMetsFile!=null && !licenseMetsFile.equals(licensePublicMetsFile)) ||
 					(licensePublicMetsFile!=null && !licensePublicMetsFile.equals(licenseMetsFile))) // mets and public mets are different
 				logger.warn("Lizenzangaben in den METS-Metadaten sind unterschiedlich: e.g.:" + licenseMetsFile+" "	+ licensePublicMetsFile);
 		}
+		
+		//check lido License
+		else if (detectedPackageType.equals(C.CB_PACKAGETYPE_LIDO)){
+			List<DAFile> metsFiles = getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_LIDO);
+			LidoLicense licenseLidoFile =null;
+			for (DAFile f : metsFiles) {//over all lido-files, amount is checked by previous actions
+				SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+				LidoParser mp = new LidoParser(builder.build(wa.toFile(f).getAbsolutePath()));
+				licenseLidoFile=mp.getLicenseForWholeMets();
+				hasLidoLicense=(licenseLidoFile!=null);
+			}
+			
+			if(hasLidoLicense){
+				try{
+					new URL(licenseLidoFile.getHref());
+				}catch(MalformedURLException e){
+					throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
+							"Invalide Lizenzangaben in LIDO-Metadaten: accessCondition-Element hat ein ungueltiges href-Attribut("+e.getMessage()+")",
+							"Invalide Lizenzangaben in LIDO-Metadaten: accessCondition-Element hat ein ungueltiges href-Attribut("+licenseLidoFile.getHref()+")");
+				}
+			}
+			
+		}
+		
 		//check license compatibility
-		logger.debug("Detected license information wantPublication:"+wantPublication+", hasPremisLicense:"+hasPremisLicense+", hasMetsLicense:"+hasMetsLicense+", usePublicMets:"+usePublicMets+", hasPublicMetsLicense:"+hasPublicMetsLicense);
+		logger.debug("Detected license information wantPublication:"+wantPublication+", hasPremisLicense:"+hasPremisLicense+", hasMetsLicense:"+
+		hasMetsLicense+", usePublicMets:"+usePublicMets+", hasPublicMetsLicense:"+hasPublicMetsLicense+", hasLidoLicense:"+hasLidoLicense);
 		
 		if(usePublicMets && wantPublication && !hasPublicMetsLicense)
 			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
 					"Keine Lizenzangaben in der Public-METS-Metadatei vorhanden.",
 					"Keine Lizenzangaben in der Public-METS-Metadatei vorhanden.");
-		if (hasPremisLicense && (hasMetsLicense || hasPublicMetsLicense))
+		if (hasPremisLicense && (hasMetsLicense || hasPublicMetsLicense || hasLidoLicense))
 			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
-					"Lizenzangaben in den METS-Metadaten und in der Premis-Datei vorhanden.",
-					"Lizenzangaben in den METS-Metadaten und in der Premis-Datei vorhanden.");
+					"Lizenzangaben in den Metadaten und in der Premis-Datei vorhanden.",
+					"Lizenzangaben in den Metadaten und in der Premis-Datei vorhanden.");
+		/*
+		if (hasPremisLicense && hasLidoLicense)
+			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
+					"Lizenzangaben in den LIDO-Metadaten und in der Premis-Datei vorhanden.",
+					"Lizenzangaben in den LIDO-Metadaten und in der Premis-Datei vorhanden.");*/
 
-		if (wantPublication && !hasPremisLicense && !(hasMetsLicense || hasPublicMetsLicense))
+		if (wantPublication && !hasPremisLicense && !(hasMetsLicense || hasPublicMetsLicense || hasLidoLicense))
 			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
 					"Keine Lizenzangaben für eine Publikation vorhanden.",
 					"Keine Lizenzangaben für eine Publikation vorhanden.");
 		
+		
+		
+		
 
 		if(hasPremisLicense)
 			o.setLicense_flag(C.LICENSEFLAG_PREMIS);
+		else if(hasLidoLicense)
+			o.setLicense_flag(C.LICENSEFLAG_LIDO);
 		else if(hasMetsLicense && !usePublicMets)
 			o.setLicense_flag(C.LICENSEFLAG_METS);
 		else if(hasPublicMetsLicense && o.getContractor().isUsePublicMets())
 			o.setLicense_flag(C.LICENSEFLAG_PUBLIC_METS);
-		else if(!hasPremisLicense && !hasMetsLicense && !hasPublicMetsLicense)
+		else if(!hasPremisLicense && !hasMetsLicense && !hasPublicMetsLicense && !hasLidoLicense)
 			o.setLicense_flag(C.LICENSEFLAG_NO_LICENSE);
 		else
 			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,"Invalide Lizenzangaben.","Invalide Lizenzangaben.");

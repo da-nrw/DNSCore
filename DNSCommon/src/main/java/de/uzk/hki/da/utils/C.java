@@ -183,6 +183,7 @@ public class C {
 	public static final int LICENSEFLAG_PREMIS = 1;
 	public static final int LICENSEFLAG_METS = 2;
 	public static final int LICENSEFLAG_PUBLIC_METS = 3;
+	public static final int LICENSEFLAG_LIDO = 4;
 	public static final int PRESERVATIONSYS_LICENSE_VALIDATION_YES = 1;
 	public static final int PRESERVATIONSYS_LICENSE_VALIDATION_NO = 0;
 	

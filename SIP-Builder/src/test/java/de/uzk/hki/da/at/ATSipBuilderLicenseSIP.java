@@ -56,7 +56,7 @@ public class ATSipBuilderLicenseSIP {
 	    boolean rightLicense=false;
 	    while ((s = stdInput.readLine()) != null) {
 	         System.out.println(s);
-	         if(s.contains("License is satisfiable: Premis-License:false Metadata-License:true Publication-Decision:true"))
+	         if(s.contains("License is satisfiable: Premis-License:false Mets-License:true Lido-License:false Publication-Decision:true"))
 	        	 rightLicense=true;
 	         if(s.contains("Die SIP-Erstellung wurde erfolgreich abgeschlossen."))
 	    	   successful=true;
@@ -141,7 +141,7 @@ public class ATSipBuilderLicenseSIP {
 	    //boolean errMsg=false;
 	    while ((s = stdInput.readLine()) != null) {
 	         System.out.println(s);
-	         if(s.contains("License is satisfiable: Premis-License:true Metadata-License:false Publication-Decision:true"))
+	         if(s.contains("License is satisfiable: Premis-License:true Mets-License:false Lido-License:false Publication-Decision:true"))
 	        	 rightLicense=true;
 	         if(s.contains("Die SIP-Erstellung wurde erfolgreich abgeschlossen."))
 	    	   successfulMSG=true;
@@ -226,7 +226,7 @@ public class ATSipBuilderLicenseSIP {
 	    //boolean errMsg=false;
 	    while ((s = stdInput.readLine()) != null) {
 	         System.out.println(s);
-	         if(s.contains("License is satisfiable: Premis-License:false Metadata-License:false Publication-Decision:false"))
+	         if(s.contains("License is satisfiable: Premis-License:false Mets-License:false Lido-License:false Publication-Decision:false"))
 	        	 rightLicense=true;
 	         if(s.contains("Die SIP-Erstellung wurde erfolgreich abgeschlossen."))
 	    	   successfulMSG=true;
@@ -269,7 +269,7 @@ public class ATSipBuilderLicenseSIP {
 	    //boolean errMsg=false;
 	    while ((s = stdInput.readLine()) != null) {
 	         System.out.println(s);
-	         if(s.contains("License is satisfiable: Premis-License:false Metadata-License:false Publication-Decision:false"))
+	         if(s.contains("License is satisfiable: Premis-License:false Mets-License:false Lido-License:false Publication-Decision:false"))
 	        	 rightLicense=true;
 	         if(s.contains("Die SIP-Erstellung wurde erfolgreich abgeschlossen."))
 	    	   successfulMSG=true;
