@@ -1,7 +1,7 @@
 Anleitung SIP-Builder
 =====================
 
-Bitte verwenden Sie eine Version des SIP-Builders, die mindestens die Build-Nr. __1606__ hat!
+Bitte verwenden Sie eine Version des SIP-Builders, die mindestens die Build-Nr. __1916_ hat!
 
 ## Überblick
 
@@ -61,6 +61,18 @@ Wählen Sie diese Option, um die Standard-Rechteeinstellungen zu wählen:
 * Keine Migrationsbedingungen  
 
 Bei Betätigung des Buttons __Standard__ werden die zuvor gewählten Einstellungen verworfen und durch die Standardwerte ersetzt.
+
+### Lizenzangaben  
+
+![Bild](https://raw.githubusercontent.com/da-nrw/DNSCore/master/SIP-Builder/src/manual/Lizenz.jpg)
+
+Für eine Publikation ist eine Lizenzangabe erforderlich. Die Lizenznangabe darf entweder in den Metadaten stehen oder im SIP-Builder angegeben werden, aber nicht an beiden Stellen gleichzeitig.
+
+__Aus Metadaten__  
+Die Lizenzangaben können aus den Metadaten (z.B. Mets) übernommen werden.
+
+__Im Sip-Builder festlegen__  
+Zur Auswahl stehen unterschiedliche CC-Lizensen und PDM-Lizenz. Diese Lizenzangabe wird in der Premis-Datei vermerkt und bis zum Portal weitergereicht, somit bleiben die angegebenen Quellordner-Daten unverändert. 
 
 ### Publikation
 
