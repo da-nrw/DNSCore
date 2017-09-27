@@ -4,7 +4,7 @@
 Jede premis.xml die innerhalb des DNS verwendet wird, unterliegt den folgenden Schema-Definitionen:
 * http://www.loc.gov/standards/premis/v2/premis-v2-2.xsd
 * http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd 
-* Beabsichtigte Ergänzung im Namespace V1 zu Lizenzen: [danrw-contract-1.01.xsd](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/xsd/v1/danrw-contract-v1-01.xsd) (vsstl. Nov. 2017 unter der URL http://www.danrw.de/schemas/contract/v1/danrw-contract-1.01.xsd 
+* Beabsichtigte Ergänzung im Namespace V1 zu Lizenzen: [danrw-contract-1.01.xsd](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/xsd/v1/danrw-contract-v1-01.xsd) (vsstl. Nov. 2017 unter der URL http://www.danrw.de/schemas/contract/v1/danrw-contract-1.01.xsd)
 
 
 ### Inhalt einer vom SIP-Builder gebauten Premis-Datei für ein einzulieferndes SIP-Paket
