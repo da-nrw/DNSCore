@@ -124,8 +124,7 @@ public class LidoMetadataStructure extends MetadataStructure{
 		is.setEncoding("UTF-8");
 		Document lidoDoc = builder.build(is);
 		
-		Element lidoWrap= lidoDoc.getRootElement().getChild("lidoWrap", C.LIDO_NS);
-		List<Element> lidoElems= lidoWrap.getChildren("lido", C.LIDO_NS);
+		List<Element> lidoElems= lidoDoc.getRootElement().getChildren("lido", C.LIDO_NS);
 
 		for (int i=0; i<lidoElems.size(); i++) { 
 			appendRightsResourceToLido(lidoElems.get(i),licenseHref,displayLabel);
