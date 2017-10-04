@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +13,9 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.io.FileUtils;
 import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -23,6 +26,7 @@ import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
+import de.uzk.hki.da.utils.XMLUtils;
 
 /**
  * 
@@ -49,7 +53,7 @@ public class MetadataStructureGetIndexInfoTests {
 		pSystem.setUrisCho("http://data.danrw.de/cho");
 		pSystem.setUrisAggr("http://data.danrw.de/aggregation");
 	}
-	
+	/*
 	@Test
 	public void testLIDO() throws FileNotFoundException, JDOMException, IOException {
 		
@@ -65,18 +69,18 @@ public class MetadataStructureGetIndexInfoTests {
 			if(content.get(C.EDM_TITLE).contains("Poltrona di Proust")) {
 				assertTrue(
 						content.get(C.EDM_PUBLISHER).get(0).equals("Mailand, Italien"));
-				assertTrue(content.get(C.EDM_DATE).size()==2&&
-						content.get(C.EDM_DATE).contains("1978 (Herstellungsjahr: 1980/1990)")&&
-						content.get(C.EDM_DATE).contains("1978-1990"));
+				assertTrue(content.get(C.EDM_DATE_ISSUED).size()==2&&
+						content.get(C.EDM_DATE_ISSUED).contains("1978 (Herstellungsjahr: 1980/1990)")&&
+						content.get(C.EDM_DATE_ISSUED).contains("1978-1990"));
 				
 			}
 			if(content.get(C.EDM_TITLE).contains("Prämienschein Konzentrationslager Floßenbürg 009739")) {
 				assertTrue(
 						content.get(C.EDM_PUBLISHER).get(0).equals("Floßenbürg, Deutschland"));
 				assertTrue(
-						content.get(C.EDM_DATE).size()==2
-						&&content.get(C.EDM_DATE).contains("o. D.")
-						&&content.get(C.EDM_DATE).contains("1943-1945"));
+						content.get(C.EDM_DATE_ISSUED).size()==2
+						&&content.get(C.EDM_DATE_ISSUED).contains("o. D.")
+						&&content.get(C.EDM_DATE_ISSUED).contains("1943-1945"));
 			}
 			
 		}
@@ -100,9 +104,9 @@ public class MetadataStructureGetIndexInfoTests {
 
 		assertEquals(content.get(C.EDM_TITLE).get(0), "Chronik der Stadt Hoerde"+" : "+"und der größeren evangelischen Gemeinde in derselben");
 			
-		
-		assertTrue(content.get(C.EDM_DATE).contains("1836")
-				&&content.get(C.EDM_DATE).contains("2011"));
+		assertTrue(content.get(C.EDM_EXTENT).get(0).equals("VI, 115 S."));
+		assertTrue(content.get(C.EDM_DATE_ISSUED).contains("1836")
+				&&content.get(C.EDM_DATE_CREATED).contains("2011"));
 		
 		assertTrue(content.get(C.EDM_PUBLISHER).contains("Hoerde")
 				&&content.get(C.EDM_PUBLISHER).contains("Universitäts- und Landesbibliothek (Münster)"));
@@ -128,8 +132,8 @@ public class MetadataStructureGetIndexInfoTests {
 		content = indexInfo.get(objectID+"-md1617166");
 		
 		assertTrue(content.get(C.EDM_TITLE).contains("[Atlas von Europa]"));	
-		assertTrue(content.get(C.EDM_DATE).contains("1794")
-				&&content.get(C.EDM_DATE).contains("2012"));
+		assertTrue(content.get(C.EDM_DATE_ISSUED).contains("1794")
+				&&content.get(C.EDM_DATE_CREATED).contains("2012"));
 		assertTrue(content.get(C.EDM_PUBLISHER).contains("Otto (Wien)")
 				&&content.get(C.EDM_PUBLISHER).contains("Univ.- und Landesbibliothek (Münster)"));
 
@@ -143,7 +147,69 @@ public class MetadataStructureGetIndexInfoTests {
 		
 		mms.toEDM(indexInfo, Path.makeFile(basePath, "target", "multilevelMetsToEdm.xml"), pSystem, objectID, urn);
 	}
+	*/
+	@Test
+	public void testMultilevelMETSappendAccessCondition() throws FileNotFoundException, JDOMException, IOException {
+		MetsLicense testLicense=new MetsLicense("https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
+		File metsFile = Path.make("export_mets.xml").toFile();
+		
+		//file for modifications
+		File metsTMP=Path.make("/export_metsTEST.xml").toFile();
+		File metsTMPFullPath= Path.make(Path.make(basePath),metsTMP.getAbsolutePath()).toFile();
+		FileUtils.copyFile(Path.make(Path.make(basePath),metsFile.getAbsolutePath()).toFile(), metsTMPFullPath);
+		try{
+			List<Document> docs = new ArrayList<Document>();
+			MetsMetadataStructure mms = new MetsMetadataStructure(Path.make(basePath),metsFile, docs);
+			mms.appendAccessCondition(metsTMP, testLicense.getHref(), testLicense.getDisplayLabel(), testLicense.getText());
+			
+			//read the written result
+			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+			FileReader fr1 = new FileReader(metsTMPFullPath);
+			org.jdom.Document metsDoc = builder.build(fr1);
+			MetsParser mp = new MetsParser(metsDoc);
+			
+			assertEquals(testLicense,mp.getLicenseForWholeMets());
+			assertEquals(testLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.EDM_RIGHTS).get(0));
+			assertEquals(testLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1617166").get(C.EDM_RIGHTS).get(0));
+			
+			
+		}finally{
+			FileUtils.deleteQuietly(metsTMPFullPath);
+		}
+
+	}
+
 	
+	@Test
+	public void testSimpleMETSappendAccessCondition() throws FileNotFoundException, JDOMException, IOException {
+		MetsLicense testLicense=new MetsLicense("https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
+		File metsFile = Path.make("simpleMetsNoLicense.xml").toFile();
+		
+		//file for modifications
+		File metsTMP=Path.make("/simpleMetsNoLicenseTEST.xml").toFile();
+		File metsTMPFullPath= Path.make(Path.make(basePath),metsTMP.getAbsolutePath()).toFile();
+		FileUtils.copyFile(Path.make(Path.make(basePath),metsFile.getAbsolutePath()).toFile(), metsTMPFullPath);
+		try{
+			List<Document> docs = new ArrayList<Document>();
+			MetsMetadataStructure mms = new MetsMetadataStructure(Path.make(basePath),metsFile, docs);
+			mms.appendAccessCondition(metsTMP, testLicense.getHref(), testLicense.getDisplayLabel(), testLicense.getText());
+			
+			//read the written result
+			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+			FileReader fr1 = new FileReader(metsTMPFullPath);
+			org.jdom.Document metsDoc = builder.build(fr1);
+			MetsParser mp = new MetsParser(metsDoc);
+			
+			assertEquals(testLicense,mp.getLicenseForWholeMets());
+			assertEquals(testLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md2684319").get(C.EDM_RIGHTS).get(0));			
+		}finally{
+			FileUtils.deleteQuietly(metsTMPFullPath);
+		}
+
+	}
+	
+/*
+		
 	@Test
 	public void testEAD() throws FileNotFoundException, JDOMException, IOException, ParserConfigurationException, SAXException {
 		
@@ -160,7 +226,7 @@ public class MetadataStructureGetIndexInfoTests {
 			if(content.get(C.EDM_TITLE).contains("Pressemitteilungen, Amerikadienst")) {
 				
 				assertTrue(
-						content.get(C.EDM_DATE).contains("1938-01-01/1938-12-31"));
+						content.get(C.EDM_DATE_CREATED).contains("1938-01-01/1938-12-31"));
 				assertTrue(content.get(C.EDM_IDENTIFIER).size()==3&&
 						content.get(C.EDM_IDENTIFIER).contains("XIV 34")&&
 						content.get(C.EDM_IDENTIFIER).contains("4667")&&
@@ -170,7 +236,7 @@ public class MetadataStructureGetIndexInfoTests {
 			}
 			if(content.get(C.EDM_TITLE).contains("Hans Abel")) {
 				assertTrue(
-						content.get(C.EDM_DATE).contains("0000/0000"));
+						content.get(C.EDM_DATE_CREATED).contains("0000/0000"));
 				assertTrue(content.get(C.EDM_IDENTIFIER).size()==2&&
 						content.get(C.EDM_IDENTIFIER).contains("2")&&
 						content.get(C.EDM_IDENTIFIER).contains("4547_Blatt_002"));
@@ -220,7 +286,7 @@ public class MetadataStructureGetIndexInfoTests {
 		assertTrue(parentID1_Bestandsname.equals(parentID2_Bestandsname) && parentID2_Bestandsname.equals(parentID3_Bestandsname));
 		ems.toEDM(indexInfo, Path.makeFile(basePath, "target", "new_ddb_ead_to_edm.xml"), pSystem, objectID, urn);
 	}
-	
+	*/
 	@AfterClass 
 	public static void tearDown(){
 		Path.makeFile(basePath, "target", "eadToEdm.xml").delete();

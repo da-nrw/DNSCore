@@ -41,7 +41,7 @@ public class ATSipBuilderCliNestedLAV {
 	@Test
 	public void testLAVData() throws IOException {
 		
-		String cmd = "./SipBuilder-Unix.sh -source=\""+sourceDir.getAbsolutePath()+"/\" -destination=\""+targetDir.getAbsolutePath()+"/\" -nested -alwaysOverwrite";
+		String cmd = "./SipBuilder-Unix.sh -rights=\""+ATWorkingDirectory.CONTRACT_RIGHT_LICENSED.getAbsolutePath()+"\" -source=\""+sourceDir.getAbsolutePath()+"/\" -destination=\""+targetDir.getAbsolutePath()+"/\" -nested -alwaysOverwrite";
 		
 		p=Runtime.getRuntime().exec(cmd,
 		        null, new File("target/installation"));

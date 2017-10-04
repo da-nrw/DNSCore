@@ -84,6 +84,7 @@
 					<archive>
 						<manifestEntries>
 							<buildNumber>${env.BUILD_NUMBER}</buildNumber>
+							<timeStamp>${maven.build.timestamp}</timeStamp>
 						</manifestEntries>
 						<manifest>
 							<mainClass>de.uzk.hki.main.RegressTesterMain</mainClass>

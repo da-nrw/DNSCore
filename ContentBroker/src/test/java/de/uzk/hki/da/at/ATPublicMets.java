@@ -28,7 +28,7 @@ public class ATPublicMets extends AcceptanceTest {
 
 	@After
 	public void tearDown() {
-		this.setUserPublicMets(Boolean.FALSE);
+		setUserPublicMets(Boolean.FALSE);
 	}
 
 	@Test
@@ -39,12 +39,12 @@ public class ATPublicMets extends AcceptanceTest {
 
 	@Test
 	public void testUserYesSipYes() throws Exception {
-		Boolean oldUsePublicMets = this.setUserPublicMets(Boolean.TRUE);
+		Boolean oldUsePublicMets = setUserPublicMets(Boolean.TRUE);
 
 		ath.putSIPtoIngestArea(YES_NAME, C.FILE_EXTENSION_TGZ, YES_NAME);
 		ath.awaitObjectState(YES_NAME, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 
-		this.setUserPublicMets(oldUsePublicMets);
+		setUserPublicMets(oldUsePublicMets);
 		Object object = ath.getObject(YES_NAME);
 		assertTrue(object.getPublished_flag() == 1);
 	}
@@ -61,20 +61,5 @@ public class ATPublicMets extends AcceptanceTest {
 		assertTrue(object.getPublished_flag() == 0);
 	}
 
-	public Boolean setUserPublicMets(Boolean usePublicMets) {
-		Session session = HibernateUtil.openSession();
-		Transaction transaction = session.beginTransaction();
-		Query query = session.createQuery("SELECT u FROM User u where username = 'TEST'");
-
-		@SuppressWarnings("unchecked")
-		List<User> users = query.list();
-		User testUser = users.get(0);
-		Boolean oldUsePublicMets = testUser.isUsePublicMets();
-		testUser.setUsePublicMets(usePublicMets);
-		session.save(testUser);
-		transaction.commit();
-		session.close();
-
-		return oldUsePublicMets;
-	}
+	
 }

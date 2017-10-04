@@ -71,6 +71,17 @@ public interface GridFacade {
 	 */
 	abstract void get(File destination, String gridFileAdress) throws java.io.IOException;
 	
+	/**
+	 * Retrieve file from the DataGrid, by using specific federated irods zone.
+	 * 
+	 * @param federatedZone
+	 * @param destination
+	 * @param gridFileAdress
+	 * @throws IOException
+	 * @author Eugen Trebunski
+	 */
+	abstract void getFederated(String federatedZone, File destination, String gridFileAdress) throws java.io.IOException;
+	
 	
 	/**
 	 * Determine if a file is valid on the Grid.
@@ -143,4 +154,6 @@ public interface GridFacade {
 			String checksum) throws java.io.IOException;
 
 	boolean remove(String dest);
+
+	
 }

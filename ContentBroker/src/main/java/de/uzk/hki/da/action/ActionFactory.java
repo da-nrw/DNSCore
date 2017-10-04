@@ -30,6 +30,7 @@ import static de.uzk.hki.da.utils.StringUtilities.isNotSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
@@ -96,12 +97,23 @@ public class ActionFactory implements ApplicationContextAware {
 	/** ActionName, StartStatus */
 	private Map<String,String> actionStartStates = new HashMap<String,String>();
 	
+	private Set<String> testContractors;
 	
+	
+	public static void refreshLicenseFlagInPreservationSystem(PreservationSystem preservationSystem ){
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		PreservationSystem psTMP=(PreservationSystem) session.load(PreservationSystem.class, preservationSystem.getId());
+		
+		List lResult= session.createQuery("SELECT ps.licenseValidationFlag FROM PreservationSystem ps where ps.id = :PSID").setParameter("PSID", preservationSystem.getId()).list();
+		if(lResult.size()==1) //some junit cases operate on empty database
+			preservationSystem.setLicenseValidationFlag((Integer)lResult.get(0));	
+		session.close();
+	}
 	
 	
 	public void init(){
 		setPreservationSystem(new PreservationSystem()); getPreservationSystem().setId(1);
-		
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		session.refresh(preservationSystem);
@@ -133,6 +145,7 @@ public class ActionFactory implements ApplicationContextAware {
 	
 	
 	private void injectProperties(AbstractAction action, Job job){
+		refreshLicenseFlagInPreservationSystem(getPreservationSystem());
 		action.setUserExceptionManager(userExceptionManager);
 		action.setJmsMessageServiceHandler(jmsMessageServiceHandler);
 		action.setLocalNode(localNode);
@@ -141,6 +154,7 @@ public class ActionFactory implements ApplicationContextAware {
 		action.setActionFactory(this);
 		action.setJob(job);
 		action.setPSystem(getPreservationSystem());
+		action.setTestContractors(testContractors);
 	}
 	
 	
@@ -248,7 +262,7 @@ public class ActionFactory implements ApplicationContextAware {
 		return selectActionToExecute();
 	}
 	
-	private AbstractAction selectActionToExecute() {
+	synchronized private AbstractAction selectActionToExecute() {
 		
 		for (String jobType : actionRegistry.getActionPriority()) {
 			if (!actionRegistry.getAvailableJobTypes().contains(jobType)) continue;
@@ -313,6 +327,7 @@ public class ActionFactory implements ApplicationContextAware {
 			action.checkPreconditions();
 		}catch(PreconditionsNotMetException e) {
 			logger.error("Regarding job for object ["+jobCandidate.getObject().getIdentifier()+"]. Preconfigurations not met for action. "+e.getMessage());
+			System.out.println("Regarding job for object ["+jobCandidate.getObject().getIdentifier()+"]. Preconfigurations not met for action. "+e.getMessage());
 			qc.updateJobStatus(jobCandidate, 
 					status(getActionStartStates().get(jobType),WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET));
 			
@@ -479,6 +494,26 @@ public class ActionFactory implements ApplicationContextAware {
 
 	public void setActionStartStates(Map<String,String> actionStartStates) {
 		this.actionStartStates = actionStartStates;
+	}
+	
+	/**
+	 * Get the set of contractors that are considered test users.
+	 * Objects ingested by these users will be indexed in the
+	 * test index (index_name + "test").
+	 * @return the set of test users
+	 */
+	public Set<String> getTestContractors() {
+		return testContractors;
+	}
+
+	/**
+	 * Set the set of contractors that are considered test users.
+	 * Objects ingested by these users will be indexed in the
+	 * test index (index_name + "test").
+	 * @param the set of test users
+	 */
+	public void setTestContractors(Set<String> testContractors) {
+		this.testContractors = testContractors;
 	}
 
 }

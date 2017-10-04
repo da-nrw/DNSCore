@@ -150,7 +150,7 @@ public class RestructureAction extends AbstractAction{
 		dgs.addDocumentsToObject(o);
 
 		listAllDAFiles();
-		List<DAFile> newestFiles = o.getNewestFilesFromAllRepresentations(preservationSystem.getSidecarExtensions());
+		List<DAFile> newestFiles = o.getNewestFilesFromAllRepresentations(o.getFriendlyFileExtensions());
 		
 		determineFileFormats(newestFiles);
 		

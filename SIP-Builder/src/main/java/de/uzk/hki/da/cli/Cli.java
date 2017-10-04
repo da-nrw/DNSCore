@@ -30,11 +30,6 @@ import java.util.List;
 
 import javax.xml.parsers.SAXParserFactory;
 
-import nu.xom.Builder;
-import nu.xom.Document;
-import nu.xom.Element;
-import nu.xom.Elements;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.xml.sax.ErrorHandler;
@@ -48,9 +43,15 @@ import de.uzk.hki.da.sb.MessageWriter;
 import de.uzk.hki.da.sb.SIPFactory;
 import de.uzk.hki.da.sb.UserInputValidator;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.ExistingSIPModifier;
 import de.uzk.hki.da.utils.FolderUtils;
+import de.uzk.hki.da.utils.SimpleLicenseAppender;
 import de.uzk.hki.da.utils.StringUtilities;
 import de.uzk.hki.da.utils.Utilities;
+import nu.xom.Builder;
+import nu.xom.Document;
+import nu.xom.Element;
+import nu.xom.Elements;
 
 /**
  * Runs the SIP-Builder in CLI mode
@@ -75,6 +76,7 @@ public class Cli {
 		this.confFolderPath = confFolderPath;
 		this.args = args;
 		sipFactory = new SIPFactory();
+		
 	}
 
 	/**
@@ -85,17 +87,8 @@ public class Cli {
 	public int start() {
 		
 		Feedback returnValue;
-		
-    	if ((returnValue = configureSipFactory()) != Feedback.SUCCESS)
-    		return returnValue.toInt();
-    	
-    	if ((returnValue = checkConfiguration()) != Feedback.SUCCESS)
-    		return returnValue.toInt();
 
-    	if ((returnValue = copyFilesFromList()) != Feedback.SUCCESS)
-    		return returnValue.toInt();
-    	
-    	if ((returnValue = checkSourceFolder()) != Feedback.SUCCESS)
+    	if((returnValue = configureCLI())!=Feedback.SUCCESS)
     		return returnValue.toInt();
     	
     	sipFactory.startSIPBuilding();
@@ -111,6 +104,43 @@ public class Cli {
     	return sipFactory.getReturnCode().toInt();
 	}
 	
+	private Feedback configureCLI(){
+		Feedback returnValue;
+		if ((returnValue = configureSipFactory()) != Feedback.SUCCESS)
+    		return returnValue;
+    	
+    	if ((returnValue = checkConfiguration()) != Feedback.SUCCESS)
+    		return returnValue;
+
+    	if ((returnValue = copyFilesFromList()) != Feedback.SUCCESS)
+    		return returnValue;
+    	
+    	if ((returnValue = checkSourceFolder()) != Feedback.SUCCESS)
+    		return returnValue;
+    	return returnValue;
+	}
+	
+	public int startAppendLicense() {
+		Feedback returnValue;
+		if((returnValue = configureCLI())!=Feedback.SUCCESS)
+			if(returnValue.equals(Feedback.SOURCE_FOLDER_NOT_FOUND)){
+				returnValue=Feedback.SUCCESS;
+				System.out.println("Für Lizenzergänzung ist der angegebene Quellordner eigentliche eine Quelldatei");
+			}else
+				return returnValue.toInt();
+
+		ExistingSIPModifier licenser=new SimpleLicenseAppender();
+		try {
+			returnValue=licenser.startModifyExistingSip(sipFactory.getSourcePath(), sipFactory.getDestinationPath());
+		} catch (IOException e) {
+			e.printStackTrace();
+			returnValue=Feedback.PREMIS_ERROR;
+		}
+
+		return returnValue.toInt();
+	}
+
+	
 	/**
 	 * Sets the values in the SIPFactory depending on the arguments passed to the SIP-Builder
 	 * 
@@ -119,6 +149,10 @@ public class Cli {
 	private Feedback configureSipFactory() {
 		
 		boolean contractRightsLoaded = false;
+		// DANRW-1515
+		boolean allowDuplicateFilename = false; 
+		boolean checkFileExtensionOff = false;
+		
 		CliMessageWriter messageWriter = new CliMessageWriter();
 		
 		// Default settings
@@ -246,12 +280,37 @@ public class Cli {
     			continue;
     		} 
     		
+    		// DANRW-1515: Extension to disable checking for duplicate filename
+    		// configurable, if the file extension may be checked
+    		if (arg.equals("-allowDuplicateFilename")) {
+    			sipFactory.setAllowDuplicateFilename(true);
+    			allowDuplicateFilename = true;
+    			continue;
+    		}
+    		if (arg.equals("-checkFileExtensionOff")) {
+    			sipFactory.setCheckFileExtensionOff(true);
+    			checkFileExtensionOff = true;
+    			continue;
+    		}
+    		
+    		if (!allowDuplicateFilename && checkFileExtensionOff) {
+    			System.out.println("-checkFileExtensionOff ist nicht ohne den Parameter -allowDuplicateFilename gültig. Starten Sie den SipBuilder " 
+    					+ "mit dem Parameter -help, um eine Liste aller möglichen Parameter anzuzeigen.");
+    			return Feedback.INVALID_PARAMETER_COMBINATION;
+    		}
+    		
     		if (arg.startsWith("-destDir")) {
     			sipFactory.setDestinationPath(sipFactory.getDestinationPath() + File.separator + extractParameter(arg));
     			continue;
     		} 
 
-    		if (arg.equals("-default") || arg.equals("-multiple") || arg.equals("-neverOverwrite") || arg.equals("-compression") || arg.equals("-nested"))
+    		// DANRW-1352: Extension to disable bagit - function
+    		if (arg.startsWith("-noBagit")) {
+    			sipFactory.setBagit(false);
+    			continue;
+    		}
+    		
+    		if (arg.equals("-onlyAddLicense") || arg.equals("-default") || arg.equals("-multiple") || arg.equals("-neverOverwrite") || arg.equals("-compression") || arg.equals("-nested"))
     			continue;
     		
     		System.out.println(arg + " ist kein gültiger Parameter. Starten Sie den SipBuilder mit dem Parameter " +
@@ -275,6 +334,17 @@ public class Cli {
     							   "standardRights.xml\" geladen werden.");
     			return Feedback.STANDARD_RIGHTS_FILE_READ_ERROR;
     		}
+    	// DANRW-1515
+    	if (allowDuplicateFilename && !checkFileExtensionOff) {
+			try {
+				sipFactory.setFileExtensionsList(sipFactory.getFileExtensions().loadFileExtensionsFromFile(
+						new File(confFolderPath + File.separator + "fileExtensions.xml")));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return Feedback.FILE_EXTENSIONS_READ_ERROR;
+			}
+    	}
     	
     	return Feedback.SUCCESS;
 	}
@@ -451,7 +521,7 @@ public class Cli {
 	 * @return The parameter value
 	 */
     private String extractParameter(String arg) {
-    	
+    	System.out.println();
     	int index = arg.indexOf('=');
     	
     	if (index == -1)
@@ -461,8 +531,7 @@ public class Cli {
     	if (parameter.startsWith("\""))
     		parameter = parameter.substring(1);
     	if (parameter.endsWith("\""))
-    		parameter = parameter.substring(0, parameter.length() - 2);
-    	
+    		parameter = parameter.substring(0, parameter.length() - 1);
     	return parameter;
     }
     
@@ -745,7 +814,12 @@ public class Cli {
 		System.out.println("   -noCompression            SIPs als unkomprimierte tar-Files erstellen");
 		System.out.println("");
 		System.out.println("   -noTar                    SIPs als Verzeichnis erstellen");
+		System.out.println("");
 		System.out.println("   -destDir=\"[Name]\"         Verzeichnisname, in dem das SIP erstellt werden soll (abhängig vom gewählten Zielordner). Darf nur in Kombination mit -noTar verwendet werden");
+		System.out.println("");
+		System.out.println("	-noBagit				  SIP ohne bagit erstellen");
+		System.out.println("   -allowDuplicateFilename   SIP erstellen, auch wenn Metadaten und Daten den gleichen Dateinamen haben");
+		System.out.println("   -checkFileExtensionOff	 SIP erstellen, auch wenn Metadaten und Daten den gleichen Dateinamen haben ohne Prüfung auf die Dateiendung, Nur in Verbindung mit dem Parameter -allowDuplicateFilename"); 
 		System.out.println("");
 		System.out.println("   -neverOverwrite           SIPs nicht erstellen, wenn sich im Zielordner bereits ein SIP gleichen Namens befindet (Standard)");
 		System.out.println("   -alwaysOverwrite          Bereits existierende SIPs/Lieferungen gleichen Namens im Zielordner ohne Nachfrage überschreiben");

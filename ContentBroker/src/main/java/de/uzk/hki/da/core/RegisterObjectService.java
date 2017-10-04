@@ -144,11 +144,8 @@ public class RegisterObjectService {
 
 	
 	private void updateExistingObject(Object obj,String containerName){
-		
-		List<Package> packs = obj.getPackages();
-
 		Package newPkg = new Package();
-		newPkg.setName(generateNewPackageName(packs));
+		newPkg.setName(generateNewPackageName(obj));
 		newPkg.setContainerName(containerName);
 		if (obj.getObject_state()<50) throw new UserException(UserExceptionId.DELTA_RECIEVED_BEFORE_ARCHIVED, "Delta Record für ein nicht fertig archiviertes Objekt");
 		obj.getPackages().add(newPkg);
@@ -230,15 +227,8 @@ public class RegisterObjectService {
 	 * @param packs the packs
 	 * @return the string
 	 */
-	private String generateNewPackageName(List<Package> packs){
-
-		List<String> names = new ArrayList<String>();
-		for (Package pkg:packs) names.add(pkg.getName());
-
-		Collections.sort(names);
-		Collections.reverse(names);
-
-		String max = names.get(0);
+	private String generateNewPackageName(Object obj){
+		String max=obj.getLatestPackage().getName();
 		return Integer.toString(Integer.parseInt( max )+1);		
 	}
 

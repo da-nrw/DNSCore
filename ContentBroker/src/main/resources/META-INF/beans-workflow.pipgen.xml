@@ -29,6 +29,7 @@
 		scope="prototype">
 		<property name="startStatus" value="720" />
 		<property name="endStatus" value="740" />
+		<property name="knownFormatCmdLineErrors" ref="knownErrors" />
 		<property name="name" value="PIPGenConvertAction" />
 		<property name="distributedConversionAdapter" ref="${cb.implementation.distributedConversion:fakeDistributedConversionAdapter}" />
 	</bean>

@@ -114,10 +114,13 @@ public class FolderUtils {
 				FileUtils.deleteDirectory(directory);
 			} catch (IOException e) {
 				successful = false;
-				System.out.println("FolderUtils::deleteDirectorySafe(): delete " + directory + " fails: " + i+" x "+TIME_TO_END_FILE_OPERATION);
+				System.out.println("FolderUtils::deleteDirectorySafe(): delete " + directory  + " fails: " + i+" x "+TIME_TO_END_FILE_OPERATION);
 				waitToCompleteNFSAwareFileOperation();
 				// Zweiter versuch nach einer Pause
 				// FileUtils.deleteDirectory(directory);
+				if (i == 14) {
+					throw e;
+				}
 			}
 		}
 

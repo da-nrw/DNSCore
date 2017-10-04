@@ -39,7 +39,6 @@ public class ATIngestLav extends AcceptanceTest {
 	
 	@BeforeClass
 	public static void setUp() throws IOException, InterruptedException {
-		
 		ath.putSIPtoIngestArea(urn1, "tgz", urn1);
 		ath.awaitObjectState(urn1,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForDefinedPublishedState(urn1);

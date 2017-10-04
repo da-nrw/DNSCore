@@ -34,6 +34,7 @@
 		<property name="workAreaRootPath" value="${localNode.workAreaRootPath}"/>
         <property name="userAreaRootPath" value="${localNode.userAreaRootPath:_}" />
         <property name="ingestAreaRootPath" value="${localNode.ingestAreaRootPath:_}" />
+        <property name="ingestAreaNoBagitRootPath" value="${localNode.ingestAreaNoBagitRootPath:_}" />
         <property name="gridCacheAreaRootPath" value="${localNode.gridCacheAreaRootPath:_}" />
         <property name="workingResource" value="${localNode.workingResource}" />
         <property name="id" value="${localNode.id}" />
@@ -72,5 +73,12 @@
   <bean id="jmsMessageServiceHandler" class="de.uzk.hki.da.service.JmsMessageServiceHandler">
   	<property name="mqConnectionFactory" ref="mqConnectionFactory"/>
   </bean>
+  
+  <util:set id="testContractors">
+  		<value>TEST</value>
+  		<value>LVRInfoKom</value>
+  		<value>HBZ</value>
+  		<value>CIRegressionTEST</value>
+  	</util:set>
 
 </beans>

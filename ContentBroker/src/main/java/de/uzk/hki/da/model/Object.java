@@ -53,7 +53,7 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.utils.C;
-import de.uzk.hki.da.utils.SidecarUtils;
+import de.uzk.hki.da.utils.FriendlyFilesUtils;
 
 
 /**
@@ -182,6 +182,9 @@ public class Object {
 	/** last publication try (time based) */
 	@Column(name="last_publication_try")
 	private Date lastPublicationTry;
+	
+	@Column(name="license_flag")
+	private int license_flag=C.LICENSEFLAG_UNDEFINED;
 
 	/** The rights. */
 	@Transient
@@ -719,7 +722,7 @@ public class Object {
 		
 		for (String rep : getReps())
 			for (DAFile f: getFilesFromRepresentation(rep)){
-				if (SidecarUtils.hasSidecarExtension(f.getRelative_path(),sidecarExts))
+				if (FriendlyFilesUtils.isFriendlyFileExtension(f.getRelative_path(),sidecarExts))
 					documentMap.put(f.getRelative_path(), f);
 				else
 					documentMap.put(FilenameUtils.removeExtension(f.getRelative_path()), f);
@@ -823,6 +826,15 @@ public class Object {
 	}
 
 
+	
+	public int getLicense_flag() {
+		return license_flag;
+	}
+
+	public void setLicense_flag(int license_flag) {
+		this.license_flag = license_flag;
+	}
+
 	public boolean ddbExcluded() {
 		return ddbExclusion;
 	}
@@ -855,6 +867,16 @@ public class Object {
 		this.lastPublicationTry = lastPublicationTry;
 	}
 
+	public String getFriendlyFileExtensions() {
+		if (this.getContractor() == null){
+			return "";
+		}
+		String ret = this.getContractor().getFriendlyFileExtensions();
+		if (ret == null){
+			return "";
+		}
+		return ret;
+	}
 	/**
 	 * Gets the files of a representation based on the information stored
 	 * in the object tree. 

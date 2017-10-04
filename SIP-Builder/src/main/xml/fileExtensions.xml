@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<file-extensions>
+	<image>
+		<f-ext>bmp</f-ext>
+		<f-ext>jpg</f-ext>
+		<f-ext>jp2</f-ext>
+		<f-ext>jpeg</f-ext>
+		<f-ext>tif</f-ext>
+		<f-ext>tiff</f-ext>
+	</image>
+	<text>
+		<f-ext>txt</f-ext>
+		<f-ext>csv</f-ext>
+		<f-ext>xml</f-ext>
+	</text>
+	<document>
+		<f-ext>doc</f-ext>
+		<f-ext>docx</f-ext>
+		<f-ext>pdf</f-ext>
+	</document>
+	<audio>
+		<f-ext>mp3</f-ext>
+		<f-ext>wav</f-ext>
+	</audio>
+	<video>
+		<f-ext>avi</f-ext>
+		<f-ext>mp4</f-ext>
+	</video>
+</file-extensions>

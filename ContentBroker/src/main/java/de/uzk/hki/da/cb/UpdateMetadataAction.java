@@ -22,8 +22,8 @@ package de.uzk.hki.da.cb;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -34,8 +34,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOCase;
-import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.xml.sax.SAXException;
@@ -47,16 +45,17 @@ import de.uzk.hki.da.metadata.EadMetsMetadataStructure;
 import de.uzk.hki.da.metadata.LidoMetadataStructure;
 import de.uzk.hki.da.metadata.MetadataStructure;
 import de.uzk.hki.da.metadata.MetsMetadataStructure;
-import de.uzk.hki.da.metadata.XMPMetadataStructure;
-import de.uzk.hki.da.metadata.XmpCollector;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Event;
+import de.uzk.hki.da.model.ObjectPremisXmlReader;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.PremisLicense;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.util.FileIdGenerator;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.FolderUtils;
+import de.uzk.hki.da.utils.FriendlyFilesUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
 import de.uzk.hki.da.utils.XMLUtils;
@@ -102,7 +101,7 @@ public class UpdateMetadataAction extends AbstractAction {
 	}
 
 	@Override
-	public boolean implementation() throws IOException, JDOMException, ParserConfigurationException, SAXException {
+	public boolean implementation() throws IOException, JDOMException, ParserConfigurationException, SAXException, NullPointerException {
 		
 		logger.debug("UpdateMetadataAction ...");
 		
@@ -131,7 +130,6 @@ public class UpdateMetadataAction extends AbstractAction {
 		
 		String packageType = o.getPackage_type();
 		String metadataFileName = o.getMetadata_file();
-		
 //		check object & job settings
 		if (j==null) throw new ConfigurationException("job");
 		if (packageType == null || metadataFileName == null) {
@@ -146,8 +144,9 @@ public class UpdateMetadataAction extends AbstractAction {
 			
 		if(!"XMP".equals(packageType)) {
 			
-			metadataFileName = copyMetadataFileToNewReps(packageType,
-					metadataFileName);
+			String mfPathSrc = o.getLatest(metadataFileName).getPath().toString();
+			
+			metadataFileName = copyMetadataFileToNewReps(packageType, metadataFileName);
 			
 			for (String repName : getRepNames()) {
 				
@@ -164,15 +163,39 @@ public class UpdateMetadataAction extends AbstractAction {
 	                fileName_convertRewritingCount = new HashMap<String, Integer>();
 	                
 					if("EAD".equals(packageType)) {
+						EadMetsMetadataStructure srcEmms;
+						srcEmms = new EadMetsMetadataStructure(wa.dataPath(), new File(mfPathSrc), documents);
+						copyMetsFiles(srcEmms, repName);
 						EadMetsMetadataStructure emms = new EadMetsMetadataStructure(wa.dataPath(),metadataFile, documents);
-						updatePathsInEad(emms, repName, replacements);
+						updatePathsInEad(emms, repName, replacements, this.o.getFriendlyFileExtensions());
 					} else if ("METS".equals(packageType) && (!replacements.isEmpty() && replacements!=null)) {
 						MetsMetadataStructure mms = new MetsMetadataStructure(wa.dataPath(),metadataFile, documents);
-						updatePathsInMets(mms, metadataFile, replacements);
+						updatePathsInMets(mms, metadataFile, replacements, this.o.getFriendlyFileExtensions());
 					} else if("LIDO".equals(packageType) && (!replacements.isEmpty() && replacements!=null)) {
 						LidoMetadataStructure lms = new LidoMetadataStructure(wa.dataPath(),metadataFile, documents);
-						updatePathsInLido(lms, replacements);
+						updatePathsInLido(lms, replacements, this.o.getFriendlyFileExtensions());
 					}
+				}
+				
+				if(presMode && "METS".equals(packageType)&&o.getLicense_flag()==C.LICENSEFLAG_PREMIS){//append accessCondition-Element to PIP-Mets 
+					logger.debug("Insert License from Premis to Metadata file ");	
+					PremisLicense pLicense;
+						try {
+							MetsMetadataStructure mms = new MetsMetadataStructure(wa.dataPath(),metadataFile, documents);
+							pLicense = (new ObjectPremisXmlReader()).deserialize(wa.toFile(o.getLatest(C.PREMIS_XML))).getRights().getPremisLicense();
+							logger.debug("Recognized License from Premis: "+pLicense);
+							mms.appendAccessCondition(metadataFile, pLicense.getHref(), pLicense.getDisplayLabel(), pLicense.getText());
+						} catch (ParseException  e) {
+							logger.error("Exception: "+e);
+							e.printStackTrace();
+							throw new IOException(e);
+						}catch (IllegalArgumentException e) {
+							logger.error("Exception: "+e);
+							e.printStackTrace();
+							throw new IOException(e);
+						}
+						
+					
 				}
 				
 				if(!replacements.isEmpty() && replacements!=null) {
@@ -196,45 +219,14 @@ public class UpdateMetadataAction extends AbstractAction {
 			}
 		}
 		
-	
-		if ("XMP".equals(packageType)){
-			
-			collectXMP();
-			
-			for (String repName : getRepNames()) {
-				if(representationExists(repName)) {
-					logger.debug("representation: "+repName);
-					Map<DAFile,DAFile> replacements = generateReplacementsMap(o.getLatestPackage(), repName, absUrlPrefix);
-					logger.debug("Search for metadata file "+Path.make(wa.dataPath(),repName,metadataFileName));
-					metadataFile = new RelativePath(repName,metadataFileName).toFile();
-					if (!Path.makeFile(wa.dataPath(),metadataFile.getPath()).exists()) throw new FileNotFoundException();
-		            XMPMetadataStructure xms = new XMPMetadataStructure(wa.dataPath(),metadataFile, documents);
-					updatePathsInRDF(xms, replacements);
-				}
-			}
-		}
-		
 		return true;
 	}
+
 	
-	private void updatePathsInRDF(XMPMetadataStructure xms, Map<DAFile,DAFile> replacements) throws IOException {
-		logger.debug("Update paths in XMP file "+xms.getMetadataFile().getAbsolutePath());
-		Map<String, String> replacementsMap = new HashMap<String, String>();
-		for(DAFile sourceFile : replacements.keySet()) {
-			DAFile targetFile = (DAFile)replacements.get(sourceFile);
-			String targetValue;
-			if(!isPresMode()) {
-				targetValue = targetFile.getRelative_path();
-			} else {
-				targetValue = preservationSystem.getUrisFile() + File.separator + o.getIdentifier() + File.separator + targetFile.getRelative_path();
-			}
-			replacementsMap.put(sourceFile.getRelative_path(), targetValue);
-		}
-		xms.makeReplacementsInRDf(replacementsMap);	
-	}
-	
-	private void updatePathsInEad(EadMetsMetadataStructure emms, String repName, Map<DAFile,DAFile> replacements) throws JDOMException, IOException {
+	private void updatePathsInEad(EadMetsMetadataStructure emms, String repName, Map<DAFile,DAFile> replacements, String friendlyExts) throws JDOMException, IOException {
+
 		logger.info("Update paths in EAD file "+emms.getMetadataFile().getAbsolutePath());
+
 		HashMap<String, String> eadReplacements = new HashMap<String, String>();
 		List<String> eadRefs = emms.getMetsRefsInEad();
 		for (Event e:o.getLatestPackage().getEvents()) {
@@ -260,22 +252,56 @@ public class UpdateMetadataAction extends AbstractAction {
 		}		
 		emms.replaceMetsRefsInEad(metadataFile, eadReplacements);
 		if(!replacements.isEmpty() && replacements!=null) {
-			updatePathsInEADMetsFiles(emms, repName, replacements);
+			updatePathsInEADMetsFiles(emms, repName, replacements, friendlyExts);
 		}
 	}
 	
+	private void copyMetsFiles(EadMetsMetadataStructure emms, String repName) throws IOException{
+		
+		List<String> metse = emms.getMetsRefsInEad();
+		
+		for (int mmm = 0; mmm < metse.size(); mmm++) {
+			String mets = metse.get(mmm);
+			String normMets = FilenameUtils.normalize(mets);
+			if (normMets != null){
+				mets = normMets; 
+			}
+			
+			File srcFile = new File(wa.dataPath() + "/" + o.getLatest(mets).getPath());
+			File dstFile = new File(wa.dataPath() + "/" + repName + "/" + mets);
+			FileUtils.copyFile(srcFile, dstFile);
+
+			DAFile dstDaFile = new DAFile(repName, mets);
+			DAFile srcDaFile = o.getLatest(mets);
+			dstDaFile.setFormatPUID(srcDaFile.getFormatPUID());
+			o.getLatestPackage().getFiles().add(dstDaFile);
+			
+			Event e = new Event();
+			e.setSource_file(srcDaFile);
+			e.setTarget_file(dstDaFile);
+			e.setType("COPY");
+			e.setDate(new Date());
+			e.setAgent_type("NODE");
+			e.setAgent_name(n.getName());							
+			o.getLatestPackage().getEvents().add(e);
+			
+			logger.debug("Copied metadata file \"{}\" to \"{}\"", srcDaFile.toString(), dstDaFile);
+		}
+	}
 	
-	private void updatePathsInEADMetsFiles(EadMetsMetadataStructure emms, String repName, Map<DAFile,DAFile> replacements) throws IOException, JDOMException {
+	private void updatePathsInEADMetsFiles(EadMetsMetadataStructure emms, String repName, Map<DAFile,DAFile> replacements, String friendlyExts) 
+			throws IOException, JDOMException {
 		List<MetsMetadataStructure> mmsList = emms.getMetsMetadataStructures();
 		for (MetsMetadataStructure mms : mmsList) {
 			logger.info("Update paths in METS file "+mms.getMetadataFile().getAbsolutePath());
-			updatePathsInMets(mms, mms.getMetadataFile(), replacements);
+			updatePathsInMets(mms, mms.getMetadataFile(), replacements, friendlyExts);
 		}
 	}
 	
 	
 	@SuppressWarnings("rawtypes")
-	private void updatePathsInMets(MetsMetadataStructure mms, File metsFile, Map<DAFile,DAFile> replacements) throws IOException, JDOMException {
+	private void updatePathsInMets(MetsMetadataStructure mms, File metsFile, Map<DAFile,DAFile> replacements, String friendlyExts) 
+			throws IOException, JDOMException {
 		String targetPath = "";
 		List<Element> metsFileElemens = mms.getFileElements();
 		for(Element metsFileElement : metsFileElemens) {
@@ -303,7 +329,7 @@ public class UpdateMetadataAction extends AbstractAction {
 				} 
 			}
 			if(!fileExists && o.isDelta() && !isPresMode()) {
-				List<String> referenceWithMimetype = getCorrReferencesAndMimetypeInDelta(mms, href, "");
+				List<String> referenceWithMimetype = getCorrReferencesAndMimetypeInDelta(mms, href, friendlyExts);
 				if(!referenceWithMimetype.isEmpty()&&referenceWithMimetype!=null) {
 					targetPath = referenceWithMimetype.get(0);
 					mimetype = referenceWithMimetype.get(1);
@@ -320,7 +346,7 @@ public class UpdateMetadataAction extends AbstractAction {
 					loctype = "URL";
 				}
 				logger.debug("New mets replacement: "+href+" by "+targetValue);
-				mms.makeReplacementsInMetsFile(metsFile, href, targetValue, mimetype, loctype);
+				mms.makeReplacementsHrefInMetsFile(metsFile, href, targetValue, mimetype, loctype);
 			} else {
 				logger.error("No dafile found for href "+href);
 			}
@@ -328,7 +354,8 @@ public class UpdateMetadataAction extends AbstractAction {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	private void updatePathsInLido(LidoMetadataStructure lms, Map<DAFile,DAFile> replacements) throws IOException {
+	private void updatePathsInLido(LidoMetadataStructure lms, Map<DAFile,DAFile> replacements, String friendlyExts) 
+			throws IOException {
 		logger.info("Update paths in LIDO file "+lms.getMetadataFile().getAbsolutePath());
 		HashMap<String, String> lidoReplacements = new HashMap<String, String>();
 		List<String> lidoRefs = lms.getReferences();
@@ -355,7 +382,7 @@ public class UpdateMetadataAction extends AbstractAction {
 				}
 			}
 			if(!fileExists && o.isDelta() && !isPresMode()) {
-				List<String> references = getCorrReferencesAndMimetypeInDelta(lms, href, "");
+				List<String> references = getCorrReferencesAndMimetypeInDelta(lms, href, friendlyExts);
 				if(!references.isEmpty() && references.get(0)!=null) {
 					targetPath = references.get(0);
 					fileExists = true;
@@ -383,14 +410,20 @@ public class UpdateMetadataAction extends AbstractAction {
 		fileName_convertRewritingCount.put(href, count+1);
 	}
 	
-	private List<String> getCorrReferencesAndMimetypeInDelta(MetadataStructure ms, String href, String sidecarExts) {
+	private List<String> getCorrReferencesAndMimetypeInDelta(MetadataStructure ms, String href, String friendlyExts) {
 		logger.debug("File not found. Completing reference "+href+" in delta ...");
 		List<String> reference = new ArrayList<String>();
-		DAFile sourceFile = ms.getReferencedDafile(metadataFile, href, o.getDocuments());
-		List<DAFile> newestFiles = o.getNewestFilesFromAllRepresentations(sidecarExts);
+		DAFile sourceFile = ms.getReferencedDafile(ms.getMetadataFile(), href, o.getDocuments());
+		String sourceFileName = wa.toFile(sourceFile).getName();
+		if (FriendlyFilesUtils.isFriendlyFile(sourceFileName, friendlyExts)){
+			return reference;
+		}
+		
+		List<DAFile> newestFiles = o.getNewestFilesFromAllRepresentations(friendlyExts);
 		for(DAFile dafile : newestFiles) {
-			if(FilenameUtils.getBaseName(wa.toFile(dafile).getName()).equals(FilenameUtils.getBaseName(wa.toFile(sourceFile).getName()))&&(
-					!(wa.toFile(dafile).getName().equals(wa.toFile(sourceFile).getName())))) {
+			if (!FriendlyFilesUtils.isFriendlyFile(dafile.getRelative_path(), friendlyExts)
+			 && FilenameUtils.getBaseName(wa.toFile(dafile).getName()).equals(FilenameUtils.getBaseName(sourceFileName))
+			 &&(!(wa.toFile(dafile).getName().equals(sourceFileName)))) {
 				logger.debug("calculated reference "+dafile.getRelative_path());
 				reference.add(dafile.getRelative_path());
 				String mimetype = "";
@@ -472,189 +505,14 @@ public class UpdateMetadataAction extends AbstractAction {
 //			object.setMetadata_file(metadataFileName);
 			
 			// copy METS-Files if present in EAD-package
-			if ("EAD".equals(packageType)) {
-				copyXMLsToNewRepresentation(e.getSource_file(), repName);
-			}
+//			if ("EAD".equals(packageType)) {
+//				copyXMLsToNewRepresentation(e.getSource_file(), repName);
+//			}
 		}
 		return metadataFileName;
 	}
 
 	
-	
-	/**
-	 * @param srcFile
-	 * @param repName
-	 * @throws IOException
-	 */
-	
-	private void copyXMLsToNewRepresentation(DAFile srcDAFile, String repName) 
-			throws IOException {
-		
-		File srcFile = wa.toFile(srcDAFile);
-		
-		Iterator<File> xmlFiles = FileUtils.iterateFiles(
-				srcFile.getParentFile(), new WildcardFileFilter("*.xml", IOCase.INSENSITIVE), null);
-
-//		Implementierung für beliebige Baumtiefe steht noch aus!
-		
-		File[] subDirs = srcFile.getParentFile().listFiles();
-		
-		for(int file=-1; file<subDirs.length; file++) {
-			File destDir = new File(wa.dataPath() +"/"+ repName);
-			
-			if(file>-1) {
-				File currentFile = subDirs[file];
-				if(currentFile.isDirectory()) {
-					destDir = new File(Path.make(wa.dataPath(), repName, currentFile.getName()).toString());
-					xmlFiles = FileUtils.iterateFiles(
-							currentFile, new WildcardFileFilter("*.xml", IOCase.INSENSITIVE), null);
-				}
-			}
-			
-			int count=0;
-			while (xmlFiles.hasNext()) {
-				count++;
-				
-				File xmlFile = xmlFiles.next();
-				
-				if(!xmlFile.getName().equals(o.getMetadata_file())) {
-					FileUtils.copyFileToDirectory(xmlFile, destDir);
-					logger.debug("Copy "+xmlFile.getAbsolutePath()+" to "+destDir.getAbsolutePath());
-					
-					DAFile daFile = null;
-					Event e = new Event();							
-					for (Package p : o.getPackages()) {
-						for (DAFile f : p.getFiles()) {
-							if (xmlFile.getAbsolutePath()
-									.equals(wa.toFile(f).getAbsolutePath())) {
-								e.setSource_file(f);
-								daFile = new DAFile(repName, f.getRelative_path());
-								daFile.setFormatPUID(f.getFormatPUID());
-							}
-						}
-					}	
-					
-					o.getLatestPackage().getFiles().add(daFile);
-					
-					e.setTarget_file(daFile);
-					e.setType("COPY");
-					e.setDate(new Date());
-					e.setAgent_type("NODE");
-					e.setAgent_name(n.getName());							
-					o.getLatestPackage().getEvents().add(e);
-				}
-			}
-			logger.debug("Copied "+count+ " *.xml files to new representation (package is of type EAD)");	
-		}
-	}
-	
-	/**
-	 * Copy xmp sidecar files and collect them into one "XMP manifest"
-	 * @author Sebastian Cuy
-	 * @author Daniel M. de Oliveira
-	 * @author Thomas Kleinke
-	 * @throws IOException
-	 */
-	private void collectXMP() throws IOException {
-		logger.debug("collectXMP");
-		Map<DAFile,DAFile> copyCommands = new HashMap<DAFile,DAFile>();
-		for (String repName : getRepNames()) {
-			logger.debug("looking for xmp files in rep {}", repName);
-			String repPath = Path.make(wa.dataPath(),repName).toString();
-			File repDir = new File(repPath);
-			if (!repDir.exists()) {
-				logger.info("representation directory {} does not exist. Skipping ...", repPath);
-				continue;
-			}
-			
-			List<DAFile> newestFiles = o.getNewestFilesFromAllRepresentations("xmp");
-			List<DAFile> newestXmpFiles = new ArrayList<DAFile>();
-			for (DAFile dafile : newestFiles) {
-				if (dafile.getRelative_path().toLowerCase().endsWith(".xmp"))
-					newestXmpFiles.add(dafile);
-			}
-			
-			logger.debug("found {} xmp files", newestXmpFiles.size());
-			
-			for (DAFile sidecarSourceFile : newestXmpFiles) {
-				if (Arrays.asList(repNames).contains(sidecarSourceFile.getRep_name())) continue;
-				logger.debug("Found xmp sidecar: {}", sidecarSourceFile);
-
-				String xmpTargetPath = determineTargetRelativePathWithoutExtension(sidecarSourceFile); 
-				
-				if (xmpTargetPath.equals(""))					
-					continue;
-				
-				xmpTargetPath += ".xmp";
-				
-				DAFile sidecarTargetFile = new DAFile(repName, xmpTargetPath);
-				
-				copyCommands.put(sidecarTargetFile, sidecarSourceFile);
-			}
-			logger.debug("collecting files in path: {}", repPath);
-			
-			XmpCollector.collect(wa,newestXmpFiles, new File(repPath + "/XMP.xml"));
-			DAFile xmpFile = new DAFile(repName,"XMP.xml");
-			o.getLatestPackage().getFiles().add(xmpFile);
-			o.getLatestPackage().getEvents().add(createCreateEvent(xmpFile));
-			
-		}
-		
-		// run copy commands
-		for (DAFile sidecarTargetFile : copyCommands.keySet()) {
-			DAFile sidecarSourceFile = copyCommands.get(sidecarTargetFile);
-			
-			logger.debug("Copying {} to {}", sidecarSourceFile, sidecarTargetFile);
-			FileUtils.copyFile(wa.toFile(sidecarSourceFile), wa.toFile(sidecarTargetFile));
-			sidecarTargetFile.setFormatPUID(sidecarSourceFile.getFormatPUID());
-			
-			o.getLatestPackage().getFiles().add(sidecarTargetFile);
-			o.getLatestPackage().getEvents().add(
-					createCopyEvent(sidecarSourceFile, sidecarTargetFile));
-		}
-		
-	}
-	
-	private String determineTargetRelativePathWithoutExtension(DAFile sidecarSourceFile) {
-		String relativePath = "";
-		for (Event evt:o.getLatestPackage().getEvents()){
-			if (evt.getType().equals("CONVERT")&&
-					FilenameUtils.removeExtension(wa.toFile(evt.getSource_file()).getAbsolutePath()).
-						equals(FilenameUtils.removeExtension(wa.toFile(sidecarSourceFile).getAbsolutePath()))){
-				relativePath = FilenameUtils.removeExtension(evt.getTarget_file().getRelative_path());
-				break;
-			}
-		}
-		
-		if (relativePath.equals(""))
-			logger.debug("No CONVERT event found for " + FilenameUtils.removeExtension(wa.toFile(sidecarSourceFile).getName()));
-		
-		return relativePath;
-	}
-	
-	private Event createCopyEvent(DAFile sidecarSourceFile,
-			DAFile sidecarTargetFile) {
-		Event e = new Event();							
-		e.setTarget_file(sidecarTargetFile);
-		e.setSource_file(sidecarSourceFile);
-		e.setType("COPY");
-		e.setDate(new Date());
-		e.setAgent_type("NODE");
-		e.setAgent_name(n.getName());
-		return e;
-	}
-	
-	private Event createCreateEvent(DAFile targetFile) {
-		
-		Event e = new Event();
-		e.setTarget_file(targetFile);
-		e.setType("CREATE");
-		e.setDate(new Date());
-		e.setAgent_type("NODE");
-		e.setAgent_name(n.getName());
-		return e;
-	}
-
 	private void logConvertEventsOnDebugLevel() {
 		logger.debug("Showing events for pkg");
 		
@@ -666,9 +524,6 @@ public class UpdateMetadataAction extends AbstractAction {
 			}
 		}
 	}
-
-	
-	
 	
 	private boolean representationExists(String repName) {
 		boolean repExists = false;

@@ -65,7 +65,7 @@ public class ATDeltaOnURN extends AcceptanceTest {
 
 	@After
 	public void tearDown() {
-		distributedConversionAdapter.remove("aip/TEST/" + idiName);
+		distributedConversionAdapter.remove("aip/"+testContractor.getUsername()+"/" + idiName);
 	}
 
 }

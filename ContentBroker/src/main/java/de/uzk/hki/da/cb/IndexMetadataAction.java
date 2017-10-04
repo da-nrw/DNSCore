@@ -56,7 +56,6 @@ import de.uzk.hki.da.util.ConfigurationException;
 public class IndexMetadataAction extends AbstractAction {
 	
 	private MetadataIndex metadataIndex;
-	private Set<String> testContractors;
 	private String indexName;
 	
 	public IndexMetadataAction() {
@@ -145,25 +144,7 @@ public class IndexMetadataAction extends AbstractAction {
 		this.indexName = indexName;
 	}
 
-	/**
-	 * Get the set of contractors that are considered test users.
-	 * Objects ingested by these users will be indexed in the
-	 * test index (index_name + "test").
-	 * @return the set of test users
-	 */
-	public Set<String> getTestContractors() {
-		return testContractors;
-	}
 
-	/**
-	 * Set the set of contractors that are considered test users.
-	 * Objects ingested by these users will be indexed in the
-	 * test index (index_name + "test").
-	 * @param the set of test users
-	 */
-	public void setTestContractors(Set<String> testContractors) {
-		this.testContractors = testContractors;
-	}
 	
 	public MetadataIndex getMetadataIndex() {
 		return metadataIndex;

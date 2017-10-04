@@ -168,7 +168,7 @@ public class LidoParser {
 				logger.debug("ID: "+id);
 				lidoElementInfo.put(C.EDM_TITLE, getTitle(lidoElement));
 				lidoElementInfo.put(C.EDM_PUBLISHER, getPlaces(lidoElement));
-				lidoElementInfo.put(C.EDM_DATE, getDate(lidoElement));
+				lidoElementInfo.put(C.EDM_DATE_ISSUED, getDate(lidoElement));
 				List<String> references = getReferencesFromLidoElement(lidoElement);
 				if(references!=null && !references.isEmpty()) {
 					List<String> shownBy = new ArrayList<String>();

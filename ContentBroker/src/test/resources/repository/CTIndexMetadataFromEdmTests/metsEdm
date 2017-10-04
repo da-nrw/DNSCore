@@ -3,8 +3,8 @@
 <edm:ProvidedCHO rdf:about="http://data.danrw.de/cho/1-123456789">
 <dc:publisher>Hoerde</dc:publisher>
 <dc:publisher>Münster</dc:publisher>
-<dc:date>1836</dc:date>
-<dc:date>2011</dc:date>
+<dcterms:issued>1836</dcterms:issued>
+<dcterms:created>2011</dcterms:created>
 <dc:title>Chronik der Stadt Hoerde</dc:title>
 <dc:title>und der größeren evangelischen Gemeinde in derselben</dc:title>
 </edm:ProvidedCHO>

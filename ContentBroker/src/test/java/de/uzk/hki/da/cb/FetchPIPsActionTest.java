@@ -37,6 +37,7 @@ import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.FakeDistributedConversionAdapter;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.test.TC;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
@@ -88,6 +89,46 @@ public class FetchPIPsActionTest extends ConcreteActionUnitTest {
 	}
 	
 	@Test
+	public void noLicenseInPIPs() throws FileNotFoundException, IOException{
+		action.getPreservationSystem().setLicenseValidationFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_YES);
+		
+		// no license -> no public publication
+		action.getObject().setLicense_flag(C.LICENSEFLAG_NO_LICENSE);
+		assertFalse(makeMetadataFile(PREMIS,WorkArea.PUBLIC).exists());
+		assertFalse(makeMetadataFile(PREMIS,WorkArea.WA_INSTITUTION ).exists());
+		action.implementation();
+		assertFalse(makeMetadataFile(PREMIS,WorkArea.PUBLIC).exists());
+		assertTrue(makeMetadataFile(PREMIS,WorkArea.WA_INSTITUTION ).exists());
+	}
+	
+	@Test
+	public void undefinedLicenseInPIPs() throws FileNotFoundException, IOException{
+		action.getPreservationSystem().setLicenseValidationFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_YES);
+		
+		// undefined license -> no public publication
+		action.getObject().setLicense_flag(C.LICENSEFLAG_UNDEFINED);
+		assertFalse(makeMetadataFile(PREMIS,WorkArea.PUBLIC).exists());
+		assertFalse(makeMetadataFile(PREMIS,WorkArea.WA_INSTITUTION ).exists());
+		action.implementation();
+		assertFalse(makeMetadataFile(PREMIS,WorkArea.PUBLIC).exists());
+		assertTrue(makeMetadataFile(PREMIS,WorkArea.WA_INSTITUTION ).exists());
+	}
+	
+	@Test
+	public void metsLicenseInPIPs() throws FileNotFoundException, IOException{
+		action.getPreservationSystem().setLicenseValidationFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_YES);
+		
+		// license ok -> public publication allowed
+		action.getObject().setLicense_flag(C.LICENSEFLAG_METS);
+		assertFalse(makeMetadataFile(PREMIS,WorkArea.PUBLIC).exists());
+		assertFalse(makeMetadataFile(PREMIS,WorkArea.WA_INSTITUTION ).exists());
+		action.implementation();
+		assertTrue(makeMetadataFile(PREMIS,WorkArea.PUBLIC).exists());
+		assertTrue(makeMetadataFile(PREMIS,WorkArea.WA_INSTITUTION ).exists());
+	}
+	
+	
+	@Test
 	public void movePIPs() throws FileNotFoundException, IOException {
 		action.implementation();
 		assertFalse(makePIPSourceFolder(WorkArea.PUBLIC).exists());
@@ -122,7 +163,10 @@ public class FetchPIPsActionTest extends ConcreteActionUnitTest {
 		FolderUtils.deleteDirectorySafe(makePIPSourceFolder(WorkArea.WA_INSTITUTION));
 	}
 	
-	
+	private void cleanAfterAction() throws IOException{
+		FolderUtils.deleteDirectorySafe(makePIPFolder(WorkArea.PUBLIC));
+		FolderUtils.deleteDirectorySafe(makePIPFolder(WorkArea.WA_INSTITUTION));
+	}
 	
 	
 	public File makeMetadataFile(String fileName,String pipType) {

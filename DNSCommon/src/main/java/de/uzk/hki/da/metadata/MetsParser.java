@@ -1,9 +1,13 @@
 package de.uzk.hki.da.metadata;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
+import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -34,6 +38,7 @@ public class MetsParser{
 	private final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 	private final List<Element> fileElements;
 	public static final String titleSparator=" : ";
+	public static final String dateIssuedCreatedCondition="[Electronic ed.]";
 
 	public MetsParser(Document doc) throws JDOMException {
 		this.metsDoc = doc;
@@ -73,6 +78,89 @@ public class MetsParser{
 		}
 		return urn;
 	}
+	
+	/**
+	 * 
+	 * Method search in each dmdSec for license and return one license instance, only if each dmdSec contains same license, otherwise method causes exceptions.
+	 * @return
+	 */
+	public MetsLicense getLicenseForWholeMets() {
+		ArrayList<MetsLicense> licenseAl=new ArrayList<MetsLicense>();
+		@SuppressWarnings("unchecked")
+		List<Element> dmdSecs = metsDoc.getRootElement().getChildren("dmdSec", METS_NS);
+		for(Element dmdSec : dmdSecs) {
+			licenseAl.add(getLicense(dmdSec));
+		}
+		if(licenseAl.size()==0)
+			return null;
+		//check all licenses, all have to be the same
+		Collections.sort(licenseAl,MetsLicense.LicenseNullLastComparator);
+		if(licenseAl.get(0)==null) //all licenses are null
+			return null;
+		if(!licenseAl.get(0).equals(licenseAl.get(licenseAl.size()-1))) //first and last element have to be same in sorted array
+			throw new RuntimeException("METS contains different licenses e.g.:"+licenseAl.get(licenseAl.size()-1)+" "+licenseAl.get(0));
+		
+		return licenseAl.get(0);
+	}
+	
+	/**
+	 * Method search in given dmdSec for license. It returns MetsLicense object or null;
+	 * 
+	 * @param dmdSec
+	 * @return metsLicense
+	 */
+	public MetsLicense getLicense(Element dmdSec) {
+		MetsLicense metsLicense = null;
+
+		List<Element> accessCondition = new ArrayList<Element>();
+		try {
+			accessCondition = getModsXmlData(dmdSec).getChildren("accessCondition", C.MODS_NS);
+			if(accessCondition.size()>1)
+				throw new RuntimeException("dmdSec contains multiple licenses, unsuported");
+			if(accessCondition.size()==1){
+				metsLicense=new MetsLicense();
+				metsLicense.setText(accessCondition.get(0).getValue());
+				metsLicense.setHref(accessCondition.get(0).getAttributeValue("href", XLINK_NS));
+				metsLicense.setType(accessCondition.get(0).getAttributeValue("type"));
+				metsLicense.setDisplayLabel(accessCondition.get(0).getAttributeValue("displayLabel"));
+			}
+				
+			
+		} catch (Exception e) {
+			logger.debug("No accessCondition element found!");
+		}
+		
+		return metsLicense;
+	}
+	
+	private List<String> getPhysicalDescriptionFromDmdId(String dmdID,String objectId) {
+		List<String> extent = new ArrayList<String>();
+		String logicalId = dmdID.replace(objectId+"-", "");
+		try {
+			@SuppressWarnings("unchecked")
+			List<Element> dmdSecs = metsDoc.getRootElement().getChildren("dmdSec", METS_NS);
+			for(Element dmdSec : dmdSecs) {
+				if(dmdSec.getAttributeValue("ID").equals(logicalId)) {
+					Element rootDmdSec = dmdSec;
+					@SuppressWarnings("unchecked")
+					List<Element> elements = getModsXmlData(rootDmdSec).getChildren("physicalDescription",C.MODS_NS);
+					for (Element e : elements) {
+						if(e.getName().equals("physicalDescription") && !e.getChildren("extent", C.MODS_NS).isEmpty()) {
+							List<Element> childElements=e.getChildren("extent", C.MODS_NS);
+							for(Element eChild:childElements){
+								if(!eChild.getValue().trim().isEmpty())
+									extent.add(eChild.getValue());
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			logger.error("Unable to process xml element: "+e.getMessage());
+		}
+		return extent;
+		}
+
 	
 	@SuppressWarnings("unchecked")
 	private List<String> getTitlePageReferencesFromFrontimage() {
@@ -366,12 +454,26 @@ public class MetsParser{
 		return origInfoElements;
 	}
 	
-	private String getDate(Element originInfo) {
+	private String getDateIssued(Element originInfo) {
 		String date = "";
 			try {
-				date = originInfo.getChild("dateIssued", C.MODS_NS).getValue(); 
+				Element edition=originInfo.getChild("edition", C.MODS_NS); 
+				if(edition==null||!edition.getValue().equals(dateIssuedCreatedCondition))
+					date = originInfo.getChild("dateIssued", C.MODS_NS).getValue(); 
 			} catch (Exception e) {
-				logger.debug("Element dateIssued does not exist!");
+				logger.debug("Element dateIssued does not exist! : "+e.toString());
+			}
+		return date;
+	}
+	
+	private String getDateCreated(Element originInfo) {
+		String date = "";
+			try {
+				Element edition=originInfo.getChild("edition", C.MODS_NS); 
+				if(edition!=null&&edition.getValue().equals(dateIssuedCreatedCondition))
+					date = originInfo.getChild("dateIssued", C.MODS_NS).getValue(); 
+			} catch (Exception e) {
+				logger.debug("Element dateIssued does not exist! : "+e.toString());
 			}
 		return date;
 	}
@@ -558,10 +660,14 @@ public class MetsParser{
 		return title;
 	}
 	
+	public List<Element> getDMDSections() {
+		return metsDoc.getRootElement().getChildren("dmdSec", C.METS_NS);
+	}
+	
 	public HashMap<String, Element> getSections(String objectId) {
 		HashMap<String, Element> IDtoSecElement = new HashMap<String, Element>();
 		@SuppressWarnings("unchecked")
-		List<Element> dmdSections = metsDoc.getRootElement().getChildren("dmdSec", C.METS_NS);
+		List<Element> dmdSections =getDMDSections();
 		for(Element e : dmdSections) {
 			String id = "";
 			id = objectId+"-"+e.getAttribute("ID").getValue();
@@ -570,7 +676,7 @@ public class MetsParser{
 		return IDtoSecElement;
 	}
 	
-	public Element getModsXmlData(Element dmdSec) {
+	public static Element getModsXmlData(Element dmdSec) {
 		return dmdSec
 				.getChild("mdWrap", C.METS_NS)
 				.getChild("xmlData", C.METS_NS)
@@ -633,6 +739,7 @@ public class MetsParser{
 //			Title
 			dmdSecInfo.put(C.EDM_TITLE, getTitle(e));
 			
+			dmdSecInfo.put(C.EDM_RIGHTS, getAccessConditions(e));
 //			identifier
 			dmdSecInfo.put(C.EDM_IDENTIFIER, getIdentifier(e));
 			
@@ -653,20 +760,32 @@ public class MetsParser{
 			dmdSecInfo.put(C.EDM_CONTRIBUTOR, contributors);
 			
 //			Date && Place
-			List<String> dates = new ArrayList<String>();
+			List<String> datesIssued = new ArrayList<String>();
+			List<String> datesCreated = new ArrayList<String>();
 			List<String> publishers = new ArrayList<String>();
 			for(Element origInfo : getOrigInfoElements(e)) {
-				String date = getDate(origInfo);
+				String dateIssued = getDateIssued(origInfo);
+				String dateCreated = getDateCreated(origInfo);
 				String publisher = getPublisher(origInfo);
-				if(!date.equals("")) {
-					dates.add(date);
+				if(!dateIssued.equals("")) {
+					datesIssued.add(dateIssued);
+				}
+				if(!dateCreated.equals("")) {
+					datesCreated.add(dateCreated);
 				}
 				if(!publisher.equals("")) {
 					publishers.add(publisher);
 				}
 			}
-			dmdSecInfo.put(C.EDM_DATE, dates);
+			dmdSecInfo.put(C.EDM_DATE_ISSUED, datesIssued);
+			dmdSecInfo.put(C.EDM_DATE_CREATED, datesCreated);
 			dmdSecInfo.put(C.EDM_PUBLISHER, publishers);
+			
+			
+			List<String> allPhysicalDescr = getPhysicalDescriptionFromDmdId(id, ObjectId);
+			if (!allPhysicalDescr.isEmpty()) {
+				dmdSecInfo.put(C.EDM_EXTENT, allPhysicalDescr);
+			}
 			
 //			TitlePage
 			List<String> titlePageRefs = getTitlePageReferencesFromFrontimage();
@@ -720,7 +839,58 @@ public class MetsParser{
 		return indexInfo;
 	}
 	
+
+
+
+	
+	public  List<String> getAccessConditions(Element dmdSec) {
+		String link=null;
+		String displayLabel=null;
+		String text=null;
+		//String ret="";
+		List<String> retList = new ArrayList<String>();
+		
+		try {
+			Element modsXmlData = getModsXmlData(dmdSec);
+			//gibt nur das erste lizenz element zurueck
+			Element accessCondition = modsXmlData.getChild("accessCondition", C.MODS_NS);
+			
+			text=accessCondition.getText();
+			link=accessCondition.getAttributeValue("href",XLINK_NS);
+			displayLabel=accessCondition.getAttributeValue("displayLabel");
+			
+			if(link==null || link.trim().isEmpty()){			
+				logger.error("Attribute accessCondition.href does not exist!!!");
+				//retList.add(displayLabel+this.titleSparator+text);
+			}else{
+				retList.add(link);
+			}
+			return retList;
+		} catch(Exception e) {
+			logger.error("Element accessCondition does not exist!!!");
+		}
+		return retList;
+	}
+	
+	/**
+	 * Method wraps given attributes into accessCondition-Element and returns it.
+	 * 
+	 * @param href
+	 * @param displayLabel
+	 * @param text
+	 * @return
+	 */
+	public static Element generateAccessCondition(String href, String displayLabel, String text) {
+		Element newAccessCondition=new Element("accessCondition",C.MODS_NS);
+		newAccessCondition.setAttribute("type", "use and reproduction");
+		newAccessCondition.setAttribute(new Attribute("href", href,C.XLINK_NS));
+		newAccessCondition.setAttribute("displayLabel", displayLabel!=null?displayLabel:"");
+		newAccessCondition.addContent(text!=null?text:"");
+		return newAccessCondition;
+	}
+
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  SETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	
 	
 	public void setMimetype(Element fileElement, String mimetype) {
 		if(fileElement.getAttribute("MIMETYPE")!=null) {

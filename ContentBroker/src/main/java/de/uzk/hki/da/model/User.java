@@ -75,6 +75,8 @@ public class User{
 	private Boolean deltaOnUrn;
 	@Column(name="use_public_mets", columnDefinition="boolean")
 	private Boolean usePublicMets;
+	@Column(name="friendly_file_exts", columnDefinition="varchar(256)")
+	private String friendlyFileExtensions;
 	
 	// G.Bender 29.11.2016
 	@Column(name="use_virus_scan", columnDefinition="boolean")
@@ -327,5 +329,13 @@ public class User{
 
 	public void setMessages(List<Message> messages) {
 		this.messages = messages;
+	}
+
+	public String getFriendlyFileExtensions() {
+		return friendlyFileExtensions;
+	}
+
+	public void setFriendlyFileExtensions(String friendlyFileExtensions) {
+		this.friendlyFileExtensions = friendlyFileExtensions;
 	}
 }

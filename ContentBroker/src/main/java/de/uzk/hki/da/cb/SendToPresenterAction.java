@@ -81,7 +81,6 @@ public class SendToPresenterAction extends AbstractAction {
 	private Map<String,String> viewerUrls;
 	private Set<String> fileFilter;
 	private Map<String,String> labelMap;
-	private Set<String> testContractors;
 	
 	private MetadataIndex metadataIndex;
 	private String indexName;

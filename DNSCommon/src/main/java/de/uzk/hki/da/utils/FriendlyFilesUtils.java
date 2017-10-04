@@ -23,7 +23,7 @@ package de.uzk.hki.da.utils;
 
 import org.apache.commons.io.FilenameUtils;
 
-public class SidecarUtils {
+public class FriendlyFilesUtils {
 
 	
 	/**
@@ -32,7 +32,7 @@ public class SidecarUtils {
 	 * @return
 	 * @author Daniel M. de Oliveira
 	 */
-	public static boolean hasSidecarExtension(String filename,String sidecarExts){
+	public static boolean isFriendlyFileExtension(String filename,String sidecarExts){
 
 		String[] sidecarExtensions;
 		if (sidecarExts.contains(","))
@@ -49,14 +49,14 @@ public class SidecarUtils {
 	}
 	
 	/**
-	 * Checks if is sidecar file.
+	 * Checks if is friendly file.
 	 *
 	 * @param filename the filename
 	 * @param extensionList the extension list
 	 * @return true, if is sidecar file
 	 * @author Thomas Kleinke
 	 */
-	public static boolean isSidecarFile(String filename, String extensionList) {
+	public static boolean isFriendlyFile(String filename, String extensionList) {
 		
 		int position = 0;
 		while (position < extensionList.length())

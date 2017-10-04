@@ -34,14 +34,13 @@ import org.apache.tika.Tika;
  * @author Polina Gubaidullina
  */
 
-public class formatDetectionService {
+public class FormatDetectionService {
 	
-	private Logger logger = Logger.getLogger(formatDetectionService.class);
+	private Logger logger = Logger.getLogger(FormatDetectionService.class);
 	
 	String eadPattern = ".*(?s)\\A.{0,1000}\\x3cead[^\\x3c]{0,1000}\\x3ceadheader.*";
 	String metsPattern = ".*(?s)\\A.{0,1000}\\x3c([^: ]+:)?mets[^\\xce]{0,100}xmlns:?[^=]{0,10}=\"http://www.loc.gov/METS.*";
 	String lidoPattern = ".*(?s)\\A.{0,1000}\\x3c([^: ]+:)?lidoWrap[^\\xce]{0,100}xmlns:?[^=]{0,10}=\"http://www.lido-schema.org.*";
-	String xmpPattern = "http://www.w3.org/1999/02/22-rdf-syntax-ns";
 	
 	public File file;
 	
@@ -53,7 +52,7 @@ public class formatDetectionService {
 		this.file = file;
 	}
 
-	public formatDetectionService(File f) {
+	public FormatDetectionService(File f) {
 		this.file = f;
 	}
 	
@@ -77,14 +76,6 @@ public class formatDetectionService {
 		}
 	}
 	
-	public boolean isText(File f) throws IOException {
-		if(this.detectMimeType(f).equals("text/plain")) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
 	public String getMetadataTypeXml(File xmlFile) throws IOException {
 		String metadataType = "";
 		String beginningOfFile = convertFirst10LinesOfFileToString(xmlFile);
@@ -95,30 +86,6 @@ public class formatDetectionService {
 		} else if(beginningOfFile.matches(lidoPattern)) {
 			metadataType = C.CB_PACKAGETYPE_LIDO;
 		} 
-		return metadataType;
-	}
-	
-	public String getMetadataTypeText(File textFile) throws IOException {
-		String metadataType = "";
-		StringBuilder contents = new StringBuilder();
-		try {
-			BufferedReader input =  new BufferedReader(new FileReader(textFile));
-			try {
-		        String line = null;
-		        while (( line = input.readLine()) != null){
-		          contents.append(line);
-		          contents.append(System.getProperty("line.separator"));
-		        }
-			}
-			finally {
-				input.close();
-			}
-			if(contents.toString().contains(xmpPattern)) {
-				metadataType = C.CB_PACKAGETYPE_XMP;
-			} 
-		} catch (Exception e) {
-			logger.debug("Unable to read the text file "+textFile);
-		}
 		return metadataType;
 	}
 	
@@ -144,7 +111,6 @@ public class formatDetectionService {
 		List<File> eadFiles = new ArrayList<File>();
 		List<File> metsFiles = new ArrayList<File>();
 		List<File> lidoFiles = new ArrayList<File>();
-		List<File> xmpFiles = new ArrayList<File>();
 		for(File f: folder.listFiles()) {
 			logger.info("Check file "+f);
 			if(isXml(f)) {
@@ -161,34 +127,26 @@ public class formatDetectionService {
 					lidoFiles.add(f);
 				}
 			} 
-			else if(isText(f)) {
-				logger.info(f+" is a text file");
-				String mt = getMetadataTypeText(f);
-				if(mt.equals(C.CB_PACKAGETYPE_XMP)) {
-					logger.info("of type XMP");
-					xmpFiles.add(f);
-				} 
-			}
 		}
-		if(!xmpFiles.isEmpty() && eadFiles.size()+metsFiles.size()+lidoFiles.size()==0) {
-			fileWithType.put(new File(""), C.CB_PACKAGETYPE_XMP);
-		} else if(eadFiles.size()+metsFiles.size()+lidoFiles.size()==1) {
+		if(eadFiles.size()+metsFiles.size()+lidoFiles.size()==1) {
 			if(eadFiles.size()==1) fileWithType.put(eadFiles.get(0), C.CB_PACKAGETYPE_EAD);
 			if(metsFiles.size()==1) fileWithType.put(metsFiles.get(0), C.CB_PACKAGETYPE_METS);
 			if(lidoFiles.size()==1) fileWithType.put(lidoFiles.get(0), C.CB_PACKAGETYPE_LIDO);
 		} else if (eadFiles.size()==1 && metsFiles.size()>=0){
 			fileWithType.put(eadFiles.get(0), C.CB_PACKAGETYPE_EAD);
 		} else if(eadFiles.size()+metsFiles.size()+lidoFiles.size()>1) {
+			/*if(lidoFiles.size()==0&&eadFiles.size()==0&&metsFiles.size()==2){ //To create Public-Mets Test-Sip for CB
+				fileWithType.put(metsFiles.get(0), C.CB_PACKAGETYPE_METS);
+				fileWithType.put(metsFiles.get(1), C.CB_PACKAGETYPE_METS);
+			}else*/
 			throw new Exception("Im Verzeichnis "+folder.getName()+" wurde mehr als eine Metadatendatei gefunden. " +
 					"\nEAD: \n" + eadFiles +
 					"\nMETS: \n" + metsFiles + 
-					"\nLIDO: \n"+lidoFiles + 
-					"\nXMP: \n"+xmpFiles);
+					"\nLIDO: \n"+lidoFiles);
 		} else if(eadFiles.size()+metsFiles.size()+lidoFiles.size()==0) {
 			logger.error("Im Verzeichnis "+folder.getName()+" wurde keine Metadatendatei gefunden. \nBekannte Formate sind: EAD, METS, LIDO.");
 		}
 		logger.info("Identified metadata file "+fileWithType);
 		return fileWithType;
 	}
-	
 }
