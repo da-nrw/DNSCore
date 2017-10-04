@@ -48,7 +48,7 @@ The JSON returned includes all types of information about the SIP submitted or t
 
 Contractors must authenticate with BASIC AUTH. Credentials are same as contractor's.
 
-[https://server/daweb3/](https://Server/daweb3/)
+[https://server/daweb3/](https://Server/daweb3/
 ]}
     ]}
 
