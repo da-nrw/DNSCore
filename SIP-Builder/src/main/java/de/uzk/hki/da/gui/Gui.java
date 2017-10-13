@@ -48,6 +48,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -114,11 +115,11 @@ public class Gui extends JFrame{
 	// Panels
 	JPanel startPanel;
 	JPanel loadStandardPanel;
-	JPanel licensePanel;
 	JPanel institutionPanel;
 	JPanel institutionTempPanel;
 	JPanel institutionRestrictionPanel;
 	JPanel publicPanel;
+	JPanel publicLicensePanel;
 	JPanel publicTempPanel;
 	JPanel publicRestrictionPanel;
 	JPanel migrationPanel;
@@ -224,7 +225,7 @@ public class Gui extends JFrame{
 	JButton standardContractButton;
 	JButton goBackToStartButton;
 	JButton goToLicenseButton;
-	JButton goBackToLicenseButton;
+	JButton goBackToLicenseOrInstitutionButton;
 	JButton goToInstitutionButton;
 	JButton goBackToLoadStandardButton;
 	JButton goToInstitutionTempButton;
@@ -235,10 +236,10 @@ public class Gui extends JFrame{
 	JButton goBackToInstitutionRestrictionOrTempButton;
 	JButton goToPublicTempButton;
 	JButton goBackToPublicButton;
-	JButton goToPublicRestrictionOrMigrationButton;
+	JButton goToPublicRestrictionButton;
 	JButton goBackToPublicTempButton;
 	JButton goToMigrationButton;
-	JButton goBackToPublicRestrictionOrTempButton;
+	JButton goBackToPublicRestrictionOrPublicButton;
 	JButton goToSaveButton;
 	JButton saveButton;
 	JButton goBackToMigrationButton;
@@ -459,8 +460,6 @@ public class Gui extends JFrame{
 		startPanel.setVisible(true);
 		loadStandardPanel = new JPanel();
 		loadStandardPanel.setVisible(false);
-		licensePanel = new JPanel();
-		licensePanel.setVisible(false);
 		institutionPanel = new JPanel();
 		institutionPanel.setVisible(false);
 		institutionTempPanel = new JPanel();
@@ -469,6 +468,8 @@ public class Gui extends JFrame{
 		institutionRestrictionPanel.setVisible(false);
 		publicPanel = new JPanel();
 		publicPanel.setVisible(false);
+		publicLicensePanel = new JPanel();
+		publicLicensePanel.setVisible(false);
 		publicTempPanel = new JPanel();
 		publicTempPanel.setVisible(false);
 		publicRestrictionPanel = new JPanel();
@@ -666,11 +667,11 @@ public class Gui extends JFrame{
 		goToLicenseButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		goToLicenseButton.setBackground(new Color(0,0,0,0));
 		goToLicenseButton.setContentAreaFilled(false);
-		goBackToLicenseButton = new JButton(new ImageIcon(goBackToButtonImage));
-		goBackToLicenseButton.setBorder(null);
-		goBackToLicenseButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		goBackToLicenseButton.setBackground(new Color(0,0,0,0));
-		goBackToLicenseButton.setContentAreaFilled(false);
+		goBackToLicenseOrInstitutionButton = new JButton(new ImageIcon(goBackToButtonImage));
+		goBackToLicenseOrInstitutionButton.setBorder(null);
+		goBackToLicenseOrInstitutionButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		goBackToLicenseOrInstitutionButton.setBackground(new Color(0,0,0,0));
+		goBackToLicenseOrInstitutionButton.setContentAreaFilled(false);
 		goToInstitutionButton = new JButton(new ImageIcon(goToButtonImage));
 		goToInstitutionButton.setBorder(null);
 		goToInstitutionButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -721,11 +722,11 @@ public class Gui extends JFrame{
 		goBackToPublicButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		goBackToPublicButton.setBackground(new Color(0,0,0,0));
 		goBackToPublicButton.setContentAreaFilled(false);
-		goToPublicRestrictionOrMigrationButton = new JButton(new ImageIcon(goToButtonImage));
-		goToPublicRestrictionOrMigrationButton.setBorder(null);
-		goToPublicRestrictionOrMigrationButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		goToPublicRestrictionOrMigrationButton.setBackground(new Color(0,0,0,0));
-		goToPublicRestrictionOrMigrationButton.setContentAreaFilled(false);
+		goToPublicRestrictionButton = new JButton(new ImageIcon(goToButtonImage));
+		goToPublicRestrictionButton.setBorder(null);
+		goToPublicRestrictionButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		goToPublicRestrictionButton.setBackground(new Color(0,0,0,0));
+		goToPublicRestrictionButton.setContentAreaFilled(false);
 		goBackToPublicTempButton = new JButton(new ImageIcon(goBackToButtonImage));
 		goBackToPublicTempButton.setBorder(null);
 		goBackToPublicTempButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -736,11 +737,11 @@ public class Gui extends JFrame{
 		goToMigrationButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		goToMigrationButton.setBackground(new Color(0,0,0,0));
 		goToMigrationButton.setContentAreaFilled(false);
-		goBackToPublicRestrictionOrTempButton = new JButton(new ImageIcon(goBackToButtonImage));
-		goBackToPublicRestrictionOrTempButton.setBorder(null);
-		goBackToPublicRestrictionOrTempButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		goBackToPublicRestrictionOrTempButton.setBackground(new Color(0,0,0,0));
-		goBackToPublicRestrictionOrTempButton.setContentAreaFilled(false);
+		goBackToPublicRestrictionOrPublicButton = new JButton(new ImageIcon(goBackToButtonImage));
+		goBackToPublicRestrictionOrPublicButton.setBorder(null);
+		goBackToPublicRestrictionOrPublicButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		goBackToPublicRestrictionOrPublicButton.setBackground(new Color(0,0,0,0));
+		goBackToPublicRestrictionOrPublicButton.setContentAreaFilled(false);
 		goToSaveButton = new JButton(new ImageIcon(goToButtonImage));
 		goToSaveButton.setBorder(null);
 		goToSaveButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -1344,8 +1345,9 @@ public class Gui extends JFrame{
 		
 		licenseDropDown = new JComboBox();
 		licenseDropDown.setFont(standardFont.deriveFont(11.0f));
-		for(ContractRights.CCLicense tmp:ContractRights.CCLicense.values())
+		for(ContractRights.CCLicense tmp:ContractRights.CCLicense.values()){
 			licenseDropDown.addItem(tmp);
+		}
 
 		institutionLawIdDropDown = new JComboBox();
 		institutionLawIdDropDown.setFont(standardFont.deriveFont(11.0f));
@@ -1493,13 +1495,15 @@ public class Gui extends JFrame{
 		startIconButton.setBounds(10, 70, 171, 20);
 		loadActivatedIconButton.setBounds(10, 95, 171, 20);
 		loadIconButton.setBounds(10, 95, 171, 20);
-		licenseActivatedIconButton.setBounds(10, 120, 171, 20);
-		licenseIconButton.setBounds(10, 120, 171, 20);
 		
-		publicationActivatedIconButton.setBounds(10, 145, 171, 20);
-		publicationIconButton.setBounds(10, 145, 171, 20);
-		publicActivatedIconButton.setBounds(10, 165, 171, 20);
-		publicIconButton.setBounds(10, 165, 171, 20);
+		publicationActivatedIconButton.setBounds(10, 120, 171, 20);
+		publicationIconButton.setBounds(10, 120, 171, 20);
+		publicActivatedIconButton.setBounds(10, 145, 171, 20);
+		publicIconButton.setBounds(10, 145, 171, 20);
+		
+		licenseActivatedIconButton.setBounds(10, 165, 171, 20);
+		licenseIconButton.setBounds(10, 165, 171, 20);
+		
 		publicTempActivatedIconButton.setBounds(10, 185, 171, 20);
 		publicTempIconButton.setBounds(10, 185, 171, 20);
 		publicRestrictionActivatedIconButton.setBounds(10, 205, 171, 20);
@@ -1549,12 +1553,24 @@ public class Gui extends JFrame{
 		standardContractButton.setBounds(350, 250, 90, 20);
 		rightsAreaThree.setBounds(255, 283, 430, 100);
 		goBackToStartButton.setBounds(450, 445, 90, 20);
-		goToLicenseButton.setBounds(575, 445, 90, 20);
+		goToPublicButton.setBounds(575, 445, 90, 20);
 		backgroundLoadStandardImageLabel.setBounds(0, 0, 750, 526);
+	
+
+		// publicPanel
+		publicPanel.setBounds(0, 0, 750, 526);
+		publicLabel.setBounds(255, 70, 300, 20);
+		publicArea.setBounds(255, 100, 400, 40);
+		publicAllowRadioButton.setBounds(251, 150, 40, 20);
+		publicDenyRadioButton.setBounds(251, 175, 60, 20);
+		publicDDBArea.setBounds(255, 215, 400, 60);
+ 		publicDDBCheckBox.setBounds(251, 285, 190, 20);
+		goBackToLoadStandardButton.setBounds(450, 445, 90, 20);
+		goToLicenseButton.setBounds(575, 445, 90, 20);
+		backgroundPublicImageLabel.setBounds(0, 0, 750, 526);
 		
-		
-		// licensePanel
-		licensePanel.setBounds(0, 0, 750, 526);
+		// publicLicensePanel
+		publicLicensePanel.setBounds(0, 0, 750, 526);
 		licenseLabel.setBounds(255, 70, 300, 20);
 		licenseDropDown.setEditable(false);
 		licenseDropDown.setEnabled(false);
@@ -1564,88 +1580,9 @@ public class Gui extends JFrame{
 	    premisLicenseRadioButton.setBounds(255, 245, 430, 20);
 		licenseDropDown.setBounds(275, 270, 230, 20);
 		licenseTextField.setBounds(275, 295, 430, 20);
-		goBackToLoadStandardButton.setBounds(450, 445, 90, 20);
-		goToInstitutionButton.setBounds(575, 445, 90, 20);
-		backgroundLicenseImageLabel.setBounds(0, 0, 750, 526);
-
-		// institutionPanel
-		institutionPanel.setBounds(0, 0, 750, 526);
-		institutionLabel.setBounds(255, 70, 300, 20);
-		institutionArea.setBounds(255, 100, 400, 90);
-		institutionAllowRadioButton.setBounds(251, 210, 40, 20);
-		institutionDenyRadioButton.setBounds(251, 235, 60, 20);
-		goBackToLicenseButton.setBounds(450, 445, 90, 20);
-		goToInstitutionTempButton.setBounds(575, 445, 90, 20);
-		backgroundInstitutionImageLabel.setBounds(0, 0, 750, 526);
-
-		// institutionTempPanel
-		institutionTempPanel.setBounds(0, 0, 750, 526);
-		institutionStartLabel.setBounds(255, 70, 300, 20);
-		institutionNoTempRestrictionRadioButton.setBounds(251, 100, 215, 20);
-		institutionTempRadioButton.setBounds(251, 125, 215, 20);
-		institutionTempStartDateLabel.setBounds(255, 147, 280, 20);
-		institutionTempStartDateTextField.setBounds(255, 172, 310, 20);
-		institutionLawRadioButton.setBounds(251, 202, 275, 20);
-		institutionLawIdDropDown.setBounds(255, 232, 310, 20);
-		goBackToInstitutionButton.setBounds(450, 445, 90, 20);
-		goToInstitutionRestrictionOrPublicButton.setBounds(575, 445, 90, 20);
-		backgroundInstitutionTempImageLabel.setBounds(0, 0, 750, 526);
-
-		// institutionRestrictionPanel
-		institutionRestrictionPanel.setBounds(0, 0, 750, 526);
-		institutionRestrictionHeadlineLabel.setBounds(255, 70, 350, 20);
-		institutionRestrictionArea.setBounds(255, 100, 360, 40);
-		institutionTabbedPane.setBounds(255, 140, 380, 295);
-		goBackToInstitutionTempButton.setBounds(450, 445, 90, 20);
-		goToPublicButton.setBounds(575, 445, 90, 20);
-		backgroundInstitutionRestrictionImageLabel.setBounds(0, 0, 750, 526);
-
-		// institutionRestrictionTextPanel
-		institutionTextRestrictionCheckBox.setBounds(6, 10, 212, 20);
-		institutionRestrictionTextPagesLabel.setBounds(10, 32, 320, 20);
-		institutionRestrictionTextPagesTextField.setBounds(10, 57, 355, 20);
-		institutionRestrictionTextArea.setBounds(10, 87, 360, 170);
-
-		// institutionRestrictionImagePanel
-		institutionImageRestrictionCheckBox.setBounds(6, 10, 192, 20);
-		institutionRestrictionImageArea.setBounds(10, 35, 320, 40);
-		institutionImageDropDown.setBounds(10, 75, 150, 20);
-		institutionImageTextCheckBox.setBounds(6, 105, 270, 20);
-		institutionRestrictionImageLabel.setBounds(10, 127, 310, 20);
-		institutionRestrictionImageTextField.setBounds(10, 152, 355, 20);
-		institutionRestrictionImageTextTypeLabel.setBounds(10, 182, 80, 20);
-		institutionImageTextDropDown.setBounds(105, 182, 165, 20);
-		institutionRestrictionImageTextOpacityLabel.setBounds(10, 212, 80, 20);
-		institutionImageTextOpacityDropDown.setBounds(105, 212, 165, 20);
-		institutionRestrictionImageTextSizeLabel.setBounds(10, 242, 80, 20);
-		institutionImageTextSizeDropDown.setBounds(105, 242, 165, 20);
-
-		// institutionRestrictionAudioPanel
-		institutionAudioRestrictionCheckBox.setBounds(6, 10, 252, 20);
-		institutionRestrictionAudioDurationLabel.setBounds(10, 32, 320, 20);
-		institutionAudioDurationDropDown.setBounds(10, 57, 100, 20);
-
-		// institutionRestrictionVideoPanel
-		institutionVideoRestrictionCheckBox.setBounds(6, 10, 240, 20);
-		institutionRestrictionVideoQualityLabel.setBounds(10, 32, 420, 20);
-		institutionVideoQualityDropDown.setBounds(10, 57, 100, 20);
-		institutionVideoDurationCheckBox.setBounds(6, 87, 214, 20);
-		institutionRestrictionVideoDurationLabel.setBounds(10, 109, 320, 20);
-		institutionVideoDurationDropDown.setBounds(10, 134, 100, 20);
-
-		// publicPanel
-		publicPanel.setBounds(0, 0, 750, 526);
-		publicLabel.setBounds(255, 70, 300, 20);
-		publicArea.setBounds(255, 100, 400, 40);
-		publicAllowRadioButton.setBounds(251, 150, 40, 20);
-		publicDenyRadioButton.setBounds(251, 175, 60, 20);
-		publicDDBArea.setBounds(255, 215, 400, 60);
-
- 		publicDDBCheckBox.setBounds(251, 285, 190, 20);
-
-		goBackToInstitutionRestrictionOrTempButton.setBounds(450, 445, 90, 20);
+		goBackToPublicButton.setBounds(450, 445, 90, 20);
 		goToPublicTempButton.setBounds(575, 445, 90, 20);
-		backgroundPublicImageLabel.setBounds(0, 0, 750, 526);
+		backgroundLicenseImageLabel.setBounds(0, 0, 750, 526);
 
 		// publicTempPanel
 		publicTempPanel.setBounds(0, 0, 750, 526);
@@ -1656,8 +1593,8 @@ public class Gui extends JFrame{
 		publicTempStartDateTextField.setBounds(255, 172, 310, 20);
 		publicLawRadioButton.setBounds(251, 202, 275, 20);
 		publicLawIdDropDown.setBounds(255, 232, 310, 20);
-		goBackToPublicButton.setBounds(450, 445, 90, 20);
-		goToPublicRestrictionOrMigrationButton.setBounds(575, 445, 90, 20);
+		goBackToLicenseOrInstitutionButton.setBounds(450, 445, 90, 20);
+		goToPublicRestrictionButton.setBounds(575, 445, 90, 20);
 		backgroundPublicTempImageLabel.setBounds(0, 0, 750, 526);
 
 		// publicRestrictionPanel
@@ -1666,7 +1603,8 @@ public class Gui extends JFrame{
 		publicRestrictionArea.setBounds(255, 100, 360, 40);
 		publicTabbedPane.setBounds(255, 140, 380, 295);
 		goBackToPublicTempButton.setBounds(450, 445, 90, 20);
-		goToMigrationButton.setBounds(575, 445, 90, 20); 
+		goToInstitutionButton.setBounds(575, 445, 90, 20);
+		
 		backgroundPublicRestrictionImageLabel.setBounds(0, 0, 750, 526);
 
 		// publicRestrictionTextPanel
@@ -1701,6 +1639,74 @@ public class Gui extends JFrame{
 		publicVideoDurationCheckBox.setBounds(6, 87, 214, 20);
 		publicRestrictionVideoDurationLabel.setBounds(10, 109, 320, 20);
 		publicVideoDurationDropDown.setBounds(10, 134, 100, 20);
+		
+		
+		// institutionPanel
+		institutionPanel.setBounds(0, 0, 750, 526);
+		institutionLabel.setBounds(255, 70, 300, 20);
+		institutionArea.setBounds(255, 100, 400, 90);
+		institutionAllowRadioButton.setBounds(251, 210, 40, 20);
+		institutionDenyRadioButton.setBounds(251, 235, 60, 20);
+		goBackToPublicRestrictionOrPublicButton.setBounds(450, 445, 90, 20);
+		goToInstitutionTempButton.setBounds(575, 445, 90, 20);
+		backgroundInstitutionImageLabel.setBounds(0, 0, 750, 526);
+
+
+		// institutionTempPanel
+		institutionTempPanel.setBounds(0, 0, 750, 526);
+		institutionStartLabel.setBounds(255, 70, 300, 20);
+		institutionNoTempRestrictionRadioButton.setBounds(251, 100, 215, 20);
+		institutionTempRadioButton.setBounds(251, 125, 215, 20);
+		institutionTempStartDateLabel.setBounds(255, 147, 280, 20);
+		institutionTempStartDateTextField.setBounds(255, 172, 310, 20);
+		institutionLawRadioButton.setBounds(251, 202, 275, 20);
+		institutionLawIdDropDown.setBounds(255, 232, 310, 20);
+		goBackToInstitutionButton.setBounds(450, 445, 90, 20);
+		goToInstitutionRestrictionOrPublicButton.setBounds(575, 445, 90, 20);
+		backgroundInstitutionTempImageLabel.setBounds(0, 0, 750, 526);
+
+		// institutionRestrictionPanel
+		institutionRestrictionPanel.setBounds(0, 0, 750, 526);
+		institutionRestrictionHeadlineLabel.setBounds(255, 70, 350, 20);
+		institutionRestrictionArea.setBounds(255, 100, 360, 40);
+		institutionTabbedPane.setBounds(255, 140, 380, 295);
+		goBackToInstitutionTempButton.setBounds(450, 445, 90, 20);
+		goToMigrationButton.setBounds(575, 445, 90, 20); 
+		backgroundInstitutionRestrictionImageLabel.setBounds(0, 0, 750, 526);
+
+		// institutionRestrictionTextPanel
+		institutionTextRestrictionCheckBox.setBounds(6, 10, 212, 20);
+		institutionRestrictionTextPagesLabel.setBounds(10, 32, 320, 20);
+		institutionRestrictionTextPagesTextField.setBounds(10, 57, 355, 20);
+		institutionRestrictionTextArea.setBounds(10, 87, 360, 170);
+
+		// institutionRestrictionImagePanel
+		institutionImageRestrictionCheckBox.setBounds(6, 10, 192, 20);
+		institutionRestrictionImageArea.setBounds(10, 35, 320, 40);
+		institutionImageDropDown.setBounds(10, 75, 150, 20);
+		institutionImageTextCheckBox.setBounds(6, 105, 270, 20);
+		institutionRestrictionImageLabel.setBounds(10, 127, 310, 20);
+		institutionRestrictionImageTextField.setBounds(10, 152, 355, 20);
+		institutionRestrictionImageTextTypeLabel.setBounds(10, 182, 80, 20);
+		institutionImageTextDropDown.setBounds(105, 182, 165, 20);
+		institutionRestrictionImageTextOpacityLabel.setBounds(10, 212, 80, 20);
+		institutionImageTextOpacityDropDown.setBounds(105, 212, 165, 20);
+		institutionRestrictionImageTextSizeLabel.setBounds(10, 242, 80, 20);
+		institutionImageTextSizeDropDown.setBounds(105, 242, 165, 20);
+
+		// institutionRestrictionAudioPanel
+		institutionAudioRestrictionCheckBox.setBounds(6, 10, 252, 20);
+		institutionRestrictionAudioDurationLabel.setBounds(10, 32, 320, 20);
+		institutionAudioDurationDropDown.setBounds(10, 57, 100, 20);
+
+		// institutionRestrictionVideoPanel
+		institutionVideoRestrictionCheckBox.setBounds(6, 10, 240, 20);
+		institutionRestrictionVideoQualityLabel.setBounds(10, 32, 420, 20);
+		institutionVideoQualityDropDown.setBounds(10, 57, 100, 20);
+		institutionVideoDurationCheckBox.setBounds(6, 87, 214, 20);
+		institutionRestrictionVideoDurationLabel.setBounds(10, 109, 320, 20);
+		institutionVideoDurationDropDown.setBounds(10, 134, 100, 20);
+	
 
 		// migrationPanel
 		migrationPanel.setBounds(0, 0, 750, 526);
@@ -1708,7 +1714,7 @@ public class Gui extends JFrame{
 		migrationArea.setBounds(255, 100, 450, 125);
 		migrationConditionLabel.setBounds(255, 225, 115, 20);
 		migrationDropDown.setBounds(370, 227, 240, 20);
-		goBackToPublicRestrictionOrTempButton.setBounds(450, 445, 90, 20);
+		goBackToInstitutionRestrictionOrTempButton.setBounds(450, 445, 90, 20);
 		goToSaveButton.setBounds(575, 445, 90, 20);
 		backgroundMigrationImageLabel.setBounds(0, 0, 750, 526);
 
@@ -1801,36 +1807,35 @@ public class Gui extends JFrame{
 		loadStandardPanel.add(standardContractButton);
 		loadStandardPanel.add(rightsAreaThree);
 		loadStandardPanel.add(goBackToStartButton);
-		loadStandardPanel.add(goToLicenseButton);
+		loadStandardPanel.add(goToPublicButton);
 		loadStandardPanel.add(backgroundLoadStandardImageLabel);
 		loadStandardPanel.setLayout(null);
 		
-		getContentPane().add(licensePanel);
-		licensePanel.add(licenseLabel);
-		licensePanel.add(licenseAreaOne);
-		licensePanel.add(metadataLicenseRadioButton);
-		licensePanel.add(premisLicenseRadioButton);
-		
-		
-		licensePanel.add(licenseDropDown);
-		licensePanel.add(licenseTextField);
-		licensePanel.add(goToPublicButton);
-		licensePanel.add(goBackToLoadStandardButton);
-		licensePanel.add(backgroundLicenseImageLabel);
-		licensePanel.setLayout(null);
-
 		getContentPane().add(publicPanel);
 		publicPanel.add(publicLabel);
 		publicPanel.add(publicArea);
 		publicPanel.add(publicAllowRadioButton);
 		publicPanel.add(publicDenyRadioButton);
-		publicPanel.add(goBackToLicenseButton);
+		publicPanel.add(goToLicenseButton);
 		publicPanel.add(publicDDBArea);
 		publicPanel.add(publicDDBCheckBox);
-
-		publicPanel.add(goToPublicTempButton);
+		publicPanel.add(goBackToLoadStandardButton);
 		publicPanel.add(backgroundPublicImageLabel);
 		publicPanel.setLayout(null);
+		
+		getContentPane().add(publicLicensePanel);
+		publicLicensePanel.add(licenseLabel);
+		publicLicensePanel.add(licenseAreaOne);
+		publicLicensePanel.add(metadataLicenseRadioButton);
+		publicLicensePanel.add(premisLicenseRadioButton);
+		publicLicensePanel.add(licenseDropDown);
+		publicLicensePanel.add(licenseTextField);
+		publicLicensePanel.add(goToPublicTempButton);
+		publicLicensePanel.add(goBackToPublicButton);
+		publicLicensePanel.add(backgroundLicenseImageLabel);
+		publicLicensePanel.setLayout(null);
+		
+		
 
 		getContentPane().add(publicTempPanel);
 		publicTempPanel.add(publicStartLabel);
@@ -1840,8 +1845,8 @@ public class Gui extends JFrame{
 		publicTempPanel.add(publicTempStartDateTextField);
 		publicTempPanel.add(publicLawIdDropDown);
 		publicTempPanel.add(publicLawRadioButton);
-		publicTempPanel.add(goBackToPublicButton);
-		publicTempPanel.add(goToPublicRestrictionOrMigrationButton);
+		publicTempPanel.add(goBackToLicenseOrInstitutionButton);
+		publicTempPanel.add(goToPublicRestrictionButton);
 		publicTempPanel.add(backgroundPublicTempImageLabel);
 		publicTempPanel.setLayout(null);
 
@@ -1892,7 +1897,7 @@ public class Gui extends JFrame{
 		institutionPanel.add(institutionArea);
 		institutionPanel.add(institutionAllowRadioButton);
 		institutionPanel.add(institutionDenyRadioButton);
-		institutionPanel.add(goBackToPublicRestrictionOrTempButton);
+		institutionPanel.add(goBackToPublicRestrictionOrPublicButton);
 		institutionPanel.add(goToInstitutionTempButton);
 		institutionPanel.add(backgroundInstitutionImageLabel);
 		institutionPanel.setLayout(null);
@@ -2115,13 +2120,14 @@ public class Gui extends JFrame{
 		
 		goToLicenseButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){	
-				enterLicenseSection();
+				if(!enterPublicationPublicLicenseSection())
+					enterPublicationInstitutionSection();
 			}
 		});
 		
-		goBackToLicenseButton.addActionListener(new ActionListener(){
+		goBackToLicenseOrInstitutionButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){	
-				enterLicenseSection();
+				enterPublicationPublicLicenseSection();
 			}
 		});
 
@@ -2132,6 +2138,53 @@ public class Gui extends JFrame{
 			}
 		});
 
+
+
+		goToPublicButton.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent e){	
+				enterPublicationPublicSection();
+			}
+		});
+		
+		goBackToPublicButton.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent e){	
+				enterPublicationPublicSection();
+			}
+		});
+
+		goToPublicTempButton.addActionListener(new ActionListener(){
+			
+			public void actionPerformed(ActionEvent e){	
+				enterPublicationPublicTempSection();
+			}
+		});
+		
+		goBackToPublicTempButton.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent e){	
+				enterPublicationPublicTempSection();
+			}
+		});
+		
+		goToPublicRestrictionButton.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent e){	
+				enterPublicationPublicRestrictionsSection();
+			}
+		});
+
+
+		goBackToPublicRestrictionOrPublicButton.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent e){	
+				if (!enterPublicationPublicRestrictionsSection())
+					enterPublicationPublicSection();
+			}
+		});
+
+		
 		goToInstitutionTempButton.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e){	
@@ -2161,12 +2214,7 @@ public class Gui extends JFrame{
 			}
 		});
 
-		goToPublicButton.addActionListener(new ActionListener(){
 
-			public void actionPerformed(ActionEvent e){	
-				enterPublicationPublicSection();
-			}
-		});
 
 		goBackToInstitutionRestrictionOrTempButton.addActionListener(new ActionListener(){
 
@@ -2175,35 +2223,7 @@ public class Gui extends JFrame{
 					enterPublicationInstitutionSection();
 			}
 		});
-
-		goToPublicTempButton.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e){	
-				if (!enterPublicationPublicTempSection())
-					enterPublicationInstitutionSection();
-			}
-		});
-
-		goBackToPublicButton.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e){	
-				enterPublicationPublicSection();
-			}
-		});
-
-		goToPublicRestrictionOrMigrationButton.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e){	
-				enterPublicationPublicRestrictionsSection();
-			}
-		});
-
-		goBackToPublicTempButton.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e){	
-				enterPublicationPublicTempSection();
-			}
-		});
+		
 
 		goToMigrationButton.addActionListener(new ActionListener(){
 
@@ -2212,14 +2232,7 @@ public class Gui extends JFrame{
 			}
 		});
 
-		goBackToPublicRestrictionOrTempButton.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e){	
-				if (!enterPublicationPublicRestrictionsSection())
-					enterPublicationPublicSection();
-			}
-		});
-
+		
 		goToSaveButton.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e){	
@@ -2358,7 +2371,8 @@ public class Gui extends JFrame{
 		licenseIconButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e){
-				enterLicenseSection();
+				if(!enterPublicationPublicLicenseSection())
+					enterPublicationPublicSection();
 			}
 		});
 
@@ -3263,11 +3277,12 @@ public class Gui extends JFrame{
 
 		startPanel.setVisible(false);
 		loadStandardPanel.setVisible(false);
-		licensePanel.setVisible(false);
+		//licensePanel.setVisible(false);
 		institutionPanel.setVisible(false);
 		institutionTempPanel.setVisible(false);
 		institutionRestrictionPanel.setVisible(false);
 		publicPanel.setVisible(false);
+		publicLicensePanel.setVisible(false);
 		publicTempPanel.setVisible(false);
 		publicRestrictionPanel.setVisible(false);
 		migrationPanel.setVisible(false);
@@ -3298,18 +3313,6 @@ public class Gui extends JFrame{
 			loadStandardPanel.setVisible(true);
 			loadActivatedIconButton.setVisible(true);
 			loadIconButton.setVisible(false);
-		}
-	}
-
-	/**
-	 * Shows the license panel
-	 */
-	private void enterLicenseSection() {
-
-		if (!licensePanel.isVisible() && leaveSection()) {
-			licensePanel.setVisible(true);
-			licenseActivatedIconButton.setVisible(true);
-			licenseIconButton.setVisible(false);
 		}
 	}
 	
@@ -3386,6 +3389,29 @@ public class Gui extends JFrame{
 			publicIconButton.setVisible(false);
 		}
 	}
+	
+	/**
+	 * Shows the publication for public license restriction panel 
+	 * 
+	 * @return false if publication for public is deactivated and the section
+	 * can't be entered, otherwise true
+	 */
+	private boolean enterPublicationPublicLicenseSection() {
+
+		if (publicDenyRadioButton.isSelected())
+			return false;
+		else if (!publicLicensePanel.isVisible() && leaveSection()) {
+			publicLicensePanel.setVisible(true);			 
+			publicationActivatedIconButton.setVisible(true);
+			publicationIconButton.setVisible(false);
+			publicActivatedIconButton.setVisible(true);
+			publicIconButton.setVisible(false);
+			licenseActivatedIconButton.setVisible(true);
+			licenseIconButton.setVisible(false);
+		}
+
+		return true;
+	}
 
 	/**
 	 * Shows the publication for public temp restriction panel 
@@ -3409,6 +3435,8 @@ public class Gui extends JFrame{
 
 		return true;
 	}
+	
+	
 
 	/**
 	 * Shows the publication for public restrictions panel
