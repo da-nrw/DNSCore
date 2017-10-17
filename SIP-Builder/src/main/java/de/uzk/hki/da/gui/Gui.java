@@ -1498,28 +1498,28 @@ public class Gui extends JFrame{
 		
 		publicationActivatedIconButton.setBounds(10, 120, 171, 20);
 		publicationIconButton.setBounds(10, 120, 171, 20);
-		publicActivatedIconButton.setBounds(10, 145, 171, 20);
-		publicIconButton.setBounds(10, 145, 171, 20);
+		publicActivatedIconButton.setBounds(10, 140, 171, 20);
+		publicIconButton.setBounds(10, 140, 171, 20);
 		
-		licenseActivatedIconButton.setBounds(10, 165, 171, 20);
-		licenseIconButton.setBounds(10, 165, 171, 20);
+		licenseActivatedIconButton.setBounds(10, 160, 171, 20);
+		licenseIconButton.setBounds(10, 160, 171, 20);
 		
-		publicTempActivatedIconButton.setBounds(10, 185, 171, 20);
-		publicTempIconButton.setBounds(10, 185, 171, 20);
-		publicRestrictionActivatedIconButton.setBounds(10, 205, 171, 20);
-		publicRestrictionIconButton.setBounds(10, 205, 171, 20);
-		institutionActivatedIconButton.setBounds(10, 230, 171, 20);
-		institutionIconButton.setBounds(10, 230, 171, 20);
-		institutionTempActivatedIconButton.setBounds(10, 250, 171, 20);
-		institutionTempIconButton.setBounds(10, 250, 171, 20);
-		institutionRestrictionActivatedIconButton.setBounds(10, 270, 171, 20);
-		institutionRestrictionIconButton.setBounds(10, 270, 171, 20);
-		migrationActivatedIconButton.setBounds(10, 295, 171, 20);
-		migrationIconButton.setBounds(10, 295, 171, 20);
-		saveActivatedIconButton.setBounds(10, 320, 171, 20);
-		saveIconButton.setBounds(10, 320, 171, 20);
-		createActivatedIconButton.setBounds(10, 345, 171, 20);
-		createIconButton.setBounds(10, 345, 171, 20);
+		publicTempActivatedIconButton.setBounds(10, 180, 171, 20);
+		publicTempIconButton.setBounds(10, 180, 171, 20);
+		publicRestrictionActivatedIconButton.setBounds(10, 200, 171, 20);
+		publicRestrictionIconButton.setBounds(10, 200, 171, 20);
+		institutionActivatedIconButton.setBounds(10, 225, 171, 20);
+		institutionIconButton.setBounds(10, 225, 171, 20);
+		institutionTempActivatedIconButton.setBounds(10, 245, 171, 20);
+		institutionTempIconButton.setBounds(10, 245, 171, 20);
+		institutionRestrictionActivatedIconButton.setBounds(10, 265, 171, 20);
+		institutionRestrictionIconButton.setBounds(10, 265, 171, 20);
+		migrationActivatedIconButton.setBounds(10, 290, 171, 20);
+		migrationIconButton.setBounds(10, 290, 171, 20);
+		saveActivatedIconButton.setBounds(10, 315, 171, 20);
+		saveIconButton.setBounds(10, 315, 171, 20);
+		createActivatedIconButton.setBounds(10, 340, 171, 20);
+		createIconButton.setBounds(10, 340, 171, 20);
 		helpIconButton.setBounds(709, 15, 20, 22);
 
 		// startPanel
