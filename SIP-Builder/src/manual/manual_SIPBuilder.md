@@ -1,7 +1,7 @@
 Anleitung SIP-Builder
 =====================
 
-Bitte verwenden Sie eine Version des SIP-Builders, die mindestens die Build-Nr. __1606__ hat!
+Bitte verwenden Sie eine Version des SIP-Builders, die mindestens die Build-Nr. __1916_ hat!
 
 ## Überblick
 
@@ -62,6 +62,7 @@ Wählen Sie diese Option, um die Standard-Rechteeinstellungen zu wählen:
 
 Bei Betätigung des Buttons __Standard__ werden die zuvor gewählten Einstellungen verworfen und durch die Standardwerte ersetzt.
 
+
 ### Publikation
 
 Die Publikationseinstellungen können festgelegt werden für:  
@@ -78,6 +79,19 @@ Erstellung von Publikationsderivaten, die nur der eigenen Institution über die 
 
 Sie können  wählen, ob die Erstellung der Publikationsdaten grundsätzlich stattfinden soll und ob in diesem Fall zusätzliche Restriktionen in Kraft treten sollen. Diese Restriktionen können für die Öffentlichkeit und die eigene Institution jeweils separat festgelegt werden.  
 Daten, die für die Anzeige in öffentlichen Portalen erstellt wurden, werden automatisch auch der Deutschen Digitalen Bibliothek zur Verfügung gestellt. Möchten Sie diesen Vorgang vermeiden, können Sie die Checkbox __DDB-Harvesting erlauben__ deaktivieren. In diesem Fall werden der Deutschen Digitalen Bibliothek keine Daten zugänglich gemacht.
+
+
+#### Lizenzangaben  
+
+![Bild](https://raw.githubusercontent.com/da-nrw/DNSCore/master/SIP-Builder/src/manual/Lizenz.jpg)
+
+Für eine Publikation ist eine Lizenzangabe erforderlich. Die Lizenznangabe darf entweder in den Metadaten stehen oder im SIP-Builder angegeben werden, aber nicht an beiden Stellen gleichzeitig.
+
+__Aus Metadaten__  
+Die Lizenzangaben können aus den Metadaten (z.B. Mets) übernommen werden.
+
+__Im Sip-Builder festlegen__  
+Zur Auswahl stehen unterschiedliche Lizenzen (Creative Commons, Datenlizenz Deutschland und Public Domain Mark). Diese Lizenzangabe wird in der Premis-Datei vermerkt und bis zum Portal weitergereicht, somit bleiben die angegebenen Quellordner-Daten unverändert. 
 
 #### Startzeitpunkt der Publikation
 
