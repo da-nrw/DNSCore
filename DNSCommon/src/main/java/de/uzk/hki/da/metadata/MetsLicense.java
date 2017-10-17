@@ -1,26 +1,8 @@
 package de.uzk.hki.da.metadata;
 
-import java.util.Comparator;
-
-
 public class MetsLicense implements Comparable<MetsLicense>{
 	public static String USE_AND_REP_TYPE="use and reproduction";
-	/**
-	 * Comparator sorts objects and put null-Object at the end.
-	 */
-	public static Comparator<MetsLicense> LicenseNullLastComparator=new Comparator<MetsLicense>(){
-		public int compare(MetsLicense o1, MetsLicense o2) {
-			if(o1 == null){
-				if(o2 == null){
-					return 0;
-				}else
-					return 1;
-			}
-			if(o2 == null)
-				return -1;
-			return o1.compareTo(o2);
-		}
-	};
+	
 	private String displayLabel;
 	private String href;
 	private String type;

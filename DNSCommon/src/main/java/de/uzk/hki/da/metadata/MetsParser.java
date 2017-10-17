@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.utils.C;
+import  de.uzk.hki.da.metadata.NullLastComparator;
 
 /**
  * @author Eugen Trebunski
@@ -94,7 +95,7 @@ public class MetsParser{
 		if(licenseAl.size()==0)
 			return null;
 		//check all licenses, all have to be the same
-		Collections.sort(licenseAl,MetsLicense.LicenseNullLastComparator);
+		Collections.sort(licenseAl,new NullLastComparator<MetsLicense>());
 		if(licenseAl.get(0)==null) //all licenses are null
 			return null;
 		if(!licenseAl.get(0).equals(licenseAl.get(licenseAl.size()-1))) //first and last element have to be same in sorted array

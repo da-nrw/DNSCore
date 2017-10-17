@@ -422,7 +422,7 @@ public class SIPFactory {
 					MetsParser mp = new MetsParser(metsDoc);
 					licenseMetsFile.add(mp.getLicenseForWholeMets());
 				}
-				Collections.sort(licenseMetsFile, MetsLicense.LicenseNullLastComparator);
+				Collections.sort(licenseMetsFile, new NullLastComparator<MetsLicense>());
 				if (licenseMetsFile.get(0) == null) // all licenses are null
 					metsLicenseBool = false;
 				else if (!licenseMetsFile.get(0).equals(licenseMetsFile.get(licenseMetsFile.size() - 1))) // first and last lic have to be same in sorted array
