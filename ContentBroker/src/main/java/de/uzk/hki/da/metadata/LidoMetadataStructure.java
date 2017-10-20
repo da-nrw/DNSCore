@@ -157,19 +157,25 @@ public class LidoMetadataStructure extends MetadataStructure{
 			Element resourceWrap=admSections.get(i).getChild("resourceWrap", C.LIDO_NS);
 			if(resourceWrap==null){
 				resourceWrap=new Element("resourceWrap",C.LIDO_NS);
+				//read or add as new
+				//admSections.get(i).removeChildren("resourceWrap", C.LIDO_NS);
+				resourceWrap.detach();
+				admSections.get(i).addContent(resourceWrap);
 			}
 			List<Element> resourceSets= resourceWrap.getChildren("resourceSet", C.LIDO_NS);
 			if(resourceSets.size()==0){
 				Element newEl=new Element("resourceSet",C.LIDO_NS);
-				resourceSets.add(newEl);
+				//resourceSets.add(newEl);
 				resourceWrap.addContent(newEl);
+				resourceSets= resourceWrap.getChildren("resourceSet", C.LIDO_NS);
 			}
 			for (int j=0; j<resourceSets.size(); j++) { 
 				List<Element> rightsResources= resourceSets.get(j).getChildren("rightsResource", C.LIDO_NS);
 				if(rightsResources.size()==0){
 					Element newEl=new Element("rightsResource",C.LIDO_NS);
-					rightsResources.add(newEl);
+					newEl.detach();
 					resourceSets.get(j).addContent(newEl);
+					rightsResources= resourceSets.get(j).getChildren("rightsResource", C.LIDO_NS);
 				}
 				for (int k=0; k<rightsResources.size(); k++) {
 					List<Element> rightsTypes=rightsResources.get(k).getChildren("rightsType", C.LIDO_NS);
@@ -177,15 +183,14 @@ public class LidoMetadataStructure extends MetadataStructure{
 						throw new RuntimeException("lido/administrativeMetadata/resourceWrap/resourceSet/rightsResource has already rightsType(s): "+Arrays.toString(rightsTypes.toArray()));
 					}
 					Element newRightsTypeE=generateRightsType(licenseHref,displayLabel);
+					newRightsTypeE.detach();
 					logger.debug("Append to Lido new rightsType: "+newRightsTypeE.toString());
 					rightsResources.get(k).addContent(newRightsTypeE);
 				}
 				
 			}
 			
-			//read or add as new
-			admSections.get(i).removeChildren("resourceWrap", C.LIDO_NS);
-			admSections.get(i).addContent(resourceWrap);
+			
 		}
 	}
 	

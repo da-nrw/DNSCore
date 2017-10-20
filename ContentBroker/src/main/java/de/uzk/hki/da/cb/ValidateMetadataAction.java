@@ -195,12 +195,12 @@ public class ValidateMetadataAction extends AbstractAction {
 		
 		//check lido License
 		else if (detectedPackageType.equals(C.CB_PACKAGETYPE_LIDO)){
-			List<DAFile> metsFiles = getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_LIDO);
+			List<DAFile> lidoFiles = getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_LIDO);
 			LidoLicense licenseLidoFile =null;
-			for (DAFile f : metsFiles) {//over all lido-files, amount is checked by previous actions
+			for (DAFile f : lidoFiles) {//over all lido-files, amount is checked by previous actions
 				SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-				LidoParser mp = new LidoParser(builder.build(wa.toFile(f).getAbsolutePath()));
-				licenseLidoFile=mp.getLicenseForWholeMets();
+				LidoParser lp = new LidoParser(builder.build(wa.toFile(f).getAbsolutePath()));
+				licenseLidoFile=lp.getLicenseForWholeLido();
 				hasLidoLicense=(licenseLidoFile!=null);
 			}
 			

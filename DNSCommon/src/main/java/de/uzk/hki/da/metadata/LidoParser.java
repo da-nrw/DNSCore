@@ -74,18 +74,20 @@ public class LidoParser {
 	@SuppressWarnings("unchecked")
 	private List<String> getRecordRights(Element lidoElement) {
 		List<String> rightIds = new ArrayList<String>();
-
+/*
 		try {
 			List<Element> admSections = lidoDoc.getRootElement().getChildren("administrativeMetadata", C.LIDO_NS);
-
-			for (int i = 0; i < admSections.size(); i++) {
-				List<Element> resourceSets = admSections.get(i).getChildren("resourceSet", C.LIDO_NS);
-				for (int j = 0; j < resourceSets.size(); j++) {
-					List<Element> rightsTypeList= resourceSets.get(j).getChildren("rightsType", C.LIDO_NS);
-					for (int k = 0; k < rightsTypeList.size(); k++) {
-						List<Element> conceptIDList= resourceSets.get(j).getChildren("conceptID", C.LIDO_NS);
-						for (int m = 0; m < conceptIDList.size(); m++) {
-							rightIds.add(conceptIDList.get(m).getValue());
+			for (int l = 0; l < admSections.size(); l++) {
+				List<Element> resourceWraps = admSections.get(l).getChildren("resourceWrap", C.LIDO_NS);
+				for (int i = 0; i < resourceWraps.size(); i++) {
+					List<Element> resourceSets = resourceWraps.get(i).getChildren("resourceSet", C.LIDO_NS);
+					for (int j = 0; j < resourceSets.size(); j++) {
+						List<Element> rightsTypeList = resourceSets.get(j).getChildren("rightsType", C.LIDO_NS);
+						for (int k = 0; k < rightsTypeList.size(); k++) {
+							List<Element> conceptIDList = resourceSets.get(j).getChildren("conceptID", C.LIDO_NS);
+							for (int m = 0; m < conceptIDList.size(); m++) {
+								rightIds.add(conceptIDList.get(m).getValue());
+							}
 						}
 					}
 				}
@@ -93,7 +95,11 @@ public class LidoParser {
 
 		} catch (Exception e) {
 			logger.error("No title Element found!");
-		}
+		}*/
+		List<LidoLicense> licenses=getLicenseFromOneLidoPart(lidoElement);
+		for(LidoLicense lic:licenses)
+			rightIds.add(lic.getHref());
+		
 		return rightIds;
 	}
 
@@ -249,7 +255,7 @@ public class LidoParser {
 	 * Method search in each dmdSec for license and return one license instance, only if each dmdSec contains same license, otherwise method causes exceptions.
 	 * @return
 	 */
-	public LidoLicense getLicenseForWholeMets() {
+	public LidoLicense getLicenseForWholeLido() {
 		ArrayList<LidoLicense> licenseAl=new ArrayList<LidoLicense>();
 		@SuppressWarnings("unchecked")
 		List<Element> lidoSecs = lidoDoc.getRootElement().getChildren("lido", C.LIDO_NS);

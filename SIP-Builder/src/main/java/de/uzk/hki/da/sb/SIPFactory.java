@@ -436,11 +436,11 @@ public class SIPFactory {
 				for (File f : metadataFileWithType.keySet())
 					if (metadataFileWithType.get(f).equals(C.CB_PACKAGETYPE_LIDO))
 						lidoFiles.add(f);
-				for (File f : lidoFiles) {// assuming more as usual mets is allowed (check is done by FormatDetectionService) e.g. publicMets for testcase-creation
+				for (File f : lidoFiles) {// assuming more as one metadata is allowed (check is done by FormatDetectionService) 
 					SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 					Document metsDoc = builder.build(f);
 					LidoParser lp = new LidoParser(metsDoc);
-					licenseLidoFile.add(lp.getLicenseForWholeMets());
+					licenseLidoFile.add(lp.getLicenseForWholeLido());
 				}
 				Collections.sort(licenseLidoFile, new NullLastComparator<LidoLicense>());
 				if (licenseLidoFile.get(0) == null) // all licenses are null

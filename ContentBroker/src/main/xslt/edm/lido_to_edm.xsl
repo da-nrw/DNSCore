@@ -153,6 +153,46 @@ Technical Contact : Rodolphe Bailly - rbailly@cite-musique.fr
 							<xsl:sequence select="fn:string(.)"/>
 						</dc:title>
 					</xsl:for-each>
+					
+					
+					
+					
+					
+					
+					
+					<xsl:for-each select="$var2_administrativeMetadata/ns0:resourceWrap/ns0:resourceSet/ns0:rightsResource/ns0:rightsType/ns0:conceptID">
+						<xsl:variable name="var213_right" as="node()?" select="@xml:lang"/>
+						<dc:rights>
+							<xsl:if test="fn:exists($var213_right)">
+								<xsl:attribute name="xml:lang" select="fn:string($var213_right)"/>
+							</xsl:if>
+							<xsl:sequence select="fn:string(.)"/>
+						</dc:rights>
+					</xsl:for-each>
+					
+					
+					
+				<!--	
+					
+				<xsl:for-each select="$var2_administrativeMetadata/ns0:resourceWrap/ns0:resourceSet">
+					<edm:WebResource>
+						<xsl:for-each select="ns0:resourceID">
+							<xsl:attribute name="rdf:about" select="xs:string(xs:anyURI(fn:string(.)))"/>
+						</xsl:for-each>
+						<xsl:for-each select="ns0:rightsResource/ns0:creditLine">
+							<xsl:variable name="var20_lang" as="node()?" select="@xml:lang"/>
+							<dc:rights>
+								<xsl:if test="fn:exists($var20_lang)">
+									<xsl:attribute name="xml:lang" select="fn:string($var20_lang)"/>
+								</xsl:if>
+								<xsl:sequence select="fn:string(.)"/>
+							</dc:rights>
+						</xsl:for-each>
+					</edm:WebResource>
+				</xsl:for-each>
+				
+					 -->
+					
 					<xsl:for-each select="$var3_descriptiveMetadata/ns0:objectClassificationWrap/ns0:classificationWrap/ns0:classification">
 						<xsl:variable name="var19_cur" as="node()" select="."/>
 						<xsl:for-each select="ns0:conceptID">
@@ -179,6 +219,7 @@ Technical Contact : Rodolphe Bailly - rbailly@cite-musique.fr
 						</xsl:for-each>
 					</xsl:for-each>
 					<edm:type>IMAGE</edm:type>
+					
 				</edm:ProvidedCHO>
 				<xsl:for-each select="$var2_administrativeMetadata/ns0:resourceWrap/ns0:resourceSet">
 					<edm:WebResource>
