@@ -74,31 +74,12 @@ public class LidoParser {
 	@SuppressWarnings("unchecked")
 	private List<String> getRecordRights(Element lidoElement) {
 		List<String> rightIds = new ArrayList<String>();
-/*
-		try {
-			List<Element> admSections = lidoDoc.getRootElement().getChildren("administrativeMetadata", C.LIDO_NS);
-			for (int l = 0; l < admSections.size(); l++) {
-				List<Element> resourceWraps = admSections.get(l).getChildren("resourceWrap", C.LIDO_NS);
-				for (int i = 0; i < resourceWraps.size(); i++) {
-					List<Element> resourceSets = resourceWraps.get(i).getChildren("resourceSet", C.LIDO_NS);
-					for (int j = 0; j < resourceSets.size(); j++) {
-						List<Element> rightsTypeList = resourceSets.get(j).getChildren("rightsType", C.LIDO_NS);
-						for (int k = 0; k < rightsTypeList.size(); k++) {
-							List<Element> conceptIDList = resourceSets.get(j).getChildren("conceptID", C.LIDO_NS);
-							for (int m = 0; m < conceptIDList.size(); m++) {
-								rightIds.add(conceptIDList.get(m).getValue());
-							}
-						}
-					}
-				}
-			}
 
-		} catch (Exception e) {
-			logger.error("No title Element found!");
-		}*/
 		List<LidoLicense> licenses=getLicenseFromOneLidoPart(lidoElement);
-		for(LidoLicense lic:licenses)
-			rightIds.add(lic.getHref());
+		Collections.sort(licenses, new NullLastComparator<LidoLicense>());
+		
+		if (licenses.size()!=0 && licenses.get(0) != null)
+			rightIds.add(licenses.get(0).getHref());
 		
 		return rightIds;
 	}
@@ -283,37 +264,48 @@ public class LidoParser {
 	public List<LidoLicense>  getLicenseFromOneLidoPart(Element lidoSec) {
 		List<LidoLicense> lidoLicenses = new ArrayList<LidoLicense>();
 		
+		
 		List<Element> admSections= lidoSec.getChildren("administrativeMetadata", C.LIDO_NS);
 		
 		for (int i=0; i<admSections.size(); i++) { 
 			Element resourceWrap=admSections.get(i).getChild("resourceWrap", C.LIDO_NS);
-			if(resourceWrap==null)
+			if(resourceWrap==null){
 				lidoLicenses.add(null);
+				continue;
+			}
 			List<Element> resourceSets= resourceWrap.getChildren("resourceSet", C.LIDO_NS);
-			if(resourceSets.size()==0)
+			if(resourceSets.size()==0){
 				lidoLicenses.add(null);
+				continue;
+			}
 			for (int j=0; j<resourceSets.size(); j++) { 
 				List<Element> rightsResources= resourceSets.get(j).getChildren("rightsResource", C.LIDO_NS);
-				if(rightsResources.size()==0)
+				if(rightsResources.size()==0){
 					lidoLicenses.add(null);
+					continue;
+				}
 				for (int k=0; k<rightsResources.size(); k++) {
 					List<Element> rightsTypes=rightsResources.get(k).getChildren("rightsType", C.LIDO_NS);
-					if(rightsTypes.size()==0)
+					if(rightsTypes.size()==0){
 						lidoLicenses.add(null);
+						continue;
+					}
 					for (int m=0; m<rightsTypes.size(); m++) {
 						lidoLicenses.add(getLicenseFromOneRightsType(rightsTypes.get(m)));
 					}
 				}
-				
 			}
 		}
-
 		return lidoLicenses;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public LidoLicense getLicenseFromOneRightsType(Element rightsTape) {
 		List<Element> conceptIDs=rightsTape.getChildren("conceptID", C.LIDO_NS);
 		List<Element> terms=rightsTape.getChildren("term", C.LIDO_NS);
+		if(conceptIDs.size()==0 ||terms.size()==0 )
+			throw new RuntimeException("LIDO-Metadata RightsType has no conceptID and/or term "+rightsTape.toString());
+			//return null;
 		if(conceptIDs.size()!=1 ||terms.size()!=1 )
 			throw new RuntimeException("LIDO-Metadata RightsType has more as one conceptID and/or term: "+rightsTape.getValue());
 		

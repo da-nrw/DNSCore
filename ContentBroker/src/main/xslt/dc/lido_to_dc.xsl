@@ -26,7 +26,9 @@
             <dc:subject><xsl:value-of select="normalize-space(.)"/></dc:subject>
         </xsl:for-each>
         <dc:description><xsl:value-of select="lido:descriptiveMetadata/lido:objectIdentificationWrap/lido:objectDescriptionWrap/lido:objectDescriptionSet/lido:descriptiveNoteValue"/></dc:description>
-        <dc:rights><xsl:value-of select="lido:administrativeMetadata/lido:rightsWorkWrap/lido:rightsWorkSet/lido:rightsHolder/lido:legalBodyName/lido:appellationValue"/></dc:rights>
+       <!-- 
+       <dc:rights><xsl:value-of select="lido:administrativeMetadata/lido:rightsWorkWrap/lido:rightsWorkSet/lido:rightsHolder/lido:legalBodyName/lido:appellationValue"/></dc:rights>
+   		-->
    		<dc:rights><xsl:value-of select="lido:administrativeMetadata/lido:resourceWrap/lido:resourceSet/lido:rightsResource/lido:rightsType/lido:conceptID"/></dc:rights>
  
     </xsl:template>

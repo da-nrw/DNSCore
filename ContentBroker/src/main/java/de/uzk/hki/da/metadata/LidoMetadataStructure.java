@@ -180,7 +180,7 @@ public class LidoMetadataStructure extends MetadataStructure{
 				for (int k=0; k<rightsResources.size(); k++) {
 					List<Element> rightsTypes=rightsResources.get(k).getChildren("rightsType", C.LIDO_NS);
 					if(rightsTypes.size()!=0){
-						throw new RuntimeException("lido/administrativeMetadata/resourceWrap/resourceSet/rightsResource has already rightsType(s): "+Arrays.toString(rightsTypes.toArray()));
+						throw new RuntimeException("lido/administrativeMetadata/resourceWrap/resourceSet/rightsResource has already valid rightsType(s): "+Arrays.toString(rightsTypes.toArray()));
 					}
 					Element newRightsTypeE=generateRightsType(licenseHref,displayLabel);
 					newRightsTypeE.detach();
