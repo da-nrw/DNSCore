@@ -9,6 +9,8 @@ grails:
               authorityJoinClassName: 'daweb3.UserRole'
             authority:
               className: 'daweb3.Role'
+            login:
+              url: '/login/auth'
             logoff:
               afterLogoutUrl: '/login/auth'
             rejectIfNoRule: false
@@ -24,11 +26,12 @@ grails:
 ---
 server:
   port: 8095
+  
 ---
 grails:
   assets:
     bundle: true
-    storagePath: /home/gbender/assets
+    storagePath: $CATALINA_HOME/webapps/daweb3/assets
 ---
 grails:
     profile: web
@@ -64,6 +67,7 @@ spring:
             check-template-location: false
     activemq:
         brokerUrl: vm://localhost
+        port: 4455
         pooled: true
         
 
@@ -146,24 +150,28 @@ hibernate:
         use_query_cache: false
         region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
 
-dataSource:
-    pooled: true
-    jmxExport: true
-    driverClassName: org.postgresql.Driver
-    dialect: org.hibernate.dialect.PostgreSQLDialect
-    username: cb_usr
-    password: 4qS1BWisL6gUrvNYVFgFog==
+#dataSource:
+#    pooled: true
+#    jmxExport: true
+#    driverClassName: org.postgresql.Driver
+#    dialect: org.hibernate.dialect.PostgreSQLDialect
+ #   username: cb_usr
+  #  password: 4qS1BWisL6gUrvNYVFgFog==
 
 environments:
   development:
-    dataSource: 
-      pooled: true
-      url: jdbc:postgresql://localhost:5432/CB
-      dbCreate: validate
-      passwordEncryptionCodec: de.uzk.hki.da.utils.DESCodec
-      characterEncoding: UTF-8
-    config:
-      locations: ["file:${userHome}/.grails/${appName}_properties.groovy"]
+   # dataSource:
+   #   pooled: true 
+   #   dialect: org.hibernate.dialect.PostgreSQLDialect
+   #   url: jdbc:postgresql://localhost:5432/CB
+   #   dbCreate: update
+   #   username: cb_usr
+  #    password: 4qS1BWisL6gUrvNYVFgFog==
+  #    passwordEncryptionCodec: de.uzk.hki.da.utils.DESCodec
+  #    characterEncoding: UTF-8
+   #grails:
+   #   config:
+   #   locations: ["file:${userHome}/.grails/${appName}_properties.groovy"]
     localNode:
       id: 1
       userAreaRootPath: /ci/storage/UserArea
@@ -176,20 +184,21 @@ environments:
       presServer: "CB nodename of fedora Server"
     irods:
       server: localnode
-      default_resc: ciWorkingResource
+      default_resc: ciWorkingResour}ce
       zone: c-i
     fedora:
       urlPrefix: "http://prefix_for_fedora/fedora/objects/"
               
   test:
-    dataSource: 
-      pooled: true
-      url: jdbc:postgresql://localhost:5432/CB
-      dbCreate: validate
-      passwordEncryptionCodec: de.uzk.hki.da.utils.DESCodec
-      characterEncoding: UTF-8
-      config:
-        locations: ["file:${userHome}/.grails/${appName}_properties.groovy"] 
+    #dataSource: 
+    #  pooled: true
+    #  url: jdbc:postgresql://localhost:5432/CB
+    #  dbCreate: validate
+    #  passwordEncryptionCodec: de.uzk.hki.da.utils.DESCodec
+    #  characterEncoding: UTF-8
+ #     grails:
+ #       config:
+ #         locations: ["file:${userHome}/.grails/${appName}_properties.groovy"] 
       localNode:
         id: 1
         userAreaRootPath: /ci/storage/UserArea
@@ -206,32 +215,32 @@ environments:
         zone: c-i
       fedora:
         urlPrefix: "http://prefix_for_fedora/fedora/objects/"
-            
-    production:
-      dataSource:
-        dbCreate: none
-        url: jdbc:h2:./prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
-        properties:
-          jmxEnabled: true
-          initialSize: 5
-          maxActive: 50
-          minIdle: 5
-          maxIdle: 25
-          maxWait: 10000
-          maxAge: 600000
-          timeBetweenEvictionRunsMillis: 5000
-          minEvictableIdleTimeMillis: 60000
-          validationQuery: SELECT 1
-          validationQueryTimeout: 3
-          validationInterval: 15000
-          testOnBorrow: true
-          testWhileIdle: true
-          testOnReturn: false
-          jdbcInterceptors: ConnectionState
-          defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
-        grails:
-          config:
-            locations: ["file:${userHome}/.grails/${appName}_properties.groovy"]
+
+  production:
+    #  dataSource:
+    #    dbCreate: none
+    #    url: jdbc:postgresql://localhost:5432/CB
+    #    properties:
+    #      jmxEnabled: true
+     #     initialSize: 5
+     #     maxActive: 50
+     #     minIdle: 5
+     #     maxIdle: 25
+     #     maxWait: 10000
+     #     maxAge: 600000
+    #      timeBetweenEvictionRunsMillis: 5000
+     #     minEvictableIdleTimeMillis: 60000
+     #     validationQuery: SELECT 1
+     #     validationQueryTimeout: 3
+    #      validationInterval: 15000
+    #      testOnBorrow: true
+    #      testWhileIdle: true
+   #       testOnReturn: false
+   #       jdbcInterceptors: ConnectionState
+    #      defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
+      #  grails:
+      #    config:
+      #      locations: ["file:${userHome}/.grails/${appName}_properties.groovy"]
         logging:
         jul:
           userbridge: true        

@@ -9,8 +9,14 @@
 	<body>
 		<div id="page-body">
 			<a href="#list-formatMapping" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-			<h1 class="page-header">Format-Mapping</h1> 
+			<br>
+			<div class="nav" role="navigation">
+				<ul>
+					<li><a class="listl" href="${createLink(uri: '/cbtalk/index')}"><g:message message="zurück zur Administrationsseite"/></a></li>
+				</ul>
+			</div>
 			
+			<h1 class="page-header">Format-Mapping</h1> 
 			<g:form  name="map" url="[controller: 'formatMapping', action:'deleteAndFill']"  update="refreshView" >
 				<g:actionSubmit value="Tabelle leeren und neu laden" action="deleteAndFill"  
 							onclick="return confirm('Tabelle wirklich aktualisieren?')"/>

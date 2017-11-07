@@ -9,6 +9,11 @@
 	</head>
 	<body>
 		<div id=page-body>
+			<div class="nav" role="navigation">
+				<ul>
+					<li><a class="listl" href="${createLink(uri: '/cbtalk/index')}"><g:message message="zurück zur Administrationsseite"/></a></li>
+				</ul>
+			</div>
 			<a href="#list-preservationSystem" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 			<div id="list-preservationSystem" class="content scaffold-list" role="main">
 				<h1><g:message code="default.list.label" args="[entityName]" /></h1>
