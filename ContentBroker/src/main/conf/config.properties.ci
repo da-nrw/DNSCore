@@ -24,6 +24,9 @@ localNode.logFolder=/ci/ContentBroker/log
 
 localNode.auditSleepFor=10000
 
+checksumNode.id=2
+checksumNode.secondaryCopyPrefix=CN/federated
+
 elasticsearch.index=portal_ci
 elasticsearch.hosts=http://localhost:9200
 elasticsearch.cluster=cluster_ci

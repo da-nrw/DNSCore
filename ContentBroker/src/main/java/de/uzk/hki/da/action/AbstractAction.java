@@ -336,18 +336,13 @@ public abstract class AbstractAction implements Runnable {
 				Copy copy = cn.getCopyToSave();
 				logger.debug("Try to save copy with path "+copy.getPath());
 				
+				copy.setNode(cn);
+				copy.setPack(object.getLatestPackage());
+				copy.setChecksum(object.getLatestPackage().getChecksum());
+				copy.setChecksumDate(new Date());
+				
 				session.save(copy);
 				session.flush();
-				
-				baseLogger.info("Added copy for objects ("+object.getIdentifier()+") last package. Copy path: "+copy.getPath()+". Copy is on node with name: "+cn.getName()+" and has id "+copy.getId()+".");
-				
-				int updatesNodeId=session.createSQLQuery(
-						"UPDATE copies SET node_id="+cn.getId()+", "
-								+ "pkg_id="+object.getLatestPackage().getId()+", "
-								+ "checksum='" + object.getLatestPackage().getChecksum()+ "', "
-								+ "checksumDate = now() WHERE id = "+copy.getId()).executeUpdate();
-				if (updatesNodeId!=1) throw new RuntimeException("could not execute update of node_id");
-
 			} catch (Exception e) {
 				logger.error("Unable to save copy!");
 			} finally {

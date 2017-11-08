@@ -120,7 +120,9 @@ public class ActionFactoryTests {
 		Object o = new Object();
 		o.setIdentifier("identifier");
 		o.setContractor(c);
-		Package p = new Package(); p.setName("1"); p.setContainerName("cname");
+		Package p = new Package(); 
+		p.setDelta(1);
+		p.setContainerName("cname");
 		o.getPackages().add(p);
 		j.setObject(o);
 		Node n= new Node();

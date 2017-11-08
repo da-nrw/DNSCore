@@ -132,13 +132,13 @@ public class DeltaOnURNAction extends AbstractAction {
 
 		int max = 0;
 		for (de.uzk.hki.da.model.Package pack : oldObject.getPackages()){
-			max = Math.max(Integer.parseInt(pack.getName()), max);	
+			max = Math.max(pack.getDelta(), max);	
 		}
 		
 		de.uzk.hki.da.model.Package myPack = packs.get(0);
 		de.uzk.hki.da.model.Package deltaPack = new Package();
 		
-		deltaPack.setName(Integer.toString(max  + 1));
+		deltaPack.setDelta(max  + 1);
 		deltaPack.setContainerName(myPack.getContainerName());
 		
 		j.setObject(oldObject);
