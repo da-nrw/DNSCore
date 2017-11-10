@@ -75,6 +75,12 @@ public class ContractRights {
 
 	
 	public enum CCLicense {
+
+		DlDeBy2("http://www.govdata.de/dl-de/by-2-0","DL-DE-BY-Lizenz (v2.0)","Datenlizenz Deutschland – Namensnennung (v2.0)"),
+		DlDeZero("http://www.govdata.de/dl-de/zero-2-0","DL-DE-Zero-Lizenz (v2.0)","Datenlizenz Deutschland – Zero (v2.0)"),
+		DlDeBy1("http://www.govdata.de/dl-de/by-1-0","DL-DE-BY-Lizenz (v1.0)","Datenlizenz Deutschland – Namensnennung (v1.0)"),
+		DlDeByNc("http://www.govdata.de/dl-de/by-1-0","DL-DE-BY-NC-Lizenz (v1.0)","Datenlizenz Deutschland – Namensnennung – nicht kommerziell (v1.0)"),
+		
 		PDM("https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","Public Domain Mark 1.0"),
 		Cc0("https://creativecommons.org/publicdomain/zero/1.0/","CC0-Lizenz (v1.0)","CC0 1.0 Public Domain Dedication"),
 		/*

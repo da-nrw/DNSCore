@@ -312,6 +312,7 @@ public class AcceptanceTest {
 	
 
 	private static void cleanStorage(){
+		System.out.println("cleanStorage()");
 		FolderUtils.deleteQuietlySafe(Path.makeFile(localNode.getWorkAreaRootPath(),"work",testContractor.getUsername()));
 		FolderUtils.deleteQuietlySafe(Path.makeFile(localNode.getWorkAreaRootPath(),"repl",testContractor.getUsername()));
 		FolderUtils.deleteQuietlySafe(Path.makeFile(localNode.getIngestAreaRootPath(),testContractor.getUsername()));
@@ -354,6 +355,7 @@ public class AcceptanceTest {
 	}
 	
 	private static void clearDB() {
+		System.out.println("clearDB()");
 		TESTHelper.clearDBOnlyTestUser(testContractor);
 	}
 

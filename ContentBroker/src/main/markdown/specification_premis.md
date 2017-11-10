@@ -4,6 +4,7 @@
 Jede premis.xml die innerhalb des DNS verwendet wird, unterliegt den folgenden Schema-Definitionen:
 * http://www.loc.gov/standards/premis/v2/premis-v2-2.xsd
 * http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd 
+* Beabsichtigte Ergänzung im Namespace V1 zu Lizenzen: [danrw-contract-1.01.xsd](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/xsd/v1/danrw-contract-v1-01.xsd) (vsstl. Nov. 2017 unter der URL http://www.danrw.de/schemas/contract/v1/danrw-contract-1.01.xsd)
 
 
 ### Inhalt einer vom SIP-Builder gebauten Premis-Datei für ein einzulieferndes SIP-Paket
@@ -65,6 +66,12 @@ Jede premis.xml die innerhalb des DNS verwendet wird, unterliegt den folgenden S
 
     ```xml
                 <DDBexclusion/>
+    ```
+  * **(Optional)** Lizensen für den fall einer Publikationsabsicht. Darf nur angegeben werden wenn in den Metadaten noch keine Lizenz angegeben worden ist. Bei Publikationsabsicht muss eine Lizenzangabe entweder in der Premis oder in den Metadaten(z.B. Mets) stehen.
+Der Link ist der wichtigste Teil der Lizenzangabe, dieser wird bis ins Portal weitergereicht und ins EDM übernommen.
+    ```xml
+                <publicationLicense href="https://creativecommons.org/publicdomain/mark/1.0/" displayLabel="Public Domain Mark 1.0">Public Domain Mark 1.0</publicationLicense>
+           
     ```
   * **(Optional)** publicationRight-Block je für **PUBLIC | INSTITUTION** 
 
@@ -152,6 +159,7 @@ Dieser Abschitt enthält weitere Schnittstellenelemente die in der premis.xml ei
 	* restrictions-Block oder einzelne Bestandteile davon sind optional
 	* lawID-Element
 	* DDBexclusion-Element
+	* Lizenzen-Element (publicationLicense)
 	* rightsGranted-Block für PUBLICATION_INSTITUTION-act und PUBLICATION_PUBLIC-act (dementsprechend auch der zugehörige publicationRight-Block innerhalb des Rights-Extension Blocks)
 	
 
