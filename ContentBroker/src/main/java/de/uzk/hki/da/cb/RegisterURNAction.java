@@ -82,7 +82,7 @@ public class RegisterURNAction extends AbstractAction {
 		}
 		
 		String metsUrn = null;
-		if(o.getPackage_type()!=null && o.getPackage_type().equals(C.CB_PACKAGETYPE_METS)) {
+		if(o.getContractor().isUseMetsUrn() && o.getPackage_type()!=null && o.getPackage_type().equals(C.CB_PACKAGETYPE_METS)) {
 			logger.debug("Package type: METS. Try to read urn ...");
 			File metsFile = Path.makeFile(o.getLatest(o.getMetadata_file()).getRelative_path());
 			metsUrn = extractURNFromMetsFile(metsFile);

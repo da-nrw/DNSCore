@@ -291,6 +291,24 @@ public class AcceptanceTest {
 		setLicenseInPreservationSystem(preservationSystem,C.PRESERVATIONSYS_LICENSE_VALIDATION_NO);
 	}
 	
+	synchronized static protected boolean activateMetsUrnForTestCSN(boolean useMetsURN){
+		Session session = HibernateUtil.openSession();
+		Transaction transaction = session.beginTransaction();
+		Query query = session.createQuery("SELECT u FROM User u where username = '"+testContractor.getUsername()+"'");
+
+		@SuppressWarnings("unchecked")
+		List<User> users = query.list();
+		User testUser = users.get(0);
+		Boolean oldUseMetsUrn = testUser.isUseMetsUrn();
+		testUser.setUseMetsUrn(useMetsURN);
+		session.save(testUser);
+		transaction.commit();
+		session.close();
+
+		return oldUseMetsUrn;
+	
+	}
+	
 	
 
 	@AfterClass

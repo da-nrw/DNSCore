@@ -178,17 +178,19 @@ public class DeltaOnURNAction extends AbstractAction {
 		if (StringUtilities.isSet(urn)) {
 			return urn;
 		}
-
-		File metsFile = searchMetsFile();
-		if (metsFile == null) {
-			return null;
+		urn=null;
+		if(getObject().getContractor().isUseMetsUrn()){
+			File metsFile = searchMetsFile();
+			if (metsFile == null) {
+				return null;
+			}
+	
+			List<Document> dummyDocs = new ArrayList<Document>();
+			MetsMetadataStructure mms = new MetsMetadataStructure(wa.dataPath(), metsFile, dummyDocs);
+	
+			urn = mms.getUrn();
+			logger.debug("URN from mets: " + urn);
 		}
-
-		List<Document> dummyDocs = new ArrayList<Document>();
-		MetsMetadataStructure mms = new MetsMetadataStructure(wa.dataPath(), metsFile, dummyDocs);
-
-		urn = mms.getUrn();
-		logger.debug("URN from mets: " + urn);
 		return urn;
 	}
 
