@@ -24,6 +24,13 @@ public class ATDeltaOnURN extends AcceptanceTest {
 
 	@Before
 	public void setUp() throws IOException {
+		activateMetsUrnForTestCSN(true);
+	}
+	
+	@After
+	public void tearDown() {
+		activateMetsUrnForTestCSN(false);
+		distributedConversionAdapter.remove("aip/"+testContractor.getUsername()+"/" + idiName);
 	}
 
 	@Test
@@ -63,9 +70,6 @@ public class ATDeltaOnURN extends AcceptanceTest {
 		}
 	}
 
-	@After
-	public void tearDown() {
-		distributedConversionAdapter.remove("aip/"+testContractor.getUsername()+"/" + idiName);
-	}
+
 
 }

@@ -15,7 +15,7 @@ import de.uzk.hki.da.model.Object;
 * @author Eugen Trebunski
  */
 
-public class ATReadUrnFromMetsDeativatedMetsURN extends AcceptanceTest{
+public class ATReadUrnFromMetsDeactivatedMetsURN extends AcceptanceTest{
 	
 	private static String origNameMets = "ATReadUrnFromMets";
 	private static Object objectMetsUrn;
