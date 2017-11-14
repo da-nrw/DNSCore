@@ -93,7 +93,7 @@ public class PreservationSystem {
 	@Column(name="license_validation",columnDefinition="INTEGER DEFAULT 1")
 	private int licenseValidationFlag;
 	
-	@Column(name="license_validation_test_csn",columnDefinition="INTEGER DEFAULT 0")
+	@Column(name="license_validation_test_csn",columnDefinition="INTEGER DEFAULT 1")
 	private int licenseValidationTestCSNFlag;
 
 	@Column(name="urn_name_space")
