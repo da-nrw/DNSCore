@@ -91,6 +91,8 @@ public class RegisterURNAction extends AbstractAction {
 				logger.info("New user-supplied object URN in mets");
 				return true;
 			}
+		}else if (!o.getContractor().isUseMetsUrn()&& o.getPackage_type()!=null && o.getPackage_type().equals(C.CB_PACKAGETYPE_METS)){
+			logger.debug("Read URN from METS is deactivated("+getObject().getContractor().isUseMetsUrn()+"): ");
 		}
 		
 		String urn = preservationSystem.getUrnNameSpace() + "-" + o.getIdentifier();

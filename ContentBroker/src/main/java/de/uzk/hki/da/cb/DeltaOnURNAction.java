@@ -190,6 +190,8 @@ public class DeltaOnURNAction extends AbstractAction {
 	
 			urn = mms.getUrn();
 			logger.debug("URN from mets: " + urn);
+		}else{
+			logger.debug("Read URN from mets is deactivated("+getObject().getContractor().isUseMetsUrn()+"): ");
 		}
 		return urn;
 	}
