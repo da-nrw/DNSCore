@@ -228,12 +228,7 @@ public class ValidateMetadataAction extends AbstractAction {
 			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
 					"Lizenzangaben in den Metadaten und in der Premis-Datei vorhanden.",
 					"Lizenzangaben in den Metadaten und in der Premis-Datei vorhanden.");
-		/*
-		if (hasPremisLicense && hasLidoLicense)
-			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
-					"Lizenzangaben in den LIDO-Metadaten und in der Premis-Datei vorhanden.",
-					"Lizenzangaben in den LIDO-Metadaten und in der Premis-Datei vorhanden.");*/
-
+		
 		if (wantPublication && !hasPremisLicense && !(hasMetsLicense || hasPublicMetsLicense || hasLidoLicense))
 			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
 					"Keine Lizenzangaben für eine Publikation vorhanden.",

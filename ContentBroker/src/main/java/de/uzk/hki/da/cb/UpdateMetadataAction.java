@@ -184,6 +184,7 @@ public class UpdateMetadataAction extends AbstractAction {
 							MetsMetadataStructure mms = new MetsMetadataStructure(wa.dataPath(),metadataFile, documents);
 							pLicense = (new ObjectPremisXmlReader()).deserialize(wa.toFile(o.getLatest(C.PREMIS_XML))).getRights().getPremisLicense();
 							logger.debug("Recognized License from Premis: "+pLicense);
+							logger.debug("License will be appended to Mets");
 							mms.appendAccessCondition(metadataFile, pLicense.getHref(), pLicense.getDisplayLabel(), pLicense.getText());
 						} catch (ParseException  e) {
 							logger.error("Exception: "+e);
@@ -203,6 +204,7 @@ public class UpdateMetadataAction extends AbstractAction {
 							LidoMetadataStructure lms = new LidoMetadataStructure(wa.dataPath(),metadataFile, documents);
 							pLicense = (new ObjectPremisXmlReader()).deserialize(wa.toFile(o.getLatest(C.PREMIS_XML))).getRights().getPremisLicense();
 							logger.debug("Recognized License from Premis: "+pLicense);
+							logger.debug("License will be appended to Lido");
 							lms.appendRightsResource(metadataFile, pLicense.getHref(), pLicense.getDisplayLabel());
 						} catch (ParseException  e) {
 							logger.error("Exception: "+e);
