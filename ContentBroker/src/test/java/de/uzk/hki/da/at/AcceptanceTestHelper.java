@@ -570,6 +570,10 @@ public class AcceptanceTestHelper {
 	public File loadDefaultMetsFileFromPip(String identifier) throws IOException {
 		return loadFileFromPip(identifier, C.CB_PACKAGETYPE_METS + C.FILE_EXTENSION_XML);
 	}
+	
+	public File loadDefaultLidoFileFromPip(String identifier) throws IOException {
+		return loadFileFromPip(identifier, C.CB_PACKAGETYPE_LIDO + C.FILE_EXTENSION_XML);
+	}
 
 	public File loadFileFromPip(String identifier, String fileName) throws IOException {
 		Path contractorsPipsPublic = Path.make(localNode.getWorkAreaRootPath(), WorkArea.PIPS, WorkArea.PUBLIC,	testContractor.getUsername());

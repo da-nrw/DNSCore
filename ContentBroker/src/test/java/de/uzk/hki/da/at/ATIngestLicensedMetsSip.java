@@ -30,7 +30,7 @@ import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
-public class ATIngestLicensedSip extends AcceptanceTest {
+public class ATIngestLicensedMetsSip extends AcceptanceTest {
 	
 	private static final String sipLicenseInMets = "LicenseInMets";
 	private static final String sipLicenseInPremis = "LicenseInPremis";
