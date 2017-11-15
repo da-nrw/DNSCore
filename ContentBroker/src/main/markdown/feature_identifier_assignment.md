@@ -98,6 +98,8 @@ Dieses Szenario ist implementiert.
 
 Das oberste Objekt im METS-Baum wird durch eine dmdSec mit der entsprechenden ID beschreiben. Innerhalb dieser dmdSec findet man über mets:mdWrap\-{-}mets:xmlData{-}\-mods:identifier type=urn die entsprechende URN. Es wird diejenige dmdSec berücksichtitgt, welche dem obersten hierarchischen Element (siehe structMap) der METS-Datei entspricht.
 
+Ergänzung (seit 2017.11.15): Die Übernahme der METS-URN ins DNS-System ist per Defaulteinstellung abgestellt und kann auf Wunsch pro Kontraktor individuell an und abgestellt werden (Tabelle: users, Spalte: use_mets_urn). Die METS-URN wird unabhängig von der individuellen Kontrantor-Konfiguration ins EDM und in den Such-Index weitergereicht.
+
 ### Kontext:
 
  [ATReadUrnFromMets](../../test/java/de/uzk/hki/da/at/ATReadUrnFromMets.java).readUrnFromMets()
