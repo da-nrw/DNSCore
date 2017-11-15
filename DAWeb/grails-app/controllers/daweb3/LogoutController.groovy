@@ -12,8 +12,7 @@ class LogoutController {
 	def index = {
 		session.invalidate()
 //		sessionRegistry.removeSessionInformation(session.id)
-//		redirect uri:  'login/auth' //SpringSecurityUtils.securityConfig.logout.afterLogoutUrl
-		render (view: "/login/auth" , model:[admin: 0,user:null])
+		redirect uri:  '/login/auth' //SpringSecurityUtils.securityConfig.logout.afterLogoutUrl
 	
 	}
 }

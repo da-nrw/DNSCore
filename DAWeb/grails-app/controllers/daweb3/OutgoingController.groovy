@@ -34,7 +34,7 @@ class OutgoingController {
     def index() {
 		def user = springSecurityService.currentUser
 		def relativeDir = user.getShortName() + "/outgoing"
-		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
+		def baseFolder = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
 		def baseDir
 		def filelist = []
 		def msg = ""
@@ -85,8 +85,8 @@ class OutgoingController {
 			it.save();
 		}
 		def redirecturl = request.getHeader('referer');
-		if (grailsApplication.config.transferNode.downloadLinkPrefix && grailsApplication.config.transferNode.downloadLinkPrefix.trim().length() > 0) {
-			redirecturl = grailsApplication.config.transferNode.downloadLinkPrefix +"/"+   user.getShortName()  + "/outgoing/" + params.filename
+		if (grailsApplication.config.transferNode.downloadLinkPrefix && grailsApplication.config.getProperty('transferNode.downloadLinkPrefix').trim().length() > 0) {
+			redirecturl = grailsApplication.config.getProperty('transferNode.downloadLinkPrefix') +"/"+   user.getShortName()  + "/outgoing/" + params.filename
 		}
 		redirect(url:redirecturl)
 	}

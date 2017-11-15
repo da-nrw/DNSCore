@@ -71,7 +71,7 @@ class PackageController {
 				packages.add(Package.get(it).getName())
 			}
 			log.debug("RETRIEVE:"+packages.join(","))
-			CbNode cbn = CbNode.get(grailsApplication.config.localNode.id)
+			CbNode cbn = CbNode.get(grailsApplication.config.getProperty('localNode.id'))
 			if (packages.join(",").length()==0) {
 				result = "Es wurden keine Packages gewählt"
 			} else {

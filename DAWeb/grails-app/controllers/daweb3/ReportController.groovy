@@ -29,8 +29,8 @@ class ReportController {
 		def user = springSecurityService.currentUser
 		
 		def relativeDir = user.getShortName()
-		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
-		def httpurl = grailsApplication.config.transferNode.downloadLinkPrefix +"/"+   user.getShortName()  + "/outgoing"
+		def baseFolder = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
+		def httpurl = grailsApplication.config.getProperty('transferNode.downloadLinkPrefix') +"/"+   user.getShortName()  + "/outgoing"
 		
 		def msgN = ""
 		def baseDir;		
@@ -54,7 +54,7 @@ class ReportController {
 		def user = springSecurityService.currentUser
 		
 		def relativeDir = user.getShortName() + "/incoming"
-		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
+		def baseFolder = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
 		
 		def uploadedfile = request.getFile("file");
 		if (!uploadedfile.isEmpty()) {
@@ -68,7 +68,7 @@ class ReportController {
 	
 	def start(){
 			def user = springSecurityService.currentUser
-			CbNode node = CbNode.findById(grailsApplication.config.localNode.id);
+			CbNode node = CbNode.findById(grailsApplication.config.getProperty('localNode.id'));
 			SystemEvent se = new SystemEvent();
 			se.setType("CreateStatusReportEvent");
 			se.setUser(user);
@@ -79,7 +79,7 @@ class ReportController {
 	
 	def retrieval(){
 		def user = springSecurityService.currentUser
-		CbNode node = CbNode.findById(grailsApplication.config.localNode.id);
+		CbNode node = CbNode.findById(grailsApplication.config.getProperty('localNode.id'));
 		SystemEvent se = new SystemEvent();
 		se.setType("CreateRetrievalRequestsEvent");
 		se.setUser(user);
@@ -92,7 +92,7 @@ class ReportController {
 	def delete = {
 		def user = springSecurityService.currentUser
 		def relativeDir = user.getShortName() + "/incoming"
-		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
+		def baseFolder = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
 		
 		def files = params.list("currentFiles")
 
@@ -114,8 +114,8 @@ class ReportController {
 		def msgN;
 		def currentFileOutgoing = []
 		def relativeDir = user.getShortName()
-		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
-		def httpurl = grailsApplication.config.transferNode.downloadLinkPrefix +"/"+   user.getShortName()  + "/outgoing"
+		def baseFolder = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
+		def httpurl = grailsApplication.config.getProperty('transferNode.downloadLinkPrefix') +"/"+   user.getShortName()  + "/outgoing"
 		
 		try {
 			baseDir = new File(baseFolder + "/outgoing")
@@ -143,7 +143,7 @@ class ReportController {
 		def msgN;
 		def currentFileIncoming = []
 		def relativeDir = user.getShortName()
-		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
+		def baseFolder = grailsApplication.config.localNode.getProperty('userAreaRootPath') + "/" + relativeDir
 		try {
 			baseDir = new File(baseFolder + "/incoming")
 			if (!baseDir.exists()) {

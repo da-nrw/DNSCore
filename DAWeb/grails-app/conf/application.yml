@@ -2,38 +2,83 @@
 grails:
     plugin:
         springsecurity:
-            adh:
-                errorPage: null
+        #    adh:
+        #        errorPage: null
             userLookup:
               userDomainClassName: 'daweb3.User'
               authorityJoinClassName: 'daweb3.UserRole'
             authority:
               className: 'daweb3.Role'
-            login:
-              url: '/login/auth'
-            logoff:
-              afterLogoutUrl: '/login/auth'
-            rejectIfNoRule: false
+        #    login:
+        #      url: '/login/auth'
+        #    logoff:
+        #      afterLogoutUrl: '/login/auth'
+            rejectIfNoRule: true
             fii:
               rejectPublicInvocations: false
             useSecurityEventListener: true
             successHandler:
               defaultTargetUrl: '/'
-              alwaysUseDefault: true
+          #    alwaysUseDefault: true
             useBasicAuth: true
             basic:
               realmName: "DAWEB - DNSCORE"
+            filterChain:
+              chainMap:
+                - pattern: /status/**
+                  filters: JOINED_FILTERS, -exceptionTranslationFilter
+                - pattern: /assets/**
+                  filters: none
+                - pattern: /**/js/**
+                  filters: none
+                - pattern: /**/css/**
+                  filters: none
+                - pattern: /**/images/**   
+                  filters: none
+                - pattern: /**/favicon.ico 
+                  filters: none
+                - pattern: /**             
+                  filters: JOINED_FILTERS, -basicAuthenticationFilter, -basicExceptionTranslationFilter
+            securityConfigType: InterceptUrlMap
+            interceptUrlMap: 
+             #   {pattern: '/**',               access: ['permitAll']}
+              - {pattern: '/', access: ['ROLE_CONTRACTOR']}
+              - {pattern: '/index', access: ['ROLE_CONTRACTOR']}
+              - {pattern: '/index.gsp', access: ['ROLE_CONTRACTOR']}
+              - {pattern: '/**/js/**', access: ['permitAll']}
+              - {pattern: '/**/css/**', access: ['permitAll']}
+              - {pattern: '/**/images/**', access: ['permitAll']}
+              - {pattern: '/**/favicon.ico', access: ['permitAll']}
+              - {pattern: '/login/**', access: ['permitAll']}
+              - {pattern: '/logout/**', access: ['permitAll']}
+              - {pattern: '/contractor/**', access: ['permitAll']}
+              - {pattern: '/queueEntry/**', access: ['ROLE_CONTRACTOR']}
+              - {pattern: '/automatedRetrieval/**', access: ['ROLE_CONTRACTOR']}
+              - {pattern: '/object/**', access: ['ROLE_CONTRACTOR']}
+              - {pattern: '/incoming/**', access: ['ROLE_CONTRACTOR']}
+              - {pattern: '/outgoing/**', access: ['ROLE_CONTRACTOR']}
+              - {pattern: '/status/**', access: ['ROLE_CONTRACTOR']}
+              - {pattern: '/package/**', access: ['ROLE_CONTRACTOR']}
+              - {pattern: '/info/**', access: ['ROLE_CONTRACTOR']}
+              - {pattern: '/conversionPolicies/**', access: ['ROLE_CONTRACTOR']}
+              - {pattern: '/cbtalk/**', access: ['ROLE_NODEADMIN']}
+              - {pattern: '/user/**', access: ['ROLE_PSADMIN']}
+              - {pattern: '/userRole/**', access: ['ROLE_PSADMIN']}
+              - {pattern: '/role/**', access: ['ROLE_PSADMIN']}
+              - {pattern: '/preservationSystem/**', access: ['ROLE_PSADMIN']}
+              - {pattern: '/formatMapping/**', access: ['ROLE_PSADMIN']}
+              - {pattern: '/cbNode/**', access: ['ROLE_PSADMIN']}
+              - {pattern: '/report/**', access: ['ROLE_CONTRACTOR']}
+              - {pattern: '/systemEvent/**', access: ['ROLE_CONTRACTOR']}
+               
 ---
 server:
   port: 8095
-  
 ---
 grails:
-  assets:
-    bundle: true
-    storagePath: $CATALINA_HOME/webapps/daweb3/assets
----
-grails:
+    assets:
+      bundle: true
+      storagePath: $CATALINA_HOME/webapps/daweb3/assets
     profile: web
     codegen:
         defaultPackage: daweb3
@@ -50,9 +95,9 @@ grails:
             events: false
 info:
     app:
-        name: '@info.app.name@'
-        version: '@info.app.version@'
-        grailsVersion: '@info.app.grailsVersion@'
+        name: 'daweb3'
+        version: '0.1'
+        grailsVersion: '3.2.11'
         
 jms:
     containers:
@@ -66,7 +111,7 @@ spring:
         template:
             check-template-location: false
     activemq:
-        brokerUrl: vm://localhost
+        brokerUrl: tcp://localhost
         port: 4455
         pooled: true
         
@@ -76,18 +121,25 @@ endpoints:
     enabled: false
     jmx:
         enabled: true
-
 ---
 grails:
+    resources:
+        adhoc:
+          - {patterns: '/images/*', '/css/*', '/js/*', '/plugins/*' }
     mime:
-        disable:
-            accept:
-                header:
-                    userAgents:
-                        - Gecko
-                        - WebKit
-                        - Presto
-                        - Trident
+       # disable:
+       #     accept:
+       #         header:
+       #             userAgents:
+       #                 - Gecko
+       #                 - WebKit
+       #                 - Presto
+       #                 - Trident
+        files: 
+          extension: true
+        use: 
+          accept: 
+            header: true  
         types:
             all: '*/*'
             atom: application/atom+xml
@@ -102,19 +154,19 @@ grails:
               - application/json
               - text/json
             multipartForm: multipart/form-data
-            pdf: application/pdf
+           # pdf: application/pdf
             rss: application/rss+xml
             text: text/plain
-            hal:
-              - application/hal+json
-              - application/hal+xml
+          #  hal:
+          #    - application/hal+json
+          #    - application/hal+xml
             xml:
               - text/xml
               - application/xml
         extension : true
-    urlmapping:
-        cache:
-            maxsize: 1000
+   # urlmapping:
+   #     cache:
+   #         maxsize: 1000
     controllers:
         defaultScope: singleton
     converters:
@@ -150,31 +202,12 @@ hibernate:
         use_query_cache: false
         region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
 
-#dataSource:
-#    pooled: true
-#    jmxExport: true
-#    driverClassName: org.postgresql.Driver
-#    dialect: org.hibernate.dialect.PostgreSQLDialect
- #   username: cb_usr
-  #  password: 4qS1BWisL6gUrvNYVFgFog==
-
+---
 environments:
   development:
-   # dataSource:
-   #   pooled: true 
-   #   dialect: org.hibernate.dialect.PostgreSQLDialect
-   #   url: jdbc:postgresql://localhost:5432/CB
-   #   dbCreate: update
-   #   username: cb_usr
-  #    password: 4qS1BWisL6gUrvNYVFgFog==
-  #    passwordEncryptionCodec: de.uzk.hki.da.utils.DESCodec
-  #    characterEncoding: UTF-8
-   #grails:
-   #   config:
-   #   locations: ["file:${userHome}/.grails/${appName}_properties.groovy"]
     localNode:
       id: 1
-      userAreaRootPath: /ci/storage/UserArea
+      userAreaRootPath: /ci/storage/UserArea 
       ingestAreaRootPath: /ci/storage/IngestArea
     transferNode:
       downloadLinkPrefix: "prefix for URL to download DIP"
@@ -190,57 +223,29 @@ environments:
       urlPrefix: "http://prefix_for_fedora/fedora/objects/"
               
   test:
-    #dataSource: 
-    #  pooled: true
-    #  url: jdbc:postgresql://localhost:5432/CB
-    #  dbCreate: validate
-    #  passwordEncryptionCodec: de.uzk.hki.da.utils.DESCodec
-    #  characterEncoding: UTF-8
- #     grails:
- #       config:
- #         locations: ["file:${userHome}/.grails/${appName}_properties.groovy"] 
-      localNode:
+    localNode:
         id: 1
         userAreaRootPath: /ci/storage/UserArea
-      logging:
-        jul:
-          userbridge: true     
-      loginManager: de.uzk.hki.da.login.PlainLogin      
-      cb:
-        port: 4455
-        presServer: "CB nodename of fedora Server"    
-      irods:
-        server: localnode
-        default_resc: ciWorkingResource
-        zone: c-i
-      fedora:
-        urlPrefix: "http://prefix_for_fedora/fedora/objects/"
-
+    logging:
+      jul:
+        userbridge: true     
+    loginManager: de.uzk.hki.da.login.PlainLogin      
+    cb:
+      port: 4455
+      presServer: "CB nodename of fedora Server"    
+    irods:
+      server: localnode
+      default_resc: ciWorkingResource
+      zone: c-i
+    fedora:
+      urlPrefix: "http://prefix_for_fedora/fedora/objects/"
+      
   production:
-    #  dataSource:
-    #    dbCreate: none
-    #    url: jdbc:postgresql://localhost:5432/CB
-    #    properties:
-    #      jmxEnabled: true
-     #     initialSize: 5
-     #     maxActive: 50
-     #     minIdle: 5
-     #     maxIdle: 25
-     #     maxWait: 10000
-     #     maxAge: 600000
-    #      timeBetweenEvictionRunsMillis: 5000
-     #     minEvictableIdleTimeMillis: 60000
-     #     validationQuery: SELECT 1
-     #     validationQueryTimeout: 3
-    #      validationInterval: 15000
-    #      testOnBorrow: true
-    #      testWhileIdle: true
-   #       testOnReturn: false
-   #       jdbcInterceptors: ConnectionState
-    #      defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
-      #  grails:
-      #    config:
-      #      locations: ["file:${userHome}/.grails/${appName}_properties.groovy"]
-        logging:
-        jul:
-          userbridge: true        
+     localNode:
+        id: 1
+        userAreaRootPath: /ci/storage/UserArea
+     logging:
+      jul:
+        userbridge: true     
+     fedora:
+      urlPrefix: "http://prefix_for_fedora/fedora/objects/"

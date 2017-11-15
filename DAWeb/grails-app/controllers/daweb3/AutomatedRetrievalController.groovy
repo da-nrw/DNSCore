@@ -44,7 +44,8 @@ class AutomatedRetrievalController {
 		User user = springSecurityService.currentUser
 		def QueueUtils qu = new QueueUtils(); 
 		def result = [success:false]
-		CbNode cbn = CbNode.get(grailsApplication.config.localNode.id)
+//		CbNode cbn = CbNode.get(grailsApplication.config.localNode.id)
+		CbNode cbn = CbNode.get(grailsApplication.config.getProperty('localNode.id'))
 		def jsonObject = request.JSON
 		
 		def instance = Object.findByIdentifier(jsonObject['identifier'])

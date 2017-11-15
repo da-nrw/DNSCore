@@ -126,7 +126,7 @@ class ObjectController {
 		def filterOn = params.filterOn;
 		if (filterOn==null) filterOn=0
 
-		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
+		def baseFolder = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
 		params.max = Math.min(params.max ? params.int('max') : 50, 200)
 
 		if (params.searchContractorName){
@@ -279,7 +279,7 @@ class ObjectController {
 		def urn = objectInstance.urn
 		urn = urn.replaceAll(~"\\+",":")
 		def sortedPackages = objectInstance.packages.sort{ it.id }
-		def preslink = grailsApplication.config.fedora.urlPrefix +urn.replaceAll(~"urn:nbn:de:danrw-", "")
+		def preslink = grailsApplication.config.getProperty('fedora.urlPrefix') +urn.replaceAll(~"urn:nbn:de:danrw-", "")
 		
 		/*
 		 * DANRW-1417: extension about the access to the table format_mapping
@@ -382,7 +382,7 @@ class ObjectController {
 					result.success = false
 				} else {
 					try {
-						CbNode cbn = CbNode.get(grailsApplication.config.localNode.id)
+						CbNode cbn = CbNode.get(grailsApplication.config.getProperty('localNode.id'))
 
 						qu.createJob( object ,"900", cbn.getName()) + "\n"
 						result.msg += "${object.urn} - OK. "
@@ -416,7 +416,7 @@ class ObjectController {
 
 			} else {
 				try {
-					String lnid = grailsApplication.config.localNode.id
+					String lnid = grailsApplication.config.getProperty('localNode.id')
 					log.debug("Create Retrieval job on node id: " + lnid)
 
 					CbNode cbn = CbNode.get(Integer.parseInt(lnid))
@@ -461,7 +461,7 @@ class ObjectController {
 		if ( object == null ) result.msg += "Das Objekt ${object.urn} konnte nicht gefunden werden!"
 		else {
 			try {
-				String lnid = grailsApplication.config.localNode.id
+				String lnid = grailsApplication.config.getProperty('localNode.id')
 				log.debug("Create Rebuild PIP job on node id: " + lnid)
 				CbNode cbn = CbNode.get(Integer.parseInt(lnid))
 				qu.createJob( object ,"700", cbn.getName())
@@ -517,7 +517,7 @@ class ObjectController {
 			log.debug "object.contractor.shortName: " + object.user.shortName
 
 			try {
-				def ids= grailsApplication.config.localNode.id
+				def ids= grailsApplication.config.getProperty('localNode.id')
 				CbNode cbn = CbNode.get(Integer.valueOf(ids))
 				qu.createJob( object, "5000" , cbn.getName())
 				result.msg = "Das Objekt mit der URN ${object.urn} wurde zur Überprüfung in die Queue eingestellt!"

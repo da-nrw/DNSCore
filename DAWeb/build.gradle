@@ -1,19 +1,13 @@
 buildscript {
+	ext {
+		grailsVersion = project.grailsVersion
+	}
+	
     repositories {
-		
-//		mavenCentral()
 		mavenLocal()
         maven { url "https://repo.grails.org/grails/core" }
-//		maven { url "http://repo.spring.io/milestone" }
-//		maven { url "http://repo.grails.org/grails/repo" }
-//		maven { url "http://download.java.net/maven/2/" }
-//		maven { url "http://repository.jboss.org/nexus/content/groups/public-jboss/" }
-//		maven { url "http://mvnrepository.com/" }
-//		maven { url "http://download.java.net/maven/2/" }
-//		maven { url "http://repo.fusesource.com/nexus/content/groups/public" }
-//		maven { url "http://repo.grails.org/grails/plugins" }
-		
     }
+	
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:2.14.1"
@@ -31,11 +25,21 @@ apply plugin:"org.grails.grails-web"
 apply plugin:"org.grails.grails-gsp"
 apply plugin:"asset-pipeline"
 
+ext {
+	grailsVersion = project.grailsVersion
+	gradleWrapperVersion = project.gradleWrapperVersion
+}
+
 repositories {
-	
 	mavenLocal()
 	maven { url "https://repo.grails.org/grails/core" }
+}
 
+dependencyManagement {
+	imports {
+		mavenBom "org.grails:grails-bom:$grailsVersion"
+	}
+	applyMavenExclusions false
 }
 
 dependencies {
@@ -63,7 +67,7 @@ dependencies {
     compile "org.grails:grails-core"
     compile "org.springframework.boot:spring-boot-starter-actuator"
     compile "org.springframework.boot:spring-boot-starter-tomcat"
-//	provided   "org.springframework.boot:spring-boot-starter-tomcat"
+//	provided "org.springframework.boot:spring-boot-starter-tomcat"
     compile "org.grails:grails-dependencies"
     compile "org.grails:grails-web-boot"
     compile "org.grails.plugins:cache"
@@ -93,6 +97,10 @@ bootRun {
 //     jvmArgs('-Dspring.output.ansi.enabled=always')
     addResources = true
  	jvmArgs = ["-Xdebug", "-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005"]
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = gradleWrapperVersion
 }
 
 assets {

@@ -9,20 +9,36 @@
 	<body>
 		<div id="page-body">
 			<a href="#list-conversionPolicies" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-			
-			<div class="nav" role="navigation">
-				<ul>
-					<li><a class="listl" href="${createLink(uri: '/cbtalk/index')}"><g:message message="zurück zur Administrationsseite"/></a></li>
-				</ul>
-			</div>
-			
+			  <script>
+			  	function getLastPage(){
+			      document.write("Du hast also von " + document.referrer + " hierher gefunden");
+			      var lastPage = document.referrer
+			      lastPage = lastPage.indexOf("cbtalk")
+			      document.write("lastPage : " + lastPage);
+			      return lastPage;
+			  	}
+			      
+    		  </script>
+			  
+			  
+			<g:if test="${admin==0}" /> 
+  			<g:else>  
+  				lastPage: getLastPage()
+  				<g:if test= "${getLastPage() != '-1'}" >
+					<div class="nav" role="navigation">
+						<ul>
+							<li><a class="listl" href="${createLink(uri: '/cbtalk/index')}"><g:message message="zurück zur Administrationsseite"/></a></li>
+						</ul>
+					</div>
+				</g:if>
+  			</g:else> 
 			<div id="list-conversionPolicies" class="content scaffold-list" role="main">
 				<h1><g:message code="default.list.label" args="[entityName]" /></h1>
 				<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 				</g:if>
 				 <div style="overflow:auto; height: 600px">
-				<table>
+				<table>	
 					<thead>
 						<tr>
 						

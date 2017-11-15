@@ -43,7 +43,7 @@ class SystemEventController {
 			admin = 1;
 		}
 		
-		CbNode node = CbNode.findById(grailsApplication.config.localNode.id);
+		CbNode node = CbNode.findById(grailsApplication.config.getProperty('localNode.id'));
         params.max = Math.min(max ?: 10, 100)
 		ceu.setEncoding(response)
         respond SystemEvent.findAllByUserAndNode(user,node), 
@@ -69,7 +69,7 @@ class SystemEventController {
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			admin = 1;
 		}
-		CbNode node = CbNode.findById(grailsApplication.config.localNode.id);
+		CbNode node = CbNode.findById(grailsApplication.config.getProperty('localNode.id'));
 		def se = new SystemEvent(params)
 		se.setNode(node)
 		se.setUser(user)
@@ -80,7 +80,7 @@ class SystemEventController {
     @Transactional
     def save(SystemEvent systemEventInstance) {
 		User user = springSecurityService.currentUser
-		CbNode node = CbNode.findById(grailsApplication.config.localNode.id);
+		CbNode node = CbNode.findById(grailsApplication.config.getProperty('localNode.id'));
 		ceu.setEncoding(response)
 		if (systemEventInstance.user.id !=  springSecurityService.currentUser.id) {
 			notFound()

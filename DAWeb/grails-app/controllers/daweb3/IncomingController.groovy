@@ -19,6 +19,8 @@ package daweb3
 */
 import java.io.File
 
+import grails.util.Environment
+
 /**
  * 
  * @author Jens Peters DANRW 2013
@@ -35,7 +37,8 @@ class IncomingController {
 		def user = springSecurityService.currentUser
 		
 		def relativeDir = user.getShortName() + "/incoming"
-		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
+		def baseFolder =  grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
+//		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
 		def msg = ""
 		def baseDir;
 		def filelist = []
@@ -79,9 +82,9 @@ class IncomingController {
 		files.each {
 			 log.info "Datei ${it}" 
 			 
-			 File source = new File(grailsApplication.config.localNode.userAreaRootPath +"/" 
+			 File source = new File(grailsApplication.config.getProperty('localNode.userAreaRootPath') +"/" 
 				 		+ user.getShortName() + "/incoming/" + it);
-			File target =  new File(grailsApplication.config.localNode.ingestAreaRootPath
+			File target =  new File(grailsApplication.config.getProperty('localNode.ingestAreaRootPath')
 				 		+"/"+user.getShortName() + "/"+ it)
 			if (target.exists()) {
 				msg = "Datei existiert bereits ${it}"

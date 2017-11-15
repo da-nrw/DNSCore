@@ -45,7 +45,8 @@ class CbtalkController {
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			admin = 1;
 		}
-		if (grailsApplication.config.localNode.id==null || grailsApplication.config.localNode.id=="")
+		if (grailsApplication.config.getProperty('localNode.id')==null || 
+			grailsApplication.config.getProperty('localNode.id')=="")
 		flash.message = "LOCALNODE.ID not set!"
 		
 		[user:user, admin:admin]	
