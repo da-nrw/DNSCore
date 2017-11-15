@@ -19,6 +19,8 @@ import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.utils.FolderUtils;
 
 public class ATWorkingDirectory {
+	public static final File CONTRACT_RIGHT_LICENSED = new File("target/installation/conf" + File.separator + "standardRightsLicense.xml"); //standardRightsLicense.xml   standardRights.xml
+	
 	private static String sip1 = "ATWorkingDirectory.tgz";
 	
 	private File s1 = new File("target/atTargetDir/"+sip1);
@@ -48,7 +50,7 @@ public class ATWorkingDirectory {
 	@Test
 	public void test() throws IOException {
 		
-		String cmd = "./SipBuilder-Unix.sh -source=\""+sourceDir.getAbsolutePath()+"/\" -destination=\""+targetDir.getAbsolutePath()+"/\" -workspace=\""+workDir.getAbsolutePath()+"/\" -single";
+		String cmd = "./SipBuilder-Unix.sh -rights=\""+ATWorkingDirectory.CONTRACT_RIGHT_LICENSED.getAbsolutePath()+"\" -source=\""+sourceDir.getAbsolutePath()+"/\" -destination=\""+targetDir.getAbsolutePath()+"/\" -workspace=\""+workDir.getAbsolutePath()+"/\" -single";
 		
 		p=Runtime.getRuntime().exec(cmd,
 		        null, new File("target/installation"));
@@ -103,7 +105,7 @@ public class ATWorkingDirectory {
 
 	@Test
 	public void testNeverOverwrite() throws IOException {
-		String cmd = "./SipBuilder-Unix.sh -source=\""+sourceDir.getAbsolutePath()+"/\" -destination=\""+targetDir.getAbsolutePath()+"/\" -workspace=\""+workDir.getAbsolutePath()+"/\" -single";
+		String cmd = "./SipBuilder-Unix.sh -rights=\""+CONTRACT_RIGHT_LICENSED.getAbsolutePath()+"\" -source=\""+sourceDir.getAbsolutePath()+"/\" -destination=\""+targetDir.getAbsolutePath()+"/\" -workspace=\""+workDir.getAbsolutePath()+"/\" -single";
 		new File("target/atTargetDir/").mkdirs();
 		File targetSip = new File("target/atTargetDir/"+sip1); 
 		targetSip.createNewFile();
@@ -142,7 +144,7 @@ public class ATWorkingDirectory {
 
 	@Test
 	public void testAlwaysOverwrite() throws IOException {
-		String cmd = "./SipBuilder-Unix.sh -source=\""+sourceDir.getAbsolutePath()+"/\" -destination=\""+targetDir.getAbsolutePath()+"/\" -workspace=\""+workDir.getAbsolutePath()
+		String cmd = "./SipBuilder-Unix.sh -rights=\""+ATWorkingDirectory.CONTRACT_RIGHT_LICENSED.getAbsolutePath()+"\" -source=\""+sourceDir.getAbsolutePath()+"/\" -destination=\""+targetDir.getAbsolutePath()+"/\" -workspace=\""+workDir.getAbsolutePath()
 				+"/\" -single -alwaysOverwrite";
 		new File("target/atTargetDir/").mkdirs();
 		File targetSip = new File("target/atTargetDir/"+sip1); 

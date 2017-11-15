@@ -33,6 +33,7 @@ import de.uzk.hki.da.model.ObjectPremisXmlReader;
 import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.StringUtilities;
@@ -45,8 +46,6 @@ import de.uzk.hki.da.utils.StringUtilities;
  * @author Daniel M. de Oliveira
  */
 public class PrepareSendToPresenterAction extends AbstractAction {
-
-	private static final String PREMIS_XML = "premis.xml";
 	private DistributedConversionAdapter distributedConversionAdapter;
 
 	@Override
@@ -68,7 +67,7 @@ public class PrepareSendToPresenterAction extends AbstractAction {
 		logger.trace("Moving the dip content for presentation purposes out of the archival package.");
 		copyPIPSforReplication();
 		
-		Object premisObject = readRightsFromPREMIS(wa.toFile(o.getLatest(PREMIS_XML)));
+		Object premisObject = readRightsFromPREMIS(wa.toFile(o.getLatest(C.PREMIS_XML)));
 		deleteNotAllowedDataStreams(premisObject);
 		
 		registerPIPSforReplication();

@@ -21,12 +21,16 @@ package de.uzk.hki.da.gui;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
+import java.net.URI;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 
@@ -44,6 +48,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -58,6 +63,7 @@ import org.apache.log4j.Logger;
 
 import de.uzk.hki.da.main.SIPBuilder;
 import de.uzk.hki.da.metadata.ContractRights;
+import de.uzk.hki.da.metadata.ContractRights.CCLicense;
 import de.uzk.hki.da.metadata.ContractSettings;
 import de.uzk.hki.da.metadata.PremisXmlWriter;
 import de.uzk.hki.da.metadata.PublicationRights;
@@ -113,6 +119,7 @@ public class Gui extends JFrame{
 	JPanel institutionTempPanel;
 	JPanel institutionRestrictionPanel;
 	JPanel publicPanel;
+	JPanel publicLicensePanel;
 	JPanel publicTempPanel;
 	JPanel publicRestrictionPanel;
 	JPanel migrationPanel;
@@ -135,6 +142,7 @@ public class Gui extends JFrame{
 	// Labels 
 	JLabel backgroundStartImageLabel;
 	JLabel backgroundLoadStandardImageLabel;
+	JLabel backgroundLicenseImageLabel;
 	JLabel backgroundInstitutionImageLabel;
 	JLabel backgroundInstitutionTempImageLabel;
 	JLabel backgroundInstitutionRestrictionImageLabel;
@@ -163,6 +171,7 @@ public class Gui extends JFrame{
 	JLabel institutionRestrictionAudioDurationLabel;
 	JLabel institutionRestrictionVideoQualityLabel;
 	JLabel institutionRestrictionVideoDurationLabel;
+	JLabel licenseLabel;
 	JLabel publicLabel;
 	JLabel publicStartLabel;
 	JLabel publicTempStartDateLabel;
@@ -181,10 +190,7 @@ public class Gui extends JFrame{
 	JLabel createLabel;
 	JLabel sipProgressDisplayLabel;
 	JLabel sipProgressStepLabel;
-	
-	// TODO BEG
-	JLabel licenceLabel;
-	
+
 
 	// TextAreas
 	JTextArea welcomeArea;
@@ -195,6 +201,7 @@ public class Gui extends JFrame{
 	JTextArea institutionRestrictionArea;
 	JTextArea institutionRestrictionTextArea;
 	JTextArea institutionRestrictionImageArea;
+	JTextArea licenseAreaOne;
 	JTextArea publicArea;
 	JTextArea publicDDBArea;
 	JTextArea publicRestrictionArea;
@@ -217,6 +224,8 @@ public class Gui extends JFrame{
 	JButton loadContractButton;
 	JButton standardContractButton;
 	JButton goBackToStartButton;
+	JButton goToLicenseButton;
+	JButton goBackToLicenseOrInstitutionButton;
 	JButton goToInstitutionButton;
 	JButton goBackToLoadStandardButton;
 	JButton goToInstitutionTempButton;
@@ -227,10 +236,10 @@ public class Gui extends JFrame{
 	JButton goBackToInstitutionRestrictionOrTempButton;
 	JButton goToPublicTempButton;
 	JButton goBackToPublicButton;
-	JButton goToPublicRestrictionOrMigrationButton;
+	JButton goToPublicRestrictionButton;
 	JButton goBackToPublicTempButton;
 	JButton goToMigrationButton;
-	JButton goBackToPublicRestrictionOrTempButton;
+	JButton goBackToPublicRestrictionOrPublicButton;
 	JButton goToSaveButton;
 	JButton saveButton;
 	JButton goBackToMigrationButton;
@@ -244,6 +253,8 @@ public class Gui extends JFrame{
 	JButton startIconButton;
 	JButton loadActivatedIconButton;
 	JButton loadIconButton;
+	JButton licenseActivatedIconButton;
+	JButton licenseIconButton;
 	JButton publicationActivatedIconButton;
 	JButton publicationIconButton;
 	JButton institutionActivatedIconButton;
@@ -281,6 +292,8 @@ public class Gui extends JFrame{
 	JRadioButton publicTempRadioButton;
 	JRadioButton publicLawRadioButton;
 	JRadioButton publicNoTempRestrictionRadioButton;
+    JRadioButton metadataLicenseRadioButton;
+    JRadioButton premisLicenseRadioButton;
 
 
 	// Checkboxes
@@ -299,12 +312,12 @@ public class Gui extends JFrame{
 	JCheckBox publicVideoRestrictionCheckBox;
 	JCheckBox publicVideoDurationCheckBox;
 	JCheckBox compressionCheckBox;
-
-
+	
 	// Textfields     
 	JTextField sourcePathTextField;
 	JTextField destinationPathTextField;
 	JTextField workingPathTextField;
+	JTextField licenseTextField; 
 	JTextField collectionNameTextField;
 	JTextField institutionTempStartDateTextField;
 	JTextField institutionRestrictionTextPagesTextField;
@@ -316,6 +329,7 @@ public class Gui extends JFrame{
 
 	// Comboboxes
 	JComboBox kindOfSIPBuildingDropDown;
+	JComboBox licenseDropDown;
 	JComboBox institutionLawIdDropDown;
 	JComboBox institutionImageDropDown;
 	JComboBox institutionImageTextDropDown;
@@ -333,9 +347,6 @@ public class Gui extends JFrame{
 	JComboBox publicVideoQualityDropDown;
 	JComboBox publicVideoDurationDropDown;
 	JComboBox migrationDropDown;
-
-	JComboBox<String> licenceDropDown;
-	
 
 	// ProgressBar
 	JProgressBar progressBar;
@@ -457,6 +468,8 @@ public class Gui extends JFrame{
 		institutionRestrictionPanel.setVisible(false);
 		publicPanel = new JPanel();
 		publicPanel.setVisible(false);
+		publicLicensePanel = new JPanel();
+		publicLicensePanel.setVisible(false);
 		publicTempPanel = new JPanel();
 		publicTempPanel.setVisible(false);
 		publicRestrictionPanel = new JPanel();
@@ -478,6 +491,7 @@ public class Gui extends JFrame{
 
 		backgroundStartImageLabel = new JLabel(new ImageIcon(backgroundImage));
 		backgroundLoadStandardImageLabel = new JLabel(new ImageIcon(backgroundImage));
+		backgroundLicenseImageLabel = new JLabel(new ImageIcon(backgroundImage));
 		backgroundInstitutionImageLabel = new JLabel(new ImageIcon(backgroundImage));
 		backgroundInstitutionTempImageLabel = new JLabel(new ImageIcon(backgroundImage));
 		backgroundInstitutionRestrictionImageLabel = new JLabel(new ImageIcon(backgroundImage));
@@ -508,6 +522,8 @@ public class Gui extends JFrame{
 		workingLabel.setFont(standardFont.deriveFont(10.0f));
 		rightsLabel = new JLabel("Rechteeinstellungen");
 		rightsLabel.setFont(boldFont.deriveFont(12.0f));
+		licenseLabel= new JLabel("Lizenzangaben");
+		licenseLabel.setFont(boldFont.deriveFont(12.0f));
 		institutionLabel = new JLabel("Publikation für die eigene Institution");
 		institutionLabel.setFont(boldFont.deriveFont(12.0f));
 		institutionStartLabel = new JLabel("Startzeitpunkt der Publikation");
@@ -588,10 +604,6 @@ public class Gui extends JFrame{
 		sipProgressStepLabel = new JLabel();
 		sipProgressStepLabel.setFont(standardFont.deriveFont(12.0f));
 		sipProgressStepLabel.setHorizontalAlignment(JLabel.CENTER);
-		
-		// TODO BEG
-		licenceLabel = new JLabel("Lizenzangaben: ");
-		licenceLabel.setFont(standardFont.deriveFont(12.0f));
 	}
 
 	/**
@@ -650,6 +662,16 @@ public class Gui extends JFrame{
 		goBackToStartButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		goBackToStartButton.setBackground(new Color(0,0,0,0));
 		goBackToStartButton.setContentAreaFilled(false);
+		goToLicenseButton = new JButton(new ImageIcon(goToButtonImage));
+		goToLicenseButton.setBorder(null);
+		goToLicenseButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		goToLicenseButton.setBackground(new Color(0,0,0,0));
+		goToLicenseButton.setContentAreaFilled(false);
+		goBackToLicenseOrInstitutionButton = new JButton(new ImageIcon(goBackToButtonImage));
+		goBackToLicenseOrInstitutionButton.setBorder(null);
+		goBackToLicenseOrInstitutionButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		goBackToLicenseOrInstitutionButton.setBackground(new Color(0,0,0,0));
+		goBackToLicenseOrInstitutionButton.setContentAreaFilled(false);
 		goToInstitutionButton = new JButton(new ImageIcon(goToButtonImage));
 		goToInstitutionButton.setBorder(null);
 		goToInstitutionButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -700,11 +722,11 @@ public class Gui extends JFrame{
 		goBackToPublicButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		goBackToPublicButton.setBackground(new Color(0,0,0,0));
 		goBackToPublicButton.setContentAreaFilled(false);
-		goToPublicRestrictionOrMigrationButton = new JButton(new ImageIcon(goToButtonImage));
-		goToPublicRestrictionOrMigrationButton.setBorder(null);
-		goToPublicRestrictionOrMigrationButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		goToPublicRestrictionOrMigrationButton.setBackground(new Color(0,0,0,0));
-		goToPublicRestrictionOrMigrationButton.setContentAreaFilled(false);
+		goToPublicRestrictionButton = new JButton(new ImageIcon(goToButtonImage));
+		goToPublicRestrictionButton.setBorder(null);
+		goToPublicRestrictionButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		goToPublicRestrictionButton.setBackground(new Color(0,0,0,0));
+		goToPublicRestrictionButton.setContentAreaFilled(false);
 		goBackToPublicTempButton = new JButton(new ImageIcon(goBackToButtonImage));
 		goBackToPublicTempButton.setBorder(null);
 		goBackToPublicTempButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -715,11 +737,11 @@ public class Gui extends JFrame{
 		goToMigrationButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		goToMigrationButton.setBackground(new Color(0,0,0,0));
 		goToMigrationButton.setContentAreaFilled(false);
-		goBackToPublicRestrictionOrTempButton = new JButton(new ImageIcon(goBackToButtonImage));
-		goBackToPublicRestrictionOrTempButton.setBorder(null);
-		goBackToPublicRestrictionOrTempButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		goBackToPublicRestrictionOrTempButton.setBackground(new Color(0,0,0,0));
-		goBackToPublicRestrictionOrTempButton.setContentAreaFilled(false);
+		goBackToPublicRestrictionOrPublicButton = new JButton(new ImageIcon(goBackToButtonImage));
+		goBackToPublicRestrictionOrPublicButton.setBorder(null);
+		goBackToPublicRestrictionOrPublicButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		goBackToPublicRestrictionOrPublicButton.setBackground(new Color(0,0,0,0));
+		goBackToPublicRestrictionOrPublicButton.setContentAreaFilled(false);
 		goToSaveButton = new JButton(new ImageIcon(goToButtonImage));
 		goToSaveButton.setBorder(null);
 		goToSaveButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -769,6 +791,8 @@ public class Gui extends JFrame{
 		URL startIconImage = classloader.getResource("images/start.png");
 		URL loadActivatedIconImage = classloader.getResource("images/loadActivated.png");
 		URL loadIconImage = classloader.getResource("images/load.png");
+		URL licenseActivatedIconImage = classloader.getResource("images/licenseActivated.png");
+		URL licenseIconImage = classloader.getResource("images/license.png");
 		URL publicationActivatedIconImage = classloader.getResource("images/publicationActivated.png");
 		URL publicationIconImage = classloader.getResource("images/publication.png");
 		URL institutionActivatedIconImage = classloader.getResource("images/institutionActivated.png");
@@ -806,6 +830,14 @@ public class Gui extends JFrame{
 		loadIconButton.setVisible(true);
 		loadIconButton.setBorder(null);
 		loadIconButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		licenseActivatedIconButton = new JButton(new ImageIcon(licenseActivatedIconImage));
+		licenseActivatedIconButton.setVisible(false);
+		licenseActivatedIconButton.setBorder(null);
+		licenseActivatedIconButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		licenseIconButton = new JButton(new ImageIcon(licenseIconImage));
+		licenseIconButton.setVisible(true);
+		licenseIconButton.setBorder(null);
+		licenseIconButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		publicationActivatedIconButton = new JButton(new ImageIcon(publicationActivatedIconImage));
 		publicationActivatedIconButton.setVisible(false);
 		publicationActivatedIconButton.setBorder(null);
@@ -919,6 +951,19 @@ public class Gui extends JFrame{
 				"Ihre SIPs festlegen.\n\n" +
 				"Falls Sie diese Einstellungen schon einmal vorgenommen und gespeichert " +
 				"haben, können Sie sie jetzt laden:");	     
+		
+		licenseAreaOne = new JTextArea();
+		licenseAreaOne.setEditable(false);
+		licenseAreaOne.setOpaque(false);
+		licenseAreaOne.setLineWrap(true);
+		licenseAreaOne.setWrapStyleWord(true);
+		licenseAreaOne.setFocusable(false);
+		licenseAreaOne.setFont(standardFont.deriveFont(12.0f));
+		licenseAreaOne.setText("In den folgenden Schritten können Sie die Lizenzrechte für " +
+				"Ihre SIPs festlegen. Die Lizenzangabe gilt für die Veröffentlichungsportale.\n\n" +
+				"Für eine Publikation ist eine Lizenz zwingend erforderlich!\n\n"+
+				"Hiterlegen Sie im SIP-Builder eine Lizenz nur wenn diese nicht " +
+				"bereits in den METS-Metadaten hiterlegt sind!!! ");	     
 
 		rightsAreaTwo = new JTextArea();
 		rightsAreaTwo.setEditable(false);
@@ -1199,6 +1244,18 @@ public class Gui extends JFrame{
 		publicDDBCheckBox = new JCheckBox("DDB-Harvesting erlauben", true);
 		publicDDBCheckBox.setOpaque(false);
 		publicDDBCheckBox.setFont(standardFont.deriveFont(12.0f));
+		ButtonGroup licenseRadioButtonGroup = new ButtonGroup();
+		metadataLicenseRadioButton = new JRadioButton("Lizenz aus Metadaten übernehmen.");
+	    metadataLicenseRadioButton.setOpaque(false);
+	    metadataLicenseRadioButton.setFont(standardFont.deriveFont(12.0f));
+	    
+	    premisLicenseRadioButton = new JRadioButton("Lizenz festlegen");
+	    premisLicenseRadioButton.setOpaque(false);
+	    premisLicenseRadioButton.setFont(standardFont.deriveFont(12.0f));
+	    
+	    licenseRadioButtonGroup.add(metadataLicenseRadioButton);
+	    licenseRadioButtonGroup.add(premisLicenseRadioButton);
+		
 		publicTextRestrictionCheckBox = new JCheckBox("Einsehbare Seiten festlegen", false);
 		publicTextRestrictionCheckBox.setOpaque(false);
 		publicTextRestrictionCheckBox.setFont(standardFont.deriveFont(12.0f));
@@ -1238,6 +1295,12 @@ public class Gui extends JFrame{
 		workingPathTextField = new JTextField();
 		workingPathTextField.setEditable(true);
 		workingPathTextField.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.gray));
+		
+		licenseTextField = new JTextField();
+		licenseTextField.setEditable(true);
+		licenseTextField.setOpaque(false);
+		licenseTextField.setBorder(null);
+		licenseTextField.setFont(standardFont.deriveFont(12.0f));
 
 		collectionNameTextField = new JTextField();
 		collectionNameTextField.setEditable(false);
@@ -1279,6 +1342,12 @@ public class Gui extends JFrame{
 		kindOfSIPBuildingDropDown.addItem(C.KIND_OF_SIPBUILDING_SINGLE);
 		kindOfSIPBuildingDropDown.addItem(C.KIND_OF_SIPBUILDING_MULTIPLE);
 		kindOfSIPBuildingDropDown.addItem(C.KIND_OF_SIPBUILDING_NESTED);
+		
+		licenseDropDown = new JComboBox();
+		licenseDropDown.setFont(standardFont.deriveFont(11.0f));
+		for(ContractRights.CCLicense tmp:ContractRights.CCLicense.values()){
+			licenseDropDown.addItem(tmp);
+		}
 
 		institutionLawIdDropDown = new JComboBox();
 		institutionLawIdDropDown.setFont(standardFont.deriveFont(11.0f));
@@ -1413,20 +1482,6 @@ public class Gui extends JFrame{
 		migrationDropDown.addItem("Keine");
 		migrationDropDown.addItem("Über Migration informieren");
 		migrationDropDown.addItem("Zustimmung für Migration einholen");
-		
-		
-		licenceDropDown = new JComboBox<String>();
-		licenceDropDown.setFont(standardFont.deriveFont(12.0f));
-		licenceDropDown.addItem("Keine");
-		licenceDropDown.addItem("pdm - Public Domain");
-		licenceDropDown.addItem("cc0");
-		licenceDropDown.addItem("cc-by");
-		licenceDropDown.addItem("cc-by-sa");
-		licenceDropDown.addItem("cc-by-nd");
-		licenceDropDown.addItem("cc-by-nc");
-		licenceDropDown.addItem("cc-by-nc-sa");
-		licenceDropDown.addItem("cc-by-nc-nd");
-		licenceDropDown.addItem("reserved");
 	}
 
 	/**
@@ -1440,26 +1495,31 @@ public class Gui extends JFrame{
 		startIconButton.setBounds(10, 70, 171, 20);
 		loadActivatedIconButton.setBounds(10, 95, 171, 20);
 		loadIconButton.setBounds(10, 95, 171, 20);
+		
 		publicationActivatedIconButton.setBounds(10, 120, 171, 20);
 		publicationIconButton.setBounds(10, 120, 171, 20);
-		publicActivatedIconButton.setBounds(10, 145, 171, 20);
-		publicIconButton.setBounds(10, 145, 171, 20);
-		publicTempActivatedIconButton.setBounds(10, 165, 171, 20);
-		publicTempIconButton.setBounds(10, 165, 171, 20);
-		publicRestrictionActivatedIconButton.setBounds(10, 185, 171, 20);
-		publicRestrictionIconButton.setBounds(10, 185, 171, 20);
-		institutionActivatedIconButton.setBounds(10, 210, 171, 20);
-		institutionIconButton.setBounds(10, 210, 171, 20);
-		institutionTempActivatedIconButton.setBounds(10, 230, 171, 20);
-		institutionTempIconButton.setBounds(10, 230, 171, 20);
-		institutionRestrictionActivatedIconButton.setBounds(10, 250, 171, 20);
-		institutionRestrictionIconButton.setBounds(10, 250, 171, 20);
-		migrationActivatedIconButton.setBounds(10, 275, 171, 20);
-		migrationIconButton.setBounds(10, 275, 171, 20);
-		saveActivatedIconButton.setBounds(10, 300, 171, 20);
-		saveIconButton.setBounds(10, 300, 171, 20);
-		createActivatedIconButton.setBounds(10, 325, 171, 20);
-		createIconButton.setBounds(10, 325, 171, 20);
+		publicActivatedIconButton.setBounds(10, 140, 171, 20);
+		publicIconButton.setBounds(10, 140, 171, 20);
+		
+		licenseActivatedIconButton.setBounds(10, 160, 171, 20);
+		licenseIconButton.setBounds(10, 160, 171, 20);
+		
+		publicTempActivatedIconButton.setBounds(10, 180, 171, 20);
+		publicTempIconButton.setBounds(10, 180, 171, 20);
+		publicRestrictionActivatedIconButton.setBounds(10, 200, 171, 20);
+		publicRestrictionIconButton.setBounds(10, 200, 171, 20);
+		institutionActivatedIconButton.setBounds(10, 225, 171, 20);
+		institutionIconButton.setBounds(10, 225, 171, 20);
+		institutionTempActivatedIconButton.setBounds(10, 245, 171, 20);
+		institutionTempIconButton.setBounds(10, 245, 171, 20);
+		institutionRestrictionActivatedIconButton.setBounds(10, 265, 171, 20);
+		institutionRestrictionIconButton.setBounds(10, 265, 171, 20);
+		migrationActivatedIconButton.setBounds(10, 290, 171, 20);
+		migrationIconButton.setBounds(10, 290, 171, 20);
+		saveActivatedIconButton.setBounds(10, 315, 171, 20);
+		saveIconButton.setBounds(10, 315, 171, 20);
+		createActivatedIconButton.setBounds(10, 340, 171, 20);
+		createIconButton.setBounds(10, 340, 171, 20);
 		helpIconButton.setBounds(709, 15, 20, 22);
 
 		// startPanel
@@ -1493,73 +1553,9 @@ public class Gui extends JFrame{
 		standardContractButton.setBounds(350, 250, 90, 20);
 		rightsAreaThree.setBounds(255, 283, 430, 100);
 		goBackToStartButton.setBounds(450, 445, 90, 20);
-		goToInstitutionButton.setBounds(575, 445, 90, 20);
-		backgroundLoadStandardImageLabel.setBounds(0, 0, 750, 526);
-
-		// institutionPanel
-		institutionPanel.setBounds(0, 0, 750, 526);
-		institutionLabel.setBounds(255, 70, 300, 20);
-		institutionArea.setBounds(255, 100, 400, 90);
-		institutionAllowRadioButton.setBounds(251, 210, 40, 20);
-		institutionDenyRadioButton.setBounds(251, 235, 60, 20);
-		goBackToLoadStandardButton.setBounds(450, 445, 90, 20);
-		goToInstitutionTempButton.setBounds(575, 445, 90, 20);
-		backgroundInstitutionImageLabel.setBounds(0, 0, 750, 526);
-
-		// institutionTempPanel
-		institutionTempPanel.setBounds(0, 0, 750, 526);
-		institutionStartLabel.setBounds(255, 70, 300, 20);
-		institutionNoTempRestrictionRadioButton.setBounds(251, 100, 215, 20);
-		institutionTempRadioButton.setBounds(251, 125, 215, 20);
-		institutionTempStartDateLabel.setBounds(255, 147, 280, 20);
-		institutionTempStartDateTextField.setBounds(255, 172, 310, 20);
-		institutionLawRadioButton.setBounds(251, 202, 275, 20);
-		institutionLawIdDropDown.setBounds(255, 232, 310, 20);
-		goBackToInstitutionButton.setBounds(450, 445, 90, 20);
-		goToInstitutionRestrictionOrPublicButton.setBounds(575, 445, 90, 20);
-		backgroundInstitutionTempImageLabel.setBounds(0, 0, 750, 526);
-
-		// institutionRestrictionPanel
-		institutionRestrictionPanel.setBounds(0, 0, 750, 526);
-		institutionRestrictionHeadlineLabel.setBounds(255, 70, 350, 20);
-		institutionRestrictionArea.setBounds(255, 100, 360, 40);
-		institutionTabbedPane.setBounds(255, 140, 380, 295);
-		goBackToInstitutionTempButton.setBounds(450, 445, 90, 20);
 		goToPublicButton.setBounds(575, 445, 90, 20);
-		backgroundInstitutionRestrictionImageLabel.setBounds(0, 0, 750, 526);
-
-		// institutionRestrictionTextPanel
-		institutionTextRestrictionCheckBox.setBounds(6, 10, 212, 20);
-		institutionRestrictionTextPagesLabel.setBounds(10, 32, 320, 20);
-		institutionRestrictionTextPagesTextField.setBounds(10, 57, 355, 20);
-		institutionRestrictionTextArea.setBounds(10, 87, 360, 170);
-
-		// institutionRestrictionImagePanel
-		institutionImageRestrictionCheckBox.setBounds(6, 10, 192, 20);
-		institutionRestrictionImageArea.setBounds(10, 35, 320, 40);
-		institutionImageDropDown.setBounds(10, 75, 150, 20);
-		institutionImageTextCheckBox.setBounds(6, 105, 270, 20);
-		institutionRestrictionImageLabel.setBounds(10, 127, 310, 20);
-		institutionRestrictionImageTextField.setBounds(10, 152, 355, 20);
-		institutionRestrictionImageTextTypeLabel.setBounds(10, 182, 80, 20);
-		institutionImageTextDropDown.setBounds(105, 182, 165, 20);
-		institutionRestrictionImageTextOpacityLabel.setBounds(10, 212, 80, 20);
-		institutionImageTextOpacityDropDown.setBounds(105, 212, 165, 20);
-		institutionRestrictionImageTextSizeLabel.setBounds(10, 242, 80, 20);
-		institutionImageTextSizeDropDown.setBounds(105, 242, 165, 20);
-
-		// institutionRestrictionAudioPanel
-		institutionAudioRestrictionCheckBox.setBounds(6, 10, 252, 20);
-		institutionRestrictionAudioDurationLabel.setBounds(10, 32, 320, 20);
-		institutionAudioDurationDropDown.setBounds(10, 57, 100, 20);
-
-		// institutionRestrictionVideoPanel
-		institutionVideoRestrictionCheckBox.setBounds(6, 10, 240, 20);
-		institutionRestrictionVideoQualityLabel.setBounds(10, 32, 420, 20);
-		institutionVideoQualityDropDown.setBounds(10, 57, 100, 20);
-		institutionVideoDurationCheckBox.setBounds(6, 87, 214, 20);
-		institutionRestrictionVideoDurationLabel.setBounds(10, 109, 320, 20);
-		institutionVideoDurationDropDown.setBounds(10, 134, 100, 20);
+		backgroundLoadStandardImageLabel.setBounds(0, 0, 750, 526);
+	
 
 		// publicPanel
 		publicPanel.setBounds(0, 0, 750, 526);
@@ -1569,14 +1565,24 @@ public class Gui extends JFrame{
 		publicDenyRadioButton.setBounds(251, 175, 60, 20);
 		publicDDBArea.setBounds(255, 215, 400, 60);
  		publicDDBCheckBox.setBounds(251, 285, 190, 20);
-		
-		// TODO BEG
- 		licenceLabel.setBounds(251, 320, 200, 20);
-		licenceDropDown.setBounds(251, 350, 200, 20);
-		
-		goBackToInstitutionRestrictionOrTempButton.setBounds(450, 445, 90, 20);
-		goToPublicTempButton.setBounds(575, 445, 90, 20);
+		goBackToLoadStandardButton.setBounds(450, 445, 90, 20);
+		goToLicenseButton.setBounds(575, 445, 90, 20);
 		backgroundPublicImageLabel.setBounds(0, 0, 750, 526);
+		
+		// publicLicensePanel
+		publicLicensePanel.setBounds(0, 0, 750, 526);
+		licenseLabel.setBounds(255, 70, 300, 20);
+		licenseDropDown.setEditable(false);
+		licenseDropDown.setEnabled(false);
+		licenseTextField.setEditable(false);
+		licenseAreaOne.setBounds(255, 100, 430, 115);
+	    metadataLicenseRadioButton.setBounds(255, 220, 430, 20);
+	    premisLicenseRadioButton.setBounds(255, 245, 430, 20);
+		licenseDropDown.setBounds(275, 270, 230, 20);
+		licenseTextField.setBounds(275, 295, 430, 20);
+		goBackToPublicButton.setBounds(450, 445, 90, 20);
+		goToPublicTempButton.setBounds(575, 445, 90, 20);
+		backgroundLicenseImageLabel.setBounds(0, 0, 750, 526);
 
 		// publicTempPanel
 		publicTempPanel.setBounds(0, 0, 750, 526);
@@ -1587,8 +1593,8 @@ public class Gui extends JFrame{
 		publicTempStartDateTextField.setBounds(255, 172, 310, 20);
 		publicLawRadioButton.setBounds(251, 202, 275, 20);
 		publicLawIdDropDown.setBounds(255, 232, 310, 20);
-		goBackToPublicButton.setBounds(450, 445, 90, 20);
-		goToPublicRestrictionOrMigrationButton.setBounds(575, 445, 90, 20);
+		goBackToLicenseOrInstitutionButton.setBounds(450, 445, 90, 20);
+		goToPublicRestrictionButton.setBounds(575, 445, 90, 20);
 		backgroundPublicTempImageLabel.setBounds(0, 0, 750, 526);
 
 		// publicRestrictionPanel
@@ -1597,7 +1603,8 @@ public class Gui extends JFrame{
 		publicRestrictionArea.setBounds(255, 100, 360, 40);
 		publicTabbedPane.setBounds(255, 140, 380, 295);
 		goBackToPublicTempButton.setBounds(450, 445, 90, 20);
-		goToMigrationButton.setBounds(575, 445, 90, 20); 
+		goToInstitutionButton.setBounds(575, 445, 90, 20);
+		
 		backgroundPublicRestrictionImageLabel.setBounds(0, 0, 750, 526);
 
 		// publicRestrictionTextPanel
@@ -1632,6 +1639,74 @@ public class Gui extends JFrame{
 		publicVideoDurationCheckBox.setBounds(6, 87, 214, 20);
 		publicRestrictionVideoDurationLabel.setBounds(10, 109, 320, 20);
 		publicVideoDurationDropDown.setBounds(10, 134, 100, 20);
+		
+		
+		// institutionPanel
+		institutionPanel.setBounds(0, 0, 750, 526);
+		institutionLabel.setBounds(255, 70, 300, 20);
+		institutionArea.setBounds(255, 100, 400, 90);
+		institutionAllowRadioButton.setBounds(251, 210, 40, 20);
+		institutionDenyRadioButton.setBounds(251, 235, 60, 20);
+		goBackToPublicRestrictionOrPublicButton.setBounds(450, 445, 90, 20);
+		goToInstitutionTempButton.setBounds(575, 445, 90, 20);
+		backgroundInstitutionImageLabel.setBounds(0, 0, 750, 526);
+
+
+		// institutionTempPanel
+		institutionTempPanel.setBounds(0, 0, 750, 526);
+		institutionStartLabel.setBounds(255, 70, 300, 20);
+		institutionNoTempRestrictionRadioButton.setBounds(251, 100, 215, 20);
+		institutionTempRadioButton.setBounds(251, 125, 215, 20);
+		institutionTempStartDateLabel.setBounds(255, 147, 280, 20);
+		institutionTempStartDateTextField.setBounds(255, 172, 310, 20);
+		institutionLawRadioButton.setBounds(251, 202, 275, 20);
+		institutionLawIdDropDown.setBounds(255, 232, 310, 20);
+		goBackToInstitutionButton.setBounds(450, 445, 90, 20);
+		goToInstitutionRestrictionOrPublicButton.setBounds(575, 445, 90, 20);
+		backgroundInstitutionTempImageLabel.setBounds(0, 0, 750, 526);
+
+		// institutionRestrictionPanel
+		institutionRestrictionPanel.setBounds(0, 0, 750, 526);
+		institutionRestrictionHeadlineLabel.setBounds(255, 70, 350, 20);
+		institutionRestrictionArea.setBounds(255, 100, 360, 40);
+		institutionTabbedPane.setBounds(255, 140, 380, 295);
+		goBackToInstitutionTempButton.setBounds(450, 445, 90, 20);
+		goToMigrationButton.setBounds(575, 445, 90, 20); 
+		backgroundInstitutionRestrictionImageLabel.setBounds(0, 0, 750, 526);
+
+		// institutionRestrictionTextPanel
+		institutionTextRestrictionCheckBox.setBounds(6, 10, 212, 20);
+		institutionRestrictionTextPagesLabel.setBounds(10, 32, 320, 20);
+		institutionRestrictionTextPagesTextField.setBounds(10, 57, 355, 20);
+		institutionRestrictionTextArea.setBounds(10, 87, 360, 170);
+
+		// institutionRestrictionImagePanel
+		institutionImageRestrictionCheckBox.setBounds(6, 10, 192, 20);
+		institutionRestrictionImageArea.setBounds(10, 35, 320, 40);
+		institutionImageDropDown.setBounds(10, 75, 150, 20);
+		institutionImageTextCheckBox.setBounds(6, 105, 270, 20);
+		institutionRestrictionImageLabel.setBounds(10, 127, 310, 20);
+		institutionRestrictionImageTextField.setBounds(10, 152, 355, 20);
+		institutionRestrictionImageTextTypeLabel.setBounds(10, 182, 80, 20);
+		institutionImageTextDropDown.setBounds(105, 182, 165, 20);
+		institutionRestrictionImageTextOpacityLabel.setBounds(10, 212, 80, 20);
+		institutionImageTextOpacityDropDown.setBounds(105, 212, 165, 20);
+		institutionRestrictionImageTextSizeLabel.setBounds(10, 242, 80, 20);
+		institutionImageTextSizeDropDown.setBounds(105, 242, 165, 20);
+
+		// institutionRestrictionAudioPanel
+		institutionAudioRestrictionCheckBox.setBounds(6, 10, 252, 20);
+		institutionRestrictionAudioDurationLabel.setBounds(10, 32, 320, 20);
+		institutionAudioDurationDropDown.setBounds(10, 57, 100, 20);
+
+		// institutionRestrictionVideoPanel
+		institutionVideoRestrictionCheckBox.setBounds(6, 10, 240, 20);
+		institutionRestrictionVideoQualityLabel.setBounds(10, 32, 420, 20);
+		institutionVideoQualityDropDown.setBounds(10, 57, 100, 20);
+		institutionVideoDurationCheckBox.setBounds(6, 87, 214, 20);
+		institutionRestrictionVideoDurationLabel.setBounds(10, 109, 320, 20);
+		institutionVideoDurationDropDown.setBounds(10, 134, 100, 20);
+	
 
 		// migrationPanel
 		migrationPanel.setBounds(0, 0, 750, 526);
@@ -1639,7 +1714,7 @@ public class Gui extends JFrame{
 		migrationArea.setBounds(255, 100, 450, 125);
 		migrationConditionLabel.setBounds(255, 225, 115, 20);
 		migrationDropDown.setBounds(370, 227, 240, 20);
-		goBackToPublicRestrictionOrTempButton.setBounds(450, 445, 90, 20);
+		goBackToInstitutionRestrictionOrTempButton.setBounds(450, 445, 90, 20);
 		goToSaveButton.setBounds(575, 445, 90, 20);
 		backgroundMigrationImageLabel.setBounds(0, 0, 750, 526);
 
@@ -1678,6 +1753,8 @@ public class Gui extends JFrame{
 		getContentPane().add(startIconButton);
 		getContentPane().add(loadActivatedIconButton);
 		getContentPane().add(loadIconButton);
+		getContentPane().add(licenseActivatedIconButton);
+		getContentPane().add(licenseIconButton);
 		getContentPane().add(publicationActivatedIconButton);
 		getContentPane().add(publicationIconButton);
 		getContentPane().add(institutionActivatedIconButton);
@@ -1714,7 +1791,6 @@ public class Gui extends JFrame{
 
 		startPanel.add(workingLabel);
 		startPanel.add(workingPathTextField);
-		startPanel.add(workingPathTextField);
 		startPanel.add(workingChooserButton);
 
 		startPanel.add(kindOfSIPBuildingDropDown);
@@ -1734,23 +1810,32 @@ public class Gui extends JFrame{
 		loadStandardPanel.add(goToPublicButton);
 		loadStandardPanel.add(backgroundLoadStandardImageLabel);
 		loadStandardPanel.setLayout(null);
-
+		
 		getContentPane().add(publicPanel);
 		publicPanel.add(publicLabel);
 		publicPanel.add(publicArea);
 		publicPanel.add(publicAllowRadioButton);
 		publicPanel.add(publicDenyRadioButton);
-		publicPanel.add(goBackToLoadStandardButton);
+		publicPanel.add(goToLicenseButton);
 		publicPanel.add(publicDDBArea);
 		publicPanel.add(publicDDBCheckBox);
-		
-		// TODO
-		publicPanel.add(licenceLabel);
-		publicPanel.add(licenceDropDown);
-		
-		publicPanel.add(goToPublicTempButton);
+		publicPanel.add(goBackToLoadStandardButton);
 		publicPanel.add(backgroundPublicImageLabel);
 		publicPanel.setLayout(null);
+		
+		getContentPane().add(publicLicensePanel);
+		publicLicensePanel.add(licenseLabel);
+		publicLicensePanel.add(licenseAreaOne);
+		publicLicensePanel.add(metadataLicenseRadioButton);
+		publicLicensePanel.add(premisLicenseRadioButton);
+		publicLicensePanel.add(licenseDropDown);
+		publicLicensePanel.add(licenseTextField);
+		publicLicensePanel.add(goToPublicTempButton);
+		publicLicensePanel.add(goBackToPublicButton);
+		publicLicensePanel.add(backgroundLicenseImageLabel);
+		publicLicensePanel.setLayout(null);
+		
+		
 
 		getContentPane().add(publicTempPanel);
 		publicTempPanel.add(publicStartLabel);
@@ -1760,8 +1845,8 @@ public class Gui extends JFrame{
 		publicTempPanel.add(publicTempStartDateTextField);
 		publicTempPanel.add(publicLawIdDropDown);
 		publicTempPanel.add(publicLawRadioButton);
-		publicTempPanel.add(goBackToPublicButton);
-		publicTempPanel.add(goToPublicRestrictionOrMigrationButton);
+		publicTempPanel.add(goBackToLicenseOrInstitutionButton);
+		publicTempPanel.add(goToPublicRestrictionButton);
 		publicTempPanel.add(backgroundPublicTempImageLabel);
 		publicTempPanel.setLayout(null);
 
@@ -1812,7 +1897,7 @@ public class Gui extends JFrame{
 		institutionPanel.add(institutionArea);
 		institutionPanel.add(institutionAllowRadioButton);
 		institutionPanel.add(institutionDenyRadioButton);
-		institutionPanel.add(goBackToPublicRestrictionOrTempButton);
+		institutionPanel.add(goBackToPublicRestrictionOrPublicButton);
 		institutionPanel.add(goToInstitutionTempButton);
 		institutionPanel.add(backgroundInstitutionImageLabel);
 		institutionPanel.setLayout(null);
@@ -2032,6 +2117,19 @@ public class Gui extends JFrame{
 				enterPublicationInstitutionSection();
 			}
 		});
+		
+		goToLicenseButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){	
+				if(!enterPublicationPublicLicenseSection())
+					enterPublicationInstitutionSection();
+			}
+		});
+		
+		goBackToLicenseOrInstitutionButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){	
+				enterPublicationPublicLicenseSection();
+			}
+		});
 
 		goBackToLoadStandardButton.addActionListener(new ActionListener(){
 
@@ -2040,6 +2138,53 @@ public class Gui extends JFrame{
 			}
 		});
 
+
+
+		goToPublicButton.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent e){	
+				enterPublicationPublicSection();
+			}
+		});
+		
+		goBackToPublicButton.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent e){	
+				enterPublicationPublicSection();
+			}
+		});
+
+		goToPublicTempButton.addActionListener(new ActionListener(){
+			
+			public void actionPerformed(ActionEvent e){	
+				enterPublicationPublicTempSection();
+			}
+		});
+		
+		goBackToPublicTempButton.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent e){	
+				enterPublicationPublicTempSection();
+			}
+		});
+		
+		goToPublicRestrictionButton.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent e){	
+				enterPublicationPublicRestrictionsSection();
+			}
+		});
+
+
+		goBackToPublicRestrictionOrPublicButton.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent e){	
+				if (!enterPublicationPublicRestrictionsSection())
+					enterPublicationPublicSection();
+			}
+		});
+
+		
 		goToInstitutionTempButton.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e){	
@@ -2069,12 +2214,7 @@ public class Gui extends JFrame{
 			}
 		});
 
-		goToPublicButton.addActionListener(new ActionListener(){
 
-			public void actionPerformed(ActionEvent e){	
-				enterPublicationPublicSection();
-			}
-		});
 
 		goBackToInstitutionRestrictionOrTempButton.addActionListener(new ActionListener(){
 
@@ -2083,35 +2223,7 @@ public class Gui extends JFrame{
 					enterPublicationInstitutionSection();
 			}
 		});
-
-		goToPublicTempButton.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e){	
-				if (!enterPublicationPublicTempSection())
-					enterPublicationInstitutionSection();
-			}
-		});
-
-		goBackToPublicButton.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e){	
-				enterPublicationPublicSection();
-			}
-		});
-
-		goToPublicRestrictionOrMigrationButton.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e){	
-				enterPublicationPublicRestrictionsSection();
-			}
-		});
-
-		goBackToPublicTempButton.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e){	
-				enterPublicationPublicTempSection();
-			}
-		});
+		
 
 		goToMigrationButton.addActionListener(new ActionListener(){
 
@@ -2120,14 +2232,7 @@ public class Gui extends JFrame{
 			}
 		});
 
-		goBackToPublicRestrictionOrTempButton.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e){	
-				if (!enterPublicationPublicRestrictionsSection())
-					enterPublicationPublicSection();
-			}
-		});
-
+		
 		goToSaveButton.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e){	
@@ -2196,6 +2301,8 @@ public class Gui extends JFrame{
 				startIconButton.setEnabled(false);
 				loadActivatedIconButton.setEnabled(false);
 				loadIconButton.setEnabled(false);
+				licenseActivatedIconButton.setEnabled(false);
+				licenseIconButton.setEnabled(false);
 				publicationActivatedIconButton.setEnabled(false);
 				publicationIconButton.setEnabled(false);
 				institutionActivatedIconButton.setEnabled(false);
@@ -2258,6 +2365,14 @@ public class Gui extends JFrame{
 
 			public void actionPerformed(ActionEvent e){
 				enterLoadSection();
+			}
+		});
+		
+		licenseIconButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e){
+				if(!enterPublicationPublicLicenseSection())
+					enterPublicationPublicSection();
 			}
 		});
 
@@ -2361,8 +2476,6 @@ public class Gui extends JFrame{
 			public void actionPerformed(ActionEvent e){
 				publicDDBArea.setEnabled(true);
 				publicDDBCheckBox.setEnabled(true);
-				// TODO BEG
-				licenceDropDown.setEnabled(true);
 			}
 		});
 		
@@ -2371,8 +2484,6 @@ public class Gui extends JFrame{
 			public void actionPerformed(ActionEvent e){
 				publicDDBArea.setEnabled(false);
 				publicDDBCheckBox.setEnabled(false);
-				// TODO BEG
-				licenceDropDown.setEnabled(false);
 			}
 		});
 		
@@ -2436,6 +2547,24 @@ public class Gui extends JFrame{
 				}     
 			}
 		});
+		ActionListener licenseRadioButtonListener = new ActionListener(){
+			public void actionPerformed(ActionEvent e){	  
+				JRadioButton btn = (JRadioButton) e.getSource();
+				if(btn==premisLicenseRadioButton){
+					licenseDropDown.setEditable(true);
+					licenseDropDown.setEnabled(true);
+					licenseTextField.setVisible(true);
+					licenseDropDown.setSelectedIndex(0);
+				}
+				else{	
+					licenseDropDown.setEditable(false);
+					licenseDropDown.setEnabled(false);
+					licenseTextField.setVisible(false);
+				}     
+			}
+		};
+		metadataLicenseRadioButton.addActionListener(licenseRadioButtonListener);
+	    premisLicenseRadioButton.addActionListener(licenseRadioButtonListener);
 
 		institutionImageRestrictionCheckBox.addActionListener(new ActionListener(){
 			
@@ -2707,6 +2836,37 @@ public class Gui extends JFrame{
 			}
 
 		});
+		
+		licenseDropDown.addActionListener(new ActionListener(){	
+			public void actionPerformed(ActionEvent e){
+				licenseTextField.setText(((ContractRights.CCLicense)licenseDropDown.getSelectedItem()).getHref());
+			}
+
+		});
+
+		
+		licenseTextField.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					if (Desktop.isDesktopSupported()) {
+						try {
+							Desktop.getDesktop().browse(new URI(licenseTextField.getText()));
+						} catch (Throwable t) {
+							System.out.println("Default System Browser not startab: " + t.getMessage());
+						}
+					}
+				}else if(e.getClickCount() == 1){
+					licenseTextField.selectAll();
+				}
+			}
+
+			@Override   public void mousePressed(MouseEvent e) {}
+			@Override	public void mouseReleased(MouseEvent e) {}
+			@Override	public void mouseEntered(MouseEvent e) {}
+			@Override	public void mouseExited(MouseEvent e) {	}
+		});
 
 		institutionImageTextDropDown.addActionListener(new ActionListener(){
 			
@@ -2768,6 +2928,8 @@ public class Gui extends JFrame{
 					startIconButton.setEnabled(true);
 					loadActivatedIconButton.setEnabled(true);
 					loadIconButton.setEnabled(true);
+					licenseActivatedIconButton.setEnabled(true);
+					licenseIconButton.setEnabled(true);
 					publicationActivatedIconButton.setEnabled(true);
 					publicationIconButton.setEnabled(true);
 					institutionActivatedIconButton.setEnabled(true);
@@ -3090,6 +3252,8 @@ public class Gui extends JFrame{
 		startIconButton.setVisible(true);
 		loadActivatedIconButton.setVisible(false);
 		loadIconButton.setVisible(true);
+		licenseActivatedIconButton.setVisible(false);
+		licenseIconButton.setVisible(true);
 		publicationActivatedIconButton.setVisible(false);
 		publicationIconButton.setVisible(true);
 		institutionActivatedIconButton.setVisible(false);
@@ -3113,10 +3277,12 @@ public class Gui extends JFrame{
 
 		startPanel.setVisible(false);
 		loadStandardPanel.setVisible(false);
+		//licensePanel.setVisible(false);
 		institutionPanel.setVisible(false);
 		institutionTempPanel.setVisible(false);
 		institutionRestrictionPanel.setVisible(false);
 		publicPanel.setVisible(false);
+		publicLicensePanel.setVisible(false);
 		publicTempPanel.setVisible(false);
 		publicRestrictionPanel.setVisible(false);
 		migrationPanel.setVisible(false);
@@ -3149,7 +3315,7 @@ public class Gui extends JFrame{
 			loadIconButton.setVisible(false);
 		}
 	}
-
+	
 	/**
 	 * Shows the publication for institution panel
 	 */
@@ -3223,6 +3389,29 @@ public class Gui extends JFrame{
 			publicIconButton.setVisible(false);
 		}
 	}
+	
+	/**
+	 * Shows the publication for public license restriction panel 
+	 * 
+	 * @return false if publication for public is deactivated and the section
+	 * can't be entered, otherwise true
+	 */
+	private boolean enterPublicationPublicLicenseSection() {
+
+		if (publicDenyRadioButton.isSelected())
+			return false;
+		else if (!publicLicensePanel.isVisible() && leaveSection()) {
+			publicLicensePanel.setVisible(true);			 
+			publicationActivatedIconButton.setVisible(true);
+			publicationIconButton.setVisible(false);
+			publicActivatedIconButton.setVisible(true);
+			publicIconButton.setVisible(false);
+			licenseActivatedIconButton.setVisible(true);
+			licenseIconButton.setVisible(false);
+		}
+
+		return true;
+	}
 
 	/**
 	 * Shows the publication for public temp restriction panel 
@@ -3246,6 +3435,8 @@ public class Gui extends JFrame{
 
 		return true;
 	}
+	
+	
 
 	/**
 	 * Shows the publication for public restrictions panel
@@ -3405,6 +3596,13 @@ public class Gui extends JFrame{
 		publicRights.setVideoDuration(contractSettings.getDuration(publicVideoDurationDropDown.getSelectedIndex()));
 		contractRights.setConversionCondition((String) migrationDropDown.getSelectedItem());
 		contractRights.setDdbExclusion(!publicDDBCheckBox.isSelected());
+		
+		if(premisLicenseRadioButton.isSelected()){
+			contractRights.setCclincense((CCLicense) licenseDropDown.getSelectedItem());
+		}
+		else if(metadataLicenseRadioButton.isSelected()){
+			contractRights.setCclincense(null);
+		}
 	}
 
 	/**
@@ -3688,13 +3886,9 @@ public class Gui extends JFrame{
 		if (publicRights.getAllowPublication()) {
 			publicDDBArea.setEnabled(true);
 			publicDDBCheckBox.setEnabled(true);
-			// TODO BEG
-			licenceDropDown.setEnabled(true);
 		} else {
 			publicDDBArea.setEnabled(false);
 			publicDDBCheckBox.setEnabled(false);
-			// TODO BEG
-			licenceDropDown.setEnabled(false);
 		}
 		
 		publicNoTempRestrictionRadioButton.setSelected(true);
@@ -3726,6 +3920,20 @@ public class Gui extends JFrame{
 
 		migrationDropDown.setSelectedItem(Utilities.translateConversionCondition(contractRights.getConversionCondition()));
 		publicDDBCheckBox.setSelected(!contractRights.getDdbExclusion());
+
+		if(contractRights.getCclincense()!=null){
+			licenseDropDown.setEditable(true);
+			licenseDropDown.setEnabled(true);
+			licenseTextField.setVisible(true);
+			licenseDropDown.setSelectedItem(contractRights.getCclincense());
+			premisLicenseRadioButton.setSelected(true);
+		}else{	
+			licenseDropDown.setEditable(false);
+			licenseDropDown.setEnabled(false);
+			licenseTextField.setVisible(false);
+			licenseDropDown.setSelectedItem(0);
+			metadataLicenseRadioButton.setSelected(true);
+		}
 	}
 	
 	/**
@@ -3809,7 +4017,11 @@ public class Gui extends JFrame{
 			settingsOverview += "Nein\n";
 		
 		settingsOverview += "\nMigrationsbedingung: " + (String) migrationDropDown.getSelectedItem();
-			
+		if(premisLicenseRadioButton.isSelected()){
+			settingsOverview += "\nLizenzangaben: Im SIP-Builder festgelegt : " +  licenseDropDown.getSelectedItem().toString();
+		}else if(metadataLicenseRadioButton.isSelected()){
+			settingsOverview += "\nLizenzangaben: Aus den Metadaten übernehmen " ;
+		}
 		return settingsOverview;
 	}
 

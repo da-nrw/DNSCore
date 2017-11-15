@@ -42,6 +42,7 @@ import org.xml.sax.XMLReader;
 
 import de.uzk.hki.da.metadata.PremisXmlReaderNodeFactory;
 import de.uzk.hki.da.utils.C;
+import nu.xom.Attribute;
 import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Element;
@@ -379,6 +380,18 @@ public class ObjectPremisXmlReader{
 			
 			Element ddbExclusionEl = rightsExtEl.getFirstChildElement("DDBexclusion", C.CONTRACT_NS);
 			object.setDdbExclusion(ddbExclusionEl != null);
+			
+			Element licenseEl = rightsExtEl.getFirstChildElement("publicationLicense", C.CONTRACT_NS);
+			if(licenseEl!=null){
+				PremisLicense pl=new PremisLicense();
+				Attribute link=licenseEl.getAttribute("href");
+				pl.setHref(link!=null?link.getValue().trim():"");
+				Attribute displayLabel=licenseEl.getAttribute("displayLabel");
+				pl.setDisplayLabel(displayLabel!=null?displayLabel.getValue().trim():"");
+				pl.setText(licenseEl.getValue()!=null?licenseEl.getValue().trim():"");
+				logger.debug("Recognized PremisLicense: " + pl);
+				right.setPremisLicense(pl);
+			}
 			
 			Elements publicationRightEls = rightsExtEl
 					.getChildElements("publicationRight", C.CONTRACT_NS);

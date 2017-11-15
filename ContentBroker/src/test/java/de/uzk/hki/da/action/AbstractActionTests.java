@@ -32,8 +32,13 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -91,13 +96,14 @@ public class AbstractActionTests {
 		
 		job = new Job(); job.setStatus(startStatus);
 		action.setJob(job);
-		User c = new User(); c.setShort_name("TEST"); c.setEmailAddress("noreply");
+		User c = new User(); c.setShort_name("TEST");c.setUsername(c.getShort_name()); c.setEmailAddress("noreply");
 		object = new Object();
 		object.setIdentifier("ID");
 		object.setContractor(c);
 		object.getPackages().add(pkg);
 		job.setObject(object);
 		action.setObject(object);
+		action.setTestContractors(new HashSet<String>(Arrays.asList(c.getShort_name())));
 		action.setJmsMessageServiceHandler(ams);
 		action.setStartStatus(startStatus);
 		action.setEndStatus(endStatus);
@@ -131,6 +137,40 @@ public class AbstractActionTests {
 		
 		verify(mockSession,times(0)).update(action.getJob());
 		verify(mockSession,times(1)).delete(action.getJob());
+	}
+	
+	@Test
+	public void canIgnoreLicenseValidation(){
+		DeleteObjectAction action = new DeleteObjectAction();
+		action.setSession(mockSession);
+		setCommonProperties(action, "190", "200");
+		
+		
+		User noTestUser = new User(); noTestUser.setShort_name("NOTEST"); noTestUser.setUsername(noTestUser.getShort_name());noTestUser.setEmailAddress("noreply");
+		User testUser =action.getObject().getContractor();
+		
+
+		//not testuser and validation DEactivated in preservationsystem
+		action.getPreservationSystem().setLicenseValidationFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_NO);
+		action.getObject().setContractor(noTestUser);
+		//Assert.assertEquals(false,action.canIgnoreLicenseValidation());
+		Assert.assertEquals(true,action.canIgnoreLicenseValidation()); //disabled to have real posiibility to deactivate license validation 
+		
+		
+		//testuser and validation DEactivated in preservationsystem
+		action.getPreservationSystem().setLicenseValidationFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_NO);
+		action.getObject().setContractor(testUser);
+		Assert.assertEquals(true,action.canIgnoreLicenseValidation());
+		
+		//not testuser and validation activated in preservationsystem
+		action.getPreservationSystem().setLicenseValidationFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_YES);
+		action.getObject().setContractor(noTestUser);
+		Assert.assertEquals(false,action.canIgnoreLicenseValidation());
+		
+		//testuser and validation activated in preservationsystem
+		action.getPreservationSystem().setLicenseValidationFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_YES);
+		action.getObject().setContractor(testUser);
+		Assert.assertEquals(false,action.canIgnoreLicenseValidation());
 	}
 	
 	@Test

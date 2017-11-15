@@ -29,6 +29,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Arrays;
 import java.util.Properties;
 
 import javax.swing.JFrame;
@@ -93,7 +94,7 @@ public class SIPBuilder {
 			confFolderPath = "conf";
 			dataFolderPath = "data";
 		}
-	    
+	    System.out.println("ConfFolderPath:"+confFolderPath);
 	    if (args.length == 0)
 	    	startGUIMode(confFolderPath, dataFolderPath);
 	    else
@@ -136,13 +137,25 @@ public class SIPBuilder {
     private static void startCLIMode(String confFolderPath, String dataFolderPath, String[] args) {
     
     	Cli cli = new Cli(confFolderPath, dataFolderPath, args);
-    	int exitCode = cli.start();
+    	int exitCode = 0;
+    	/**
+    	 * Hidden Developer Feature: Ergänzung älterer SIPs um eine default Lizenzangabe in Premis.
+    	 */
+    	if(false && Arrays.asList(args).contains("-onlyAddLicense")){
+    		//Only to add a default license to existing SIP(e.g. old TestSIPs)
+    		//StartSipBuilder.sh -onlyAddLicense -source=".../OLDSIPFILE.tgz" -destination=".../DIRECTORYForLicensedSIPs/"
+    		exitCode = cli.startAppendLicense();
+    	}else
+    		exitCode = cli.start();
     	
+    	   	
     	if (exitCode < 0)
     		exitCode = 0;
     	
     	System.exit(exitCode);
     }
+
+	
 
 	public static Properties getProperties() {
 		return properties;

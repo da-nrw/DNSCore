@@ -27,7 +27,8 @@ public class UserException extends RuntimeException {
 		INVALID_METADATA_FILE,
 		DELTA_RECIEVED_BEFORE_ARCHIVED,
 		VIRUS_DETECTED,
-		INVALID_USER_FILE_FORMAT
+		INVALID_USER_FILE_FORMAT,
+		INVALID_LICENSE_DATA
 	};
 	
 	private static final long serialVersionUID = -6346016039624940492L;

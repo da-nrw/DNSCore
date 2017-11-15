@@ -103,5 +103,9 @@ public class ContractRightsTest {
 		
 		assertEquals(ContractRights.ConversionCondition.NOTIFY, rights.getConversionCondition());
 		assertFalse(rights.getDdbExclusion());
+		assertTrue("Lizenz sollte nciht NULL sein",rights.getCclincense()!=null);
+		assertEquals("https://creativecommons.org/licenses/by-sa/4.0/",rights.getCclincense().getHref());
+		assertEquals("CC-BY-SA-Lizenz (v4.0)",rights.getCclincense().getDisplayLabel());
+		assertEquals("CC v4.0 International Lizenz: Namensnennung - Weitergabe unter gleichen Bedingungen",rights.getCclincense().getText());
 	}
 }

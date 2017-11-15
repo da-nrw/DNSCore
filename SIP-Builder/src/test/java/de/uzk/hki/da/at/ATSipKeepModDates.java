@@ -72,7 +72,7 @@ public class ATSipKeepModDates {
 			
 		File unpackedSip = new File("target/atTargetDir/"+ sip);
 
-		String cmd = "./SipBuilder-Unix.sh -source=\""+sourceDir.getAbsolutePath()
+		String cmd = "./SipBuilder-Unix.sh -rights=\""+ATWorkingDirectory.CONTRACT_RIGHT_LICENSED.getAbsolutePath()+"\" -source=\""+sourceDir.getAbsolutePath()
 				+"/\" -destination=\""+targetDir.getAbsolutePath()
 				+"/\" -workspace=\""
 				+workDir.getAbsolutePath()

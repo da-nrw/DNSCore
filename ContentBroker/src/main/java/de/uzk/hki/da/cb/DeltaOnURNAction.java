@@ -38,8 +38,6 @@ import de.uzk.hki.da.utils.StringUtilities;
 public class DeltaOnURNAction extends AbstractAction {
 
 	private int timeOut = 20000;
-
-	private static final String PREMIS_XML = "premis.xml";
 	private FileFormatFacade fileFormatFacade;
 
 	@Override
@@ -50,7 +48,7 @@ public class DeltaOnURNAction extends AbstractAction {
 	public void checkPreconditions() {
 		File file = premisFile();
 		if (!file.exists()) {
-			throw new PreconditionsNotMetException("Must exist: " + PREMIS_XML);
+			throw new PreconditionsNotMetException("Must exist: " + C.PREMIS_XML);
 		}
 	}
 
@@ -230,7 +228,7 @@ public class DeltaOnURNAction extends AbstractAction {
 	}
 
 	private File premisFile() {
-		File file = Path.make(wa.dataPath(), PREMIS_XML).toFile();
+		File file = Path.make(wa.dataPath(), C.PREMIS_XML).toFile();
 		return file;
 	}
 

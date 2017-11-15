@@ -114,6 +114,7 @@
         <property name="userExceptionManager" ref="userExceptionManager" />
         <property name="jmsMessageServiceHandler" ref="jmsMessageServiceHandler"/>
         <property name="fileFormatFacade" ref="fileFormatFacade" />
+        <property name="testContractors" ref="testContractors" />
     </bean>
     
    <bean id="registerObjectService" class="de.uzk.hki.da.core.RegisterObjectService" init-method="init" >

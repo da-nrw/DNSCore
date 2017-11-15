@@ -3,7 +3,8 @@
 	xmlns:mods="http://www.loc.gov/mods/v3" exclude-result-prefixes="mods"
 	xmlns:dc="http://purl.org/dc/elements/1.1/"
 	xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:xlink="http://www.w3.org/1999/xlink">
 
 	<xsl:output method="xml" indent="yes"/>
 	
@@ -306,7 +307,7 @@
 
 	<xsl:template match="mods:accessCondition">
 		<dc:rights>
-			<xsl:value-of select="."/>
+			 <xsl:value-of select="@href" />
 		</dc:rights>
 	</xsl:template>
 

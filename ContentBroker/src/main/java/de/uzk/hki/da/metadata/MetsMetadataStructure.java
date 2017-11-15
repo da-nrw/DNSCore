@@ -40,17 +40,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
 /**
  * @author Polina Gubaidullina
+ * @author Eugen Trebunski
  */
 
 public class MetsMetadataStructure extends MetadataStructure {
 
 	/** The logger. */
-	public Logger logger = LoggerFactory
+	public static Logger logger = LoggerFactory
 			.getLogger(MetsMetadataStructure.class);
 	
 	private File metsFile;
@@ -132,8 +134,7 @@ public class MetsMetadataStructure extends MetadataStructure {
 	
 //	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::  REPLACEMENTS  :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-	public void makeReplacementsInMetsFile(File metsFile, String currentHref, String targetHref, String mimetype, String loctype) throws IOException, JDOMException {
-		File targetMetsFile = metsFile;
+	public void makeReplacementsHrefInMetsFile(File targetMetsFile, String currentHref, String targetHref, String mimetype, String loctype) throws IOException, JDOMException {
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();	
 		logger.debug(":::"+workPath+":::"+targetMetsFile.getPath());
 		FileInputStream fileInputStream = new FileInputStream(Path.makeFile(workPath,targetMetsFile.getPath()));
@@ -153,13 +154,57 @@ public class MetsMetadataStructure extends MetadataStructure {
 				setLoctype(fileElement, loctype);
 			}
 		}
-		XMLOutputter outputter = new XMLOutputter();
-		outputter.setFormat(Format.getPrettyFormat());
-		outputter.output(metsDoc, new FileWriter(Path.makeFile(workPath,targetMetsFile.getPath())));
 
 		fileInputStream.close();
 		bomInputStream.close();
 		reader.close();
+		
+		writeDocumentToFile(metsDoc,Path.makeFile(workPath,targetMetsFile.getPath()));
+	}
+	
+	/**
+	 * Append to each dmdSec in a Mets-File one accessCondition-Element and save it.
+	 * 
+	 * @param targetMetsFile
+	 * @param licenseHref
+	 * @param displayLabel
+	 * @param text
+	 * @throws IOException
+	 * @throws JDOMException
+	 */
+	public void appendAccessCondition(File targetMetsFile, String licenseHref, String displayLabel, String text) throws IOException, JDOMException {
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();	
+		
+		FileInputStream fileInputStream = new FileInputStream(Path.makeFile(workPath,targetMetsFile.getPath()));
+		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
+		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
+		InputSource is = new InputSource(reader);
+		is.setEncoding("UTF-8");
+		Document metsDoc = builder.build(is);
+		
+		List<Element> dmdSections= metsDoc.getRootElement().getChildren("dmdSec", C.METS_NS);
+		
+		for (int i=0; i<dmdSections.size(); i++) { 
+			Element newAccessConditionE=MetsParser.generateAccessCondition(licenseHref,displayLabel,text);
+			logger.debug("Append to Mets new LicenseElement: "+newAccessConditionE.toString());
+			Element dmdSecElement = (Element) dmdSections.get(i);
+			Element modsXmlData = MetsParser.getModsXmlData(dmdSecElement);
+			modsXmlData.addContent(newAccessConditionE);
+		}
+		fileInputStream.close();
+		bomInputStream.close();
+		reader.close();
+		
+		writeDocumentToFile(metsDoc,Path.makeFile(workPath,targetMetsFile.getPath()));
+	}
+	
+	private void writeDocumentToFile(Document metsDoc,File metsFile) throws IOException{
+		logger.debug("Write Mets Document : "+metsFile.getAbsolutePath());
+		XMLOutputter outputter = new XMLOutputter();
+		outputter.setFormat(Format.getPrettyFormat());
+		FileWriter fw=new FileWriter(metsFile);
+		outputter.output(metsDoc,fw);
+		fw.close();
 	}
 
 //	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::   VALIDATION   :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
