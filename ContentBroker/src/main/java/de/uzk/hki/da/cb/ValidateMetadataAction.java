@@ -138,7 +138,7 @@ public class ValidateMetadataAction extends AbstractAction {
 
 		if (wantPublication && !(detectedPackageType.equals(C.CB_PACKAGETYPE_LIDO)||detectedPackageType.equals(C.CB_PACKAGETYPE_METS)) )
 			throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
-					"Publikation ist nur mithilfe von METS- oder LIDO-Metadaten erlaubt.","Publikation ist nur mithilfe von METS- oder LIDO-Metadaten erlaubt.");
+					"Lizenzenverarbeitung mit dem Typ: "+o.getPackage_type()+" ist (noch) nicht möglich.","Lizenzenverarbeitung mit dem Typ: "+o.getPackage_type()+" ist (noch) nicht möglich.");
 
 		if (premisObject.getRights().getPremisLicense() != null)
 			hasPremisLicense = true;
@@ -209,8 +209,8 @@ public class ValidateMetadataAction extends AbstractAction {
 					new URL(licenseLidoFile.getHref());
 				}catch(MalformedURLException e){
 					throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
-							"Invalide Lizenzangaben in LIDO-Metadaten: accessCondition-Element hat ein ungueltiges href-Attribut("+e.getMessage()+")",
-							"Invalide Lizenzangaben in LIDO-Metadaten: accessCondition-Element hat ein ungueltiges href-Attribut("+licenseLidoFile.getHref()+")");
+							"Invalide Lizenzangaben in LIDO-Metadaten: conceptID-Element hat ein ungueltiges URI-Inhalt("+e.getMessage()+")",
+							"Invalide Lizenzangaben in LIDO-Metadaten: conceptID-Element hat ein ungueltiges URI-Inhalt("+licenseLidoFile.getHref()+")");
 				}
 			}
 			
