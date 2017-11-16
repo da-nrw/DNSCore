@@ -429,7 +429,7 @@ public class SIPFactory {
 					return Feedback.INVALID_LICENSE_DATA_IN_METADATA;
 				else
 					metsLicenseBool = true;
-			}else if (false &&metadataFileWithType.containsValue(C.CB_PACKAGETYPE_LIDO)) {
+			}else if (metadataFileWithType.containsValue(C.CB_PACKAGETYPE_LIDO)) {
 				ArrayList<File> lidoFiles = new ArrayList<File>();
 
 				ArrayList<LidoLicense> licenseLidoFile = new ArrayList<LidoLicense>();
@@ -456,8 +456,8 @@ public class SIPFactory {
 		}
 		//activate to be able to create non licensed test sips
 		//publicationBool=false;
-		premisLicenseBool=false;
-		publicationBool=false;
+		//premisLicenseBool=false;
+		//publicationBool=false;
 		if(premisLicenseBool && (metsLicenseBool || lidoLicenseBool)){
 			return Feedback.DUPLICATE_LICENSE_DATA;
 		}
