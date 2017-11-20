@@ -172,7 +172,13 @@ public class ValidateMetadataAction extends AbstractAction {
 					licensePublicMetsFile=mp.getLicenseForWholeMets();
 					hasPublicMetsLicense=(licensePublicMetsFile!=null);
 				}else{
-					licenseMetsFile=mp.getLicenseForWholeMets();
+					try{
+						licenseMetsFile=mp.getLicenseForWholeMets();
+					}catch(Exception e){
+						logger.error(e.getMessage());
+						if(!o.getContractor().isUsePublicMets())
+							throw e;
+					}
 					hasMetsLicense=(licenseMetsFile!=null);
 				}
 			}
