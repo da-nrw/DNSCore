@@ -250,7 +250,7 @@ public class LidoParser {
 		if(licenseAl.get(0)==null) //all licenses are null
 			return null;
 		if(!licenseAl.get(0).equals(licenseAl.get(licenseAl.size()-1))) //first and last element have to be same in sorted array
-			throw new RuntimeException("LIDO-Metadata contains different licenses e.g.:"+licenseAl.get(licenseAl.size()-1)+" "+licenseAl.get(0));
+			throw new RuntimeException("LIDO-Metadata contains different licenses("+licenseAl.size()+") e.g.:"+licenseAl.get(licenseAl.size()-1)+" "+licenseAl.get(0));
 		
 		return licenseAl.get(0);
 	}
