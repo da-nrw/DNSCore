@@ -167,6 +167,7 @@ public class ValidateMetadataAction extends AbstractAction {
 			for (DAFile f : metsFiles) {//over all mets-files (max 2), amount checked by previous actions
 				SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 				MetsParser mp = new MetsParser(builder.build(wa.toFile(f).getAbsolutePath()));
+				logger.debug("Check license in mets file: "+f.getRelative_path());
 				if(f.getRelative_path().equalsIgnoreCase(C.PUBLIC_METS)){
 					usePublicMets=true;
 					licensePublicMetsFile=mp.getLicenseForWholeMets();
