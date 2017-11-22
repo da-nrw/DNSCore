@@ -16,6 +16,7 @@ Die URN wird in jedem Fall nur einmal vergeben. Im Falle von Deltas wird die URN
 
 #### Vorbedingungen:
 
+* Dieses Feature kann momentan nur durch testweise deaktivierung der Lizenzüberprüfung getestet werden.
 * Der Nutzer ist unter der Rolle "Contractor" angemeldet/eingeloggt in der "DAWeb"
 
 #### Durchführung:
@@ -98,8 +99,7 @@ Dieses Szenario ist implementiert.
 
 Die Übernahme der URN aus der METS-Metadatei ins DNS-System erfolgt nur bei entsprechender Konfiguration. Aktivierung dieses Features durch use_mets_urn-Flag in der users-Tabelle möglich.
 
-
-Das oberste Objekt im METS-Baum wird durch eine dmdSec mit der entsprechenden ID beschreiben. Innerhalb dieser dmdSec findet man über mets:mdWrap\-{-}mets:xmlData{-}\-mods:identifier type=urn die entsprechende URN. Es wird diejenige dmdSec berücksichtitgt, welche dem obersten hierarchischen Element (siehe structMap) der METS-Datei entspricht.
+Das oberste Objekt im METS-Baum wird durch eine dmdSec mit der entsprechenden ID beschreiben. Innerhalb dieser dmdSec findet man über mets:mdWrap\-{-}mets:xmlData{-}\-mods:identifier type=urn die entsprechende URN. Es wird diejenige dmdSec berücksichtitgt, welche dem obersten hierarchischen Element (siehe structMap) der METS-Datei entspricht. 
 
 Ergänzung (seit 2017.11.15): Die Übernahme der METS-URN ins DNS-System ist per Defaulteinstellung abgestellt und kann auf Wunsch pro Kontraktor individuell an und abgestellt werden (Tabelle: users, Spalte: use_mets_urn). Die METS-URN wird unabhängig von der individuellen Kontrantor-Konfiguration ins EDM und in den Such-Index weitergereicht.
 

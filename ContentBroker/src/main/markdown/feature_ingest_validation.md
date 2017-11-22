@@ -19,6 +19,7 @@ Die hier aufgeführten Unterpunkte gelten für alle Szenarien gleichermaßen.
 
 #### Vorbedingungen:
 
+* Dieses Feature kann momentan nur durch testweise deaktivierung der Lizenzüberprüfung getestet werden.
 * Der Nutzer ist in der DAWeb in der Rolle "Vertragspartner" eingeloggt.
 * Der Nutzer ist mit einem FileShare Client mit dem entsprechenden für ihn reservierten Nutzungsbereich auf dem Verarbeitungsknoten verbunden.
 

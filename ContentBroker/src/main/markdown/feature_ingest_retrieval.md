@@ -16,7 +16,7 @@ Gilt für alle Szenarien:
 * ../../src/test/resources/at/ATUseCaseIngest1.tgz
 
 #### Vorbedingungen:
-
+* Dieses Feature kann momentan nur durch testweise deaktivierung der Lizenzüberprüfung getestet werden.
 * Der Nutzer ist unter der Rolle "Vertragspartner" angemeldet in der "DAWeb"
 
 #### Durchführung:

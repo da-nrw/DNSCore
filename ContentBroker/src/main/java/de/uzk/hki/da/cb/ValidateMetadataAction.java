@@ -94,6 +94,16 @@ public class ValidateMetadataAction extends AbstractAction {
 		
 		logger.info(PACKAGE_TYPE_FOR_OBJECT_DETERMINDED+detectedPackageType);
 		if (detectedPackageType.equals(CB_PACKAGETYPE_NONE)){
+			try {
+				if( !canIgnoreLicenseValidation())
+					checkLicenses();
+			} catch (UserException e) {
+				logger.debug("Fehler bei Lizenzauswertung: "+e.getMessage());
+				throw e;
+			}catch (Exception e) {
+				logger.debug("Fehler bei Lizenzauswertung: "+e.getMessage());
+				throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,"Fehler bei Lizenzenauswertung: "+e,"Fehler bei Lizenzenauswertung");
+			}
 			return true;
 		}
 		
@@ -166,7 +176,13 @@ public class ValidateMetadataAction extends AbstractAction {
 					licensePublicMetsFile=mp.getLicenseForWholeMets();
 					hasPublicMetsLicense=(licensePublicMetsFile!=null);
 				}else{
-					licenseMetsFile=mp.getLicenseForWholeMets();
+					try{
+						licenseMetsFile=mp.getLicenseForWholeMets();
+					}catch(Exception e){
+						logger.error(e.getMessage());
+						if(!o.getContractor().isUsePublicMets())
+							throw e;
+					}
 					hasMetsLicense=(licenseMetsFile!=null);
 				}
 			}

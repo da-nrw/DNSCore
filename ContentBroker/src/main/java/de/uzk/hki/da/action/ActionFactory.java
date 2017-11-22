@@ -106,8 +106,22 @@ public class ActionFactory implements ApplicationContextAware {
 		PreservationSystem psTMP=(PreservationSystem) session.load(PreservationSystem.class, preservationSystem.getId());
 		
 		List lResult= session.createQuery("SELECT ps.licenseValidationFlag FROM PreservationSystem ps where ps.id = :PSID").setParameter("PSID", preservationSystem.getId()).list();
-		if(lResult.size()==1) //some junit cases operate on empty database
-			preservationSystem.setLicenseValidationFlag((Integer)lResult.get(0));	
+		if(lResult.size()==1){ //some junit cases operate on empty database
+			int newLicenseFlag=(Integer)lResult.get(0);
+			if(preservationSystem.getLicenseValidationFlag()!=newLicenseFlag){
+				logger.warn("PreservationSystem::licenseValidationFlag is changed from "+preservationSystem.getLicenseValidationFlag()+" to "+newLicenseFlag);
+				preservationSystem.setLicenseValidationFlag(newLicenseFlag);
+			}
+		}
+		
+		List lResultTestCSN= session.createQuery("SELECT ps.licenseValidationTestCSNFlag FROM PreservationSystem ps where ps.id = :PSID").setParameter("PSID", preservationSystem.getId()).list();
+		if(lResultTestCSN.size()==1){ //some junit cases operate on empty database
+			int newLicenseFlag=(Integer)lResultTestCSN.get(0);
+			if(preservationSystem.getLicenseValidationTestCSNFlag()!=newLicenseFlag){
+				logger.warn("PreservationSystem::licenseValidationTestCSNFlag is changed from "+preservationSystem.getLicenseValidationTestCSNFlag()+" to "+newLicenseFlag);
+				preservationSystem.setLicenseValidationTestCSNFlag(newLicenseFlag);
+			}
+		}
 		session.close();
 	}
 	

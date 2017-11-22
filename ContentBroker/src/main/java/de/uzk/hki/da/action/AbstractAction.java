@@ -565,8 +565,10 @@ public abstract class AbstractAction implements Runnable {
 	 * @return
 	 */
 	public boolean canIgnoreLicenseValidation(){
-		return preservationSystem.getLicenseValidationFlag()==C.PRESERVATIONSYS_LICENSE_VALIDATION_NO ;
-				//&& testContractors.contains(o.getContractor().getShort_name());
+		boolean ignoreForAll=preservationSystem.getLicenseValidationFlag()==C.PRESERVATIONSYS_LICENSE_VALIDATION_NO ;
+		boolean ignoreForTestUser=  preservationSystem.getLicenseValidationTestCSNFlag()==C.PRESERVATIONSYS_LICENSE_VALIDATION_NO;
+		return ignoreForAll || (testContractors.contains(o.getContractor().getShort_name()) && ignoreForTestUser);
+			
 	}
 	
 	
