@@ -2,8 +2,8 @@
 
 Ausgehend von einer NRW-Regelung müssen alle mit Publikationsabsicht eingeliefrten SIP's eine gültige Veröffentlichungslizenz beinhalten.
 
-Die Lizenz kann in den Mets-Metadaten stehen, oder in der Premis-Datei enthalten sein, jedoch nicht an beiden stellen gleichzeitig. Lizenzangabe in der Premis-Datei wird in die METS-Datei des PIP übernommen.
-Anschlisend wird die angegebene Lizenz ins EDM übernommen und bis zum Portal weitergereicht.
+Die Lizenz kann in den METS-Metadaten stehen, oder in der PREMIS-Datei enthalten sein, jedoch nicht an beiden stellen gleichzeitig. Lizenzangabe aus der PREMIS-Datei wird in die METS-Datei des PIP übernommen.
+Anschließend wird die angegebene Lizenz ins EDM übernommen und bis zum Portal weitergereicht.
 
  
 #### Kontext:
