@@ -300,14 +300,14 @@ public class LidoParser {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public LidoLicense getLicenseFromOneRightsType(Element rightsTape) {
-		List<Element> conceptIDs=rightsTape.getChildren("conceptID", C.LIDO_NS);
-		List<Element> terms=rightsTape.getChildren("term", C.LIDO_NS);
+	public LidoLicense getLicenseFromOneRightsType(Element rightsType) {
+		List<Element> conceptIDs=rightsType.getChildren("conceptID", C.LIDO_NS);
+		List<Element> terms=rightsType.getChildren("term", C.LIDO_NS);
 		if(conceptIDs.size()==0 ||terms.size()==0 )
-			throw new RuntimeException("LIDO-Metadata RightsType has no conceptID and/or term "+rightsTape.toString());
+			throw new RuntimeException("LIDO-Metadata RightsType has no conceptID and/or term "+rightsType.toString());
 			//return null;
 		if(conceptIDs.size()!=1 ||terms.size()!=1 )
-			throw new RuntimeException("LIDO-Metadata RightsType has more as one conceptID and/or term: "+rightsTape.getValue());
+			throw new RuntimeException("LIDO-Metadata RightsType has more as one conceptID and/or term: "+rightsType.getValue());
 		
 		String licenseURI=conceptIDs.get(0).getText();
 		String type=conceptIDs.get(0).getAttribute("type",C.LIDO_NS).getValue();
