@@ -171,6 +171,7 @@ public class ValidateMetadataAction extends AbstractAction {
 			for (DAFile f : metsFiles) {//over all mets-files (max 2), amount is checked by previous actions
 				SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 				MetsParser mp = new MetsParser(builder.build(wa.toFile(f).getAbsolutePath()));
+				logger.debug("Check license in mets file: "+f.getRelative_path());
 				if(f.getRelative_path().equalsIgnoreCase(C.PUBLIC_METS)){
 					usePublicMets=true;
 					licensePublicMetsFile=mp.getLicenseForWholeMets();
@@ -180,6 +181,7 @@ public class ValidateMetadataAction extends AbstractAction {
 						licenseMetsFile=mp.getLicenseForWholeMets();
 					}catch(Exception e){
 						logger.error(e.getMessage());
+						//bei public-mets-csn ist eine invalide Angabe der Lizenz in der export_mets akzeptabel
 						if(!o.getContractor().isUsePublicMets())
 							throw e;
 					}

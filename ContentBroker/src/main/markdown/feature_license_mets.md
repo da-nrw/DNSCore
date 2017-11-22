@@ -2,8 +2,9 @@
 
 Ausgehend von einer NRW-Regelung müssen alle mit Publikationsabsicht eingeliefrten SIP's eine gültige Veröffentlichungslizenz beinhalten.
 
-Die Lizenz kann in den Mets-Metadaten stehen, oder in der Premis-Datei enthalten sein, jedoch nicht an beiden stellen gleichzeitig. Lizenzangabe in der Premis-Datei wird in die METS-Datei des PIP übernommen.
-Anschlisend wird die angegebene Lizenz ins EDM übernommen und bis zum Portal weitergereicht.
+Die Lizenz kann in den METS-Datei(accessCondition-Element) stehen, oder in der PREMIS-Datei(publicationLicense-Element) enthalten sein, jedoch nicht an beiden Stellen gleichzeitig. Lizenzangabe aus der PREMIS-Datei wird in die METS-Datei des PIP übernommen.
+Anschließend wird die angegebene Lizenz ins EDM übernommen und bis zum Portal weitergereicht.
+
 
  
 #### Kontext:
@@ -24,10 +25,10 @@ Anschlisend wird die angegebene Lizenz ins EDM übernommen und bis zum Portal we
 
 #### Durchführung:
 
-* Testpacket ins Incoming-Order ablegen und die Verarbeitung starten (Maske "Verarbeitung für abgelieferte SIP starten")
+* Testpaket ins Incoming-Order ablegen und die Verarbeitung starten (Maske "Verarbeitung für abgelieferte SIP starten")
 * Warten auf die Bestätigungsmail.
-* Überprüfen ob die Lizenz in den PIP-Metadaten (METS, EDM, DC) in Fedora enthalten ist.
-* Überprüfen ob die Lizenz bei dem entsp. Objekt im Portal erscheint.
+
 
 #### Akzeptanzkriterien:
-* Die Lizenz ist in den PIP-Metadaten und im Portal bei dem Objekt enthalten
+* Überprüfen ob die Lizenz in den PIP-Metadaten (METS, EDM, DC) in Fedora enthalten ist.
+* Überprüfen ob die Lizenz bei dem entsp. Objekt im Portal erscheint.
