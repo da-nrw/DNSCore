@@ -16,6 +16,7 @@ Die URN wird in jedem Fall nur einmal vergeben. Im Falle von Deltas wird die URN
 
 #### Vorbedingungen:
 
+* Dieses Feature kann momentan nur durch testweise deaktivierung der Lizenzüberprüfung getestet werden.
 * Der Nutzer ist unter der Rolle "Contractor" angemeldet/eingeloggt in der "DAWeb"
 
 #### Durchführung:
@@ -96,7 +97,7 @@ Inhalt premis.xml
 
 Dieses Szenario ist implementiert.
 
-Das oberste Objekt im METS-Baum wird durch eine dmdSec mit der entsprechenden ID beschreiben. Innerhalb dieser dmdSec findet man über mets:mdWrap\-{-}mets:xmlData{-}\-mods:identifier type=urn die entsprechende URN. Es wird diejenige dmdSec berücksichtitgt, welche dem obersten hierarchischen Element (siehe structMap) der METS-Datei entspricht.
+Das oberste Objekt im METS-Baum wird durch eine dmdSec mit der entsprechenden ID beschreiben. Innerhalb dieser dmdSec findet man über mets:mdWrap\-{-}mets:xmlData{-}\-mods:identifier type=urn die entsprechende URN. Es wird diejenige dmdSec berücksichtitgt, welche dem obersten hierarchischen Element (siehe structMap) der METS-Datei entspricht. 
 
 ### Kontext:
 

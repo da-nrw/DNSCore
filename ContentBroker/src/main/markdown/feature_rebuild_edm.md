@@ -18,6 +18,7 @@ wodurch eine neue EDM erzeugt wird (570-Status) und in den ES-Index republiziert
 
 #### Vorbedingungen:
 
+* Dieses Feature kann momentan nur durch testweise deaktivierung der Lizenzüberprüfung getestet werden.
 * Der Tester ist unter der Rolle "Contractor" angemeldet/eingeloggt in der "DAWeb"
 
 #### Durchführung:

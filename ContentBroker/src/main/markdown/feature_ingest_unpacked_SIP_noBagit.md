@@ -17,6 +17,7 @@ in Form eines "Move" auf dem gleichen Filesystem zu bewerkstelligen, wie es bei 
 
 #### Vorbedingungen:
 
+* Dieses Feature kann momentan nur durch testweise deaktivierung der Lizenzüberprüfung getestet werden.
 * Der Nutzer ist mit einem FileShare Client mit dem entsprechenden für ihn reservierten Nutzungsbereich auf dem Verarbeitungsknoten verbunden.
 * Der Nutzer hat Zugriff auf die Ausführung von "Move" - Operationen auf Filesystemebene.
 

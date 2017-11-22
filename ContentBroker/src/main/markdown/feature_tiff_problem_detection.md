@@ -49,6 +49,7 @@ Tag 33437: FNumber Exif Private IFD spec p. 39
 
 #### Vorbedingung:
 
+* Dieses Feature kann momentan nur durch testweise deaktivierung der Lizenzüberprüfung getestet werden.
 * Der User hat einen Account und kann sich unter der Rolle "Contractor" in der DA-WEB&nbsp;eingeloggen.
 
 #### Durchführung:
