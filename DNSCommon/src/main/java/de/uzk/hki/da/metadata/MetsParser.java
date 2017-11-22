@@ -98,7 +98,7 @@ public class MetsParser{
 		if(licenseAl.get(0)==null) //all licenses are null
 			return null;
 		if(!licenseAl.get(0).equals(licenseAl.get(licenseAl.size()-1))) //first and last element have to be same in sorted array
-			throw new RuntimeException("METS contains different licenses e.g.:"+licenseAl.get(licenseAl.size()-1)+" "+licenseAl.get(0));
+			throw new RuntimeException("METS contains different licenses("+licenseAl.size()+") e.g.:"+licenseAl.get(licenseAl.size()-1)+" "+licenseAl.get(0));
 		
 		return licenseAl.get(0);
 	}
@@ -115,8 +115,12 @@ public class MetsParser{
 		List<Element> accessCondition = new ArrayList<Element>();
 		try {
 			accessCondition = getModsXmlData(dmdSec).getChildren("accessCondition", C.MODS_NS);
-			if(accessCondition.size()>1)
-				throw new RuntimeException("dmdSec contains multiple licenses, unsuported");
+		} catch (Exception e) {
+			logger.debug("No accessCondition element found! "+e.getMessage());
+		}
+		if(accessCondition.size()>1)
+			throw new RuntimeException("dmdSec contains multiple licenses (accessCondition-Elements), unsuported");
+		try {
 			if(accessCondition.size()==1){
 				metsLicense=new MetsLicense();
 				metsLicense.setText(accessCondition.get(0).getValue());
@@ -124,10 +128,8 @@ public class MetsParser{
 				metsLicense.setType(accessCondition.get(0).getAttributeValue("type"));
 				metsLicense.setDisplayLabel(accessCondition.get(0).getAttributeValue("displayLabel"));
 			}
-				
-			
 		} catch (Exception e) {
-			logger.debug("No accessCondition element found!");
+			logger.debug("No valid accessCondition element found! "+e.getMessage());
 		}
 		
 		return metsLicense;

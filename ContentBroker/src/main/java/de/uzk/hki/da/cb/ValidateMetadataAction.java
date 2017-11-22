@@ -176,6 +176,7 @@ public class ValidateMetadataAction extends AbstractAction {
 						licenseMetsFile=mp.getLicenseForWholeMets();
 					}catch(Exception e){
 						logger.error(e.getMessage());
+						//bei public-mets-csn ist eine invalide Angabe der Lizenz in der export_mets akzeptabel
 						if(!o.getContractor().isUsePublicMets())
 							throw e;
 					}
