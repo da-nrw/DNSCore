@@ -153,12 +153,7 @@ Technical Contact : Rodolphe Bailly - rbailly@cite-musique.fr
 							<xsl:sequence select="fn:string(.)"/>
 						</dc:title>
 					</xsl:for-each>
-					
-					
-					
-					
-					
-					
+
 					
 					<xsl:for-each select="$var2_administrativeMetadata/ns0:resourceWrap/ns0:resourceSet/ns0:rightsResource/ns0:rightsType/ns0:conceptID">
 						<xsl:variable name="var213_right" as="node()?" select="@xml:lang"/>
@@ -169,10 +164,8 @@ Technical Contact : Rodolphe Bailly - rbailly@cite-musique.fr
 							<xsl:sequence select="fn:string(.)"/>
 						</dc:rights>
 					</xsl:for-each>
-					
-					
-					
-				<!--	
+						
+				<!--	licenses from lido to edm
 					
 				<xsl:for-each select="$var2_administrativeMetadata/ns0:resourceWrap/ns0:resourceSet">
 					<edm:WebResource>

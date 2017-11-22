@@ -93,7 +93,7 @@ public class LidoParser {
 					.getChild("eventSet", C.LIDO_NS).getChild("event", C.LIDO_NS).getChild("eventDate", C.LIDO_NS)
 					.getChildren();
 		} catch (Exception e) {
-			// logger.debug("No eventDate element found!");
+			 logger.debug("No eventDate element found!");
 		}
 		for (Element e : eventDateChildren) {
 			String date = "";
@@ -140,14 +140,14 @@ public class LidoParser {
 						.getChild("eventWrap", C.LIDO_NS).getChild("eventSet", C.LIDO_NS).getChild("event", C.LIDO_NS)
 						.getChild("eventPlace", C.LIDO_NS).getChild("place", C.LIDO_NS).getChildren();
 			} catch (Exception e) {
-				// logger.error("No place element found!");
+				 logger.error("No place element found!");
 			}
 			for (Element e : placeElementChildren) {
 				if (e.getName().equals("namePlaceSet")) {
 					try {
 						places.add(e.getChild("appellationValue", C.LIDO_NS).getValue());
 					} catch (Exception e2) {
-						// logger.error("No appellationValue found!");
+						 logger.error("No appellationValue found!");
 					}
 				}
 			}

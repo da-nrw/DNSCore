@@ -341,7 +341,6 @@ public class ATIngestLicensedMetsSip extends AcceptanceTest {
 		List<Element> providetCho = edmDoc1.getRootElement().getChildren("ProvidedCHO", C.EDM_NS);
 		assertTrue(providetCho.size()==1);
 		for(Element pcho : providetCho) {
-			//assertTrue(pcho.getChild("rights", C.DC_NS).getValue().equals(license.getHref()));
 			assertTrue(license==null? pcho.getChild("rights", C.DC_NS)==null : pcho.getChild("rights", C.DC_NS).getValue().equals(license.getHref()));
 		}
 		
@@ -351,7 +350,6 @@ public class ATIngestLicensedMetsSip extends AcceptanceTest {
 		assertEquals(1,jsonObj.getInt("total"));
 		
 		jsonObj = jsonObj.getJSONArray("hits").getJSONObject(0);
-		//assertTrue(jsonObj.getString("_id").contains("Jh-Dussel"));
 		jsonObj = jsonObj.getJSONObject("_source");
 		jsonObj = jsonObj.getJSONObject("edm:aggregatedCHO");
 		 try{

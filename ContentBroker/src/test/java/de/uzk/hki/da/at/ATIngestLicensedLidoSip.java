@@ -220,7 +220,6 @@ public class ATIngestLicensedLidoSip extends AcceptanceTest {
 		assertEquals(2,jsonObj.getInt("total"));
 		
 		jsonObj = jsonObj.getJSONArray("hits").getJSONObject(0);
-		//assertTrue(jsonObj.getString("_id").contains("Jh-Dussel"));
 		jsonObj = jsonObj.getJSONObject("_source");
 		jsonObj = jsonObj.getJSONObject("edm:aggregatedCHO");
 		assertTrue(jsonObj.getJSONArray("dc:rights").get(0).toString().equals(license.getHref()));

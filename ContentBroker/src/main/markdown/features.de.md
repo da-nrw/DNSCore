@@ -32,3 +32,4 @@
 * Leistungsmerkmal [Archivierung von Multipage-Tiffs](feature_multipagetiff.md) 
 * Leistungsmerkmal [Starten der Neuanlage der EDM-Daten und des ElasticSearch-Suchindexes](feature_rebuild_edm.md) 
 * Leistungsmerkmal [Verarbeiten der Lizenzen für METS-SIP](feature_license_mets.md)
+* Leistungsmerkmal [Verarbeiten der Lizenzen für LIDO-SIP](feature_license_lido.md)
