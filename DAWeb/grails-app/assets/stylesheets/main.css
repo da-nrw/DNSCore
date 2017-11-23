@@ -38,7 +38,8 @@ html * {
 
 body {
 	background: #ffffff;
-	color: #51194b;
+	/*color: #51194b;*/
+	color: #1094d4;
 	margin: 0 auto;
 	max-width: 100%;
 	overflow-x: hidden; /* prevents box-shadow causing a horizontal scrollbar in firefox when viewport < 960px wide */
@@ -48,7 +49,7 @@ body {
 }
 
 #header {
-	background: #7a4274;
+	background: #FFF;
 	background: -moz-linear-gradient(top, #7a4274 0%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7a4274));
 	background: -webkit-linear-gradient(top, #7a4274 0%);
@@ -58,9 +59,22 @@ body {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7a4274', endColorstr='',GradientType=0 );
 }
 
+.trennerHeader {
+	background: #1094d4;
+ 	color: #FFFFFF;
+	clear: both;
+	font-size: 0.8em;
+	margin-top: 1.5em;
+	padding: 1em;
+	min-height: 1em;
+	margin-left: 10px;	
+	margin-right: 10px;	
+}
+
 #header h1 {
-	color: #fff;
-	display: inline;
+	color: #FFF;
+	text-align: center;
+	font-weight: bold;
 }
 
 #header-menu {
@@ -164,13 +178,17 @@ img {
 }
 
 .footer {
-	background: #7a4274;
-	color: #FFFFFF;
+	/*background: #7a4274;*/
+	background: #1094d4;
+ 	color: #FFFFFF;
 	clear: both;
 	font-size: 0.8em;
 	margin-top: 1.5em;
 	padding: 1em;
 	min-height: 1em;
+	
+	margin-left: 10px;	
+	margin-right: 10px;	
 }
 
 .footer a {
@@ -526,7 +544,8 @@ th a:link, th a:visited {
 }
 
 th a:hover, th a:focus {
-	color: #51194b;
+	/*color: #51194b;*/
+	color: #1094d4;
 }
 
 th.sortable a {
@@ -603,7 +622,7 @@ th:hover, tr:hover {
 }
 
 .pagination a,
-.pagination .currentStl
+.pagination .currentStl{
 	display: inline-block;
 	margin: 0 0.1em;
 	padding: 0.25em 0.7em;

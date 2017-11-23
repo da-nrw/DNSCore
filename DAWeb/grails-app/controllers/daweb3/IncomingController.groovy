@@ -18,7 +18,7 @@ package daweb3
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 import java.io.File
-
+import grails.converters.JSON
 import grails.util.Environment
 
 /**
@@ -90,17 +90,20 @@ class IncomingController {
 				msg = "Datei existiert bereits ${it}"
 				[msg:msg]
 				
-				redirect(action:"index")
+				redirect(action: "index")
 			}
 			 try {
 				 boolean fileMoved = source.renameTo(target);
-				 if (!fileMoved) msg = "Fehler bei der Erstellung eines Arbeitsauftrages fuer ${it}"
-			 	log.error "Fehler bei der Erstellung der Datei " + target.getAbsolutePath();
+				 if (!fileMoved) {
+					 msg = "Fehler bei der Erstellung eines Arbeitsauftrages fuer ${it}"
+					 log.error "Fehler bei der Erstellung der Datei " + target.getAbsolutePath();
+				 }
+					 
 			} catch (Exception e) {
 				msg = "Exception beim Verschieben der Datei ${it}"
 				log.error "Datei ${it} Exception " + e.printStackTrace()
 			}
-				}
+		}
 		[msg:msg]
 		redirect(action:"index")
 	}
