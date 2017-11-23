@@ -226,6 +226,7 @@ environments:
     localNode:
         id: 1
         userAreaRootPath: /ci/storage/UserArea
+        ingestAreaRootPath: /ci/storage/IngestArea
     logging:
       jul:
         userbridge: true     
@@ -241,11 +242,19 @@ environments:
       urlPrefix: "http://prefix_for_fedora/fedora/objects/"
       
   production:
-     localNode:
-        id: 1
-        userAreaRootPath: /ci/storage/UserArea
-     logging:
+    localNode:
+      id: 1
+      userAreaRootPath: /ci/storage/UserArea
+      ingestAreaRootPath: /ci/storage/IngestArea
+    logging:
       jul:
-        userbridge: true     
-     fedora:
+        userbridge: true   
+    cb:
+      port: 4455
+      presServer: "CB nodename of fedora Server"    
+    irods:
+      server: localnode
+      default_resc: ciWorkingResource
+      zone: c-i
+    fedora:
       urlPrefix: "http://prefix_for_fedora/fedora/objects/"
