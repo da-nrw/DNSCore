@@ -113,7 +113,7 @@ public class C {
 	public static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 	public static final Namespace XLINK_NS = Namespace.getNamespace("xlink","http://www.w3.org/1999/xlink");
 	public static final Namespace MODS_NS = Namespace.getNamespace("http://www.loc.gov/mods/v3");
-	public static final Namespace LIDO_NS = Namespace.getNamespace("http://www.lido-schema.org");
+	public static final Namespace LIDO_NS = Namespace.getNamespace("lido","http://www.lido-schema.org");
 	public static final Namespace ORE_NS = Namespace.getNamespace("http://www.openarchives.org/ore/terms/");
 	public static final Namespace RDF_NS = Namespace.getNamespace("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
 	public static final Namespace EDM_NS = Namespace.getNamespace("http://www.europeana.eu/schemas/edm/");
@@ -183,6 +183,7 @@ public class C {
 	public static final int LICENSEFLAG_PREMIS = 1;
 	public static final int LICENSEFLAG_METS = 2;
 	public static final int LICENSEFLAG_PUBLIC_METS = 3;
+	public static final int LICENSEFLAG_LIDO = 4;
 	public static final int PRESERVATIONSYS_LICENSE_VALIDATION_YES = 1;
 	public static final int PRESERVATIONSYS_LICENSE_VALIDATION_NO = 0;
 	

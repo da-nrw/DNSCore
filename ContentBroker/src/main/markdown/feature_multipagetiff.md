@@ -12,6 +12,7 @@ Ein sogenanntes Multipage-Tiff enthält mehrere Bilder, von denen aber nur das e
 
 #### Vorbedingungen:
 
+* Dieses Feature kann momentan nur durch testweise deaktivierung der Lizenzüberprüfung getestet werden.
 * User ist unter der Rolle "Contractor" angemeldet/eingeloggt in der "DAWeb"
  
 #### Durchführung:

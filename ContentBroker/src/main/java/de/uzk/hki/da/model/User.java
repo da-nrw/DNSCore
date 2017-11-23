@@ -82,6 +82,9 @@ public class User{
 	@Column(name="use_virus_scan", columnDefinition="boolean")
 	private boolean useVirusScan;
 	
+	@Column(name="use_mets_urn", columnDefinition="boolean default false")
+	private boolean useMetsUrn;
+	
 	private String username;
 	private String password;
 	private String description;
@@ -338,4 +341,14 @@ public class User{
 	public void setFriendlyFileExtensions(String friendlyFileExtensions) {
 		this.friendlyFileExtensions = friendlyFileExtensions;
 	}
+
+	public boolean isUseMetsUrn() {
+		return useMetsUrn;
+	}
+
+	public void setUseMetsUrn(boolean useMetsUrn) {
+		this.useMetsUrn = useMetsUrn;
+	}
+	
+	
 }

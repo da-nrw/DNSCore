@@ -15,6 +15,7 @@ Im Fehlerfall wird eine UserException (VIRUS_DETECTED) geworfen, wodurch eine EM
 
 #### Vorbedingung (gilt für alle Szenarien): 
 
+* Dieses Feature kann momentan nur durch testweise deaktivierung der Lizenzüberprüfung getestet werden.
 * Der User hat einen Account und in der Tabelle users in der Spalte use_virus_scan = true für den verwendeten Contractor 
 * Der User hat einen Account und ist unter der Rolle "Contractor" in DA-WEB eingeloggt.
 * Der User hat einen Webshare mit Incoming Ordner, in den er Pakete legen kann. DA-WEB zeigt den Inhalt dieses Ordners in der Maske&nbsp;"Verarbeitung für abgelieferte SIP starten" an.

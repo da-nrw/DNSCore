@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -25,6 +26,7 @@ public class ATReadUrnFromMets extends AcceptanceTest{
 	
 	@BeforeClass
 	public static void setUp() throws IOException {
+		activateMetsUrnForTestCSN(true);
 		ath.putSIPtoIngestArea(origNameMets, "tgz", origNameMets);
 		ath.awaitObjectState(origNameMets,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForDefinedPublishedState(origNameMets);
@@ -36,13 +38,17 @@ public class ATReadUrnFromMets extends AcceptanceTest{
 	
 	@AfterClass
 	public static  void tearDown() throws IOException{
+		activateMetsUrnForTestCSN(false);
 	}
+	
+
 	
 	@Test
 	public void readUrnFromMets() {
 		objectMetsUrn=ath.getObject(origNameMets);
 		assertTrue(objectMetsUrn.getUrn().equals(metsUrn));
 	}
+	
 	
 	@Test
 	public void ignoreUrnInMetsReadPremisUrn() {
