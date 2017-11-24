@@ -90,7 +90,7 @@ public class FetchPIPsActionTest extends ConcreteActionUnitTest {
 	
 	@Test
 	public void noLicenseInPIPs() throws FileNotFoundException, IOException{
-		action.getPreservationSystem().setLicenseValidationFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_YES);
+		action.getPreservationSystem().setLicenseValidationTestCSNFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_YES);
 		
 		// no license -> no public publication
 		action.getObject().setLicense_flag(C.LICENSEFLAG_NO_LICENSE);
@@ -103,7 +103,7 @@ public class FetchPIPsActionTest extends ConcreteActionUnitTest {
 	
 	@Test
 	public void undefinedLicenseInPIPs() throws FileNotFoundException, IOException{
-		action.getPreservationSystem().setLicenseValidationFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_YES);
+		action.getPreservationSystem().setLicenseValidationTestCSNFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_YES);
 		
 		// undefined license -> no public publication
 		action.getObject().setLicense_flag(C.LICENSEFLAG_UNDEFINED);
@@ -116,7 +116,7 @@ public class FetchPIPsActionTest extends ConcreteActionUnitTest {
 	
 	@Test
 	public void metsLicenseInPIPs() throws FileNotFoundException, IOException{
-		action.getPreservationSystem().setLicenseValidationFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_YES);
+		action.getPreservationSystem().setLicenseValidationTestCSNFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_YES);
 		
 		// license ok -> public publication allowed
 		action.getObject().setLicense_flag(C.LICENSEFLAG_METS);

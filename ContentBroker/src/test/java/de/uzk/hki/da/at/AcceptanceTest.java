@@ -259,9 +259,12 @@ public class AcceptanceTest {
 	public static void setLicenseInPreservationSystem(PreservationSystem preservationSystem ,int lflag){
 			Session session = HibernateUtil.openSession();
 			Transaction transaction = session.beginTransaction();
-			preservationSystem = (PreservationSystem) session.get(PreservationSystem.class, 1);
-			preservationSystem.setLicenseValidationFlag(lflag);
-			session.save(preservationSystem);
+			PreservationSystem preservationSystemPersist = (PreservationSystem) session.get(PreservationSystem.class,preservationSystem.getId());
+			//System.out.println("AcceptanceTest::setLicenseInPreservationSystem: "+preservationSystem.getLicenseValidationTestCSNFlag()+" "+lflag);
+			preservationSystemPersist.setLicenseValidationTestCSNFlag(lflag);
+			preservationSystem.setLicenseValidationTestCSNFlag(lflag);
+			session.save(preservationSystemPersist);
+			//session.update(preservationSystem);
 			transaction.commit();
 			session.close();
 	}
@@ -291,6 +294,24 @@ public class AcceptanceTest {
 		setLicenseInPreservationSystem(preservationSystem,C.PRESERVATIONSYS_LICENSE_VALIDATION_NO);
 	}
 	
+	synchronized static protected boolean activateMetsUrnForTestCSN(boolean useMetsURN){
+		Session session = HibernateUtil.openSession();
+		Transaction transaction = session.beginTransaction();
+		Query query = session.createQuery("SELECT u FROM User u where username = '"+testContractor.getUsername()+"'");
+
+		@SuppressWarnings("unchecked")
+		List<User> users = query.list();
+		User testUser = users.get(0);
+		Boolean oldUseMetsUrn = testUser.isUseMetsUrn();
+		testUser.setUseMetsUrn(useMetsURN);
+		session.save(testUser);
+		transaction.commit();
+		session.close();
+
+		return oldUseMetsUrn;
+	
+	}
+	
 	
 
 	@AfterClass
@@ -309,6 +330,7 @@ public class AcceptanceTest {
 	
 
 	private static void cleanStorage(){
+		System.out.println("cleanStorage()");
 		FolderUtils.deleteQuietlySafe(Path.makeFile(localNode.getWorkAreaRootPath(),"work",testContractor.getUsername()));
 		FolderUtils.deleteQuietlySafe(Path.makeFile(localNode.getWorkAreaRootPath(),"repl",testContractor.getUsername()));
 		FolderUtils.deleteQuietlySafe(Path.makeFile(localNode.getIngestAreaRootPath(),testContractor.getUsername()));
@@ -351,6 +373,7 @@ public class AcceptanceTest {
 	}
 	
 	private static void clearDB() {
+		System.out.println("clearDB()");
 		TESTHelper.clearDBOnlyTestUser(testContractor);
 	}
 

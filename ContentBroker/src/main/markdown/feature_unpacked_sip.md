@@ -20,6 +20,7 @@ Gilt für alle Szenarien!
 
 #### Vorbedingungen:
 
+* Dieses Feature kann momentan nur durch testweise deaktivierung der Lizenzüberprüfung getestet werden.
 * Der User kann die Verarbeitung nicht manuell starten,
 sondern nur über die Moveoperation an die interne Ingestschnittstelle des Ordners. 
 

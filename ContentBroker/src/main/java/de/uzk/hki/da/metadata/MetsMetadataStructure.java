@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.io.input.BOMInputStream;
+import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -185,7 +186,7 @@ public class MetsMetadataStructure extends MetadataStructure {
 		List<Element> dmdSections= metsDoc.getRootElement().getChildren("dmdSec", C.METS_NS);
 		
 		for (int i=0; i<dmdSections.size(); i++) { 
-			Element newAccessConditionE=MetsParser.generateAccessCondition(licenseHref,displayLabel,text);
+			Element newAccessConditionE=generateAccessCondition(licenseHref,displayLabel,text);
 			logger.debug("Append to Mets new LicenseElement: "+newAccessConditionE.toString());
 			Element dmdSecElement = (Element) dmdSections.get(i);
 			Element modsXmlData = MetsParser.getModsXmlData(dmdSecElement);
@@ -198,15 +199,25 @@ public class MetsMetadataStructure extends MetadataStructure {
 		writeDocumentToFile(metsDoc,Path.makeFile(workPath,targetMetsFile.getPath()));
 	}
 	
-	private void writeDocumentToFile(Document metsDoc,File metsFile) throws IOException{
-		logger.debug("Write Mets Document : "+metsFile.getAbsolutePath());
-		XMLOutputter outputter = new XMLOutputter();
-		outputter.setFormat(Format.getPrettyFormat());
-		FileWriter fw=new FileWriter(metsFile);
-		outputter.output(metsDoc,fw);
-		fw.close();
+	
+	/**
+	 * Method wraps given attributes into accessCondition-Element and returns it.
+	 * 
+	 * @param href
+	 * @param displayLabel
+	 * @param text
+	 * @return
+	 */
+	public static Element generateAccessCondition(String href, String displayLabel, String text) {
+		Element newAccessCondition=new Element("accessCondition",C.MODS_NS);
+		newAccessCondition.setAttribute("type", "use and reproduction");
+		newAccessCondition.setAttribute(new Attribute("href", href,C.XLINK_NS));
+		newAccessCondition.setAttribute("displayLabel", displayLabel!=null?displayLabel:"");
+		newAccessCondition.addContent(text!=null?text:"");
+		return newAccessCondition;
 	}
-
+	
+	
 //	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::   VALIDATION   :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 	private boolean checkReferencedFiles() {

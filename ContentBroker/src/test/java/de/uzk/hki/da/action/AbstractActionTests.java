@@ -149,26 +149,43 @@ public class AbstractActionTests {
 		User noTestUser = new User(); noTestUser.setShort_name("NOTEST"); noTestUser.setUsername(noTestUser.getShort_name());noTestUser.setEmailAddress("noreply");
 		User testUser =action.getObject().getContractor();
 		
+		//default settings
+		action.getPreservationSystem().setLicenseValidationFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_YES);
+		action.getPreservationSystem().setLicenseValidationTestCSNFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_YES);
+		
 
 		//not testuser and validation DEactivated in preservationsystem
 		action.getPreservationSystem().setLicenseValidationFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_NO);
 		action.getObject().setContractor(noTestUser);
-		//Assert.assertEquals(false,action.canIgnoreLicenseValidation());
-		Assert.assertEquals(true,action.canIgnoreLicenseValidation()); //disabled to have real posiibility to deactivate license validation 
-		
+		Assert.assertEquals(true,action.canIgnoreLicenseValidation()); 
+		action.getPreservationSystem().setLicenseValidationFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_YES); //rollback
 		
 		//testuser and validation DEactivated in preservationsystem
 		action.getPreservationSystem().setLicenseValidationFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_NO);
 		action.getObject().setContractor(testUser);
-		Assert.assertEquals(true,action.canIgnoreLicenseValidation());
+		Assert.assertEquals(true,action.canIgnoreLicenseValidation()); 
+		action.getPreservationSystem().setLicenseValidationFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_YES); //rollback
 		
-		//not testuser and validation activated in preservationsystem
-		action.getPreservationSystem().setLicenseValidationFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_YES);
+		
+		
+		
+		//not testuser and validation DEactivated in preservationsystem only for csn-users
+		action.getPreservationSystem().setLicenseValidationTestCSNFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_NO);
 		action.getObject().setContractor(noTestUser);
 		Assert.assertEquals(false,action.canIgnoreLicenseValidation());
 		
-		//testuser and validation activated in preservationsystem
-		action.getPreservationSystem().setLicenseValidationFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_YES);
+		//testuser and validation DEactivated in preservationsystem only for csn-users
+		action.getPreservationSystem().setLicenseValidationTestCSNFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_NO);
+		action.getObject().setContractor(testUser);
+		Assert.assertEquals(true,action.canIgnoreLicenseValidation());
+		
+		//not testuser and validation activated in preservationsystem only for csn-users
+		action.getPreservationSystem().setLicenseValidationTestCSNFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_YES);
+		action.getObject().setContractor(noTestUser);
+		Assert.assertEquals(false,action.canIgnoreLicenseValidation());
+		
+		//testuser and validation activated in preservationsystem only for csn-users
+		action.getPreservationSystem().setLicenseValidationTestCSNFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_YES);
 		action.getObject().setContractor(testUser);
 		Assert.assertEquals(false,action.canIgnoreLicenseValidation());
 	}

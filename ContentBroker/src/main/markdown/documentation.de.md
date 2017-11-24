@@ -20,7 +20,7 @@ Die gesamte Dokumentation (auch hier nicht explizit verlinkte Texte) findet sich
 
 Die Dokumentation ist Teil des Git-Repository der DNSCore und wird gemeinsam mit der Codebasis versioniert. Auf diese Weise wird der Stand der Dokumentation synchron zum Stand der Codebasis gehalten. Die Links sind, soweit es möglich ist, relativ, damit ein Checkout einer beliebigen Version selbstreferentiell und konsistent ist. Im Falle der Grafiken ist diese Vorgehensweise hinsichtlich der Darstellung in GitHub nicht möglich (wegen der Referenzen auf raw-Dateien). Hier finden sich die Quellen der Grafiken aber immer im ContentBroker/src/main/markdown Verzeichnis wieder.
 
-##Für Anwender##
+## Für Anwender
 
 * Ingest ([deutsch](usage_ingest.de.md))
 * Retrieval ([deutsch](usage_retrieval.de.md))
@@ -29,7 +29,7 @@ Die Dokumentation ist Teil des Git-Repository der DNSCore und wird gemeinsam mit
 * Metadatenverarbeitung ([deutsch](specification_metadata.de.md))
 * Fehlerbehebung ([deutsch](user_troubleshooting.de.md))
 
-##Für Administratoren
+## Für Administratoren
 
 * Fehleranalyse und Fehlerbehebung ([deutsch](administration-troubleshooting.de.md))
 * Formatidentifikation mit DNSCore ([deutsch](operations_format_identification.de.md))
@@ -37,7 +37,7 @@ Die Dokumentation ist Teil des Git-Repository der DNSCore und wird gemeinsam mit
 * Formatmodul ([englisch](format_module.md))
 * 3rd Party Module ([english](3rdPartyTools.md))
 
-###Langzeitarchivierung mit DNSCore verstehen
+### Langzeitarchivierung mit DNSCore verstehen
 
 Hier befinden sich alle Dokus, die Grundkonzepte der Langzeitarchivierung im Kontext des Einsatzes von DNSCore beschreiben.
 
