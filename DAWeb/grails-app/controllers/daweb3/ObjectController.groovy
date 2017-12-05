@@ -21,6 +21,13 @@ package daweb3
  */
 
 
+
+import java.awt.Queue
+
+import org.hibernate.criterion.CriteriaSpecification
+import org.hibernate.sql.JoinType
+
+
 import grails.converters.*
 import grails.core.GrailsApplication
 
@@ -31,6 +38,8 @@ class ObjectController {
 	static QueueUtils qu = new QueueUtils();
 
 	def springSecurityService
+	boolean archivedObjects = false;
+	boolean workingObjects = false;
 
 	def index() {
 		redirect(action: "list", params: params)
@@ -117,141 +126,154 @@ class ObjectController {
 		 }
  	} 
 	 
+	def listAll () {
+		archivedObjects = false;
+		workingObjects = false;
+		redirect(action: "list", params: params)
+	}
+	 
 	def list() {
-		User user = springSecurityService.currentUser
-
-		def contractorList = User.list()
-		def admin = 0;
-		def relativeDir = user.getShortName() + "/outgoing"
-		def filterOn = params.filterOn;
-		if (filterOn==null) filterOn=0
-
-		def baseFolder = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
-		params.max = Math.min(params.max ? params.int('max') : 50, 200)
-
-		if (params.searchContractorName){
-			if(params.searchContractorName=="null"){
-				params.remove("searchContractorName")
-			}
-		}
-		def c1 = Object.createCriteria()
-		def objtsTotalForCont = c1.list() {
-			eq("user.id", user.id)
-			between("object_state", 50,200)
-		}
-		def totalObjs = objtsTotalForCont.size();
+		if (archivedObjects ) {
+			getObjects(100);
+		} else if (workingObjects) {
+			getObjects(50);
+		} else {
 		
-		
-		def c = Object.createCriteria()
-		log.debug(params.toString())
-		
-		def objects = c.list(max: params.max, offset: params.offset ?: 0) {
-			if (params.search) params.search.each { key, value ->
-				if (value!="") filterOn=1
-				like(key, "%" + value + "%")
-			}
-			
-			log.debug("Date as Strings " + params.searchDateStart + " and " + params.searchDateEnd)
-			
-			def ds = params.searchDateStart
-			def de = params.searchDateEnd
-
-			def st = "createdAt"; 
-			String searchDateType = params.searchDateType;
-						
-			if (ds!=null || de!=null ) {
-				if (!ds.equals("0") || !de.equals("0")) {
-					if ( params.searchDateType.equals("null") ) {
-						params.searchDateType = "createdAt"
-					} else {
-						st =  params.searchDateType;
-					}
-				}
-			} else {
-				if ( params.searchDateType.equals("null") ) {
-					params.remove("searchDateType")
+			User user = springSecurityService.currentUser
+	
+			def contractorList = User.list()
+			def admin = 0;
+			def relativeDir = user.getShortName() + "/outgoing"
+			def filterOn = params.filterOn;
+			if (filterOn==null) filterOn=0
+			def objArt = "gesamten"
+	
+			def baseFolder = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
+			params.max = Math.min(params.max ? params.int('max') : 50, 200)
+	
+			if (params.searchContractorName){
+				if(params.searchContractorName=="null"){
+					params.remove("searchContractorName")
 				}
 			}
-			
-			if (ds!=null  && de!=null)  {
-				if (!ds.equals("0") && !de.equals("0")) {
-					filterOn=1
-					log.debug("Objects between " + ds + " and " + de)
-					between(st, ds, de)
-				}
-			}
-			if (ds!=null && de==null ) {
-				if (!ds.equals("0") && de.equals("0")) {
-					filterOn=1
-					log.debug("Objects greater than " + ds)
-					gt(st,ds)
-				}
-			}
-			if (ds==null && de!=null ) {
-				if (ds.equals("0") || !de.equals("0")) {
-					filterOn=1
-					log.debug("Objects lower than " + de)
-					lt(st,de)
-				}
-			}
-
-			if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
-				admin = 1;
-			}
-			if (admin==0) {
-				
+			def c1 = Object.createCriteria()
+			def objectsTotalForCont = c1.list() {
 				eq("user.id", user.id)
+				between("object_state", 50,200)
 			}
-			if (admin==1) {
-				if (params.searchContractorName!=null) {
-					if	( !params.searchContractorName.isEmpty() || params.searchContractorName != "") {
-						filterOn=1
-						createAlias( "user", "c" )
-						eq("c.shortName", params.searchContractorName)
+			def totalObjs = objectsTotalForCont.size();
+			
+			def c = Object.createCriteria()
+			log.debug(params.toString())
+			def objects = c.list(max: params.max, offset: params.offset ?: 0) {
+				if (params.search) params.search.each { key, value ->
+					if (value!="") filterOn=1
+					like(key, "%" + value + "%")
+				}
+				
+				log.debug("Date as Strings " + params.searchDateStart + " and " + params.searchDateEnd)
+				
+				def ds = params.searchDateStart
+				def de = params.searchDateEnd
+	
+				def st = "createdAt"; 
+				String searchDateType = params.searchDateType;
+							
+				if (ds!=null || de!=null ) {
+					if (!ds.equals("0") || !de.equals("0")) {
+						if ( params.searchDateType.equals("null") ) {
+							params.searchDateType = "createdAt"
+						} else {
+							st =  params.searchDateType;
+						}
+					}
+				} else {
+					if ( params.searchDateType.equals("null") ) {
+						params.remove("searchDateType")
 					}
 				}
+				
+				if (ds!=null  && de!=null)  {
+					if (!ds.equals("0") && !de.equals("0")) {
+						filterOn=1
+						log.debug("Objects between " + ds + " and " + de)
+						between(st, ds, de)
+					}
+				}
+				if (ds!=null && de==null ) {
+					if (!ds.equals("0") && de.equals("0")) {
+						filterOn=1
+						log.debug("Objects greater than " + ds)
+						gt(st,ds)
+					}
+				}
+				if (ds==null && de!=null ) {
+					if (ds.equals("0") || !de.equals("0")) {
+						filterOn=1
+						log.debug("Objects lower than " + de)
+						lt(st,de)
+					}
+				}
+	
+				if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+					admin = 1;
+				}
+				if (admin==0) {
+					
+					eq("user.id", user.id)
+				}
+				if (admin==1) {
+					if (params.searchContractorName!=null) {
+						if	( !params.searchContractorName.isEmpty() || params.searchContractorName != "") {
+							filterOn=1
+							createAlias( "user", "c" )
+							eq("c.shortName", params.searchContractorName)
+						}
+					}
+				}
+				between("object_state", 50,200)
+				order(params.sort ?: "id", params.order ?: "desc")
 			}
-			between("object_state", 50,200)
-			order(params.sort ?: "id", params.order ?: "desc")
+			log.debug("Search " + params.search)
+			// workaround: make ALL params accessible for following http-requests
+			def paramsList = params.search?.collectEntries { key, value -> ['search.'+key, value]}
+			if(params.searchContractorName){
+				paramsList.putAt("searchContractorName", params?.searchContractorName)
+			}
+			
+			if (paramsList != null) {
+				paramsList.putAt("searchDateType", params?.searchDateType);
+				paramsList.putAt("searchDateStart", params?.searchDateStart);
+				paramsList.putAt("searchDateEnd", params?.searchDateEnd);
+			}
+			
+			if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+				render(view:"adminList", model:[	objectInstanceList: objects,
+					objectInstanceTotal: objects.getTotalCount(),
+					searchParams: params.search,
+					filterOn: filterOn,
+					paramsList: paramsList,
+					paginate: true,
+					admin: admin,
+					baseFolder: baseFolder,
+					contractorList: contractorList,
+					user: user ,
+					objArt: objArt
+				]);
+			} else render(view:"list", model:[	objectInstanceList: objects,
+					objectInstanceTotal: objects.getTotalCount(),
+					searchParams: params.search,
+					filterOn: filterOn,
+					paramsList: paramsList,
+					paginate: true,
+					admin: 0,
+					totalObjs: totalObjs,
+					baseFolder: baseFolder,
+					contractorList: contractorList,
+					user: user ,
+					objArt: objArt
+				]);
 		}
-		log.debug("Search " + params.search)
-		// workaround: make ALL params accessible for following http-requests
-		def paramsList = params.search?.collectEntries { key, value -> ['search.'+key, value]}
-		if(params.searchContractorName){
-			paramsList.putAt("searchContractorName", params?.searchContractorName)
-		}
-		
-		if (paramsList != null) {
-			paramsList.putAt("searchDateType", params?.searchDateType);
-			paramsList.putAt("searchDateStart", params?.searchDateStart);
-			paramsList.putAt("searchDateEnd", params?.searchDateEnd);
-		}
-		
-		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
-			print ("Objects: " + objects);
-			render(view:"adminList", model:[	objectInstanceList: objects,
-				objectInstanceTotal: objects.getTotalCount(),
-				searchParams: params.search,
-				filterOn: filterOn,
-				paramsList: paramsList,
-				paginate: true,
-				admin: admin,
-				baseFolder: baseFolder,
-				contractorList: contractorList,
-				user: user 
-			]);
-		} else render(view:"list", model:[	objectInstanceList: objects,
-				objectInstanceTotal: objects.getTotalCount(),
-				searchParams: params.search,
-				filterOn: filterOn,
-				paramsList: paramsList,
-				paginate: true,
-				admin: 0,
-				totalObjs: totalObjs,
-				baseFolder: baseFolder,
-				contractorList: contractorList,
-				user: user 
-			]);
 	}
 
 	def show() {
@@ -538,4 +560,353 @@ class ObjectController {
 		[paramsList:paramsList]
 	}	
 	
+	def getObjects(int status) {
+		
+		User user = springSecurityService.currentUser
+		
+		def contractorList = User.list()
+		def admin = 0;
+		def relativeDir = user.getShortName() + "/outgoing"
+		def filterOn = params.filterOn;
+		if (filterOn==null) filterOn=0
+	
+		def objArt = "sich in Bearbeitung befindlichen"
+		if (status == 100) objArt="verarbeiteten"
+		
+		def baseFolder = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
+		params.max = Math.min(params.getObjectsmax ? params.int('max') : status, status)
+	
+		if (params.searchContractorName){
+			if(params.searchContractorName=="null"){
+				params.remove("searchContractorName")
+			}
+		}
+		
+		def c1 = Object.createCriteria()
+		def objectsArchivedForCount = c1.list() {
+			eq("user.id", user.id)
+			eq("object_state", status)
+		}
+		def totalArchivedObjects = objectsArchivedForCount.size();
+		
+		
+		def c = Object.createCriteria() 
+		log.debug(params.toString())
+		
+		if (status == 50) {
+			if ( params.search != null) {
+	 			if (params.search.urn.isEmpty()) {
+					 params.search.remove("urn");
+				 }
+			}
+		}
+		def objects = c.list(max: params.max, offset: params.offset ?: 0) {
+			
+			if (params.search) params.search.each { key, value ->
+				if (value!="") filterOn=1
+				like(key, "%" + value + "%")
+			}
+			
+			log.debug("Date as Strings " + params.searchDateStart + " and " + params.searchDateEnd)
+			
+			def ds = params.searchDateStart
+			def de = params.searchDateEnd
+	
+			def st = "createdAt";
+			String searchDateType = params.searchDateType;
+						
+			if (ds!=null || de!=null ) {
+				if (!ds.equals("0") || !de.equals("0")) {
+					if ( params.searchDateType.equals("null") ) {
+						params.searchDateType = "createdAt"
+					} else {
+						st =  params.searchDateType;
+					}
+				}
+			} else {
+				if ( params.searchDateType.equals("null") ) {
+					params.remove("searchDateType")
+				}
+			}
+			
+			if (ds!=null  && de!=null)  {
+				if (!ds.equals("0") && !de.equals("0")) {
+					filterOn=1
+					log.debug("Objects between " + ds + " and " + de)
+					between(st, ds, de)
+				}
+			}
+			if (ds!=null && de==null ) {
+				if (!ds.equals("0") && de.equals("0")) {
+					filterOn=1
+					log.debug("Objects greater than " + ds)
+					gt(st,ds)
+				}
+			}
+			if (ds==null && de!=null ) {
+				if (ds.equals("0") || !de.equals("0")) {
+					filterOn=1
+					log.debug("Objects lower than " + de)
+					lt(st,de)
+				}
+			}
+	
+			if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+				admin = 1;
+			}
+			if (admin==0) {
+				
+				eq("user.id", user.id)
+			}
+			if (admin==1) {
+				if (params.searchContractorName!=null) {
+					if	( !params.searchContractorName.isEmpty() || params.searchContractorName != "") {
+						filterOn=1
+						createAlias( "user", "c" )
+						eq("c.shortName", params.searchContractorName)
+					}
+				}
+			}
+			eq("object_state", status)
+			order(params.sort ?: "id", params.order ?: "desc")
+		}
+		log.debug("Search " + params.search)
+		// workaround: make ALL params accessible for following http-requests
+		def paramsList = params.search?.collectEntries { key, value -> ['search.'+key, value]}
+		if(params.searchContractorName){
+			paramsList.putAt("searchContractorName", params?.searchContractorName)
+		}
+		
+		if (paramsList != null) {
+			paramsList.putAt("searchDateType", params?.searchDateType);
+			paramsList.putAt("searchDateStart", params?.searchDateStart);
+			paramsList.putAt("searchDateEnd", params?.searchDateEnd);
+		}
+		
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			print ("Objects: " + objects);
+			render(view:"adminList", model:[	objectInstanceList: objects,
+				objectInstanceTotal: objects.getTotalCount(),
+				searchParams: params.search,
+				filterOn: filterOn,
+				paramsList: paramsList,
+				paginate: true,
+				admin: admin,
+				baseFolder: baseFolder,
+				contractorList: contractorList,
+				user: user,
+				objArt: objArt
+			]);
+		} else render(view:"list", model:[	objectInstanceList: objects,
+				objectInstanceTotal: objects.getTotalCount(),
+				searchParams: params.search,
+				filterOn: filterOn,
+				paramsList: paramsList,
+				paginate: true,
+				admin: 0,
+				totalObjs: totalArchivedObjects,
+				baseFolder: baseFolder,
+				contractorList: contractorList,
+				user: user,
+				objArt: objArt
+			]);
+		
+	}
+	
+
+	
+	def archived() {
+		archivedObjects = true;
+		workingObjects = false;
+		getObjects(100);
+	}
+	
+	def working() {
+		archivedObjects = false;
+		workingObjects = true;
+		getObjects(50);
+	}
+	
+//	def error () {
+//		getErrorObjects(50, 4);
+//	}
+//	
+//	private getErrorObjects(int objStatus, int error) {
+//		User user = springSecurityService.currentUser
+//
+//		def contractorList = User.list()
+//		def admin = 0;
+//		def relativeDir = user.getShortName() + "/outgoing"
+//		def filterOn = params.filterOn;
+//		if (filterOn==null) filterOn=0
+//
+//
+//		def baseFolder = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
+//		params.max = Math.min(params.max ? params.int('max') : objStatus, objStatus)
+//
+//		if (params.searchContractorName){
+//			if(params.searchContractorName=="null"){
+//				params.remove("searchContractorName")
+//			}
+//		}
+//
+//		if ( params.search != null) {
+//			if (params.search.urn.isEmpty()) {
+//				params.search.remove("urn");
+//			}
+//	   }
+//		
+//		
+//		def c1 = QueueEntry.createCriteria()
+//		def objectsWorkingForCount = c1.list() {
+//			createAlias('obj', 'o', JoinType.INNER_JOIN.getJoinTypeValue())
+//			eq("o.object_state", objStatus)
+//			like("status", "%" + error)
+//		}
+//
+//		def totalWorkingObjects = objectsWorkingForCount.size()
+//
+//		if (totalWorkingObjects > 0) {
+//
+//			def c = Object.createCriteria()
+//			log.debug(params.toString())
+//			println (" +++++++  params1: " + params.toString() )
+//
+//			def objects = c.list(max: params.max, offset: params.offset ?: 0) {
+//				if (params.search) params.search.each { key, value ->
+//					if (value!="") filterOn=1
+//					like(key, "%" + value + "%")
+//				}
+//
+//				log.debug("Date as Strings " + params.searchDateStart + " and " + params.searchDateEnd)
+//
+//				def ds = params.searchDateStart
+//				def de = params.searchDateEnd
+//
+//				def st = "createdAt";
+//				String searchDateType = params.searchDateType;
+//
+//				if (ds!=null || de!=null ) {
+//					if (!ds.equals("0") || !de.equals("0")) {
+//						if ( params.searchDateType.equals("null") ) {
+//							params.searchDateType = "createdAt"
+//						} else {
+//							st =  params.searchDateType;
+//						}
+//					}
+//				} else {
+//					if ( params.searchDateType.equals("null") ) {
+//						params.remove("searchDateType")
+//					}
+//				}
+//
+//				if (ds!=null  && de!=null)  {
+//					if (!ds.equals("0") && !de.equals("0")) {
+//						filterOn=1
+//						log.debug("Objects between " + ds + " and " + de)
+//						between(st, ds, de)
+//					}
+//				}
+//				if (ds!=null && de==null ) {
+//					if (!ds.equals("0") && de.equals("0")) {
+//						filterOn=1
+//						log.debug("Objects greater than " + ds)
+//						gt(st,ds)
+//					}
+//				}
+//				if (ds==null && de!=null ) {
+//					if (ds.equals("0") || !de.equals("0")) {
+//						filterOn=1
+//						log.debug("Objects lower than " + de)
+//						lt(st,de)
+//					}
+//				}
+//
+//				if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+//					admin = 1;
+//				}
+//				if (admin==0) {
+//
+//					eq("user.id", user.id)
+//				}
+//				if (admin==1) {
+//					if (params.searchContractorName!=null) {
+//						if	( !params.searchContractorName.isEmpty() || params.searchContractorName != "") {
+//							filterOn=1
+//							createAlias( "user", "c" )
+//							eq("c.shortName", params.searchContractorName)
+//						}
+//					}
+//				}
+//				eq("object_state", objStatus)
+//				order(params.sort ?: "id", params.order ?: "desc")
+//			}
+//			log.debug("Search " + params.search)
+//			// workaround: make ALL params accessible for following http-requests
+//			def paramsList = params.search?.collectEntries { key, value -> ['search.'+key, value]}
+//			if(params.searchContractorName){
+//				paramsList.putAt("searchContractorName", params?.searchContractorName)
+//			}
+//
+//			if (paramsList != null) {
+//				paramsList.putAt("searchDateType", params?.searchDateType);
+//				paramsList.putAt("searchDateStart", params?.searchDateStart);
+//				paramsList.putAt("searchDateEnd", params?.searchDateEnd);
+//			}
+//
+//
+//
+//
+//			if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+//				print ("Objects: " + objects);
+//				render(view:"adminList", model:[	objectInstanceList: objects,
+//					objectInstanceTotal: objects.getTotalCount(),
+//					searchParams: params.search,
+//					filterOn: filterOn,
+//					paramsList: paramsList,
+//					paginate: true,
+//					admin: admin,
+//					baseFolder: baseFolder,
+//					contractorList: contractorList,
+//					user: user
+//				]);
+//			} else render(view:"list", model:[	objectInstanceList: objects,
+//					objectInstanceTotal: objects.getTotalCount(),
+//					searchParams: params.search,
+//					filterOn: filterOn,
+//					paramsList: paramsList,
+//					paginate: true,
+//					admin: 0,
+//					totalObjs: totalWorkingObjects,
+//					baseFolder: baseFolder,
+//					contractorList: contractorList,
+//					user: user
+//				]);
+//		} else {
+//			if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+//				render(view:"list", model:[	objectInstanceList: new ArrayList(),
+//					objectInstanceTotal: 0,
+//					searchParams: params.search,
+//					filterOn: filterOn,
+//					paginate: true,
+//					admin: admin,
+//					baseFolder: baseFolder,
+//					contractorList: contractorList,
+//					user: user
+//				]);
+//			} else render(view:"list", model:[	objectInstanceList: new ArrayList(),
+//					objectInstanceTotal: 0,
+//					searchParams: params.search,
+//					filterOn: filterOn,
+//					paginate: true,
+//					admin: 0,
+//					totalObjs: 0,
+//					baseFolder: baseFolder,
+//					contractorList: contractorList,
+//					user: user
+//				]);
+//		}
+//
+//
+//	}
 }

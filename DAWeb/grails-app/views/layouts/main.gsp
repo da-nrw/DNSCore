@@ -9,13 +9,15 @@
 	    <meta name="viewport" content="width=device-width, initial-scale=1"/>
 		<asset:link rel="icon" href="apple-touch-icon.png" type="image/x-ico" />
 		<asset:link rel="icon" href="apple-touch-icon-retina.png" sizes="114x114" type="image/x-ico" />
+		<asset:link rel="shortcut icon" href="/icons/favicon.ico" type="image/x-icon" />
 		<asset:stylesheet src="main.css"/>
 		<asset:stylesheet src="mobile.css"/>
 		<g:layoutHead/>
 		<asset:javascript src="jquery-2.2.0.min.js"/>
 		<asset:javascript src="jquery.periodicalupdater.js"/>
 		<asset:javascript src="jquery.ui.messages.min.js"/>
-	 	<asset:stylesheet src="jquery-ui.js"/> 
+		<asset:javascript src="jquery-ui.js"/>
+	 	<asset:stylesheet src="jquery-ui.css"/> 
 		<asset:javascript src="application.js"/>
 		<asset:stylesheet src="application.css"/>
 	    <g:layoutHead/>
@@ -25,7 +27,7 @@
 			<g:link controller="home"> 
 				<asset:image src="DA_NRW268x80.png" alt="DANRW" />
 	        </g:link>
-				<asset:image src="DANRW_P_OBEN.png" alt="DANRW" align="right" width="268" height="80" /> 
+			<asset:image src="DANRW_P_OBEN.png" alt="DANRW" align="right" width="268" height="80" /> 
 	        <div class="trennerHeader" role="banner">
 	         	<h1>Web Konsole</h1>
 	        </div>
@@ -71,7 +73,7 @@
 		
 		<div id="page-body">
 			<g:layoutBody/> 
-		</div>
+		</div> 
 		<div align="center">
 			<div class="footer" id="page-footer" role="contentinfo">
 				<g:meta name="app.name"/> 

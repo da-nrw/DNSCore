@@ -23,6 +23,14 @@
 		<div id="page-body">
 			<a href="#list-object" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 			<h1>eingelieferte AIP's</h1>
+			<div class="nav" role="navigation">
+				<ul>
+					<li><a class="list" href="${createLink(controller: 'object', action: 'listAll')}">alle Objekte</a></li>
+					<li><a class="list" href="${createLink(controller: 'object', action: 'archived')}">archivierte Objekte</a></li>
+					<li><a class="list" href="${createLink(controller: 'object', action: 'working')}">Objekte in Verarbeitung</a></li>
+				<!--  	<li><a class="list" href="${createLink(controller: 'object', action: 'error')}">fehlerhafte Objekte</a></li> --> 
+				</ul>
+			</div><br>
 			<button class="accordion">Filter
 				<g:if test="${params.search}"><br>
 		    		<g:if test="${!params.search?.origName.isEmpty()}">
@@ -173,7 +181,7 @@
 				</script>
 	        </div>
 			<div id="list-object" class="content scaffold-list" role="main">
-				<h1>Ihre DA-NRW Objekte</h1>
+				<h1>Ihre ${objArt} DA-NRW Objekte (${objectInstanceList.size()} Treffer)</h1>
 				<g:if test="${flash.message}">
 					<div class="message" role="status">${flash.message}</div>
 				</g:if>

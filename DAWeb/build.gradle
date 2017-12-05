@@ -19,6 +19,7 @@ version "0.1"
 group "DAWeb"
 
 apply plugin:"eclipse"
+apply plugin:"maven"
 apply plugin:"idea"
 apply plugin:"war"
 apply plugin:"org.grails.grails-web"

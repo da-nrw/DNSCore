@@ -20,18 +20,13 @@
 			      
     		  </script>
 			  
-			  
-			<g:if test="${admin==0}" /> 
-  			<g:else>  
-  				lastPage: getLastPage()
-  				<g:if test= "${getLastPage() != '-1'}" >
-					<div class="nav" role="navigation">
-						<ul>
-							<li><a class="listl" href="${createLink(uri: '/cbtalk/index')}"><g:message message="zurück zur Administrationsseite"/></a></li>
-						</ul>
-					</div>
-				</g:if>
-  			</g:else> 
+			  <div class="nav" role="navigation">
+				<ul>
+					<li><a class="listl" href="${createLink(uri: '/cbtalk/index')}"><g:message message="zurück zur Administrationsseite"/></a></li>
+					<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
+				</ul>
+			</div>
+
 			<div id="list-conversionPolicies" class="content scaffold-list" role="main">
 				<h1><g:message code="default.list.label" args="[entityName]" /></h1>
 				<g:if test="${flash.message}">

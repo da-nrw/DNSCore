@@ -24,6 +24,7 @@ package daweb3
 */
 import java.text.SimpleDateFormat;
 import org.hibernate.criterion.CriteriaSpecification
+import org.hibernate.sql.JoinType
 
 class QueueEntry {
 	
@@ -67,8 +68,8 @@ class QueueEntry {
 	
 	static List getAllQueueEntriesForShortNameAndUrn(String shortName, String urn) {
 		return createCriteria().list  {
-			createAlias('obj', 'o', CriteriaSpecification.INNER_JOIN)
-			createAlias('o.user', 'user', CriteriaSpecification.INNER_JOIN)
+			createAlias('obj', 'o', JoinType.INNER_JOIN.getJoinTypeValue()) //CriteriaSpecification.INNER_JOIN)
+			createAlias('o.user', 'user', JoinType.INNER_JOIN.getJoinTypeValue) // CriteriaSpecification.INNER_JOIN)
 			eq("user.shortName", shortName)
 			eq("o.urn", urn)
 		}

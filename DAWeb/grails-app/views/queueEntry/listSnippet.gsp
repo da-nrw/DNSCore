@@ -40,8 +40,8 @@
 	<tbody>
 		<g:each in="${queueEntryInstanceList}" status="i" var="queueEntryInstance">
 			<g:set var="statusType" value="status-type-${queueEntryInstance.status[-1]}" />
-			<tr class="${ ((i % 2) == 0 ? 'odd' : 'even') + ' ' + statusType}">
-
+			<!-- <tr class="${ ((i % 2) == 0 ? 'odd' : 'even') + ' ' + statusType}"> -->
+				<tr class="${ ((i % 2) == 0 ? 'odd' : 'even')}">
 				<td>
 					<g:link action="show" id="${queueEntryInstance.id}"><g:if test="${queueEntryInstance.obj != null}">
 						${fieldValue(bean: queueEntryInstance.obj, field: "identifier")}

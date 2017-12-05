@@ -24,12 +24,12 @@
 		<g:message code="conversionPolicies.source_format.label" default="Quellformat" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="source_format" value="${conversionPoliciesInstance?.source_format}"/></div>
+	<g:textField name="source_format" value="${conversionPoliciesInstance?.source_format}"/>
+</div>
 
 <div class="fieldcontain ${hasErrors(bean: conversionPoliciesInstance, field: 'presentation', 'error')} ">
 	<label for="accountExpired">
 		<g:message code="conversionPolicies.presentation.label" default="Presentation Repository Policy" />
-		
 	</label>
 	<g:checkBox name="presentation" value="${conversionPoliciesInstance?.presentation}" />
 </div>

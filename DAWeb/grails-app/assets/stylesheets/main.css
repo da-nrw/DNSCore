@@ -38,8 +38,9 @@ html * {
 
 body {
 	background: #ffffff;
-	/*color: #51194b;*/
-	color: #1094d4;
+	/*color: #51194b;
+	color:#082BAA; */
+	color: #095377;
 	margin: 0 auto;
 	max-width: 100%;
 	overflow-x: hidden; /* prevents box-shadow causing a horizontal scrollbar in firefox when viewport < 960px wide */
@@ -61,7 +62,7 @@ body {
 
 .trennerHeader {
 	background: #1094d4;
- 	color: #FFFFFF;
+ 	/*color: #FFFFFF;*/
 	clear: both;
 	font-size: 0.8em;
 	margin-top: 1.5em;
@@ -72,7 +73,7 @@ body {
 }
 
 #header h1 {
-	color: #FFF;
+	color: #D4B110;
 	text-align: center;
 	font-weight: bold;
 }
@@ -155,7 +156,6 @@ img {
 #page-body {
 	padding: 1em;
 	margin-left: 100px;
-	margin-top: float;
 	
 }
 
@@ -180,7 +180,7 @@ img {
 .footer {
 	/*background: #7a4274;*/
 	background: #1094d4;
- 	color: #FFFFFF;
+ 	color:  #D4B110; /*#FFFFFF;*/
 	clear: both;
 	font-size: 0.8em;
 	margin-top: 1.5em;
@@ -725,7 +725,7 @@ a.skip {
 .vertical-menu {
     width: 200px;
     height: float;
-    overflow-y: auto;
+ /*   overflow-y: auto;*/
     float:left;
     margin-bottom: 10px;
 }
@@ -738,7 +738,7 @@ a.skip {
     text-decoration: none;
 }
 
-.vertical-menu li:hover {
+.vertical-menu li:hover li:ACTIVE{
     background-color: #ccc;
 }
 

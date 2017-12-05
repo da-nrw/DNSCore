@@ -48,7 +48,7 @@ grails:
               - {pattern: '/**/js/**', access: ['permitAll']}
               - {pattern: '/**/css/**', access: ['permitAll']}
               - {pattern: '/**/images/**', access: ['permitAll']}
-              - {pattern: '/**/favicon.ico', access: ['permitAll']}
+              - {pattern: '/**/icons/favicon.ico', access: ['permitAll']}
               - {pattern: '/login/**', access: ['permitAll']}
               - {pattern: '/logout/**', access: ['permitAll']}
               - {pattern: '/contractor/**', access: ['permitAll']}
@@ -72,6 +72,7 @@ grails:
               - {pattern: '/systemEvent/**', access: ['ROLE_CONTRACTOR']}
                
 ---
+# nur für den Start aus der IDE #
 server:
   port: 8095
 ---
