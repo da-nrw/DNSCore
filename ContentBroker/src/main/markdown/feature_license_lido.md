@@ -12,7 +12,7 @@ Beispielhafte Verschachtelung der Lizenz in einem LIDO-XML-Bereich:
   <lido:administrativeMetadata>
     <lido:resourceWrap>
       <lido:resourceSet>
-	    <lido:rightsResource>
+	<lido:rightsResource>
           <lido:rightsType>
             <lido:conceptID lido:type="URI">http://creativecommons.org/licenses/by/3.0/de/</lido:conceptID>
             <lido:term lido:pref="preferred" lido:addedSearchTerm="no" xml:lang="de">CC BY 3.0 DE</lido:term>
