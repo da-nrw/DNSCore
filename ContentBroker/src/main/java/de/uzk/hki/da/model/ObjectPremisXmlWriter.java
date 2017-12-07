@@ -742,7 +742,7 @@ public class ObjectPremisXmlWriter {
 		}
 		if (right.getPremisLicense()!=null){
 			PremisLicense pl=right.getPremisLicense();
-			createOpenElement("publicationLicense ", 4);
+			createOpenElement("publicationLicense", 4);
 		  	createAttribute("href", pl.getHref());
 		  	createAttribute("displayLabel", pl.getDisplayLabel());
 		  	//createTextElement("allowed", String.valueOf(license), 2);
