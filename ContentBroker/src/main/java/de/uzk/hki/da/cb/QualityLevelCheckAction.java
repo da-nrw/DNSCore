@@ -161,9 +161,9 @@ public class QualityLevelCheckAction extends AbstractAction {
 		int requiredIngestQualityPremis=getRequiredIngestLevelFromPremis();
 		if(requiredIngestQualityPremis>0){
 			if(qualityLevel<requiredIngestQualityPremis)
-				throw new UserException(UserExceptionId.QUALITY_BELOW_REQUIRED, "Current Quality("+qualityLevel+") is below "+requiredIngestQualityPremis +" ");
+				throw new UserException(UserExceptionId.QUALITY_BELOW_REQUIRED, "Current QualityLevel("+qualityLevel+") is below required "+requiredIngestQualityPremis +" ");
 		}else if(qualityLevel< this.o.getContractor().getRequiredIngestQuality())
-			throw new UserException(UserExceptionId.QUALITY_BELOW_REQUIRED, "Current Quality("+qualityLevel+") is below "+this.o.getContractor().getRequiredIngestQuality() +" ");
+			throw new UserException(UserExceptionId.QUALITY_BELOW_REQUIRED, "Current QualityLevell("+qualityLevel+") is below required "+this.o.getContractor().getRequiredIngestQuality() +" ");
 		
 		return true;
 

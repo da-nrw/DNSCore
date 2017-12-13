@@ -114,7 +114,7 @@ public class CreatePremisAction extends AbstractAction {
 		newPREMISObject.setContractor(o.getContractor());
 		newPREMISObject.setDdbExclusion(o.ddbExcluded());
 		newPREMISObject.setLicense_flag(o.getLicense_flag());
-		
+		newPREMISObject.setMinimalIngestQLevel(o.getMinimalIngestQLevel());
 	
 		Object sipPREMISObject = parsePremisFile(
 				new File(Path.make(wa.dataPath(),o.getNameOfLatestBRep(),PREMIS).toString().replace("+b", "+a")));

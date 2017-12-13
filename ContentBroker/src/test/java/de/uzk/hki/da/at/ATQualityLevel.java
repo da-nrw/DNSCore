@@ -22,6 +22,9 @@ public class ATQualityLevel extends AcceptanceTest {
 
 	private static final String SOURCE_NAME_5 = "ATQualityLevel_5";
 	
+	private static final String SOURCE_NAME_MINIMAL_4 = "ATMinimalQualityLevel4";
+	private static final String SOURCE_NAME_MINIMAL_5 = "ATMinimalQualityLevel5";
+	
 	private static final String ORIG_NAME_DELTA = "ATQualityDeltaTest";
 
 	private static final String ORIG_NAME = "ATQualityTest";
@@ -33,12 +36,43 @@ public class ATQualityLevel extends AcceptanceTest {
 	@Before
 	public void setUp() throws IOException {
 	}
+	
+	@Test
+	public void testMinimalQualityLevel4OK() throws IOException {
+		
+		ath.putSIPtoIngestArea(SOURCE_NAME_MINIMAL_4, C.FILE_EXTENSION_TGZ, SOURCE_NAME_MINIMAL_4);
+		ath.awaitObjectState(SOURCE_NAME_MINIMAL_4, Object.ObjectStatus.InWorkflow);
+ 		//ath.waitForObjectPublishedState(ORIG_NAME,0);
+ 		ath.awaitObjectState(SOURCE_NAME_MINIMAL_4, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+ 		
+ 		Object obbi = ath.getObject(SOURCE_NAME_MINIMAL_4);
 
+		idiName = obbi.getIdentifier();
+ 		assertEquals("Object Level: "+obbi.getQuality_flag(),obbi.getQuality_flag(),4);
+ 		assertEquals("Package count: "+obbi.getPackages().size(),obbi.getPackages().size(),1);
+	}
+	
+	@Test
+	public void testMinimalQualityLevel5Fail() throws IOException, InterruptedException {
+		
+		ath.putSIPtoIngestArea(SOURCE_NAME_MINIMAL_5, C.FILE_EXTENSION_TGZ, SOURCE_NAME_MINIMAL_5);
+		ath.awaitObjectState(SOURCE_NAME_MINIMAL_5, Object.ObjectStatus.InWorkflow);
+		ath.waitForJobToBeInErrorStatus(SOURCE_NAME_MINIMAL_5, C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
+		
+		assertEquals(ath.getJob(SOURCE_NAME_MINIMAL_5).getStatus(),"274");
+ 		
+ 		Object obbi = ath.getObject(SOURCE_NAME_MINIMAL_5);
+
+		idiName = obbi.getIdentifier();
+ 		assertEquals("Object Level: "+obbi.getQuality_flag(),obbi.getQuality_flag(),4);
+	}
+	
+/*
 	@Test
 	public void testOnlyNonSupported() throws IOException {
 		ath.putSIPtoIngestArea(SOURCE_NAME_4_OnlyNonSupported, C.FILE_EXTENSION_TGZ, ORIG_NAME);
 		ath.awaitObjectState(ORIG_NAME, Object.ObjectStatus.InWorkflow);
- 		ath.waitForObjectPublishedState(ORIG_NAME,0);
+ 		//ath.waitForObjectPublishedState(ORIG_NAME,0);
  		ath.awaitObjectState(ORIG_NAME, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
  		
  		Object obbi = ath.getObject(ORIG_NAME);
@@ -47,8 +81,8 @@ public class ATQualityLevel extends AcceptanceTest {
  		assertEquals("Object Level: "+obbi.getQuality_flag(),obbi.getQuality_flag(),4);
  		assertEquals("Package count: "+obbi.getPackages().size(),obbi.getPackages().size(),1);
 	}
-	
-	/*
+*/	
+	/*----
 	@Test
 	public void testOnlyNonSupported() throws IOException {
 		ath.putSIPtoIngestArea(SOURCE_NAME_4_OnlyNonSupported, C.FILE_EXTENSION_TGZ, ORIG_NAME);
@@ -65,6 +99,7 @@ public class ATQualityLevel extends AcceptanceTest {
 	
 	*/
 	
+	/*
 	@Test
 	public void deltaTest() throws IOException {
 		System.out.println(">>>deltaTest(): 1");
@@ -151,7 +186,7 @@ public class ATQualityLevel extends AcceptanceTest {
  		
 		System.out.println(">>>deltaTest(): 12");
 	}
-
+*/
 	@After
 	public void tearDown() {
 		System.out.println(">>>deltaTest(): 13");
