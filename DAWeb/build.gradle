@@ -15,12 +15,15 @@ buildscript {
     }
 }
 
-version "0.1"
 group "DAWeb"
+version "0.1"
 
 apply plugin:"eclipse"
+apply plugin:"java"
 apply plugin:"maven"
-apply plugin:"idea"
+apply plugin:"maven-publish"
+//apply from: 'https://raw.githubusercontent.com/...'
+//apply plugin:"idea"
 apply plugin:"war"
 apply plugin:"org.grails.grails-web"
 apply plugin:"org.grails.grails-gsp"

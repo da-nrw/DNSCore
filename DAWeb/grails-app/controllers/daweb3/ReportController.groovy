@@ -73,7 +73,7 @@ class ReportController {
 			se.setType("CreateStatusReportEvent");
 			se.setUser(user);
 			se.setNode(node);
-			se.save();
+			se.save flush:true
 			return redirect(action: "index", params: [msg: "Auftrag zur Erstellung eines Statusreports erfolgreich erstellt!"])
 	}
 	
@@ -84,7 +84,7 @@ class ReportController {
 		se.setType("CreateRetrievalRequestsEvent");
 		se.setUser(user);
 		se.setNode(node);
-		se.save();
+		se.save flush:true
 		return redirect(action: "index", params: [msg: "Auftrag zum massenhaften Retrieval erfolgreich erstellt!"])
 		
 	} 
