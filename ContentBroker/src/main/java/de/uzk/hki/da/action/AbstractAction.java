@@ -156,6 +156,7 @@ public abstract class AbstractAction implements Runnable {
 		
 			upateObjectAndJob(n, o, j, DELETEOBJECT, kILLATEXIT, getToCreate());
 		} catch (Exception e) {
+			logger.error( "Exception: ",e);
 			resetModifiers();
 			execAndPostProcessRollback(o, j);
 			try {
