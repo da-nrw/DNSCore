@@ -51,13 +51,9 @@ body {
 
 #header {
 	background: #FFF;
-	background: -moz-linear-gradient(top, #7a4274 0%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7a4274));
-	background: -webkit-linear-gradient(top, #7a4274 0%);
-	background: -o-linear-gradient(top, #7a4274 0%);
-	background: -ms-linear-gradient(top, #7a4274 0%);
-	background: linear-gradient(top, #7a4274 0%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7a4274', endColorstr='',GradientType=0 );
+	margin-left: 10px;	
+	margin-right: 10px;	
+	margin-top: 10px;
 }
 
 .trennerHeader {
@@ -68,8 +64,6 @@ body {
 	margin-top: 1.5em;
 	padding: 1em;
 	min-height: 1em;
-	margin-left: 10px;	
-	margin-right: 10px;	
 }
 
 #header h1 {

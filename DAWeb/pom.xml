@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-<!--   <groupId>DAWeb</groupId> -->
   <groupId>DNS</groupId>
   <artifactId>daweb3</artifactId>
   <version>0.1-SNAPSHOT</version>
-<!--   <packaging>grails-app</packaging> -->
    <packaging>war</packaging>
   <name>daweb3</name>
   <parent>
@@ -21,7 +19,7 @@
   	<failOnMissingWebXml>false</failOnMissingWebXml>
   </properties>
   <dependencies>
-  
+
     <dependency> 
 	  <groupId>org.grails</groupId> 
 	  <artifactId>grails-dependencies</artifactId> 
@@ -226,8 +224,18 @@
                     <task>war</task>
                 </tasks>
             </configuration>
-  			<executions>
+  			<executions> 
+  				<execution>
+                	<id>1</id>
+<!--                     You can bind this to any phase you like -->
+                    <phase>clean</phase>
+                    <goals>
+<!--                         goal must be "invoke" 
+                        <goal>invoke</goal>-->
+                    </goals>
+                </execution>
                 <execution>
+                	<id>2</id>
 <!--                     You can bind this to any phase you like -->
                     <phase>compile</phase>
                     <goals>
