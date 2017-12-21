@@ -109,6 +109,7 @@ public class ATMetadataTitleAndRoleTerm extends AcceptanceTest {
 		jsonObj = jsonObj.getJSONArray("hits").getJSONObject(0);
 		assertTrue(jsonObj.getString("_id").contains("Jh-Dussel"));
 		jsonObj = jsonObj.getJSONObject("_source");
+		assertTrue(jsonObj.getString(C.INDEX_INSTITUTION_TYPE).contains("Bibliothek"));
 		jsonObj = jsonObj.getJSONObject("edm:aggregatedCHO");
 		
 		JSONArray jsonContributorArray=jsonObj.getJSONArray("dc:contributor");
