@@ -6,12 +6,12 @@
   <version>0.1-SNAPSHOT</version>
    <packaging>war</packaging>
   <name>daweb3</name>
-  <parent>
-  	<groupId>de.uzk.hki.da</groupId>
-  	<artifactId>DNSCore</artifactId>
-  	<version>1.0-SNAPSHOT</version>
-  	<relativePath>../pom.xml</relativePath>
-  </parent>
+<!--   <parent> -->
+<!--   	<groupId>de.uzk.hki.da</groupId> -->
+<!--   	<artifactId>DNSCore</artifactId> -->
+<!--   	<version>1.0-SNAPSHOT</version> -->
+<!--   	<relativePath>../pom.xml</relativePath> -->
+<!--   </parent> -->
   <description>daweb3</description>
   <properties>
   	<grails.version>3.2.11</grails.version>
@@ -211,39 +211,44 @@
     </dependencies>
   </dependencyManagement>
   
-  
+ 
   <build>
+  	<pluginManagement>
+	  	<plugins>
+	  		<plugin>
+	  			<groupId>org.fortasoft</groupId> 
+  			<artifactId>gradle-maven-plugin</artifactId>
+  			<version>1.0.8</version>
+	  		</plugin>
+	  	</plugins>
+  	</pluginManagement>
   	<plugins>
   		<plugin>
   			<groupId>org.fortasoft</groupId>
   			<artifactId>gradle-maven-plugin</artifactId>
-  			<version>1.0.8</version>
-  			 <configuration>
+  			<configuration>
                 <tasks>
                     <!-- this would effectively call "gradle war" -->
+                    <task>clean</task>
                     <task>war</task>
                 </tasks>
             </configuration>
   			<executions> 
   				<execution>
-                	<id>1</id>
-<!--                     You can bind this to any phase you like -->
+                	<id>cleanup</id>
                     <phase>clean</phase>
                     <goals>
-<!--                         goal must be "invoke" 
-                        <goal>invoke</goal>-->
-                    </goals>
-                </execution>
-                <execution>
-                	<id>2</id>
-<!--                     You can bind this to any phase you like -->
-                    <phase>compile</phase>
-                    <goals>
-<!--                         goal must be "invoke" -->
                         <goal>invoke</goal>
                     </goals>
                 </execution>
-            </executions>
+                <execution>
+                	<id>compileIt</id>
+                    <phase>compile</phase>
+                    <goals>
+                        <goal>invoke</goal>
+                    </goals>
+                </execution> 
+              </executions> 
   		</plugin>
   	</plugins>
   </build>
