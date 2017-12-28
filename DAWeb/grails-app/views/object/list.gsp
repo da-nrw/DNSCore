@@ -27,10 +27,24 @@
 			<h1>eingelieferte AIP's</h1>
 			<div class="nav" role="navigation">
 				<ul>
-					<li><a class="list" href="${createLink(controller: 'object', action: 'listAll')}">alle Objekte</a></li>
-					<li><a class="list" href="${createLink(controller: 'object', action: 'archived')}">archivierte Objekte</a></li>
-					<li><a class="list" href="${createLink(controller: 'object', action: 'working')}">Objekte in Verarbeitung</a></li>
-				<!-- 	<li><a class="list" href="${createLink(controller: 'object', action: 'error')}">fehlerhafte Objekte</a></li> -->
+					<g:if test="${objArt=='gesamten'}">
+						<li id="aktuell"><g:link url="[action: 'listAll', controller: 'object']">alle Objekte</g:link></li>
+					</g:if>
+					<g:else>
+						<li><g:link url="[action: 'listAll', controller: 'object']">alle Objekte</g:link></li>
+					</g:else>
+					<g:if test="${objArt=='verarbeiteten'}">
+						<li id="aktuell"><g:link url="[controller: 'object', action: 'archived']">archivierte Objekte</g:link></li>
+					</g:if>
+					<g:else>
+						<li><g:link url="[controller: 'object', action: 'archived']">archivierte Objekte</g:link></li>
+					</g:else>
+					<g:if test="${objArt=='sich in Bearbeitung befindlichen'}">
+						<li id="aktuell"><g:link url="[controller: 'object', action: 'working']">Objekte in Verarbeitung</g:link></li>
+					</g:if>
+					<g:else>
+						<li><g:link url="[controller: 'object', action: 'working']">Objekte in Verarbeitung</g:link></li>
+					</g:else>
 				</ul>
 			</div><br>
 			<button class="accordion">Filter

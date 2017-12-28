@@ -93,7 +93,8 @@
 		<g:set var="showRetryAll" value="false" />
 		<g:each in="${queueEntryInstanceList}" status="i" var="queueEntryInstance">
 			<g:set var="statusType" value="status-type-${queueEntryInstance.status[-1]}" />
-			<tr class="${ ((i % 2) == 0 ? 'odd' : 'even') + ' ' + statusType}">
+				<tr class="${ ((i % 2) == 0 ? 'odd' : 'even')}">
+<!-- 			<tr class="${ ((i % 2) == 0 ? 'odd' : 'even') + ' ' + statusType}"> -->
 				<g:if test="${params.search?.status != null && params.search?.status.length()==3}">
 					<td><g:checkBox name="modifyIds" value="${queueEntryInstance.getId()}" checked="false"  onClick="deselect(this)"/></td>
 				</g:if>

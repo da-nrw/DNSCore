@@ -172,7 +172,6 @@ img {
 }
 
 .footer {
-	/*background: #7a4274;*/
 	background: #1094d4;
  	color:  #D4B110; /*#FFFFFF;*/
 	clear: both;
@@ -226,26 +225,27 @@ img {
 	padding: 0;
 }
 
-.nav a {
-	color: #666666;
+.nav a:link {
+	color: #3a3838;
 	display: block;
 	padding: 0.25em 0.7em;
 	text-decoration: none;
-	   -moz-border-radius: 0.3em;
-	-webkit-border-radius: 0.3em;
 	        border-radius: 0.3em;
 }
 
-.nav a:active, .nav a:visited {
-	color: #666666;
+.nav a.visited, a:hover {
+	background-color:  #1094d4;
+	color: #3a3838; /*#ffffff;*/
 }
 
-.nav a:focus, .nav a:hover {
-	background-color: #1094d4;
-	color: #ffffff;
-	outline: none;
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
+.nav a.active {
+	color: #80005c;
 }
+
+.nav #aktuell a{
+	background-color: #13d3f1;
+}
+
 
 #items div {  } 
 #items ul {  list-style-type: none;  margin: 0;  padding: 0;}  
@@ -612,7 +612,6 @@ th:hover, tr:hover {
 	        box-shadow: 0 0 3px 1px #AAAAAA;
 	background-color: #EFEFEF;
 	width: 100%;
-	
 }
 
 .pagination a,
@@ -628,7 +627,7 @@ th:hover, tr:hover {
 
 .pagination a:hover, .pagination a:focus,
 .pagination .currentStep {
-	background-color: #7a4274;
+	background-color: #1094d4;
 	color: #ffffff;
 	outline: none;
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
@@ -673,7 +672,7 @@ th:hover, tr:hover {
 
 .buttons input:hover, .buttons input:focus,
 .buttons a:hover, .buttons a:focus {
-	background-color: #7a4274;
+	background-color:  #1094d4; 
 	color: #ffffff;
 	outline: none;
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
@@ -716,15 +715,14 @@ a.skip {
 	left: -9999px;
 }
 
-.vertical-menu {
+#vertical-menu {
     width: 200px;
     height: float;
- /*   overflow-y: auto;*/
     float:left;
     margin-bottom: 10px;
 }
 
-.vertical-menu li {
+#vertical-menu li {
     background-color: #eee;
     color: black;
     display: block;
@@ -732,12 +730,10 @@ a.skip {
     text-decoration: none;
 }
 
-.vertical-menu li:hover li:ACTIVE{
-    background-color: #ccc;
+#vertical-menu li a:hover{
+    background-color: #1094d4; 
 }
 
-.vertical-menu li.active {
-    background-color: #4CAF50;
-    color: white;
+#vertical-menu #aktuell a{
+    background-color: #13d3f1; 
 }
-

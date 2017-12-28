@@ -48,24 +48,111 @@
 		<g:elseif test="${controllerName=='logout'}"/>
 		<g:else>
 			<div class="welcome">
-				<h1>Willkommen  ${user} ! <g:if test="${admin==1}"> (Administrator)</g:if> </h1>
-	  			<div class="vertical-menu">
+				<h1>Willkommen  ${user} ! <g:if test="${admin==1}"> (Administrator)</g:if></h1>
+	  			<div id="vertical-menu">
 					<ul>
-					 	<li class="controller"><g:link controller="queueEntry" action="index">Bearbeitungsübersicht</g:link></li> 
-						<g:if test="${admin==1}">
-							<li class="controller"><g:link controller="object" action="listObjects">Auswahl Objekte nach Formaten</g:link></li>
+						<!-- Bearbeitungsübersicht / Entscheidungsübersicht  -->
+						<g:if test="${controllerName=='queueEntry'}">
+							<g:if test="${actionName=='list'}">
+					 			<li id="aktuell"><g:link controller="queueEntry" action="index">Bearbeitungsübersicht</g:link></li>
+					 			<li><g:link controller="queueEntry" action="listRequests">Entscheidungsübersicht</g:link></li> 
+							</g:if>
+							<g:elseif test="${actionName=='listRequests'}">
+								<li><g:link controller="queueEntry" action="index">Bearbeitungsübersicht</g:link></li>
+								<li id="aktuell"><g:link controller="queueEntry" action="listRequests">Entscheidungsübersicht</g:link></li>
+							</g:elseif>
 						</g:if>
-						<li class="controller"><g:link controller="queueEntry" action="listRequests">Entscheidungsübersicht</g:link></li>
-						<li class="controller"><g:link controller="object">Eingelieferte Objekte (AIP)</g:link></li>
-						<li class="controller"><g:link controller="incoming">Verarbeitung für abgelieferte SIP starten</g:link></li>
-						<li class="controller"><g:link controller="outgoing">Objekt entnehmen (DIP)</g:link></li>
-						<li class="controller"><g:link controller="info">Hinweise zur Ansteuerung über externe Systeme</g:link></li>
-						<li class="controller"><g:link controller="conversionPolicies">Konfigurierte Konversionen</g:link></li>
-						<li class="controller"><g:link controller="report">Abfragen verarbeiten</g:link></li>
-						<li class="controller"><g:link controller="systemEvent">System-Eventsteuerung</g:link></li>
+						<g:else>
+							<li><g:link controller="queueEntry" action="index">Bearbeitungsübersicht</g:link></li>
+							<li><g:link controller="queueEntry" action="listRequests">Entscheidungsübersicht</g:link></li>
+						</g:else>
+						
+						<!-- Auswahl Objekte nach Formaten -->
 						<g:if test="${admin==1}">
-							<li class="controller"><g:link controller="cbtalk">Adminfunktionen</g:link></li>
+							<g:if test="${controllerName=='object'}">
+								<g:if test="${actionName=='listObjects'}">
+									<li id="aktuell"><g:link controller="object" action="listObjects">Auswahl Objekte nach Formaten</g:link></li>
+								</g:if>
+								<g:else>
+									<li><g:link controller="object" action="listObjects">Auswahl Objekte nach Formaten</g:link></li>
+								</g:else>
+							</g:if>
+							<g:else>
+								<li><g:link controller="object" action="listObjects">Auswahl Objekte nach Formaten</g:link></li>
+							</g:else>
 						</g:if>
+						
+						<!-- Eingelieferte Objekte (AIP) -->
+						<g:if test="${controllerName=='object'}">
+							<g:if test="${actionName!='listObjects'}">
+								<li id="aktuell"><g:link controller="object">Eingelieferte Objekte (AIP)</g:link></li>
+							</g:if>
+							<g:else>
+								<li><g:link controller="object">Eingelieferte Objekte (AIP)</g:link></li>
+							</g:else>
+						</g:if>
+						<g:else>
+							<li><g:link controller="object">Eingelieferte Objekte (AIP)</g:link></li>
+						</g:else>
+						
+						<!-- Verarbeitung für abgelieferte SIP starten -->
+						<g:if test="${controllerName=='incoming'}">
+							<li id="aktuell"><g:link controller="incoming">Verarbeitung für abgelieferte SIP starten</g:link></li>
+						</g:if>
+						<g:else>
+							<li><g:link controller="incoming">Verarbeitung für abgelieferte SIP starten</g:link></li>
+						</g:else>
+							
+						<!-- Objekt entnehmen (DIP) -->
+						<g:if test="${controllerName=='outgoing'}">
+							<li id="aktuell"><g:link controller="outgoing">Objekt entnehmen (DIP)</g:link></li>
+						</g:if>
+						<g:else>
+							<li><g:link controller="outgoing">Objekt entnehmen (DIP)</g:link></li>
+						</g:else>
+						
+						<!-- Hinweise zur Ansteuerung über externe Systeme -->
+						<g:if test="${controllerName=='info'}">
+							<li id="aktuell"><g:link controller="info">Hinweise zur Ansteuerung über externe Systeme</g:link></li>
+						</g:if>
+						<g:else>
+							<li><g:link controller="info">Hinweise zur Ansteuerung über externe Systeme</g:link></li>
+						</g:else>
+						
+						<!-- Konfigurierte Konversionen -->
+						<g:if test="${controllerName=='conversionPolicies'}">
+							<li id="aktuell"><g:link controller="conversionPolicies">Konfigurierte Konversionen</g:link></li>
+						</g:if>
+						<g:else>
+							<li><g:link controller="conversionPolicies">Konfigurierte Konversionen</g:link></li>
+						</g:else>
+						
+						<!-- Abfragen verarbeiten -->
+						<g:if test="${controllerName=='report'}">
+							<li id="aktuell"><g:link controller="report">Abfragen verarbeiten</g:link></li>
+						</g:if>
+						<g:else>	
+							<li><g:link controller="report">Abfragen verarbeiten</g:link></li>
+						</g:else>
+						
+						<!-- System-Eventsteuerung -->
+						<g:if test="${controllerName=='systemEvent'}">
+							<li id="aktuell"><g:link controller="systemEvent">System-Eventsteuerung</g:link></li>
+						</g:if>
+						<g:else>	
+							<li><g:link controller="systemEvent">System-Eventsteuerung</g:link></li>
+						</g:else>
+						
+						<!-- Adminfunktionen -->
+						<g:if test="${admin==1}">
+							<g:if test="${controllerName=='cbtalk'}">
+								<li id="aktuell"><g:link controller="cbtalk">Adminfunktionen</g:link></li>
+							</g:if>
+							<g:else>
+								<li><g:link controller="cbtalk">Adminfunktionen</g:link></li>
+							</g:else>
+						</g:if>
+						
 					</ul>
 				</div>
 			</div> 

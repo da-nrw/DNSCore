@@ -9,7 +9,6 @@
 	<body>
 		<div id="page-body">
 			<h1>Anfragenübersicht</h1>			
-			admin: ${admin}
 			<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 			</g:if>			

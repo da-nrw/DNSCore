@@ -25,10 +25,25 @@
 			<h1>eingelieferte AIP's</h1>
 			<div class="nav" role="navigation">
 				<ul>
-					<li><a class="list" href="${createLink(controller: 'object', action: 'listAll')}">alle Objekte</a></li>
-					<li><a class="list" href="${createLink(controller: 'object', action: 'archived')}">archivierte Objekte</a></li>
-					<li><a class="list" href="${createLink(controller: 'object', action: 'working')}">Objekte in Verarbeitung</a></li>
-				<!--  	<li><a class="list" href="${createLink(controller: 'object', action: 'error')}">fehlerhafte Objekte</a></li> --> 
+					<g:if test="${objArt=='gesamten'}">
+						<li id="aktuell"><g:link url="[action: 'listAll', controller: 'object']">alle Objekte</g:link></li>
+					</g:if>
+					<g:else>
+						<li><g:link url="[action: 'listAll', controller: 'object']">alle Objekte</g:link></li>
+					</g:else>
+					<g:if test="${objArt=='verarbeiteten'}">
+						<li id="aktuell"><g:link url="[controller: 'object', action: 'archived']">archivierte Objekte</g:link></li>
+					</g:if>
+					<g:else>
+						<li><g:link url="[controller: 'object', action: 'archived']">archivierte Objekte</g:link></li>
+					</g:else>
+					<g:if test="${objArt=='sich in Bearbeitung befindlichen'}">
+						<li id="aktuell"><g:link url="[controller: 'object', action: 'working']">Objekte in Verarbeitung</g:link></li>
+					</g:if>
+					<g:else>
+						<li><g:link url="[controller: 'object', action: 'working']">Objekte in Verarbeitung</g:link></li>
+					</g:else>
+					<!--  	<li><a class="list" href="${createLink(controller: 'object', action: 'error')}">fehlerhafte Objekte</a></li> -->
 				</ul>
 			</div><br>
 			<button class="accordion">Filter
@@ -221,7 +236,7 @@
 							<g:if test="${admin}">				
 								<g:set var="statusCode" value="${objectInstance.getStatusCode()}" />
 							</g:if>
-							<tr class="${ ((i % 2) == 0 ? 'odd' : 'even') + ' status-type-' + statusCode}">
+							<tr class="${ ((i % 2) == 0 ? 'odd' : 'even')}">
 									<td>${fieldValue(bean: objectInstance, field: "identifier")}</td>
 							
 								<td><g:link action="show" id="${objectInstance.id}">${objectInstance.getFormattedUrn()}</g:link></td>
