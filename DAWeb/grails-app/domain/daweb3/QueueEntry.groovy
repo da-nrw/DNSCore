@@ -105,6 +105,36 @@ class QueueEntry {
 	}
 	
 	/**
+	 * 
+	 * @return
+	 */
+	boolean showTrafficLightGreen() {
+		def checkfor = [
+			WORKFLOW_STATUS_DIGIT_WAITING ,
+			WORKFLOW_STATUS_DIGIT_WORKING]
+		def ch = status[-1]
+		if (checkfor.contains(ch)) return true;
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	boolean showTrafficLightRed() {
+		def checkfor = [
+		WORKFLOW_STATUS_DIGIT_ERROR_BAD_CONFIGURATION ,
+		WORKFLOW_STATUS_DIGIT_ERROR_BAD_ROLLBACK,
+		WORKFLOW_STATUS_DIGIT_ERROR_MODEL_INCONSISTENT,
+		WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET,
+		WORKFLOW_STATUS_DIGIT_USER_ERROR,
+		WORKFLOW_STATUS_DIGIT_ERROR_PROPERLY_HANDLED]	
+		def ch = status[-1]
+		if (checkfor.contains(ch)) return true;
+		return false;
+	}
+	
+	/**
 	 * @author jpeters
 	 * Show Deletion button
 	 * @return

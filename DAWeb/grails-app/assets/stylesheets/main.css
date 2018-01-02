@@ -546,6 +546,7 @@ th.sortable a {
 	background-position: right;
 	background-repeat: no-repeat;
 	padding-right: 1.1em;
+	color: #000000;
 }
 
 th.asc a {
@@ -597,7 +598,7 @@ th.desc a {
 }
 
 th:hover, tr:hover {
-	background: #b3eec5 !important;
+	/*background: #b3eec5 !important;*/
 }
 
 /* PAGINATION */

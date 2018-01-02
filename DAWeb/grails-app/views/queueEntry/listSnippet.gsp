@@ -49,7 +49,13 @@
 						</g:link>
 				</td>
 				<td>
-						${queueEntryInstance.getInformation()}
+<!-- 						${queueEntryInstance.getInformation()} -->
+					<g:if test="${queueEntryInstance.showTrafficLightRed()}">
+						<asset:image style="width:16px; height:16px" src="/icons/red-gr.png" title="${queueEntryInstance.getInformation()}" alt="${queueEntryInstance.getInformation()}"/> 
+					</g:if>
+					<g:if test="${queueEntryInstance.showTrafficLightGreen()}">
+						<asset:image style="width:16px; height:16px" src="/icons/green-gr.png" title="${queueEntryInstance.getInformation()}" alt="${queueEntryInstance.getInformation()}"/>
+					</g:if>
 				</td>
 				<td>
 					${fieldValue(bean: queueEntryInstance.obj, field: "urn")}
