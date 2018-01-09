@@ -85,18 +85,20 @@ public class SIPBuilder {
 		}
     
 	    String mainFolderPath = SIPBuilder.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-	    String confFolderPath, dataFolderPath;
+	    String confFolderPath, dataFolderPath, fidoFolderPath;
 	    try {
 	    	mainFolderPath = URLDecoder.decode(mainFolderPath, "UTF-8");
 			confFolderPath = new File(mainFolderPath).getParent() + File.separator + "conf";
 			dataFolderPath = new File(mainFolderPath).getParent() + File.separator + "data";
+			fidoFolderPath = new File(mainFolderPath).getParent() + File.separator + "fido";
 		} catch (UnsupportedEncodingException e) {
 			confFolderPath = "conf";
 			dataFolderPath = "data";
+			fidoFolderPath = "fido";
 		}
 	    System.out.println("ConfFolderPath:"+confFolderPath);
 	    if (args.length == 0)
-	    	startGUIMode(confFolderPath, dataFolderPath);
+	    	startGUIMode(confFolderPath, dataFolderPath, fidoFolderPath);
 	    else
 		    startCLIMode(confFolderPath, dataFolderPath, args);
     }
@@ -107,7 +109,7 @@ public class SIPBuilder {
      * @param confFolderPath Path to conf folder
      * @param dataFolderPath Path to data folder
      */
-    private static void startGUIMode(String confFolderPath, String dataFolderPath) {
+    private static void startGUIMode(String confFolderPath, String dataFolderPath, String fidoFolderPath) {
     	
     	try {
     		UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
@@ -119,7 +121,7 @@ public class SIPBuilder {
     	UIManager.put("ComboBox.disabledForeground", Color.LIGHT_GRAY);
     	UIManager.put("CheckBox.disabledText", Color.LIGHT_GRAY);
 
-    	Gui gui = new Gui(confFolderPath, dataFolderPath);
+    	Gui gui = new Gui(confFolderPath, dataFolderPath, fidoFolderPath);
     	gui.setBounds(100, 100, 750, 520);
     	gui.setResizable(false);
     	gui.setVisible(true);

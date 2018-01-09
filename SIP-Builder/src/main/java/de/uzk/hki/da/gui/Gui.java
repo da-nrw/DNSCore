@@ -48,7 +48,6 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -104,7 +103,7 @@ public class Gui extends JFrame{
 
 	Font standardFont, boldFont;
 
-	String confFolderPath, dataFolderPath;
+	String confFolderPath, dataFolderPath, fidoFolderPath;
 	
 	int startPanelWidth = 750;
 	int startPanelHeight = 526;
@@ -352,10 +351,13 @@ public class Gui extends JFrame{
 	JProgressBar progressBar;
 
 
-	public Gui(String confFolderPath, String dataFolderPath) {
+
+	public Gui(String confFolderPath, String dataFolderPath, String fidoFolderPath) {
 
 		this.confFolderPath = confFolderPath;
 		this.dataFolderPath = dataFolderPath;
+		this.fidoFolderPath = fidoFolderPath;
+		
 		if (!new File(dataFolderPath).exists())
 			new File(dataFolderPath).mkdir();
 		
@@ -2335,6 +2337,9 @@ public class Gui extends JFrame{
 				sipFactory.setCompress(compressionCheckBox.isSelected());
 				sipFactory.setProgressManager(progressManager);
 				sipFactory.setMessageWriter(messageWriter);
+				
+				sipFactory.setFidoFolderPath(fidoFolderPath);
+				
 				sipFactory.startSIPBuilding();
 			}
 		});

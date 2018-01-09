@@ -19,11 +19,14 @@
 
 package de.uzk.hki.da.metadata;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -52,6 +55,8 @@ public class PremisXmlWriter {
 
 	private XMLStreamWriter writer = null;
 
+	private File folder;
+	private String fidoFolderPath = null;
 	
 	/**
 	 * Creates a new premis.xml file; the rights settings are taken from the SIPFactory
@@ -59,10 +64,11 @@ public class PremisXmlWriter {
 	 * @param sip The active SIPFactory
 	 * @param f The premis file to create
 	 * @param packageName The package name
+	 * @param folder 
 	 * @throws Exception
 	 */
-	public void createPremisFile(SIPFactory sip, File f, String packageName) throws Exception {
-		createPremisFile(sip, f, null, packageName);
+	public void createPremisFile(SIPFactory sip, File f, String packageName, File folder, String fidoFolderPath) throws Exception {
+		createPremisFile(sip, f, null, packageName, folder, fidoFolderPath);
 	}
 	
 	/**
@@ -73,13 +79,17 @@ public class PremisXmlWriter {
 	 * @param rightsSourcePremisFile The premis file from which the rights settings are taken (null if the rights settings are
 	 * taken from the SIPFactory)
 	 * @param packageName The package name
+	 * @param fidoFolderPath 
 	 * @throws Exception
 	 */
-	public void createPremisFile(SIPFactory sip, File f, File rightsSourcePremisFile, String packageName) throws Exception {
+	public void createPremisFile(SIPFactory sip, File f, File rightsSourcePremisFile, String packageName, File folder, String fidoFolderPath) throws Exception {
+		
+		this.folder = folder;
+		this.fidoFolderPath = fidoFolderPath;
 		
 		XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
 		FileOutputStream outputStream = new FileOutputStream(f);		
-
+		
 		try {
 	    		writer = outputFactory.createXMLStreamWriter(outputStream, "UTF-8");
 			} catch (XMLStreamException e) {
@@ -98,6 +108,7 @@ public class PremisXmlWriter {
 		   	  		createAttribute("version", "2.2");
 		   	  				   	
 		   	  		generateObjectElement(packageName);
+		   	  		generateComplexObjectElement(packageName);
 		   	  		generateEventElement(packageName);
 		   	  		generateAgentElement();
 		   	  	if (rightsSourcePremisFile == null)
@@ -241,6 +252,159 @@ public class PremisXmlWriter {
 				createTextElement("objectIdentifierValue", packageName, 3);
 			createCloseElement(2);
 		createCloseElement(1);		
+	}
+	
+	/**
+	 * @param packagename
+	 * @throws XMLStreamException
+	 */
+	private void generateComplexObjectElement(String packagename) throws XMLStreamException {
+		
+		createOpenElement("object", 1);
+			createAttribute(C.XSI_NS, "type", "file");
+			createOpenElement("objectIdentifier", 2);
+				createTextElement("objectIdentifierType", "PACKAGE_NAME", 3);
+				createTextElement("objectIdentifierValue", packagename, 3);
+			createCloseElement(2);
+		
+			// DANRW-250 BEG 03.01.2018
+//			generateFormatElement();
+			
+			createOpenElement("objectCharacteristics", 2);
+				createTextElement("compositionLevel", "0", 3);
+//				createTextElement("size", "0", 3);
+			
+				/*
+				 * für jedes Element aus dem Ordner muss eine Formatidentifikation stattfinden
+				 */
+			
+				if ( folder.list().length == 1)  {
+					folder = new File(folder, "data");
+				}
+				
+				for (File f : folder.listFiles()) {
+					if (f.isDirectory()) {
+						folder = new File(f.toString());
+					} 
+				}
+			
+				File[] folderFileList = folder.listFiles();	
+				int length =  folderFileList.length;
+				for ( int i = 0; length > i ; i++ ) {
+					
+					
+					if (folderFileList[i].getName().equals("premis.xml") ) {
+						// nix
+					} else {
+						System.out.println( "File " + i + " : " + folderFileList[i]);
+						String fileName = folderFileList[i].getName();
+						String formatVersion = "";
+						String formatKey = "";
+						String formatName = fileName.substring(fileName.indexOf(".")+1, fileName.length());
+						// Run fido.py
+						try {
+							//String cmd = "python " +  fidoFolderPath + "/fido.py -filename " + folderFileList[i];
+							String cmd = "python " +  fidoFolderPath + "/fido.py " + folderFileList[i];
+							Process p = Runtime.getRuntime().exec(cmd);
+							String line;
+							Reader r = new  InputStreamReader(p.getInputStream());
+							BufferedReader brIn = new BufferedReader(r);
+							while ((line = brIn.readLine()) != null) {
+								formatKey = (line.split(",")[2]);
+		
+								createOpenElement("format", 3);
+									createOpenElement("formatDesignation", 4);
+										createTextElement("formatName", formatName, 5);
+										createTextElement("formatVersion", formatVersion, 5);
+									createCloseElement(4);
+									createOpenElement("formatRegistry", 4);
+									createTextElement("formatRegistryName", "PRONOM", 5);
+									createTextElement("formatRegistryKey", formatKey, 5);
+									createTextElement("formatRegistryRole", "identification", 5);
+									createCloseElement(4);
+								createCloseElement(3);
+							}
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}	
+				}
+			createCloseElement(2);
+			
+		createCloseElement(1);
+	}
+
+	/**
+	 * DANRW-250: Es soll eine Formatidentifier integriert werden
+	 * @param folder
+	 * @throws XMLStreamException
+	 */
+	private void generateFormatElement()	throws XMLStreamException {
+		/*
+		 * DANRW-250
+		 */
+		createOpenElement("objectCharacteristics", 2);
+			createTextElement("compositionLevel", "0", 3);
+//			createTextElement("size", "0", 3);
+			
+			/*
+			 * für jedes Element aus dem Ordner muss eine Formatidentifikation stattfinden
+			 */
+		
+		if ( folder.list().length == 1)  {
+			folder = new File(folder, "data");
+		}
+		
+		for (File f : folder.listFiles()) {
+			if (f.isDirectory()) {
+				folder = new File(f.toString());
+			} 
+		}
+		
+		File[] folderFileList = folder.listFiles();	
+		int length =  folderFileList.length;
+		for ( int i = 0; length > i ; i++ ) {
+			
+			
+			if (folderFileList[i].getName().equals("premis.xml") ) {
+				// nix
+			} else {
+				System.out.println( "File " + i + " : " + folderFileList[i]);
+				String fileName = folderFileList[i].getName();
+				String formatVersion = "";
+				String formatKey = "";
+				String formatName = fileName.substring(fileName.indexOf(".")+1, fileName.length());
+				// Run fido.py
+				try {
+					//String cmd = "python " +  fidoFolderPath + "/fido.py -filename " + folderFileList[i];
+					String cmd = "python " +  fidoFolderPath + "/fido.py " + folderFileList[i];
+					Process p = Runtime.getRuntime().exec(cmd);
+					String line;
+					Reader r = new  InputStreamReader(p.getInputStream());
+					BufferedReader brIn = new BufferedReader(r);
+					while ((line = brIn.readLine()) != null) {
+						formatKey = (line.split(",")[2]);
+
+						createOpenElement("format", 3);
+							createOpenElement("formatDesignation", 4);
+								createTextElement("formatName", formatName, 5);
+								createTextElement("formatVersion", formatVersion, 5);
+							createCloseElement(4);
+							createOpenElement("formatRegistry", 4);
+							createTextElement("formatRegistryName", "PRONOM", 5);
+							createTextElement("formatRegistryKey", formatKey, 5);
+							createTextElement("formatRegistryRole", "identification", 5);
+							createCloseElement(4);
+						createCloseElement(3);
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			createCloseElement(2);
+			}	
+		}
 	}
 	
 	/**

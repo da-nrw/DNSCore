@@ -102,6 +102,9 @@ public class SIPFactory {
 	private boolean allowDuplicateFilename = false;
 	private boolean checkFileExtensionOff = false;
 	
+	// DANRW-250
+	private String fidoFolderPath = null;
+	
 	private List<String> forbiddenFileExtensions = null;
 
 	private File listCreationTempFolder = null;
@@ -500,9 +503,9 @@ public class SIPFactory {
 		try {
 			if (rightsSourcePremisFile != null)
 				premisWriter.createPremisFile(this, premisFile,
-						rightsSourcePremisFile, packageName);
+						rightsSourcePremisFile, packageName, folder, fidoFolderPath);
 			else
-				premisWriter.createPremisFile(this, premisFile, packageName);
+				premisWriter.createPremisFile(this, premisFile, packageName, folder, fidoFolderPath);
 		} catch (Exception e) {
 			logger.error(
 					"Failed to create premis file "
@@ -942,6 +945,15 @@ public class SIPFactory {
 	public void setBagit(boolean bagit) {
 		this.bagit = bagit;
 	}
+	
+	// 	DANRW-250
+	public String getFidoFolderPath() {
+		return fidoFolderPath;
+	}
+
+	public void setFidoFolderPath(String fidoFolderPath) {
+		this.fidoFolderPath = fidoFolderPath;
+	};
 
 	/**
 	 * The SIP building procedure is run in its own thread to prevent GUI
@@ -1345,6 +1357,6 @@ public class SIPFactory {
 
 	public void setSipBuildingProcess(SipBuildingProcess sipBuildingProcess2) {
 		this.sipBuildingProcess=sipBuildingProcess2;
-	};
+	}
 
 }
