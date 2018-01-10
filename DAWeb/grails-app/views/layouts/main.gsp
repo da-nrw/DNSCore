@@ -61,6 +61,10 @@
 								<li><g:link controller="queueEntry" action="index">Bearbeitungsübersicht</g:link></li>
 								<li id="aktuell"><g:link controller="queueEntry" action="listRequests">Entscheidungsübersicht</g:link></li>
 							</g:elseif>
+							<g:elseif test="${actionName=='show'}">
+								<li id="aktuell"><g:link controller="queueEntry" action="index">Bearbeitungsübersicht</g:link></li>
+								<li><g:link controller="queueEntry" action="listRequests">Entscheidungsübersicht</g:link></li>
+							</g:elseif>
 						</g:if>
 						<g:else>
 							<li><g:link controller="queueEntry" action="index">Bearbeitungsübersicht</g:link></li>

@@ -43,10 +43,11 @@
 			<!-- <tr class="${ ((i % 2) == 0 ? 'odd' : 'even') + ' ' + statusType}"> -->
 				<tr class="${ ((i % 2) == 0 ? 'odd' : 'even')}">
 				<td>
-					<g:link action="show" id="${queueEntryInstance.id}"><g:if test="${queueEntryInstance.obj != null}">
+					<g:link action="show" id="${queueEntryInstance.id}">
+						<g:if test="${queueEntryInstance.obj != null}">
 						${fieldValue(bean: queueEntryInstance.obj, field: "identifier")}
-					</g:if>
-						</g:link>
+						</g:if>
+					</g:link>
 				</td>
 				<td>
 <!-- 						${queueEntryInstance.getInformation()} -->

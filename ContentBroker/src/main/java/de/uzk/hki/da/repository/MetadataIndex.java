@@ -56,7 +56,7 @@ public interface MetadataIndex {
 	 * @throws FileNotFoundException 
 	 * @throws IOException 
 	 */
-	void prepareAndIndexMetadata(String indexName, String id, String edmContent)
+	void prepareAndIndexMetadata(String indexName, String id,String institutionType, String edmContent)
 			throws RepositoryException, FileNotFoundException, IOException;	
 	
 	/**

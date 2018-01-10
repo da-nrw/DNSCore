@@ -1,5 +1,7 @@
 package de.uzk.hki.da.event;
 
+import static de.uzk.hki.da.utils.C.PUBLISHEDFLAG_INSTITUTION;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -164,7 +166,7 @@ public class RecreateEDMAndReindexEvent extends AbstractSystemEvent {
 				objlist = execQueryGetObjectsForOwner(session);
 			}
 			
-			logger.debug("for user : " + owner.getId()+" "+objlist.size()+" Objects are fetched");
+			logger.debug("for user(" + owner.getId()+") "+objlist.size()+" Objects are fetched");
 			
 			if ((objlist == null) || (objlist.isEmpty())){
 				logger.trace("no objects found for USER : " +  owner.getId());
@@ -182,16 +184,18 @@ public class RecreateEDMAndReindexEvent extends AbstractSystemEvent {
 	
 	private synchronized List<Object> execQueryGetObjectsForAdmin(Session session){
 		return session
-				.createQuery("SELECT o FROM Object o where o.object_state =?2 and (o.published_flag = ?3 or o.published_flag = ?4) ORDER BY o.modifiedAt")
+				.createQuery("SELECT o FROM Object o where o.object_state =?2 and (o.published_flag = ?3 or o.published_flag = ?4 or o.published_flag = ?5) ORDER BY o.modifiedAt")
 				.setParameter("2", Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow)
-				.setParameter("3", C.PUBLISHEDFLAG_PUBLIC).setParameter("4", C.PUBLISHEDFLAG_INSTITUTION).setCacheable(false).list();
+				.setParameter("3", C.PUBLISHEDFLAG_PUBLIC).setParameter("4", C.PUBLISHEDFLAG_INSTITUTION).setParameter("5", C.PUBLISHEDFLAG_PUBLIC+C.PUBLISHEDFLAG_INSTITUTION)
+				.setCacheable(false).list();
 	}
 	
 	private synchronized List<Object> execQueryGetObjectsForOwner(Session session){
 		return session
-				.createQuery("SELECT o FROM Object o where o.user.id = ?1 and o.object_state =?2 and (o.published_flag = ?3 or o.published_flag = ?4) ORDER BY o.modifiedAt")
+				.createQuery("SELECT o FROM Object o where o.user.id = ?1 and o.object_state =?2 and (o.published_flag = ?3 or o.published_flag = ?4 or o.published_flag = ?5) ORDER BY o.modifiedAt")
 				.setParameter("1", owner.getId()).setParameter("2", Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow)
-				.setParameter("3", C.PUBLISHEDFLAG_PUBLIC).setParameter("4", C.PUBLISHEDFLAG_INSTITUTION).setCacheable(false).list();
+				.setParameter("3", C.PUBLISHEDFLAG_PUBLIC).setParameter("4", C.PUBLISHEDFLAG_INSTITUTION).setParameter("5", C.PUBLISHEDFLAG_PUBLIC+C.PUBLISHEDFLAG_INSTITUTION)
+				.setCacheable(false).list();
 	}
 	
 	
