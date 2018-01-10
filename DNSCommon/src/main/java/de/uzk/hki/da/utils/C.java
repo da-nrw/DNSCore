@@ -144,7 +144,7 @@ public class C {
 	public static final String EDM_HAS_TYPE = "edm:hasType";
 	public static final String EDM_RIGHTS = "dc:rights";
 	public static final String EDM_EXTENT = "dcterms:extent";
-	
+	public static final String INDEX_INSTITUTION_TYPE ="@institutionType";
 	// Other
 	public static final String LOCAL_NODE_BEAN_NAME = "localNode";
 	public static final File BASIC_TEST_PACKAGE = Path.makeFile(CONF,"basic_test_package.tgz");

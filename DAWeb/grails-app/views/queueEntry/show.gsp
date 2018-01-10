@@ -1,4 +1,3 @@
-
 <%@ page import="daweb3.QueueEntry" %>
 <!doctype html>
 <html>

@@ -34,6 +34,14 @@
 	<g:textField name="password" required="" value="${userInstance?.password}"/>
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'provider_type', 'error')} required">
+	<label for="provider_type">
+		<g:message code="user.provider_type.label" default="Provider Type" />
+		<span class="required-indicator">*</span>
+	</label>
+	<g:select id="providerType" name="provider_type" from="${['Archiv','Bibliothek','Museum']}" keys="${['Archiv','Bibliothek','Museum']}" value="${userInstance?.provider_type}" />
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'friendly_file_exts', 'error')} ">
 	<label for="friendly_file_exts">
 		<g:message code="user.friendly_file_exts.label" default="Friendly extensions" />

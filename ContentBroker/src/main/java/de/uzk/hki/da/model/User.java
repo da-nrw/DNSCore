@@ -71,6 +71,8 @@ public class User{
 	private String emailAddress;
 	@Column(name="mails_pooled", columnDefinition="boolean")
 	private Boolean mailsPooled;
+	@Column(name="provider_type", columnDefinition="varchar(16)")
+	private String providerType;//="Bibliothek";
 	@Column(name="delta_on_urn", columnDefinition="boolean")
 	private Boolean deltaOnUrn;
 	@Column(name="use_public_mets", columnDefinition="boolean")
@@ -183,6 +185,16 @@ public class User{
 	 */
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
+	}
+	
+	
+
+	public String getProviderType() {
+		return providerType;
+	}
+
+	public void setProviderType(String providerType) {
+		this.providerType = providerType;
 	}
 
 	/**
