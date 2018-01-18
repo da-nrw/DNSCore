@@ -45,6 +45,7 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.model.Event.IdType;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.GenericChecksum;
 import de.uzk.hki.da.utils.Path;
 
 
@@ -277,7 +278,7 @@ public class ObjectPremisXmlWriter {
 		createTextElement("compositionLevel", "0", 3);
 		
 		createOpenElement("fixity", 3);
-			createTextElement("messageDigestAlgorithm", "MD5", 4);
+			createTextElement("messageDigestAlgorithm", GenericChecksum.DEFAULT_CHECKSUM_ALGO_FOR_DAF.toString(), 4);
 			createTextElement("messageDigest", f.getChksum(), 4);
 			createTextElement("messageDigestOriginator", "ContentBroker", 4);
 		

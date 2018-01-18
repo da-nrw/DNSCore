@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.GenericChecksum;
 import de.uzk.hki.da.utils.ProcessInformation;
 import de.uzk.hki.da.utils.StringUtilities;
 
@@ -39,7 +40,8 @@ import de.uzk.hki.da.utils.StringUtilities;
  * @author Jens Peters
  */
 public class IrodsCommandLineConnector {
-
+	/** configured checksum type in irods configs */
+	static final String CHECKSUM_TYPE=GenericChecksum.Algorithm.MD5.toString();//GenericChecksum.Algorithm.SHA256.toString();
 	/** CommandLineConnector */
 	private CommandLineConnector clc;
 	/** The logger. */
@@ -195,18 +197,18 @@ public class IrodsCommandLineConnector {
 	 * md5sum. 
 	 * @author Jens Peters
 	 * @param dest
-	 * @param md5sum
+	 * @param checksum
 	 * @return
 	 */
-	public boolean existsWithChecksum(String dest, String md5sum) {
-		if (md5sum.equals(null)) throw new RuntimeException("md5sum not given");
-		if (md5sum.equals("")) throw new RuntimeException("md5sum not given");
+	public boolean existsWithChecksum(String dest, String checksum) {
+		if (checksum.equals(null) || checksum.trim().equals("")) throw new RuntimeException("checksum not given");
+		checksum=prepareDNSCheckSumForIrods(checksum);
 		String data_name = FilenameUtils.getName(dest);
 		String commandAsArray[] = new String[]{
 				"ils","-L", dest 
 		}; 
 		String out = executeIcommand(commandAsArray);
-		if (out.indexOf(data_name)>=0 && out.indexOf(md5sum)>0) return true;
+		if (out.indexOf(data_name)>=0 && out.indexOf(checksum)>0) return true;
 		return false;
 	}
 	
@@ -247,8 +249,27 @@ public class IrodsCommandLineConnector {
 		  }
 		}
 		scanner.close();
-		return ret;
+		return prepareIrodsCheckSumForDNS(ret);
 	}
+	
+	private String prepareIrodsCheckSumForDNS(String chksum){
+		if(CHECKSUM_TYPE.equals(GenericChecksum.Algorithm.SHA256.toString())){
+			return GenericChecksum.decodeBase64(chksum.split("sha2:")[1]);
+		}else if(CHECKSUM_TYPE.equals(GenericChecksum.Algorithm.MD5.toString()))
+			return chksum;
+		else
+			throw new RuntimeException("Unknown checksum type: "+CHECKSUM_TYPE);
+	}
+	
+	private String prepareDNSCheckSumForIrods(String chksum){
+		if(CHECKSUM_TYPE.equals(GenericChecksum.Algorithm.SHA256.toString())){
+			return "sha2:"+GenericChecksum.encodeBase64(chksum);
+		}else if(CHECKSUM_TYPE.equals(GenericChecksum.Algorithm.MD5.toString()))
+			return chksum;
+		else
+			throw new RuntimeException("Unknown checksum type: "+CHECKSUM_TYPE);
+	}
+	
 	/**
 	 * Gets checksum from ICAT for the newest instance destDao
 	 * @author Jens Peters

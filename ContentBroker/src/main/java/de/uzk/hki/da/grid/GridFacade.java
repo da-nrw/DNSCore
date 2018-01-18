@@ -116,6 +116,14 @@ public interface GridFacade {
 	abstract long getFileSize(String address_dest) throws java.io.IOException ; 
 	
 	/**
+	 * Gets used checksum type 
+	 * @author Eugen Trebunski
+	 * @param address_dest
+	 * @return
+	 */
+	abstract String getChecksumType();
+	
+	/**
 	 * Gets checksum in custody 
 	 * @author Jens Peters
 	 * @param address_dest

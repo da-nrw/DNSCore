@@ -30,7 +30,7 @@ import java.security.MessageDigest;
 
 /**
  * The Class MD5Checksum.
- *
+ *	@deprecated
  * @author Jens Peters
  */
 public class MD5Checksum {

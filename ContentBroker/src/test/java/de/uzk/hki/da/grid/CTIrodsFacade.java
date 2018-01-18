@@ -39,6 +39,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.utils.FolderUtils;
+import de.uzk.hki.da.utils.GenericChecksum;
 import de.uzk.hki.da.utils.MD5Checksum;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.PropertiesUtils;
@@ -70,7 +71,7 @@ public class CTIrodsFacade {
 	private static String testCollPhysicalPathOnLTA = null;
 	
 	File temp;
-	public String md5sum = "";
+	public String checksum = "";
 	private static StoragePolicy sp ;
 	
 	/**
@@ -115,7 +116,7 @@ public class CTIrodsFacade {
 	@Before
 	public void setUp() throws Exception {
 		temp = createTestFile();
-		md5sum = MD5Checksum.getMD5checksumForLocalFile(temp);
+		checksum = GenericChecksum.getChecksumForLocalFile(temp);
 	}
 	
 	/**
@@ -194,8 +195,8 @@ public class CTIrodsFacade {
 	@Test
 	public void testFilePutAndStoragePolicyAchieved() throws IOException {
 		String aip = testColl + "/urn.tar";
-		assertTrue(ig.put(temp, aip, sp, md5sum));
-		assertTrue(ig.storagePolicyAchieved(aip, sp, md5sum, null));
+		assertTrue(ig.put(temp, aip, sp, checksum));
+		assertTrue(ig.storagePolicyAchieved(aip, sp, checksum, null));
 		assertFalse(ig.storagePolicyAchieved(aip, sp, "ddlldld", null));
 	}
 	
@@ -214,8 +215,8 @@ public class CTIrodsFacade {
 		sp2.setCommonStorageRescName("ciArchiveRescGroup");
 		String aip = testColl + "/urn.tar";
 		sp2.setMinNodes(10);
-		assertTrue(ig.put(temp, aip, sp2, md5sum));
-		assertFalse(ig.storagePolicyAchieved(aip, sp2, md5sum, null));
+		assertTrue(ig.put(temp, aip, sp2, checksum));
+		assertFalse(ig.storagePolicyAchieved(aip, sp2, checksum, null));
 	}
 	
 	/**
@@ -226,7 +227,7 @@ public class CTIrodsFacade {
 	public void testFilePutWithChecksum() {
 		
 		try {
-			assertTrue(ig.put(temp, testColl + "/urn.tar", sp, md5sum));
+			assertTrue(ig.put(temp, testColl + "/urn.tar", sp, checksum));
 	
 		} catch (IOException e) {
 			fail();

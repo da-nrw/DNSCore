@@ -21,6 +21,7 @@ package de.uzk.hki.da.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -41,7 +42,11 @@ public class Copy {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
-	
+	@Column(name="`checksum_type`", columnDefinition="varchar(16)")
+	private String checksumType;
+	@Column(name="`checksum_base64`", columnDefinition="varchar(255)") //512 bits /4 ->128
+	private String checksumBase64;
+	@Column(name="`checksum`", columnDefinition="varchar(255)") //512 bits/ 6 -> 86 +2 padding byte
 	private String checksum;
 
 	private Date checksumDate;
@@ -80,6 +85,22 @@ public class Copy {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getChecksumType() {
+		return checksumType;
+	}
+
+	public void setChecksumType(String checksumType) {
+		this.checksumType = checksumType;
+	}
+
+	public String getChecksumBase64() {
+		return checksumBase64;
+	}
+
+	public void setChecksumBase64(String checksumBase64) {
+		this.checksumBase64 = checksumBase64;
 	}
 	
 	

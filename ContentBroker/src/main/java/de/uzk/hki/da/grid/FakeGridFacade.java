@@ -38,6 +38,7 @@ import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.FolderUtils;
+import de.uzk.hki.da.utils.GenericChecksum;
 import de.uzk.hki.da.utils.MD5Checksum;
 import de.uzk.hki.da.utils.StringUtilities;
 
@@ -107,6 +108,11 @@ public class FakeGridFacade implements GridFacade {
 	public void setGridCacheAreaRootPath(String gridCacheAreaRootPath) {
 		this.gridCacheAreaRootPath = StringUtilities.slashize(gridCacheAreaRootPath);
 	}
+	
+	@Override
+	public	String getChecksumType(){
+		return GenericChecksum.DEFAULT_CHECKSUM_ALGO.toString();
+	}
 
 	@Override
 	public String getChecksumInCustody(String address_dest) {
@@ -169,11 +175,14 @@ public class FakeGridFacade implements GridFacade {
 		try {	 
 			if (!checkForCorruptedMarker(custodyFile)) {
 				logger.debug("Returning checksum for File " + custodyFile.getAbsolutePath());
-				return MD5Checksum.getMD5checksumForLocalFile(custodyFile);
-			} return "";
+				//return MD5Checksum.getMD5checksumForLocalFile(custodyFile);
+				return GenericChecksum.getChecksumForLocalFile(custodyFile);
+			} 
+			return "";
 		} catch (IOException e) {
 			logger.error("Error retrieving MD5 for " + custodyFile.getAbsolutePath());
-		} return "";
+		}
+		return "";
 	}
 
 	@Override

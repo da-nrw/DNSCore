@@ -39,6 +39,7 @@ import de.uzk.hki.da.core.ChecksumWorker;
 import de.uzk.hki.da.model.Copy;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.service.HibernateUtil;
+import de.uzk.hki.da.utils.GenericChecksum;
 import de.uzk.hki.da.utils.MD5Checksum;
 import de.uzk.hki.da.utils.PropertiesUtils;
 
@@ -55,7 +56,9 @@ public class CTChecksumWorker {
 	String fedprefix = "federated";
 	String fedcoll = fedprefix + "/" + coll;
 	String feddao =  fedcoll + "/" + data_name;
-	String md5sum = "";
+	String checksum = "";
+	String checksum64 = "";
+	String checksumType = "";
 
 	File tempTest;
 	
@@ -73,18 +76,23 @@ public class CTChecksumWorker {
 	@Before
 	public void before() throws IOException {
 		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
-
 		node = new Node();
 		node.setName("localnode");
 		tempTest = createTestFile();
-		md5sum = MD5Checksum.getMD5checksumForLocalFile(tempTest);
+		checksum = GenericChecksum.getChecksumForLocalFile(tempTest);
+		checksum64 = GenericChecksum.encodeBase64(checksum);
+		checksumType=GenericChecksum.DEFAULT_CHECKSUM_ALGO.toString();
 	}
 	
-	private int storeCopy(String checksum, Date date) {
+	private int storeCopy(String checksumLocal, Date date) {
 		Copy copy;
 		copy = new Copy();
 		copy.setPath(dao);
-		if (checksum!=null) copy.setChecksum(checksum);
+		if (checksum!=null){ 
+			copy.setChecksum(checksumLocal);
+			copy.setChecksumBase64(GenericChecksum.encodeBase64(checksumLocal));
+			copy.setChecksumType(GenericChecksum.DEFAULT_CHECKSUM_ALGO.toString());
+		}
 		if (date!=null) copy.setChecksumDate(date);
 		node.getCopies().add(copy);
 		Session session = HibernateUtil.openSession();
@@ -122,7 +130,9 @@ public class CTChecksumWorker {
 		session.beginTransaction();
 		
 		Copy recopy = (Copy) session.get(Copy.class,id);
-		assertEquals(md5sum,recopy.getChecksum());
+		assertEquals(checksum,recopy.getChecksum());
+		assertEquals(checksum64,recopy.getChecksumBase64());
+		assertEquals(checksumType,recopy.getChecksumType());
 		assertNotNull(recopy.getChecksumDate());
 		assertTrue(recopy.getChecksumDate().after(initchecksumdate));
 		session.close();
@@ -166,7 +176,7 @@ public class CTChecksumWorker {
 	public void initialComputationOfChecksum() throws IOException, InterruptedException {
 		Date initchecksumdate = new Date();;
 		
-		int id = storeCopy(md5sum, null);
+		int id = storeCopy(checksum, null);
 		iclc = new IrodsCommandLineConnector();
 		iclc.mkCollection("/"+zone+"/"+fedcoll);
 		iclc.put(tempTest,"/"+zone+"/"+feddao);
@@ -185,7 +195,7 @@ public class CTChecksumWorker {
 		session.beginTransaction();
 		
 		Copy recopy = (Copy) session.get(Copy.class,id);
-		assertEquals(md5sum,recopy.getChecksum());
+		assertEquals(checksum,recopy.getChecksum());
 		assertNotNull(recopy.getChecksumDate());
 		assertTrue(recopy.getChecksumDate().after(initchecksumdate));
 		session.close();

@@ -42,6 +42,7 @@ import org.xml.sax.XMLReader;
 
 import de.uzk.hki.da.metadata.PremisXmlReaderNodeFactory;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.GenericChecksum;
 import nu.xom.Attribute;
 import nu.xom.Builder;
 import nu.xom.Document;
@@ -655,7 +656,10 @@ public class ObjectPremisXmlReader{
 		
 		Element charEl = objectEl.getFirstChildElement("objectCharacteristics", PREMIS_NS);
 		f.setChksum(stringValue(charEl.getFirstChildElement("fixity", PREMIS_NS).getFirstChildElement("messageDigest", PREMIS_NS)));
-		
+		String checksumType=stringValue(charEl.getFirstChildElement("fixity", PREMIS_NS).getFirstChildElement("messageDigestAlgorithm", PREMIS_NS));
+		if(checksumType==null || !checksumType.trim().equals(GenericChecksum.DEFAULT_CHECKSUM_ALGO_FOR_DAF))
+			new RuntimeException("DAFile Checksum is not consitent in premis is "+checksumType+" type, ContentBroker uses "+GenericChecksum.DEFAULT_CHECKSUM_ALGO_FOR_DAF);
+				
 		Element sizeEl = charEl.getFirstChildElement("size", PREMIS_NS);
 		f.setSize(sizeEl.getValue());
 		

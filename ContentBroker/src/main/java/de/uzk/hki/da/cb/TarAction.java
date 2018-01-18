@@ -26,6 +26,7 @@ import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.pkg.NativeJavaTarArchiveBuilder;
 import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.utils.GenericChecksum;
 import de.uzk.hki.da.utils.MD5Checksum;
 
 
@@ -84,8 +85,7 @@ public class TarAction extends AbstractAction {
 			throw new RuntimeException("Error while creating tar.",e);
 		}
 
-		o.getLatestPackage().setChecksum(MD5Checksum.getMD5checksumForLocalFile(
-				new File(tar)));
+		o.getLatestPackage().setChecksum(GenericChecksum.getChecksumForLocalFile(new File(tar)));
 		return true;
 	}
 

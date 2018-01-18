@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.WorkArea;
+import de.uzk.hki.da.utils.GenericChecksum;
 import de.uzk.hki.da.utils.MD5Checksum;
 
 
@@ -83,8 +84,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 			
 			if (!replicatedOnlyToCache(targetAbsoluteLogicalPath))
 				throw new java.io.IOException("Grid File " +gridfile+" "+targetAbsoluteLogicalPath+" not exclusively or not only available on cache group devices!");
-			
-			if (MD5Checksum.getMD5checksumForLocalFile(file).equals(MD5Checksum.getMD5checksumForLocalFile(gridfile))){	
+			if (GenericChecksum.getChecksumForLocalFile(file).equals(GenericChecksum.getChecksumForLocalFile(gridfile))){	
 				logger.info("GridFile is valid and only available on cache devices");
 				return true;
 			} else {
@@ -102,8 +102,7 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 			logger.error("Error while creating File or directory physically on the GridCachePath, target file may already exist " + e.getMessage());
 			return false; 
 		}
-		
-		if (!MD5Checksum.getMD5checksumForLocalFile(file).equals(MD5Checksum.getMD5checksumForLocalFile(gridfile))){
+		if (!GenericChecksum.getChecksumForLocalFile(file).equals(GenericChecksum.getChecksumForLocalFile(gridfile))){
 			logger.error(" put of " + file +" failed");
 			return false;
 		}
@@ -239,10 +238,9 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 			// TODO should throw gridexception
 			throw new java.io.IOException("Error in retrieving file: " + prefixedGridFileAdress, e);
 		}
-		
-		if (!MD5Checksum.getMD5checksumForLocalFile(destination).equals(irodsSystemConnector.getChecksum(prefixedGridFileAdress))){
+		if (!GenericChecksum.getChecksumForLocalFile(destination).equals(irodsSystemConnector.getChecksum(prefixedGridFileAdress))){
 			throw new java.io.IOException("The unloaded file differs from the Grid's file! Local:"
-					+MD5Checksum.getMD5checksumForLocalFile(destination)+" vs Remote:"+irodsSystemConnector.getChecksum(prefixedGridFileAdress));
+					+GenericChecksum.getChecksumForLocalFile(destination)+" vs Remote:"+irodsSystemConnector.getChecksum(prefixedGridFileAdress));
 		}
 		
 		if (!destination.exists()) throw new java.io.IOException("The destination file has " + destination + " not been created!");

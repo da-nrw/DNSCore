@@ -35,6 +35,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.utils.FolderUtils;
+import de.uzk.hki.da.utils.GenericChecksum;
 
 /** ComponentTest of IrodsCommandLineConnector
  * @author Jens Peters
@@ -57,7 +58,7 @@ public class CTIrodsCommandLineConnector {
 	String dao3 = "aip/connector/urn3.tar";
 	String daolong = "aip/connector/urnwithextraordinaryLongNameInsteadOfShortName.tar";
 	File file;
-	String md5sum;
+	String checksum;
 	String testCollPhysicalPathOnLTA = "/ci/archiveStorage/aip/connector";
 	String archiveStorage = "ciArchiveRescGroup";
 	
@@ -84,7 +85,7 @@ public class CTIrodsCommandLineConnector {
 		String destColl = 
 				FilenameUtils.getFullPathNoEndSeparator(dao);
 		iclc.mkCollection(destColl);
-		md5sum = MD5Checksum.getMD5checksumForLocalFile(file);
+		checksum = GenericChecksum.getChecksumForLocalFile(file);
 		assertTrue(iclc.put(file, dao, archiveStorage ));
 	}
 	@Test
@@ -112,12 +113,12 @@ public class CTIrodsCommandLineConnector {
 
 	@Test
 	public void testExistsGetChecksum() {
-		assertEquals(iclc.getChecksum(dao),md5sum);
+		assertEquals(iclc.getChecksum(dao),checksum);
 	}
 
 	@Test
 	public void testComputeChecksumForce() {
-		assertEquals(iclc.computeChecksumForce(dao),md5sum);
+		assertEquals(iclc.computeChecksumForce(dao),checksum);
 	}
 	
 	@After
@@ -140,12 +141,12 @@ public class CTIrodsCommandLineConnector {
 
 	@Test
 	public void testGetChecksum() {
-		assertEquals(iclc.computeChecksumForce(dao),md5sum);
+		assertEquals(iclc.computeChecksumForce(dao),checksum);
 	}
 	
 	@Test
 	public void testExistsWithChecksum() {
-		assertTrue(iclc.existsWithChecksum(dao, md5sum));
+		assertTrue(iclc.existsWithChecksum(dao, checksum));
 	}
 	
 	@Test 
@@ -158,9 +159,9 @@ public class CTIrodsCommandLineConnector {
 	
 		destroyTestFileOnLongTermStorage();
 		assertFalse(iclc.isValid(dao));
-		assertTrue(iclc.existsWithChecksum(dao, md5sum));
+		assertTrue(iclc.existsWithChecksum(dao, checksum));
 		iclc.computeChecksumForce(dao);
-		assertFalse(iclc.existsWithChecksum(dao, md5sum));
+		assertFalse(iclc.existsWithChecksum(dao, checksum));
 		
 	}
 	
@@ -177,9 +178,14 @@ public class CTIrodsCommandLineConnector {
 	}
 	
 	@Test
+	public void testDefaultChecksumAlgorithm() throws IOException {
+		assertTrue(GenericChecksum.DEFAULT_CHECKSUM_ALGO.toString().equals(IrodsCommandLineConnector.CHECKSUM_TYPE));
+	}
+	
+	@Test
 	public void testIputAndChecksumOfExtraOrdinaryLongName() throws IOException {
 		assertTrue(iclc.put(file, daolong, archiveStorage ));
-		assertEquals(md5sum, iclc.getChecksum(daolong));
+		assertEquals(checksum, iclc.getChecksum(daolong));
 	}
 	
 	@Test
@@ -188,7 +194,7 @@ public class CTIrodsCommandLineConnector {
 		assertTrue(iclc.get(get,dao));
 		assertFalse(iclc.get(new File(tmpDir + "urn2.tar"),dao));
 		assertTrue(get.exists());
-		assertEquals(md5sum, MD5Checksum.getMD5checksumForLocalFile(file));
+		assertEquals(checksum, GenericChecksum.getChecksumForLocalFile(file));
 	}
 	
 //	@Test

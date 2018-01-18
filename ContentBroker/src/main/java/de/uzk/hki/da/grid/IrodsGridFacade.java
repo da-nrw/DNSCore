@@ -22,6 +22,7 @@ package de.uzk.hki.da.grid;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.Set;
 
@@ -33,6 +34,7 @@ import org.springframework.util.StringUtils;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.WorkArea;
+import de.uzk.hki.da.utils.GenericChecksum;
 import de.uzk.hki.da.utils.MD5Checksum;
 
 /**
@@ -87,9 +89,9 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 		irodsSystemConnector.registerFile(targetLogically, gridfile,irodsSystemConnector.getDefaultStorage() );
 		if (irodsSystemConnector.fileExists(targetLogically)) {
 			logger.debug("compute checksum on " + targetLogically);
-			String MD5CheckSum = MD5Checksum.getMD5checksumForLocalFile(file);
-			if (irodsSystemConnector.computeChecksum(targetLogically).equals(MD5CheckSum)){
-				irodsSystemConnector.saveOrUpdateAVUMetadataDataObject(targetLogically, "chksum", MD5CheckSum );
+			String checkSum = GenericChecksum.getChecksumForLocalFile(file);
+			if (irodsSystemConnector.computeChecksum(targetLogically).equals(checkSum)){
+				irodsSystemConnector.saveOrUpdateAVUMetadataDataObject(targetLogically, "chksum", checkSum );
 				return true;
 			}
 		}
@@ -180,6 +182,11 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 	}
 
 	@Override
+	public	String getChecksumType(){
+		return IrodsCommandLineConnector.CHECKSUM_TYPE;
+	}
+	
+	@Override
 	public String getChecksumInCustody(String address_dest) {
 		IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
 		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + address_dest;
@@ -231,6 +238,8 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+
 	
 
 }

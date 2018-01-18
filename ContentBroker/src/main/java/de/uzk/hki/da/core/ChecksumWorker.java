@@ -123,6 +123,8 @@ public class ChecksumWorker extends Worker{
     				oneMonthAgo.add(Calendar.DAY_OF_YEAR, trustChecksumForDays*(-1));
     				logger.debug("will look for Checksums older than " + oneMonthAgo.getTime() );
     				String cs = "";
+    				String csType = "";
+    				String cs64 = "";
     				if (copy.getChecksumDate()==null) {
     					cs = gridFacade.reComputeAndGetChecksumInCustody(dest);
     					logger.info("checksum in custody is " + cs + " for " + dest);
@@ -131,9 +133,11 @@ public class ChecksumWorker extends Worker{
     					logger.info("recompute old checksum in custody, now is " + cs + " for " + dest);
     				} else {
     					cs = copy.getChecksum();
+    					csType=copy.getChecksumType();
+    					cs64=copy.getChecksumBase64();
     					logger.info("Checksum does not yet need recomputation. Checksum is " + cs);
     				}
-    				updateCopy(copy, cs);
+    				updateCopy(copy,csType, cs,cs64);
     				
     			} else logger.error(dest + " does not exist.");
     			
@@ -216,11 +220,13 @@ public class ChecksumWorker extends Worker{
 	 * @param checksum
 	 * 	
 	 *  */
-	private synchronized void updateCopy(Copy copy, String checksum ){
+	private synchronized void updateCopy(Copy copy, String checksumType,String checksum, String checksumBase64 ){
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		copy.setChecksumDate(new Date());
 		copy.setChecksum(checksum);
+		copy.setChecksumType(checksumType);
+		copy.setChecksumBase64(checksumBase64);
 		session.update(copy);
 		session.getTransaction().commit();
 		session.close();

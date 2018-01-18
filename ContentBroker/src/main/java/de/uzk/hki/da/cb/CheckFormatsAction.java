@@ -41,6 +41,7 @@ import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.CommaSeparatedList;
 import de.uzk.hki.da.utils.FolderUtils;
+import de.uzk.hki.da.utils.GenericChecksum;
 import de.uzk.hki.da.utils.MD5Checksum;
 import de.uzk.hki.da.utils.Path;
 
@@ -96,8 +97,8 @@ public class CheckFormatsAction extends AbstractAction {
 	
 	private void createChecksumsFor(List<DAFile> allFiles) throws IOException {
 		for (DAFile daf:allFiles){
-			String md5 = MD5Checksum.getMD5checksumForLocalFile(wa.toFile(daf));
-			daf.setChksum(md5);
+			String checkSum = GenericChecksum.getChecksumForLocalFile(GenericChecksum.DEFAULT_CHECKSUM_ALGO_FOR_DAF,wa.toFile(daf));
+			daf.setChksum(checkSum);
 		}
 	}
 	

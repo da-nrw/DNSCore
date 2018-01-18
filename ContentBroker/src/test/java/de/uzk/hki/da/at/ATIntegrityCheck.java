@@ -300,7 +300,8 @@ public class ATIntegrityCheck extends AcceptanceTest{
 		session.refresh(object);
 		for (Copy rec : object.getLatestPackage().getCopies()) rec.getId();
 		Copy copy = object.getLatestPackage().getCopies().iterator().next();
-		if (copy.getChecksum().equals(object.getLatestPackage().getChecksum())) return true;
+		if (copy.getChecksum().equals(object.getLatestPackage().getChecksum())) 
+			return true;
 		return false;
 	}
 }

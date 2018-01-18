@@ -57,6 +57,7 @@ import de.uzk.hki.da.util.FileIdGenerator;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.FolderUtils;
+import de.uzk.hki.da.utils.GenericChecksum;
 import de.uzk.hki.da.utils.MD5Checksum;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.ProcessInformation;
@@ -502,9 +503,12 @@ public class AcceptanceTestHelper {
 		pkg.setContainerName(originalName+"."+C.FILE_EXTENSION_TGZ);
 		
 		Copy copy = new Copy();
-		String md5=MD5Checksum.getMD5checksumForLocalFile(Path.makeFile(TC.TEST_ROOT_AT,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR));
-		pkg.setChecksum(md5);
-		copy.setChecksum(md5);
+		String checksum=GenericChecksum.getChecksumForLocalFile(Path.makeFile(TC.TEST_ROOT_AT,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR));
+		
+		pkg.setChecksum(checksum);
+		copy.setChecksum(checksum);
+		copy.setChecksumBase64(GenericChecksum.encodeBase64(checksum));
+		copy.setChecksumType(GenericChecksum.DEFAULT_CHECKSUM_ALGO.toString());
 		copy.setChecksumDate(new Date());
 		for (Copy c:pkg.getCopies()) c.getId();
 		pkg.getCopies().add(copy);
