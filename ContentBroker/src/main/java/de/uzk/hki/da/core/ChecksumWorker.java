@@ -36,6 +36,7 @@ import de.uzk.hki.da.model.Copy;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.service.HibernateUtil;
+import de.uzk.hki.da.utils.GenericChecksum;
 
 
 /**
@@ -127,9 +128,13 @@ public class ChecksumWorker extends Worker{
     				String cs64 = "";
     				if (copy.getChecksumDate()==null) {
     					cs = gridFacade.reComputeAndGetChecksumInCustody(dest);
+    					csType=gridFacade.getChecksumType();
+    					cs64=copy.getChecksumBase64();
     					logger.info("checksum in custody is " + cs + " for " + dest);
     				} else if (copy.getChecksumDate().before(oneMonthAgo.getTime())) {
     					cs = gridFacade.reComputeAndGetChecksumInCustody(dest);
+    					csType=gridFacade.getChecksumType();
+    					cs64=GenericChecksum.encodeBase64(cs);
     					logger.info("recompute old checksum in custody, now is " + cs + " for " + dest);
     				} else {
     					cs = copy.getChecksum();
