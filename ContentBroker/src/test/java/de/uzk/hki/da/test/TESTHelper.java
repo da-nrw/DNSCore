@@ -133,7 +133,7 @@ public class TESTHelper {
 			session.delete(o);
 
 		List copyJoblist = session
-				.createQuery("FROM CopyJob as cj where cj.aipgridpath like concat('%',:CSNPATH,'%')")
+				.createQuery("FROM CopyJob as cj where aipGridPath like concat('%',:CSNPATH,'%')")
 				.setParameter("CSNPATH", node.getIdentifier()+"/aip/"+testContractor.getUsername()).list();
 		for (java.lang.Object o : copyJoblist)
 			session.delete(o);
