@@ -261,7 +261,7 @@ public class PremisXmlWriter {
 	private void generateComplexObjectElement(String packagename) throws XMLStreamException {
 		
 		createOpenElement("object", 1);
-			createAttribute(C.XSI_NS, "type", "file");
+			createAttribute(C.XSI_NS, "type", "");
 			createOpenElement("objectIdentifier", 2);
 				createTextElement("objectIdentifierType", "PACKAGE_NAME", 3);
 				createTextElement("objectIdentifierValue", packagename, 3);
