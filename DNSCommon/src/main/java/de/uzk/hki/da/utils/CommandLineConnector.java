@@ -108,6 +108,7 @@ public class CommandLineConnector {
 		Process p=null;
 		ProcessBuilder pb = new ProcessBuilder(cmd);
 		if (workingDir!=null) pb.directory(workingDir);
+		//pb.environment();
 		p = pb.start(); 
 		return p;
 	}

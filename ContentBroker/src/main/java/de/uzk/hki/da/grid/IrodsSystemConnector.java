@@ -39,6 +39,7 @@ import org.irods.jargon.core.exception.DataNotFoundException;
 import org.irods.jargon.core.exception.FileNotFoundException;
 import org.irods.jargon.core.exception.JargonException;
 import org.irods.jargon.core.packinstr.TransferOptions;
+import org.irods.jargon.core.protovalues.ChecksumEncodingEnum;
 import org.irods.jargon.core.pub.CollectionAO;
 import org.irods.jargon.core.pub.CollectionAndDataObjectListAndSearchAO;
 import org.irods.jargon.core.pub.DataAOHelper;
@@ -74,6 +75,7 @@ import org.irods.jargon.core.transfer.TransferControlBlock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.utils.GenericChecksum;
 import de.uzk.hki.da.utils.PasswordUtils;
 
 
@@ -301,6 +303,8 @@ public class IrodsSystemConnector {
 					
 					// pre 3.3 iRODS needs to set the Socket flush, jp 
 					SettableJargonProperties jargonProperties = new SettableJargonProperties();
+					if(IrodsCommandLineConnector.CHECKSUM_TYPE==GenericChecksum.Algorithm.SHA256.toString())
+						jargonProperties.setChecksumEncoding(ChecksumEncodingEnum.SHA256);
 					jargonProperties.setForcePamFlush(true);
 					irodsFileSystem.getIrodsSession().setJargonProperties(jargonProperties);
 					
@@ -1497,7 +1501,7 @@ public class IrodsSystemConnector {
 		try {
 			DataObject dao = getDataObjectAO().findByAbsolutePath(data_name);
 			if (dao.getChecksum().equals("")) throw new IrodsRuntimeException(data_name + " has not a checksum yet!");
-			else return dao.getChecksum();
+			else return IrodsCommandLineConnector.prepareIrodsCheckSumForDNS(dao.getChecksum());
 		} catch (JargonException e) {
 			throw new IrodsRuntimeException("Get Checksum error on " + data_name,e);
 		} 

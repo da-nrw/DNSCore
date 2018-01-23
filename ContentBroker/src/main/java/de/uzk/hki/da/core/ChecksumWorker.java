@@ -129,7 +129,7 @@ public class ChecksumWorker extends Worker{
     				if (copy.getChecksumDate()==null) {
     					cs = gridFacade.reComputeAndGetChecksumInCustody(dest);
     					csType=gridFacade.getChecksumType();
-    					cs64=copy.getChecksumBase64();
+    					cs64=GenericChecksum.encodeBase64(cs);
     					logger.info("checksum in custody is " + cs + " for " + dest);
     				} else if (copy.getChecksumDate().before(oneMonthAgo.getTime())) {
     					cs = gridFacade.reComputeAndGetChecksumInCustody(dest);

@@ -9,8 +9,8 @@ import java.util.Base64;
 
 public class GenericChecksum {
 	static final int BUFFER_SIZE=1024*4;
-	public static final Algorithm DEFAULT_CHECKSUM_ALGO=Algorithm.MD5;//Algorithm.SHA256; //"MD5"
-	public static final Algorithm DEFAULT_CHECKSUM_ALGO_FOR_DAF=Algorithm.SHA256;//Algorithm.MD5;
+	public static final Algorithm DEFAULT_CHECKSUM_ALGO=Algorithm.SHA256;//Algorithm.SHA256; //"MD5"
+	public static final Algorithm DEFAULT_CHECKSUM_ALGO_FOR_DAF=Algorithm.MD5;//Algorithm.MD5;
 	public static enum Algorithm{MD5("MD5"),SHA1("SHA-1"),SHA256("SHA-256"),SHA384("SHA-384"),SHA512("SHA-512");
 		private final String algoName;
 		private Algorithm(final String algo) {

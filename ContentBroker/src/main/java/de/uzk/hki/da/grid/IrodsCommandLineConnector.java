@@ -41,7 +41,7 @@ import de.uzk.hki.da.utils.StringUtilities;
  */
 public class IrodsCommandLineConnector {
 	/** configured checksum type in irods configs */
-	static final String CHECKSUM_TYPE=GenericChecksum.Algorithm.MD5.toString();//GenericChecksum.Algorithm.SHA256.toString();
+	static final String CHECKSUM_TYPE=GenericChecksum.Algorithm.SHA256.toString();//GenericChecksum.Algorithm.SHA256.toString(); GenericChecksum.Algorithm.MD5.toString();
 	/** CommandLineConnector */
 	private CommandLineConnector clc;
 	/** The logger. */
@@ -252,7 +252,7 @@ public class IrodsCommandLineConnector {
 		return prepareIrodsCheckSumForDNS(ret);
 	}
 	
-	private String prepareIrodsCheckSumForDNS(String chksum){
+	public static String prepareIrodsCheckSumForDNS(String chksum){
 		if(CHECKSUM_TYPE.equals(GenericChecksum.Algorithm.SHA256.toString())){
 			return GenericChecksum.decodeBase64(chksum.split("sha2:")[1]);
 		}else if(CHECKSUM_TYPE.equals(GenericChecksum.Algorithm.MD5.toString()))
@@ -261,7 +261,7 @@ public class IrodsCommandLineConnector {
 			throw new RuntimeException("Unknown checksum type: "+CHECKSUM_TYPE);
 	}
 	
-	private String prepareDNSCheckSumForIrods(String chksum){
+	public static String prepareDNSCheckSumForIrods(String chksum){
 		if(CHECKSUM_TYPE.equals(GenericChecksum.Algorithm.SHA256.toString())){
 			return "sha2:"+GenericChecksum.encodeBase64(chksum);
 		}else if(CHECKSUM_TYPE.equals(GenericChecksum.Algorithm.MD5.toString()))
