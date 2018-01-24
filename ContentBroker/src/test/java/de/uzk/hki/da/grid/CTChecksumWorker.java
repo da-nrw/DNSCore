@@ -27,10 +27,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Properties;
 
 import org.hibernate.Session;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.core.ChecksumWorker;
@@ -38,6 +40,7 @@ import de.uzk.hki.da.model.Copy;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.MD5Checksum;
+import de.uzk.hki.da.utils.PropertiesUtils;
 
 public class CTChecksumWorker {
 
@@ -54,15 +57,22 @@ public class CTChecksumWorker {
 	String feddao =  fedcoll + "/" + data_name;
 	String md5sum = "";
 
-	String zone = "c-i";
 	File tempTest;
 	
+	private static final String PROPERTIES_FILE_PATH = "src/main/conf/config.properties.ci";
+	private static String zone;
 	private static String tmpDir = "/tmp/forkDir/";
 	
+	
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+	
+		Properties properties = readProperties();			
+		zone = properties.getProperty("irods.zone");
+	}
 	@Before
 	public void before() throws IOException {
 		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
-		
 
 		node = new Node();
 		node.setName("localnode");
@@ -103,7 +113,7 @@ public class CTChecksumWorker {
 		setAllowedTimeAndNumOfCopyjobsForChecksumWorker(cw);
 		cw.setSecondaryCopyPrefix(fedprefix);
 		IrodsSystemConnector isc = new IrodsSystemConnector("","");
-		isc.setZone("c-i");
+		isc.setZone(zone);
 		gf.setIrodsSystemConnector(isc);
 		cw.setGridFacade(gf);
 		cw.setNode(node);
@@ -136,7 +146,7 @@ public class CTChecksumWorker {
 		setAllowedTimeAndNumOfCopyjobsForChecksumWorker(cw);
 		cw.setSecondaryCopyPrefix(fedprefix);
 		IrodsSystemConnector isc = new IrodsSystemConnector("","");
-		isc.setZone("c-i");
+		isc.setZone(zone);
 		gf.setIrodsSystemConnector(isc);
 		cw.setGridFacade(gf);
 		cw.setNode(node);
@@ -166,7 +176,7 @@ public class CTChecksumWorker {
 		setAllowedTimeAndNumOfCopyjobsForChecksumWorker(cw);
 		cw.setSecondaryCopyPrefix(fedprefix);
 		IrodsSystemConnector isc = new IrodsSystemConnector("","");
-		isc.setZone("c-i");
+		isc.setZone(zone);
 		gf.setIrodsSystemConnector(isc);
 		cw.setGridFacade(gf);
 		cw.setNode(node);
@@ -201,6 +211,19 @@ public class CTChecksumWorker {
 		cw.setStartTime(0);
 		cw.setEndTime(24);
 		cw.setAllowedNumOfCopyjobs(100);
+	}	
+	
+	private static Properties readProperties() throws IOException {
+		
+		Properties properties = null;
+		File propertiesFile = new File (PROPERTIES_FILE_PATH);
+		try {
+			properties = PropertiesUtils.read(propertiesFile);
+		} catch (IOException e) {
+			System.out.println("error while reading " + propertiesFile);
+			return null;
+		}
+		return properties;
 	}
 	
 
