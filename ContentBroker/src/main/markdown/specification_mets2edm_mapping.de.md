@@ -32,9 +32,45 @@ Der Unterabschnitt **"Regeln für das Mergen der Felder"** beschreibt, wie mehre
 * dc.titel = $3 + " " + $1  ; wenn beide vorhanden.
 * dc.titel = $3 + " " + $1 + " " + $2  ; wenn drei vorhanden.
 
-
 ### Status
 Umgesetzt in Build 1856
+
+### Tabellarische Übersicht
+
+<table>
+<thead>
+<td>Quelle</td>
+<td>Ziel</td>
+<td>Regeln</td>
+<td>Status</td>
+</thead>
+<tr>
+<td>
+<ul>
+<li>mods.titleInfo.title $1</li>
+<li>mods.titleInfo.subTitle $2</li>
+<li>mods.titleInfo.nonSort $3</li>
+<li>mods.titleInfo.displayLabel</li>
+</ul>
+</td>
+<td>
+<ul>
+<li>dc.title</li>
+</ul>
+</td>
+<td>
+<ul>
+<li>dc.title = $1 + " " + $2  ; wenn beide vorhanden.</li>
+<li>dc.titel = $3 + " " + $1  ; wenn beide vorhanden.</li>
+<li>dc.titel = $3 + " " + $1 + " " + $2  ; wenn drei vorhanden.</li>
+</ul>
+</td>
+<td>Umgesetzt in Build 1856</td>
+<td>
+</td>
+</tr>
+</table>
+
 
 ## Mapping auf Person(en) / Institution(en) im Portal
 
