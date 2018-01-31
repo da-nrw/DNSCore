@@ -204,9 +204,9 @@ Umgesetzt in Build 1856
 
 *Wenn erfüllt*
 
-* mods.originInfo.publisher $1
-* mods.originInfo.place.placeTerm[type=text] $2
-* mods.originInfo.dateIssued $3
+* mods.originInfo.publisher = $1
+* mods.originInfo.place.placeTerm[type=text] = $2
+* mods.originInfo.dateIssued = $3
 
 
 ### Mapping zu EDM / Index
@@ -225,6 +225,45 @@ Umgesetzt in Build 1856
 ### Status
 Umgesetzt in Build 1856
 
+### Tabellarische Übersicht
+
+<table>
+<thead style="font-weight: 600;">
+<tr>
+<td>Quelle</td>
+<td>Ziel</td>
+<td>Regeln</td>
+<td>Status</td>
+</tr>
+</thead>
+<tr>
+<td>
+<p><em>Bedingung</em></p>
+<ul>
+<li>mods.originInfo.edition != "[Electronic ed.]"</li>
+</ul>
+<ul>
+<li>mods.originInfo.publisher = $1</li>
+<li>mods.originInfo.place.placeTerm[type=text] = $2</li>
+<li>mods.originInfo.dateIssued = $3</li>
+</ul>
+</td>
+<td>
+<ul>
+<li>dc.publisher $1 und $2</li>
+<li>dcterms.issued = $3</li>
+</ul>
+</td>
+<td>
+<ul>
+<li>dc.publisher = $1 + " (" + $2 + ")"</li>
+<li>dcterms.issued = $3</li>
+</ul>
+</td>
+<td>Umgesetzt in Build 1856</td>
+</tr>
+</table>
+
 ## Mapping auf Elektronische Edition im Portal
 
 ### Quelle Mods
@@ -235,9 +274,9 @@ Umgesetzt in Build 1856
 
 *Wenn erfüllt*
 
-* mods.originInfo.publisher $1
-* mods.originInfo.place.placeTerm[type=text] $2
-* mods.originInfo.dateIssued $3
+* mods.originInfo.publisher = $1
+* mods.originInfo.place.placeTerm[type=text] = $2
+* mods.originInfo.dateIssued = $3
 
 
 ### Mapping zu EDM / Index
@@ -257,12 +296,54 @@ Zusatz ", [Elektr. Ed.]" wird benötigt, um Publisher zuordnen zu können. Soll 
 ### Status
 [ ] Zusatz offen
 
+### Tabellarische Übersicht
+
+<table>
+<thead style="font-weight: 600;">
+<tr>
+<td>Quelle</td>
+<td>Ziel</td>
+<td>Regeln</td>
+<td>Status</td>
+</tr>
+</thead>
+<tr>
+<td>
+<p><em>Bedingung</em></p>
+<ul>
+<li>mods.originInfo.edition == "[Electronic ed.]"</li>
+</ul>
+<ul>
+<li>mods.originInfo.publisher = $1</li>
+<li>mods.originInfo.place.placeTerm[type=text] = $2</li>
+<li>mods.originInfo.dateIssued = $3</li>
+</ul>
+</td>
+<td>
+<ul>
+<li>dc.publisher $1 und $2</li>
+<li>dcterms.issued = $3</li>
+</ul>
+</td>
+<td>
+<ul>
+<li>dc.publisher = $1 + " (" + $2 + ")" + ", [Elektr. Ed.]"</li>
+<li>dcterms.issued = $3</li>
+</ul>
+<ul>
+<li>Zusatz ", [Elektr. Ed.]" wird benötigt, um Publisher zuordnen zu können. Soll im Portal nicht angezeigt werden.</li>
+</ul>
+</td>
+<td>Umgesetzt in Build 1856, [ ] Zusatz offen?</td>
+</tr>
+</table>
+
 ## Mapping auf Umfang im Portal
 
 ### Quelle Mods
 
-* mods.physicalDescription.extent $1
-* mods.physicalDescription.note $2
+* mods.physicalDescription.extent = $1
+* mods.physicalDescription.note = $2
 
 
 ### Mapping zu EDM / Index
@@ -275,7 +356,40 @@ Zusatz ", [Elektr. Ed.]" wird benötigt, um Publisher zuordnen zu können. Soll 
 
 
 ### Status
-[ ] Zusatz offen
+erledigt Build?
+
+### Tabellarische Übersicht
+
+<table>
+<thead style="font-weight: 600;">
+<tr>
+<td>Quelle</td>
+<td>Ziel</td>
+<td>Regeln</td>
+<td>Status</td>
+</tr>
+</thead>
+<tr>
+<td>
+<ul>
+<li>mods.physicalDescription.extent = $1</li>
+<li>mods.physicalDescription.note = $2</li>
+</ul>
+</td>
+<td>
+<ul>
+<li>dcterms.extend</li>
+</ul>
+</td>
+<td>
+<ul>
+<li>dcterms.extend = $1 + ", " + $2</li>
+</ul>
+</td>
+<td>Umgesetzt in Build ?</td>
+</tr>
+</table>
+
 
 
 
@@ -294,6 +408,34 @@ Wird aktuell im Portal nicht angezeigt. Ggf. für Suche wichtig
 ### Status
 [x] Umgesetzt
 
+### Tabellarische Übersicht
+
+<table>
+<thead style="font-weight: 600;">
+<tr>
+<td>Quelle</td>
+<td>Ziel</td>
+<td>Regeln</td>
+<td>Status</td>
+</tr>
+</thead>
+<tr>
+<td>
+<ul>
+<li>dv.rights.owner</li>
+</ul>
+</td>
+<td>
+<ul>
+<li>edm.dataProvider</li>
+</ul>
+</td>
+<td>
+</td>
+<td>Umgesetzt in Build ?</td>
+</tr>
+</table>
+
 ## Mapping für Nutzungslizenz im Portal
 
 ### Quelle Mods
@@ -304,11 +446,39 @@ Wird aktuell im Portal nicht angezeigt. Ggf. für Suche wichtig
 ### Mapping zu EDM / Index
 
 * edm.ProvidedCHO.dc.rights
+* ore.aggregation.edm.rights
 
 ### Bemerkung:  
 Nur die URL der Lizenz soll übernommen werden!
 
 ### Status
+Mapping auf edm.ProvidedCHO.dc.rights umgesetzt, Mapping auf ore.aggregation.edm.rights fehlt, ist verpflichtend für Europeana
 
+### Tabellarische Übersicht
 
-
+<table>
+<thead style="font-weight: 600;">
+<tr>
+<td>Quelle</td>
+<td>Ziel</td>
+<td>Regeln</td>
+<td>Status</td>
+</tr>
+</thead>
+<tr>
+<td>
+<ul>
+<li>mods.accessCondition[type="use and reproduction"].attr('xlink:href')</li>
+</ul>
+</td>
+<td>
+<ul>
+<li>edm.ProvidedCHO.dc.rights</li>
+<li>ore.aggregation.edm.rights</li>
+</ul>
+</td>
+<td>
+</td>
+<td>Mapping auf edm.ProvidedCHO.dc.rights umgesetzt, Mapping auf ore.aggregation.edm.rights fehlt, ist verpflichtend für Europeana</td>
+</tr>
+</table>
