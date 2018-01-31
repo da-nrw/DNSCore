@@ -11,6 +11,287 @@ Der Unterabschnitt **"Mapping zu EDM / Index"** gibt an, wohin die aus der Quell
 
 Der Unterabschnitt **"Regeln für das Mergen der Felder"** beschreibt, wie mehrere Felder aus der Quelle in einem oder mehreren EDM-Feldern kombiniert werden. 
 
+## Übersichtstabelle
+
+<table style="border: 1px solid;">
+<thead style="font-weight: 600;">
+<tr>
+<td style="border: 1px solid;">Quelle</td>
+<td style="border: 1px solid;">Ziel</td>
+<td style="border: 1px solid;">Merging-Regeln</td>
+<td style="border: 1px solid;">Status</td>
+</tr>
+</thead>
+<tr>
+<td style="border: 1px solid;">
+<ul>
+<li>mods.titleInfo.title = $1</li>
+<li>mods.titleInfo.subTitle = $2</li>
+<li>mods.titleInfo.nonSort = $3</li>
+<li>mods.titleInfo.displayLabel</li>
+</ul>
+</td>
+<td style="border: 1px solid;">
+<ul>
+<li>edm.ProvidedCHO.dc.title</li>
+</ul>
+</td>
+<td style="border: 1px solid;">
+<ul>
+<li>dc.title = $1 + " " + $2  ; wenn beide vorhanden.</li>
+<li>dc.titel = $3 + " " + $1  ; wenn beide vorhanden.</li>
+<li>dc.titel = $3 + " " + $1 + " " + $2  ; wenn drei vorhanden.</li>
+</ul>
+</td style="border: 1px solid;">
+<td style="border: 1px solid;">Umgesetzt in Build 1856</td>
+</tr>
+<tr>
+<td style="border: 1px solid;">
+</td>
+<td style="border: 1px solid;">
+<ul>
+<li>edm.ProvidedCHO.dc.description</li>
+</ul>
+</td>
+<td style="border: 1px solid;">
+</td>
+<td style="border: 1px solid;">Ausstehend</td>
+</tr>
+<tr>
+<td style="border: 1px solid;">
+<ul>
+<li>mods.language.mods.languageTerm[authority=iso639-2b]\[type=code]</li>
+</ul>
+</td>
+<td style="border: 1px solid;">
+<ul>
+<li>edm.ProvidedCHO.dc.language</li>
+</ul>
+</td>
+<td style="border: 1px solid;">
+</td>
+<td style="border: 1px solid;">Ausstehend</td>
+</tr>
+<tr>
+<td style="border: 1px solid;">
+<ul>
+<li>mods.genre[authority=marcg]</li>
+</ul>
+</td>
+<td style="border: 1px solid;">
+<ul>
+<li>edm.ProvidedCHO.dc.type</li>
+</ul>
+</td>
+<td style="border: 1px solid;">
+</td>
+<td style="border: 1px solid;">Ausstehend</td>
+</tr>
+<tr>
+<td style="border: 1px solid;">
+<ul>
+<li>mods.typeOfResource == "text" entspricht edm.ProvidedCHO.edm.type = "TEXT"</li>
+<li>mods.typeOfResource == "still image" entspricht edm.ProvidedCHO.edm.type = "IMAGE"</li>
+<li>mods.typeOfResource == "moving image" entspricht edm.ProvidedCHO.edm.type = "VIDEO"</li>
+<li>mods.typeOfResource == "sound recording" entspricht edm.ProvidedCHO.edm.type = "SOUND"</li>
+</ul>
+</td>
+<td style="border: 1px solid;">
+<ul>
+<li>edm.ProvidedCHO.dc.type</li>
+</ul>
+</td>
+<td style="border: 1px solid;">
+</td>
+<td style="border: 1px solid;">Ausstehend</td>
+</tr>
+<tr>
+<td style="border: 1px solid;">
+<p><em>Bedingung</em></p>
+<ul>
+<li>mods.name.role.roleTerm[type=code] == aut oder cre</li>
+</ul>
+<p><em>Wenn erfüllt</em></p>
+<ul>
+<li>mods.name.namePart = $1</li>
+<li>mods.name.role.roleTerm[type=text] = $2</li>
+</ul>
+</td>
+<td style="border: 1px solid;">
+<ul>
+<li>dc.creator</li>
+</ul>
+</td>
+<td style="border: 1px solid;">
+<ul>
+<li>dc.creator = $2 + ", " + $1 ; wenn beide vorhanden.</li>
+</ul>
+</td>
+<td style="border: 1px solid;">Umgesetzt in Build 1856</td>
+</tr>
+<tr>
+<td style="border: 1px solid;">
+<p><em>Bedingung</em></p>
+<ul>
+<li>mods.name.role.roleTerm[type=code] != aut oder cre</li>
+</ul>
+<p><em>Wenn erfüllt</em></p>
+<ul>
+<li>mods.name.namePart = $1</li>
+<li>mods.name.role.roleTerm[type=text] = $2</li>
+</ul>
+</td>
+<td style="border: 1px solid;">
+<ul>
+<li>dc.conrtributor</li>
+</ul>
+</td>
+<td style="border: 1px solid;">
+<ul>
+<li>dc.contributor = $2 + ", " + $1 ; wenn beide vorhanden.</li>
+</ul>
+</td>
+<td style="border: 1px solid;">Umgesetzt in Build 1856</td>
+</tr>
+<tr>
+<td style="border: 1px solid;">
+<p><em>Bedingung</em></p>
+<ul>
+<li>mods.originInfo.edition != "[Electronic ed.]"</li>
+</ul>
+<p><em>Wenn erfüllt</em></p>
+<ul>
+<li>mods.originInfo.publisher = $1</li>
+<li>mods.originInfo.place.placeTerm[type=text] = $2</li>
+<li>mods.originInfo.dateIssued = $3</li>
+</ul>
+</td>
+<td style="border: 1px solid;">
+<ul>
+<li>dc.publisher $1 und $2</li>
+<li>dcterms.issued = $3</li>
+</ul>
+</td>
+<td style="border: 1px solid;">
+<ul>
+<li>dc.publisher = $1 + " (" + $2 + ")"</li>
+<li>dcterms.issued = $3</li>
+</ul>
+</td>
+<td style="border: 1px solid;">Umgesetzt in Build 1856</td>
+</tr>
+<tr>
+<td style="border: 1px solid;">
+<p><em>Bedingung</em></p>
+<ul>
+<li>mods.originInfo.edition == "[Electronic ed.]"</li>
+</ul>
+<p><em>Wenn erfüllt</em></p>
+<ul>
+<li>mods.originInfo.publisher = $1</li>
+<li>mods.originInfo.place.placeTerm[type=text] = $2</li>
+<li>mods.originInfo.dateIssued = $3</li>
+</ul>
+</td>
+<td style="border: 1px solid;">
+<ul>
+<li>dc.publisher $1 und $2</li>
+<li>dcterms.issued = $3</li>
+</ul>
+</td>
+<td style="border: 1px solid;">
+<ul>
+<li>dc.publisher = $1 + " (" + $2 + ")" + ", [Elektr. Ed.]"</li>
+<li>dcterms.issued = $3</li>
+</ul>
+<ul>
+<li>Zusatz ", [Elektr. Ed.]" wird benötigt, um Publisher zuordnen zu können. Soll im Portal nicht angezeigt werden.</li>
+</ul>
+</td>
+<td style="border: 1px solid;">Umgesetzt in Build 1856, [ ] Zusatz offen?</td>
+</tr>
+<tr>
+<td style="border: 1px solid;">
+<p><em>Bedingung</em></p>
+<ul>
+<li>mods.originInfo.edition == "[Electronic ed.]"</li>
+</ul>
+<p><em>Wenn erfüllt</em></p>
+<ul>
+<li>mods.originInfo.publisher = $1</li>
+<li>mods.originInfo.place.placeTerm[type=text] = $2</li>
+<li>mods.originInfo.dateIssued = $3</li>
+</ul>
+</td>
+<td style="border: 1px solid;">
+<ul>
+<li>dc.publisher $1 und $2</li>
+<li>dcterms.issued = $3</li>
+</ul>
+</td>
+<td style="border: 1px solid;">
+<ul>
+<li>dc.publisher = $1 + " (" + $2 + ")" + ", [Elektr. Ed.]"</li>
+<li>dcterms.issued = $3</li>
+</ul>
+<ul>
+<li>Zusatz ", [Elektr. Ed.]" wird benötigt, um Publisher zuordnen zu können. Soll im Portal nicht angezeigt werden.</li>
+</ul>
+</td>
+<td style="border: 1px solid;">Umgesetzt in Build 1856, [ ] Zusatz offen?</td>
+</tr>
+<tr>
+<td style="border: 1px solid;">
+<ul>
+<li>mods.physicalDescription.extent = $1</li>
+<li>mods.physicalDescription.note = $2</li>
+</ul>
+</td>
+<td style="border: 1px solid;">
+<ul>
+<li>dcterms.extend</li>
+</ul>
+</td>
+<td style="border: 1px solid;">
+<ul>
+<li>dcterms.extend = $1 + ", " + $2</li>
+</ul>
+</td>
+<td style="border: 1px solid;">Umgesetzt in Build ?</td>
+</tr>
+<tr>
+<td style="border: 1px solid;">
+<ul>
+<li>dv.rights.owner</li>
+</ul>
+</td>
+<td style="border: 1px solid;">
+<ul>
+<li>edm.dataProvider</li>
+</ul>
+</td>
+<td style="border: 1px solid;">
+</td>
+<td style="border: 1px solid;">Umgesetzt</td>
+</tr>
+<tr>
+<td style="border: 1px solid;">
+<ul>
+<li>mods.accessCondition[type="use and reproduction"].attr('xlink:href')</li>
+</ul>
+</td>
+<td style="border: 1px solid;">
+<ul>
+<li>edm.ProvidedCHO.dc.rights</li>
+<li>ore.aggregation.edm.rights</li>
+</ul>
+</td>
+<td style="border: 1px solid;">
+</td>
+<td style="border: 1px solid;">Mapping auf edm.ProvidedCHO.dc.rights umgesetzt, Mapping auf ore.aggregation.edm.rights fehlt, ist verpflichtend für Europeana</td>
+</tr>
+
+</table>
 
 ## Mapping für Titel im Portal:
 
@@ -24,7 +305,7 @@ Der Unterabschnitt **"Regeln für das Mergen der Felder"** beschreibt, wie mehre
 
 ### Mapping zu EDM / Index
 
-* dc.title
+* edm.ProvidedCHO.dc.title
 
 ### Regeln für das Mergen der Felder
 
@@ -35,42 +316,80 @@ Der Unterabschnitt **"Regeln für das Mergen der Felder"** beschreibt, wie mehre
 ### Status
 Umgesetzt in Build 1856
 
-### Tabellarische Übersicht
+## Mapping für Beschreibung im Portal:
 
-<table>
-<thead style="font-weight: 600;">
-<tr>
-<td>Quelle</td>
-<td>Ziel</td>
-<td>Regeln</td>
-<td>Status</td>
-</tr>
-</thead>
-<tr>
-<td>
-<ul>
-<li>mods.titleInfo.title = $1</li>
-<li>mods.titleInfo.subTitle = $2</li>
-<li>mods.titleInfo.nonSort = $3</li>
-<li>mods.titleInfo.displayLabel</li>
-</ul>
-</td>
-<td>
-<ul>
-<li>dc.title</li>
-</ul>
-</td>
-<td>
-<ul>
-<li>dc.title = $1 + " " + $2  ; wenn beide vorhanden.</li>
-<li>dc.titel = $3 + " " + $1  ; wenn beide vorhanden.</li>
-<li>dc.titel = $3 + " " + $1 + " " + $2  ; wenn drei vorhanden.</li>
-</ul>
-</td>
-<td>Umgesetzt in Build 1856</td>
-</tr>
-</table>
+### Quelle Mods
 
+* bisher kein Feld identifizierbar
+
+### Mapping zu EDM / Index
+
+* edm.ProvidedCHO.dc.description
+
+### Regeln für das Mergen der Felder
+
+
+### Status
+
+Ausstehend
+
+## Mapping für dc:language im OAI-PMH:
+
+### Quelle Mods
+
+* mods.language.mods.languageTerm[authority=iso639-2b]\[type=code]
+
+### Mapping zu EDM / Index
+
+* edm.ProvidedCHO.dc.language
+
+### Regeln für das Mergen der Felder
+
+### Status
+
+Ausstehend
+
+## Mapping für dc:type im OAI-PMH:
+
+### Quelle Mods
+
+* mods.subject.mods.genre = $1
+* mods.genre[authority=marcg] =$2
+
+### Mapping zu EDM / Index
+
+* edm.ProvidedCHO.dc.type
+
+### Regeln für das Mergen der Felder
+
+* edm.ProvidedCHO.dc.type = $1
+oder 
+* edm.ProvidedCHO.dc.type = $2
+
+### Status
+
+Ausstehend
+
+## Mapping für dc:type im OAI-PMH:
+
+### Quelle Mods
+
+* mods.typeOfResource == "text" entspricht edm.ProvidedCHO.edm.type = "TEXT"  
+* mods.typeOfResource == "still image" entspricht edm.ProvidedCHO.edm.type = "IMAGE"
+* mods.typeOfResource == "moving image" entspricht edm.ProvidedCHO.edm.type = "VIDEO"
+* mods.typeOfResource == "sound recording" entspricht edm.ProvidedCHO.edm.type = "SOUND"
+  
+
+### Mapping zu EDM / Index
+
+* edm.ProvidedCHO.edm.type
+
+### Regeln für das Mergen der Felder
+
+
+### Status
+
+Ausstehend
 
 ## Mapping auf Person(en) / Institution(en) im Portal
 
@@ -97,42 +416,6 @@ Umgesetzt in Build 1856
 ### Status
 Umgesetzt in Build 1856
 
-### Tabellarische Übersicht
-
-<table>
-<thead style="font-weight: 600;">
-<tr>
-<td>Quelle</td>
-<td>Ziel</td>
-<td>Regeln</td>
-<td>Status</td>
-</tr>
-</thead>
-<tr>
-<td>
-<p><em>Bedingung</em></p>
-<ul>
-<li>mods.name.role.roleTerm[type=code] == aut oder cre</li>
-</ul>
-<ul>
-<li>mods.name.namePart = $1</li>
-<li>mods.name.role.roleTerm[type=text] = $2</li>
-</ul>
-</td>
-<td>
-<ul>
-<li>dc.creator</li>
-</ul>
-</td>
-<td>
-<ul>
-<li>dc.creator = $2 + ", " + $1 ; wenn beide vorhanden.</li>
-</ul>
-</td>
-<td>Umgesetzt in Build 1856</td>
-</tr>
-</table>
-
 ## Mapping auf Person(en) / Institution(en) im Portal
 
 ### Quelle Mods
@@ -157,42 +440,6 @@ Umgesetzt in Build 1856
 
 ### Status
 Umgesetzt in Build 1856
-
-### Tabellarische Übersicht
-
-<table>
-<thead style="font-weight: 600;">
-<tr>
-<td>Quelle</td>
-<td>Ziel</td>
-<td>Regeln</td>
-<td>Status</td>
-</tr>
-</thead>
-<tr>
-<td>
-<p><em>Bedingung</em></p>
-<ul>
-<li>mods.name.role.roleTerm[type=code] != aut oder cre</li>
-</ul>
-<ul>
-<li>mods.name.namePart = $1</li>
-<li>mods.name.role.roleTerm[type=text] = $2</li>
-</ul>
-</td>
-<td>
-<ul>
-<li>dc.conrtributor</li>
-</ul>
-</td>
-<td>
-<ul>
-<li>dc.contributor = $2 + ", " + $1 ; wenn beide vorhanden.</li>
-</ul>
-</td>
-<td>Umgesetzt in Build 1856</td>
-</tr>
-</table>
 
 ## Mapping auf *Erschienen* im Portal
 
@@ -224,45 +471,6 @@ Umgesetzt in Build 1856
 
 ### Status
 Umgesetzt in Build 1856
-
-### Tabellarische Übersicht
-
-<table>
-<thead style="font-weight: 600;">
-<tr>
-<td>Quelle</td>
-<td>Ziel</td>
-<td>Regeln</td>
-<td>Status</td>
-</tr>
-</thead>
-<tr>
-<td>
-<p><em>Bedingung</em></p>
-<ul>
-<li>mods.originInfo.edition != "[Electronic ed.]"</li>
-</ul>
-<ul>
-<li>mods.originInfo.publisher = $1</li>
-<li>mods.originInfo.place.placeTerm[type=text] = $2</li>
-<li>mods.originInfo.dateIssued = $3</li>
-</ul>
-</td>
-<td>
-<ul>
-<li>dc.publisher $1 und $2</li>
-<li>dcterms.issued = $3</li>
-</ul>
-</td>
-<td>
-<ul>
-<li>dc.publisher = $1 + " (" + $2 + ")"</li>
-<li>dcterms.issued = $3</li>
-</ul>
-</td>
-<td>Umgesetzt in Build 1856</td>
-</tr>
-</table>
 
 ## Mapping auf Elektronische Edition im Portal
 
@@ -296,47 +504,6 @@ Zusatz ", [Elektr. Ed.]" wird benötigt, um Publisher zuordnen zu können. Soll 
 ### Status
 [ ] Zusatz offen
 
-### Tabellarische Übersicht
-
-<table>
-<thead style="font-weight: 600;">
-<tr>
-<td>Quelle</td>
-<td>Ziel</td>
-<td>Regeln</td>
-<td>Status</td>
-</tr>
-</thead>
-<tr>
-<td>
-<p><em>Bedingung</em></p>
-<ul>
-<li>mods.originInfo.edition == "[Electronic ed.]"</li>
-</ul>
-<ul>
-<li>mods.originInfo.publisher = $1</li>
-<li>mods.originInfo.place.placeTerm[type=text] = $2</li>
-<li>mods.originInfo.dateIssued = $3</li>
-</ul>
-</td>
-<td>
-<ul>
-<li>dc.publisher $1 und $2</li>
-<li>dcterms.issued = $3</li>
-</ul>
-</td>
-<td>
-<ul>
-<li>dc.publisher = $1 + " (" + $2 + ")" + ", [Elektr. Ed.]"</li>
-<li>dcterms.issued = $3</li>
-</ul>
-<ul>
-<li>Zusatz ", [Elektr. Ed.]" wird benötigt, um Publisher zuordnen zu können. Soll im Portal nicht angezeigt werden.</li>
-</ul>
-</td>
-<td>Umgesetzt in Build 1856, [ ] Zusatz offen?</td>
-</tr>
-</table>
 
 ## Mapping auf Umfang im Portal
 
@@ -358,41 +525,6 @@ Zusatz ", [Elektr. Ed.]" wird benötigt, um Publisher zuordnen zu können. Soll 
 ### Status
 erledigt Build?
 
-### Tabellarische Übersicht
-
-<table>
-<thead style="font-weight: 600;">
-<tr>
-<td>Quelle</td>
-<td>Ziel</td>
-<td>Regeln</td>
-<td>Status</td>
-</tr>
-</thead>
-<tr>
-<td>
-<ul>
-<li>mods.physicalDescription.extent = $1</li>
-<li>mods.physicalDescription.note = $2</li>
-</ul>
-</td>
-<td>
-<ul>
-<li>dcterms.extend</li>
-</ul>
-</td>
-<td>
-<ul>
-<li>dcterms.extend = $1 + ", " + $2</li>
-</ul>
-</td>
-<td>Umgesetzt in Build ?</td>
-</tr>
-</table>
-
-
-
-
 ## Mapping für edmDataProvider in OAI-PMH
 Wird aktuell im Portal nicht angezeigt. Ggf. für Suche wichtig
 
@@ -406,35 +538,7 @@ Wird aktuell im Portal nicht angezeigt. Ggf. für Suche wichtig
 * edm.dataProvider
 
 ### Status
-[x] Umgesetzt
-
-### Tabellarische Übersicht
-
-<table>
-<thead style="font-weight: 600;">
-<tr>
-<td>Quelle</td>
-<td>Ziel</td>
-<td>Regeln</td>
-<td>Status</td>
-</tr>
-</thead>
-<tr>
-<td>
-<ul>
-<li>dv.rights.owner</li>
-</ul>
-</td>
-<td>
-<ul>
-<li>edm.dataProvider</li>
-</ul>
-</td>
-<td>
-</td>
-<td>Umgesetzt in Build ?</td>
-</tr>
-</table>
+Umgesetzt
 
 ## Mapping für Nutzungslizenz im Portal
 
@@ -442,43 +546,14 @@ Wird aktuell im Portal nicht angezeigt. Ggf. für Suche wichtig
 
 * mods.accessCondition[type="use and reproduction"].attr('xlink:href')
 
-
 ### Mapping zu EDM / Index
 
 * edm.ProvidedCHO.dc.rights
 * ore.aggregation.edm.rights
 
 ### Bemerkung:  
-Nur die URL der Lizenz soll übernommen werden!
+Beide Zielfelder sind zu befüllen, nur die URL der Lizenz soll übernommen werden!
 
 ### Status
 Mapping auf edm.ProvidedCHO.dc.rights umgesetzt, Mapping auf ore.aggregation.edm.rights fehlt, ist verpflichtend für Europeana
 
-### Tabellarische Übersicht
-
-<table>
-<thead style="font-weight: 600;">
-<tr>
-<td>Quelle</td>
-<td>Ziel</td>
-<td>Regeln</td>
-<td>Status</td>
-</tr>
-</thead>
-<tr>
-<td>
-<ul>
-<li>mods.accessCondition[type="use and reproduction"].attr('xlink:href')</li>
-</ul>
-</td>
-<td>
-<ul>
-<li>edm.ProvidedCHO.dc.rights</li>
-<li>ore.aggregation.edm.rights</li>
-</ul>
-</td>
-<td>
-</td>
-<td>Mapping auf edm.ProvidedCHO.dc.rights umgesetzt, Mapping auf ore.aggregation.edm.rights fehlt, ist verpflichtend für Europeana</td>
-</tr>
-</table>
