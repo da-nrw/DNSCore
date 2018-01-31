@@ -16,9 +16,9 @@ Der Unterabschnitt **"Regeln für das Mergen der Felder"** beschreibt, wie mehre
 
 ### Quelle Mods
 
-* mods.titleInfo.title $1
-* mods.titleInfo.subTitle $2
-* mods.titleInfo.nonSort $3
+* mods.titleInfo.title = $1
+* mods.titleInfo.subTitle = $2
+* mods.titleInfo.nonSort = $3
 * mods.titleInfo.displayLabel
 
 
@@ -38,18 +38,20 @@ Umgesetzt in Build 1856
 ### Tabellarische Übersicht
 
 <table>
-<thead>
+<thead style="font-weight: 600;">
+<tr>
 <td>Quelle</td>
 <td>Ziel</td>
 <td>Regeln</td>
 <td>Status</td>
+</tr>
 </thead>
 <tr>
 <td>
 <ul>
-<li>mods.titleInfo.title $1</li>
-<li>mods.titleInfo.subTitle $2</li>
-<li>mods.titleInfo.nonSort $3</li>
+<li>mods.titleInfo.title = $1</li>
+<li>mods.titleInfo.subTitle = $2</li>
+<li>mods.titleInfo.nonSort = $3</li>
 <li>mods.titleInfo.displayLabel</li>
 </ul>
 </td>
@@ -66,8 +68,6 @@ Umgesetzt in Build 1856
 </ul>
 </td>
 <td>Umgesetzt in Build 1856</td>
-<td>
-</td>
 </tr>
 </table>
 
@@ -82,8 +82,8 @@ Umgesetzt in Build 1856
 
 *Wenn erfüllt*
 
-* mods.name.namePart $1
-* mods.name.role.roleTerm[type=text] $2
+* mods.name.namePart = $1
+* mods.name.role.roleTerm[type=text] = $2
 
 
 ### Mapping zu EDM / Index
@@ -97,6 +97,41 @@ Umgesetzt in Build 1856
 ### Status
 Umgesetzt in Build 1856
 
+### Tabellarische Übersicht
+
+<table>
+<thead style="font-weight: 600;">
+<tr>
+<td>Quelle</td>
+<td>Ziel</td>
+<td>Regeln</td>
+<td>Status</td>
+</tr>
+</thead>
+<tr>
+<td>
+<p><em>Bedingung</em></p>
+<ul>
+<li>mods.name.role.roleTerm[type=code] == aut oder cre</li>
+</ul>
+<ul>
+<li>mods.name.namePart = $1</li>
+<li>mods.name.role.roleTerm[type=text] = $2</li>
+</ul>
+</td>
+<td>
+<ul>
+<li>dc.creator</li>
+</ul>
+</td>
+<td>
+<ul>
+<li>dc.creator = $2 + ", " + $1 ; wenn beide vorhanden.</li>
+</ul>
+</td>
+<td>Umgesetzt in Build 1856</td>
+</tr>
+</table>
 
 ## Mapping auf Person(en) / Institution(en) im Portal
 
@@ -108,8 +143,8 @@ Umgesetzt in Build 1856
 
 *Wenn erfüllt*
 
-* mods.name.namePart $1
-* mods.name.namePart.role.roleTerm[type=text] $2
+* mods.name.namePart = $1
+* mods.name.namePart.role.roleTerm[type=text] = $2
 
 
 ### Mapping zu EDM / Index
@@ -122,6 +157,42 @@ Umgesetzt in Build 1856
 
 ### Status
 Umgesetzt in Build 1856
+
+### Tabellarische Übersicht
+
+<table>
+<thead style="font-weight: 600;">
+<tr>
+<td>Quelle</td>
+<td>Ziel</td>
+<td>Regeln</td>
+<td>Status</td>
+</tr>
+</thead>
+<tr>
+<td>
+<p><em>Bedingung</em></p>
+<ul>
+<li>mods.name.role.roleTerm[type=code] != aut oder cre</li>
+</ul>
+<ul>
+<li>mods.name.namePart = $1</li>
+<li>mods.name.role.roleTerm[type=text] = $2</li>
+</ul>
+</td>
+<td>
+<ul>
+<li>dc.conrtributor</li>
+</ul>
+</td>
+<td>
+<ul>
+<li>dc.contributor = $2 + ", " + $1 ; wenn beide vorhanden.</li>
+</ul>
+</td>
+<td>Umgesetzt in Build 1856</td>
+</tr>
+</table>
 
 ## Mapping auf *Erschienen* im Portal
 
