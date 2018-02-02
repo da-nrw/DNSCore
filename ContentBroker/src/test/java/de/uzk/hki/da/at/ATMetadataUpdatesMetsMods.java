@@ -66,6 +66,7 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 	
 	@BeforeClass
 	public static void setUp() throws IOException{
+		activateMetsUrnForTestCSN(true);
 		ath.putSIPtoIngestArea(origName, "tgz", origName);
 		ath.awaitObjectState(origName,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		ath.waitForDefinedPublishedState(origName);
@@ -75,6 +76,7 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 	
 	@AfterClass
 	public static void tearDown() throws IOException{
+		activateMetsUrnForTestCSN(false);
 		FolderUtils.deleteDirectorySafe(retrievalFolder);
 		Path.makeFile("tmp",object.getIdentifier()+".pack_1.tar").delete(); // retrieved dip
 	}

@@ -13,6 +13,9 @@
           	"@root": {
                 "type": "string"
             },
+            "@institutionType": {
+                "type": "string"
+            },
             "edm:aggregatedCHO": {
                 "dynamic": "true",
                 "path": "just_name",

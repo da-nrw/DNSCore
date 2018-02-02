@@ -178,12 +178,13 @@ public class UpdateMetadataAction extends AbstractAction {
 				}
 				
 				if(presMode && "METS".equals(packageType)&&o.getLicense_flag()==C.LICENSEFLAG_PREMIS){//append accessCondition-Element to PIP-Mets 
-					logger.debug("Insert License from Premis to Metadata file ");	
+					logger.debug("Insert License from Premis to Mets-Metadata file ");	
 					PremisLicense pLicense;
 						try {
 							MetsMetadataStructure mms = new MetsMetadataStructure(wa.dataPath(),metadataFile, documents);
 							pLicense = (new ObjectPremisXmlReader()).deserialize(wa.toFile(o.getLatest(C.PREMIS_XML))).getRights().getPremisLicense();
 							logger.debug("Recognized License from Premis: "+pLicense);
+							logger.debug("License will be appended to Mets");
 							mms.appendAccessCondition(metadataFile, pLicense.getHref(), pLicense.getDisplayLabel(), pLicense.getText());
 						} catch (ParseException  e) {
 							logger.error("Exception: "+e);
@@ -193,9 +194,27 @@ public class UpdateMetadataAction extends AbstractAction {
 							logger.error("Exception: "+e);
 							e.printStackTrace();
 							throw new IOException(e);
+						}					
+				}
+				
+				if(presMode && "LIDO".equals(packageType) && o.getLicense_flag()==C.LICENSEFLAG_PREMIS){//append rightsType-Element to PIP-Lido
+					logger.debug("Insert License from Premis to Lido-Metadata file ");	
+					PremisLicense pLicense;
+						try {
+							LidoMetadataStructure lms = new LidoMetadataStructure(wa.dataPath(),metadataFile, documents);
+							pLicense = (new ObjectPremisXmlReader()).deserialize(wa.toFile(o.getLatest(C.PREMIS_XML))).getRights().getPremisLicense();
+							logger.debug("Recognized License from Premis: "+pLicense);
+							logger.debug("License will be appended to Lido");
+							lms.appendRightsResource(metadataFile, pLicense.getHref(), pLicense.getDisplayLabel());
+						} catch (ParseException  e) {
+							logger.error("Exception: "+e);
+							e.printStackTrace();
+							throw new IOException(e);
+						}catch (IllegalArgumentException e) {
+							logger.error("Exception: "+e);
+							e.printStackTrace();
+							throw new IOException(e);
 						}
-						
-					
 				}
 				
 				if(!replacements.isEmpty() && replacements!=null) {

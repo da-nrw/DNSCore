@@ -78,8 +78,8 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 	DAFile f_lic_mets = new DAFile("1+a",METS_LICENSE_XML);
 	DAFile f_mets1 = new DAFile("1+a",METS_2_99_XML); 
 	DAFile f_mets2 = new DAFile("1+a",METS_2_998_XML);
-	DAFile f_lido1 = new DAFile("",LIDO_XML);
-	DAFile f_lido2 = new DAFile("",LIDO2_XML);
+	DAFile f_lido1 = new DAFile("1+a",LIDO_XML);
+	DAFile f_lido2 = new DAFile("1+a",LIDO2_XML);
 	DAFile f_premis = new DAFile("1+a",C.PREMIS_XML);
 	
 	DAFile f_subfolder_ead1 = new DAFile(REP_A,"subfolder/"+VDA03_XML);
@@ -117,6 +117,9 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 	public void ignoreMetadataFilesInSubfolders() throws FileNotFoundException, UserException, IOException, RepositoryException {
 		
 		o.getLatestPackage().getFiles().add(f_subfolder_ead1);
+
+		action.getPreservationSystem().setLicenseValidationTestCSNFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_NO);
+
 		action.implementation();
 		
 		assertEquals(null,o.getPackage_type());

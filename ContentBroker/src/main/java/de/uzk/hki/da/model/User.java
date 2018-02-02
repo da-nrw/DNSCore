@@ -71,6 +71,8 @@ public class User{
 	private String emailAddress;
 	@Column(name="mails_pooled", columnDefinition="boolean")
 	private Boolean mailsPooled;
+	@Column(name="provider_type", columnDefinition="varchar(16)")
+	private String providerType;//="Bibliothek";
 	@Column(name="delta_on_urn", columnDefinition="boolean")
 	private Boolean deltaOnUrn;
 	@Column(name="use_public_mets", columnDefinition="boolean")
@@ -81,6 +83,9 @@ public class User{
 	// G.Bender 29.11.2016
 	@Column(name="use_virus_scan", columnDefinition="boolean")
 	private boolean useVirusScan;
+	
+	@Column(name="use_mets_urn", columnDefinition="boolean default false")
+	private boolean useMetsUrn;
 	
 	private String username;
 	private String password;
@@ -180,6 +185,16 @@ public class User{
 	 */
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
+	}
+	
+	
+
+	public String getProviderType() {
+		return providerType;
+	}
+
+	public void setProviderType(String providerType) {
+		this.providerType = providerType;
 	}
 
 	/**
@@ -338,4 +353,14 @@ public class User{
 	public void setFriendlyFileExtensions(String friendlyFileExtensions) {
 		this.friendlyFileExtensions = friendlyFileExtensions;
 	}
+
+	public boolean isUseMetsUrn() {
+		return useMetsUrn;
+	}
+
+	public void setUseMetsUrn(boolean useMetsUrn) {
+		this.useMetsUrn = useMetsUrn;
+	}
+	
+	
 }

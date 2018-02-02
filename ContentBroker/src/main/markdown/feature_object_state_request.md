@@ -25,6 +25,7 @@ zu versehen. Zeichensatz ist CP1252 (Windows-Standard). Es wird angenommen, dass
 
 ##### Vorbedingungen:
 
+* Dieses Feature kann momentan nur durch testweise deaktivierung der Lizenzüberprüfung getestet werden.
 * Der Nutzer hat einen Account und ist unter der Rolle "Vertragspartner" eingeloggt in der DA-WEB.
 * Der User hat mindestens ein beliebiges Paket eingespielt, welches fertig archiviert ist.
 * Dem User liegen URN, Identifier und originalName vor.

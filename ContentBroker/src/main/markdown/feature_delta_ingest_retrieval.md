@@ -3,6 +3,7 @@
 Dieser Test fokussiert die für den User offensichtlichsten Aspekte des Delta-Mechanismus. Zum einen bezieht sich das auf die Erkennung eines Paketes als zu einem Objekt zugehörig (z. B. durch die Namenswahl per&nbsp;*OriginalName*) und zum anderen auf die Regeln der Erstellung des DIPs (Stichwort{*}Oberflächenansicht*).&nbsp;
 
 
+
 #### Kontext:
 
 * [SIP-Spezifikation](specification_sip.de.md)
@@ -31,7 +32,9 @@ Dieser Test fokussiert die für den User offensichtlichsten Aspekte des Delta-Me
 
 #### Vorbedingungen:
 
+* Dieses Feature kann momentan nur durch testweise deaktivierung der Lizenzüberprüfung getestet werden.
 * User ist unter der Rolle "Contractor" angemeldet/eingeloggt in der "DAWeb"
+
 
 #### Durchführung:
 

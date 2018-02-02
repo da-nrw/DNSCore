@@ -25,6 +25,7 @@ Zur Verwaltung von Präsentationsderivaten (sog. PIP - eine spezielle Form eines
 
 #### Vorbedingungen:
 
+* Dieses Feature kann momentan nur durch testweise deaktivierung der Lizenzüberprüfung getestet werden.
 * Der User verfügt über SIPBuilder.
 * Der User hat einen Account und ist unter der Rolle "Contractor" eingeloggt in der DA-WEB.
 * Der User hat einen Webshare mit Incoming Order, in den er Pakete legen kann. DA-WEB zeigt den Inhalt dieses Ordners in der Maske&nbsp;"Verarbeitung für abgelieferte SIP starten" an.

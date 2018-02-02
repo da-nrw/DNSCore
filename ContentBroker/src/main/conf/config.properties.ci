@@ -5,7 +5,7 @@ fedora.password=BYi/MFjKDFd5Dpe52PSUoA==
 irods.user=rods
 irods.password=WpXlLLg3a4/S/iYrs6UhtQ==
 irods.server=cihost
-irods.zone=c-i
+irods.zone=ci
 irods.default_resc=ciWorkingResource
 irods.pam=false
 irods.keyStorePassword=

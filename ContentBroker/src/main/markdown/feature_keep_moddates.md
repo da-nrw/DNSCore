@@ -12,6 +12,7 @@ Dies gilt nur für die nicht konvertierten Originaldatein.
 
 #### Vorbedingungen:
 
+* Dieses Feature kann momentan nur durch testweise deaktivierung der Lizenzüberprüfung getestet werden.
 * Der Nutzer verfügt über den SIPBuilder ab Version 1606
 * Der Nutzer kann Pakete ins Archiv einliefern und anfordern.
 

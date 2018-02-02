@@ -21,6 +21,7 @@ package de.uzk.hki.da.metadata;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +36,8 @@ import javax.xml.transform.TransformerFactory;
 
 import org.apache.commons.io.FilenameUtils;
 import org.jdom.JDOMException;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
@@ -278,4 +281,16 @@ public abstract class MetadataStructure {
 		logger.debug("number of existing referenced files "+existingFiles.size());
 		return existingFiles;
 	}
+	
+	protected void writeDocumentToFile(org.jdom.Document doc,File file) throws IOException{
+		logger.debug("Write Metadata Document : "+file.getAbsolutePath());
+		XMLOutputter outputter = new XMLOutputter();
+		outputter.setFormat(Format.getPrettyFormat());
+		FileWriter fw=new FileWriter(file);
+		outputter.output(doc,fw);
+		fw.close();
+	}
+	
 }
+
+

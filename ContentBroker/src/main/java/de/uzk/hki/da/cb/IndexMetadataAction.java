@@ -86,7 +86,7 @@ public class IndexMetadataAction extends AbstractAction {
 		try {
 			metadataStream = new FileInputStream(wa.pipMetadataFile(WorkArea.PUBLIC, EDM_FOR_ES_INDEX_METADATA_STREAM_ID));
 			edmContent = IOUtils.toString(metadataStream, ENCODING_UTF_8);
-			getMetadataIndex().prepareAndIndexMetadata(adjustIndexName(indexName), o.getIdentifier(), edmContent);
+			getMetadataIndex().prepareAndIndexMetadata(adjustIndexName(indexName), o.getIdentifier(),o.getContractor().getProviderType(), edmContent);
 		} catch (Exception e) {
 			throw new RepositoryException("Unable to prepare and index metadata!", e);
 		}

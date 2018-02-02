@@ -19,6 +19,7 @@ Gilt für alle nachfolgenden Szenarien!
 
 #### Vorbedingungen:
 
+* Dieses Feature kann momentan nur durch testweise deaktivierung der Lizenzüberprüfung getestet werden.
 * Der Tester ist unter der Rolle "Contractor" angemeldet/eingeloggt in der "DAWeb"
 * Der Tester hat volle Administrationsrechte: Rolle: "DA-Admin,Knotenadmin"
 

@@ -6,12 +6,12 @@
 if [ "$1" = "ci" ]
 then
 	echo clean iRODS Stuff
-	irm -rf /c-i/aip/TEST                2>/dev/null
-	irm -rf /c-i/pips/institution/TEST   2>/dev/null
-	irm -rf /c-i/pips/public/TEST        2>/dev/null
+	irm -rf /ci/aip/TEST                2>/dev/null
+	irm -rf /ci/pips/institution/TEST   2>/dev/null
+	irm -rf /ci/pips/public/TEST        2>/dev/null
 	
-	irm -rf /c-i/CN/federated/c-i/aip/TEST/    2>/dev/null
-	irm -rf /c-i/CN/federated/zoneA/aip/TEST/  2>/dev/null
+	irm -rf /ci/CN/federated/c-i/aip/TEST/    2>/dev/null
+	irm -rf /ci/CN/federated/zoneA/aip/TEST/  2>/dev/null
 	
 	rm -r /ci/storage/GridCacheArea/aip/TEST 
 	mkdir /ci/storage/GridCacheArea/aip/TEST
