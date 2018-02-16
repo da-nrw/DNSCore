@@ -1,13 +1,14 @@
 package de.uzk.hki.da.at;
 
-import gov.loc.repository.bagit.Bag;
-import gov.loc.repository.bagit.BagFactory;
-import gov.loc.repository.bagit.utilities.SimpleResult;
+import gov.loc.repository.bagit.domain.Bag;
+import gov.loc.repository.bagit.reader.BagReader;
+import gov.loc.repository.bagit.verify.BagVerifier;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Paths;
 
 import static org.junit.Assert.assertTrue;
 
@@ -17,6 +18,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.pkg.BagitUtils;
 import de.uzk.hki.da.utils.FolderUtils;
 
 /**
@@ -82,10 +84,7 @@ public class ATSipBuilderNoTar {
 	    	 noTarFolder = new File(targetDir.getAbsolutePath() + File.separator + "data" + File.separator +  directorys[0].getName());
 		}
 	    
-		assertTrue(new File(noTarFolder + File.separator + "bag-info.txt").exists());
-		assertTrue(new File(noTarFolder + File.separator + "bagit.txt").exists());
-		assertTrue(new File(noTarFolder + File.separator + "manifest-md5.txt").exists());
-		assertTrue(new File(noTarFolder + File.separator + "tagmanifest-md5.txt").exists());
+		assertTrue(BagitUtils.isBagItStyle(noTarFolder));
 		assertTrue(new File(noTarFolder + File.separator + "data/NoTar.bmp").exists());
 		assertTrue(new File(noTarFolder + File.separator + "data/premis.xml").exists());
 				
@@ -132,10 +131,7 @@ public class ATSipBuilderNoTar {
 	    	 String dirName = directorys[i].getName();
 	    	 noTarFolder = new File(targetDir.getAbsolutePath() + File.separator +  "data" + File.separator + dirName);
 	
-			assertTrue(new File(noTarFolder + File.separator + "bag-info.txt").exists());
-			assertTrue(new File(noTarFolder + File.separator + "bagit.txt").exists());
-			assertTrue(new File(noTarFolder + File.separator + "manifest-md5.txt").exists());
-			assertTrue(new File(noTarFolder + File.separator + "tagmanifest-md5.txt").exists());
+	    	 assertTrue(BagitUtils.isBagItStyle(noTarFolder));
 			assertTrue(new File(noTarFolder + File.separator + "data/premis.xml").exists());
 			if (StringUtils.equals(dirName.trim(), "noTar1")) {
 				assertTrue(new File(noTarFolder + File.separator + "data/NoTar1.bmp").exists());
@@ -186,10 +182,7 @@ public class ATSipBuilderNoTar {
 	    
 		System.out.println("### noTarFolder: " + noTarFolder);
 		
-		assertTrue(new File(noTarFolder + File.separator + "bag-info.txt").exists());
-		assertTrue(new File(noTarFolder + File.separator + "bagit.txt").exists());
-		assertTrue(new File(noTarFolder + File.separator + "manifest-md5.txt").exists());
-		assertTrue(new File(noTarFolder + File.separator + "tagmanifest-md5.txt").exists());
+		assertTrue(BagitUtils.isBagItStyle(noTarFolder));
 		assertTrue(new File(noTarFolder + File.separator + "data/NoTar.bmp").exists());
 		assertTrue(new File(noTarFolder + File.separator + "data/premis.xml").exists());
 				
@@ -203,11 +196,18 @@ public class ATSipBuilderNoTar {
 	 * @return true if the BagIt metadata is valid, otherwise false
 	 */
 	private boolean validateBagIt(File folder) {
+		BagReader reader = new BagReader();
 		
-		BagFactory bagFactory = new BagFactory();
-		Bag bag = bagFactory.createBag(folder);
-		SimpleResult result = bag.verifyValid();
-		return result.isSuccess();
+		Bag bagVer;
+		BagVerifier sut = new BagVerifier();
+		try {
+			bagVer = reader.read(Paths.get(folder.toURI()));
+			sut.isValid(bagVer, false);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} 
+		return true;
 	}
 	
 }

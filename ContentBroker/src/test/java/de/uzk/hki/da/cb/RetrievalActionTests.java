@@ -24,6 +24,7 @@ package de.uzk.hki.da.cb;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 
@@ -32,6 +33,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.at.AcceptanceTest;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.pkg.NativeJavaTarArchiveBuilder;
@@ -39,9 +41,6 @@ import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
-import gov.loc.repository.bagit.Bag;
-import gov.loc.repository.bagit.BagFactory;
-import gov.loc.repository.bagit.utilities.SimpleResult;
 
 
 /**
@@ -113,11 +112,8 @@ public class RetrievalActionTests extends ConcreteActionUnitTest{
 		assertFalse(Path.makeFile(workAreaRootPath,o.getContractor().getShort_name(),TC.IDENTIFIER+"_").exists());
 		assertTrue( Path.makeFile(outgoingFolder,TC.IDENTIFIER+C.FILE_EXTENSION_TAR).exists() );
 		unpack();
-		
-		BagFactory bagFactory = new BagFactory();
-		Bag bag = bagFactory.createBag(Path.makeFile(outgoingFolder,TC.IDENTIFIER));
-		SimpleResult result = bag.verifyValid();
-		assertTrue(result.isSuccess());
+
+		assertTrue(AcceptanceTest.bagIsValid(outgoingFolder+"/"+TC.IDENTIFIER));
 	}
 	
 	

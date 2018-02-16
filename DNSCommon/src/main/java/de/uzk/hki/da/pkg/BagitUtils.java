@@ -18,16 +18,25 @@
 */
 
 package de.uzk.hki.da.pkg;
-
+/*
 import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.BagFactory;
 import gov.loc.repository.bagit.PreBag;
-
+*/
 import java.io.File;
-import java.io.IOException;
+import java.io.FileFilter;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import gov.loc.repository.bagit.creator.BagCreator;
+import gov.loc.repository.bagit.domain.Bag;
+import gov.loc.repository.bagit.hash.StandardSupportedAlgorithms;
+import gov.loc.repository.bagit.hash.SupportedAlgorithm;
+import gov.loc.repository.bagit.verify.BagVerifier;
 
 /**
  * Builds a BagIt around a folder which contains only one subfolder (data) which itself can contain various data.
@@ -36,33 +45,85 @@ import org.slf4j.LoggerFactory;
  * @author Daniel M. de Oliveira
  */
 public class BagitUtils {
+	public static final SupportedAlgorithm DEFAULT_BAGIT_ALGORITHM=StandardSupportedAlgorithms.SHA512;
+	public static final RegexFileFilter MANIFEST_FILE_FILTER=new RegexFileFilter("manifest\\-\\w*\\.txt");
+	public static final RegexFileFilter TAG_MANIFEST_FILE_FILTER=new RegexFileFilter("tagmanifest\\-\\w*\\.txt");
+	
+	public static class RegexFileFilter implements FileFilter{
+
+		final Pattern p;
+		
+		public RegexFileFilter(String regex) {
+			super();
+			p = Pattern.compile(regex);
+		}
+
+		public boolean accept(File file) {
+			boolean ret=p.matcher(file.getName()).matches();
+			return ret;
+		}
+	}
 	
 	/** The Constant logger. */
 	static final Logger logger = LoggerFactory.getLogger(BagitUtils.class);
 	
 	public static void buildBagit(String packagePath){
-		
 		if (new File(packagePath + "/" + "bagit.txt").exists())
 			new File(packagePath + "/" + "bagit.txt").delete();
 		if (new File(packagePath + "/" + "bag-info.txt").exists())
 			new File(packagePath + "/" + "bag-info.txt").delete();
-		if (new File(packagePath + "/" + "manifest-md5.txt").exists())
-			new File(packagePath + "/" + "manifest-md5.txt").delete();
-		if (new File(packagePath + "/" + "tagmanifest-md5.txt").exists())
-			new File(packagePath + "/" + "tagmanifest-md5.txt").delete();
 		
+		File[] fileToDel=new File(packagePath).listFiles(MANIFEST_FILE_FILTER);
+		for(File f:fileToDel)
+			f.delete();
+		fileToDel=new File(packagePath).listFiles(TAG_MANIFEST_FILE_FILTER);
+		for(File f:fileToDel)
+			f.delete();
+		
+		
+		Bag bag;
+		try {
+			bag = BagCreator.bagInPlace(Paths.get(packagePath), Arrays.asList(DEFAULT_BAGIT_ALGORITHM), false);
+		} catch (Exception e) {
+			//e.printStackTrace();
+			throw new RuntimeException("BagIt couldn't create Bag: "+e.toString());
+		}
+		
+		BagVerifier sut = new BagVerifier();
+		try {
+			sut.isValid(bag, false);
+		} catch (Exception e) {
+			//e.printStackTrace();
+			throw new RuntimeException("BagIt couldn't be validated after its creation: "+e.toString());
+		}
+		
+/*		
 		BagFactory bagFactory = new BagFactory();
 		
 		PreBag preBag = bagFactory.createPreBag(new File(packagePath));
 		preBag.makeBagInPlace(BagFactory.LATEST, false); 
 		
 		Bag bag = bagFactory.createBag(new File(packagePath));
+		
 		if(!bag.verifyValid().isSuccess()) throw new RuntimeException("BagIt couldn't be validated after its creation");
 		try {
 			bag.close();
 		} catch (IOException e) {
 			logger.error("Error closing Bag at " + packagePath + " " + e.getStackTrace());
 		}
+		
+		*/
+	}
+	
+	public static boolean isBagItStyle(File packagePath){
+		if (new File(packagePath, "bagit.txt").exists() &&
+				new File(packagePath, "bag-info.txt").exists() &&
+				packagePath.listFiles(TAG_MANIFEST_FILE_FILTER).length!=0 &&
+				packagePath.listFiles(MANIFEST_FILE_FILTER).length!=0)
+			return true;
+		
+		return false;
+		
 	}
 
 }

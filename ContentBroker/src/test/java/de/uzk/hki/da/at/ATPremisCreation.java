@@ -40,8 +40,6 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
-import gov.loc.repository.bagit.Bag;
-import gov.loc.repository.bagit.BagFactory;
 
 
 /**
@@ -200,10 +198,7 @@ public class ATPremisCreation extends PREMISBase{
 		}
 		assertThat(checkedEvents).isEqualTo(4);
 	}
-	
-	
-	
-	
+
 	
 	/**
 	 * Assert true that aip contains expected files.
@@ -227,19 +222,5 @@ public class ATPremisCreation extends PREMISBase{
 		assertTrue(new File(dataFolder+repBName +"/"+"premis.xml").exists());
 
 	}
-	
-	
-	private boolean bagIsValid(String unpackedObjectPath) throws IOException{
-		BagFactory bagFactory = new BagFactory();
-		Bag bag = bagFactory.createBag(new File(unpackedObjectPath));
-		if(!bag.verifyValid().isSuccess()){
-			bag.close();
-			return false;
-		}
-		bag.close();
-		return true;
-	}
-	
-	
-	
+
 }

@@ -42,8 +42,10 @@ import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.FolderUtils;
+/*
 import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.BagFactory;
+*/
 
 /**
  * Relates to AK-T/05 RetrieveObject - Happy Path Scenario.
@@ -100,14 +102,8 @@ public class ATRetrieval extends AcceptanceTest{
 		if (!new File("/tmp/"+identifier+"/data/"+"image/713091.tif").exists()) fail();
 		if (!new File("/tmp/"+identifier+"/data/"+"premis.xml").exists()) fail();
 		
-		if (!bagIsValid(new File("/tmp/"+identifier))) fail();
+		if (!bagIsValid("/tmp/"+identifier)) fail();
 	}
-
-	private boolean bagIsValid(File file){
-		BagFactory bagFactory = new BagFactory();
-		Bag bag = bagFactory.createBag(file);
-		return bag.verifyValid().isSuccess();
-	}	
 
 	@Test
 	public void testTimebasedRemoveRetrievalAfter14DayBeforeTimeout() throws Exception {

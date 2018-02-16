@@ -23,15 +23,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
-import gov.loc.repository.bagit.Bag;
-import gov.loc.repository.bagit.BagFactory;
-import gov.loc.repository.bagit.utilities.SimpleResult;
+
+import gov.loc.repository.bagit.domain.Bag;
+import gov.loc.repository.bagit.reader.BagReader;
+import gov.loc.repository.bagit.verify.BagVerifier;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Properties;
 
@@ -52,6 +54,7 @@ import org.junit.Test;
 import de.uzk.hki.da.cli.CliMessageWriter;
 import de.uzk.hki.da.main.SIPBuilder;
 import de.uzk.hki.da.metadata.ContractRights;
+import de.uzk.hki.da.pkg.BagitUtils;
 import de.uzk.hki.da.pkg.SipArchiveBuilder;
 import de.uzk.hki.da.sb.MessageWriter.UserInput;
 import de.uzk.hki.da.utils.FolderUtils;
@@ -131,10 +134,7 @@ public class SIPFactoryTest {
 		
 		File unpackedFolder = new File(pathToResourcesFolder + "destination/singleFolder");
 		
-		assertTrue(new File(unpackedFolder, "bag-info.txt").exists());
-		assertTrue(new File(unpackedFolder, "bagit.txt").exists());
-		assertTrue(new File(unpackedFolder, "manifest-md5.txt").exists());
-		assertTrue(new File(unpackedFolder, "tagmanifest-md5.txt").exists());
+		assertTrue(BagitUtils.isBagItStyle(unpackedFolder));
 		assertTrue(new File(unpackedFolder, "data/document.pdf").exists());
 		assertTrue(new File(unpackedFolder, "data/image.tif").exists());
 		assertTrue(new File(unpackedFolder, "data/premis.xml").exists());
@@ -173,10 +173,7 @@ public class SIPFactoryTest {
 		
 		File unpackedFolder = new File(pathToResourcesFolder + "destination/singleFolder");
 		
-		assertTrue(new File(unpackedFolder, "bag-info.txt").exists());
-		assertTrue(new File(unpackedFolder, "bagit.txt").exists());
-		assertTrue(new File(unpackedFolder, "manifest-md5.txt").exists());
-		assertTrue(new File(unpackedFolder, "tagmanifest-md5.txt").exists());
+		assertTrue(BagitUtils.isBagItStyle(unpackedFolder));
 		assertTrue(new File(unpackedFolder, "data/document.pdf").exists());
 		assertTrue(new File(unpackedFolder, "data/image.tif").exists());
 		assertTrue(new File(unpackedFolder, "data/premis.xml").exists());
@@ -216,10 +213,7 @@ public class SIPFactoryTest {
 		
 		File unpackedFolder1 = new File(pathToResourcesFolder + "destination/SIP_1");
 		
-		assertTrue(new File(unpackedFolder1, "bag-info.txt").exists());
-		assertTrue(new File(unpackedFolder1, "bagit.txt").exists());
-		assertTrue(new File(unpackedFolder1, "manifest-md5.txt").exists());
-		assertTrue(new File(unpackedFolder1, "tagmanifest-md5.txt").exists());
+		assertTrue(BagitUtils.isBagItStyle(unpackedFolder1));
 		assertTrue(new File(unpackedFolder1, "data/document.pdf").exists());
 		
 		assertTrue(validateBagIt(unpackedFolder1));
@@ -230,10 +224,7 @@ public class SIPFactoryTest {
 		
 		File unpackedFolder2 = new File(pathToResourcesFolder + "destination/SIP_2");
 		
-		assertTrue(new File(unpackedFolder2, "bag-info.txt").exists());
-		assertTrue(new File(unpackedFolder2, "bagit.txt").exists());
-		assertTrue(new File(unpackedFolder2, "manifest-md5.txt").exists());
-		assertTrue(new File(unpackedFolder2, "tagmanifest-md5.txt").exists());
+		assertTrue(BagitUtils.isBagItStyle(unpackedFolder2));
 		assertTrue(new File(unpackedFolder2, "data/image.tif").exists());
 		assertTrue(new File(unpackedFolder2, "data/image_2.tif").exists());
 		
@@ -245,10 +236,7 @@ public class SIPFactoryTest {
 		
 		File unpackedFolder3 = new File(pathToResourcesFolder + "destination/SIP_3");
 		
-		assertTrue(new File(unpackedFolder3, "bag-info.txt").exists());
-		assertTrue(new File(unpackedFolder3, "bagit.txt").exists());
-		assertTrue(new File(unpackedFolder3, "manifest-md5.txt").exists());
-		assertTrue(new File(unpackedFolder3, "tagmanifest-md5.txt").exists());
+		assertTrue(BagitUtils.isBagItStyle(unpackedFolder3));
 		assertTrue(new File(unpackedFolder3, "data/text.txt").exists());
 		
 		assertTrue(validateBagIt(unpackedFolder3));
@@ -286,10 +274,7 @@ public class SIPFactoryTest {
 		builder.unarchiveFolder(new File(pathToSIP1), new File(pathToResourcesFolder + "destination"), true);
 		File unpackedFolder1 = new File(pathToResourcesFolder+"destination/"+fixedUrn1);
 		
-		assertTrue(new File(unpackedFolder1, "bag-info.txt").exists());
-		assertTrue(new File(unpackedFolder1, "bagit.txt").exists());
-		assertTrue(new File(unpackedFolder1, "manifest-md5.txt").exists());
-		assertTrue(new File(unpackedFolder1, "tagmanifest-md5.txt").exists());
+		assertTrue(BagitUtils.isBagItStyle(unpackedFolder1));
 		assertTrue(new File(unpackedFolder1, "data/export_mets.xml").exists());
 		assertTrue(new File(unpackedFolder1, "data/premis.xml").exists());
 		
@@ -299,10 +284,7 @@ public class SIPFactoryTest {
 		builder.unarchiveFolder(new File(pathToSIP2), new File(pathToResourcesFolder + "destination"), true);
 		File unpackedFolder2 = new File(pathToResourcesFolder+"destination/"+fixedUrn2);
 		
-		assertTrue(new File(unpackedFolder2, "bag-info.txt").exists());
-		assertTrue(new File(unpackedFolder2, "bagit.txt").exists());
-		assertTrue(new File(unpackedFolder2, "manifest-md5.txt").exists());
-		assertTrue(new File(unpackedFolder2, "tagmanifest-md5.txt").exists());
+		assertTrue(BagitUtils.isBagItStyle(unpackedFolder2));
 		assertTrue(new File(unpackedFolder2, "data/export_mets.xml").exists());
 		assertTrue(new File(unpackedFolder2, "data/premis.xml").exists());
 		
@@ -347,10 +329,7 @@ public class SIPFactoryTest {
 		
 		File unpackedFolder = new File(pathToResourcesFolder + "destination/testCollection");
 		
-		assertTrue(new File(unpackedFolder, "bag-info.txt").exists());
-		assertTrue(new File(unpackedFolder, "bagit.txt").exists());
-		assertTrue(new File(unpackedFolder, "manifest-md5.txt").exists());
-		assertTrue(new File(unpackedFolder, "tagmanifest-md5.txt").exists());
+		assertTrue(BagitUtils.isBagItStyle(unpackedFolder));
 		assertTrue(new File(unpackedFolder, "data/SIP_1.tgz").exists());
 		assertTrue(new File(unpackedFolder, "data/SIP_2.tgz").exists());
 		assertTrue(new File(unpackedFolder, "data/SIP_3.tgz").exists());
@@ -395,10 +374,7 @@ public class SIPFactoryTest {
 		
 		File unpackedFolder = new File(pathToResourcesFolder + "destination/singleFolder");
 	
-		assertTrue(new File(unpackedFolder, "bag-info.txt").exists());
-		assertTrue(new File(unpackedFolder, "bagit.txt").exists());
-		assertTrue(new File(unpackedFolder, "manifest-md5.txt").exists());
-		assertTrue(new File(unpackedFolder, "tagmanifest-md5.txt").exists());
+		assertTrue(BagitUtils.isBagItStyle(unpackedFolder));
 		assertTrue(new File(unpackedFolder, "data/document.pdf").exists());
 		assertTrue(new File(unpackedFolder, "data/image.tif").exists());
 		assertTrue(new File(unpackedFolder, "data/premis.xml").exists());
@@ -445,10 +421,7 @@ public class SIPFactoryTest {
 		
 		File unpackedFolder = new File(pathToResourcesFolder + "destination/singleFolder");
 	
-		assertTrue(new File(unpackedFolder, "bag-info.txt").exists());
-		assertTrue(new File(unpackedFolder, "bagit.txt").exists());
-		assertTrue(new File(unpackedFolder, "manifest-md5.txt").exists());
-		assertTrue(new File(unpackedFolder, "tagmanifest-md5.txt").exists());
+		assertTrue(BagitUtils.isBagItStyle(unpackedFolder));
 		assertTrue(new File(unpackedFolder, "data/document.pdf").exists());
 		assertTrue(new File(unpackedFolder, "data/image.tif").exists());
 		assertTrue(new File(unpackedFolder, "data/premis.xml").exists());
@@ -500,11 +473,18 @@ public class SIPFactoryTest {
 	 * @return true if the BagIt metadata is valid, otherwise false
 	 */
 	private boolean validateBagIt(File folder) {
+		BagReader reader = new BagReader();
 		
-		BagFactory bagFactory = new BagFactory();
-		Bag bag = bagFactory.createBag(folder);
-		SimpleResult result = bag.verifyValid();
-		return result.isSuccess();
+		Bag bagVer;
+		BagVerifier sut = new BagVerifier();
+		try {
+			bagVer = reader.read(Paths.get(folder.toURI()));
+			sut.isValid(bagVer, false);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} 
+		return true;
 	}
 	
 	private void setUpLogger() {

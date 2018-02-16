@@ -20,6 +20,7 @@ package de.uzk.hki.da.at;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -50,6 +51,9 @@ import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.PropertiesUtils;
+import gov.loc.repository.bagit.domain.Bag;
+import gov.loc.repository.bagit.reader.BagReader;
+import gov.loc.repository.bagit.verify.BagVerifier;
 
 /**
  * @author Daniel M. de Oliveira
@@ -389,6 +393,21 @@ public class AcceptanceTest {
 		return CI_ARCHIVE_STORAGE;
 	}
 	
+	
+	public static boolean bagIsValid(String unpackedObjectPath) throws IOException{
+		BagReader reader = new BagReader();
+		
+		Bag bagVer;
+		BagVerifier sut = new BagVerifier();
+		try {
+			bagVer = reader.read(Paths.get(unpackedObjectPath));
+			sut.isValid(bagVer, false);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} 
+		return true;
+	}
 	
 	
 }

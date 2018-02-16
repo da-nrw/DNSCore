@@ -21,6 +21,8 @@ package de.uzk.hki.da.sb;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -45,6 +47,7 @@ import de.uzk.hki.da.metadata.LidoParser;
 import de.uzk.hki.da.metadata.MetsLicense;
 import de.uzk.hki.da.metadata.MetsParser;
 import de.uzk.hki.da.metadata.PremisXmlWriter;
+import de.uzk.hki.da.pkg.BagitUtils;
 import de.uzk.hki.da.pkg.CopyUtility;
 import de.uzk.hki.da.pkg.NestedContentStructure;
 import de.uzk.hki.da.pkg.SipArchiveBuilder;
@@ -53,10 +56,22 @@ import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.FormatDetectionService;
 import de.uzk.hki.da.utils.Utilities;
 import de.uzk.hki.da.utils.XMLUtils;
-import gov.loc.repository.bagit.Bag;
-import gov.loc.repository.bagit.BagFactory;
-import gov.loc.repository.bagit.PreBag;
-import gov.loc.repository.bagit.utilities.SimpleResult;
+import gov.loc.repository.bagit.creator.BagCreator;
+import gov.loc.repository.bagit.domain.Bag;
+import gov.loc.repository.bagit.exceptions.CorruptChecksumException;
+import gov.loc.repository.bagit.exceptions.FileNotInPayloadDirectoryException;
+import gov.loc.repository.bagit.exceptions.InvalidBagitFileFormatException;
+import gov.loc.repository.bagit.exceptions.MaliciousPathException;
+import gov.loc.repository.bagit.exceptions.MissingBagitFileException;
+import gov.loc.repository.bagit.exceptions.MissingPayloadDirectoryException;
+import gov.loc.repository.bagit.exceptions.MissingPayloadManifestException;
+import gov.loc.repository.bagit.exceptions.UnparsableVersionException;
+import gov.loc.repository.bagit.exceptions.UnsupportedAlgorithmException;
+import gov.loc.repository.bagit.exceptions.VerificationException;
+import gov.loc.repository.bagit.hash.StandardSupportedAlgorithms;
+import gov.loc.repository.bagit.hash.SupportedAlgorithm;
+import gov.loc.repository.bagit.reader.BagReader;
+import gov.loc.repository.bagit.verify.BagVerifier;
 import de.uzk.hki.da.metadata.NullLastComparator;
 
 /**
@@ -528,32 +543,39 @@ public class SIPFactory {
 	 * @return The method result as a Feedback enum
 	 */
 	public Feedback createBag(int jobId, File folder) {
-
 		progressManager.bagitProgress(jobId, 0.0);
-
-		BagFactory bagFactory = new BagFactory();
-		PreBag preBag = bagFactory.createPreBag(folder);
-		preBag.makeBagInPlace(BagFactory.LATEST, false);
+		
+		Bag bag;
+		try {
+			bag = BagCreator.bagInPlace(Paths.get(folder.toURI()), Arrays.asList(BagitUtils.DEFAULT_BAGIT_ALGORITHM), false);
+		} catch (Exception e) {
+			//e.printStackTrace();
+			logger.error("Bag in folder " + folder.getAbsolutePath()+ " can not be created.\n" + e.getMessage());
+		}
+				
 		progressManager.bagitProgress(jobId, 10.0);
 
 		if (sipBuildingProcess.isAborted())
 			return Feedback.ABORT;
-
-		Bag bag = bagFactory.createBag(folder);
-		progressManager.bagitProgress(jobId, 40.0);
-
-		if (sipBuildingProcess.isAborted())
-			return Feedback.ABORT;
-
-		SimpleResult result = bag.verifyValid();
-		if (result.isSuccess()) {
+		
+		try {
+			BagReader reader = new BagReader();
+			
+			Bag bagVer = reader.read(Paths.get(folder.getAbsolutePath()));
+			progressManager.bagitProgress(jobId, 40.0);
+			if (sipBuildingProcess.isAborted())
+				return Feedback.ABORT;
+			
+			BagVerifier sut = new BagVerifier();
+			sut.isValid(bagVer, false);
 			progressManager.bagitProgress(jobId, 50.0);
 			return Feedback.SUCCESS;
-		} else {
-			logger.error("Bag in folder " + folder.getAbsolutePath()
-					+ " is not valid.\n" + result.getErrorMessages());
+		} catch (Exception  e) {
+			//e.printStackTrace();
+			logger.error("Bag in folder " + folder.getAbsolutePath()+ " is not valid.\n" + e.getMessage());
 			return Feedback.BAGIT_ERROR;
-		}
+		} 
+		
 	}
 
 	/**

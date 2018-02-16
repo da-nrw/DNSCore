@@ -18,13 +18,30 @@
 */
 
 package de.uzk.hki.da.pkg;
-
+/*
 import gov.loc.repository.bagit.Bag;
 import gov.loc.repository.bagit.BagFactory;
-import gov.loc.repository.bagit.utilities.SimpleResult;
+import gov.loc.repository.bagit.utilities.SimpleResult;*/
+
+import gov.loc.repository.bagit.domain.Bag;
+import gov.loc.repository.bagit.exceptions.CorruptChecksumException;
+import gov.loc.repository.bagit.exceptions.FileNotInPayloadDirectoryException;
+import gov.loc.repository.bagit.exceptions.InvalidBagitFileFormatException;
+import gov.loc.repository.bagit.exceptions.MaliciousPathException;
+import gov.loc.repository.bagit.exceptions.MissingBagitFileException;
+import gov.loc.repository.bagit.exceptions.MissingPayloadDirectoryException;
+import gov.loc.repository.bagit.exceptions.MissingPayloadManifestException;
+import gov.loc.repository.bagit.exceptions.UnparsableVersionException;
+import gov.loc.repository.bagit.exceptions.UnsupportedAlgorithmException;
+import gov.loc.repository.bagit.exceptions.VerificationException;
+import gov.loc.repository.bagit.reader.BagReader;
+import gov.loc.repository.bagit.verify.BagVerifier;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -62,6 +79,22 @@ public class BagitConsistencyChecker implements ConsistencyChecker {
 	public boolean checkPackage() {
 		
 		logger.debug("Starting BagIt consistency check.");
+		BagVerifier sut = new BagVerifier();
+		BagReader reader = new BagReader();
+		Bag bagVer;
+		try {
+			bagVer = reader.read(Paths.get(packagePath));
+			sut.isValid(bagVer, false);
+			//sut.isComplete(bagVer, false); isValid do it already
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			messages = Arrays.asList(e.getMessage());
+			logger.debug("BagIt verification failed: " + e.toString());
+			return false;
+		}
+		
+		/*
 		
 		BagFactory bagFactory = new BagFactory();
 		Bag bag = bagFactory.createBag(new File(packagePath));
@@ -72,8 +105,8 @@ public class BagitConsistencyChecker implements ConsistencyChecker {
 		logger.debug("verifyComplete returned: " + bag.verifyComplete().isSuccess());
 		logger.debug("verifyTagManifests returned: " + bag.verifyTagManifests().isSuccess());
 		logger.debug("verifyValid returned: " + bag.verifyValid().isSuccess());
-		
-		return result.isSuccess();
+		*/
+		return true;
 	}
 
 	/* (non-Javadoc)

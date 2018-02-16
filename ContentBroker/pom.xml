@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
@@ -9,11 +8,11 @@
 	<name>DA-NRW Content Broker</name>
 
 	<parent>
-        <groupId>de.uzk.hki.da</groupId>
-        <artifactId>DNSCore</artifactId>
-        <version>1.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
-    </parent>
+		<groupId>de.uzk.hki.da</groupId>
+		<artifactId>DNSCore</artifactId>
+		<version>1.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
 
 	<properties>
 		<maven.test.search.classdir>true</maven.test.search.classdir>
@@ -44,28 +43,28 @@
 
 	<repositories>
 		<repository>
-	      <id>central</id>
-	      <name>Maven Repository Switchboard</name>
-	      <layout>default</layout>
-	      <url>http://repo1.maven.org/maven2</url>
-	      <snapshots>
-	        <enabled>false</enabled>
-	      </snapshots>
-	    </repository>
-	    
+			<id>central</id>
+			<name>Maven Repository Switchboard</name>
+			<layout>default</layout>
+			<url>http://repo1.maven.org/maven2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+
 		<repository>
-	      <id>dice-git</id>
-	      <name>DICE MAVEN REPO</name>
-	      <layout>default</layout>
-	      <url>https://github.com/DICE-UNC/DICE-Maven/raw/master/releases</url>
-	      	<releases>
+			<id>dice-git</id>
+			<name>DICE MAVEN REPO</name>
+			<layout>default</layout>
+			<url>https://github.com/DICE-UNC/DICE-Maven/raw/master/releases</url>
+			<releases>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
 				<checksumPolicy>warn</checksumPolicy>
 			</releases>
-	    </repository>
-	    
-	    
+		</repository>
+
+
 		<repository>
 			<id>renci.repository</id>
 			<name>renci.repository</name>
@@ -85,34 +84,37 @@
 
 	<build>
 		<plugins>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.9.1</version>
 				<configuration>
 					<reportOutputDirectory>${project.reporting.outputDirectory}/staging</reportOutputDirectory>
-					<bottom>DA-NRW Software Suite | ContentBroker Copyright (C) 2011-2014
-						Historisch-Kulturwissenschaftliche Informationsverarbeitung Universitaet zu
+					<bottom>DA-NRW Software Suite | ContentBroker Copyright (C)
+						2011-2014
+						Historisch-Kulturwissenschaftliche
+						Informationsverarbeitung Universitaet zu
 						Koeln</bottom>
 					<quiet>true</quiet>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-scm-publish-plugin</artifactId>
 				<version>1.0</version>
 				<configuration>
 					<checkoutDirectory>${project.build.directory}/scmpublish</checkoutDirectory>
-					<checkinComment>Publishing javadoc for ${project.artifactId}:${project.version}</checkinComment>
+					<checkinComment>Publishing javadoc for
+						${project.artifactId}:${project.version}</checkinComment>
 					<content>${project.reporting.outputDirectory}/staging</content>
 					<skipDeletedFiles>true</skipDeletedFiles>
 					<pubScmUrl>scm:git:git@github.com:da-nrw/DNSCore.git</pubScmUrl>
 					<scmBranch>gh-pages</scmBranch>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>2.6</version>
@@ -125,13 +127,13 @@
 					</execution>
 				</executions>
 				<configuration>
-				<argLine>-Xmx512m -XX:MaxPermSize=256m</argLine>
-				<systemProperties>
-            		<property>
-              			<name>env</name>
-              			<value>${env}</value>
-            		</property>
-         		</systemProperties>
+					<argLine>-Xmx512m -XX:MaxPermSize=256m</argLine>
+					<systemProperties>
+						<property>
+							<name>env</name>
+							<value>${env}</value>
+						</property>
+					</systemProperties>
 					<includes>
 						<include>**/AT**.java</include>
 					</includes>
@@ -148,7 +150,7 @@
 						<include>${include.tests}</include>
 					</includes>
 					<argLine>-Dfile.encoding=UTF-8 -Xmx512m -XX:MaxPermSize=256m</argLine>
-    				<skipTests>${skip.surefire.tests}</skipTests>
+					<skipTests>${skip.surefire.tests}</skipTests>
 				</configuration>
 			</plugin>
 
@@ -156,10 +158,10 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-				 <configuration> 
-                         <source>1.8</source> 
-                         <target>1.8</target> 
-                     </configuration> 
+					<configuration>
+						<source>1.8</source>
+						<target>1.8</target>
+					</configuration>
 
 				</configuration>
 			</plugin>
@@ -214,10 +216,9 @@
 						<phase>validate</phase>
 						<configuration>
 							<tasks>
-								<exec dir="${basedir}"
-									executable="${basedir}/src/main/bash/validate.sh"
+								<exec dir="${basedir}" executable="${basedir}/src/main/bash/validate.sh"
 									failonerror="true">
-									<arg line="${env}"/>
+									<arg line="${env}" />
 								</exec>
 							</tasks>
 						</configuration>
@@ -230,10 +231,9 @@
 						<phase>clean</phase>
 						<configuration>
 							<tasks>
-								<exec dir="${basedir}"
-									executable="${basedir}/src/main/bash/clean.sh"
+								<exec dir="${basedir}" executable="${basedir}/src/main/bash/clean.sh"
 									failonerror="true">
-									<arg line="${env}"/>
+									<arg line="${env}" />
 								</exec>
 							</tasks>
 						</configuration>
@@ -246,10 +246,9 @@
 						<phase>package</phase>
 						<configuration>
 							<tasks>
-								<exec dir="${basedir}"
-									executable="${basedir}/src/main/bash/package.sh"
+								<exec dir="${basedir}" executable="${basedir}/src/main/bash/package.sh"
 									failonerror="true">
-									<arg line="${env} ${appHome} ${DAWeb}"/>
+									<arg line="${env} ${appHome} ${DAWeb}" />
 								</exec>
 							</tasks>
 						</configuration>
@@ -265,7 +264,7 @@
 								<exec dir="${basedir}"
 									executable="${basedir}/src/main/bash/pre-integration-test.sh"
 									failonerror="true">
-									<arg line="${env} ${appHome}"/>
+									<arg line="${env} ${appHome}" />
 								</exec>
 							</tasks>
 						</configuration>
@@ -281,7 +280,7 @@
 								<exec dir="${basedir}"
 									executable="${basedir}/src/main/bash/post-integration-test.sh"
 									failonerror="true">
-									<arg line="${env}"/>
+									<arg line="${env}" />
 								</exec>
 							</tasks>
 						</configuration>
@@ -315,7 +314,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<execute/>
+										<execute />
 									</action>
 								</pluginExecution>
 								<pluginExecution>
@@ -328,7 +327,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore/>
+										<ignore />
 									</action>
 								</pluginExecution>
 								<pluginExecution>
@@ -341,7 +340,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore/>
+										<ignore />
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
@@ -358,19 +357,19 @@
 			<artifactId>DNSCommon</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
-	
-	
+
+
 		<dependency>
 			<groupId>org.apache.qpid</groupId>
 			<artifactId>proton-jms</artifactId>
 			<version>0.6</version>
 		</dependency>
-	
-	    <dependency>
-           <groupId>org.json</groupId>
-           <artifactId>json</artifactId>
-           <version>20131018</version>
-        </dependency>
+
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20131018</version>
+		</dependency>
 		<dependency>
 			<groupId>org.xeustechnologies</groupId>
 			<artifactId>jtar</artifactId>
@@ -381,7 +380,7 @@
 			<artifactId>hsqldb</artifactId>
 			<version>2.3.2</version>
 		</dependency>
-	
+
 		<dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
@@ -400,7 +399,7 @@
 		<dependency>
 			<groupId>com.yourmediashelf.fedora.client</groupId>
 			<artifactId>fedora-client-core</artifactId>
-			<version>0.7</version>			
+			<version>0.7</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.slf4j</groupId>
@@ -413,31 +412,31 @@
 			</exclusions>
 		</dependency>
 
-		
+
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>1.1.2</version>
 		</dependency>
 
-		
-		
-		
+
+
+
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>4.3.8.Final</version>
 			<exclusions>
-			<exclusion>
+				<exclusion>
 					<groupId>org.slf4j</groupId>
 					<artifactId>slf4j-api</artifactId>
 				</exclusion>
-				</exclusions>
+			</exclusions>
 		</dependency>
-		
-		
-		
-		
+
+
+
+
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
@@ -463,19 +462,19 @@
 			<artifactId>spring-context</artifactId>
 			<version>4.0.0.RELEASE</version>
 			<exclusions>
-		        <exclusion>
-		            <groupId>commons-logging</groupId>
-		            <artifactId>commons-logging</artifactId>
-		        </exclusion>
-		    </exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
 			<version>4.0.0.RELEASE</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.irods.jargon</groupId>
 			<artifactId>jargon-core</artifactId>
@@ -489,13 +488,13 @@
 					<groupId>log4j</groupId>
 					<artifactId>log4j</artifactId>
 				</exclusion>
-					<exclusion>
+				<exclusion>
 					<groupId>log4j</groupId>
 					<artifactId>log4j-api</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>xom</groupId>
 			<artifactId>xom</artifactId>
@@ -579,15 +578,21 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency> 
-		    <groupId>xml-apis</groupId>
-		    <artifactId>xml-apis</artifactId>
-		    <version>1.4.01</version>
+		<dependency>
+			<groupId>xml-apis</groupId>
+			<artifactId>xml-apis</artifactId>
+			<version>1.4.01</version>
 		</dependency>
 		<dependency>
-		    <groupId>net.sf.supercsv</groupId>
-		    <artifactId>super-csv</artifactId>
-		    <version>2.3.1</version>
+			<groupId>net.sf.supercsv</groupId>
+			<artifactId>super-csv</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+			<version>4.3.1</version>
 		</dependency>
 	</dependencies>
 
