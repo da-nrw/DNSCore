@@ -256,6 +256,14 @@
     	<version>2.47.1</version>
     	<scope>test</scope>
     </dependency>    
+    
+     <dependency>
+    	<groupId>org.gebish</groupId>
+    	<artifactId>geb-junit4</artifactId>
+    	<version>0.10.0</version>
+    	<scope>test</scope>
+    </dependency>    
+    
   </dependencies>
   <dependencyManagement>
     <dependencies>
