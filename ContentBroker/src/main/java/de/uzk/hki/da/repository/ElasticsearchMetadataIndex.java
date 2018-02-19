@@ -62,7 +62,7 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 	private String edmJsonFrame;
 	
 	@Override
-	public void prepareAndIndexMetadata(String indexName, String id, String edmContent
+	public void prepareAndIndexMetadata(String indexName, String id,String providerType, String edmContent
 			) throws RepositoryException, IOException {
 		
 		if(edmJsonFrame==null) 
@@ -83,7 +83,7 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 		List<Object> graph = (List<Object>) json.get("@graph");
 		for (Object object : graph) {
 			logger.trace("Preparing json graph for indexing in elasticsearch: \n{}", JSONUtils.toPrettyString(object));
-			createIndexEntryForGraphObject(indexName, edmJsonFrame, object, id);
+			createIndexEntryForGraphObject(indexName, edmJsonFrame, object, providerType, id);
 		}
 	}
 	
@@ -113,7 +113,7 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 		}
 	}
 	
-	private void createIndexEntryForGraphObject(String indexName, String framePath, Object object, String objectID)
+	private void createIndexEntryForGraphObject(String indexName, String framePath, Object object,String institutionType, String objectID)
 			throws RepositoryException {
 		
 		@SuppressWarnings("unchecked")
@@ -133,6 +133,9 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 		} else {
 			subject.put("@root", "false");
 		}
+		
+		if(institutionType!=null && !institutionType.trim().isEmpty())
+			subject.put(C.INDEX_INSTITUTION_TYPE, institutionType.trim());
 		
 		String idAsString = subject.get("@id").toString();
 		String id = idAsString.substring(idAsString.indexOf(objectID));

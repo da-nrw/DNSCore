@@ -26,6 +26,7 @@ class User {
 	 
 	 String username 
 	 String password 
+	 String provider_type
 	 
 	 boolean enabled = true
 	 boolean accountExpired 
@@ -63,6 +64,7 @@ class User {
 		useVirusScan column: 'use_virus_scan'//DANRW-1511
 		deltaOnUrn column: 'delta_on_urn'
 		friendly_file_exts column: 'friendly_file_exts'
+		provider_type column:'provider_type' //DANRW-1446
 		}
 
 	 Set<Role> getAuthorities() { UserRole.findAllByUser(this).collect { it.role } as Set }

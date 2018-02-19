@@ -51,6 +51,11 @@ public class ATRecreateEDM extends AcceptanceTest {
 		
 		object1=ath.getObject(sip);
 	}
+	
+	@AfterClass
+	public static void teardown(){
+		setUserInstitutionType("Bibliothek");
+	} 
 
 	@Test
 	public void testRecreactionOfEDM() throws IOException, JDOMException, MetadataIndexException, RepositoryException, InterruptedException {
@@ -58,6 +63,9 @@ public class ATRecreateEDM extends AcceptanceTest {
 		//assert edm file and index entry exists
 		assertTrue(edmFile1.exists());	
 		assertTrue(indexHasObj(object1.getIdentifier()));
+		indexCheckInstitutionTypeObj(object1.getIdentifier(), "Bibliothek");
+		setUserInstitutionType("Archiv");
+		
 		//remove edm file and index entry
 		edmFile1.delete();
 		metadataIndex.deleteFromIndex(PORTAL_CI_TEST, object1.getIdentifier());
@@ -77,6 +85,8 @@ public class ATRecreateEDM extends AcceptanceTest {
 		edmFile1 = ath.loadFileFromPip(object1.getIdentifier(), "EDM.xml");
 		assertTrue(edmFile1.exists());	
 		assertTrue(indexHasObj(object1.getIdentifier()));
+		indexCheckInstitutionTypeObj(object1.getIdentifier(), "Archiv");
+		setUserInstitutionType("Bibliothek");
 	}
 	
 	private boolean indexHasObj(String id){
@@ -89,6 +99,34 @@ public class ATRecreateEDM extends AcceptanceTest {
 		else
 			assertEquals("Es sollte nur 0 oder 1 Objekt in dem Index auffindbar sein",-1,jsonObj.getInt("total"));
 		return false;
+	}
+	
+	private void indexCheckInstitutionTypeObj(String id, String type){
+		String jsonString=metadataIndex.getIndexedMetadata(PORTAL_CI_TEST, id);
+		JSONObject jsonObj = (new JSONObject(jsonString)).getJSONObject("hits");
+		
+		assertEquals(1,jsonObj.getInt("total"));
+		
+		jsonObj = jsonObj.getJSONArray("hits").getJSONObject(0);
+		jsonObj = jsonObj.getJSONObject("_source");
+		assertTrue(jsonObj.getString(C.INDEX_INSTITUTION_TYPE).contains(type));
+	}
+	
+	public static String setUserInstitutionType(String insitutionType) {
+		Session session = HibernateUtil.openSession();
+		Transaction transaction = session.beginTransaction();
+		Query query = session.createQuery("SELECT u FROM User u where username = '"+testContractor.getUsername()+"'");
+
+		@SuppressWarnings("unchecked")
+		List<User> users = query.list();
+		User testUser = users.get(0);
+		String oldInstitutionType = testUser.getProviderType();
+		testUser.setProviderType(insitutionType);
+		session.save(testUser);
+		transaction.commit();
+		session.close();
+
+		return oldInstitutionType;
 	}
 	
 	private SystemEvent createReindexSystemEvent() {

@@ -16,7 +16,7 @@ public class FakeMetadataIndex implements MetadataIndex{
 
 	@Override
 	public void prepareAndIndexMetadata(String indexName, String id,
-			String edmContent) throws RepositoryException {
+			String institutionType,String edmContent) throws RepositoryException {
 		
 		FileOutputStream fop = null;
 		File file;
@@ -31,6 +31,7 @@ public class FakeMetadataIndex implements MetadataIndex{
 				file.createNewFile();
 			}
  
+			
 			// get the content in bytes
 			byte[] contentInBytes = edmContent.getBytes();
 			fop.write(contentInBytes);
