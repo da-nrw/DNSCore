@@ -230,13 +230,12 @@
     	<version>2.4.11</version>
     </dependency>
     
-        <dependency>
+    <dependency>
     	<groupId>org.seleniumhq.selenium</groupId>
     	<artifactId>selenium-support</artifactId>
     	<version>2.47.1</version>
-    	<scope>test</scope>
     </dependency>
-    
+
     <dependency>
     	<groupId>org.seleniumhq.selenium</groupId>
     	<artifactId>selenium-htmlunit-driver</artifactId>
@@ -253,7 +252,7 @@
     <dependency>
     	<groupId>org.seleniumhq.selenium</groupId>
     	<artifactId>selenium-firefox-driver</artifactId>
-    	<version>2.47.1</version>
+    	<version>2.53.1</version>
     	<scope>test</scope>
     </dependency>    
     
@@ -321,7 +320,14 @@
                     <goals>
                         <goal>invoke</goal>
                     </goals>
-                </execution> 
+                </execution>
+                 <execution>
+                	<id>surefireIt</id>
+                    <phase>integration-test</phase>
+                    <goals>
+                        <goal>invoke</goal>
+                    </goals>
+                </execution>  
               </executions> 
   		</plugin>
   	</plugins>
