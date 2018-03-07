@@ -103,7 +103,7 @@ public class ArchiveReplicationActionTests {
 	private void setUpObject(){
 		object.setIdentifier("identifier");
 		Package pkg = new Package();
-		pkg.setName("1");
+		pkg.setDelta(1);
 		object.getPackages().add(pkg);
 	}
 	

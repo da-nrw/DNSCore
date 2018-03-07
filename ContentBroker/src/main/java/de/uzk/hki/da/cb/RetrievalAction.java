@@ -144,7 +144,7 @@ public class RetrievalAction extends AbstractAction {
 		for (int i=0;i<pp.length;i++){
 			
 			for (Package p_:o.getPackages()){
-				if (p_.getName().equals(pp[i]))
+				if (p_.getDelta().toString().equals(pp[i]))
 					packagesToRetrieve.add(p_);
 			}
 		}

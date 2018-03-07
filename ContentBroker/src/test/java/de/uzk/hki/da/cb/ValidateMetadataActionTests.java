@@ -297,7 +297,7 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 		
 		o.getLatestPackage().getFiles().add(f_ead1);
 		Package pkg2 = new Package();
-		pkg2.setName("2");
+		pkg2.setDelta(2);
 		pkg2.getFiles().add(f_ead2);
 		o.getPackages().add(pkg2);
 		
