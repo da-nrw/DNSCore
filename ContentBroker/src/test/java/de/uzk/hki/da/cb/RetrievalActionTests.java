@@ -69,9 +69,9 @@ public class RetrievalActionTests extends ConcreteActionUnitTest{
 	
 		Package pkg1 = o.getLatestPackage();
 		Package pkg2 = new Package();
-		pkg2.setName("2");
+		pkg2.setDelta(2);
 		Package pkg3 = new Package();
-		pkg3.setName("3");
+		pkg3.setDelta(3);
 		o.getPackages().add(pkg2);
 		o.getPackages().add(pkg3);
 		

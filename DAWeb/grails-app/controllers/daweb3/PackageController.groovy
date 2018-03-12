@@ -68,7 +68,7 @@ class PackageController {
 			
 			def packages = []
 			packagesIds.each { 
-				packages.add(Package.get(it).getName())
+				packages.add(Package.get(it).getDelta())
 			}
 			log.debug("RETRIEVE:"+packages.join(","))
 			CbNode cbn = CbNode.get(grailsApplication.config.getProperty('localNode.id'))

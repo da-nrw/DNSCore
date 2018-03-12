@@ -180,7 +180,8 @@ public class CreatePremisAction extends AbstractAction {
 			
 			Package newPREMISPackage = new Package();
 			newPREMISPackage.setId(o.getLatestPackage().getId());
-			newPREMISPackage.setName(mainPREMISPackage.getName());
+			newPREMISPackage.setDelta(mainPREMISPackage.getDelta());
+			newPREMISPackage.setRepair(mainPREMISPackage.getRepair());
 			newPREMISPackage.setContainerName(mainPREMISPackage.getContainerName());
 			newPREMISPackage.setFiles(mainPREMISPackage.getFiles());
 			newPREMISPackage.setEvents(mainPREMISPackage.getEvents());
