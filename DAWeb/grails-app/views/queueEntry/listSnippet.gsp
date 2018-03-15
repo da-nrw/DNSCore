@@ -50,13 +50,23 @@
 					</g:link>
 				</td>
 				<td>
-<!-- 						${queueEntryInstance.getInformation()} -->
 					<g:if test="${queueEntryInstance.showTrafficLightRed()}">
-						<asset:image style="width:16px; height:16px" src="/icons/red-gr.png" title="${queueEntryInstance.getInformation()}" alt="${queueEntryInstance.getInformation()}"/> 
+						<asset:image style="width:16px; height:16px" src="/icons/red-gr.png" title="${queueEntryInstance.getInformation()}" alt="${queueEntryInstance.getInformation()}"/>
+						${queueEntryInstance.status}
 					</g:if>
 					<g:if test="${queueEntryInstance.showTrafficLightGreen()}">
 						<asset:image style="width:16px; height:16px" src="/icons/green-gr.png" title="${queueEntryInstance.getInformation()}" alt="${queueEntryInstance.getInformation()}"/>
 					</g:if>
+					
+					<g:if test="${ queueEntryInstance.showDeletionButton()}">
+						<g:set var="showDeleteAll" value="true" />
+						<g:link onclick="return confirm('Eintrag löschen. Sind Sie sicher?');" action="queueDelete" id="${queueEntryInstance.id}">
+							<asset:image style="width:16px; height:16px" src="/icons/list_remove.png" 
+										title="${message(code: 'default.workflow.icon.delete', default: 'Paket löschen')}" 
+										alt="${message(code: 'default.workflow.icon.delete', default: 'Paket löschen')}"/>
+						</g:link>
+					</g:if>
+					
 				</td>
 				<td>
 					${fieldValue(bean: queueEntryInstance.obj, field: "urn")}

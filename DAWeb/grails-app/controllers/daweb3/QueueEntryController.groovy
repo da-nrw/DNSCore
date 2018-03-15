@@ -320,7 +320,7 @@ class QueueEntryController {
 					def msg = ""
 					modifyIds.each {
 						que.modifyJob(it, "800")
-					}
+					}params
 					flash.message = " (" +modifyIds.size() + ") Pakete zur Löschung vorgesehen! "
 			
 		} catch (Exception e) {
@@ -389,6 +389,35 @@ class QueueEntryController {
 		}
 		redirect(action: "listRequests")
 		return
+	}
+
+	
+	def deleteSip() {
+		
+		User us = springSecurityService.currentUser
+		def queueEntries = null
+		println("fehlerhafte SIP's werden gelöscht:  " + us.getShortName());
+		def contractorList = User.list()
+			try {
+			   queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn" + 
+				   " and q.status < '400' and ( q.status like ('%1') or q.status like ('%3') " + 
+				   " or  q.status like ('%4') or q.status like ('%6')) ", 
+             [csn: us.getShortName()]
+			 )
+		
+			def msg = ""
+			queueEntries.each {
+				println("status : " + it.status + "   id: " + it.id)
+				que.modifyJob(it.id.toString(), "800")
+			}
+			flash.message = " (" +queueEntries.size() + ") Pakete zur Löschung vorgesehen! "
+			
+		} catch (Exception e) {
+			log.error("Löschungen aus Workflow fehlgeschlagen" + e.printStackTrace())
+			flash.message = "Löschungen aus Workflow fehlgeschlagen!"
+		}
+		
+		redirect(action: "list")
 	}
 
 }
