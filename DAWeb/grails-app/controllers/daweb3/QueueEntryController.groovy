@@ -393,10 +393,10 @@ class QueueEntryController {
 
 	
 	def deleteSip() {
-		
 		User us = springSecurityService.currentUser
 		def queueEntries = null
-		println("fehlerhafte SIP's werden gelöscht:  " + us.getShortName());
+		
+		println("fehlerhafte SIP's des Contractors "  + us.getShortName()) +  " werden gelöscht.";
 		def contractorList = User.list()
 			try {
 			   queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn" + 
@@ -404,14 +404,10 @@ class QueueEntryController {
 				   " or  q.status like ('%4') or q.status like ('%6')) ", 
              [csn: us.getShortName()]
 			 )
-		
-			def msg = ""
+			 flash.message = " (" + queueEntries.size() + ") Pakete zur Löschung vorgesehen! "
 			queueEntries.each {
-				println("status : " + it.status + "   id: " + it.id)
 				que.modifyJob(it.id.toString(), "800")
-			}
-			flash.message = " (" +queueEntries.size() + ") Pakete zur Löschung vorgesehen! "
-			
+			}			
 		} catch (Exception e) {
 			log.error("Löschungen aus Workflow fehlgeschlagen" + e.printStackTrace())
 			flash.message = "Löschungen aus Workflow fehlgeschlagen!"

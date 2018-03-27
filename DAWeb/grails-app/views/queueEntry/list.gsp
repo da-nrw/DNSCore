@@ -56,13 +56,13 @@
 	<body>
 		<div id="page-body">
 			<h1>Bearbeitungsübersicht</h1>	<br>		
-			<g:form controller="queueEntry" >
+			<g:form controller="queueEntry" action="deleteSip">
 				<g:if test="${!params.search }">
 					<i>Aktualisieren der Seite:&nbsp; </i>
 					<input id="stopper" type="button" onclick="stopUpdater();this.disabled=true;" value="stoppen"/>
 					 &nbsp;
 					<input id="starter" type="button" onclick="startUpdater();this.disabled=true;" disabled value="starten"/><br><br>
-					<g:actionSubmit value="fehlerhaft SIP's löschen" action="deleteSip"/>
+					<button onclick="return confirm ('Wirklich alle  fehlerhaften SIP löschen?')" >fehlerhaft SIP's löschen </button>
 				</g:if> <br>
 			</g:form>
 			<g:if test="${flash.message}">
