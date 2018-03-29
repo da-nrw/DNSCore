@@ -798,12 +798,12 @@ public class Object {
 		if (getPackages().size()==0) throw new IllegalStateException("no packages associated");
 
 		Package max = null;
-		int maxnumber=0;
+		int maxDelta=0;
 		
-		for (Package p:getPackages()){
-			if (Integer.parseInt(p.getName())>maxnumber){
-				maxnumber = Integer.parseInt(p.getName());
-				max = p;
+		for (Package pack : getPackages()){
+			if (pack.getDelta() > maxDelta){
+				maxDelta = pack.getDelta();
+				max = pack;
 			}
 		}
 		return max;

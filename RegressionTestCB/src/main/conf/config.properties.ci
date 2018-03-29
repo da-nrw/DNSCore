@@ -14,6 +14,7 @@ irods.trustStorePath=
 
 localNode.userAreaRootPath=/ci/storage/UserArea
 localNode.ingestAreaRootPath=/ci/storage/IngestArea
+localNode.ingestAreaNoBagitRootPath=/ci/storage/IngestArea/noBagit
 localNode.workAreaRootPath=/ci/storage/WorkArea
 localNode.gridCacheAreaRootPath=/ci/storage/GridCacheArea
 localNode.workingResource=ciWorkingResource

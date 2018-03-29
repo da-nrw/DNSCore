@@ -139,7 +139,7 @@ public class CheckFormatsActionTest extends ConcreteActionUnitTest {
 	public void setUp() throws Exception{
 		HibernateUtil.init("src/main/xml/hibernateCentralDB.cfg.xml.inmem");
 
-		final Package sipPackage = new Package(); sipPackage.setName("2"); // the SIP / Delta
+		final Package sipPackage = new Package(); sipPackage.setDelta(2); // the SIP / Delta
 		
 		DAFile a  = new DAFile(REP1A,"_1.jpg");
 		DAFile b  = new DAFile(REP1A,"_3.mov");
@@ -241,7 +241,7 @@ public class CheckFormatsActionTest extends ConcreteActionUnitTest {
 		
 		Package oldPackage = new Package(); // the AIP
 		
-		oldPackage.setName("1");
+		oldPackage.setDelta(1);
 		
 		DAFile newPackageOriginalFile  = new DAFile( REP1A,"_1.jpg");
 		DAFile newPackageConvertedFile = new DAFile( REP1B,"_1.tif"); 
@@ -311,7 +311,7 @@ public class CheckFormatsActionTest extends ConcreteActionUnitTest {
 	public void testThatObjectsFormatsListsAreCorrectWithDeltas() throws FileNotFoundException, IOException, SubsystemNotAvailableException{
 		
 		Package aipPackage = new Package(); 
-		aipPackage.setName("1"); 
+		aipPackage.setDelta(1); 
 		o.getPackages().add(aipPackage);
 		
 		action.implementation();
@@ -346,7 +346,7 @@ public class CheckFormatsActionTest extends ConcreteActionUnitTest {
 	public void testThatObjectsCodecListsAreCorrectWithDeltas() throws FileNotFoundException, IOException, SubsystemNotAvailableException{
 		
 		Package aipPackage = new Package(); 
-		aipPackage.setName("1"); 
+		aipPackage.setDelta(1); 
 		o.getPackages().add(aipPackage);
 		
 		action.implementation();

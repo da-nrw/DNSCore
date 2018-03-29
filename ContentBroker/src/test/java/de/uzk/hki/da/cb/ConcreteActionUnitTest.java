@@ -23,9 +23,7 @@ import static de.uzk.hki.da.test.TC.URN;
 import static de.uzk.hki.da.utils.C.TEST_USER_SHORT_NAME;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
 
 import org.junit.Before;
 
@@ -99,7 +97,7 @@ public class ConcreteActionUnitTest {
 		c.setEmailAddress("noreply");
 		
 		Package pkg = new Package();
-		pkg.setName("1");
+		pkg.setDelta(1);
 		pkg.setId(1);
 		pkg.setContainerName("testcontainer.tgz");
 		

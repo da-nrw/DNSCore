@@ -104,12 +104,12 @@ public class CreatePremisActionTests {
 		
 		pkg = new Package();
 		pkg.setId(1234565);
-		pkg.setName("1");
+		pkg.setDelta(1);
 		pkg.setContainerName("testpackage.tgz");
 				
 		pkg2 = new Package();
 		pkg2.setId(1);
-		pkg2.setName("2");
+		pkg2.setDelta(2);
 		pkg2.setContainerName("testpackage.tgz");
 		
 		User contractor = new User();

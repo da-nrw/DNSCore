@@ -58,8 +58,8 @@ public class RetrievePackagesHelperTest {
 		
 		object = TESTHelper.setUpObject("id", workAreaRootPath);
 		
-		Package p2 = new Package(); p2.setName("2");
-		Package p3 = new Package(); p3.setName("3");
+		Package p2 = new Package(); p2.setDelta(2);
+		Package p3 = new Package(); p3.setDelta(3);
 		object.getPackages().add(p2);
 		object.getPackages().add(p3);
 		
