@@ -100,7 +100,7 @@ public class PremisXmlWriterTest {
 		object.setOrig_name("orig_name");
 		
 		Package pkg = new Package();
-		pkg.setName("7");
+		pkg.setDelta(7);
 		object.getPackages().add(pkg);
 		
 		Event event = new Event();
