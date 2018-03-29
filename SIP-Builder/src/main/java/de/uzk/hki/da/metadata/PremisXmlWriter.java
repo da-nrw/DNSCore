@@ -151,7 +151,7 @@ public class PremisXmlWriter {
 				createTextElement("ddbExclusion", String.valueOf(contractRights.getDdbExclusion()), 1);
 				if(contractRights.getCclincense()!=null)
 					generatePublicationLicenseElement(contractRights.getCclincense(),1);
-				if(contractRights.getMinimalIngestQuality()!=0)
+				if(contractRights.getMinimalIngestQuality()>0)
 					createTextElement("minimalIngestQualityLevel", String.valueOf(contractRights.getMinimalIngestQuality()), 1);
 			createCloseElement(0);
 
@@ -551,7 +551,7 @@ public class PremisXmlWriter {
 					// DDB exclusion option
 					if (publicRights.getAllowPublication() && contractRights.getDdbExclusion())
 						createEmptyElement("DDBexclusion", 4);
-					if (contractRights.getMinimalIngestQuality()!=0){
+					if (contractRights.getMinimalIngestQuality()>0){
 						createTextElement("minimalIngestQualityLevel",""+contractRights.getMinimalIngestQuality(), 4);
 					}
 					if(contractRights.getCclincense()!=null){

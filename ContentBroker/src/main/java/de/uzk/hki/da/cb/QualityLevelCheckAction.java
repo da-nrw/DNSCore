@@ -54,6 +54,9 @@ public class QualityLevelCheckAction extends AbstractAction {
 		setKILLATEXIT(true);
 	}*/
 	
+	/**
+	 * Sort Events by absolute path of source DAFile
+	 */
 	private Comparator<Event> eventComparator=new Comparator<Event>(){
 		@Override public int compare(Event o1, Event o2) {
 			String f1=o1.getSource_file().getRep_name() + o1.getSource_file().getRelative_path();
@@ -123,10 +126,10 @@ public class QualityLevelCheckAction extends AbstractAction {
 
 			logger.debug("QualityLevelCheckAction unknownPuidFile:"+Arrays.toString(unsupportedPuidFile.toArray()));
 			if(!unrecognizedPUIDFiles.isEmpty()){
-				extendObject(C.QUALITYFLAG_LEVEL_4,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4,o.getLatestPackage().getFiles().get(0),"NO CRITICAL QUALITY_LEVEL EVENTS, BUT HAS UNKNOWN FORMATS , e.g. FILE: "+unrecognizedPUIDFiles.get(0).getRelative_path()));
+				extendObject(C.QUALITYFLAG_LEVEL_4,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4,unrecognizedPUIDFiles.get(0),"NO CRITICAL QUALITY_LEVEL EVENTS, BUT HAS UNKNOWN FORMATS , e.g. FILE: "+unrecognizedPUIDFiles.get(0).getRelative_path()));
 				qualityLevel=C.QUALITYFLAG_LEVEL_4;
 			} else if(!unsupportedPuidFile.isEmpty()){
-				extendObject(C.QUALITYFLAG_LEVEL_4,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4,o.getLatestPackage().getFiles().get(0),"NO CRITICAL QUALITY_LEVEL EVENTS, BUT HAS UNSUPPORTED FORMATS , e.g. FILE: "+unsupportedPuidFile.get(0).getRelative_path()));
+				extendObject(C.QUALITYFLAG_LEVEL_4,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4,unsupportedPuidFile.get(0),"NO CRITICAL QUALITY_LEVEL EVENTS, BUT HAS UNSUPPORTED FORMATS , e.g. FILE: "+unsupportedPuidFile.get(0).getRelative_path()));
 				qualityLevel=C.QUALITYFLAG_LEVEL_4;
 			}else if(unsupportedPuidFile.isEmpty() && unrecognizedPUIDFiles.isEmpty()){
 				extendObject(C.QUALITYFLAG_LEVEL_5,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_5,o.getLatestPackage().getFiles().get(0),"NO CRITICAL QUALITY_LEVEL EVENTS"));
@@ -161,9 +164,9 @@ public class QualityLevelCheckAction extends AbstractAction {
 		int requiredIngestQualityPremis=getRequiredIngestLevelFromPremis();
 		if(requiredIngestQualityPremis>0){
 			if(qualityLevel<requiredIngestQualityPremis)
-				throw new UserException(UserExceptionId.QUALITY_BELOW_REQUIRED, "Current QualityLevel("+qualityLevel+") is below required "+requiredIngestQualityPremis +" ");
-		}else if(qualityLevel< this.o.getContractor().getRequiredIngestQuality())
-			throw new UserException(UserExceptionId.QUALITY_BELOW_REQUIRED, "Current QualityLevell("+qualityLevel+") is below required "+this.o.getContractor().getRequiredIngestQuality() +" ");
+				throw new UserException(UserExceptionId.QUALITY_BELOW_REQUIRED, "Current QualityLevel("+qualityLevel+") is below required "+requiredIngestQualityPremis +" in Premis");
+		}else if(qualityLevel< this.o.getContractor().getMinimalIngestQualityLevel())
+			throw new UserException(UserExceptionId.QUALITY_BELOW_REQUIRED, "Current QualityLevel("+qualityLevel+") is below required "+this.o.getContractor().getMinimalIngestQualityLevel() +" ");
 		
 		return true;
 

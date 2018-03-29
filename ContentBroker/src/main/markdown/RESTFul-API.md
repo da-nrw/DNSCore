@@ -43,7 +43,7 @@ The JSON returned includes all types of information about the SIP submitted or t
 ### Example Response    
 
     {"result":
-    [{"type":"Object","status":"archived","urn":"urn:nbn:de:hbz:6:1-31323","contractor":"hbzadmin","origName":"06-Apr-2016-T-15-10-01-urn+nbn+de+hbz+6+1-31323","identifier":"8-2016040610214","packages":["<package name for backward compliancy as numeric value"]}
+    [{"type":"Object","status":"archived","urn":"urn:nbn:de:hbz:6:1-31323","contractor":"hbzadmin","origName":"06-Apr-2016-T-15-10-01-urn+nbn+de+hbz+6+1-31323","identifier":"8-2016040610214","qualityLevel": "4","packages":["<package name for backward compliancy as numeric value"]}
 ## Authentification
 
 Contractors must authenticate with BASIC AUTH. Credentials are same as contractor's.

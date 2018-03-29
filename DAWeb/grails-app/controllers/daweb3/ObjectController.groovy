@@ -142,11 +142,19 @@ class ObjectController {
 		log.debug(params.toString())
 		def objects = c.list(max: params.max, offset: params.offset ?: 0) {
 
-			if (params.search) params.search.each { key, value ->
-				if (value!="") filterOn=1
-				like(key, "%" + value + "%")
+			/*
+			 *like fuer alle  oder nur fuer die value!="" ??
+			 */
+			if (params.search) {
+				params.search.each 
+				{ key, value ->
+						if (!(value==""/* && value=="null" && value==null*/)) {
+							filterOn=1
+							like(key, "%" + value + "%")
+						}
+						
+				}
 			}
-
 			log.debug("Date as Strings " + params.searchDateStart + " and " + params.searchDateEnd)
 			def ds = daweb3.Object.convertDateIntoDate(params.searchDateStart)
 			def de = daweb3.Object.convertDateIntoDate(params.searchDateEnd)
@@ -164,7 +172,7 @@ class ObjectController {
 					params.remove("searchDateType")
 				}
 			}
-			
+		
 			if (ds!=null && de!=null) {
 				filterOn=1
 				log.debug("Objects between " + ds + " and " + de)
@@ -180,14 +188,15 @@ class ObjectController {
 				log.debug("Objects lower than " + de)
 				lt(st,de)
 			}
-
-			/*if (params.searchQualityLevel!=null) {
-				filterOn=1
-				//createAlias( "user", "c" )
-				//eq("quality_flag", params.searchQualityLevel)
-				//between("quality_flag", params.searchQualityLevel,params.searchQualityLevel+1)
-				//eq("user.id", user.id)
-			}*/
+			
+			if (params.searchQualityLevel!=null /*&& !params.searchQualityLevel.equals("null")*/) {
+				if(params.searchQualityLevel?.isInteger()){
+					filterOn=1
+					log.debug("QualityLevel filter on :"+params.searchQualityLevel)
+					eq("quality_flag", Integer.valueOf(params.searchQualityLevel))
+					//between("quality_flag", params.searchQualityLevel,params.searchQualityLevel+1)
+				}
+			}
 
 			if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 				admin = 1;
@@ -205,6 +214,7 @@ class ObjectController {
 			}
 			between("object_state", 50,200)
 			order(params.sort ?: "id", params.order ?: "desc")
+			
 		}
 		log.debug("Search " + params.search)
 
@@ -219,7 +229,7 @@ class ObjectController {
 			paramsList.putAt("searchDateStart", params?.searchDateStart);
 			paramsList.putAt("searchDateEnd", params?.searchDateEnd);
 		}
-		
+	
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			render(view:"adminList", model:[	objectInstanceList: objects,
 				objectInstanceTotal: objects.getTotalCount(),

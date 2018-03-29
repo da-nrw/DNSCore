@@ -53,11 +53,12 @@
 		    		<g:if test="${!params.search?.identifier.isEmpty()}">
 		    			<span style="margin-right: 25px"><i>Identifier: </i>${params.search?.identifier}</span>
 		    		</g:if> 
-		    		<g:if test="${!params.search?.qualityLevel.isEmpty()}">
-	    					<g:if test="${params.searchDateType == 'qualityLevel1'}">Stufe 1</g:if>
-	    					<g:if test="${params.searchDateType == 'qualityLevel2'}">Stufe 2</g:if>
-	    					<g:if test="${params.searchDateType == 'qualityLevel3'}">Stufe 3</g:if>
-	    					<g:if test="${params.searchDateType == 'qualityLevel4'}">Stufe 4</g:if>
+		    		<g:if test="${!params.search?.searchQualityLevel?.isEmpty()}">
+	    					<g:if test="${params.searchQualityLevel == '1'}">Qualitätsstufe: 1</g:if>
+	    					<g:if test="${params.searchQualityLevel == '2'}">Qualitätsstufe: 2</g:if>
+	    					<g:if test="${params.searchQualityLevel == '3'}">Qualitätsstufe: 3</g:if>
+	    					<g:if test="${params.searchQualityLevel == '4'}">Qualitätsstufe: 4</g:if>
+	    					<g:if test="${params.searchQualityLevel == '5'}">Qualitätsstufe: 5</g:if>
 		    		</g:if> 
 		    		<div>
 						<g:if test="${params.searchDateType != null } ">
@@ -93,7 +94,7 @@
             			<tr>
             			<td>Qualitätsstufe:</td>
             			<td>
-	            			<g:select id="qualityLevel" name="searchQualityLevel" from="${['Stufe 1','Stufe 2','Stufe 3','Stufe 4']}" keys="${['qualityLevel1','qualityLevel2','qualityLevel3','qualityLevel4']}" value="${params.searchQualityLevel}" noSelection="[null:'Bitte auswählen']" />
+	            			<g:select id="qualityLevel" name="searchQualityLevel" from="${['Stufe 1','Stufe 2','Stufe 3','Stufe 4','Stufe 5']}" keys="${['1','2','3','4','5']}" value="${params.searchQualityLevel}" noSelection="[null:'Bitte auswählen']" />
 	            		</td>
             		</tr>
 	            		<tr>
@@ -197,7 +198,7 @@
 							<td>${fieldValue(bean: objectInstance, field: "origName")}</td>
 							<td>${objectInstance.getFormattedCreatedDate()}</td>
 							<td>${objectInstance.getFormattedModifiedDate()}</td>
-							<td>${objectInstance.getFormattedQualityLevel()}</td>
+							<td>${objectInstance.getFormattedQualityLevelNoZero()}</td>
 							<td>	
 						<g:if test="${objectInstance.getPublished_flag()==1}">
 							<g:link url="${objectInstance.getPublicPresLink()}" target="_blank"><g:img style="width:16px; height:16px" uri="/images/icons/globe.png"/></g:link>

@@ -145,8 +145,16 @@ class Object {
 	}
 	
 	def getFormattedQualityLevel() {
-		if (quality_flag!=null && quality_flag!="" && quality_flag!="NULL" && quality_flag!="-1") {
-			return quality_flag
+		if (quality_flag!=null && quality_flag!="" && quality_flag!="NULL" && quality_flag!="-1"&& quality_flag!=-1) {
+			return ""+quality_flag
+		}
+		return ""
+	}
+	
+	def getFormattedQualityLevelNoZero() {
+		if (quality_flag!=null && quality_flag!="" && quality_flag!="NULL" && 
+				quality_flag!="-1"&& quality_flag!=0&& quality_flag!=-1&& quality_flag!="0") {
+			return ""+quality_flag
 		}
 		return ""
 	}

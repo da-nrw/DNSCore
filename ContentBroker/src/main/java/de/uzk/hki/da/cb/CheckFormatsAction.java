@@ -218,15 +218,7 @@ public class CheckFormatsAction extends AbstractAction {
 		}
 		return originalFormatsSet;
 	}
-	
-
-	
-	
-	
-	
-	
-	
-	
+		
 	
 	@Override
 	public void rollback() throws Exception {

@@ -110,8 +110,8 @@ public class User{
 	@Cascade({CascadeType.SAVE_UPDATE,CascadeType.DELETE})
 	private List<Message> messages = new ArrayList<Message>();
 	
-	@Column(name="required_ingest_quality", columnDefinition="INTEGER DEFAULT "+C.QUALITYFLAG_DEFAULT)
-	private int requiredIngestQuality;
+	@Column(name="minimal_ingest_quality_level", columnDefinition="INTEGER DEFAULT "+C.QUALITYFLAG_DEFAULT)
+	private int minimalIngestQualityLevel;
 	
 	
 	/**
@@ -233,11 +233,13 @@ public class User{
 	public void setUsePublicMets(Boolean usePublicMets) {
 		this.usePublicMets = usePublicMets;
 	}
-	
-	
-	
-	public int getRequiredIngestQuality() {
-		return requiredIngestQuality;
+
+	public int getMinimalIngestQualityLevel() {
+		return minimalIngestQualityLevel;
+	}
+
+	public void setMinimalIngestQualityLevel(int minimalIngestQualityLevel) {
+		this.minimalIngestQualityLevel = minimalIngestQualityLevel;
 	}
 
 	public boolean isUseVirusScan() {

@@ -401,7 +401,13 @@ public class ObjectPremisXmlReader{
 			
 			Element minimalIngestQualityLevelEl = rightsExtEl.getFirstChildElement("minimalIngestQualityLevel", C.CONTRACT_NS);
 			if(minimalIngestQualityLevelEl!=null){
-				object.setMinimalIngestQLevel(Integer.parseInt(minimalIngestQualityLevelEl.getValue()));
+				int minimalLevel=Integer.parseInt(minimalIngestQualityLevelEl.getValue());
+				if(minimalLevel>=0){
+					logger.debug("Set Recognized MinimalIngestQLevel: " + minimalLevel);
+					object.setMinimalIngestQLevel(minimalLevel);
+				}else{
+					logger.debug("Recognized Invalid MinimalIngestQLevel: " + minimalLevel);
+				}
 			}
 			
 			

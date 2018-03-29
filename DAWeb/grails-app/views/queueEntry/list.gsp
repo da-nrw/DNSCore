@@ -153,30 +153,36 @@
 			<div>
 			<p style="font-style:italic">xx0 bedeutet "wartend", xx2: bezeichnet "arbeitend" - hingegen bezeichnen xx1,xx3,xx4,xx5,xx6,xx7,xx8 einen bestimmten Fehler, Genaueres hier: <a href="https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/administration-troubleshooting.de.md" target="err" >Fehlercodes</a></p> 
 			<table>
+<!-- ingest-->
 			<tr><th>Statuscode</th><th>Kurzbezeichnung</th><th>Beschreibung</th></tr>
 			<tr><td>110</td><td>IngestUnpackAction</td><td>Auspacken & Vollständigkeitstests</td></tr>
-			<tr><td>120</td><td>IngestRegisterObjectAction</td><td>Objekt- oder Deltaerkennung, Typerkennung</td></tr>
-			<tr><td>220</td><td>IngestScanAction</td><td>Formaterkennung</td></tr>
+		<tr><td>130</td><td>IngestRestructureAction</td><td>Virus-Scan und Reorganisation der Ordnerstruktur</td></tr>
+		<tr><td>140</td><td>IngestValidateMetadataAction</td><td>Validierung der Metadaten</td></tr>
+		<tr><td>150</td><td>IngestScanAction</td><td>Formaterkennung</td></tr>
+		<tr><td>160</td><td>IngestRegisterURNAction</td><td>Register URN in DNS</td></tr>
 			<tr><td>230</td><td>IngestConvertAction</td><td>LZA Konvertierung</td></tr>
-			<tr><td>250</td><td>IngestMetadataUpdateAction</td><td>Update der Metadaten</td></tr>
-			<tr><td>260</td><td>IngestCheckFormatAction</td><td>Überprüfung der LZA Konvertierung</td></tr>
-			<tr><td>270</td><td>IngestCreatePremisAction</td><td>Bearbeitung der PREMIS-Datei</td></tr>
+			<tr><td>250</td><td>IngestUpdateMetadataAction</td><td>Update der Metadaten</td></tr>
+			<tr><td>260</td><td>IngestCheckFormatAction</td><td>Überprüfung der LZA Konvertierung</td></tr>	
+		<tr><td>270</td><td>IngestQualityLevelCheckAction</td><td>Ermittlung einer Qualitätsstufe</td></tr>		
+			<tr><td>290</td><td>IngestCreatePremisAction</td><td>Bearbeitung der PREMIS-Datei</td></tr>
 			<tr><td>310</td><td>IngestScanForPresentationAction</td><td>Formaterkennung für Präsentation auf Basis der LZA Formate</td></tr>
 			<tr><td>320</td><td>IngestConvertForPresentationAction</td><td>Bildung der PIPs (Präsentationsderivate)</td></tr>
-			<tr><td>330</td><td>IngestPreProcessForPresentationAction</td><td>Verschieben der PIPs</td></tr>
 			<tr><td>340</td><td>IngestShortenFilenamesAction</td><td>Kürzung der PIP Dateinamen</td></tr>
-			<tr><td>350</td><td>IngestPreUpdateMetadataAction</td><td>Update der Metadaten nach PIP Erstellung</td></tr>
+			<tr><td>350</td><td>IngestPresUpdateMetadataAction</td><td>Update der Metadaten nach PIP Erstellung</td></tr>
 			<tr><td>360</td><td>IngestPrepareSendToPresenterAction</td><td>Anmeldung der PIP zur Übertragung ans Pres. Repository</td></tr>
 			<tr><td>370</td><td>IngestBuildAIPAction</td><td>AIP Erstellung</td></tr>
 			<tr><td>380</td><td>IngestTarAction</td><td>AIP Erstellung als TAR-Archiv</td></tr>
-			<tr><td>400</td><td>ArchiveReplicationAction</td><td>Ablage auf LZA Medien und Replikation</td></tr>
-			<tr><td>440</td><td>ArchiveReplicationCheckAction</td><td>Prüfung der Replikationen</td></tr>
+			<tr><td>400</td><td>IngestArchiveReplicationAction</td><td>Ablage auf LZA Medien und Replikation</td></tr>
+			<tr><td>440</td><td>IngestArchiveReplicationCheckAction</td><td>Prüfung der Replikationen</td></tr>
+	<!-- presentation-->		
 			<tr><td>540</td><td>FetchPIPsAction</td><td>Replikation der PIP an den Presentation Repository Knoten</td></tr>
-			<tr><td>550</td><td>SendToPresenterAction</td><td>Einspielung der PIP in das Presentation Repository</td></tr>
-			<tr><td>560</td><td>CreateEDMAction</td><td>EDM Metadaten-Erstellung</td></tr>
-			<tr><td>570</td><td>IndexESAction</td><td>Indizierung im Elasticsearch Suchindex</td></tr>			
-			<tr><td>580</td><td>FriendshipConversionAction</td><td>Konvertierung auf anderem Knoten</td></tr>			
+			<tr><td>550</td><td>CreateDCAction</td><td>DC Metadaten-Erstellung</td></tr>
+			<tr><td>560</td><td>SendToPresenterAction</td><td>Einspielung der PIP in das Presentation Repository</td></tr>
+			<tr><td>570</td><td>CreateEDMAction</td><td>EDM Metadaten-Erstellung</td></tr>
+			<tr><td>580</td><td>IndexMetadataAction</td><td>Indizierung im Elasticsearch Suchindex</td></tr>			
 			<tr><td>600</td><td>RestartIngestWorkflowAction</td><td>Zurücksetzung des Ingestworkflows</td></tr>			
+			<tr><td>640</td><td>ProcessUserDecisionsAction</td><td>Warten auf Nutzerentscheidung</td></tr>	
+	<!-- pipgen-->		
 			<tr><td>700</td><td>PIPGenObjectToWorkareaAction</td><td>Übertragung von AIP an das Knotenarbeitsverzeichnis</td></tr>
 			<tr><td>710</td><td>PIPGenScanForPresentationAction</td><td>Scannen der Präsentationsformate</td></tr>
 			<tr><td>720</td><td>PIPGenConvertForPrestationAction</td><td>Bildung der PIPs (Präsentationsderivate)</td></tr>
@@ -190,6 +196,7 @@
 			<tr><td>910</td><td>RetrievalAction</td><td>Bildung des DIP, Übertragung an das Ausgabeverzeichnis des Contractor</td></tr>
 			<tr><td>950</td><td>RetrievalDeliveredDIPAction</td><td>Warten auf Abholung durch Contractor</td></tr>
 			<tr><td>960</td><td>PostRetrievaAction</td><td>Wurde abgeholt, vorbereiten auf Löschung DIP</td></tr>
+			
 			<tr><td>5000</td><td>AuditAction</td><td>Überprüfung des AIP</td></tr>
 			</table>
 				<a target="liste" href="https://docs.google.com/drawings/d/1qEd_LVNXKiiHmAW_LKNL0hEkS6ixcVf8TgO9-5a9WrM/edit?pli=1">(Quelle: Workflowdiagramm)</a>

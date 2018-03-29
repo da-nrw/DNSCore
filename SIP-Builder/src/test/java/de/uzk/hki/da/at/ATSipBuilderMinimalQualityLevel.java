@@ -15,7 +15,7 @@ import org.junit.Test;
 
 import de.uzk.hki.da.utils.FolderUtils;
 
-public class ATSipBuilderPathMinimalQualityLevel {
+public class ATSipBuilderMinimalQualityLevel {
 	
 	private static File targetDir = new File("target/atTargetDir/");
 	private static File sourceDir = new File("src/test/resources/at/");
@@ -60,7 +60,7 @@ public class ATSipBuilderPathMinimalQualityLevel {
 	         if(s.contains("Die SIP-Erstellung wurde erfolgreich abgeschlossen."))
 	    	   successful=true;
 	    }
-	    System.out.println("successful: "+successful+" rightLicense: "+rightMinQuality);
+	    System.out.println("successful: "+successful+" rightMinQualityLevel: "+rightMinQuality);
 	    assertTrue(rightMinQuality && successful);
 	    
 	    // read any errors from the attempted command
@@ -71,7 +71,5 @@ public class ATSipBuilderPathMinimalQualityLevel {
 	    System.out.println("End\n");
 	    assertTrue(new File("target/atTargetDir/"+sipMinimalQuality+".tgz").exists());
 	}
-	
-	
 	
 }

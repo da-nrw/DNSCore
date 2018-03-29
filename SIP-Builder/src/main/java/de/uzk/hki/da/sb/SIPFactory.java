@@ -502,7 +502,7 @@ public class SIPFactory {
 				premisWriter.createPremisFile(this, premisFile,
 						rightsSourcePremisFile, packageName);
 			else{
-				if(this.getContractRights().getMinimalIngestQuality()!=0)
+				if(this.getContractRights().getMinimalIngestQuality()>0)
 					logger.info("Take over minimal ingest quality: "+this.getContractRights().getMinimalIngestQuality());
 				premisWriter.createPremisFile(this, premisFile, packageName);
 			}

@@ -10,13 +10,17 @@ commit;
 
 
 begin;
-ALTER TABLE users ADD COLUMN required_ingest_quality INTEGER;
-update users SET required_ingest_quality=0 WHERE required_ingest_quality IS NULL;
+ALTER TABLE users ADD COLUMN minimal_ingest_quality_level INTEGER;
+update users SET minimal_ingest_quality_level=0 WHERE minimal_ingest_quality_level IS NULL;
 commit;
 
 
 begin;
-ALTER TABLE conversion_policies ADD COLUMN  format_type
+ALTER TABLE conversion_policies ADD COLUMN  format_type varchar(20);
+update conversion_policies SET format_type="LZA" WHERE presentation IS False;
+update conversion_policies SET format_type="LZA" WHERE (source_format='fmt/353' or source_format='fmt/354' or source_format='fmt/5' or source_format='x-fmt/392' or source_format='fmt/141');
+/*fmt/353=TIFF    fmt/354=PDF/A1b    fmt/5=AudioVideo Interleaved Format   x-fmt/392=JP2   fmt/141=WaveformAudio*/
+
 commit;
 
 
@@ -27,6 +31,7 @@ commit;
 
 
 /*clean same entries after column remove*/
+/*nicht notwendig*/
 /*
 begin;
 DELETE FROM conversion_policies
@@ -40,5 +45,3 @@ WHERE
    KeepRows.id IS NULL  
 commit;
 */
-
-

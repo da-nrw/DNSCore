@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
@@ -44,9 +45,13 @@ import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.format.ConfigurableFileFormatFacade;
 import de.uzk.hki.da.format.ConnectionException;
 import de.uzk.hki.da.format.FileWithFileFormat;
+import de.uzk.hki.da.format.QualityLevelException;
+import de.uzk.hki.da.format.QualityLevelException.Type;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.service.HibernateUtil;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
@@ -172,6 +177,25 @@ public class CheckFormatsActionTest extends ConcreteActionUnitTest {
 			fail();
 		}
 	}
+	
+	@Test
+	public void testQualityLevelExceptionToEvent() throws ConnectionException, IOException{
+		ConfigurableFileFormatFacade fffException =setUpFakeFormatScanService();
+		when(fffException.extract((File)anyObject(), (File)anyObject(),(String)anyObject())).thenThrow(new QualityLevelException(Type.VALIDATION, "TestMessage"));
+		try {
+			action.setFileFormatFacade(fffException);
+			action.implementation();
+		} catch (Exception e) {
+			e.printStackTrace(System.err);
+			fail();
+		}
+		List<Event> events=action.getObject().getLatestPackage().getEvents();
+		Assert.assertEquals(events.size(),3);
+		Assert.assertEquals(events.get(0).getType(),C.EVENT_TYPE_QUALITY_FAULT_VALIDATION);
+		Assert.assertEquals(events.get(0).getDetail(),Type.VALIDATION+" "+"TestMessage");
+		
+	}
+	
 	
 	@Test
 	public void technicalMetadataFoldersForTechnicalMetadataArePresent() throws IOException, SubsystemNotAvailableException {

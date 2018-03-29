@@ -5,6 +5,9 @@ Jede premis.xml die innerhalb des DNS verwendet wird, unterliegt den folgenden S
 * http://www.loc.gov/standards/premis/v2/premis-v2-2.xsd
 * http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd 
 * Beabsichtigte Ergänzung im Namespace V1 zu Lizenzen: [danrw-contract-1.01.xsd](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/xsd/v1/danrw-contract-v1-01.xsd) (vsstl. Nov. 2017 unter der URL http://www.danrw.de/schemas/contract/v1/danrw-contract-1.01.xsd)
+* Beabsichtigte Ergänzung um Mindest-Quualitätsstufe im Namespace V1: [danrw-contract-v1-02.xsd](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/xsd/v1/danrw-contract-v1-02.xsd) (vsstl. Jul. 2018 unter der URL http://www.danrw.de/schemas/contract/v1/danrw-contract-v1-02.xsd)
+
+
 
 
 ### Inhalt einer vom SIP-Builder gebauten Premis-Datei für ein einzulieferndes SIP-Paket
@@ -72,6 +75,10 @@ Der Link ist der wichtigste Teil der Lizenzangabe, dieser wird bis ins Portal we
     ```xml
                 <publicationLicense href="https://creativecommons.org/publicdomain/mark/1.0/" displayLabel="Public Domain Mark 1.0">Public Domain Mark 1.0</publicationLicense>
            
+    ```
+  * **(Optional)** Angabe einer Mindest-Qualitätsstufe. Sollte während der SIP-Verarbeitung eine kleinere Qualitätstufe ermittelt werden, wird ein USER_ERROR ausgelöst. Mögliche Ausprägungen sind 1,2,3,4,5.
+    ```xml
+               <minimalIngestQualityLevel>3</minimalIngestQualityLevel>    
     ```
   * **(Optional)** publicationRight-Block je für **PUBLIC | INSTITUTION** 
 

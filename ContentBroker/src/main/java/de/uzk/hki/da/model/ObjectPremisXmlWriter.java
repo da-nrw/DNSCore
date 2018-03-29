@@ -306,6 +306,9 @@ public class ObjectPremisXmlWriter {
 			createTextElement("linkingObjectIdentifierValue", e.getSource_file().getRep_name() + "/" + e.getSource_file().getRelative_path(), 3);
 			createTextElement("linkingObjectRole", "source", 3);
 			createCloseElement(2);
+		}else{
+			logger.debug("Quality Event has no SourceFile: "+e);
+			//throw new RuntimeException("No SourceFile defined: "+e);
 		}
 		
 		createOpenElement("linkingObjectIdentifier", 2);

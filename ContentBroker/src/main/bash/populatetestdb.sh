@@ -56,7 +56,12 @@ then
         "INSERT INTO conversion_routines (id,name,target_suffix,type,psystem_id) VALUES (2,'PIMG','jpg','de.uzk.hki.da.convert.PublishImageConversionStrategy',1);"
         "INSERT INTO conversion_routines (id,name,target_suffix,type,params,psystem_id) VALUES (3,'CLITIF','tif','de.uzk.hki.da.convert.CLIConversionStrategy','convert input output',1);"
         "INSERT INTO conversion_routines (id,name,target_suffix,type,params,psystem_id) VALUES (4,'CLICOPY','*','de.uzk.hki.da.convert.PublishCLIConversionStrategy','cp input output',1);"
-	"INSERT INTO conversion_routines (id,name,target_suffix,type,psystem_id) VALUES (5,'PUB_PDF','pdf','de.uzk.hki.da.convert.PublishPDFConversionStrategy',1);"
+	    "INSERT INTO conversion_routines (id,name,target_suffix,type,psystem_id) VALUES (5,'PUB_PDF','pdf','de.uzk.hki.da.convert.PublishPDFConversionStrategy',1);"
+    
+         #QualityLevel Fake Conversions
+        "INSERT INTO conversion_routines(id, target_suffix, type,name,params,psystem_id) values(11,'pdf','de.uzk.hki.da.convert.CLIConversionStrategy','LZA_DOCX','convert input +compress output',1);"
+		"INSERT INTO conversion_policies(id, presentation, source_format,conversion_routine_id,psystem_id) values(11,false,'fmt/40',11,1);"
+        
         "INSERT INTO conversion_policies (id,psystem_id,source_format,conversion_routine_id,presentation,format_type) VALUES (1,1,'fmt/353',1,false,'LZA');"
         "INSERT INTO conversion_policies (id,psystem_id,source_format,conversion_routine_id,presentation) VALUES (2,1,'fmt/353',2,true);"
         "INSERT INTO conversion_policies (id,psystem_id,source_format,conversion_routine_id,presentation,format_type) VALUES (3,1,'fmt/116',3,false,'LZA');"
@@ -95,7 +100,7 @@ done
 #needs at least all migration.sql should be executed before coredata skripts
 psql -U cb_usr -d CB -f ./src/main/sql/coredata/coredata1.sql   
 psql -U cb_usr -d CB -f ./src/main/sql/coredata/coredata2.sql
-psql -U cb_usr -d CB -f ./src/main/sql/coredata/coredataTEST.sql
+
 
 
 

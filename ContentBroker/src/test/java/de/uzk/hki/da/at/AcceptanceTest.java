@@ -188,6 +188,22 @@ public class AcceptanceTest {
 		return oldUsePublicMets;
 	}
 	
+	public static int setTestUserMinimalQualityLevel(int minimalQuality){
+	Session session = HibernateUtil.openSession();
+	Transaction transaction = session.beginTransaction();
+	Query query = session.createQuery("SELECT u FROM User u where username = '"+testContractor.getUsername()+"'");
+
+	@SuppressWarnings("unchecked")
+	List<User> users = query.list();
+	User testUser = users.get(0);
+	int oldQualityLevel = testUser.getMinimalIngestQualityLevel();
+	testUser.setMinimalIngestQualityLevel(minimalQuality);
+	session.save(testUser);
+	transaction.commit();
+	session.close();
+
+	return oldQualityLevel;
+}
 	
 	
 	@BeforeClass
