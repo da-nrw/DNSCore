@@ -25,19 +25,3 @@ begin;
 ALTER TABLE conversion_policies DROP contractor_id;
 commit;
 
-
-/*clean same entries after column remove*/
-/*sehr wahrscheinlich nicht notwendig*/
-/*
-begin;
-DELETE FROM conversion_policies
-LEFT OUTER JOIN (
-   SELECT MIN(id) as id, source_format, conversion_routine_id, presentation, psystem_id 
-   FROM conversion_policies 
-   GROUP BY source_format, conversion_routine_id, presentation, psystem_id
-) as KeepRows ON
-   MyTable.id = KeepRows.id
-WHERE
-   KeepRows.id IS NULL  
-commit;
-*/
