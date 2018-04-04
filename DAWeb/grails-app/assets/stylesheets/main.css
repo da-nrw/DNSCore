@@ -56,6 +56,12 @@ body {
 	margin-top: 10px;
 }
 
+.logos{
+	margin-left: 10px;	
+	margin-right: 28px;	
+	margin-top: 10px;
+}
+
 .trennerHeader {
 	background: #1094d4;
  	/*color: #FFFFFF;*/
@@ -64,14 +70,15 @@ body {
 	margin-top: 1.5em;
 	padding: 1em;
 	min-height: 1em;
+	width: 99%;
 }
 
 #header h1 {
-	color: #D4B110;
+	color: #ffffff;
+	font-family: inherit;
+	font-weight: 500;
 	text-align: center;
-	font-weight: bold;
 }
-
 #header-menu {
 	background-color: #fff;
 	margin: 0;
@@ -155,7 +162,10 @@ img {
 
 .welcome{
 	padding: 10px;	
-	height: 20px;
+	height: 30px;
+	margin-bottom: 20px;
+	font-family: 'Lora', serif;
+	font-size: 20px;
 }
 
 .content {
@@ -173,13 +183,12 @@ img {
 
 .footer {
 	background: #1094d4;
- 	color:  #D4B110; /*#FFFFFF;*/
+ 	color:#000;
 	clear: both;
-	font-size: 0.8em;
+	font-size: 15px;
 	margin-top: 1.5em;
 	padding: 1em;
 	min-height: 1em;
-	
 	margin-left: 10px;	
 	margin-right: 10px;	
 }

@@ -62,7 +62,7 @@
 					<input id="stopper" type="button" onclick="stopUpdater();this.disabled=true;" value="stoppen"/>
 					 &nbsp;
 					<input id="starter" type="button" onclick="startUpdater();this.disabled=true;" disabled value="starten"/><br><br>
-					<button onclick="return confirm ('Wirklich alle  fehlerhaften SIP löschen?')" >fehlerhaft SIP's löschen </button>
+					<button onclick="return confirm ('Wirklich alle  fehlerhaften SIP löschen?')" >fehlerhafte SIP's löschen </button>
 				</g:if> <br>
 			</g:form>
 			<g:if test="${flash.message}">
