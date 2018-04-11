@@ -1,5 +1,6 @@
 package de.uzk.hki.da.format;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.uzk.hki.da.model.KnownError;
@@ -11,6 +12,7 @@ public class FileWithFileFormatImpl implements FileWithFileFormat {
 	private String subformatIdentifier;
 	private Path path;
 	private List<KnownError> knownErrors;
+	private List<RuntimeException> getUnknownIdentificationErrorList=new ArrayList<RuntimeException>();
 
 	@Override
 	public String getFormatPUID() {
@@ -57,6 +59,11 @@ public class FileWithFileFormatImpl implements FileWithFileFormat {
 				+ (subformatIdentifier != null ? "subformatIdentifier=" + subformatIdentifier + ", " : "")
 				+ (path != null ? "path=" + path + ", " : "")
 				+ (knownErrors != null ? "knownErrors=" + knownErrors : "") + "]";
+	}
+
+	@Override
+	public List<RuntimeException> getUnknownIdentificationErrorList() {
+		return getUnknownIdentificationErrorList;
 	}
 
 

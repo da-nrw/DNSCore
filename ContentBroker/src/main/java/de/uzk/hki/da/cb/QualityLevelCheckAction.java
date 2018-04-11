@@ -80,6 +80,7 @@ public class QualityLevelCheckAction extends AbstractAction {
 		List<Event> events = o.getLatestPackage().getEvents();
 		List<Event> validationFailEvents = new ArrayList<Event>();
 		List<Event> conversionFailEvents = new ArrayList<Event>();
+		List<Event> identificationFailEvents = new ArrayList<Event>();
 		
 		List<DAFile> unrecognizedPUIDFiles = new ArrayList<DAFile>();
 		List<DAFile> unsupportedPuidFile = new ArrayList<DAFile>();
@@ -114,50 +115,87 @@ public class QualityLevelCheckAction extends AbstractAction {
 				conversionFailEvents.add(e);
 			} else if (e.getType().equals(C.EVENT_TYPE_QUALITY_FAULT_VALIDATION)) {
 				validationFailEvents.add(e);
+			}else if (e.getType().equals(C.EVENT_TYPE_QUALITY_FAULT_IDENTIFICATION)) {
+				identificationFailEvents.add(e);
 			}
 		}
-		
-		
-		Collections.sort(conversionFailEvents, eventComparator);
-		Collections.sort(validationFailEvents, eventComparator);
-		if(validationFailEvents.isEmpty()&&conversionFailEvents.isEmpty()){
-			logger.debug("QualityLevelCheckAction LatestFiles:"+Arrays.toString(o.getLatestPackage().getFiles().toArray()));
-			logger.debug("QualityLevelCheckAction unrecognizedPUIDFiles:"+Arrays.toString(unrecognizedPUIDFiles.toArray()));
-
-			logger.debug("QualityLevelCheckAction unknownPuidFile:"+Arrays.toString(unsupportedPuidFile.toArray()));
-			if(!unrecognizedPUIDFiles.isEmpty()){
-				extendObject(C.QUALITYFLAG_LEVEL_4,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4,unrecognizedPUIDFiles.get(0),"NO CRITICAL QUALITY_LEVEL EVENTS, BUT HAS UNKNOWN FORMATS , e.g. FILE: "+unrecognizedPUIDFiles.get(0).getRelative_path()));
-				qualityLevel=C.QUALITYFLAG_LEVEL_4;
-			} else if(!unsupportedPuidFile.isEmpty()){
-				extendObject(C.QUALITYFLAG_LEVEL_4,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4,unsupportedPuidFile.get(0),"NO CRITICAL QUALITY_LEVEL EVENTS, BUT HAS UNSUPPORTED FORMATS , e.g. FILE: "+unsupportedPuidFile.get(0).getRelative_path()));
-				qualityLevel=C.QUALITYFLAG_LEVEL_4;
-			}else if(unsupportedPuidFile.isEmpty() && unrecognizedPUIDFiles.isEmpty()){
-				extendObject(C.QUALITYFLAG_LEVEL_5,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_5,o.getLatestPackage().getFiles().get(0),"NO CRITICAL QUALITY_LEVEL EVENTS"));
-				qualityLevel=C.QUALITYFLAG_LEVEL_5;
-			}
-		}else if(!validationFailEvents.isEmpty()&&conversionFailEvents.isEmpty()){
-			extendObject(C.QUALITYFLAG_LEVEL_3,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_3,validationFailEvents.get(0).getSource_file(),generateQualityEventDetail("ONLY "+C.EVENT_TYPE_QUALITY_FAULT_VALIDATION+" EVENTS",validationFailEvents)));
-			qualityLevel=C.QUALITYFLAG_LEVEL_3;
-		}else if(validationFailEvents.isEmpty()&&!conversionFailEvents.isEmpty()){
-			extendObject(C.QUALITYFLAG_LEVEL_2,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2,conversionFailEvents.get(0).getSource_file(),generateQualityEventDetail("ONLY "+C.EVENT_TYPE_QUALITY_FAULT_CONVERSION+" EVENTS",conversionFailEvents)));
-			qualityLevel=C.QUALITYFLAG_LEVEL_2;
-		}else{
-			List<Event> commonConversionEvents=new ArrayList<Event>();
-			Event[] validationEventsArray=new Event[validationFailEvents.size()];
-			validationEventsArray=validationFailEvents.toArray(validationEventsArray);
 			
-			for(Event e:conversionFailEvents){
-				int index=Arrays.binarySearch(validationEventsArray, e, eventComparator);
-					if (index>=0)
+		if (!identificationFailEvents.isEmpty()) { //Level 1
+			extendObject(C.QUALITYFLAG_LEVEL_1, createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1,
+					identificationFailEvents.get(0).getSource_file(),
+					generateQualityEventDetail("IDENTIFICATION QUALITY_LEVEL EVENTS", identificationFailEvents)));
+			qualityLevel = C.QUALITYFLAG_LEVEL_1;
+		} else {// Level 2-3-4-5
+
+			Collections.sort(conversionFailEvents, eventComparator);
+			Collections.sort(validationFailEvents, eventComparator);
+			if (validationFailEvents.isEmpty() && conversionFailEvents.isEmpty()) {
+				logger.debug("QualityLevelCheckAction LatestFiles:"
+						+ Arrays.toString(o.getLatestPackage().getFiles().toArray()));
+				logger.debug("QualityLevelCheckAction unrecognizedPUIDFiles:"
+						+ Arrays.toString(unrecognizedPUIDFiles.toArray()));
+
+				logger.debug(
+						"QualityLevelCheckAction unknownPuidFile:" + Arrays.toString(unsupportedPuidFile.toArray()));
+				if (!unrecognizedPUIDFiles.isEmpty()) {
+					extendObject(C.QUALITYFLAG_LEVEL_4,
+							createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4, unrecognizedPUIDFiles.get(0),
+									"NO CRITICAL QUALITY_LEVEL EVENTS, BUT HAS UNKNOWN FORMATS , e.g. FILE: "
+											+ unrecognizedPUIDFiles.get(0).getRelative_path()));
+					qualityLevel = C.QUALITYFLAG_LEVEL_4;
+				} else if (!unsupportedPuidFile.isEmpty()) {
+					extendObject(C.QUALITYFLAG_LEVEL_4,
+							createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4, unsupportedPuidFile.get(0),
+									"NO CRITICAL QUALITY_LEVEL EVENTS, BUT HAS UNSUPPORTED FORMATS , e.g. FILE: "
+											+ unsupportedPuidFile.get(0).getRelative_path()));
+					qualityLevel = C.QUALITYFLAG_LEVEL_4;
+				} else if (unsupportedPuidFile.isEmpty() && unrecognizedPUIDFiles.isEmpty()) {
+					extendObject(C.QUALITYFLAG_LEVEL_5, createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_5,
+							o.getLatestPackage().getFiles().get(0), "NO CRITICAL QUALITY_LEVEL EVENTS"));
+					qualityLevel = C.QUALITYFLAG_LEVEL_5;
+				}
+			} else if (!validationFailEvents.isEmpty() && conversionFailEvents.isEmpty()) {
+				extendObject(C.QUALITYFLAG_LEVEL_3,
+						createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_3, validationFailEvents.get(0).getSource_file(),
+								generateQualityEventDetail("ONLY " + C.EVENT_TYPE_QUALITY_FAULT_VALIDATION + " EVENTS",
+										validationFailEvents)));
+				qualityLevel = C.QUALITYFLAG_LEVEL_3;
+			} else if (validationFailEvents.isEmpty() && !conversionFailEvents.isEmpty()) {
+				extendObject(C.QUALITYFLAG_LEVEL_2,
+						createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2, conversionFailEvents.get(0).getSource_file(),
+								generateQualityEventDetail("ONLY " + C.EVENT_TYPE_QUALITY_FAULT_CONVERSION + " EVENTS",
+										conversionFailEvents)));
+				qualityLevel = C.QUALITYFLAG_LEVEL_2;
+			} else {
+				List<Event> commonConversionEvents = new ArrayList<Event>();
+				Event[] validationEventsArray = new Event[validationFailEvents.size()];
+				validationEventsArray = validationFailEvents.toArray(validationEventsArray);
+
+				for (Event e : conversionFailEvents) {
+					int index = Arrays.binarySearch(validationEventsArray, e, eventComparator);
+					if (index >= 0)
 						commonConversionEvents.add(validationEventsArray[index]);
-			}
-			if(commonConversionEvents.isEmpty()){//there is no validation and conversion events on same files
-				conversionFailEvents.addAll(validationFailEvents);
-				extendObject(C.QUALITYFLAG_LEVEL_2,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2,conversionFailEvents.get(0).getSource_file(),generateQualityEventDetail("CONVERSION AND VALIDATION QUALITY_LEVEL EVENTS ON DIFFERENT FILES",conversionFailEvents)));
-				qualityLevel=C.QUALITYFLAG_LEVEL_2;
-			}else{
-				extendObject(C.QUALITYFLAG_LEVEL_1,createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1,commonConversionEvents.get(0).getSource_file(),generateQualityEventDetail("CONVERSION AND VALIDATION QUALITY_LEVEL EVENTS ON SAME FILES",commonConversionEvents)));
-				qualityLevel=C.QUALITYFLAG_LEVEL_1;
+				}
+				if (commonConversionEvents.isEmpty()) {// there is no validation
+														// and conversion events
+														// on same files
+					conversionFailEvents.addAll(validationFailEvents);
+					extendObject(C.QUALITYFLAG_LEVEL_2,
+							createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2,
+									conversionFailEvents.get(0).getSource_file(),
+									generateQualityEventDetail(
+											"CONVERSION AND VALIDATION QUALITY_LEVEL EVENTS ON DIFFERENT FILES",
+											conversionFailEvents)));
+					qualityLevel = C.QUALITYFLAG_LEVEL_2;
+				} else {
+					extendObject(C.QUALITYFLAG_LEVEL_1,
+							createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1,
+									commonConversionEvents.get(0).getSource_file(),
+									generateQualityEventDetail(
+											"CONVERSION AND VALIDATION QUALITY_LEVEL EVENTS ON SAME FILES",
+											commonConversionEvents)));
+					qualityLevel = C.QUALITYFLAG_LEVEL_1;
+				}
 			}
 		}
 		

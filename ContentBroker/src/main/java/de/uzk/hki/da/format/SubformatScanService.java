@@ -63,6 +63,8 @@ public class SubformatScanService implements FormatScanService, Connector {
 				List <KnownError> ke = f.getKnownErrors();
 				ke.add(ufe.getKnownError());
 				f.setKnownErrors(ke);
+			}catch (RuntimeException ex) {
+				f.getUnknownIdentificationErrorList().add(ex);
 			}
 		}
 		return files;

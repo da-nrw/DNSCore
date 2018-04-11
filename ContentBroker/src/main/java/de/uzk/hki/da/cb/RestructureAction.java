@@ -28,6 +28,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Transient;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 
@@ -40,6 +42,7 @@ import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.format.FileFormatException;
 import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
+import de.uzk.hki.da.format.QualityLevelException;
 import de.uzk.hki.da.format.UserFileFormatException;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.DAFile;
@@ -304,6 +307,28 @@ public class RestructureAction extends AbstractAction{
 				}
 			} else err = "<NONE>";
 			logger.info(line + err);
+			
+			if(!f.getUnknownIdentificationErrorList().isEmpty()){
+				for (RuntimeException e:f.getUnknownIdentificationErrorList()){
+					if (!o.getLatestPackage().getFiles().contains(f)) {
+						logger.debug("(QualityLevel)RuntimeException is not for Latest Package: " + e);
+					} else {
+						Event qualityEvent = new Event();			
+						qualityEvent.setDate(new Date());
+						qualityEvent.setAgent_name(n.getName());
+						qualityEvent.setAgent_type(C.AGENT_TYPE_NODE);
+						qualityEvent.setType(C.EVENT_TYPE_QUALITY_FAULT_IDENTIFICATION);
+						qualityEvent.setSource_file((DAFile)f);
+						String msg=QualityLevelException.Type.IDENTIFICATION+" | "+e.getMessage();
+						if(msg.length()>Event.MAX_DETAIL_STR_LEN)
+							msg=msg.substring(0,Event.MAX_DETAIL_STR_LEN);
+						qualityEvent.setDetail(msg);
+	
+						logger.debug("QualityEvent created: "+qualityEvent);
+						o.getLatestPackage().getEvents().add(qualityEvent);
+					}
+				}
+			}
 		}
 		if (last!=null && !o.getLatestPackage().isPruneExceptions()) {
 			if (last.getAdvice()!=null) {

@@ -61,7 +61,11 @@ public class FidoFormatScanService implements FormatScanService, Connector {
 	public
 	List<FileWithFileFormat> identify(Path workPath,List<FileWithFileFormat> files,boolean pruneExceptions) throws IOException {
 		for (FileWithFileFormat f:files){
-			f.setFormatPUID(pronom.identify(Path.makeFile(workPath,f.getPath()),pruneExceptions));
+			try{
+				f.setFormatPUID(pronom.identify(Path.makeFile(workPath,f.getPath()),pruneExceptions));
+			}catch(RuntimeException e){
+				f.getUnknownIdentificationErrorList().add(e);
+			}
 		}
 		return files;
 	}

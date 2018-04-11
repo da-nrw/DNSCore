@@ -116,6 +116,9 @@ public class DAFile implements FileWithFileFormat{
     joinColumns={@JoinColumn(name="dafile_id", referencedColumnName="id")},  
     inverseJoinColumns={@JoinColumn(name="knownerror_id", referencedColumnName="id")})
 	private List<KnownError> knownErrors = new ArrayList<KnownError>();
+    
+    @Transient
+    private List<RuntimeException> getUnknownIdentificationErrorList=new ArrayList<RuntimeException>();
 
 	/**
 	 * Instantiates a new dA file.
@@ -341,6 +344,12 @@ public class DAFile implements FileWithFileFormat{
 	public void setKnownErrors(List<KnownError> knownErrors) {
 		this.knownErrors = knownErrors;
 		
+	}
+	
+	@Transient
+	@Override
+	public List<RuntimeException> getUnknownIdentificationErrorList() {
+		return getUnknownIdentificationErrorList;
 	}
 
 }
