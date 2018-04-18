@@ -962,8 +962,8 @@ public class Gui extends JFrame{
 		licenseAreaOne.setText("In den folgenden Schritten können Sie die Lizenzrechte für " +
 				"Ihre SIPs festlegen. Die Lizenzangabe gilt für die Veröffentlichungsportale.\n\n" +
 				"Für eine Publikation ist eine Lizenz zwingend erforderlich!\n\n"+
-				"Hiterlegen Sie im SIP-Builder eine Lizenz nur wenn diese nicht " +
-				"bereits in den METS-Metadaten hiterlegt sind!!! ");	     
+				"Hinterlegen Sie im SIP-Builder eine Lizenz nur wenn diese nicht " +
+				"bereits in den METS-Metadaten hinterlegt sind!!! ");	     
 
 		rightsAreaTwo = new JTextArea();
 		rightsAreaTwo.setEditable(false);
