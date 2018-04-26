@@ -10,7 +10,7 @@ Unabhängig vom jeweiligen Metadatenformat werden inhaltlich gesehen folgende Ar
 * Technische Metadaten enthalten Informationen über die technischen Parameter der Ressource wie etwa Dateityp, Dateigröße und Auflösung.
 
 ## Akzeptierte Metadatenformate
-Im Rahmen des DNS werden derzeit grundsätzlich vier Metadatenformate akzeptiert:
+Im Rahmen des DNS werden derzeit grundsätzlich die folgenden Metadatenformate akzeptiert:
 
 * EAD + METS/MODS (s. [offizielle EAD Spezifikation](http://www.loc.gov/ead/index.html), oder spezielle [DDB-EAD-Spezifikation](http://www.dlib.indiana.edu/services/metadata/activities/EADManual.pdf))
 * METS (s. [offizielle METS Spezifikation](http://www.loc.gov/standards/mets/))
@@ -38,7 +38,7 @@ Die Informationen darüber, Welche Metadatenfelder genau ihren Weg zum Portal fi
 1. [EAD](https://wiki1.hbz-nrw.de/display/DANOPEN/EAD+zu+EDM)
 1. [METS](https://wiki1.hbz-nrw.de/display/DANOPEN/METSMods+zu+EDM) 
 1. [LIDO](https://wiki1.hbz-nrw.de/display/DANOPEN/LIDO+to+EDM)
-1. [XMP](https://wiki1.hbz-nrw.de/display/DANOPEN/XMP+zu+EDM)
+
 
 ## Anforderungen an die Metadaten im DNSCore
 
