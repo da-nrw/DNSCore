@@ -22,7 +22,6 @@ package de.uzk.hki.da.gui;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Desktop;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -49,14 +48,12 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
@@ -324,28 +321,31 @@ public class Gui extends JFrame {
 	JTextField publicRestrictionImageTextField;
 
 	// Comboboxes
-	JComboBox kindOfSIPBuildingDropDown;
-	JComboBox licenseDropDown;
-	JComboBox institutionLawIdDropDown;
-	JComboBox institutionImageDropDown;
-	JComboBox institutionImageTextDropDown;
-	JComboBox institutionImageTextOpacityDropDown;
-	JComboBox institutionImageTextSizeDropDown;
-	JComboBox institutionAudioDurationDropDown;
-	JComboBox institutionVideoQualityDropDown;
-	JComboBox institutionVideoDurationDropDown;
-	JComboBox publicLawIdDropDown;
-	JComboBox publicImageDropDown;
-	JComboBox publicImageTextDropDown;
-	JComboBox publicImageTextOpacityDropDown;
-	JComboBox publicImageTextSizeDropDown;
-	JComboBox publicAudioDurationDropDown;
-	JComboBox publicVideoQualityDropDown;
-	JComboBox publicVideoDurationDropDown;
-	JComboBox migrationDropDown;
+	JComboBox<String> kindOfSIPBuildingDropDown;
+	JComboBox<CCLicense> licenseDropDown;
+	JComboBox<String> institutionLawIdDropDown;
+	JComboBox<String> institutionImageDropDown;
+	JComboBox<String> institutionImageTextDropDown;
+	JComboBox<String> institutionImageTextOpacityDropDown;
+	JComboBox<String> institutionImageTextSizeDropDown;
+	JComboBox<String> institutionAudioDurationDropDown;
+	JComboBox<String> institutionVideoQualityDropDown;
+	JComboBox<String> institutionVideoDurationDropDown;
+	JComboBox<String> publicLawIdDropDown;
+	JComboBox<String> publicImageDropDown;
+	JComboBox<String> publicImageTextDropDown;
+	JComboBox<String> publicImageTextOpacityDropDown;
+	JComboBox<String> publicImageTextSizeDropDown;
+	JComboBox<String> publicAudioDurationDropDown;
+	JComboBox<String> publicVideoQualityDropDown;
+	JComboBox<String> publicVideoDurationDropDown;
+	JComboBox<String> migrationDropDown;
 
 	// ProgressBar
 	JProgressBar progressBar;
+
+	int oldTabPublic = -1;
+	int oldTabInstitution = -1;
 
 	public Gui(String confFolderPath, String dataFolderPath) {
 
@@ -411,6 +411,8 @@ public class Gui extends JFrame {
 
 		defineElementPositions();
 		addElementsToContentPane();
+		oldTabPublic = publicTabbedPane.getSelectedIndex();
+		oldTabInstitution = institutionTabbedPane.getSelectedIndex();
 		createListeners();
 
 		loadLastSessionSettings();
@@ -1282,16 +1284,16 @@ public class Gui extends JFrame {
 
 		sourcePathTextField = new JTextField();
 		sourcePathTextField.setEditable(true);
-		sourcePathTextField.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.gray));
+		sourcePathTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
 
 		destinationPathTextField = new JTextField();
 		destinationPathTextField.setEditable(true);
-		destinationPathTextField.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.gray));
+		destinationPathTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
 
 		workingPathTextField = new JTextField();
 		workingPathTextField.setEditable(true);
-		workingPathTextField.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.gray));
-		
+		workingPathTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
+
 		licenseTextField = new JTextField();
 		licenseTextField.setEditable(true);
 		licenseTextField.setOpaque(false);
@@ -1301,29 +1303,29 @@ public class Gui extends JFrame {
 		collectionNameTextField = new JTextField();
 		collectionNameTextField.setEditable(false);
 		collectionNameTextField.setEnabled(false);
-		collectionNameTextField.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.gray));
+		collectionNameTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
 		institutionTempStartDateTextField = new JTextField();
-		institutionTempStartDateTextField.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.gray));
+		institutionTempStartDateTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
 		institutionTempStartDateTextField.setEditable(false);
 		institutionTempStartDateTextField.setEnabled(false);
 		institutionRestrictionTextPagesTextField = new JTextField();
 		institutionRestrictionTextPagesTextField.setEditable(false);
-		institutionRestrictionTextPagesTextField.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.gray));
+		institutionRestrictionTextPagesTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
 		institutionRestrictionTextPagesTextField.setEnabled(false);
 		institutionRestrictionImageTextField = new JTextField();
-		institutionRestrictionImageTextField.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.gray));
+		institutionRestrictionImageTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
 		institutionRestrictionImageTextField.setEnabled(false);
 		institutionRestrictionImageTextField.setEditable(false);
 		publicTempStartDateTextField = new JTextField();
-		publicTempStartDateTextField.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.gray));
+		publicTempStartDateTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
 		publicTempStartDateTextField.setEditable(false);
 		publicTempStartDateTextField.setEnabled(false);
 		publicRestrictionTextPagesTextField = new JTextField();
 		publicRestrictionTextPagesTextField.setEditable(false);
-		publicRestrictionTextPagesTextField.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.gray));
+		publicRestrictionTextPagesTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
 		publicRestrictionTextPagesTextField.setEnabled(false);
 		publicRestrictionImageTextField = new JTextField();
-		publicRestrictionImageTextField.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.gray));
+		publicRestrictionImageTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
 		publicRestrictionImageTextField.setEnabled(false);
 		publicRestrictionImageTextField.setEditable(false);
 	}
@@ -1333,25 +1335,25 @@ public class Gui extends JFrame {
 	 */
 	private void initializeComboBoxes() {
 
-		kindOfSIPBuildingDropDown = new JComboBox();
+		kindOfSIPBuildingDropDown = new JComboBox<String>();
 		kindOfSIPBuildingDropDown.setFont(standardFont.deriveFont(11.0f));
 		kindOfSIPBuildingDropDown.addItem(C.KIND_OF_SIPBUILDING_SINGLE);
 		kindOfSIPBuildingDropDown.addItem(C.KIND_OF_SIPBUILDING_MULTIPLE);
 		kindOfSIPBuildingDropDown.addItem(C.KIND_OF_SIPBUILDING_NESTED);
 
-		licenseDropDown = new JComboBox();
+		licenseDropDown = new JComboBox<CCLicense>();
 		licenseDropDown.setFont(standardFont.deriveFont(11.0f));
 		for (ContractRights.CCLicense tmp : ContractRights.CCLicense.values()) {
 			licenseDropDown.addItem(tmp);
 		}
 
-		institutionLawIdDropDown = new JComboBox();
+		institutionLawIdDropDown = new JComboBox<String>();
 		institutionLawIdDropDown.setFont(standardFont.deriveFont(11.0f));
 		institutionLawIdDropDown.setEnabled(false);
 		institutionLawIdDropDown.addItem("ePflicht");
 		institutionLawIdDropDown.addItem("UrhG DE");
 
-		institutionImageDropDown = new JComboBox();
+		institutionImageDropDown = new JComboBox<String>();
 		institutionImageDropDown.setFont(standardFont.deriveFont(11.0f));
 		institutionImageDropDown.addItem(
 				"Niedrig (" + contractSettings.getWidthImage(0) + "x" + contractSettings.getHeightImage(0) + ")");
@@ -1364,7 +1366,7 @@ public class Gui extends JFrame {
 		institutionImageDropDown.addItem(contractSettings.getPercentImage(2));
 		institutionImageDropDown.setEnabled(false);
 
-		institutionImageTextDropDown = new JComboBox();
+		institutionImageTextDropDown = new JComboBox<String>();
 		institutionImageTextDropDown.setFont(standardFont.deriveFont(11.0f));
 		institutionImageTextDropDown.addItem("Fußzeile");
 		institutionImageTextDropDown.addItem("Wasserzeichen (oben)");
@@ -1372,7 +1374,7 @@ public class Gui extends JFrame {
 		institutionImageTextDropDown.addItem("Wasserzeichen (unten)");
 		institutionImageTextDropDown.setEnabled(false);
 
-		institutionImageTextOpacityDropDown = new JComboBox();
+		institutionImageTextOpacityDropDown = new JComboBox<String>();
 		institutionImageTextOpacityDropDown.setFont(standardFont.deriveFont(11.0f));
 		institutionImageTextOpacityDropDown.addItem(contractSettings.getOpacityImage(0) + "%");
 		institutionImageTextOpacityDropDown.addItem(contractSettings.getOpacityImage(1) + "%");
@@ -1381,7 +1383,7 @@ public class Gui extends JFrame {
 		institutionImageTextOpacityDropDown.addItem(contractSettings.getOpacityImage(4) + "%");
 		institutionImageTextOpacityDropDown.setEnabled(false);
 
-		institutionImageTextSizeDropDown = new JComboBox();
+		institutionImageTextSizeDropDown = new JComboBox<String>();
 		institutionImageTextSizeDropDown.setFont(standardFont.deriveFont(11.0f));
 		institutionImageTextSizeDropDown.addItem(contractSettings.getTextSizeImage(0));
 		institutionImageTextSizeDropDown.addItem(contractSettings.getTextSizeImage(1));
@@ -1389,7 +1391,7 @@ public class Gui extends JFrame {
 		institutionImageTextSizeDropDown.addItem(contractSettings.getTextSizeImage(3));
 		institutionImageTextSizeDropDown.setEnabled(false);
 
-		institutionAudioDurationDropDown = new JComboBox();
+		institutionAudioDurationDropDown = new JComboBox<String>();
 		institutionAudioDurationDropDown.setFont(standardFont.deriveFont(11.0f));
 		institutionAudioDurationDropDown.addItem(contractSettings.getDuration(0));
 		institutionAudioDurationDropDown.addItem(contractSettings.getDuration(1));
@@ -1397,14 +1399,14 @@ public class Gui extends JFrame {
 		institutionAudioDurationDropDown.addItem(contractSettings.getDuration(3));
 		institutionAudioDurationDropDown.setEnabled(false);
 
-		institutionVideoQualityDropDown = new JComboBox();
+		institutionVideoQualityDropDown = new JComboBox<String>();
 		institutionVideoQualityDropDown.setFont(standardFont.deriveFont(11.0f));
 		institutionVideoQualityDropDown.addItem("Niedrig");
 		institutionVideoQualityDropDown.addItem("Mittel");
 		institutionVideoQualityDropDown.addItem("Hoch");
 		institutionVideoQualityDropDown.setEnabled(false);
 
-		institutionVideoDurationDropDown = new JComboBox();
+		institutionVideoDurationDropDown = new JComboBox<String>();
 		institutionVideoDurationDropDown.setFont(standardFont.deriveFont(11.0f));
 		institutionVideoDurationDropDown.addItem(contractSettings.getDuration(0));
 		institutionVideoDurationDropDown.addItem(contractSettings.getDuration(1));
@@ -1412,13 +1414,13 @@ public class Gui extends JFrame {
 		institutionVideoDurationDropDown.addItem(contractSettings.getDuration(3));
 		institutionVideoDurationDropDown.setEnabled(false);
 
-		publicLawIdDropDown = new JComboBox();
+		publicLawIdDropDown = new JComboBox<String>();
 		publicLawIdDropDown.setFont(standardFont.deriveFont(11.0f));
 		publicLawIdDropDown.setEnabled(false);
 		publicLawIdDropDown.addItem("ePflicht");
 		publicLawIdDropDown.addItem("UrhG DE");
 
-		publicImageDropDown = new JComboBox();
+		publicImageDropDown = new JComboBox<String>();
 		publicImageDropDown.setFont(standardFont.deriveFont(11.0f));
 		publicImageDropDown.addItem(
 				"Niedrig (" + contractSettings.getWidthImage(0) + "x" + contractSettings.getHeightImage(0) + ")");
@@ -1431,7 +1433,7 @@ public class Gui extends JFrame {
 		publicImageDropDown.addItem(contractSettings.getPercentImage(2));
 		publicImageDropDown.setEnabled(false);
 
-		publicImageTextDropDown = new JComboBox();
+		publicImageTextDropDown = new JComboBox<String>();
 		publicImageTextDropDown.setFont(standardFont.deriveFont(11.0f));
 		publicImageTextDropDown.addItem("Fußzeile");
 		publicImageTextDropDown.addItem("Wasserzeichen (oben)");
@@ -1439,7 +1441,7 @@ public class Gui extends JFrame {
 		publicImageTextDropDown.addItem("Wasserzeichen (unten)");
 		publicImageTextDropDown.setEnabled(false);
 
-		publicImageTextOpacityDropDown = new JComboBox();
+		publicImageTextOpacityDropDown = new JComboBox<String>();
 		publicImageTextOpacityDropDown.setFont(standardFont.deriveFont(11.0f));
 		publicImageTextOpacityDropDown.addItem(contractSettings.getOpacityImage(0) + "%");
 		publicImageTextOpacityDropDown.addItem(contractSettings.getOpacityImage(1) + "%");
@@ -1448,7 +1450,7 @@ public class Gui extends JFrame {
 		publicImageTextOpacityDropDown.addItem(contractSettings.getOpacityImage(4) + "%");
 		publicImageTextOpacityDropDown.setEnabled(false);
 
-		publicImageTextSizeDropDown = new JComboBox();
+		publicImageTextSizeDropDown = new JComboBox<String>();
 		publicImageTextSizeDropDown.setFont(standardFont.deriveFont(11.0f));
 		publicImageTextSizeDropDown.addItem(contractSettings.getTextSizeImage(0));
 		publicImageTextSizeDropDown.addItem(contractSettings.getTextSizeImage(1));
@@ -1456,7 +1458,7 @@ public class Gui extends JFrame {
 		publicImageTextSizeDropDown.addItem(contractSettings.getTextSizeImage(3));
 		publicImageTextSizeDropDown.setEnabled(false);
 
-		publicAudioDurationDropDown = new JComboBox();
+		publicAudioDurationDropDown = new JComboBox<String>();
 		publicAudioDurationDropDown.setFont(standardFont.deriveFont(11.0f));
 		publicAudioDurationDropDown.addItem(contractSettings.getDuration(0));
 		publicAudioDurationDropDown.addItem(contractSettings.getDuration(1));
@@ -1464,14 +1466,14 @@ public class Gui extends JFrame {
 		publicAudioDurationDropDown.addItem(contractSettings.getDuration(3));
 		publicAudioDurationDropDown.setEnabled(false);
 
-		publicVideoQualityDropDown = new JComboBox();
+		publicVideoQualityDropDown = new JComboBox<String>();
 		publicVideoQualityDropDown.setFont(standardFont.deriveFont(11.0f));
 		publicVideoQualityDropDown.addItem("Niedrig");
 		publicVideoQualityDropDown.addItem("Mittel");
 		publicVideoQualityDropDown.addItem("Hoch");
 		publicVideoQualityDropDown.setEnabled(false);
 
-		publicVideoDurationDropDown = new JComboBox();
+		publicVideoDurationDropDown = new JComboBox<String>();
 		publicVideoDurationDropDown.setFont(standardFont.deriveFont(11.0f));
 		publicVideoDurationDropDown.addItem(contractSettings.getDuration(0));
 		publicVideoDurationDropDown.addItem(contractSettings.getDuration(1));
@@ -1479,7 +1481,7 @@ public class Gui extends JFrame {
 		publicVideoDurationDropDown.addItem(contractSettings.getDuration(3));
 		publicVideoDurationDropDown.setEnabled(false);
 
-		migrationDropDown = new JComboBox();
+		migrationDropDown = new JComboBox<String>();
 		migrationDropDown.setFont(standardFont.deriveFont(11.0f));
 		migrationDropDown.addItem("Keine");
 		migrationDropDown.addItem("Über Migration informieren");
@@ -2735,14 +2737,14 @@ public class Gui extends JFrame {
 					publicRestrictionImageLabel.setEnabled(true);
 					publicRestrictionImageLabel.setEnabled(true);
 					publicImageTextDropDown.setEnabled(true);
-					publicRestrictionImageTextTypeLabel.setEnabled(true); 
+					publicRestrictionImageTextTypeLabel.setEnabled(true);
 
 					if (!((String) publicImageTextDropDown.getSelectedItem()).equals("Fußzeile")) {
 						publicRestrictionImageTextOpacityLabel.setEnabled(true);
 						publicImageTextOpacityDropDown.setEnabled(true);
 						publicRestrictionImageTextSizeLabel.setEnabled(true);
 						publicImageTextSizeDropDown.setEnabled(true);
-					} 
+					}
 				} else {
 					publicRestrictionImageTextField.setEnabled(false);
 					publicRestrictionImageTextField.setEditable(false);
@@ -2880,24 +2882,27 @@ public class Gui extends JFrame {
 					institutionRestrictionImageTextField.setDocument(new SetMaxText(65));
 					institutionRestrictionImageTextField.setText(text);
 					if (institutionImageTextCheckBox.isSelected()) {
-						institutionRestrictionImageLabel.setText("Bitte geben Sie den gewünschten Text an (max. 65 Zeichen)");
+						institutionRestrictionImageLabel
+								.setText("Bitte geben Sie den gewünschten Text an (max. 65 Zeichen)");
 					}
-					
+
 					institutionRestrictionImageTextOpacityLabel.setEnabled(false);
 					institutionImageTextOpacityDropDown.setEnabled(false);
 					institutionRestrictionImageTextSizeLabel.setEnabled(false);
 					institutionImageTextSizeDropDown.setEnabled(false);
 				} else {
 					institutionRestrictionImageTextField.setDocument(new SetMaxText(20));
-					if (text.length()>20) {
+					if (text.length() > 20) {
 						text = text.substring(0, 20);
-						messageWriter.showMessage("Der Text enthält mehr als 20 Zeichen und wird entsprechend gekürzt." );
+						messageWriter
+								.showMessage("Der Text enthält mehr als 20 Zeichen und wird entsprechend gekürzt.");
 					}
 					institutionRestrictionImageTextField.setText(text);
 					if (institutionImageTextCheckBox.isSelected()) {
-						institutionRestrictionImageLabel.setText("Bitte geben Sie den gewünschten Text an: (max. 20 Zeichen)");
+						institutionRestrictionImageLabel
+								.setText("Bitte geben Sie den gewünschten Text an: (max. 20 Zeichen)");
 					}
-					
+
 					institutionRestrictionImageTextOpacityLabel.setEnabled(true);
 					institutionImageTextOpacityDropDown.setEnabled(true);
 					institutionRestrictionImageTextSizeLabel.setEnabled(true);
@@ -2915,7 +2920,8 @@ public class Gui extends JFrame {
 					publicRestrictionImageTextField.setDocument(new SetMaxText(65));
 					publicRestrictionImageTextField.setText(text);
 					if (publicImageTextCheckBox.isSelected()) {
-						publicRestrictionImageLabel.setText("Bitte geben Sie den gewünschten Text an (max. 65 Zeichen)");
+						publicRestrictionImageLabel
+								.setText("Bitte geben Sie den gewünschten Text an (max. 65 Zeichen)");
 					}
 					publicRestrictionImageTextOpacityLabel.setEnabled(false);
 					publicImageTextOpacityDropDown.setEnabled(false);
@@ -2923,13 +2929,15 @@ public class Gui extends JFrame {
 					publicImageTextSizeDropDown.setEnabled(false);
 				} else {
 					publicRestrictionImageTextField.setDocument(new SetMaxText(20));
-					if (text.length()>20) {
+					if (text.length() > 20) {
 						text = text.substring(0, 20);
-						messageWriter.showMessage("Der Text enthält mehr als 20 Zeichen und wird entsprechend gekürzt." );
+						messageWriter
+								.showMessage("Der Text enthält mehr als 20 Zeichen und wird entsprechend gekürzt.");
 					}
 					publicRestrictionImageTextField.setText(text);
 					if (publicImageTextCheckBox.isSelected()) {
-						publicRestrictionImageLabel.setText("Bitte geben Sie den gewünschten Text an: (max. 20 Zeichen)");
+						publicRestrictionImageLabel
+								.setText("Bitte geben Sie den gewünschten Text an: (max. 20 Zeichen)");
 					}
 					publicRestrictionImageTextOpacityLabel.setEnabled(true);
 					publicImageTextOpacityDropDown.setEnabled(true);
@@ -2988,6 +2996,202 @@ public class Gui extends JFrame {
 			}
 
 		});
+
+		publicTabbedPane.addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+
+				if (oldTabPublic != publicTabbedPane.getSelectedIndex()) {
+					/*
+					 * Reiter Text
+					 */
+					if (oldTabPublic == 0) {
+
+						if (publicTextRestrictionCheckBox.isSelected()) {
+							if (publicRestrictionTextPagesTextField == null
+									|| publicRestrictionTextPagesTextField.getText().equals("")) {
+								publicTabbedPane.setSelectedIndex(oldTabPublic);
+								messageWriter.showMessage(
+										"Bitte geben Sie die Seitennummern der zu\n" + "berücksichtigenden Seiten an.",
+										JOptionPane.ERROR_MESSAGE);
+
+								oldTabPublic = publicTabbedPane.getSelectedIndex();
+								return;
+							}
+
+							sipFactory.getContractRights().getPublicRights()
+									.setPages(publicRestrictionTextPagesTextField.getText());
+							if (sipFactory.getContractRights().getPublicRights().parsePages().equals("")) {
+								publicTabbedPane.setSelectedIndex(oldTabPublic);
+								messageWriter.showMessage(
+										"Die Angabe der Seitenzahlen ist nicht \n" + "korrekt formuliert.",
+										JOptionPane.ERROR_MESSAGE);
+
+								oldTabPublic = publicTabbedPane.getSelectedIndex();
+								return;
+							}
+						}
+					} // Ende Reiter Text
+					/*
+					 * Reiter Bild
+					 */
+					if (oldTabPublic == 1) {
+						if (publicImageTextCheckBox.isSelected()) {
+							if (publicRestrictionImageTextField.getText() == null
+									|| publicRestrictionImageTextField.getText().equals("")) {
+								if (Utilities.translateTextType((String) publicImageTextDropDown
+										.getSelectedItem()) == PublicationRights.TextType.footer) {
+									publicTabbedPane.setSelectedIndex(oldTabPublic);
+
+									messageWriter.showMessage("Bitte geben Sie den Text der Fußzeile an.",
+											JOptionPane.ERROR_MESSAGE);
+
+									oldTabPublic = publicTabbedPane.getSelectedIndex();
+									return;
+								} else {
+									publicTabbedPane.setSelectedIndex(oldTabPublic);
+
+									messageWriter.showMessage("Bitte geben Sie den Text des Wasserzeichens an.",
+											JOptionPane.ERROR_MESSAGE);
+
+									oldTabPublic = publicTabbedPane.getSelectedIndex();
+									return;
+								}
+							}
+
+							int imageTextSize = publicRestrictionImageTextField.getText().length();
+							if (Utilities
+									.translateTextType((String) publicImageTextDropDown
+											.getSelectedItem()) == PublicationRights.TextType.footer
+									&& imageTextSize > 65) {
+
+								// publicTabbedPane.setSelectedIndex(oldTab);
+								messageWriter.showMessage("Fußzeilen dürfen nicht mehr als 65 Zeichen lang sein.\n"
+										+ "Ihr Text ist " + (imageTextSize - 65) + " Zeichen zu lang.");
+
+								oldTabPublic = publicTabbedPane.getSelectedIndex();
+								return;
+							}
+
+							if (Utilities
+									.translateTextType((String) publicImageTextDropDown
+											.getSelectedItem()) != PublicationRights.TextType.footer
+									&& imageTextSize > 20) {
+
+								// publicTabbedPane.setSelectedIndex(oldTab);
+								messageWriter.showMessage("Wasserzeichen dürfen nicht mehr als 20 Zeichen lang sein.\n"
+										+ "Ihr Text ist " + (imageTextSize - 20) + " Zeichen zu lang.");
+
+								oldTabPublic = publicTabbedPane.getSelectedIndex();
+								return;
+							}
+						}
+					} // Ende Reiter Bild
+
+					oldTabPublic = publicTabbedPane.getSelectedIndex();
+
+				}
+			}
+		});
+
+		institutionTabbedPane.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+
+				if (oldTabInstitution != institutionTabbedPane.getSelectedIndex()) {
+					/*
+					 * Reiter Text
+					 */
+					if (oldTabInstitution == 0) {
+
+						if (institutionTextRestrictionCheckBox.isSelected()) {
+							if (institutionRestrictionTextPagesTextField == null
+									|| institutionRestrictionTextPagesTextField.getText().equals("")) {
+								institutionTabbedPane.setSelectedIndex(oldTabInstitution);
+								messageWriter.showMessage(
+										"Bitte geben Sie die Seitennummern der zu\n" + "berücksichtigenden Seiten an.",
+										JOptionPane.ERROR_MESSAGE);
+
+								oldTabInstitution = institutionTabbedPane.getSelectedIndex();
+								return;
+							}
+
+							sipFactory.getContractRights().getPublicRights()
+									.setPages(institutionRestrictionTextPagesTextField.getText());
+							if (sipFactory.getContractRights().getPublicRights().parsePages().equals("")) {
+								institutionTabbedPane.setSelectedIndex(oldTabInstitution);
+								messageWriter.showMessage(
+										"Die Angabe der Seitenzahlen ist nicht \n" + "korrekt formuliert.",
+										JOptionPane.ERROR_MESSAGE);
+
+								oldTabInstitution = institutionTabbedPane.getSelectedIndex();
+								return;
+							}
+						}
+					} // Ende Reiter Text
+					/*
+					 * Reiter Bild
+					 */
+					if (oldTabInstitution == 1) {
+						if (institutionImageTextCheckBox.isSelected()) {
+							if (institutionRestrictionImageTextField.getText() == null
+									|| institutionRestrictionImageTextField.getText().equals("")) {
+								if (Utilities.translateTextType((String) institutionImageTextDropDown
+										.getSelectedItem()) == PublicationRights.TextType.footer) {
+									institutionTabbedPane.setSelectedIndex(oldTabInstitution);
+
+									messageWriter.showMessage("Bitte geben Sie den Text der Fußzeile an.",
+											JOptionPane.ERROR_MESSAGE);
+
+									oldTabInstitution = institutionTabbedPane.getSelectedIndex();
+									return;
+								} else {
+									institutionTabbedPane.setSelectedIndex(oldTabInstitution);
+
+									messageWriter.showMessage("Bitte geben Sie den Text des Wasserzeichens an.",
+											JOptionPane.ERROR_MESSAGE);
+
+									oldTabInstitution = institutionTabbedPane.getSelectedIndex();
+									return;
+								}
+							}
+
+							int imageTextSize = institutionRestrictionImageTextField.getText().length();
+							if (Utilities
+									.translateTextType((String) institutionImageTextDropDown
+											.getSelectedItem()) == PublicationRights.TextType.footer
+									&& imageTextSize > 65) {
+
+								// institutionTabbedPane.setSelectedIndex(oldTab);
+								messageWriter.showMessage("Fußzeilen dürfen nicht mehr als 65 Zeichen lang sein.\n"
+										+ "Ihr Text ist " + (imageTextSize - 65) + " Zeichen zu lang.");
+
+								oldTabInstitution = institutionTabbedPane.getSelectedIndex();
+								return;
+							}
+
+							if (Utilities
+									.translateTextType((String) institutionImageTextDropDown
+											.getSelectedItem()) != PublicationRights.TextType.footer
+									&& imageTextSize > 20) {
+
+								// institutionTabbedPane.setSelectedIndex(oldTab);
+								messageWriter.showMessage("Wasserzeichen dürfen nicht mehr als 20 Zeichen lang sein.\n"
+										+ "Ihr Text ist " + (imageTextSize - 20) + " Zeichen zu lang.");
+
+								oldTabInstitution = institutionTabbedPane.getSelectedIndex();
+								return;
+							}
+						}
+					} // Ende Reiter Bild
+
+					oldTabInstitution = institutionTabbedPane.getSelectedIndex();
+
+				}
+			}
+		});
+
 	}
 
 	/**
