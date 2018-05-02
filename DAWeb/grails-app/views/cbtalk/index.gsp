@@ -25,7 +25,7 @@
 			);
 		</g:javascript>
   <body>
-	<div id="page-body">
+	<div class="page-body">
   		<div class="nav" role="navigation">
 			<ul>
 				<li><a class="list" href="${createLink(controller: 'conversionPolicies', action: 'index')}">Conversion Policies</a></li>
@@ -52,7 +52,7 @@
 		</g:form>
 		Rückmeldungen des ContentBroker (können verzögert eintreffen)
 		<!-- This div is updated through the periodical updater -->
-		<div class="list" id="entry-list">
+		<div id="entry-list">
 			<g:include action="messageSnippet" />
 		</div>
 	</div>

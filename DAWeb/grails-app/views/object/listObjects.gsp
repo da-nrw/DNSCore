@@ -7,7 +7,7 @@
 		<title>Liste der Objekte</title>
 	</head>
 	<body>
-		<div id="page-body">
+		<div class="page-body">
 		<h1>Liste der Objekte nach Formaten</h1>
 			<a href="#listFormat-queueEntry" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 			 <div id="list-queueEntry" class="content scaffold-list" role="main">			

@@ -15,7 +15,7 @@
 		</style>
 </head>
 <body>
-	<div id="page-body">
+	<div class="page-body">
 		<div id="controller-list" role="navigation"  style="margin: 0.8em 0 0.3em">
 			<h2>REST Funktionen:</h2>
 			<ul>

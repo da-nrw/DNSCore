@@ -54,15 +54,15 @@
 		</g:javascript>	
 	</head>
 	<body>
-		<div id="page-body">
-			<h1>Bearbeitungsübersicht</h1>	<br>		
+		<div class="page-body">
+			<h1 id="page-header">Bearbeitungsübersicht</h1> 	
 			<g:form controller="queueEntry" action="deleteSip">
 				<g:if test="${!params.search }">
 					<i>Aktualisieren der Seite:&nbsp; </i>
 					<input id="stopper" type="button" onclick="stopUpdater();this.disabled=true;" value="stoppen"/>
 					 &nbsp;
-					<input id="starter" type="button" onclick="startUpdater();this.disabled=true;" disabled value="starten"/><br><br>
-					<button onclick="return confirm ('Wirklich alle  fehlerhaften SIP löschen?')" >fehlerhafte SIP's löschen </button>
+					<input id="starter" type="button" onclick="startUpdater();this.disabled=true;" disabled value="starten"/> 
+					<button style="float: right;" onclick="return confirm ('Wirklich alle  fehlerhaften SIP löschen?')" >fehlerhafte SIP's löschen </button>
 				</g:if> <br>
 			</g:form>
 			<g:if test="${flash.message}">
@@ -149,7 +149,7 @@
 	        </div>
 	    	<div id="list-queueEntry" class="content scaffold-list" role="main">
 				<!-- This div is updated through the periodical updater -->
-				<div class="list" id="entry-list">
+				<div id="entry-list">
 					<g:include action="listSnippet" />
 				</div>
 			</div>
@@ -182,6 +182,7 @@
 						<tr><td>570</td><td>IndexESAction</td><td>Indizierung im Elasticsearch Suchindex</td></tr>			
 						<tr><td>580</td><td>FriendshipConversionAction</td><td>Konvertierung auf anderem Knoten</td></tr>			
 						<tr><td>600</td><td>RestartIngestWorkflowAction</td><td>Zurücksetzung des Ingestworkflows</td></tr>			
+						<tr><td>645</td><td>RestartIngestWorkflowAction</td><td>Warten auf Rückfrage</td></tr>
 						<tr><td>700</td><td>PIPGenObjectToWorkareaAction</td><td>Übertragung von AIP an das Knotenarbeitsverzeichnis</td></tr>
 						<tr><td>710</td><td>PIPGenScanForPresentationAction</td><td>Scannen der Präsentationsformate</td></tr>
 						<tr><td>720</td><td>PIPGenConvertForPrestationAction</td><td>Bildung der PIPs (Präsentationsderivate)</td></tr>

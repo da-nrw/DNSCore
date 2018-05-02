@@ -20,7 +20,7 @@
 		</g:javascript>
 	</head>
 	<body>
-		<div id="page-body">
+		<div class="page-body">
 			<a href="#list-object" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 			<h1>eingelieferte AIP's</h1>
 			<div class="nav" role="navigation">

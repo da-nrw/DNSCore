@@ -20,12 +20,12 @@
 		</g:javascript>
 	</head>
 	<body>
-		<div id="page-body">
+		<div class="page-body">
 			<a href="#list-object" class="skip" tabindex="-1">
 				<g:message code="default.link.skip.label" default="Skip to content&hellip;"/>
 			</a>
-			<h1>eingelieferte AIP's</h1>
-			<div class="nav" role="navigation">
+			<h1 id="page-header">eingelieferte AIP's</h1>
+			<div class="nav" role="navigation" >
 				<ul>
 					<g:if test="${objArt=='gesamten'}">
 						<li id="aktuell"><g:link url="[action: 'listAll', controller: 'object']">alle Objekte</g:link></li>
@@ -188,85 +188,86 @@
 				<g:formRemote name="myForm" on404="alert('not found!')" 
 	            url="[controller: 'object', action:'queueAllForRetrieval']" 
 	            onLoaded="queuedFor(data)">
-			   <div style="overflow:auto; height: 600px; padding: 10px">
-				<table>
-					<thead>
-						<tr>
-							<th><g:message code="object.identifier.label" default="Ident" /></th>
+				  <div style="overflow:scroll; height: 600px; padding: 10px">
+					<table>
+						<thead>
+							<tr>
+								<th><g:message code="object.identifier.label" default="Ident" /></th>
+								
+								<g:sortableColumn property="urn" title="${message(code: 'object.urn.label', default: 'Urn')}" />						
+								<g:sortableColumn property="origName" title="${message(code: 'object.origName.label', default: 'Orig Name')}" />
+								<g:sortableColumn property="createdAt" title="${message(code: 'object.created.label', default: 'Erstellt')}" />
+								<g:sortableColumn property="modifiedAt" title="${message(code: 'object.modified.label', default: 'Geändert')}" />
+								<th style="text-align: center">Publ.</th>
+								<th style="text-align: center">Anfordern				
+									<g:if test="${!paginate}">
+											<g:actionSubmitImage value="submit" action="submit"
+			                   	src="${resource(dir: 'images/icons', file: 'boxdownload32.png')}" />
+									</g:if>
+								</th>
+								<th style="text-align: center">Entnahme			
+								</th>			
+								
+			
+							</tr>
+						</thead>
+						<tbody>
+						<g:each in="${objectInstanceList}" status="i" var="objectInstance">
+												
+	 						<g:set var="statusCode" value="100" />  
+							<g:if test="${admin}">				
+								<g:set var="statusCode" value="${objectInstance.getStatusCode()}" />
+							</g:if>
+							<tr class="${ ((i % 2) == 0 ? 'odd' : 'even') + ' status-type-' + statusCode}">
+									<td>${fieldValue(bean: objectInstance, field: "identifier")}</td>
 							
-							<g:sortableColumn property="urn" title="${message(code: 'object.urn.label', default: 'Urn')}" />						
-							<g:sortableColumn property="origName" title="${message(code: 'object.origName.label', default: 'Orig Name')}" />
-							<g:sortableColumn property="createdAt" title="${message(code: 'object.created.label', default: 'Erstellt')}" />
-							<g:sortableColumn property="modifiedAt" title="${message(code: 'object.modified.label', default: 'Geändert')}" />
-							<th style="text-align: center">Publ.</th>
-							<th style="text-align: center">Anfordern				
-								<g:if test="${!paginate}">
-										<g:actionSubmitImage value="submit" action="submit"
-		                   	src="${resource(dir: 'images/icons', file: 'boxdownload32.png')}" />
-								</g:if>
-							</th>
-							<th style="text-align: center">Entnahme			
-							</th>			
+								<td><g:link action="show" id="${objectInstance.id}">${objectInstance.getFormattedUrn()}</g:link></td>
 							
-		
-						</tr>
-					</thead>
-					<tbody>
-					<g:each in="${objectInstanceList}" status="i" var="objectInstance">
-											
- 						<g:set var="statusCode" value="100" />  
-						<g:if test="${admin}">				
-							<g:set var="statusCode" value="${objectInstance.getStatusCode()}" />
-						</g:if>
-						<tr class="${ ((i % 2) == 0 ? 'odd' : 'even') + ' status-type-' + statusCode}">
-								<td>${fieldValue(bean: objectInstance, field: "identifier")}</td>
-						
-							<td><g:link action="show" id="${objectInstance.id}">${objectInstance.getFormattedUrn()}</g:link></td>
-						
-							<td>${fieldValue(bean: objectInstance, field: "origName")}</td>
-							<td>${objectInstance.getFormattedCreatedDate()}</td>
-							<td>${objectInstance.getFormattedModifiedDate()}</td>
-							<td>	
-						<g:if test="${objectInstance.getPublished_flag()==1}">
-							<g:link url="${objectInstance.getPublicPresLink()}" target="_blank"><asset:image width="16px" height="16px" src="/icons/globe.png"/></g:link>
-						</g:if>
-						<g:if test="${objectInstance.getPublished_flag()==2}">
-							<g:link url="${objectInstance.getInstPresLink()}" target="_blank"><asset:image width="16px" height="16px" src="/icons/globe.png"/></g:link>
-						</g:if>
-						<g:if test="${objectInstance.getPublished_flag()==3}">
-							<asset:image width="16px" height="16px" src="/icons/globe.png"/>
-						</g:if>
-							</td>
-							<g:if test="${!objectInstance.isInWorkflowButton()}">
-								<td style="text-align: center">
-									<g:remoteLink action="queueForRetrieval" onLoaded="queuedFor(data)" id="${objectInstance.id}">
-										<asset:image width="16px" height="16px" src="/icons/boxdownload32.png"/>
-									</g:remoteLink>
+								<td>${fieldValue(bean: objectInstance, field: "origName")}</td>
+								<td>${objectInstance.getFormattedCreatedDate()}</td>
+								<td>${objectInstance.getFormattedModifiedDate()}</td>
+								<td>	
+									<g:if test="${objectInstance.getPublished_flag()==1}">
+										<g:link url="${objectInstance.getPublicPresLink()}" target="_blank"><asset:image width="16px" height="16px" src="/icons/globe.png"/></g:link>
+									</g:if>
+									<g:if test="${objectInstance.getPublished_flag()==2}">
+										<g:link url="${objectInstance.getInstPresLink()}" target="_blank"><asset:image width="16px" height="16px" src="/icons/globe.png"/></g:link>
+									</g:if>
+									<g:if test="${objectInstance.getPublished_flag()==3}">
+										<asset:image width="16px" height="16px" src="/icons/globe.png"/>
+									</g:if>
 								</td>
-							</g:if><g:else><td style="text-align: center">Objekt in der Verarbeitung
-							</td>
-							</g:else>
-							<td style="text-align: center">
-								<g:if test="${new File(baseFolder+ "/"+ objectInstance.identifier +".tar").exists()}">
-									 <g:link controller="outgoing" action="download" params="['filename':objectInstance.identifier +'.tar']">
-										<asset:image width="16px" height="16px" src="/icons/delivery.png"/>
-									</g:link>
+								<g:if test="${!objectInstance.isInWorkflowButton()}">
+									<td style="text-align: center">
+										<g:remoteLink action="queueForRetrieval" onLoaded="queuedFor(data)" id="${objectInstance.id}">
+											<asset:image width="16px" height="16px" src="/icons/boxdownload32.png"/>
+										</g:remoteLink>
+									</td>
 								</g:if>
-							</td>
-						</tr>
-					</g:each>
-					</tbody>
-				</table>
-				StandardView
-			   </div>
-			</g:formRemote>
-			<g:if test="${paginate}" >
-				<!-- workaround weil paginate die search map zerhackstückelt -->
-				<g:set var="searchParams" value="${paramsList}"/>
-				<div class="pagination">
-					<g:paginate total="${objectInstanceTotal}" params="${searchParams}" />
-				</div>
-			</g:if>
+								<g:else>
+									<td style="text-align: center">Objekt in der Verarbeitung</td>
+								</g:else>
+								<td style="text-align: center">
+									<g:if test="${new File(baseFolder+ "/"+ objectInstance.identifier +".tar").exists()}">
+										 <g:link controller="outgoing" action="download" params="['filename':objectInstance.identifier +'.tar']">
+											<asset:image width="16px" height="16px" src="/icons/delivery.png"/>
+										</g:link>
+									</g:if>
+								</td>
+							</tr>
+						</g:each>
+						</tbody>
+					</table>
+					StandardView
+				   </div>
+				</g:formRemote>
+				<g:if test="${paginate}" >
+				<!-- 	  workaround weil paginate die search map zerhackstückelt  -->
+					<g:set var="searchParams" value="${paramsList}"/>
+					<div class="pagination">
+						<g:paginate total="${objectInstanceTotal}" params="${searchParams}" />
+					</div>
+				</g:if>  
 			</div>
 		</div>
 	</body>

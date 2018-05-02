@@ -23,46 +23,45 @@
 	    <g:layoutHead/>
 	</head>
 	<body>
-	   	    <div class="logos">
-				<asset:image src="DA_NRW268x80.png" alt="DANRW" />
-			    <asset:image src="DANRW_P_OBEN.png" alt="DANRW" align="right"  width="240" height="80" />
-		    </div> 
-		     <div id="header" role="banner">
-			<div class="trennerHeader" role="banner">
+   	    <div class="logos">
+			<asset:image src="DA_NRW268x80.png" alt="DANRW" />
+		    <asset:image src="DANRW_P_OBEN.png" alt="DANRW" align="right"  width="240" height="80" />
+	    </div> 
+	    <div id="header" role="banner">
+			<div id="trennerHeader" role="banner">
 	         	<h1>Web Konsole</h1>
 	        </div>
 			<g:if test="${actionName=='auth'}" />
 			<g:else>
-				<div id="header-menu">
+			 	<div id="header-menu"> 
 					<form name="submitForm" method="POST" action="${createLink(controller: 'logout')}">
-						<input type="hidden" name="" value="" >
+					 	<input type="hidden" name="" value="" > 
 						<a HREF="javascript:document.submitForm.submit()">Logout</a>
 					</form> 
-				</div>
+				</div> 
 			</g:else>
 		</div>
 		
 	  	<g:if test="${actionName=='auth'}" />  
 		<g:elseif test="${controllerName=='logout'}"/>
 		<g:else>
-		<div>
-			<div class="welcome">
-				Willkommen  ${user} ! <g:if test="${admin==1}"> (Administrator)</g:if>
+			<div id="welcome">Willkommen  ${user} ! 
+				<g:if test="${admin==1}"> (Administrator)</g:if>
 			</div>
   			<div id="vertical-menu">
 				<ul>
 					<!-- Bearbeitungsübersicht / Entscheidungsübersicht  -->
 					<g:if test="${controllerName=='queueEntry'}">
 						<g:if test="${actionName=='list'}">
-				 			<li id="aktuell"><g:link controller="queueEntry" action="index">Bearbeitungsübersicht</g:link></li>
+				 			<li class="aktuell"><g:link controller="queueEntry" action="index">Bearbeitungsübersicht</g:link></li>
 				 			<li><g:link controller="queueEntry" action="listRequests">Entscheidungsübersicht</g:link></li> 
 						</g:if>
 						<g:elseif test="${actionName=='listRequests'}">
 							<li><g:link controller="queueEntry" action="index">Bearbeitungsübersicht</g:link></li>
-							<li id="aktuell"><g:link controller="queueEntry" action="listRequests">Entscheidungsübersicht</g:link></li>
+							<li class="aktuell"><g:link controller="queueEntry" action="listRequests">Entscheidungsübersicht</g:link></li>
 						</g:elseif>
 						<g:elseif test="${actionName=='show'}">
-							<li id="aktuell"><g:link controller="queueEntry" action="index">Bearbeitungsübersicht</g:link></li>
+							<li class="aktuell"><g:link controller="queueEntry" action="index">Bearbeitungsübersicht</g:link></li>
 							<li><g:link controller="queueEntry" action="listRequests">Entscheidungsübersicht</g:link></li>
 						</g:elseif>
 					</g:if>
@@ -75,7 +74,7 @@
 					<g:if test="${admin==1}">
 						<g:if test="${controllerName=='object'}">
 							<g:if test="${actionName=='listObjects'}">
-								<li id="aktuell"><g:link controller="object" action="listObjects">Auswahl Objekte nach Formaten</g:link></li>
+								<li class="aktuell"><g:link controller="object" action="listObjects">Auswahl Objekte nach Formaten</g:link></li>
 							</g:if>
 							<g:else>
 								<li><g:link controller="object" action="listObjects">Auswahl Objekte nach Formaten</g:link></li>
@@ -89,7 +88,7 @@
 					<!-- Eingelieferte Objekte (AIP) -->
 					<g:if test="${controllerName=='object'}">
 						<g:if test="${actionName!='listObjects'}">
-							<li id="aktuell"><g:link controller="object">Eingelieferte Objekte (AIP)</g:link></li>
+							<li class="aktuell"><g:link controller="object">Eingelieferte Objekte (AIP)</g:link></li>
 						</g:if>
 						<g:else>
 							<li><g:link controller="object">Eingelieferte Objekte (AIP)</g:link></li>
@@ -101,7 +100,7 @@
 					
 					<!-- Verarbeitung für abgelieferte SIP starten -->
 					<g:if test="${controllerName=='incoming'}">
-						<li id="aktuell"><g:link controller="incoming">Verarbeitung für abgelieferte SIP starten</g:link></li>
+						<li class="aktuell"><g:link controller="incoming">Verarbeitung für abgelieferte SIP starten</g:link></li>
 					</g:if>
 					<g:else>
 						<li><g:link controller="incoming">Verarbeitung für abgelieferte SIP starten</g:link></li>
@@ -109,7 +108,7 @@
 						
 					<!-- Objekt entnehmen (DIP) -->
 					<g:if test="${controllerName=='outgoing'}">
-						<li id="aktuell"><g:link controller="outgoing">Objekt entnehmen (DIP)</g:link></li>
+						<li class="aktuell"><g:link controller="outgoing">Objekt entnehmen (DIP)</g:link></li>
 					</g:if>
 					<g:else>
 						<li><g:link controller="outgoing">Objekt entnehmen (DIP)</g:link></li>
@@ -117,7 +116,7 @@
 					
 					<!-- Hinweise zur Ansteuerung über externe Systeme -->
 					<g:if test="${controllerName=='info'}">
-						<li id="aktuell"><g:link controller="info">Hinweise zur Ansteuerung über externe Systeme</g:link></li>
+						<li class="aktuell"><g:link controller="info">Hinweise zur Ansteuerung über externe Systeme</g:link></li>
 					</g:if>
 					<g:else>
 						<li><g:link controller="info">Hinweise zur Ansteuerung über externe Systeme</g:link></li>
@@ -125,7 +124,7 @@
 					
 					<!-- Konfigurierte Konversionen -->
 					<g:if test="${controllerName=='conversionPolicies'}">
-						<li id="aktuell"><g:link controller="conversionPolicies">Konfigurierte Konversionen</g:link></li>
+						<li class="aktuell"><g:link controller="conversionPolicies">Konfigurierte Konversionen</g:link></li>
 					</g:if>
 					<g:else>
 						<li><g:link controller="conversionPolicies">Konfigurierte Konversionen</g:link></li>
@@ -133,7 +132,7 @@
 					
 					<!-- Abfragen verarbeiten -->
 					<g:if test="${controllerName=='report'}">
-						<li id="aktuell"><g:link controller="report">Abfragen verarbeiten</g:link></li>
+						<li class="aktuell"><g:link controller="report">Abfragen verarbeiten</g:link></li>
 					</g:if>
 					<g:else>	
 						<li><g:link controller="report">Abfragen verarbeiten</g:link></li>
@@ -141,7 +140,7 @@
 					
 					<!-- System-Eventsteuerung -->
 					<g:if test="${controllerName=='systemEvent'}">
-						<li id="aktuell"><g:link controller="systemEvent">System-Eventsteuerung</g:link></li>
+						<li class="aktuell"><g:link controller="systemEvent">System-Eventsteuerung</g:link></li>
 					</g:if>
 					<g:else>	
 						<li><g:link controller="systemEvent">System-Eventsteuerung</g:link></li>
@@ -150,23 +149,21 @@
 					<!-- Adminfunktionen -->
 					<g:if test="${admin==1}">
 						<g:if test="${controllerName=='cbtalk'}">
-							<li id="aktuell"><g:link controller="cbtalk">Adminfunktionen</g:link></li>
+							<li class="aktuell"><g:link controller="cbtalk">Adminfunktionen</g:link></li>
 						</g:if>
 						<g:else>
 							<li><g:link controller="cbtalk">Adminfunktionen</g:link></li>
 						</g:else>
 					</g:if>
-					
 				</ul>
-			</div>
 			</div>
 		</g:else>
 		
-		<div id="page-body">
+		<div class="page-body">
 			<g:layoutBody/> 
 		</div> 
 		<div align="center">
-			<div class="footer" id="page-footer" role="contentinfo">
+			<div id="footer" role="contentinfo">
 				<g:meta name="app.name"/> 
 				daweb3 Build:  <g:meta name="app.version.buildNumber"/>, LVR-InfoKom (ab 2014). HKI, Universität zu Köln 2011-2014. 
 				<g:if test="${grailsApplication.config.provider.logo}">

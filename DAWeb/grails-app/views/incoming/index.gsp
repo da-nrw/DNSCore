@@ -4,8 +4,8 @@
 		<meta name="layout" content="main">
 	</head>
 	<body>
-		<div id="page-body">
-			<h1 class="page-header">Verarbeitung manuell starten</h1> 
+		<div class="page-body">
+			<h1 id="page-header">Verarbeitung manuell starten</h1> 
 			<script type="text/javascript">
 				function toggle(source) {
 				  checkboxes = document.getElementsByName('currentFiles');

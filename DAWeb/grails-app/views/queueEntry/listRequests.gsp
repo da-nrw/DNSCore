@@ -7,13 +7,13 @@
 		<title>Anfragen</title>
 	</head>
 	<body>
-		<div id="page-body">
+		<div class="page-body">
 			<h1>Anfragenübersicht</h1>			
 			<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 			</g:if>			
 			<!-- This div is updated through the periodical updater -->
-			 <div class="list" id="entry-list">
+			 <div id="entry-list">
 			  <div style="overflow:auto; height: 300px">
 			   <table>
 				<thead>

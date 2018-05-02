@@ -54,7 +54,7 @@
 		</g:javascript>
 	</head>
 	<body>
-		<div id="page-body">
+		<div class="page-body">
  			<a href="#list-queueEntry" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 			<h1>Bearbeitungsübersicht</h1>		
 			<g:if test="${  !params.search }">

@@ -4,7 +4,7 @@
 		<meta name="layout" content="main">
 	</head>
 	<body>
-		<div id="page-body">
+		<div class="page-body">
 			<div id="show-object" class="content scaffold-show" role="main">
 				<h1>Hinweise</h1>
 				<ul class="property-list object">

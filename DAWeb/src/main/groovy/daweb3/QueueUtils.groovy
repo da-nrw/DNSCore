@@ -51,7 +51,6 @@ class QueueUtils {
 		if (object == null) throw new IllegalArgumentException ( "Object is not valid" )
 		if (responsibleNodeName == null) throw new IllegalArgumentException("responsibleNodeName must not be null")
 		object.setObject_state(50)
-
 		LOG.debug("Create job object.user.shortName: " + object.user.shortName)
 	
 		def list = QueueEntry.findByObj(object)
@@ -81,11 +80,11 @@ class QueueUtils {
 			LOG.error "Saving job failed " + errorMsg
 			throw new Exception(errorMsg)
 		}
-		
+		println("JOB: " + job.getStatus() + " -- " + job.getId())
 	}
+	
 	String createJob( daweb3.Object object, status, responsibleNodeName) {
-		return createJob(object,status,responsibleNodeName, "" )
-		
+		return createJob(object,status,responsibleNodeName, "" )	
 	}
 	/**
 	 * Modifies a job and sets it to new Workflow state

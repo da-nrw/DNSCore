@@ -6,7 +6,7 @@
 		
 	</head>
 	<body>
-		<div id="page-body">
+		<div class="page-body">
 			<g:if test="${msg}">
 				<div class="message" role="status">${msg}</div>
 			</g:if>

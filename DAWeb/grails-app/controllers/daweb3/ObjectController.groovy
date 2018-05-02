@@ -434,6 +434,7 @@ class ObjectController {
 		}
 		else {
 			if (object.user.shortName != user.getShortName()) {
+				
 				result.msg = "Sie haben nicht die nötigen Berechtigungen, um das Objekt ${object.urn} anzufordern!"
 
 			} else {
@@ -443,8 +444,10 @@ class ObjectController {
 
 					CbNode cbn = CbNode.get(Integer.parseInt(lnid))
 					qu.createJob( object ,"900", cbn.getName())
+					
 					result.msg = "Objekt ${object.urn} erfolgreich angefordert."
 					result.success = true
+					
 				} catch ( Exception e ) {
 				/*
 				 * DANRW-1419: error messages must be better specified
@@ -468,6 +471,9 @@ class ObjectController {
 				}
 			}
 		}
+		
+		//println(" msg : " + result.msg )
+ 
 		render result as JSON
 	}
 

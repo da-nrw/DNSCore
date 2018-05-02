@@ -58,32 +58,37 @@ body {
 
 .logos{
 	margin-left: 10px;	
-	margin-right: 28px;	
+	margin-right: 10px;	
 	margin-top: 10px;
 }
 
-.trennerHeader {
+#trennerHeader {
 	background: #1094d4;
- 	/*color: #FFFFFF;*/
-	clear: both;
-	font-size: 0.8em;
-	margin-top: 1.5em;
-	padding: 1em;
-	min-height: 1em;
-	width: 99%;
+	height: auto;
+	padding-left: auto;
+	padding-right: auto;
+	
 }
 
 #header h1 {
 	color: #ffffff;
 	font-family: inherit;
-	font-weight: 500;
+	line-height: 40px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	font-size: 24px;
 	text-align: center;
+	
 }
+
 #header-menu {
 	background-color: #fff;
 	margin: 0;
-	padding: 0;
+	padding: 0; 
 	text-align: right;
+	min-height: 5px;
+    max-height: 10px;
+    font-family: 'Lora', serif;
 }
 
 .message-box {
@@ -125,6 +130,7 @@ h1 {
 	font-weight: normal;
 	font-size: 1.25em;
 	margin: 0.8em 0 0.3em 0;
+	font-family: 'Lora', serif;
 }
 
 ul {
@@ -154,16 +160,16 @@ img {
 	margin: 1em;
 }
 
-#page-body {
+.page-body {
 	padding: 1em;
 	margin-left: 100px;
-	
+	margin-top: -20px;
+    font-family: 'Lora', serif;
 }
 
-.welcome{
+#welcome{
 	padding: 10px;	
-	height: 30px;
-	margin-bottom: 20px;
+	height: auto;
 	font-family: 'Lora', serif;
 	font-size: 20px;
 }
@@ -181,11 +187,12 @@ img {
 	border: none;
 }
 
-.footer {
+#footer {
 	background: #1094d4;
  	color:#000;
 	clear: both;
-	font-size: 15px;
+	font-size: 12px;
+	font-family: 'Lora', serif;
 	margin-top: 1.5em;
 	padding: 1em;
 	min-height: 1em;
@@ -463,6 +470,7 @@ fieldset.embedded legend {
 .message {
 	background: transparent url(../images/skin/information.png) 0.5em 50% no-repeat;
 	text-indent: 2.2em;
+	margin-left: 1px;
 }
 
 /* form fields with errors */
@@ -727,11 +735,12 @@ a.skip {
 
 #vertical-menu {
     width: 200px;
-    height: float;
     float:left;
     margin-bottom: 10px;
+    margin-left: 10px;
+   font-family: 'Lora', serif;
+    
 }
-
 #vertical-menu li {
     background-color: #eee;
     color: black;
@@ -744,6 +753,6 @@ a.skip {
     background-color: #1094d4; 
 }
 
-#vertical-menu #aktuell a{
+#vertical-menu .aktuell a{
     background-color: #13d3f1; 
 }

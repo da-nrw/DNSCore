@@ -60,7 +60,7 @@
 					
 					<g:if test="${ queueEntryInstance.showDeletionButton()}">
 						<g:set var="showDeleteAll" value="true" />
-						<g:link onclick="return confirm('Eintrag löschen. Sind Sie sicher?');" action="queueDelete" id="${queueEntryInstance.id}">
+						<g:link onclick="return confirm('Eintrag mit ID ${fieldValue(bean: queueEntryInstance.obj, field: "identifier")} wirklich löschen?');" action="queueDelete" id="${queueEntryInstance.id}">
 							<asset:image style="width:16px; height:16px" src="/icons/list_remove.png" 
 										title="${message(code: 'default.workflow.icon.delete', default: 'Paket löschen')}" 
 										alt="${message(code: 'default.workflow.icon.delete', default: 'Paket löschen')}"/>

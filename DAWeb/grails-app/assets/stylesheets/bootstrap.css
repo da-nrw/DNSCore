@@ -12,25 +12,15 @@ html {
 body {
   margin: 0;
 }
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-main,
-menu,
-nav,
-section,
-summary {
+/*#page-body {
+	padding: 1em;
+	margin-left: 100px;
+}*/
+article, aside, details, figcaption, figure,footer,
+header, hgroup, main, menu, nav, section, summary {
   display: block;
 }
-audio,
-canvas,
-progress,
-video {
+audio, canvas, progress, video {
   display: inline-block;
   vertical-align: baseline;
 }
@@ -38,22 +28,19 @@ audio:not([controls]) {
   display: none;
   height: 0;
 }
-[hidden],
-template {
+[hidden], template {
   display: none;
 }
 a {
   background-color: transparent;
 }
-a:active,
-a:hover {
+a:active, a:hover {
   outline: 0;
 }
 abbr[title] {
   border-bottom: 1px dotted;
 }
-b,
-strong {
+b, strong {
   font-weight: bold;
 }
 dfn {
@@ -70,8 +57,7 @@ mark {
 small {
   font-size: 80%;
 }
-sub,
-sup {
+sub, sup {
   position: relative;
   font-size: 75%;
   line-height: 0;
@@ -101,18 +87,12 @@ hr {
 pre {
   overflow: auto;
 }
-code,
-kbd,
-pre,
-samp {
+code, kbd, pre, samp {
   font-family: monospace, monospace;
   font-size: 1em;
 }
-button,
-input,
-optgroup,
-select,
-textarea {
+button, input, optgroup,
+select, textarea {
   margin: 0;
   font: inherit;
   color: inherit;
@@ -130,6 +110,7 @@ input[type="reset"],
 input[type="submit"] {
   -webkit-appearance: button;
   cursor: pointer;
+ /* font-family: 'Lora', serif;*/
 }
 button[disabled],
 html input[disabled] {
@@ -1172,119 +1153,56 @@ hr {
 [role="button"] {
   cursor: pointer;
 }
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6 {
-  font-family: inherit;
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+ /* font-family: 'Lora', serif;*/ 
   font-weight: 500;
   line-height: 1.1;
   color: inherit;
 }
-h1 small,
-h2 small,
-h3 small,
-h4 small,
-h5 small,
-h6 small,
-.h1 small,
-.h2 small,
-.h3 small,
-.h4 small,
-.h5 small,
-.h6 small,
-h1 .small,
-h2 .small,
-h3 .small,
-h4 .small,
-h5 .small,
-h6 .small,
-.h1 .small,
-.h2 .small,
-.h3 .small,
-.h4 .small,
-.h5 .small,
-.h6 .small {
+h1 small, h2 small, h3 small, h4 small, h5 small, h6 small,
+.h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small,
+h1 .small, h2 .small, h3 .small, h4 .small, h5 .small, h6 .small,
+.h1 .small, .h2 .small, .h3 .small, .h4 .small, .h5 .small, .h6 .small {
   font-weight: normal;
   line-height: 1;
   color: #777;
 }
-h1,
-.h1,
-h2,
-.h2,
-h3,
-.h3 {
+h1, .h1,
+h2, .h2,
+h3, .h3 {
   margin-top: 20px;
   margin-bottom: 10px;
 }
-h1 small,
-.h1 small,
-h2 small,
-.h2 small,
-h3 small,
-.h3 small,
-h1 .small,
-.h1 .small,
-h2 .small,
-.h2 .small,
-h3 .small,
-.h3 .small {
+h1 small, .h1 small, h2 small, .h2 small, h3 small, .h3 small,
+h1 .small, .h1 .small, h2 .small, .h2 .small,
+h3 .small, .h3 .small {
   font-size: 65%;
 }
-h4,
-.h4,
-h5,
-.h5,
-h6,
-.h6 {
+h4, .h4, h5, .h5, h6, .h6 {
   margin-top: 10px;
   margin-bottom: 10px;
 }
-h4 small,
-.h4 small,
-h5 small,
-.h5 small,
-h6 small,
-.h6 small,
-h4 .small,
-.h4 .small,
-h5 .small,
-.h5 .small,
-h6 .small,
-.h6 .small {
+h4 small, .h4 small, h5 small, .h5 small, h6 small, .h6 small,
+h4 .small, .h4 .small, h5 .small, .h5 .small, h6 .small, .h6 .small {
   font-size: 75%;
 }
-h1,
-.h1 {
+h1, .h1 {
   font-size: 36px;
 }
-h2,
-.h2 {
+h2, .h2 {
   font-size: 30px;
 }
-h3,
-.h3 {
+h3, .h3 {
   font-size: 24px;
 }
-h4,
-.h4 {
+h4, .h4 {
   font-size: 18px;
 }
-h5,
-.h5 {
+h5, .h5 {
   font-size: 14px;
 }
-h6,
-.h6 {
+h6, .h6 {
   font-size: 12px;
 }
 p {
@@ -1301,12 +1219,10 @@ p {
     font-size: 21px;
   }
 }
-small,
-.small {
+small, .small {
   font-size: 85%;
 }
-mark,
-.mark {
+mark, .mark {
   padding: .2em;
   background-color: #fcf8e3;
 }
@@ -1408,10 +1324,11 @@ a.bg-danger:hover,
 a.bg-danger:focus {
   background-color: #e4b9b9;
 }
-.page-header {
+#page-header {
   padding-bottom: 9px;
   margin: 40px 0 20px;
   border-bottom: 1px solid #eee;
+  margin-top: 10px;
 }
 ul,
 ol {
@@ -2525,6 +2442,8 @@ input[type="checkbox"] {
 }
 input[type="file"] {
   display: block;
+  margin-bottom: 10px;
+ /* font-family: 'Lora', serif;*/
 }
 input[type="range"] {
   display: block;
@@ -3466,6 +3385,7 @@ input[type="submit"].btn-block,
 input[type="reset"].btn-block,
 input[type="button"].btn-block {
   width: 100%;
+/*  font-family: 'Lora', serif;*/
 }
 .fade {
   opacity: 0;
@@ -6758,3 +6678,12 @@ button.close {
   }
 }
 /*# sourceMappingURL=bootstrap.css.map */
+/* Neu ab 30.04.2018 */
+#entry-list{
+	margin-top: 10px;
+}	
+.entry-list-report{
+	
+}
+
+

@@ -7,7 +7,7 @@
 		<title>DA-NRW Objekt</title>
 	</head>
 	<body>
-		<div id="page-body">
+		<div class="page-body">
 			<script type="text/javascript" >
 				function toggle(source) {
 					checkboxes = document.getElementsByName('currentPackages');

@@ -5,7 +5,7 @@
 		<r:require modules="jqueryui,messagebox"/>
 	</head>
 <body>
-	<div id="page-body">
+	<div class="page-body">
 		<div id="show-object" class="content scaffold-show" role="main">
 			<h1>Hinweise zur automatischen Retrievalanforderung an die DNS </h1>
 				<ul class="property-list object">

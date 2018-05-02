@@ -29,7 +29,7 @@
 		</g:javascript>
 	</head>
 	<body>
-		<div id="page-body">
+		<div class="page-body">
 			<a href="#list-formatMapping" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 			<h1 class="page-header">Format-Mapping</h1> 
 			
