@@ -104,7 +104,8 @@ public class FFmpegSubformatIdentifier implements FormatIdentifier, Connector{
 		if (acceptedVersions.contains(version)) 
 			return true;
 		else
-			return false;
+			throw new RuntimeException("Version nciht vorhanden: "+version+" "+acceptedVersions.contains(version));
+			//return false;
 	}
 
 	@Override
