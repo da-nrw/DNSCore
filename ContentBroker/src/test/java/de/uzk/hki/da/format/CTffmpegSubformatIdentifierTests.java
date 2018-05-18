@@ -32,6 +32,7 @@ public class CTffmpegSubformatIdentifierTests {
 	
 	@Test
 	public void testConncectivity() {
-		assertTrue(ffmpeg.isConnectable());
+		
+		assertTrue("Test FFmpeg-Verbindung ist fehlgeschlagen",ffmpeg.isConnectable());
 	}
 }
