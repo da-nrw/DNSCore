@@ -59,7 +59,6 @@ public class FFmpegSubformatIdentifier implements FormatIdentifier, Connector{
 	public boolean isConnectable() {
 		
 		String version=ffmpegVersion();
-		logger.debug("FFmpegSubformatIdentifier::isConnectable() "+version);
 		if (isNotSet(version)) return false;
 		
 		return isSupported(version);
@@ -90,11 +89,9 @@ public class FFmpegSubformatIdentifier implements FormatIdentifier, Connector{
 	}
 	
 	private String parseVersionOutpu(String ffmpegVersionStdout) {
-		logger.debug("FFmpegSubformatIdentifier::parseVersionOutpu() "+ffmpegVersionStdout);
 		Pattern MY_PATTERN = Pattern.compile(".*(\\d+\\.\\d+\\.\\d+).*");
 		Matcher m = MY_PATTERN.matcher(ffmpegVersionStdout); m.find();
 		String version = m.group(1);
-		logger.debug("FFmpegSubformatIdentifier::parseVersionOutpu() "+version);
 		return version;
 	}
 
@@ -104,8 +101,7 @@ public class FFmpegSubformatIdentifier implements FormatIdentifier, Connector{
 		if (acceptedVersions.contains(version)) 
 			return true;
 		else
-			throw new RuntimeException("Version nciht vorhanden: "+version+" "+acceptedVersions.contains(version));
-			//return false;
+			return false;
 	}
 
 	@Override
