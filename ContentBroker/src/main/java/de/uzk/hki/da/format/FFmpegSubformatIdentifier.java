@@ -59,6 +59,7 @@ public class FFmpegSubformatIdentifier implements FormatIdentifier, Connector{
 	public boolean isConnectable() {
 		
 		String version=ffmpegVersion();
+		System.out.println("FFmpegSubformatIdentifier::isConnectable() "+version);
 		if (isNotSet(version)) return false;
 		
 		return isSupported(version);
@@ -89,11 +90,11 @@ public class FFmpegSubformatIdentifier implements FormatIdentifier, Connector{
 	}
 	
 	private String parseVersionOutpu(String ffmpegVersionStdout) {
-		
+		System.out.println("FFmpegSubformatIdentifier::parseVersionOutpu() "+ffmpegVersionStdout);
 		Pattern MY_PATTERN = Pattern.compile(".*(\\d+\\.\\d+\\.\\d+).*");
 		Matcher m = MY_PATTERN.matcher(ffmpegVersionStdout); m.find();
 		String version = m.group(1);
-		
+		System.out.println("FFmpegSubformatIdentifier::parseVersionOutpu() "+version);
 		return version;
 	}
 
