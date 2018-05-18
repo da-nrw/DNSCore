@@ -85,7 +85,7 @@ public class DAFile implements FileWithFileFormat{
 	
 	/** The format puid. */
 	@Column(name="`format_puid`", columnDefinition="varchar(64)")
-	private String formatPUID; // encoded as PRONOM-PUID
+	private String formatPUID=""; // encoded as PRONOM-PUID
 	
 	/** The format secondary attribute. */
 	@Column(name="subformat_identifier", columnDefinition="varchar(50)")
@@ -118,7 +118,7 @@ public class DAFile implements FileWithFileFormat{
 	private List<KnownError> knownErrors = new ArrayList<KnownError>();
     
     @Transient
-    private List<RuntimeException> getUnknownIdentificationErrorList=new ArrayList<RuntimeException>();
+    private List<RuntimeException> unknownIdentificationErrorList=new ArrayList<RuntimeException>();
 
 	/**
 	 * Instantiates a new dA file.
@@ -349,7 +349,7 @@ public class DAFile implements FileWithFileFormat{
 	@Transient
 	@Override
 	public List<RuntimeException> getUnknownIdentificationErrorList() {
-		return getUnknownIdentificationErrorList;
+		return unknownIdentificationErrorList;
 	}
 
 }

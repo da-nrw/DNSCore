@@ -210,9 +210,10 @@ public class PreservationSystem {
 	public List<ConversionPolicy> getApplicablePolicies(FileWithFileFormat file,Boolean presentation) throws IllegalStateException {
 		if (file==null) throw new IllegalStateException("DAFile file is null!");
 		if (file.getFormatPUID()==null) throw new IllegalStateException("Format PUID is null!");
-		if (file.getFormatPUID().isEmpty())throw new IllegalStateException("Format PUID is empty!");
-				
 		List<ConversionPolicy> result = new ArrayList<ConversionPolicy>();
+		if (file.getFormatPUID().isEmpty()) return result;//throw new IllegalStateException("Format PUID is empty!");
+				
+		
 		for (ConversionPolicy p:conversion_policies){
 			if ((p.getSource_format().equals(file.getFormatPUID()))&&(presentation.equals(p.isPresentation()))){
 				result.add(p);

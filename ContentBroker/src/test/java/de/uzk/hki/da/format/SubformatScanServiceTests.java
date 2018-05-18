@@ -99,7 +99,7 @@ public class SubformatScanServiceTests {
 		files.add(f);
 		try {
 			sfs.identify(wa.dataPath(),files,false);
-			fail();
+			//fail(); According to Quality Levels no PUID is becoming one of usual cases 
 		} catch (IllegalArgumentException e){}
 	}
 }

@@ -47,7 +47,7 @@ public class ScriptWrappedPronomFormatIdentifier implements FormatIdentifier, Co
 	
 	private CommandLineConnector cli = null;
 	
-	ScriptWrappedPronomFormatIdentifier(File cs){
+	public ScriptWrappedPronomFormatIdentifier(File cs){
 		this.conversionScript=cs;
 	}
 	
@@ -79,8 +79,8 @@ public class ScriptWrappedPronomFormatIdentifier implements FormatIdentifier, Co
 		if (pi.getExitValue()!=0){
 			logger.warn("stdout from identification: "+pi.getStdErr());
 			logger.warn("FormatIdentifier with exit value: " + pi.getExitValue());
-			
-			return C.UNRECOGNIZED_PUID;
+			throw new RuntimeException("PUID is "+C.UNRECOGNIZED_PUID);
+			//return C.UNRECOGNIZED_PUID;
 		}
 		
 		logger.debug("stdout from identification: "+pi.getStdOut());

@@ -71,7 +71,7 @@ public class QualityLevelCheckActionTests extends ConcreteActionUnitTest{
 	
 	Event qualityFaultValidationEvent=null;
 	Event qualityFaultConversationEvent = null;
-	
+	Event qualityFaultIdentificationEvent = null;
 	
 	File premisFile=null;
 	
@@ -152,7 +152,7 @@ public class QualityLevelCheckActionTests extends ConcreteActionUnitTest{
 		qualityFaultValidationEvent = new Event();
 		qualityFaultValidationEvent.setType(C.EVENT_TYPE_QUALITY_FAULT_VALIDATION);
 		qualityFaultValidationEvent.setId(1);
-		qualityFaultValidationEvent.setDetail("detail");
+		qualityFaultValidationEvent.setDetail("detail VALIDATION");
 		qualityFaultValidationEvent.setAgent_type("NODE");
 		qualityFaultValidationEvent.setAgent_name("TESTNODE");
 		qualityFaultValidationEvent.setDate(new Date());
@@ -160,11 +160,19 @@ public class QualityLevelCheckActionTests extends ConcreteActionUnitTest{
 		
 		qualityFaultConversationEvent = new Event();
 		qualityFaultConversationEvent.setType(C.EVENT_TYPE_QUALITY_FAULT_CONVERSION);
-		qualityFaultConversationEvent.setId(1);
-		qualityFaultConversationEvent.setDetail("detail");
+		qualityFaultConversationEvent.setId(2);
+		qualityFaultConversationEvent.setDetail("detail CONVERSION");
 		qualityFaultConversationEvent.setAgent_type("NODE");
 		qualityFaultConversationEvent.setAgent_name("TESTNODE");
 		qualityFaultConversationEvent.setDate(new Date());
+		
+		qualityFaultIdentificationEvent = new Event();
+		qualityFaultIdentificationEvent.setType(C.EVENT_TYPE_QUALITY_FAULT_IDENTIFICATION);
+		qualityFaultIdentificationEvent.setId(3);
+		qualityFaultIdentificationEvent.setDetail("detail IDENTIFICATION");
+		qualityFaultIdentificationEvent.setAgent_type("NODE");
+		qualityFaultIdentificationEvent.setAgent_name("TESTNODE");
+		qualityFaultIdentificationEvent.setDate(new Date());
 
 		action.getLocalNode().setWorkAreaRootPath(new RelativePath("src/test/resources/cb/QualityLevelCheckActionTests/"));
 		premisFile=new File(action.getLocalNode().getWorkAreaRootPath().toFile().getAbsolutePath()+"/work/TEST/identifier/data/"+premisDAF.getPath());
@@ -336,40 +344,6 @@ public class QualityLevelCheckActionTests extends ConcreteActionUnitTest{
 		testQualityLevel3ContainsValidationFEvents();
 	}
 	
-	
-	@Test
-	public void testQualityLevel2ContainsConversionAndValidationFEventsOnDifferenceFiles() throws IOException {
-		action.getObject().getLatestPackage().getFiles().add(unknownPuidDAF);
-		action.getObject().getLatestPackage().getFiles().add(nonLzaPuidDAF);
-		action.getObject().getLatestPackage().getFiles().add(lzaPuidDAF);
-		action.getObject().getLatestPackage().getFiles().add(lzaPuidDAF2);
-		action.getObject().getLatestPackage().getFiles().add(premisDAF);
-		
-		//previous validation fails 
-		qualityFaultValidationEvent.setSource_file(lzaPuidDAF); 
-		action.getObject().getLatestPackage().getEvents().add(qualityFaultValidationEvent);
-		
-		
-		//previous conversion fails
-		qualityFaultConversationEvent.setSource_file(lzaPuidDAF2); 
-		action.getObject().getLatestPackage().getEvents().add(qualityFaultConversationEvent);
-		action.implementation();
-		
-		boolean has2QualityLevelEvents=getEvents(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2).size()==1;
-		boolean hasOtherQualityLevelEvents=getEvents(true,C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2).size()==2; //vault validation && vault conversation
-		assertTrue(hasOtherQualityLevelEvents) ;
-		assertTrue("Es sind QualityEvents nicht vorhanden obwohl es welche geben sollte. ",has2QualityLevelEvents) ;
-	
-		Event myEvent=getEvents(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2).get(0);
-		assertTrue(myEvent.getSource_file().getPath().equals(lzaPuidDAF2.getPath()) || myEvent.getSource_file().getPath().equals(lzaPuidDAF.getPath()));
-		
-		myEvent=getEvents(C.EVENT_TYPE_QUALITY_FAULT_VALIDATION).get(0);
-		assertTrue(myEvent.getSource_file().getPath().equals(lzaPuidDAF.getPath()));
-		
-		myEvent=getEvents(C.EVENT_TYPE_QUALITY_FAULT_CONVERSION).get(0);
-		assertTrue(myEvent.getSource_file().getPath().equals(lzaPuidDAF2.getPath()));
-	}
-	
 	@Test
 	public void testQualityLevel2ContainsConversionFEvents() throws IOException {
 		action.getObject().getLatestPackage().getFiles().add(unknownPuidDAF);
@@ -395,6 +369,174 @@ public class QualityLevelCheckActionTests extends ConcreteActionUnitTest{
 		myEvent=getEvents(C.EVENT_TYPE_QUALITY_FAULT_CONVERSION).get(0);
 		assertTrue(myEvent.getSource_file().getPath().equals(lzaPuidDAF2.getPath()));
 	}
+	
+	
+	@Test
+	public void testQualityLevel1ContainsIdentificationFEvents() throws IOException {
+		action.getObject().getLatestPackage().getFiles().add(unknownPuidDAF);
+		action.getObject().getLatestPackage().getFiles().add(nonLzaPuidDAF);
+		action.getObject().getLatestPackage().getFiles().add(lzaPuidDAF);
+		action.getObject().getLatestPackage().getFiles().add(lzaPuidDAF2);
+		action.getObject().getLatestPackage().getFiles().add(premisDAF);
+		
+		//previous validation fails 
+		qualityFaultIdentificationEvent.setSource_file(unknownPuidDAF); 
+		action.getObject().getLatestPackage().getEvents().add(qualityFaultIdentificationEvent);
+		action.implementation();
+		
+		boolean has1QualityLevelEvents=getEvents(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1).size()==1;
+		boolean hasValidationQualityLevelEvent=getEvents(true,C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1).size()==1;
+		assertTrue(hasValidationQualityLevelEvent) ;
+		assertTrue("Es sind QualityEvents nicht vorhanden obwohl es welche geben sollte. ",has1QualityLevelEvents) ;
+	
+		Event myEvent=getEvents(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1).get(0);
+		assertTrue(myEvent.getSource_file().getPath().equals(unknownPuidDAF.getPath()));
+		
+		myEvent=getEvents(C.EVENT_TYPE_QUALITY_FAULT_IDENTIFICATION).get(0);
+		assertTrue(myEvent.getSource_file().getPath().equals(unknownPuidDAF.getPath()));
+	}
+	
+	@Test
+	public void testQualityLevel1ContainsIdentificationAndValidationAndConversionFEvents() throws IOException {
+		action.getObject().getLatestPackage().getFiles().add(unknownPuidDAF);
+		action.getObject().getLatestPackage().getFiles().add(nonLzaPuidDAF);
+		action.getObject().getLatestPackage().getFiles().add(lzaPuidDAF);
+		action.getObject().getLatestPackage().getFiles().add(lzaPuidDAF2);
+		action.getObject().getLatestPackage().getFiles().add(premisDAF);
+		
+		//previous validation fails 
+		qualityFaultIdentificationEvent.setSource_file(unknownPuidDAF); 
+		action.getObject().getLatestPackage().getEvents().add(qualityFaultIdentificationEvent);
+		
+		qualityFaultConversationEvent.setSource_file(lzaPuidDAF2); 
+		action.getObject().getLatestPackage().getEvents().add(qualityFaultConversationEvent);
+		
+		qualityFaultValidationEvent.setSource_file(lzaPuidDAF); 
+		action.getObject().getLatestPackage().getEvents().add(qualityFaultValidationEvent);
+		
+		action.implementation();
+		
+		boolean has1QualityLevelEvents=getEvents(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1).size()==1;
+		boolean hasValidationQualityLevelEvent=getEvents(true,C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1).size()==3;
+		
+		assertTrue(hasValidationQualityLevelEvent) ;
+		assertTrue("Es sind QualityEvents nicht vorhanden obwohl es welche geben sollte. ",has1QualityLevelEvents) ;
+	
+		Event myEvent=getEvents(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1).get(0);
+		assertTrue(myEvent.getSource_file().getPath().equals(unknownPuidDAF.getPath()));
+		
+		myEvent=getEvents(C.EVENT_TYPE_QUALITY_FAULT_CONVERSION).get(0);
+		assertTrue(myEvent.getSource_file().getPath().equals(lzaPuidDAF2.getPath()));
+		
+		myEvent=getEvents(C.EVENT_TYPE_QUALITY_FAULT_IDENTIFICATION).get(0);
+		assertTrue(myEvent.getSource_file().getPath().equals(unknownPuidDAF.getPath()));
+		
+		myEvent=getEvents(C.EVENT_TYPE_QUALITY_FAULT_VALIDATION).get(0);
+		assertTrue(myEvent.getSource_file().getPath().equals(lzaPuidDAF.getPath()));
+	}
+	
+
+	@Test
+	public void testQualityLevel1ContainsIdentificationAndValidationFEvents() throws IOException {
+		action.getObject().getLatestPackage().getFiles().add(unknownPuidDAF);
+		action.getObject().getLatestPackage().getFiles().add(nonLzaPuidDAF);
+		action.getObject().getLatestPackage().getFiles().add(lzaPuidDAF);
+		action.getObject().getLatestPackage().getFiles().add(lzaPuidDAF2);
+		action.getObject().getLatestPackage().getFiles().add(premisDAF);
+		
+		//previous validation fails 
+		qualityFaultIdentificationEvent.setSource_file(unknownPuidDAF); 
+		action.getObject().getLatestPackage().getEvents().add(qualityFaultIdentificationEvent);
+		
+		
+		qualityFaultValidationEvent.setSource_file(lzaPuidDAF); 
+		action.getObject().getLatestPackage().getEvents().add(qualityFaultValidationEvent);
+		
+		action.implementation();
+		
+		boolean has1QualityLevelEvents=getEvents(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1).size()==1;
+		boolean hasValidationQualityLevelEvent=getEvents(true,C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1).size()==2;
+		
+		assertTrue(hasValidationQualityLevelEvent) ;
+		assertTrue("Es sind QualityEvents nicht vorhanden obwohl es welche geben sollte. ",has1QualityLevelEvents) ;
+	
+		Event myEvent=getEvents(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1).get(0);
+		assertTrue(myEvent.getSource_file().getPath().equals(unknownPuidDAF.getPath()));
+		
+		myEvent=getEvents(C.EVENT_TYPE_QUALITY_FAULT_IDENTIFICATION).get(0);
+		assertTrue(myEvent.getSource_file().getPath().equals(unknownPuidDAF.getPath()));
+		
+		myEvent=getEvents(C.EVENT_TYPE_QUALITY_FAULT_VALIDATION).get(0);
+		assertTrue(myEvent.getSource_file().getPath().equals(lzaPuidDAF.getPath()));
+	}
+	
+	@Test
+	public void testQualityLevel1ContainsIdentificationAndConversionFEvents() throws IOException {
+		action.getObject().getLatestPackage().getFiles().add(unknownPuidDAF);
+		action.getObject().getLatestPackage().getFiles().add(nonLzaPuidDAF);
+		action.getObject().getLatestPackage().getFiles().add(lzaPuidDAF);
+		action.getObject().getLatestPackage().getFiles().add(lzaPuidDAF2);
+		action.getObject().getLatestPackage().getFiles().add(premisDAF);
+		
+		//previous validation fails 
+		qualityFaultIdentificationEvent.setSource_file(unknownPuidDAF); 
+		action.getObject().getLatestPackage().getEvents().add(qualityFaultIdentificationEvent);
+		
+		qualityFaultConversationEvent.setSource_file(lzaPuidDAF2); 
+		action.getObject().getLatestPackage().getEvents().add(qualityFaultConversationEvent);
+		
+		action.implementation();
+		
+		boolean has1QualityLevelEvents=getEvents(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1).size()==1;
+		boolean hasValidationQualityLevelEvent=getEvents(true,C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1).size()==2;
+		
+		assertTrue(hasValidationQualityLevelEvent) ;
+		assertTrue("Es sind QualityEvents nicht vorhanden obwohl es welche geben sollte. ",has1QualityLevelEvents) ;
+	
+		Event myEvent=getEvents(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1).get(0);
+		assertTrue(myEvent.getSource_file().getPath().equals(unknownPuidDAF.getPath()));
+		
+		myEvent=getEvents(C.EVENT_TYPE_QUALITY_FAULT_CONVERSION).get(0);
+		assertTrue(myEvent.getSource_file().getPath().equals(lzaPuidDAF2.getPath()));
+		
+		myEvent=getEvents(C.EVENT_TYPE_QUALITY_FAULT_IDENTIFICATION).get(0);
+		assertTrue(myEvent.getSource_file().getPath().equals(unknownPuidDAF.getPath()));
+	}
+	
+	@Test
+	public void testQualityLevel1ContainsConversionAndValidationFEventsOnDifferenceFiles() throws IOException {
+		action.getObject().getLatestPackage().getFiles().add(unknownPuidDAF);
+		action.getObject().getLatestPackage().getFiles().add(nonLzaPuidDAF);
+		action.getObject().getLatestPackage().getFiles().add(lzaPuidDAF);
+		action.getObject().getLatestPackage().getFiles().add(lzaPuidDAF2);
+		action.getObject().getLatestPackage().getFiles().add(premisDAF);
+		
+		//previous validation fails 
+		qualityFaultValidationEvent.setSource_file(lzaPuidDAF); 
+		action.getObject().getLatestPackage().getEvents().add(qualityFaultValidationEvent);
+		
+		
+		//previous conversion fails
+		qualityFaultConversationEvent.setSource_file(lzaPuidDAF2); 
+		action.getObject().getLatestPackage().getEvents().add(qualityFaultConversationEvent);
+		action.implementation();
+		
+		boolean has1QualityLevelEvents=getEvents(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1).size()==1;
+		boolean hasOtherQualityLevelEvents=getEvents(true,C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1).size()==2; //vault validation && vault conversation
+		assertTrue(hasOtherQualityLevelEvents) ;
+		assertTrue("Es sind QualityEvents nicht vorhanden obwohl es welche geben sollte. ",has1QualityLevelEvents) ;
+	
+		Event myEvent=getEvents(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1).get(0);
+		assertTrue(myEvent.getSource_file().getPath().equals(lzaPuidDAF2.getPath()) || myEvent.getSource_file().getPath().equals(lzaPuidDAF.getPath()));
+		
+		myEvent=getEvents(C.EVENT_TYPE_QUALITY_FAULT_VALIDATION).get(0);
+		assertTrue(myEvent.getSource_file().getPath().equals(lzaPuidDAF.getPath()));
+		
+		myEvent=getEvents(C.EVENT_TYPE_QUALITY_FAULT_CONVERSION).get(0);
+		assertTrue(myEvent.getSource_file().getPath().equals(lzaPuidDAF2.getPath()));
+	}
+	
+
 	
 	@Test
 	public void testQualityLevel1ContainsConversionAndValidationEventsOnSameFiles() throws IOException {

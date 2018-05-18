@@ -272,7 +272,8 @@ public class ObjectPremisXmlReader{
 				|| eventType.toUpperCase().equals(C.EVENT_TYPE_CREATE)
 
 				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_CONVERSION)
-				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_VALIDATION)				
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_VALIDATION)	
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_IDENTIFICATION)
 				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1)
 				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2)
 				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_3)
@@ -293,7 +294,8 @@ public class ObjectPremisXmlReader{
 					if (sourceFile.equals(f.getRep_name() + "/" + f.getRelative_path())) {
 						event.setSource_file(f);
 						if (event.getTarget_file() != null || eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_CONVERSION)
-								|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_VALIDATION)			
+								|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_VALIDATION)
+								|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_IDENTIFICATION)
 								|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1)
 								|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2)
 								|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_3)

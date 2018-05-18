@@ -171,6 +171,7 @@ public class ObjectPremisXmlWriter {
 				createVirusEventElement(object,pkg.getName(), e);
 			} else if (e.getType().toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_CONVERSION) ||
 					e.getType().toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_VALIDATION)||
+					e.getType().toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_IDENTIFICATION)||
 					e.getType().toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1) ||
 					e.getType().toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2) ||
 					e.getType().toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_3) ||

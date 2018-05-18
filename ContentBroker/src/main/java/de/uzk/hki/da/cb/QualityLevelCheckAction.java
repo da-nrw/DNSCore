@@ -129,7 +129,7 @@ public class QualityLevelCheckAction extends AbstractAction {
 
 			Collections.sort(conversionFailEvents, eventComparator);
 			Collections.sort(validationFailEvents, eventComparator);
-			if (validationFailEvents.isEmpty() && conversionFailEvents.isEmpty()) {
+			if (validationFailEvents.isEmpty() && conversionFailEvents.isEmpty()) {// Level 4-5
 				logger.debug("QualityLevelCheckAction LatestFiles:"
 						+ Arrays.toString(o.getLatestPackage().getFiles().toArray()));
 				logger.debug("QualityLevelCheckAction unrecognizedPUIDFiles:"
@@ -180,13 +180,13 @@ public class QualityLevelCheckAction extends AbstractAction {
 														// and conversion events
 														// on same files
 					conversionFailEvents.addAll(validationFailEvents);
-					extendObject(C.QUALITYFLAG_LEVEL_2,
-							createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2,
+					extendObject(C.QUALITYFLAG_LEVEL_1,
+							createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1,
 									conversionFailEvents.get(0).getSource_file(),
 									generateQualityEventDetail(
 											"CONVERSION AND VALIDATION QUALITY_LEVEL EVENTS ON DIFFERENT FILES",
 											conversionFailEvents)));
-					qualityLevel = C.QUALITYFLAG_LEVEL_2;
+					qualityLevel = C.QUALITYFLAG_LEVEL_1;
 				} else {
 					extendObject(C.QUALITYFLAG_LEVEL_1,
 							createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1,

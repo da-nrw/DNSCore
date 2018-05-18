@@ -62,8 +62,10 @@ public class FidoFormatScanService implements FormatScanService, Connector {
 	List<FileWithFileFormat> identify(Path workPath,List<FileWithFileFormat> files,boolean pruneExceptions) throws IOException {
 		for (FileWithFileFormat f:files){
 			try{
+				f.setFormatPUID("");//in case of exception by next line, the attribute is not null
 				f.setFormatPUID(pronom.identify(Path.makeFile(workPath,f.getPath()),pruneExceptions));
 			}catch(RuntimeException e){
+				System.out.print("Add RuntimeException to DAFIle("+f.getPath()+"): "+e.getMessage());
 				f.getUnknownIdentificationErrorList().add(e);
 			}
 		}
@@ -97,4 +99,16 @@ public class FidoFormatScanService implements FormatScanService, Connector {
 		
 	}
 
+
+	public ScriptWrappedPronomFormatIdentifier getPronom() {
+		return pronom;
+	}
+
+
+	public void setPronom(ScriptWrappedPronomFormatIdentifier pronom) {
+		this.pronom = pronom;
+	}
+
+	
+	
 }
