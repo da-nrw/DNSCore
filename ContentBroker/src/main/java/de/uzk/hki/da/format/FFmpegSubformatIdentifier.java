@@ -45,12 +45,12 @@ public class FFmpegSubformatIdentifier implements FormatIdentifier, Connector{
 
 		ProcessInformation pi = new CommandLineConnector().runCmdSynchronously(new String[] {"ffmpeg","-i",f.toString()});
 		String ffmpegOutput = pi.getStdErr();
-		System.out.println("ffmpegOutput:"+ffmpegOutput);
+		logger.info("ffmpegOutput:"+ffmpegOutput);
 		Pattern MY_PATTERN = Pattern.compile(".*Stream.*Video:\\s([a-z0-9]+)[,\\s].*");
 		Matcher m = MY_PATTERN.matcher(ffmpegOutput); m.find();
 		String codec=m.group(1);
 		
-		System.out.println("c:"+codec);
+		logger.info("c:"+codec);
 		
 		return codec;
 	}
@@ -59,7 +59,7 @@ public class FFmpegSubformatIdentifier implements FormatIdentifier, Connector{
 	public boolean isConnectable() {
 		
 		String version=ffmpegVersion();
-		System.out.println("FFmpegSubformatIdentifier::isConnectable() "+version);
+		logger.info("FFmpegSubformatIdentifier::isConnectable() "+version);
 		if (isNotSet(version)) return false;
 		
 		return isSupported(version);
@@ -90,11 +90,11 @@ public class FFmpegSubformatIdentifier implements FormatIdentifier, Connector{
 	}
 	
 	private String parseVersionOutpu(String ffmpegVersionStdout) {
-		System.out.println("FFmpegSubformatIdentifier::parseVersionOutpu() "+ffmpegVersionStdout);
+		logger.info("FFmpegSubformatIdentifier::parseVersionOutpu() "+ffmpegVersionStdout);
 		Pattern MY_PATTERN = Pattern.compile(".*(\\d+\\.\\d+\\.\\d+).*");
 		Matcher m = MY_PATTERN.matcher(ffmpegVersionStdout); m.find();
 		String version = m.group(1);
-		System.out.println("FFmpegSubformatIdentifier::parseVersionOutpu() "+version);
+		logger.info("FFmpegSubformatIdentifier::parseVersionOutpu() "+version);
 		return version;
 	}
 
