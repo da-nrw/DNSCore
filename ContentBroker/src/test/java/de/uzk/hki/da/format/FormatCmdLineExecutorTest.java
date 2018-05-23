@@ -39,7 +39,7 @@ public class FormatCmdLineExecutorTest {
 
 	String fileIptcError = Path.make(TC.TEST_ROOT_FORMAT,"bigTiff","268754.tif").toString(); 
 
-	@Test
+	//@Test
 	public void testGetRuntimeExceptionForNotPruned() {
 		File iptcerror = new File(fileIptcError);
 		KnownError ke = new KnownError();
@@ -66,7 +66,7 @@ public class FormatCmdLineExecutorTest {
 	}
 
 
-	@Test
+	//@Test
 	public void testGetRuntimeExceptionForPrunedException() {
 		File iptcerror = new File(fileIptcError);
 		KnownError ke = new KnownError();
