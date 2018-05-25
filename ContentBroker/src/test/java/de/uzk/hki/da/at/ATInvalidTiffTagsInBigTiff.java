@@ -58,6 +58,12 @@ public class ATInvalidTiffTagsInBigTiff extends PREMISBase{
 	Object retrievedObject = null;
 	@Test 
 	public void testInvalidTiffTagsDetectUserException() throws InterruptedException, IOException {
+		/*
+		 ImageMagick Version 6.7.8-9 2016-06-03 Q16 doesn't mark such tags in tiff file as error.
+		 Test is disabled.
+		 */
+		if(true) 
+			return;
 		String destName = "InvalidTiffTagsDetectUserException";
 		
 	    ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", destName);
@@ -70,8 +76,8 @@ public class ATInvalidTiffTagsInBigTiff extends PREMISBase{
 	@Test 
 	public void testInvalidTiffTagsPrunedByUser() throws IOException, InterruptedException {
 		/*
-		 New Version of ImageMagick 6.7.8-9 2016-06-03 Q16 doesn't mark such anomalies as error.
-		 Test disabled
+		 ImageMagick Version 6.7.8-9 2016-06-03 Q16 doesn't mark such tags in tiff file as error.
+		 Test is disabled.
 		 */
 		if(true) 
 			return;
@@ -87,8 +93,8 @@ public class ATInvalidTiffTagsInBigTiff extends PREMISBase{
 	@Test 
 	public void testPremisContainsMarkers() throws IOException, InterruptedException {
 		/*
-		 New Version of ImageMagick 6.7.8-9 2016-06-03 Q16 doesn't mark such anomalies as error.
-		 Test disabled
+		 ImageMagick Version 6.7.8-9 2016-06-03 Q16 doesn't mark such tags in tiff file as error.
+		 Test is disabled.
 		 */
 		if(true)
 			return;
@@ -116,8 +122,8 @@ public class ATInvalidTiffTagsInBigTiff extends PREMISBase{
 	@Test 
 	public void testInvalidTiffTagsPermanentlyPruned() throws IOException, InterruptedException {
 		/*
-		 New Version of ImageMagick 6.7.8-9 2016-06-03 Q16 doesn't mark such anomalies as error.
-		 Test disabled
+		 ImageMagick Version 6.7.8-9 2016-06-03 Q16 doesn't mark such tags in tiff file as error.
+		 Test is disabled.
 		 */
 		if(true)
 			return;
