@@ -103,7 +103,7 @@ public class IngestAreaScannerWorker extends Worker{
 	private RegisterObjectService registerObjectService;
 	
 	/** The files. */
-	private Map<String,Long> sips = new HashMap<String,Long>();
+	private Map<String, Map<String,Long>> sipsForIngestForCSN = new HashMap<String,Map<String,Long>>(); //CSN-String -> FileName-String -> Timestamp-Long
 	
 	/** The contractor short names. */
 	private List<User> contractors = new ArrayList<User>();
@@ -136,6 +136,8 @@ public class IngestAreaScannerWorker extends Worker{
 				logger.info("Will scan sips for contractor: "+children[i]);
 			
 			contractors.add(contractor);
+			if(!sipsForIngestForCSN.keySet().contains(contractor.getShort_name()))
+				sipsForIngestForCSN.put(contractor.getShort_name(), new HashMap<String,Long>());
 		}
 		return new HashSet<User>(contractors);
 	}
@@ -308,24 +310,24 @@ public class IngestAreaScannerWorker extends Worker{
 	} 
 	
 		private List<String> addToList(String sipname,  String csn, long currentTimeStamp,List<String> childrenWhichAreReady) {
-			if (!sips.containsKey(sipname)){
+			if (!sipsForIngestForCSN.get(csn).containsKey(sipname)){
 				Job job = getJob( convertMaskedSlashes(FilenameUtils.removeExtension(sipname)),
 						csn);
 				if ( job == null) { // consider only containers for which there is not already a job in queue since it is possible that the CB has stopped and now resumes work.
 					logger.debug("New file found, making timestamp for: "+sipname);
-					sips.put(sipname, currentTimeStamp);
+					sipsForIngestForCSN.get(csn).put(sipname, currentTimeStamp);
 				} else {
 //					USER EMAIL 
 				}
 			}
 			else
 			{
-				long diff = currentTimeStamp - sips.get(sipname);
+				long diff = currentTimeStamp - sipsForIngestForCSN.get(csn).get(sipname);
 				logger.debug("Old file found, lets look how their timestamps differ: "+ sipname+" diff: "+diff);
 				
 				if (diff>minAge){
 					logger.debug("File "+sipname+" which has lasted "+minAge+" miliseconds is ready.");
-					sips.remove(sipname);
+					sipsForIngestForCSN.get(csn).remove(sipname);
 					childrenWhichAreReady.add(sipname);
 				}
 				}

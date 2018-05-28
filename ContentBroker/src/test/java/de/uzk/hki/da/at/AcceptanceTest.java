@@ -374,7 +374,7 @@ public class AcceptanceTest {
 	
 	private static void clearDB() {
 		System.out.println("clearDB()");
-		TESTHelper.clearDBOnlyTestUser(testContractor);
+		TESTHelper.clearDBOnlyTestUser(testContractor,localNode);
 	}
 
 	public static String getTestIndex() {

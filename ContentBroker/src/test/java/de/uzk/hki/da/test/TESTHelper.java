@@ -118,7 +118,7 @@ public class TESTHelper {
 		return o;
 	}
 
-	public static void clearDBOnlyTestUser(final User testContractor) {
+	public static void clearDBOnlyTestUser(final User testContractor, Node node) {
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
 		//final User testContractor = AcceptanceTest.getContractor(session, "TEST");
@@ -133,8 +133,8 @@ public class TESTHelper {
 			session.delete(o);
 
 		List copyJoblist = session
-				.createQuery("FROM CopyJob as cj where cj.source_node_identifier like concat('%',:CSNPATH,'%')")
-				.setParameter("CSNPATH", "/aip/"+testContractor.getUsername()+"/").list();
+				.createQuery("FROM CopyJob as cj where aipGridPath like concat('%',:CSNPATH,'%')")
+				.setParameter("CSNPATH", node.getIdentifier()+"/aip/"+testContractor.getUsername()).list();
 		for (java.lang.Object o : copyJoblist)
 			session.delete(o);
 		
