@@ -298,7 +298,7 @@ class QueueEntryController {
 		
 		try {
 			def res = que.modifyJob(params.id, "800")
-			flash.message = "Paket zur Löschung vorgesehen! " + res
+			flash.message = "Paket zur Löschung vorgesehen! " + res 
 		} catch (Exception e) {
 			log.error("Löschung aus Workflow fehlgeschlagen für " + params.id + " " + e.printStackTrace())
 			print("Löschung aus Workflow fehlgeschlagen für " + params.id + " " + e.printStackTrace())

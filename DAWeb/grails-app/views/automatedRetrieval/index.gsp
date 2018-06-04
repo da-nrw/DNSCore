@@ -36,7 +36,7 @@
 								var type = "error";
 								if (result.success) type = "info";
 								var messageBox = $("<div class='message-box'></div>");
-								$("#page-body").prepend(messageBox);
+								$(".page-body").prepend(messageBox);
 								messageBox.message({
 									type: type, message: result.msg
 								});

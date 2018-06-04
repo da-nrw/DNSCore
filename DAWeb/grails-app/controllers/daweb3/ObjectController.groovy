@@ -27,13 +27,13 @@ import java.awt.Queue
 import org.hibernate.criterion.CriteriaSpecification
 import org.hibernate.sql.JoinType
 
-
 import grails.converters.*
 import grails.core.GrailsApplication
 
 
 class ObjectController {
 
+	
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 	static QueueUtils qu = new QueueUtils();
 
@@ -441,7 +441,9 @@ class ObjectController {
 				try {
 					String lnid = grailsApplication.config.getProperty('localNode.id')
 					log.debug("Create Retrieval job on node id: " + lnid)
-
+					
+					println ("Create Retrieval job on node id: " + lnid)
+					
 					CbNode cbn = CbNode.get(Integer.parseInt(lnid))
 					qu.createJob( object ,"900", cbn.getName())
 					
@@ -457,7 +459,7 @@ class ObjectController {
 				 */
 					if (e instanceof RuntimeException) {
 						result.msg = e.getMessage() +  " ${object.urn}" 
-					} else 
+					} else  
 					if (e instanceof IllegalArgumentException) { 
 						if (e.getMessage().equals("Object is not valid")) {
 							result.msg = "Objekt ${object.urn} konnte nicht angefordert werden. Das Object ist ungültig."
@@ -472,8 +474,6 @@ class ObjectController {
 			}
 		}
 		
-		//println(" msg : " + result.msg )
- 
 		render result as JSON
 	}
 
@@ -598,14 +598,27 @@ class ObjectController {
 		
 		def c = Object.createCriteria() 
 		log.debug(params.toString())
-		
+		def statusQueue
 		if (status == 50) {
 			if ( params.search != null) {
 	 			if (params.search.urn.isEmpty()) {
 					 params.search.remove("urn");
 				 }
 			}
+					
+			def cStatus = Object.createCriteria()
+			List<Object> listObject= cStatus.list(){
+				eq("user.id", user.id)
+				eq("object_state", status)
+			};
+			
+//			for ( int i= 0; i < listObject.size(); i++) {
+//				int id =  listObject.getAt(i).id;
+//				statusQueue = QueueEntry.findAll("from QueueEntry as q where q.obj.id = :data_pk", 
+//					[data_pk: id]);
+// 			}	
 		}
+		
 		def objects = c.list(max: params.max, offset: params.offset ?: 0) {
 			
 			if (params.search) params.search.each { key, value ->
@@ -675,6 +688,7 @@ class ObjectController {
 			}
 			eq("object_state", status)
 			order(params.sort ?: "id", params.order ?: "desc")
+			
 		}
 		log.debug("Search " + params.search)
 		// workaround: make ALL params accessible for following http-requests
@@ -690,7 +704,6 @@ class ObjectController {
 		}
 		
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
-			print ("Objects: " + objects);
 			render(view:"adminList", model:[	objectInstanceList: objects,
 				objectInstanceTotal: objects.getTotalCount(),
 				searchParams: params.search,
@@ -702,6 +715,7 @@ class ObjectController {
 				contractorList: contractorList,
 				user: user,
 				objArt: objArt
+//				statusQueue: statusQueue
 			]);
 		} else render(view:"list", model:[	objectInstanceList: objects,
 				objectInstanceTotal: objects.getTotalCount(),
@@ -715,11 +729,10 @@ class ObjectController {
 				contractorList: contractorList,
 				user: user,
 				objArt: objArt
+//				statusQueue: statusQueue
 			]);
 		
 	}
-	
-
 	
 	def archived() {
 		archivedObjects = true;

@@ -8,6 +8,9 @@
 	</g:if>
 </script>
 <div style="overflow:auto; height: float; margin-top: 10px">
+	<g:if test="${flash.message}">
+		<div class="message" role="status">${flash.message}</div>
+	</g:if><br>
 <table>
 	<thead>
 		<tr>
@@ -50,14 +53,16 @@
 					</g:link>
 				</td>
 				<td>
-					<g:if test="${queueEntryInstance.showTrafficLightRed()}">
+					<g:if test="${queueEntryInstance.showTrafficLightYellow()}">
+						<asset:image style="width:16px; height:16px" src="/icons/yellow-gr.png" title="${queueEntryInstance.getInformation()}" alt="${queueEntryInstance.getInformation()}"/>
+					</g:if>
+					<g:elseif test="${queueEntryInstance.showTrafficLightRed()}">
 						<asset:image style="width:16px; height:16px" src="/icons/red-gr.png" title="${queueEntryInstance.getInformation()}" alt="${queueEntryInstance.getInformation()}"/>
 						${queueEntryInstance.status}
-					</g:if>
+					</g:elseif>
 					<g:if test="${queueEntryInstance.showTrafficLightGreen()}">
 						<asset:image style="width:16px; height:16px" src="/icons/green-gr.png" title="${queueEntryInstance.getInformation()}" alt="${queueEntryInstance.getInformation()}"/>
 					</g:if>
-					
 					<g:if test="${ queueEntryInstance.showDeletionButton()}">
 						<g:set var="showDeleteAll" value="true" />
 						<g:link onclick="return confirm('Eintrag mit ID ${fieldValue(bean: queueEntryInstance.obj, field: "identifier")} wirklich löschen?');" action="queueDelete" id="${queueEntryInstance.id}">

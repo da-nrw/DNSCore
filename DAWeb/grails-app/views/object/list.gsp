@@ -6,18 +6,19 @@
 		<g:set var="entityName" value="${message(code: 'object.label', default: 'Object')}" />
 		<asset:stylesheet src="accordion.css" />
 		<title>DA-NRW Objekte</title>
-		<r:require module="messagebox"/>
-	<g:javascript>
+		<r:require module="messagebox"/> 
+		<g:javascript>
 			function queuedFor(result) {
 				var type = "error";
 				if (result.success) type = "info";
 				var messageBox = $("<div class='message-box'></div>");
-				$("#page-body").prepend(messageBox);
+				$(".page-body").prepend(messageBox);
 				messageBox.message({
 					type: type, message: result.msg
 				});
 			}
 		</g:javascript>
+		
 	</head>
 	<body>
 		<div class="page-body">
@@ -207,8 +208,9 @@
 								</th>
 								<th style="text-align: center">Entnahme			
 								</th>			
-								
-			
+<!-- 								<g:if test="${objArt=='sich in Bearbeitung befindlichen'}"> -->
+<!-- 									<g:sortableColumn property="status" title="${message(code: 'object.modified.label', default: 'Status')}" /> -->
+<!-- 								</g:if> -->
 							</tr>
 						</thead>
 						<tbody>
@@ -219,7 +221,7 @@
 								<g:set var="statusCode" value="${objectInstance.getStatusCode()}" />
 							</g:if>
 							<tr class="${ ((i % 2) == 0 ? 'odd' : 'even') + ' status-type-' + statusCode}">
-									<td>${fieldValue(bean: objectInstance, field: "identifier")}</td>
+								<td>${fieldValue(bean: objectInstance, field: "identifier")}</td>
 							
 								<td><g:link action="show" id="${objectInstance.id}">${objectInstance.getFormattedUrn()}</g:link></td>
 							
@@ -254,6 +256,7 @@
 										</g:link>
 									</g:if>
 								</td>
+
 							</tr>
 						</g:each>
 						</tbody>

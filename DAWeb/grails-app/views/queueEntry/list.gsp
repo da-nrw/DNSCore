@@ -65,9 +65,6 @@
 					<button style="float: right;" onclick="return confirm ('Wirklich alle  fehlerhaften SIP löschen?')" >fehlerhafte SIP's löschen </button>
 				</g:if> <br>
 			</g:form>
-			<g:if test="${flash.message}">
-				<div class="message" role="status">${flash.message}</div>
-			</g:if><br>
 			<button class="accordion">Filter
 				<g:if test="${params.search }"><br>
 		    		<g:if test="${!params.search?.status.isEmpty()}">

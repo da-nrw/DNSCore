@@ -28,6 +28,7 @@ import org.hibernate.sql.JoinType
 
 class QueueEntry {
 	
+	private static final String WORKFLOW_STATUS_DIGIT_WAITING_FOR_DECISION="645";  
 	private static final String WORKFLOW_STATUS_DIGIT_USER_ERROR="4";
 	private static final String WORKFLOW_STATUS_DIGIT_WAITING="0";
 	private static final String WORKFLOW_STATUS_DIGIT_WORKING="2";
@@ -116,6 +117,19 @@ class QueueEntry {
 		if (checkfor.contains(ch)) return true;
 		return false;
 	}
+
+	/**
+	 * 	
+	 * @return
+	 */
+	boolean showTrafficLightYellow() {
+		def checkfor = [
+			WORKFLOW_STATUS_DIGIT_WAITING_FOR_DECISION]
+		def ch = status
+		if (checkfor.contains(ch)) return true;
+		return false;
+	}
+
 	
 	/**
 	 * 

@@ -92,6 +92,7 @@
 					<g:set var="statusCode" value="${objectInstance.getStatusCode()}" />
 					<li class="fieldcontain">
 						<span id="packages-label" class="property-label">Status:</span>
+						<span class="property-value" aria-labelledby="packages-label">
 						<g:if test="${statusCode == 1}">
 							<asset:image width="16px" height="16px" src="/icons/warning32.png"/>
 						</g:if>
@@ -101,6 +102,7 @@
 						<g:elseif test="${statusCode == 0}">
 							<asset:image  width="16px" height="16px" src="/icons/check32.png"/>
 						</g:elseif>
+					</span>
 					</li>
 					</g:if>			
 					<g:if test="${objectInstance?.urn}">
