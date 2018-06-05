@@ -19,8 +19,14 @@
 					</span></li>
 					<li><span class="property-value">Als Antwort erhalten Sie ein maschinenlesbares Ergebnis (JSON) über die Erstellung eines Abfragevorgangs<br></span></li>
 				</ul>
-				<g:javascript>
-				$('form').submit(function(e) {
+				
+				<form method="POST" action="">
+					Identifier: <input id="identifier" name="identifier" type="text" value="">
+				 	<input type="submit" value="Als JSON senden (testweise)" class="button"/> 
+				</form>
+			</div>
+			<g:javascript>
+		 		$('form').submit(function(e) {
 					 e.preventDefault();
 				    var identifier = $('#identifier').val();
 				    var formData = { identifier: identifier };                
@@ -43,12 +49,8 @@
 							}
 				   });
 				});
-				</g:javascript>
-				<form method="POST" action="">
-					Identifier: <input id="identifier" name="identifier" type="text" value="">
-					<input type="submit" value="Als JSON senden (testweise)" class="button"/> 
-				</form>
-			</div>
+			</g:javascript> 
+			
 		</div>
 	</body>
 </html>

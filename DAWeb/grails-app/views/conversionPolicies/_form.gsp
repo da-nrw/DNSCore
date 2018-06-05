@@ -1,5 +1,4 @@
 <%@ page import="daweb3.ConversionPolicies" %>
-
 <g:if test="${!fieldValue(bean: conversionPoliciesInstance, field: "id").equals("0")}">
 <div class="fieldcontain ${hasErrors(bean: conversionPoliciesInstance, field: 'id', 'error')}">
 	<label for="conversion_routine_id">
@@ -10,11 +9,11 @@
 </g:if>
 
 <div class="fieldcontain ${hasErrors(bean: conversionPoliciesInstance, field: 'conversion_routine', 'error')} required">
-	<label for="conversion_routine">
+	 <label for="conversion_routine">
 		<g:message code="conversionPolicies.conversion_routine.label" default="Konversionsroutine" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="conversion_routine" name="conversion_routine.id" from="${daweb34.ConversionRoutine.list()}" 
+	<g:select id="conversion_routine" name="conversion_routine.id" from="${daweb3.ConversionRoutine.list()}" 
 				optionKey="id" required="" value="${conversionPoliciesInstance?.conversion_routine?.id}" 
 				class="many-to-one" 	style="width:100%;max-width:500px"/>
 </div>

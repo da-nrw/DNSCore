@@ -9,24 +9,6 @@
 	<body>
 		<div class="page-body">
 			<a href="#list-conversionPolicies" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-<!-- 			  <script> -->
-<!--  			  	function getLastPage(){-->
-<!-- 			      document.write("Du hast also von " + document.referrer + " hierher gefunden");-->
-<!-- 			      var lastPage = document.referrer-->
-<!-- 			      lastPage = lastPage.indexOf("cbtalk")-->
-<!-- 			      document.write("lastPage : " + lastPage);-->
-<!-- 			      return lastPage;-->
-<!-- 			  	}-->
-			      
-<!--     		  </script> -->
-			  
-<!-- 			  <div class="nav" role="navigation"> -->
-<!-- 				<ul> -->
-<!-- 					<li><a class="listl" href="${createLink(uri: '/cbtalk/index')}"><g:message message="zurück zur Administrationsseite"/></a></li> -->
-<!-- 					<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li> -->
-<!-- 				</ul> -->
-<!-- 			</div> -->
-
 			<div id="list-conversionPolicies" class="content scaffold-list" role="main">
 				<h1><g:message code="default.list.label" args="[entityName]" /></h1>
 				<g:if test="${flash.message}">
