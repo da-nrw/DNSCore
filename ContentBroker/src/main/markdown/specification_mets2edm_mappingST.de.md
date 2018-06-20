@@ -4,7 +4,7 @@
 <th><sub>Quelle Mods</sub></th>
 <th><sub>Mapping zu EDM</sub></th>
 <th><sub>Regeln für das Mergen der Felder</sub></th>
-<th><sub>Status</sub></th>
+<th><sub>Umgesetzt in</sub></th>
 </tr></thead><tbody><tr>
 <td><sub> -mods.titleInfo.title $1<br>
 -mods.titleInfo.subTitle $2<br>
@@ -15,7 +15,7 @@
 -dc:title = $1 + " " + $2  ; wenn beide vorhanden.<br>
 -dc:titel = $3 + " " + $1  ; wenn beide vorhanden.<br>
 -dc:titel = $3 + " " + $1 + " " + $2  ; wenn drei vorhanden.<br></sub></td>
-<td><sub>Umgesetzt in Build 1856</sub></td>
+<td><sub>Build 1856</sub></td>
 </tr></tbody></table>
 
 
