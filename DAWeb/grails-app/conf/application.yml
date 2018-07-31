@@ -2,24 +2,17 @@
 grails:
     plugin:
         springsecurity:
-        #    adh:
-        #        errorPage: null
             userLookup:
               userDomainClassName: 'daweb3.User'
               authorityJoinClassName: 'daweb3.UserRole'
             authority:
               className: 'daweb3.Role'
-        #    login:
-        #      url: '/login/auth'
-        #    logoff:
-        #      afterLogoutUrl: '/login/auth'
             rejectIfNoRule: true
             fii:
               rejectPublicInvocations: false
             useSecurityEventListener: true
             successHandler:
               defaultTargetUrl: '/'
-          #    alwaysUseDefault: true
             useBasicAuth: true
             basic:
               realmName: "DAWEB - DNSCORE"
@@ -75,6 +68,7 @@ grails:
 # nur für den Start aus der IDE #
 server:
   port: 8095
+  
 ---
 grails:
     assets:
@@ -115,8 +109,6 @@ spring:
         brokerUrl: tcp://localhost
         port: 4455
         pooled: true
-        
-
 # Spring Actuator Endpoints are Disabled by Default
 endpoints:
     enabled: false
@@ -202,60 +194,3 @@ hibernate:
         use_second_level_cache: true
         use_query_cache: false
         region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
-
----
-environments:
-  development:
-    localNode:
-      id: 1
-      userAreaRootPath: /ci/storage/UserArea 
-      ingestAreaRootPath: /ci/storage/IngestArea
-    transferNode:
-      downloadLinkPrefix: "prefix for URL to download DIP"
-    loginManager: de.uzk.hki.da.login.PlainLogin  
-    cb:
-      port: 4455
-      presServer: "CB nodename of fedora Server"
-    irods:
-      server: localnode
-      default_resc: ciWorkingResour}ce
-      zone: c-i
-    fedora:
-      urlPrefix: "http://prefix_for_fedora/fedora/objects/"
-              
-  test:
-    localNode:
-        id: 1
-        userAreaRootPath: /ci/storage/UserArea
-        ingestAreaRootPath: /ci/storage/IngestArea
-    logging:
-      jul:
-        userbridge: true     
-    loginManager: de.uzk.hki.da.login.PlainLogin      
-    cb:
-      port: 4455
-      presServer: "CB nodename of fedora Server"    
-    irods:
-      server: localnode
-      default_resc: ciWorkingResource
-      zone: c-i
-    fedora:
-      urlPrefix: "http://prefix_for_fedora/fedora/objects/"
-      
-  production:
-    localNode:
-      id: 1
-      userAreaRootPath: /ci/storage/UserArea
-      ingestAreaRootPath: /ci/storage/IngestArea
-    logging:
-      jul:
-        userbridge: true   
-    cb:
-      port: 4455
-      presServer: "CB nodename of fedora Server"    
-    irods:
-      server: localnode
-      default_resc: ciWorkingResource
-      zone: c-i
-    fedora:
-      urlPrefix: "http://prefix_for_fedora/fedora/objects/"
