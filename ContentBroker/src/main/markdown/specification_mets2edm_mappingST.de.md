@@ -1,13 +1,27 @@
+# Mapping von METS / Mods zu EDM
+
+Da auch Elternelemente in den XML-basierten Metadatenschemata relevant sein können, werden die Mappings werden in der Punktnotation bzw. in Form von jQuery/CSS-Selektoren dargestellt
+
+Die Spalte "Quelle" gibt an, aus welchem Namensraum und Feldern aus dem Mets die relevante Daten für das Mapping bezogen werden können.
+$1 bis $n können als Platzhalter für die Merging-Regeln verwendet werden.
+
+Die Spalte "Mapping zu EDM" gibt an, wohin die aus der Quelle bezogenen Daten in das EDM geschrieben werden sollen.
+
+Die Spalte "Bemerkung" beschreibt, wie mehrere Felder aus der Quelle in einem oder mehreren EDM-Feldern kombiniert werden.
+
+Die Spalte "Portal" beschreibt, in welchem Feld die inhalte im Portal eingesehen werden können. Nicht alle verarbeiteten Felder werden in der Portal-Ansicht angezeigt.
+
+Die Spalte "Umgesetzt" beschreibt den Umsetzungssstatus mögliche Ausprägungen ""(Leer), "Vorschlag", "Review durch ULB", "In Umsetzung", "Build XYZ".
 
 
-## Mapping für Titel im Portal:
+### Mapping für Titel im Portal:
 
 <table><thead><tr>
 <th><sub>Quelle Mods</sub></th>
 <th><sub>Mapping zu EDM</sub></th>
 <th><sub>Bemerkung</sub></th>
 <th><sub>Portal</sub></th>
-<th><sub>Umgesetzt in</sub></th>
+<th><sub>Umgesetzt</sub></th>
 </tr></thead><tbody><tr>
 <td><sub> -mods.titleInfo.title $1<br>
 -mods.titleInfo.subTitle $2<br>
@@ -24,13 +38,13 @@
 
 
 
-## Mapping auf Person(en) / Institution(en) im Portal
+### Mapping auf Person(en) / Institution(en) im Portal
 <table><thead><tr>
 <th><sub>Quelle Mods</sub></th>
 <th><sub>Mapping zu EDM</sub></th>
 <th><sub>Bemerkung</sub></th>
 <th><sub>Portal</sub></th>
-<th><sub>Umgesetzt in</sub></th>
+<th><sub>Umgesetzt</sub></th>
 </tr></thead><tbody><tr>
 <td><sub>
 <b>wenn:</b> <br>
@@ -100,13 +114,13 @@
 </tr>
 </tbody></table>
 
-## Mapping für Umfang
+### Mapping für Umfang
 <table><thead><tr>
 <th><sub>Quelle Mods</sub></th>
 <th><sub>Mapping zu EDM</sub></th>
 <th><sub>Bemerkung</sub></th>
 <th><sub>Portal</sub></th>
-<th><sub>Umgesetzt in</sub></th>
+<th><sub>Umgesetzt</sub></th>
 </tr></thead><tbody>
 <tr>
 <td><sub>
@@ -126,13 +140,13 @@ $2 = mods.physicalDescription.note</sub></td>
 <td><sub></sub></td>
 </tr></tbody></table>
 
-## Mapping für Institutionstyp
+### Mapping für Institutionstyp
 <table><thead><tr>
 <th><sub>Quelle Mods</sub></th>
 <th><sub>Mapping zu EDM</sub></th>
 <th><sub>Bemerkung</sub></th>
 <th><sub>Portal</sub></th>
-<th><sub>Umgesetzt in</sub></th>
+<th><sub>Umgesetzt</sub></th>
 </tr></thead><tbody><tr>
 <td><sub>
 </sub></td>
@@ -147,13 +161,13 @@ $2 = mods.physicalDescription.note</sub></td>
 </tbody></table>
 
 
-## Mapping für Objektbeziehnungen
+### Mapping für Objektbeziehnungen
 <table><thead><tr>
 <th><sub>Quelle Mods</sub></th>
 <th><sub>Mapping zu EDM</sub></th>
 <th><sub>Bemerkung</sub></th>
 <th><sub>Portal</sub></th>
-<th><sub>Umgesetzt in</sub></th>
+<th><sub>Umgesetzt</sub></th>
 </tr></thead><tbody><tr>
 <td><sub>
 </sub></td>
@@ -174,13 +188,13 @@ $2 = mods.physicalDescription.note</sub></td>
 </tr>
 </tbody></table>
 
-## Mapping für Thumbnail
+### Mapping für Thumbnail
 <table><thead><tr>
 <th><sub>Quelle Mods</sub></th>
 <th><sub>Mapping zu EDM</sub></th>
 <th><sub>Bemerkung</sub></th>
 <th><sub>Portal</sub></th>
-<th><sub>Umgesetzt in</sub></th>
+<th><sub>Umgesetzt</sub></th>
 </tr></thead><tbody><tr>
 <td><sub>FLocat href
 </sub></td>
@@ -195,13 +209,13 @@ edm:hasView
 
 </tbody></table>
 
-## Mapping der Rechte/Lizenzen
+### Mapping der Rechte/Lizenzen
 <table><thead><tr>
 <th><sub>Quelle Mods</sub></th>
 <th><sub>Mapping zu EDM</sub></th>
 <th><sub>Bemerkung</sub></th>
 <th><sub>Portal</sub></th>
-<th><sub>Umgesetzt in</sub></th>
+<th><sub>Umgesetzt</sub></th>
 </tr></thead><tbody><tr>
 <td><sub>
 dv.rights.owner </sub></td>
@@ -229,13 +243,13 @@ mods.accessCondition[type="use and reproduction"].attr('xlink:href') </sub></td>
 
 </tbody></table>
 
-## Zusätzliche Mappings für Europeana
+### Zusätzliche Mappings für Europeana
 <table><thead><tr>
 <th><sub>Quelle Mods</sub></th>
 <th><sub>Mapping zu EDM</sub></th>
 <th><sub>Bemerkung</sub></th>
 <th><sub>Portal</sub></th>
-<th><sub>Umgesetzt in</sub></th>
+<th><sub>Umgesetzt</sub></th>
 </tr></thead><tbody><tr>
 <td><sub> </sub></td>
 <td><sub>edm.ProvidedCHO.dc.description</sub></td>
