@@ -32,7 +32,8 @@ dataSource{
 }
 
 grails.config.locations = [
-	      'file:/usr/share/tomcat/.grails/daweb3_properties.groovy'
+		'file:${catalina.home}/.grails/daweb3_properties.groovy'
+		//'file:/usr/share/tomcat/.grails/daweb3_properties.groovy'
 ]
 environments{
 	
