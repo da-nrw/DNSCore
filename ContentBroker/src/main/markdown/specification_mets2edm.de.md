@@ -24,14 +24,20 @@ Die Spalte "Umgesetzt" beschreibt den Umsetzungssstatus mögliche Ausprägungen 
 <th><sub>Umgesetzt</sub></th>
 </tr></thead><tbody><tr>
 <td><sub> -mods.titleInfo.title $1<br>
--mods.titleInfo.subTitle $2<br>
+-mods.titleInfo.displayLabel $2<br>
 -mods.titleInfo.nonSort $3<br>
--mods.titleInfo.displayLabel</sub></td>
+-mods.titleInfo.subTitle $4</sub></td>
 <td><sub>dc.title</sub></td>
 <td><sub>
--dc:title = $1 + " " + $2  ; wenn beide vorhanden.<br>
--dc:titel = $3 + " " + $1  ; wenn beide vorhanden.<br>
--dc:titel = $3 + " " + $1 + " " + $2  ; wenn drei vorhanden.<br></sub></td>
+  je nach dem welche Attribute vorhanden sind <br>
+  -dc:title = $1  <br>
+  -dc:title = $2  <br>
+  -dc:title = $3  <br>
+  -dc:title = $3 + " " + $1  <br>
+  -dc:title = $1 + " : " + $4  <br>
+  -dc:title = $2 + " : " + $4  <br>
+  -dc:title = $3 + " : " + $4  <br>
+  -dc:title = $3 + " " + $1 + " : " + $4  <br></sub></td>
 <td><sub>Titel</sub></td>
 <td><sub>Build 1856</sub></td>
 </tr></tbody></table>
