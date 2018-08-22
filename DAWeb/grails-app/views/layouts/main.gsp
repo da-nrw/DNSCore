@@ -73,7 +73,7 @@
 					<!-- Auswahl Objekte nach Formaten -->
 					<g:if test="${admin==1}">
 						<g:if test="${controllerName=='object'}">
-							<g:if test="${actionName=='listObjects'}">
+							<g:if test="${actionName=='listObjects' || actionName =='listObjectsSearch'}">
 								<li class="aktuell"><g:link controller="object" action="listObjects">Auswahl Objekte nach Formaten</g:link></li>
 							</g:if>
 							<g:else>
@@ -87,15 +87,15 @@
 					
 					<!-- Eingelieferte Objekte (AIP) -->
 					<g:if test="${controllerName=='object'}">
-						<g:if test="${actionName!='listObjects'}">
-							<li class="aktuell"><g:link controller="object">Eingelieferte Objekte (AIP)</g:link></li>
+						<g:if test="${actionName=='list' || actionName=='archived' || actionName=='working'}">
+							<li class="aktuell"><g:link controller="object" action="list">Eingelieferte Objekte (AIP)</g:link></li>
 						</g:if>
 						<g:else>
-							<li><g:link controller="object">Eingelieferte Objekte (AIP)</g:link></li>
+							<li><g:link controller="object" action="list">Eingelieferte Objekte (AIP)</g:link></li>
 						</g:else>
 					</g:if>
 					<g:else>
-						<li><g:link controller="object">Eingelieferte Objekte (AIP)</g:link></li>
+						<li><g:link controller="object" action="list">Eingelieferte Objekte (AIP)</g:link></li>
 					</g:else>
 					
 					<!-- Verarbeitung für abgelieferte SIP starten -->

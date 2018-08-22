@@ -47,7 +47,8 @@ class StatusController {
 		// listall objects of Contractor
 		results.result = []
 		if (params.listallobjects) {
-			def objects = Object.findAllByUserAndObject_stateGreaterThan(contractor, 49)
+			def objects = Object.findAllByUserAndObjectStateGreaterThan(contractor, 49)
+			
 			objects.each()  { inst ->
 				result.type = "Object"
 				result.status = inst.getTextualObjectState()
@@ -68,6 +69,7 @@ class StatusController {
 				result = [:]
 				results.result.add(result)
 			}
+			
 			render results as JSON
 			return
 		}
@@ -138,13 +140,13 @@ class StatusController {
 		}  
 		
 		if (params.urn) {
-				rList = Object.findAllByUserAndUrnAndObject_stateBetween(contractor, params.urn,50,100)
+			rList = Object.findAllByUserAndUrnAndObjectStateBetween(contractor, params.urn,50,100)
 		}
 		if (params.origName) {
-				rList = Object.findAllByUserAndOrigNameAndObject_stateBetween(contractor, params.origName,50,100)
+				rList = Object.findAllByUserAndOrigNameAndObjectStateBetween(contractor, params.origName,50,100)
 		} 
 		if (params.identifier) {
-				rList = Object.findAllByUserAndIdentifierAndObject_stateBetween(contractor, params.identifier,50,100)	
+				rList = Object.findAllByUserAndIdentifierAndObjectStateBetween(contractor, params.identifier,50,100)	
 		}
 		if (params.containerName) {
 			def criteria = Object.createCriteria ()

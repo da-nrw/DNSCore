@@ -70,7 +70,7 @@ class QueueEntry {
 	static List getAllQueueEntriesForShortNameAndUrn(String shortName, String urn) {
 		return createCriteria().list  {
 			createAlias('obj', 'o', JoinType.INNER_JOIN.getJoinTypeValue()) //CriteriaSpecification.INNER_JOIN)
-			createAlias('o.user', 'user', JoinType.INNER_JOIN.getJoinTypeValue) // CriteriaSpecification.INNER_JOIN)
+			createAlias('o.user', 'user', JoinType.INNER_JOIN) // CriteriaSpecification.INNER_JOIN)
 			eq("user.shortName", shortName)
 			eq("o.urn", urn)
 		}

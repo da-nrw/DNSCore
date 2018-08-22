@@ -52,7 +52,12 @@
 							   <g:else>${fieldValue(bean: conversionPoliciesInstance, field: "source_format")}</g:else>
 							</td>
 							<td>${fieldValue(bean: conversionPoliciesInstance.conversion_routine, field: "target_suffix")}</td>
-							<td>${fieldValue(bean: conversionPoliciesInstance, field: "presentation")}</td>
+							<td>
+								<g:if test="${conversionPoliciesInstance?.presentation}">
+									<asset:image  width="16px" height="16px" src="/icons/check32.png"/>
+								</g:if>
+								<g:else>  </g:else>
+							</td>
 						
 						
 						</tr>

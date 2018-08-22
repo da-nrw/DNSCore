@@ -88,7 +88,7 @@
 					</g:if>
 					</g:form>
 					</li>
-					<g:if test="${objectInstance?.object_state}">
+					<g:if test="${objectInstance?.objectState}">
 					<g:set var="statusCode" value="${objectInstance.getStatusCode()}" />
 					<li class="fieldcontain">
 						<span id="packages-label" class="property-label">Status:</span>

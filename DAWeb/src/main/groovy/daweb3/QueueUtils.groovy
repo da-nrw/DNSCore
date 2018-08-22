@@ -51,7 +51,7 @@ class QueueUtils {
 		
 		if (object == null) throw new IllegalArgumentException ( "Object is not valid" )
 		if (responsibleNodeName == null) throw new IllegalArgumentException("responsibleNodeName must not be null")
-		object.setObject_state(50)
+		object.setObjectState(50)
 		LOG.debug("Create job object.user.shortName: " + object.user.shortName)
 	
 		def list = QueueEntry.findByObj(object)

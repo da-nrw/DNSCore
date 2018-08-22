@@ -43,6 +43,7 @@ class Package {
 	String checksum
 	String status
 	String container_name
+	String name
 	
 	String toString() {
 		return "Paket Nr. " + delta + " (ID: "+id+" : " + container_name + ")" ;

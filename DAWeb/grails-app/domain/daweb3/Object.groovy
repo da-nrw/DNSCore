@@ -44,14 +44,17 @@ class Object {
 		packages joinTable: [key: 'objects_data_pk', column: 'packages_id']
 		createdAt column: 'created_at'
 		modifiedAt column: 'modified_at'
+		objectState column: 'object_state'
     }
-		
+	
+	
 	int id
 	String urn
 	String identifier
 	User user
 	String origName
-	int object_state
+	
+	int objectState
 	int published_flag
 	
 	// due to now unused iRODS functions these fields are still strings, should be 
@@ -78,11 +81,10 @@ class Object {
 	 * https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md
 	 */
 	def getStatusCode() {
-
-		if ( object_state == 50 ) return 2
-		if ( object_state == 60 ) return 2
-		if ( object_state == 51 ) return 1
-		if (object_state == 100 ) return 0
+		if ( objectState == 50 ) return 2
+		if ( objectState == 60 ) return 2
+		if ( objectState == 51 ) return 1
+		if (objectState == 100 ) return 0
 		return 1;
 	}
 	
@@ -118,17 +120,17 @@ class Object {
 	 */
 	
 	boolean isInWorkflowButton() {
-		if (object_state==50) {
+		if (objectState==50) {
 			return true;
 		}
 		return false;
 	}
 	
 	String getTextualObjectState() {
-		String state = (String)object_state
-		if (object_state==100) {
+		String state = (String)objectState
+		if (objectState==100) {
 			state = "archived"
-		} else if (object_state==50) {
+		} else if (objectState==50) {
 			state = "Object is in transient state"
 		} else {
 			state = "archived - but check needed"

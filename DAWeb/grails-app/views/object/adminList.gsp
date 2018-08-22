@@ -215,7 +215,7 @@
 								<g:sortableColumn property="modifiedAt" title="${message(code: 'object.modified.label', default: 'Geändert')}" />
 								
 								<g:if test="${admin}">
-									<g:sortableColumn style="text-align: center" property="object_state" title="${message(code: 'object.object_state.label', default: 'Objekt Status')}" />
+									<g:sortableColumn style="text-align: center" property="objectState" title="${message(code: 'object.objectState.label', default: 'Objekt Status')}" />
 									<th style="text-align: center">Überprüfen</th>
 									<th style="text-align: center">Pres. Derivate</th>
 									<th style="text-align: center">Index</th>

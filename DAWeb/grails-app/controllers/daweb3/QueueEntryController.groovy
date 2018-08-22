@@ -396,7 +396,7 @@ class QueueEntryController {
 		User us = springSecurityService.currentUser
 		def queueEntries = null
 		
-		println("fehlerhafte SIP's des Contractors "  + us.getShortName()) +  " werden gelöscht.";
+		log.info("fehlerhafte SIP's des Contractors "  + us.getShortName()) +  " werden gelöscht.";
 		def contractorList = User.list()
 			try {
 			   queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn" + 
