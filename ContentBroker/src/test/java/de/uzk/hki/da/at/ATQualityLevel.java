@@ -47,7 +47,7 @@ public class ATQualityLevel extends AcceptanceTest {
 	public void setUp() throws IOException {
 	}
 	
-/*	
+////	
 	@Test
 	public void testMinimalQualityLevelPremis4OK() throws IOException {
 		String origName=SOURCE_NAME_MINIMAL_4+"PremisOK";
@@ -84,7 +84,7 @@ public class ATQualityLevel extends AcceptanceTest {
 	
 	@Test
 	public void testMinimalQualityLevelPremis5Fail() throws IOException, InterruptedException {
-		String origName=SOURCE_NAME_MINIMAL_5_FAIL+"Premis";
+		String origName=SOURCE_NAME_MINIMAL_5_FAIL+"PremisFail";
 		ath.putSIPtoIngestArea(SOURCE_NAME_MINIMAL_5_FAIL, C.FILE_EXTENSION_TGZ, origName);
 		ath.awaitObjectState(origName, Object.ObjectStatus.InWorkflow);
 		ath.waitForJobToBeInErrorStatus(origName, C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
@@ -100,7 +100,7 @@ public class ATQualityLevel extends AcceptanceTest {
 	
 	@Test
 	public void testMinimalQualityLevelUser5Fail() throws IOException, InterruptedException {
-		String origName=SOURCE_NAME_MINIMAL_5_FAIL+"User";
+		String origName=SOURCE_NAME_MINIMAL_5_FAIL+"UserFail";
 		
 		setTestUserMinimalQualityLevel(5);
 		ath.putSIPtoIngestArea(SOURCE_NAME_MINIMAL_5_FAIL, C.FILE_EXTENSION_TGZ, origName);
@@ -116,7 +116,7 @@ public class ATQualityLevel extends AcceptanceTest {
  		assertEquals("Package count: "+obbi.getPackages().size(),obbi.getPackages().size(),1);
  		
 	}
-	*/
+	///
 	
 	// de.uzk.hki.da.format.ImageMagickSubformatIdentifier
 	//de.uzk.hki.da.format.FFmpegSubformatIdentifier

@@ -148,7 +148,7 @@ public class RegisterObjectService {
 		int max = obj.getLatestPackage().getDelta();
 		newPkg.setDelta(max + 1);
 		newPkg.setContainerName(containerName);
-		if (obj.getObject_state()<50) throw new UserException(UserExceptionId.DELTA_RECIEVED_BEFORE_ARCHIVED, "Delta Record für ein nicht fertig archiviertes Objekt");
+		if (obj.getObject_state()<100) throw new UserException(UserExceptionId.DELTA_RECIEVED_BEFORE_ARCHIVED, "Delta Record für ein nicht fertig archiviertes Objekt");
 		obj.getPackages().add(newPkg);
 	}
 	

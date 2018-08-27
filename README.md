@@ -1,6 +1,5 @@
 DNSCore        
 ======= 
-
  
 [Dokumentation der DA-NRW Software Suite (DNS)](ContentBroker/src/main/markdown/documentation.de.md)
 
@@ -74,6 +73,7 @@ Prerequisites:
     export MAVEN_OPTS='-Dfile.encoding=UTF-8'
     export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
     export LANG='de_DE.UTF-8'
+
 
 
 The following five commands will get you started:
