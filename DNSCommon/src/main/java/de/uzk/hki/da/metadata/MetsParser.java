@@ -82,15 +82,33 @@ public class MetsParser{
 	
 	/**
 	 * 
+	 * Method search in each dmdSec for license and return one license instance, only if each dmdSec contains same license.
+	 * @return
+	 */
+	public MetsLicense getLicenseForWholeMetsQuiet() {
+		return getLicenseForWholeMets(true);
+	}
+	
+	/**
+	 * 
 	 * Method search in each dmdSec for license and return one license instance, only if each dmdSec contains same license, otherwise method causes exceptions.
 	 * @return
 	 */
 	public MetsLicense getLicenseForWholeMets() {
+		return getLicenseForWholeMets(false);
+	}
+	
+	/**
+	 * 
+	 * Method search in each dmdSec for license and return one license instance, only if each dmdSec contains same license, otherwise method causes exceptions.
+	 * @return
+	 */
+	protected MetsLicense getLicenseForWholeMets(boolean quiet) {
 		ArrayList<MetsLicense> licenseAl=new ArrayList<MetsLicense>();
 		@SuppressWarnings("unchecked")
 		List<Element> dmdSecs = metsDoc.getRootElement().getChildren("dmdSec", METS_NS);
 		for(Element dmdSec : dmdSecs) {
-			licenseAl.add(getLicense(dmdSec));
+			licenseAl.add(getLicense(dmdSec,quiet));
 		}
 		if(licenseAl.size()==0)
 			return null;
@@ -99,7 +117,8 @@ public class MetsParser{
 		if(licenseAl.get(0)==null) //all licenses are null
 			return null;
 		if(!licenseAl.get(0).equals(licenseAl.get(licenseAl.size()-1))) //first and last element have to be same in sorted array
-			throw new RuntimeException("METS contains different licenses("+licenseAl.size()+") e.g.:"+licenseAl.get(licenseAl.size()-1)+" "+licenseAl.get(0));
+			if(!quiet)
+				throw new RuntimeException("METS contains different licenses("+licenseAl.size()+") e.g.:"+licenseAl.get(licenseAl.size()-1)+" "+licenseAl.get(0));
 		
 		return licenseAl.get(0);
 	}
@@ -110,30 +129,40 @@ public class MetsParser{
 	 * @param dmdSec
 	 * @return metsLicense
 	 */
-	public MetsLicense getLicense(Element dmdSec) {
-		MetsLicense metsLicense = null;
-
-		List<Element> accessCondition = new ArrayList<Element>();
+	protected MetsLicense getLicense(Element dmdSec, boolean quiet) {
+		MetsLicense metsLicenseReturn = null;
+		List<MetsLicense> metsLicenseList = new ArrayList<MetsLicense>();
+		List<Element> accessConditionList = new ArrayList<Element>();
 		try {
-			accessCondition = getModsXmlData(dmdSec).getChildren("accessCondition", C.MODS_NS);
+			accessConditionList = getModsXmlData(dmdSec).getChildren("accessCondition", C.MODS_NS);
 		} catch (Exception e) {
 			logger.debug("No accessCondition element found! "+e.getMessage());
 		}
-		if(accessCondition.size()>1)
-			throw new RuntimeException("dmdSec contains multiple licenses (accessCondition-Elements), unsuported");
-		try {
-			if(accessCondition.size()==1){
-				metsLicense=new MetsLicense();
-				metsLicense.setText(accessCondition.get(0).getValue());
-				metsLicense.setHref(accessCondition.get(0).getAttributeValue("href", XLINK_NS));
-				metsLicense.setType(accessCondition.get(0).getAttributeValue("type"));
-				metsLicense.setDisplayLabel(accessCondition.get(0).getAttributeValue("displayLabel"));
+
+		for(Element accessCondition:accessConditionList){
+			try {
+				MetsLicense metsLicense=new MetsLicense();
+				metsLicense.setHref(accessCondition.getAttributeValue("href", XLINK_NS));
+				metsLicense.setType(accessCondition.getAttributeValue("type"));
+				metsLicense.setText(accessCondition.getValue());
+				metsLicense.setDisplayLabel(accessCondition.getAttributeValue("displayLabel"));
+				
+				if(metsLicense.getType()!=null && metsLicense.getType().equals(metsLicense.USE_AND_REP_TYPE))
+					metsLicenseList.add(metsLicense);
+			} catch (Exception e) {
+				logger.debug("No valid accessCondition element found! "+e.getMessage());
 			}
-		} catch (Exception e) {
-			logger.debug("No valid accessCondition element found! "+e.getMessage());
 		}
-		
-		return metsLicense;
+
+		Collections.sort(metsLicenseList, new NullLastComparator<MetsLicense>());
+
+		if(metsLicenseList.size()>=1){
+			metsLicenseReturn=metsLicenseList.get(0);
+			if(quiet!=true && metsLicenseList.size()>1)
+				throw new RuntimeException("dmdSec contains multiple licenses (accessCondition-Elements), unsuported");
+		}
+
+		return metsLicenseReturn;
 	}
 	
 	private List<String> getPhysicalDescriptionFromDmdId(String dmdID,String objectId) {

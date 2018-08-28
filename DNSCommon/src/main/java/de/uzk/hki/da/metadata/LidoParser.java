@@ -233,10 +233,28 @@ public class LidoParser {
 	
 	/**
 	 * 
-	 * Method search in each dmdSec for license and return one license instance, only if each dmdSec contains same license, otherwise method causes exceptions.
+	 * Method search in each lido-Section for license and return one license instance.
+	 * @return
+	 */
+	public LidoLicense getLicenseForWholeLidoQuiet() {
+		return getLicenseForWholeLido(true);
+	}
+	
+	/**
+	 * 
+	 * Method search in each lido-Section for license and return one license instance, only if each dmdSec contains same license, otherwise method causes exceptions.
 	 * @return
 	 */
 	public LidoLicense getLicenseForWholeLido() {
+		return getLicenseForWholeLido(false);
+	}
+	
+	/**
+	 * 
+	 * Method search in each lido-Section for license and return one license instance, only if each dmdSec contains same license, otherwise method causes exceptions.
+	 * @return
+	 */
+	protected LidoLicense getLicenseForWholeLido(boolean quiet) {
 		ArrayList<LidoLicense> licenseAl=new ArrayList<LidoLicense>();
 		@SuppressWarnings("unchecked")
 		List<Element> lidoSecs = lidoDoc.getRootElement().getChildren("lido", C.LIDO_NS);
@@ -250,7 +268,8 @@ public class LidoParser {
 		if(licenseAl.get(0)==null) //all licenses are null
 			return null;
 		if(!licenseAl.get(0).equals(licenseAl.get(licenseAl.size()-1))) //first and last element have to be same in sorted array
-			throw new RuntimeException("LIDO-Metadata contains different licenses("+licenseAl.size()+") e.g.:"+licenseAl.get(licenseAl.size()-1)+" "+licenseAl.get(0));
+			if(!quiet)
+				throw new RuntimeException("LIDO-Metadata contains different licenses("+licenseAl.size()+") e.g.:"+licenseAl.get(licenseAl.size()-1)+" "+licenseAl.get(0));
 		
 		return licenseAl.get(0);
 	}
@@ -261,7 +280,7 @@ public class LidoParser {
 	 * @param lidoSec
 	 * @return metsLicense
 	 */
-	public List<LidoLicense>  getLicenseFromOneLidoPart(Element lidoSec) {
+	protected List<LidoLicense>  getLicenseFromOneLidoPart(Element lidoSec) {
 		List<LidoLicense> lidoLicenses = new ArrayList<LidoLicense>();
 		
 		
@@ -300,7 +319,7 @@ public class LidoParser {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public LidoLicense getLicenseFromOneRightsType(Element rightsType) {
+	protected LidoLicense getLicenseFromOneRightsType(Element rightsType) {
 		List<Element> conceptIDs=rightsType.getChildren("conceptID", C.LIDO_NS);
 		List<Element> terms=rightsType.getChildren("term", C.LIDO_NS);
 		if(conceptIDs.size()==0 ||terms.size()==0 )
