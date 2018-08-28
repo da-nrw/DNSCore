@@ -19,6 +19,7 @@
 grails.plugin.springsecurity.onAbstractAuthenticationFailureEvent = { e, appCtx ->
 	println "\nERROR auth failed for user $e.authentication.name: $e.exception.message\n"
 }
+
 dataSource{
 	pooled=""
 	jmxExport=true
@@ -33,8 +34,8 @@ dataSource{
 
 grails.config.locations = [
 		'file:${catalina.home}/.grails/daweb3_properties.groovy'
-		//'file:/usr/share/tomcat/.grails/daweb3_properties.groovy'
 ]
+
 environments{
 	
 	localNode.id= ""

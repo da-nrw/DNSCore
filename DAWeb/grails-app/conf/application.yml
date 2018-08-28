@@ -98,6 +98,10 @@ jms:
     containers:
         standard:
             messageConverter: null
+            connectionFactoryBean: jmsConnectionFactory
+    adapters:
+        standard:
+            persistenceInterceptorBean: null
 
 spring:
     main:

@@ -6,12 +6,12 @@
   <version>0.1-SNAPSHOT</version>
    <packaging>war</packaging>
   <name>daweb3</name>
-<!--   <parent> -->
-<!--   	<groupId>de.uzk.hki.da</groupId> -->
-<!--   	<artifactId>DNSCore</artifactId> -->
-<!--   	<version>1.0-SNAPSHOT</version> -->
-<!--   	<relativePath>../pom.xml</relativePath> -->
-<!--   </parent> -->
+  <parent>
+  	<groupId>de.uzk.hki.da</groupId>
+  	<artifactId>DNSCore</artifactId>
+  	<version>1.0-SNAPSHOT</version>
+  	<relativePath>../pom.xml</relativePath>
+  </parent>
   <description>daweb3</description>
   <properties>
   	<grails.version>3.2.11</grails.version>
@@ -143,13 +143,13 @@
       <scope>compile</scope>
       <type>zip</type>
     </dependency>
-    <dependency>
-      <groupId>org.grails.plugins</groupId>
-      <artifactId>hibernate</artifactId>
-      <version>3.6.10.2</version>
-      <scope>compile</scope>
-      <type>zip</type>
-    </dependency>
+<!--     <dependency> -->
+<!--       <groupId>org.grails.plugins</groupId> -->
+<!--       <artifactId>hibernate</artifactId> -->
+<!--        <version>3.6.10.2</version> -->
+<!--       <scope>compile</scope> -->
+<!--       <type>zip</type> -->
+<!--     </dependency> -->
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
@@ -190,7 +190,7 @@
       <scope>runtime</scope>
       <type>zip</type>
     </dependency>
-   
+    
    <dependency>
     	<groupId>org.grails</groupId>
     	<artifactId>grails-test</artifactId>
@@ -348,12 +348,42 @@
   			<artifactId>gradle-maven-plugin</artifactId>
   			<version>1.0.8</version>
 	  		</plugin>
+	  		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+	  		<plugin>
+	  			<groupId>org.eclipse.m2e</groupId>
+	  			<artifactId>lifecycle-mapping</artifactId>
+	  			<version>1.0.0</version>
+	  			<configuration>
+	  				<lifecycleMappingMetadata>
+	  					<pluginExecutions>
+	  						<pluginExecution>
+	  							<pluginExecutionFilter>
+	  								<groupId>org.fortasoft</groupId>
+	  								<artifactId>
+	  									gradle-maven-plugin
+	  								</artifactId>
+	  								<versionRange>
+	  									[1.0.8,)
+	  								</versionRange>
+	  								<goals>
+	  									<goal>invoke</goal>
+	  								</goals>
+	  							</pluginExecutionFilter>
+	  							<action>
+	  								<ignore></ignore>
+	  							</action>
+	  						</pluginExecution>
+	  					</pluginExecutions>
+	  				</lifecycleMappingMetadata>
+	  			</configuration>
+	  		</plugin>
 	  	</plugins>
   	</pluginManagement>
   	<plugins>
   		<plugin>
   			<groupId>org.fortasoft</groupId>
   			<artifactId>gradle-maven-plugin</artifactId>
+  			<version>1.0.8</version>
   			<configuration>
                 <tasks>
                     <!-- this would effectively call "gradle war" -->

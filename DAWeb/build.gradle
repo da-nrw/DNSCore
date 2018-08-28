@@ -51,15 +51,15 @@ dependencyManagement {
 
 dependencies {
     compile group: 'org.grails', name: 'grails-dependencies', version:'3.2.11'
-    compile(group: 'org.apache.activemq', name: 'activemq-client', version:'5.13.5') {
-		exclude(module: 'slf4j-api')
-		exclude(module: 'org.slf4j')
-		exclude(module: 'xalan')
-		exclude(module: 'xml-apis')
-		exclude(module: 'activemq-openwire-generator')
-		exclude(module: 'commons-logging')
-		exclude(module: 'spring-context')
-    }
+//    compile(group: 'org.apache.activemq', name: 'activemq-client', version:'5.13.5') {
+//		exclude(module: 'slf4j-api')
+//		exclude(module: 'org.slf4j')
+//		exclude(module: 'xalan')
+//		exclude(module: 'xml-apis')
+//		exclude(module: 'activemq-openwire-generator')
+//		exclude(module: 'commons-logging')
+//		exclude(module: 'spring-context')
+//    }
     compile(group: 'org.quartz-scheduler', name: 'quartz', version:'2.2.1') {
 		exclude(module: 'c3p0')
     }
@@ -97,9 +97,7 @@ dependencies {
     //runtime group: 'org.grails.plugins', name: 'asset-pipeline', version:'1.8.3'
 	runtime group: 'com.bertramlabs.plugins', name: 'asset-pipeline-grails', version: '2.14.1'
     runtime group: 'org.hsqldb', name: 'hsqldb', version:'2.3.3'
-    runtime(group: 'org.apache.activemq', name: 'activemq-spring', version:'5.13.5') {
-		exclude(module: 'commons-logging')
-    }
+    runtime group: 'org.apache.activemq', name: 'activemq-spring', version:'5.11.1'
     runtime group: 'postgresql', name: 'postgresql', version:'9.0-801.jdbc4'
     runtime group: 'org.grails.plugins', name: 'jquery', version:'1.11.0.2'
 	runtime group: 'org.grails.plugins', name: 'hibernate5'
