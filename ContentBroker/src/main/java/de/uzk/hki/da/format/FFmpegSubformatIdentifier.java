@@ -38,19 +38,19 @@ public class FFmpegSubformatIdentifier implements FormatIdentifier, Connector{
 
 	private Logger logger = LoggerFactory.getLogger( FFmpegSubformatIdentifier.class );
 	
-	private String[] supportedVersions = new String[] {"2.2.10","0.6.5","0.6.7","0.6.6","0.10.3","2.2.1"};
+	private String[] supportedVersions = new String[] {"2.6.8","2.2.10","0.6.5","0.6.7","0.6.6","0.10.3","2.2.1"};
 	
 	@Override
 	public String identify(File f,boolean pruneExceptions) throws IOException {
 
 		ProcessInformation pi = new CommandLineConnector().runCmdSynchronously(new String[] {"ffmpeg","-i",f.toString()});
 		String ffmpegOutput = pi.getStdErr();
-		System.out.println("ffmpegOutput:"+ffmpegOutput);
+		logger.info("ffmpegOutput:"+ffmpegOutput);
 		Pattern MY_PATTERN = Pattern.compile(".*Stream.*Video:\\s([a-z0-9]+)[,\\s].*");
 		Matcher m = MY_PATTERN.matcher(ffmpegOutput); m.find();
 		String codec=m.group(1);
 		
-		System.out.println("c:"+codec);
+		logger.info("c:"+codec);
 		
 		return codec;
 	}
@@ -89,11 +89,9 @@ public class FFmpegSubformatIdentifier implements FormatIdentifier, Connector{
 	}
 	
 	private String parseVersionOutpu(String ffmpegVersionStdout) {
-		
 		Pattern MY_PATTERN = Pattern.compile(".*(\\d+\\.\\d+\\.\\d+).*");
 		Matcher m = MY_PATTERN.matcher(ffmpegVersionStdout); m.find();
 		String version = m.group(1);
-		
 		return version;
 	}
 
