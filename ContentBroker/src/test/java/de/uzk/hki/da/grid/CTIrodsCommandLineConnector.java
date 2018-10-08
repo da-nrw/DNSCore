@@ -84,6 +84,12 @@ public class CTIrodsCommandLineConnector {
 		String destColl = 
 				FilenameUtils.getFullPathNoEndSeparator(dao);
 		iclc.mkCollection(destColl);
+		String destColl1 = 
+				FilenameUtils.getFullPathNoEndSeparator(dao2);
+		iclc.mkCollection(destColl1);
+		String destColl2 = 
+				FilenameUtils.getFullPathNoEndSeparator(dao3);
+		iclc.mkCollection(destColl2);
 		md5sum = MD5Checksum.getMD5checksumForLocalFile(file);
 		assertTrue(iclc.put(file, dao, archiveStorage ));
 	}
