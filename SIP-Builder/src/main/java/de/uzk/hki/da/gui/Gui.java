@@ -960,7 +960,7 @@ public class Gui extends JFrame {
 				+ "Ihre SIPs festlegen. Die Lizenzangabe gilt für die Veröffentlichungsportale.\n\n"
 				+ "Für eine Publikation ist eine Lizenz zwingend erforderlich!\n\n"
 				+ "Hinterlegen Sie im SIP-Builder eine Lizenz nur wenn diese nicht "
-				+ "bereits in den METS-Metadaten hinterlegt sind!!! ");
+				+ "bereits in den Metadaten hinterlegt ist!!! ");
 
 		rightsAreaTwo = new JTextArea();
 		rightsAreaTwo.setEditable(false);
