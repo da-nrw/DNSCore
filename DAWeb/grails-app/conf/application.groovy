@@ -52,4 +52,6 @@ environments{
 	transferNode.downloadLinkPrefix = ""
 	fedora.urlPrefix = ""
 	cb.presServer= ""
+	
+	app.version.buildNumber=1231
 }
