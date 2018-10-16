@@ -80,14 +80,6 @@ public class MetsParser{
 		return urn;
 	}
 	
-	/**
-	 * 
-	 * Method search in each dmdSec for license and return one license instance, only if each dmdSec contains same license.
-	 * @return
-	 */
-	public MetsLicense getLicenseForWholeMetsQuiet() {
-		return getLicenseForWholeMets(true);
-	}
 	
 	/**
 	 * 
@@ -119,7 +111,7 @@ public class MetsParser{
 		if(!licenseAl.get(0).equals(licenseAl.get(licenseAl.size()-1))) //first and last element have to be same in sorted array
 			if(!quiet)
 				throw new RuntimeException("METS contains different licenses("+licenseAl.size()+") e.g.:"+licenseAl.get(licenseAl.size()-1)+" "+licenseAl.get(0));
-		
+		logger.debug("Recognized License in METS("+licenseAl.size()+") "+licenseAl.get(0));
 		return licenseAl.get(0);
 	}
 	
@@ -870,34 +862,17 @@ public class MetsParser{
 		}
 		return indexInfo;
 	}
-	
-
-
 
 	
 	public  List<String> getAccessConditions(Element dmdSec) {
-		String link=null;
-		String displayLabel=null;
-		String text=null;
-		//String ret="";
 		List<String> retList = new ArrayList<String>();
-		
 		try {
-			Element modsXmlData = getModsXmlData(dmdSec);
-			//gibt nur das erste lizenz element zurueck
-			Element accessCondition = modsXmlData.getChild("accessCondition", C.MODS_NS);
-			
-			text=accessCondition.getText();
-			link=accessCondition.getAttributeValue("href",XLINK_NS);
-			displayLabel=accessCondition.getAttributeValue("displayLabel");
-			
-			if(link==null || link.trim().isEmpty()){			
+			MetsLicense mLic=getLicense(dmdSec,false);
+			if(mLic==null || mLic.getHref().trim().isEmpty()){			
 				logger.error("Attribute accessCondition.href does not exist!!!");
-				//retList.add(displayLabel+this.titleSparator+text);
 			}else{
-				retList.add(link);
+				retList.add(mLic.getHref());
 			}
-			return retList;
 		} catch(Exception e) {
 			logger.error("Element accessCondition does not exist!!!");
 		}

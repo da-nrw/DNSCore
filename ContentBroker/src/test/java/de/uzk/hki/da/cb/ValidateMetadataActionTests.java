@@ -70,6 +70,13 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 	private static final String LIDO_XML = "lido1.xml";
 	private static final String LIDO2_XML = "lido2.xml";
 	
+	private static final String LIDO_DiffLicenses_XML = "LIDO-DifferentLicenses.xml";
+	private static final String METS_DiffLicenses_XML = "METS-DifferentLicenses.xml";
+	
+	private static final String Premis_NoPublication_XML = "NoPubpremis.xml";
+	private static final String Premis_Publication_XML = "Pubpremis.xml";
+	private static final String Premis_PublicationInst_XML = "PubInstpremis.xml";
+	
 	private static MetadataStructureFactory msf;
 	
 	
@@ -81,6 +88,12 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 	DAFile f_lido1 = new DAFile("1+a",LIDO_XML);
 	DAFile f_lido2 = new DAFile("1+a",LIDO2_XML);
 	DAFile f_premis = new DAFile("1+a",C.PREMIS_XML);
+	
+	DAFile f_lidoDiffLicenses = new DAFile("licences+a",LIDO_DiffLicenses_XML);
+	DAFile f_metsDiffLicenses = new DAFile("licences+a",METS_DiffLicenses_XML);
+	DAFile f_premisNoPub = new DAFile("licences+a",Premis_NoPublication_XML);
+	DAFile f_premisPub = new DAFile("licences+a",Premis_Publication_XML);
+	DAFile f_premisPubInst = new DAFile("licences+a",Premis_PublicationInst_XML);
 	
 	DAFile f_subfolder_ead1 = new DAFile(REP_A,"subfolder/"+VDA03_XML);
 
@@ -98,6 +111,7 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 	public void setUp(){
 		
 		n.setWorkAreaRootPath(WORK_AREA_ROOT);
+		action.getObject().getContractor().setUsePublicMets(false);;
 		
 		action.setMsf(msf);
 
@@ -110,6 +124,9 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 		f_lido2.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_LIDO);
 		
 		f_subfolder_ead1.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_EAD);
+		
+		f_metsDiffLicenses.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_METS);
+		f_lidoDiffLicenses.setSubformatIdentifier(C.SUBFORMAT_IDENTIFIER_LIDO);
 	}
 	
 	
@@ -161,7 +178,6 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 
 	@Test
 	public void testMoreThanOneMETSAndNoEAD() throws FileNotFoundException, UserException, IOException, RepositoryException{
-
 		o.getLatestPackage().getFiles().add(f_mets1);
 		o.getLatestPackage().getFiles().add(f_mets2);
 		
@@ -196,6 +212,149 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 		assertEquals(C.LICENSEFLAG_NO_LICENSE,o.getLicense_flag());
 		assertEquals(LIDO_XML,o.getMetadata_file());
 	}
+	
+	/**
+	 * 
+	 * Test Lido multiple different licenses but no publication -> no error
+	 * @throws FileNotFoundException
+	 * @throws UserException
+	 * @throws IOException
+	 * @throws RepositoryException
+	 */
+	@Test
+	public void testLidoDifferentLicensesNoPublication() throws FileNotFoundException, UserException, IOException, RepositoryException{
+		o.getLatestPackage().getFiles().add(f_lidoDiffLicenses);
+		o.getLatestPackage().getFiles().add(f_premisNoPub);
+		action.implementation();
+		
+		assertEquals(C.CB_PACKAGETYPE_LIDO,o.getPackage_type());
+		assertEquals(C.LICENSEFLAG_UNDEFINED,o.getLicense_flag()); //Keine Publikation -> keine lizenzprüfung
+		assertEquals(LIDO_DiffLicenses_XML,o.getMetadata_file());
+	}
+	
+	
+	/**
+	 * 
+	 * Test Lido multiple different licenses and publication intention ->  error
+	 * @throws FileNotFoundException
+	 * @throws UserException
+	 * @throws IOException
+	 * @throws RepositoryException
+	 */
+	@Test
+	public void testLidoDifferentLicensesInstPublication() throws FileNotFoundException, UserException, IOException, RepositoryException{
+	
+		o.getLatestPackage().getFiles().add(f_lidoDiffLicenses);
+		o.getLatestPackage().getFiles().add(f_premisPubInst);
+		try{
+			action.implementation();
+			throw new RuntimeException("UserException not Throwed");
+		}catch(UserException e){
+			if(!e.getMessage().contains("contains different licenses"))
+				throw e;
+		}
+		assertEquals(C.CB_PACKAGETYPE_LIDO,o.getPackage_type());
+		assertEquals(C.LICENSEFLAG_UNDEFINED,o.getLicense_flag());
+		assertEquals(LIDO_DiffLicenses_XML,o.getMetadata_file());
+	}
+	
+	/**
+	 * 
+	 * Test Lido multiple different licenses and publication intention ->  error
+	 * @throws FileNotFoundException
+	 * @throws UserException
+	 * @throws IOException
+	 * @throws RepositoryException
+	 */
+	@Test
+	public void testLidoDifferentLicensesPublication() throws FileNotFoundException, UserException, IOException, RepositoryException{
+	
+		o.getLatestPackage().getFiles().add(f_lidoDiffLicenses);
+		o.getLatestPackage().getFiles().add(f_premisPub);
+		try{
+			action.implementation();
+			throw new RuntimeException("UserException not Throwed");
+		}catch(UserException e){
+			if(!e.getMessage().contains("contains different licenses"))
+				throw e;
+		}
+		assertEquals(C.CB_PACKAGETYPE_LIDO,o.getPackage_type());
+		assertEquals(C.LICENSEFLAG_UNDEFINED,o.getLicense_flag());
+		assertEquals(LIDO_DiffLicenses_XML,o.getMetadata_file());
+	}
+	
+
+	/**
+	 * 
+	 * Test METS multiple different licenses but no publication -> no error
+	 * @throws FileNotFoundException
+	 * @throws UserException
+	 * @throws IOException
+	 * @throws RepositoryException
+	 */
+	@Test
+	public void testMetsDifferentLicensesNoPublication() throws FileNotFoundException, UserException, IOException, RepositoryException{
+	
+		o.getLatestPackage().getFiles().add(f_metsDiffLicenses);
+		o.getLatestPackage().getFiles().add(f_premisNoPub);
+		action.implementation();
+		
+		assertEquals(C.CB_PACKAGETYPE_METS,o.getPackage_type());
+		assertEquals(C.LICENSEFLAG_UNDEFINED,o.getLicense_flag()); //Keine Publikation -> keine lizenzprüfung
+		assertEquals(METS_DiffLicenses_XML,o.getMetadata_file());
+	}
+	
+	
+	/**
+	 * 
+	 * Test METS multiple different licenses and publication intention ->  error
+	 * @throws FileNotFoundException
+	 * @throws UserException
+	 * @throws IOException
+	 * @throws RepositoryException
+	 */
+	@Test
+	public void testMetsDifferentLicensesInstPublication() throws FileNotFoundException, UserException, IOException, RepositoryException{
+	
+		o.getLatestPackage().getFiles().add(f_metsDiffLicenses);
+		o.getLatestPackage().getFiles().add(f_premisPubInst);
+		try{
+			action.implementation();
+			throw new RuntimeException("UserException not Throwed");
+		}catch(UserException e){
+			if(!e.getMessage().contains("contains different licenses"))
+				throw e;
+		}
+		assertEquals(C.CB_PACKAGETYPE_METS,o.getPackage_type());
+		assertEquals(C.LICENSEFLAG_UNDEFINED,o.getLicense_flag());
+		assertEquals(METS_DiffLicenses_XML,o.getMetadata_file());
+	}
+	
+	/**
+	 * 
+	 * Test Mets multiple different licenses and publication intention ->  error
+	 * @throws FileNotFoundException
+	 * @throws UserException
+	 * @throws IOException
+	 * @throws RepositoryException
+	 */
+	@Test
+	public void testMetsDifferentLicensesPublication() throws FileNotFoundException, UserException, IOException, RepositoryException{
+	
+		o.getLatestPackage().getFiles().add(f_metsDiffLicenses);
+		o.getLatestPackage().getFiles().add(f_premisPub);
+		try{
+			action.implementation();
+			throw new RuntimeException("UserException not Throwed");
+		}catch(UserException e){
+			if(!e.getMessage().contains("contains different licenses"))
+				throw e;
+		}
+		assertEquals(C.CB_PACKAGETYPE_METS,o.getPackage_type());
+		assertEquals(C.LICENSEFLAG_UNDEFINED,o.getLicense_flag());
+		assertEquals(METS_DiffLicenses_XML,o.getMetadata_file());
+	}
+	
 	
 	@Test
 	public void testRejectPackageWithDuplicateLIDOFile() throws FileNotFoundException, UserException, IOException, RepositoryException{

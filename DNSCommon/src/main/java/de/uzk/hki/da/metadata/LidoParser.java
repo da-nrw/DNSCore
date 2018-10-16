@@ -231,14 +231,6 @@ public class LidoParser {
 		return linkResources;
 	}
 	
-	/**
-	 * 
-	 * Method search in each lido-Section for license and return one license instance.
-	 * @return
-	 */
-	public LidoLicense getLicenseForWholeLidoQuiet() {
-		return getLicenseForWholeLido(true);
-	}
 	
 	/**
 	 * 

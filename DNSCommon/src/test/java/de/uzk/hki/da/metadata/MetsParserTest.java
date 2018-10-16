@@ -126,7 +126,7 @@ public class MetsParserTest {
 	
 	@Test
 	public void testReadAccessConditionExist()throws JDOMException, IOException{
-		MetsLicense mLicense=new MetsLicense("https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
+		MetsLicense mLicense=new MetsLicense("use and reproduction","https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		FileReader fr1 = new FileReader(licenseMetsFile);
 		Document lavMets = builder.build(fr1);
@@ -139,7 +139,7 @@ public class MetsParserTest {
 	
 		@Test
 	public void testReadAccessConditionInMultilevelMETSDifferent()throws JDOMException, IOException{
-			MetsLicense mLicense=new MetsLicense("https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
+			MetsLicense mLicense=new MetsLicense("use and reproduction","https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
 			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 			FileReader fr1 = new FileReader(differentLicenseMultiMetsFile);
 			Document lavMets = builder.build(fr1);
@@ -159,7 +159,7 @@ public class MetsParserTest {
 		
 		@Test
 		public void testReadAccessConditionInMultilevelMETSNo()throws JDOMException, IOException{
-			MetsLicense mLicense=new MetsLicense("https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
+			MetsLicense mLicense=new MetsLicense("use and reproduction","https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
 			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 			FileReader fr1 = new FileReader(noLicenseMultiMetsFile);
 			Document lavMets = builder.build(fr1);
@@ -174,7 +174,7 @@ public class MetsParserTest {
 	
 	@Test
 	public void testReadAccessConditionInMultilevelMETSSame()throws JDOMException, IOException{
-		MetsLicense mLicense=new MetsLicense("https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
+		MetsLicense mLicense=new MetsLicense("use and reproduction","https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		FileReader fr1 = new FileReader(sameLicenseMultiMetsFile);
 		Document lavMets = builder.build(fr1);

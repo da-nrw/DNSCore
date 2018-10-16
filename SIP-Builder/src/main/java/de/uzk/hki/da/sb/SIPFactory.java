@@ -406,6 +406,11 @@ public class SIPFactory {
 		boolean publicationBool=contractRights.getPublicRights().getAllowPublication();
 		boolean instPublicationBool=contractRights.getInstitutionRights().getAllowPublication();
 		
+		//activate to be able to create wrong licensed test sips
+		//publicationBool=false;
+		//instPublicationBool=false;
+		//end
+		
 		//Nur bei publikationen Lizenzauswertungen vornehmen
 		if(publicationBool || instPublicationBool){
 			TreeMap<File, String> metadataFileWithType;
@@ -462,6 +467,7 @@ public class SIPFactory {
 		//publicationBool=false;
 		//premisLicenseBool=false;
 		//publicationBool=false;
+		//end
 		if(premisLicenseBool && (metsLicenseBool || lidoLicenseBool)){
 			return Feedback.DUPLICATE_LICENSE_DATA;
 		}
