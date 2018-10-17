@@ -231,6 +231,23 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public void get(File destination, String gridFileAdress) throws IOException  { 
+		getFile(irodsSystemConnector.getZone(),destination,gridFileAdress);
+	}
+	
+	@Override
+	public void getFederated(String federatedZone, File destination, String gridFileAdress) throws IOException  { 
+		getFile(irodsSystemConnector.getZone()+ "/" + WorkArea.FEDERATED+ "/"+federatedZone,destination,gridFileAdress);
+	}
+	
+	
+	private void getFile(String zone, File destination, String gridFileAdress) throws IOException  { 
+		IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
+		String prefixedGridFileAdress = "/" + zone+ "/" + WorkArea.AIP + "/" + gridFileAdress;
+		iclc.get(destination, prefixedGridFileAdress);
+	}
 	
 
 }
