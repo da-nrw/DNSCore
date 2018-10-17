@@ -67,7 +67,7 @@ public class CreateRetrievalRequestsEvent extends AbstractSystemEvent {
 		for (int i=0;i<files.length;i++){
 			if (Path.makeFile(pathToReportIncoming(),files[i].getName()).isDirectory())
 				continue;
-			try {
+			try {	
 			CSVQueryHandler sr = new CSVQueryHandler(node.getName(),owner.getId());
 			logger.debug("working on " + Path.makeFile(pathToReportIncoming(),files[i].getName()));
 			sr.generateRetrievalRequests(Path.makeFile(pathToReportIncoming(),files[i].getName()),Path.makeFile(pathToReportOutgoing(),files[i].getName()));
