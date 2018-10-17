@@ -37,7 +37,7 @@ import de.uzk.hki.da.utils.Path;
  */
 public class CreateStatusReportEvent extends AbstractSystemEvent {
 
-	private Path pathToReportIncoming() {
+	protected Path pathToReportIncoming() {
 		return Path.make(
 				node.getUserAreaRootPath(),
 				owner.getShort_name(),
@@ -45,7 +45,7 @@ public class CreateStatusReportEvent extends AbstractSystemEvent {
 				);
 	}
 	
-	private Path pathToReportOutgoing() {
+	protected Path pathToReportOutgoing() {
 		return Path.make(
 				node.getUserAreaRootPath(),
 				owner.getShort_name(),
