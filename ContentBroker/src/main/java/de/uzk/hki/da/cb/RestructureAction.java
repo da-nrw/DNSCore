@@ -308,6 +308,7 @@ public class RestructureAction extends AbstractAction{
 			} else err = "<NONE>";
 			logger.info(line + err);
 			
+			//Look into list of IdentificationErrors and transform them to QualityEvents
 			if(!f.getUnknownIdentificationErrorList().isEmpty()){
 				for (RuntimeException e:f.getUnknownIdentificationErrorList()){
 					if (!o.getLatestPackage().getFiles().contains(f)) {
