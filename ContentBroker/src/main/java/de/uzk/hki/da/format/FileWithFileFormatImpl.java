@@ -52,19 +52,19 @@ public class FileWithFileFormatImpl implements FileWithFileFormat {
 	public void setKnownErrors(List<KnownError> knownError) {
 		this.knownErrors = knownError;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "FileWithFileFormatImpl [" + (formatPUID != null ? "formatPUID=" + formatPUID + ", " : "")
 				+ (subformatIdentifier != null ? "subformatIdentifier=" + subformatIdentifier + ", " : "")
 				+ (path != null ? "path=" + path + ", " : "")
-				+ (knownErrors != null ? "knownErrors=" + knownErrors : "") + "]";
+				+ (knownErrors != null ? "knownErrors=" + knownErrors : "") +", getUnknownIdentificationErrorList="
+						+ getUnknownIdentificationErrorList.size() + "]";
 	}
 
 	@Override
 	public List<RuntimeException> getUnknownIdentificationErrorList() {
 		return getUnknownIdentificationErrorList;
 	}
-
 
 }

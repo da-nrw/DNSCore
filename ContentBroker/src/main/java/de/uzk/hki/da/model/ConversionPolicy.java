@@ -61,7 +61,10 @@ public class ConversionPolicy {
 	@ManyToOne(targetEntity=ConversionRoutine.class)
 	private ConversionRoutine conversion_routine;
 	
-
+	/**
+	 * Marks a type as LZA-able. It means this type can be converted to LZA-format, or it is already LZA-format. 
+	 * This is important for Quality-Level decision in  {@link de.uzk.hki.da.cb.QualityLevelCheckAction}.
+	 */
 	@Column(name="format_type",columnDefinition="varchar(20)")
 	@Enumerated(EnumType.STRING)
 	private FormatType format_type;

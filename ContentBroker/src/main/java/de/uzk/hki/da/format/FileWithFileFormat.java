@@ -44,7 +44,7 @@ public interface FileWithFileFormat {
 	public void setKnownErrors(List<KnownError> knownError);
 	
 	/**
-	 * List to gather all Exceptions happens at File identification/validation 
+	 * List to gather all Exceptions thrown at File identification/validation 
 	 * @return List
 	 */
 	public List<RuntimeException> getUnknownIdentificationErrorList();

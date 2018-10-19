@@ -65,8 +65,8 @@ public class FidoFormatScanService implements FormatScanService, Connector {
 				f.setFormatPUID("");//in case of exception by next line, the attribute is not null
 				f.setFormatPUID(pronom.identify(Path.makeFile(workPath,f.getPath()),pruneExceptions));
 			}catch(RuntimeException e){
-				System.out.print("Add RuntimeException to DAFIle("+f.getPath()+"): "+e.getMessage());
-				f.getUnknownIdentificationErrorList().add(e);
+				System.out.print("Add RuntimeException to DAFile("+f.getPath()+"): "+e.getMessage());
+				f.getUnknownIdentificationErrorList().add(e); //Collected Exceptions will be processed later
 			}
 		}
 		return files;

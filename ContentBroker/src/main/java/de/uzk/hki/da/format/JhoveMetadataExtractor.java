@@ -132,11 +132,6 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 			
 		}
 
-		/*
-		 * Second bug in jhove is: jhove can't handle good enough files containing whitespaces in their names (jira: DANRW-1415)
-		 * TODO: check newer version of jhove and hope files with whitespaces can be processed 
-		 */
-
 		if (!jhResult.isValid()){
 			logger.warn("JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + jhResult);
 			throw new QualityLevelException(QualityLevelException.Type.VALIDATION,"JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + jhResult);

@@ -504,7 +504,7 @@ public class QualityLevelCheckActionTests extends ConcreteActionUnitTest{
 	}
 	
 	@Test
-	public void testQualityLevel1ContainsConversionAndValidationFEventsOnDifferenceFiles() throws IOException {
+	public void testQualityLevel1ContainsConversionAndValidationFEventsOnDifferentFiles() throws IOException {
 		action.getObject().getLatestPackage().getFiles().add(unknownPuidDAF);
 		action.getObject().getLatestPackage().getFiles().add(nonLzaPuidDAF);
 		action.getObject().getLatestPackage().getFiles().add(lzaPuidDAF);

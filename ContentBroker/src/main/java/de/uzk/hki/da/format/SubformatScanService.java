@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.model.KnownError;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -53,7 +54,7 @@ public class SubformatScanService implements FormatScanService, Connector {
 	public List<FileWithFileFormat> identify(Path workPath,List<FileWithFileFormat> files,boolean pruneExceptions) throws IOException{
 	
 		for (FileWithFileFormat f:files){
-			if (f.getFormatPUID()==null||f.getFormatPUID().isEmpty()){
+			if (f.getFormatPUID()==null||f.getFormatPUID().isEmpty()||f.getFormatPUID().equals(C.UNRECOGNIZED_PUID)){
 				continue;
 				//throw new IllegalArgumentException(f+" has no puid");
 			}

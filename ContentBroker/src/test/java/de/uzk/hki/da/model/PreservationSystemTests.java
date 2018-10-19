@@ -32,6 +32,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.service.HibernateUtil;
+import de.uzk.hki.da.utils.C;
 
 
 
@@ -76,6 +77,8 @@ public class PreservationSystemTests {
 
 	private ConversionPolicy four;
 	
+	private ConversionPolicy unrecognizedPuid;
+	
 	/**
 	 * Sets the up.
 	 *
@@ -90,18 +93,13 @@ public class PreservationSystemTests {
 		routine.setName("COPY");
 		
 		// Conversion Policies
-		List<ConversionPolicy> policies = new ArrayList<ConversionPolicy>();
 		one = new ConversionPolicy();
 		one.setSource_format("fmt/10");
 		one.setConversion_routine(routine);
 		two = new ConversionPolicy();
 		two.setSource_format("fmt/10");
 		two.setConversion_routine(routine);
-		policies.add(one);
-		policies.add(two);
 		
-		
-		List<ConversionPolicy> policies2 = new ArrayList<ConversionPolicy>();
 		three = new ConversionPolicy();
 		three.setSource_format("fmt/10");
 		three.setConversion_routine(routine);
@@ -110,9 +108,11 @@ public class PreservationSystemTests {
 		four.setSource_format("fmt/10");
 		four.setConversion_routine(routine);
 		four.setPresentation(true);
-		policies2.add(three);
-		policies2.add(four);
-
+		unrecognizedPuid = new ConversionPolicy();
+		unrecognizedPuid.setSource_format(C.UNRECOGNIZED_PUID);
+		unrecognizedPuid.setConversion_routine(routine);
+		unrecognizedPuid.setPresentation(false);
+		
 		User admin = new User(); 
 		
 		preservationSystem = new PreservationSystem();
@@ -123,6 +123,7 @@ public class PreservationSystemTests {
 		preservationSystem.getConversion_policies().add(two);
 		preservationSystem.getConversion_policies().add(three);
 		preservationSystem.getConversion_policies().add(four);
+		preservationSystem.getConversion_policies().add(unrecognizedPuid);
 		
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
@@ -132,6 +133,7 @@ public class PreservationSystemTests {
 		session.save(two);
 		session.save(three);
 		session.save(four);
+		session.save(unrecognizedPuid);
 		session.save(preservationSystem);
 		session.getTransaction().commit();
 		session.close();
@@ -166,11 +168,31 @@ public class PreservationSystemTests {
 		fileundef.setFormatPUID("");
 		try {
 			//According to Quality Levels no PUID is becoming one of usual cases
-			preservationSystem.getApplicablePolicies(fileundef, false);
+			List<ConversionPolicy> polList=preservationSystem.getApplicablePolicies(fileundef, false);
+			assertTrue(polList.isEmpty());
 			//fail(); 
 		} catch (Exception  e) {
 			
-		} 	}
+		} 	
+	}
+	
+	/**
+	 * Test file has no file format.
+	 */
+	@Test
+	public void testFileHasUndefinedFileFormat(){
+		
+		DAFile fileundef = new DAFile("","");
+		fileundef.setFormatPUID(C.UNRECOGNIZED_PUID);
+		try {
+			//According to Quality Levels undef PUID is becoming one of usual cases
+			List<ConversionPolicy> polList=preservationSystem.getApplicablePolicies(fileundef, false);
+			assertTrue(polList.isEmpty());
+			//fail(); 
+		} catch (Exception  e) {
+			
+		} 	
+	}
 	
 	/**
 	 * Test success scenario.
