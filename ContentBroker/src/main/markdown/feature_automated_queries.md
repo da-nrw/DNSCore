@@ -77,7 +77,7 @@ outgoing read, write für irods user, read für tomcat user
 
 
 ```
-identifier;origName;statuscode;createddate;updateddate;erfolg;bemerkung
+identifier;origName;createddate;updateddate;statuscode;erfolg;bemerkung
 ```
 Zeichensatz ist CP1252 (Windows-Standard). Es wird angenommen, dass die Datei mittels EXCEL erstellt wurde. 
 [Beispiel, bitte die RAW Filedarstellung sichern](../../../src/test/resources/at/ATCSVQueries.csv) 
@@ -274,7 +274,7 @@ Example:
 2. Login an der DAWEB
 3. Eine semikolongetrennte Datei mit den Spalten:
 
-    identifier;origName;statuscode;createdate;updatedate;erfolg;bemerkung
+    identifier;origName;createdate;updatedate;statuscode;erfolg;bemerkung
 
 Zeichensatz ist CP1252 (Windows-Standard). Es wird angenommen, dass die Datei mittels EXCEL erstellt wurde. 
 [Beispiel](../../../src/test/resources/at/ATCSVQueries.csv)
