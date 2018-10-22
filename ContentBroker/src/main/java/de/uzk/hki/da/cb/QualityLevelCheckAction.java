@@ -41,19 +41,19 @@ import de.uzk.hki.da.utils.Path;
 
 /**
  * 
+ * The Logic of the Action looks for QualityLevelEvents and compute Quality-Level. </br>
+ * </br>
+ * -At least one IdentificationFail-Event: QL = 1 </br>
+ * -At least one Validation Event and at least one Conversion-Event on different or same file(s): QL = 1 </br>
+ * -No Validation-Event and at least one Conversion-Event: QL = 2 </br>
+ * -At least one Validation-Event and no Conversion-Event: QL = 3 </br>
+ * -No Validation- and No Conversion-Events at least one file with unrecognized PUID or unsupported Format: QL = 4 </br>
+ * -No Validation- and No Conversion-Events and no file with unrecognized PUID or unsupported Format: QL = 5
+ * 
  * @author trebunski
  *
  */
 public class QualityLevelCheckAction extends AbstractAction {
-/*
-	private static final String OUTGOING = "outgoing";
-	public static int PAUSE_DELAY = 20000;
-	*/
-/*	public QualityLevelCheckAction(){
-		SUPPRESS_OBJECT_CONSISTENCY_CHECK=true;
-		setKILLATEXIT(true);
-	}*/
-	
 	/**
 	 * Sort Events by absolute path of source DAFile
 	 */
@@ -62,7 +62,8 @@ public class QualityLevelCheckAction extends AbstractAction {
 			String f1=o1.getSource_file().getRep_name() + o1.getSource_file().getRelative_path();
 			String f2=o2.getSource_file().getRep_name() + o2.getSource_file().getRelative_path();
 			return f1.compareTo(f2);
-		}};
+		}
+	};
 	
 	@Override
 	public void checkConfiguration() {
@@ -72,7 +73,7 @@ public class QualityLevelCheckAction extends AbstractAction {
 	@Override
 	public void checkPreconditions() {
 	}
-	
+
 	@Override
 	public boolean implementation() {
 		logger.debug("QualityLevelCheckAction called! ");
@@ -99,7 +100,7 @@ public class QualityLevelCheckAction extends AbstractAction {
 					df.getSubformatIdentifier().equals(C.SUBFORMAT_IDENTIFIER_XMP) ||
 							df.getRelative_path().equals(C.PREMIS_XML)) 
 				continue;
-			//if puid scanner returns no puid 
+			//if puid scanner returns no puid, this files has C.UNRECOGNIZED_PUID
 			if(df.getFormatPUID().equals(C.UNRECOGNIZED_PUID))
 				unrecognizedPUIDFiles.add(df);
 			else if(!supportedFormatsForLZA.contains(df.getFormatPUID())) // if puid is not supported for lza
@@ -176,9 +177,7 @@ public class QualityLevelCheckAction extends AbstractAction {
 					if (index >= 0)
 						commonConversionEvents.add(validationEventsArray[index]);
 				}
-				if (commonConversionEvents.isEmpty()) {// there is no validation
-														// and conversion events
-														// on same files
+				if (commonConversionEvents.isEmpty()) {// there is no validation and conversion events on same files
 					conversionFailEvents.addAll(validationFailEvents);
 					extendObject(C.QUALITYFLAG_LEVEL_1,
 							createEvent(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1,
@@ -207,7 +206,6 @@ public class QualityLevelCheckAction extends AbstractAction {
 			throw new UserException(UserExceptionId.QUALITY_BELOW_REQUIRED, "Current QualityLevel("+qualityLevel+") is below required "+this.o.getContractor().getMinimalIngestQualityLevel() +" ");
 		
 		return true;
-
 	}
 	
 	private int getRequiredIngestLevelFromPremis(){
@@ -233,18 +231,15 @@ public class QualityLevelCheckAction extends AbstractAction {
 		
 		return msg;
 	}
-	/*
-	private void delay(){
-		try {
-			Thread.sleep(PAUSE_DELAY); // to prevent unnecessary small intervals when checking
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}*/
+
+	/**
+	 * Append Event to latest package and set object QualityLevelFlag
+	 * 
+	 * @param qualityFlag
+	 * @param qualityEvent
+	 */
 	private void extendObject(int qualityFlag,Event qualityEvent) {
-		//o.setObject_state(100);
 		o.setModifiedAt(new Date());
-		//TODO: Object set Quality Level
 		o.setQuality_flag(qualityFlag);
 		o.getLatestPackage().getEvents().add(qualityEvent);
 	}
@@ -254,12 +249,16 @@ public class QualityLevelCheckAction extends AbstractAction {
 		// Do nothing.
 	}
 	
-	
+	/**
+	 * Creaty Quality-Level-Event, for a given DAFile and quality message. 
+	 * 
+	 * @param qualityLevel
+	 * @param srcFile
+	 * @param qualityMessage
+	 * @return
+	 */
 	private Event createEvent(String qualityLevel,DAFile srcFile,String qualityMessage) {
-		
 		Event qualityEvent = new Event();
-		
-		//virusEventElement.setIdentifier(o.getIdentifier() + "+" + o.getLatestPackage().getName());
 		qualityEvent.setIdentifier(o.getIdentifier());
 		//qualityEvent.setIdType(qualityLevel);
 		qualityEvent.setSource_file(srcFile);

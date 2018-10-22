@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
@@ -40,9 +39,7 @@ import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectPremisXmlReader;
 import de.uzk.hki.da.model.RightsStatement;
-import de.uzk.hki.da.model.Event.IdType;
 import de.uzk.hki.da.util.ConfigurationException;
-import de.uzk.hki.da.utils.C;
 
 
 
