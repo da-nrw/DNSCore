@@ -48,21 +48,35 @@ import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.RelativePath;
 
-
 /**
- * The Class CreatePremisActionTests.
+ * Test following casses:
+ * 
+ * fail by minimal quality level from Premis
+ * 
+ * fail by minimal quality level by user configuration e.g. 5
+ * 
+ * quality 5 has no validation and conversion issues and has only known filetypes
+ * 
+ * quality 4 has no validation and conversion issues and has unknown filetypes
+ * 
+ * quality 4 has no validation and conversion issues and has non lza filetypes
+ * 
+ * quality 3 has validation events no conversion events 
+ * 
+ * quality 2 has conversion events no validation events 
+ * 
+ * quality 1 has conversion and validation error events 
+ * 
+ * quality 1 has identification (or subformat identification) error events 
  *
+ * 
  * @author Eugen Trebunski
  */
 public class QualityLevelCheckActionTests extends ConcreteActionUnitTest{
 
 	static final String minimalQualityLevelPremis="premisMinimalQualityLevel4.xml";
 	static final String noMinimalQualityLevelPremis="premisNoMinimalQualityLevel.xml";
-	Set<String> allAvents=new HashSet<String>(Arrays.asList(new String[]{C.EVENT_TYPE_QUALITY_FAULT_CONVERSION,
-			C.EVENT_TYPE_QUALITY_FAULT_VALIDATION,C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1,
-			C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2,C.EVENT_TYPE_QUALITY_CHECK_LEVEL_3,
-			C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4,C.EVENT_TYPE_QUALITY_CHECK_LEVEL_5}));
-	
+
 	DAFile unknownPuidDAF=null;
 	DAFile nonLzaPuidDAF =null;
 	DAFile lzaPuidDAF =null;
@@ -84,22 +98,8 @@ public class QualityLevelCheckActionTests extends ConcreteActionUnitTest{
     public ExpectedException thrown= ExpectedException.none();
 	
 	
-	/*
-	 * fail by minimal quality level from Premis
-	 * 
-	 * fail by minimal quality level by user configuration e.g. 5
-	 * 
-	 * quality 4 has unknown filetypes
-	 * 
-	 * quality 4 has non lza filetypes
-	 * 
-	 * quality 3 has validation events no conversion events (on same DAFile)
-	 * 
-	 * quality 2 has conversion events no validation events (on same DAFile)
-	 * 
-	 * quality 1 has conversion and validation events (on same DAFile)
-	 * 
-	 */
+	
+
 	
 
 	

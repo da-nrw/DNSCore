@@ -47,7 +47,7 @@ import de.uzk.hki.da.utils.Path;
  * -At least one Validation Event and at least one Conversion-Event on different or same file(s): QL = 1 </br>
  * -No Validation-Event and at least one Conversion-Event: QL = 2 </br>
  * -At least one Validation-Event and no Conversion-Event: QL = 3 </br>
- * -No Validation- and No Conversion-Events at least one file with unrecognized PUID or unsupported Format: QL = 4 </br>
+ * -No Validation- and No Conversion-Events and at least one file with unrecognized PUID or unsupported Format: QL = 4 </br>
  * -No Validation- and No Conversion-Events and no file with unrecognized PUID or unsupported Format: QL = 5
  * 
  * @author trebunski
