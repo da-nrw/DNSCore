@@ -13,7 +13,10 @@ mkdir $TARGET
 mkdir $TARGET/ContentBroker
 mkdir $TARGET/DAWeb
 mkdir $TARGET/SipBuilder
+mkdir $TARGET/RegressionTestCB
 
+
+cp -r /ci/DNSCore/RegressionTestCB/target/installation $TARGET/RegressionTestCB
 
 cd /ci/DNSCore/ContentBroker
 cp -r target/installation $TARGET/ContentBroker
