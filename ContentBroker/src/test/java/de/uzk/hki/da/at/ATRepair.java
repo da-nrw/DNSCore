@@ -55,13 +55,16 @@ public class ATRepair extends AcceptanceTest {
 
 			Writer writer = null;
 			try {
+				System.out.println("Try to modify: "+file +" file is exists: "+file.exists());
 				writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "utf-8"));
 				writer.write("Kaputnik");
-			} catch (IOException ex) {
-				fail("writing to file " + file + " failed");
+			} catch (Exception ex) {
+				fail("writing to file " + file + " failed"+ "\n" +
+						ex.getMessage() + "\n" + ex.toString());
 			} finally {
 				try {
-					writer.close();
+					if(writer!=null)
+						writer.close();
 				} catch (Exception ex) {
 					fail(ex.getMessage() + "\n" + ex.toString());
 				}

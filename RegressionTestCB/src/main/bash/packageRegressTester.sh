@@ -22,7 +22,7 @@ cp target/RegressionTestCBFull.jar $INSTALLER/
 cp $SRCDIR_RT/main/bash/StartRegressTester.sh $INSTALLER/StartRegressTester.sh
 cp $SRCDIR_RT/main/bash/rebuildTestIndex.sh $INSTALLER/conf/rebuildTestIndex.sh
 cp $SRCDIR_RT/main/conf/config.properties.ci $INSTALLER/conf/config.properties	
-cp $SRCDIR_RT/main/conf/ExpectedFuilureList.txt $INSTALLER/ExpectedFuilureList.txt
+cp $SRCDIR_RT/main/conf/ExpectedFailureList.txt $INSTALLER/ExpectedFailureList.txt
 
 #echo "java -jar ./RegressionTestCBFull.jar \$@ |  tee -a regressExec\`date "+%Y%m%d%H%M%S"\`.txt" >> ./$INSTALLER/StartRegressTester.sh
 #chmod +x  ./$INSTALLER/StartRegressTester.sh
