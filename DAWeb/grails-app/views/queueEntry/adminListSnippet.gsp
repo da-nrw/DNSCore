@@ -46,7 +46,7 @@
 	}
 </script>
 <div style="overflow:auto; height: 600px">
-<table>
+<table class="abstand-oben">
 	<thead>
 		<tr><g:if test="${params.search?.status != null && params.search?.status.length()==3}">
 			<th>

@@ -5,14 +5,14 @@
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'object.label', default: 'Object')}" />
 		<asset:stylesheet src="accordion.css" />
-		<title>DA-NRW Objekte</title>
+		<title>Eingelieferte Objekte (AIP)</title>
 		<r:require module="messagebox"/>
 		<g:javascript>
 			function queuedFor(result) {
 				var type = "error";
 				if (result.success) type = "info";
-				var messageBox = $("<div class='message-box'></div>");
-				$(".page-body").prepend(messageBox);
+				var messageBox = $("<div class='message-box abstand-unten'></div>");
+				$(".page-body .warnung").prepend(messageBox);
 				messageBox.message({
 					type: type, message: result.msg
 				});
@@ -22,7 +22,9 @@
 	<body>
 		<div class="page-body">
 			<a href="#list-object" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-			<h1>eingelieferte AIP's</h1>
+			<div class="blue-box"></div>
+			<h2>Eingelieferte Objekte (AIP)</h2>
+			<div class="warnung abstand-oben"></div>
 			<div class="nav" role="navigation">
 				<ul>
 					<g:if test="${objArt=='gesamten'}">
@@ -83,18 +85,18 @@
 		    <div class="panel">
 	            <g:form name="searchForm" action="list">
 				 	<g:hiddenField name="filterOn" value="${filterOn}" />
-	            	<table>
+	            	<table class="abstand-oben">
 	            		<tr>
 	            			<td>Original Name:</td>
-	            			<td><g:textField name="search.origName" value="${params.search?.origName}" size="50"/></td>
+	            			<td><g:textField name="search.origName" value="${params.search?.origName}" size="50" class="input-hoehe"/></td>
 	            		</tr>
 	            		<tr>
 	            			<td>URN:</td>
-	            			<td><g:textField name="search.urn" value="${params.search?.urn}" size="50"/></td>
+	            			<td><g:textField name="search.urn" value="${params.search?.urn}" size="50" class="input-hoehe"/></td>
 	            		</tr>
 	            			<tr>
 	            			<td>Identifier:</td>
-	            			<td><g:textField name="search.identifier" value="${params.search?.identifier}" size="50"/></td>
+	            			<td><g:textField name="search.identifier" value="${params.search?.identifier}" size="50" class="input-hoehe"/></td>
 	            		</tr>
 	            		
 	            		<tr>
@@ -148,8 +150,8 @@
 	            		<tr>
 	            			<td></td>
 	            			<td>
-	            				<g:submitButton name="submit" value="Filter anwenden"/>
-	           					<g:submitButton name="loeschen" type="submit" value="Filter löschen"/>
+	            				<g:submitButton class="style-buttons" name="submit" value="Filter anwenden"/>
+	           					<g:submitButton class="style-buttons" name="loeschen" type="submit" value="Filter löschen"/>
 		           			</td>
 		           			<g:javascript>
 			           			$(document).ready(function(){
@@ -196,7 +198,7 @@
 				</script>
 	        </div>
 			<div id="list-object" class="content scaffold-list" role="main">
-				<h1>Ihre ${objArt} DA-NRW Objekte (${objectInstanceList.size()} Treffer)</h1>
+				<h3>Ihre ${objArt} DA-NRW Objekte (${objectInstanceList.size()} Treffer)</h3>
 				<g:if test="${flash.message}">
 					<div class="message" role="status">${flash.message}</div>
 				</g:if>
@@ -314,13 +316,15 @@
 						</tbody>
 					</table>(AdministartorView)
 				  </div>
-				</g:formRemote>
+				</g:formRemote> 
 				<g:if test="${paginate}" >
-					<!-- workaround weil paginate die search map zerhackstückelt -->
+				<!-- workaround weil paginate die search map zerhackstückelt -->
 					<g:set var="searchParams" value="${paramsList}"/>
-					<div class="pagination">
-						<g:paginate total="${objectInstanceTotal}" params="${searchParams}" />
-					</div>
+					<g:if test="${objectInstanceList.size() > 49}">
+						<div class="pagination">
+							<g:paginate total="${objectInstanceTotal}" params="${searchParams}" />
+						</div>
+					</g:if>
 				</g:if>
 			</div>
 		</div>

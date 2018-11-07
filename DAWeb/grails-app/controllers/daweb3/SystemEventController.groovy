@@ -80,6 +80,10 @@ class SystemEventController {
     @Transactional
     def save(SystemEvent systemEventInstance) {
 		User user = springSecurityService.currentUser
+		def admin = 0;
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
 		CbNode node = CbNode.findById(grailsApplication.config.getProperty('localNode.id'));
 		ceu.setEncoding(response)
 		if (systemEventInstance.user.id !=  springSecurityService.currentUser.id) {
@@ -91,11 +95,12 @@ class SystemEventController {
             return
         }
         if (systemEventInstance.hasErrors()) {
-            respond systemEventInstance.errors, view:'create'
+            respond systemEventInstance.errors, view:'create', model:[user:user, admin: admin]
             return
         }
 		if (!SystemEvent.findAllByUserAndNodeAndType(user,node,params.type).isEmpty()) {
-			respond flash.message = 'Es gibt bereits einen SystemEvent diesen Typs!', view:'create'
+			respond flash.message = 'Es gibt bereits einen SystemEvent diesen Typs!',
+									 view:'create',  model:[user:user, admin: admin]
 			return
 		}
         systemEventInstance.save flush:true
@@ -105,7 +110,7 @@ class SystemEventController {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'systemEventInstance.label', default: 'SystemEvent'), systemEventInstance.id])
                 redirect systemEventInstance
             }
-            '*' { respond systemEventInstance, [status: CREATED] }
+            '*' { respond systemEventInstance, [status: CREATED] , [user:user, admin: admin] }
         }
     }
 

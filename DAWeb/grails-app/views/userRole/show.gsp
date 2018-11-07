@@ -9,6 +9,8 @@
 	</head>
 	<body>
 		<div class="page-body">
+			<div class="blue-box"></div>
+			<h2><g:message code="default.show.label" args="[entityName]" /></h2>
 			<a href="#show-userRole" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 			<div class="nav" role="navigation">
 				<ul>
@@ -17,7 +19,6 @@
 				</ul>
 			</div>
 			<div id="show-userRole" class="content scaffold-show" role="main">
-				<h1><g:message code="default.show.label" args="[entityName]" /></h1>
 				<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 				</g:if>

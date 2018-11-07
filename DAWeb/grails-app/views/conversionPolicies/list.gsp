@@ -3,18 +3,19 @@
 <html>
 	<head>
 		<meta name="layout" content="main">
-		<g:set var="entityName" value="${message(code: 'conversionPolicies.label', default: 'ConversionPolicies')}" />
+		<g:set var="entityName" value="${message(code: 'conversionPolicies.label', default: 'Konfigurierte Konversionen')}" />
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
 	</head>
 	<body>
 		<div class="page-body">
 			<a href="#list-conversionPolicies" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 			<div id="list-conversionPolicies" class="content scaffold-list" role="main">
-				<h1><g:message code="default.list.label" args="[entityName]" /></h1>
+				<div class="blue-box"></div>
+				<h2 id="page-header"><g:message code="default.list.label" args="[entityName]" /></h2>
 				<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 				</g:if>
-				 <div style="overflow:auto; height: 600px">
+				<div class="table-style">
 				<table>	
 					<thead>
 						<tr>
@@ -42,7 +43,7 @@
 							<td>
 	 							<g:each in="${formatMappList.keySet()}" status="j" var="fmPUID">
 									<g:if test="${fieldValue(bean: conversionPoliciesInstance, field: "source_format").equals("${fmPUID}")}">
-										 ${formatMappList.getAt(fmPUID)} --
+										 ${formatMappList.getAt(fmPUID)}:
 									</g:if>
 									  
 								</g:each> 

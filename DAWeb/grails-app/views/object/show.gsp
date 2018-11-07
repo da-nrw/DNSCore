@@ -44,7 +44,8 @@
 			</script>
 		
 			<div id="show-object" class="content scaffold-show" role="main">
-				<h1>Objektdetail</h1>
+				<div class="blue-box"></div>
+				<h2>Objektdetail</h2>
 				<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 				</g:if>
@@ -82,7 +83,7 @@
 						</g:each>	<br>
 						<span class="property-value" >
 							<g:if test="${!objectInstance.isInWorkflowButton()}">
-								<g:actionSubmit value="Versioniertes Retrieval starten" controller="package" action="retrievePackages"/>
+								<g:actionSubmit class="style-btn-2 " value="Versioniertes Retrieval starten" controller="package" action="retrievePackages"/>
 							</g:if>
 						</span>
 					</g:if>
@@ -172,7 +173,7 @@
 								<span class="property-value" aria-labelledby="urn-label">
 							  		<g:each in="${extensionSip.keySet().toString().replace('[', '').replace(']','').split(",")}" var="keySIP">
 										<g:if test="${keySIP.trim() == it.trim()}">
-											${extensionSip.getAt(keySIP.trim()).toString().replace('[', '').replace(']','')} -- 
+											${extensionSip.getAt(keySIP.trim()).toString().replace('[', '').replace(']','')} : 
 										</g:if> 
 									</g:each>
 							  	 	<g:if test="${!it.startsWith("danrw")}">
@@ -184,7 +185,7 @@
 							   			<span class="property-value" aria-labelledby="urn-label">
 								   			<g:each in="${extensionSip.keySet().toString().replace('[', '').replace(']','').split(",")}" var="keySIP">
 												<g:if test="${keySIP.trim() == it.trim()}">
-													${extensionSip.getAt(keySIP.trim()).toString().replace('[', '').replace(']','')} -- 
+													${extensionSip.getAt(keySIP.trim()).toString().replace('[', '').replace(']','')} : 
 												</g:if> 
 											</g:each>	
 							   				${it}
@@ -201,7 +202,7 @@
 								<span class="property-value" aria-labelledby="urn-label">
 							  		<g:each in="${extensionDip.keySet().toString().replace('[', '').replace(']','').split(",")}" var="keyDIP">
 										<g:if test="${keyDIP.trim() == it.trim()}">
-											${extensionDip.getAt(keyDIP.trim()).toString().replace('[', '').replace(']','')} -- 
+											${extensionDip.getAt(keyDIP.trim()).toString().replace('[', '').replace(']','')} : 
 										</g:if> 
 									</g:each>
 									<g:if test="${!it.startsWith("danrw")}">
@@ -213,7 +214,7 @@
 								      <span class="property-value" aria-labelledby="urn-label">
 									 	 <g:each in="${extensionDip.keySet().toString().replace('[', '').replace(']','').split(",")}" var="keyDIP">
 									        <g:if test="${keyDIP.trim() == it.trim()}">
-											  ${extensionDip.getAt(keyDIP.trim()).toString().replace('[', '').replace(']','')} -- 
+											  ${extensionDip.getAt(keyDIP.trim()).toString().replace('[', '').replace(']','')} : 
 										    </g:if> 
 									  	</g:each>	
 								   		${it}
@@ -242,6 +243,7 @@
 				<g:form>
 					<fieldset class="buttons">
 						<g:hiddenField name="id" value="${objectInstance?.id}" />
+						<g:actionSubmit class="cancel" action="cancel" value="${message(code: 'default.button.cancel.label', default: 'Cancel')}" />
 					</fieldset>
 				</g:form>
 			</div>

@@ -4,21 +4,24 @@
 <html>
 	<head>
 		<meta name="layout" content="main">
-		<g:set var="entityName" value="${message(code: 'conversionPolicies.label', default: 'ConversionPolicies')}" />
+		<g:set var="entityName" value="${message(code: 'conversionPolicies.label', default: 'Konfigurierte Konversionen')}" />
 		<title><g:message code="default.show.label" args="[entityName]" /></title>
 	</head>
 	<body>
 		<div class="page-body">
-			<a href="#show-conversionPolicies" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-			<g:if test="${admin}">
-				<div class="nav" role="navigation">
-					<ul>
-						<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-					</ul>
-				</div>
-			</g:if>
+			
+			
 			<div id="show-conversionPolicies" class="content scaffold-show" role="main">
-				<h1><g:message code="default.show.label" args="[entityName]" /></h1>
+				<div class="blue-box"></div>
+				<h2><g:message code="default.show.label" args="[entityName]" /></h2>
+				<a href="#show-conversionPolicies" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
+				<g:if test="${admin}">
+					<div class="nav" role="navigation">
+						<ul>
+							<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
+						</ul>
+					</div>
+				</g:if>
 				<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 				</g:if>
@@ -43,7 +46,7 @@
 						<span id="source_format-label" class="property-label"><g:message code="conversionPolicies.source_format.label" default="Quellformat" /></span>
 						<span class="property-value" aria-labelledby="source_format-label">
 							<g:if test="${extension}">
-								${extension} --  <g:fieldValue bean="${conversionPoliciesInstance}" field="source_format"/>
+								${extension}:  <g:fieldValue bean="${conversionPoliciesInstance}" field="source_format"/>
 							</g:if>
 							<g:else>
 								 <g:fieldValue bean="${conversionPoliciesInstance}" field="source_format"/>
@@ -68,9 +71,10 @@
 				<g:form>
 				
 					<fieldset class="buttons">
-						<g:if test="${admin}">
-						<g:link class="edit" action="edit" resource="${conversionPoliciesInstance}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
-						<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+						<g:if test="${adminAllg}">
+							<!--  <g:link class="edit" action="edit" resource="${conversionPoliciesInstance}"><g:message code="default.button.edit.label" default="Edit" /></g:link> -->
+							<g:actionSubmit class="edit" action="edit" resource="${conversionPoliciesInstance}" value="${message(code: 'default.button.edit.label',default: 'Edit')}"/>
+							<g:actionSubmit class="delete" action="delete" 	value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
 						</g:if>
 						<g:hiddenField name="id" value="${conversionPoliciesInstance?.id}" />
 					</fieldset>

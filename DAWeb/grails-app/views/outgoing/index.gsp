@@ -1,12 +1,14 @@
 <html>
 	<head>
-		<title>Paket entnehmen</title>
+		<title>Objekte entnehmen (DIP)</title>
 		<meta name="layout" content="main">
 	
 		
 	</head>
 	<body>
 		<div class="page-body">
+			<div class="blue-box"></div>
+			<h2 id="page-header">Objekte entnehmen (DIP) </h2>
 			<g:if test="${msg}">
 				<div class="message" role="status">${msg}</div>
 			</g:if>

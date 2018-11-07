@@ -10,9 +10,10 @@
 		<div class="page-body">
 			<!-- <a href="#list-formatMapping" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 			<br> -->			
-			<h1 id="page-header">Format-Mapping</h1> 
-			<g:form  name="map" url="[controller: 'formatMapping', action:'deleteAndFill']"  update="refreshView" >
-				<g:actionSubmit value="Tabelle leeren und neu laden" action="deleteAndFill"  
+			<div class="blue-box"></div>
+			<h2>Format-Mapping</h2> 
+			<g:form  class="style-btn-table" name="map" url="[controller: 'formatMapping', action:'deleteAndFill']"  update="refreshView" >
+				<g:actionSubmit  class="style-btn-2"value="Tabelle leeren und neu laden" action="deleteAndFill"  
 							onclick="return confirm('Tabelle wirklich aktualisieren?')"/>
 				<g:if test="${msg}">
 					<div class="message" role="status">${msg}</div> 

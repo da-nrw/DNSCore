@@ -4,7 +4,7 @@
 	<label for="conversion_routine_id">
 		<g:message code="conversionPolicies.contractor.label" default="id" />
 	</label>
-	<g:textField name="id" value="${conversionPoliciesInstance?.id?.encodeAsHTML()}" disabled="true"/>	
+	<g:textField name="id" value="${conversionPoliciesInstance?.id?.encodeAsHTML()}" disabled="true" class="input-hoehe"/>	
 </div>
 </g:if>
 
@@ -23,7 +23,7 @@
 		<g:message code="conversionPolicies.source_format.label" default="Quellformat" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="source_format" value="${conversionPoliciesInstance?.source_format}"/>
+	<g:textField name="source_format" value="${conversionPoliciesInstance?.source_format}" class="input-hoehe"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: conversionPoliciesInstance, field: 'presentation', 'error')} ">

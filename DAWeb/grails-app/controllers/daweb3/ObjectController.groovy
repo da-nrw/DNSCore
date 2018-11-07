@@ -44,6 +44,10 @@ class ObjectController {
 	def index() {
 		redirect(action: "list", params: params)
 	}
+	
+	def cancel(){
+		redirect(action: "list")
+	}
 
 	/**
 	 * proof and evaluate the search key
