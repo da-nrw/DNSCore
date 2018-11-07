@@ -404,61 +404,64 @@ public class SIPFactory {
 		boolean metsLicenseBool=false;
 		boolean lidoLicenseBool=false;
 		boolean publicationBool=contractRights.getPublicRights().getAllowPublication();
+		boolean instPublicationBool=contractRights.getInstitutionRights().getAllowPublication();
 		
-		TreeMap<File, String> metadataFileWithType;
-		try {
-			metadataFileWithType = new FormatDetectionService(sourceFolder).getMetadataFileWithType();
-
-			if (metadataFileWithType.containsValue(C.CB_PACKAGETYPE_METS)) {
-				ArrayList<File> metsFiles = new ArrayList<File>();
-
-				ArrayList<MetsLicense> licenseMetsFile = new ArrayList<MetsLicense>();
-				for (File f : metadataFileWithType.keySet())
-					if (metadataFileWithType.get(f).equals(C.CB_PACKAGETYPE_METS))
-						metsFiles.add(f);
-				for (File f : metsFiles) {// assuming more as usual mets is allowed (check is done by FormatDetectionService) e.g. publicMets for testcase-creation
-					SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-					Document metsDoc = builder.build(f);
-					MetsParser mp = new MetsParser(metsDoc);
-					licenseMetsFile.add(mp.getLicenseForWholeMets());
+		if(publicationBool || instPublicationBool){
+			TreeMap<File, String> metadataFileWithType;
+			try {
+				metadataFileWithType = new FormatDetectionService(sourceFolder).getMetadataFileWithType();
+	
+				if (metadataFileWithType.containsValue(C.CB_PACKAGETYPE_METS)) {
+					ArrayList<File> metsFiles = new ArrayList<File>();
+	
+					ArrayList<MetsLicense> licenseMetsFile = new ArrayList<MetsLicense>();
+					for (File f : metadataFileWithType.keySet())
+						if (metadataFileWithType.get(f).equals(C.CB_PACKAGETYPE_METS))
+							metsFiles.add(f);
+					for (File f : metsFiles) {// assuming more as usual mets is allowed (check is done by FormatDetectionService) e.g. publicMets for testcase-creation
+						SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+						Document metsDoc = builder.build(f);
+						MetsParser mp = new MetsParser(metsDoc);
+						licenseMetsFile.add(mp.getLicenseForWholeMets());
+					}
+					Collections.sort(licenseMetsFile, new NullLastComparator<MetsLicense>());
+					if (licenseMetsFile.get(0) == null) // all licenses are null
+						metsLicenseBool = false;
+					else if (!licenseMetsFile.get(0).equals(licenseMetsFile.get(licenseMetsFile.size() - 1))) // first and last lic have to be same in sorted array
+						return Feedback.INVALID_LICENSE_DATA_IN_METADATA;
+					else
+						metsLicenseBool = true;
+				}else if (metadataFileWithType.containsValue(C.CB_PACKAGETYPE_LIDO)) {
+					ArrayList<File> lidoFiles = new ArrayList<File>();
+	
+					ArrayList<LidoLicense> licenseLidoFile = new ArrayList<LidoLicense>();
+					for (File f : metadataFileWithType.keySet())
+						if (metadataFileWithType.get(f).equals(C.CB_PACKAGETYPE_LIDO))
+							lidoFiles.add(f);
+					for (File f : lidoFiles) {// assuming more as one metadata is allowed (check is done by FormatDetectionService) 
+						SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+						Document metsDoc = builder.build(f);
+						LidoParser lp = new LidoParser(metsDoc);
+						licenseLidoFile.add(lp.getLicenseForWholeLido());
+					}
+					Collections.sort(licenseLidoFile, new NullLastComparator<LidoLicense>());
+					if (licenseLidoFile.get(0) == null) // all licenses are null
+						lidoLicenseBool = false;
+					else if (!licenseLidoFile.get(0).equals(licenseLidoFile.get(licenseLidoFile.size() - 1))) // first and last lic have to be same in sorted array
+						return Feedback.INVALID_LICENSE_DATA_IN_METADATA;
+					else
+						lidoLicenseBool = true;
 				}
-				Collections.sort(licenseMetsFile, new NullLastComparator<MetsLicense>());
-				if (licenseMetsFile.get(0) == null) // all licenses are null
-					metsLicenseBool = false;
-				else if (!licenseMetsFile.get(0).equals(licenseMetsFile.get(licenseMetsFile.size() - 1))) // first and last lic have to be same in sorted array
-					return Feedback.INVALID_LICENSE_DATA_IN_METADATA;
-				else
-					metsLicenseBool = true;
-			}else if (metadataFileWithType.containsValue(C.CB_PACKAGETYPE_LIDO)) {
-				ArrayList<File> lidoFiles = new ArrayList<File>();
-
-				ArrayList<LidoLicense> licenseLidoFile = new ArrayList<LidoLicense>();
-				for (File f : metadataFileWithType.keySet())
-					if (metadataFileWithType.get(f).equals(C.CB_PACKAGETYPE_LIDO))
-						lidoFiles.add(f);
-				for (File f : lidoFiles) {// assuming more as one metadata is allowed (check is done by FormatDetectionService) 
-					SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
-					Document metsDoc = builder.build(f);
-					LidoParser lp = new LidoParser(metsDoc);
-					licenseLidoFile.add(lp.getLicenseForWholeLido());
-				}
-				Collections.sort(licenseLidoFile, new NullLastComparator<LidoLicense>());
-				if (licenseLidoFile.get(0) == null) // all licenses are null
-					lidoLicenseBool = false;
-				else if (!licenseLidoFile.get(0).equals(licenseLidoFile.get(licenseLidoFile.size() - 1))) // first and last lic have to be same in sorted array
-					return Feedback.INVALID_LICENSE_DATA_IN_METADATA;
-				else
-					lidoLicenseBool = true;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return Feedback.INVALID_LICENSE_DATA_IN_METADATA;
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Feedback.INVALID_LICENSE_DATA_IN_METADATA;
 		}
 		//activate to be able to create non licensed test sips
 		//publicationBool=false;
 		//premisLicenseBool=false;
 		//publicationBool=false;
-		if(premisLicenseBool && (metsLicenseBool || lidoLicenseBool)){
+		if(publicationBool && premisLicenseBool && (metsLicenseBool || lidoLicenseBool)){
 			return Feedback.DUPLICATE_LICENSE_DATA;
 		}
 		
@@ -466,7 +469,7 @@ public class SIPFactory {
 			return Feedback.PUBLICATION_NO_LICENSE;
 		}
 		
-		logger.info("License is satisfiable: Premis-License:"+premisLicenseBool+" Mets-License:"+metsLicenseBool+" Lido-License:"+lidoLicenseBool+ " Publication-Decision:"+publicationBool);
+		logger.info("License is satisfiable: Premis-License:"+premisLicenseBool+" Mets-License:"+metsLicenseBool+" Lido-License:"+lidoLicenseBool+ " Publication-Decision:"+publicationBool+" InstPublication-Decision:"+instPublicationBool);
 		
 		
 		return Feedback.SUCCESS;
