@@ -17,7 +17,7 @@
 				</g:if>
 				<div class="table-style">
 				<table>	
-					<thead>
+					<thead class="thead-line">
 						<tr>
 						
 							<th><g:message code="conversionPolicies.contractor.label" default="ID" /></th>

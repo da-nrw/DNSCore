@@ -207,7 +207,7 @@
 	              onLoaded="queuedFor(data)">
 	              <div style="overflow:auto; height: 600px">
 					 <table>
-						<thead>
+						<thead class="thead-line">
 							<tr>
 								<th><g:message code="object.identifier.label" default="Ident" /></th>
 								<g:sortableColumn property="urn" title="${message(code: 'object.urn.label', default: 'Urn')}" />

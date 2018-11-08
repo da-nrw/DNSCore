@@ -194,7 +194,7 @@
 	            onLoaded="queuedFor(data)">
 				  <div style="overflow:scroll; height: 600px">
 					<table>
-						<thead>
+						<thead class="thead-line">
 							<tr>
 								<th><g:message code="object.identifier.label" default="Ident" /></th>
 								

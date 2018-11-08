@@ -24,7 +24,7 @@
 				</g:if>
 				<div class="table-style">
 					<table>
-						<thead>
+						<thead class="thead-line">
 							<tr>
 							
 								<g:sortableColumn property="authority" title="${message(code: 'role.authority.label', default: 'Authority')}" />

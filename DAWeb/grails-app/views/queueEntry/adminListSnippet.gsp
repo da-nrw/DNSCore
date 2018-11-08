@@ -47,7 +47,7 @@
 </script>
 <div style="overflow:auto; height: 600px">
 <table class="abstand-oben">
-	<thead>
+	<thead class="thead-line">
 		<tr><g:if test="${params.search?.status != null && params.search?.status.length()==3}">
 			<th>
 			Auswahl

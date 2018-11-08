@@ -24,7 +24,7 @@
 				<div class="table-style">
 <!-- 			    <div style="overflow:auto; height: 200px"> -->
 				  <table>
-					<thead>
+					<thead class="thead-line">
 						<tr>
 							<g:sortableColumn property="parameter" title="${message(code: 'systemEvent.parameter.id', default: 'Id')}" />
 							<g:sortableColumn property="last_executed" title="${message(code: 'systemEvent.last_executed.label', default: 'Lastexecuted')}" />

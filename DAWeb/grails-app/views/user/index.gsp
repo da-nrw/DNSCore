@@ -24,7 +24,7 @@
 				</g:if>
 			  	<div class="table-style">
 					<table>
-						<thead>
+						<thead class="thead-line">
 							<tr>
 							
 								<g:sortableColumn property="email_contact" title="${message(code: 'user.email_contact.label', default: 'Emailcontact')}" />
@@ -66,9 +66,11 @@
 						</tbody>
 					</table>
 				</div>
-				<div class="pagination">
-					<g:paginate total="${userInstanceCount ?: 0}" />
-				</div>
+				<g:if test="${userInstanceList.size() > 9}">
+					<div class="pagination">
+						<g:paginate total="${userInstanceCount ?: 0}" />
+					</div>
+				</g:if>
 			</div>
 		</div>
 	</body>

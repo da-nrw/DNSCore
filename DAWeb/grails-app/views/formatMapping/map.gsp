@@ -22,7 +22,7 @@
 			
 			<div style="overflow:auto; height: 600px">
 			  <table>
-				 <thead>							
+				 <thead class="thead-line">							
 						<tr>
 							<g:sortableColumn property="puid" title="${message(code: 'formatMapping.puid', default: 'PUID')}" />
 							<g:sortableColumn property="extension" title="${message(code: 'formatMapping.extension', default: 'Erweiterung')}" />

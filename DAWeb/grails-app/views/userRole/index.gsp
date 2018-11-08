@@ -24,7 +24,7 @@
 				</g:if>
 				<div class="table-style">
 					<table>
-						<thead>
+						<thead class="thead-line">
 							<tr>
 							
 								<th><g:message code="userRole.role.label" default="Role" /></th>

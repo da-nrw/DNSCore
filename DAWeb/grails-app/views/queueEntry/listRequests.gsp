@@ -17,7 +17,7 @@
 			 <div id="entry-list">
 			  <div class="table-style">
 			   <table>
-				<thead>
+				<thead class="thead-line">
 					<tr>
 						<th class="sortable field-id">
 							<a href="#" onClick="return sortQueue('queueEntry.obj.identifier');">${message(code: 'queueEntry.obj.identifier.label', default: 'Identifier')}</a>

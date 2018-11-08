@@ -17,7 +17,7 @@
 				</g:if>
 			  	<div class="table-style">
 					<table>
-						<thead>
+						<thead class="thead-line">
 							<tr>
 								<g:sortableColumn property="minRepls" title="${message(code: 'preservationSystem.minRepls.label', default: 'Min Repls')}" />
 								<g:sortableColumn property="closedCollectionName" title="${message(code: 'preservationSystem.closedCollectionName.label', default: 'Closed Collection Name')}" />
