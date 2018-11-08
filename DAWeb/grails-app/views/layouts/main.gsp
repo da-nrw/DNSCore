@@ -165,9 +165,16 @@
 			</div>
 		</g:else>
 		
+		<g:if test="${actionName=='auth'}">
+			<div class="page-body" style="margin-left: 0px;" >
+				<g:layoutBody/>
+			</div>
+		</g:if>
+		<g:else>
 		<div class="page-body">
 			<g:layoutBody/> 
 		</div> 
+		</g:else>
 		<div align="center">
 			<div id="footer" role="contentinfo">
 				<g:meta name="app.name"/> 
