@@ -10,7 +10,8 @@
 		<div class="page-body">
 			<a href="#show-queueEntry" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 			<div id="show-queueEntry" class="content scaffold-show" role="main">
-				<h1>Statusdetail</h1>
+				<div class="blue-box"></div>
+				<h2>Statusdetail</h2>
 				<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 				</g:if>
@@ -97,8 +98,9 @@
 				<g:form>
 					<fieldset class="buttons">
 						<g:hiddenField name="id" value="${queueEntryInstance?.id}" />
-						%{--<g:link class="edit" action="edit" id="${queueEntryInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
-						<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />--}%
+						<g:actionSubmit class="cancel" action="cancel" value="${message(code: 'default.button.cancel.label', default: 'Cancel')}" />
+						<!--<g:link class="edit" action="edit" id="${queueEntryInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
+						<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />-->
 					</fieldset>
 				</g:form>
 			</div>

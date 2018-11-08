@@ -1,13 +1,11 @@
 <%@ page import="daweb3.User" %>
 
-
-
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'email_contact', 'error')} required">
 	<label for="email_contact">
 		<g:message code="user.email_contact.label" default="Emailcontact" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="email_contact" required="" value="${userInstance?.email_contact}"/>
+	<g:textField name="email_contact" required="" value="${userInstance?.email_contact}" class="input-hoehe"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'shortName', 'error')} required">
@@ -15,7 +13,7 @@
 		<g:message code="user.shortName.label" default="Short Name" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="shortName" required="" value="${userInstance?.shortName}"/>
+	<g:textField name="shortName" required="" value="${userInstance?.shortName}" class="input-hoehe"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'username', 'error')} required">
@@ -23,7 +21,7 @@
 		<g:message code="user.username.label" default="Username" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="username" required="" value="${userInstance?.username}"/>
+	<g:textField name="username" required="" value="${userInstance?.username}" class="input-hoehe"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'password', 'error')} required">
@@ -31,7 +29,7 @@
 		<g:message code="user.password.label" default="Password" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="password" required="" value="${userInstance?.password}"/>
+	<g:textField name="password" required="" value="${userInstance?.password}" class="input-hoehe"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'provider_type', 'error')} required">
@@ -47,7 +45,7 @@
 		<g:message code="user.friendly_file_exts.label" default="Friendly extensions" />
 		
 	</label>
-	<g:textField name="friendly_file_exts" value="${userInstance?.friendly_file_exts}"/>
+	<g:textField name="friendly_file_exts" value="${userInstance?.friendly_file_exts}" class="input-hoehe"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'description', 'error')} ">
@@ -55,9 +53,8 @@
 		<g:message code="user.description.label" default="Description" />
 		
 	</label>
-	<g:textField name="description" value="${userInstance?.description}"/>
-</div>
-<h1>Änderung an diesen Feldern kann signifikantes Systemverhalten ändern!</h1>
+	<g:textField name="description" value="${userInstance?.description}" class="input-hoehe"/>
+<div class="message">Änderung an diesen Feldern kann signifikantes Systemverhalten ändern!</div>
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'usePublicMets', 'error')} ">
 <label for="usePublicMets">
 	<g:message code="user.usePublicMets.label" default="Use Public Mets" />
@@ -94,7 +91,7 @@
 		<g:message code="user.forbidden_nodes.label" default="Forbiddennodes" />
 		
 	</label>
-	<g:textField name="forbidden_nodes" value="${userInstance?.forbidden_nodes}"/>
+	<g:textField name="forbidden_nodes" value="${userInstance?.forbidden_nodes}" class="input-hoehe"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'accountExpired', 'error')} ">

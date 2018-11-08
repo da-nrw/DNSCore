@@ -4,19 +4,20 @@
 	<head>
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'queueEntry.label', default: 'QueueEntry')}" />
-		<title>Anfragen</title>
+		<title>Entscheidungsübersicht</title>
 	</head>
 	<body>
 		<div class="page-body">
-			<h1>Anfragenübersicht</h1>			
+			<div class="blue-box"></div>
+			<h2 id="page-header">Entscheidungsübersicht</h2>			
 			<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 			</g:if>			
 			<!-- This div is updated through the periodical updater -->
 			 <div id="entry-list">
-			  <div style="overflow:auto; height: 300px">
+			  <div class="table-style">
 			   <table>
-				<thead>
+				<thead class="thead-line">
 					<tr>
 						<th class="sortable field-id">
 							<a href="#" onClick="return sortQueue('queueEntry.obj.identifier');">${message(code: 'queueEntry.obj.identifier.label', default: 'Identifier')}</a>

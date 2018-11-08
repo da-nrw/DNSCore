@@ -9,7 +9,7 @@
 	    <meta name="viewport" content="width=device-width, initial-scale=1"/>
 		<asset:link rel="icon" href="apple-touch-icon.png" type="image/x-ico" />
 		<asset:link rel="icon" href="apple-touch-icon-retina.png" sizes="114x114" type="image/x-ico" />
-		<asset:link rel="shortcut icon" href="/icons/favicon.ico" type="image/x-icon" />
+ 		<asset:link rel="shortcut icon" href="/icons/favicon.ico" type="image/x-icon" /> 
 		<asset:stylesheet src="main.css"/>
 		<asset:stylesheet src="mobile.css"/>
 		<g:layoutHead/>
@@ -36,7 +36,7 @@
 			 	<div id="header-menu"> 
 					<form name="submitForm" method="POST" action="${createLink(controller: 'logout')}">
 					 	<input type="hidden" name="" value="" > 
-						<a HREF="javascript:document.submitForm.submit()">Logout</a>
+						<a HREF="javascript:document.submitForm.submit()" class="submitForm-btn">Logout</a>
 					</form> 
 				</div> 
 			</g:else>
@@ -45,11 +45,16 @@
 	  	<g:if test="${actionName=='auth'}" />  
 		<g:elseif test="${controllerName=='logout'}"/>
 		<g:else>
-			<div id="welcome">Willkommen  ${user} ! 
-				<g:if test="${admin==1}"> (Administrator)</g:if>
+			<div id="welcome">
+				<span>Willkommen <strong>${user} </strong> !</span> 
+				<span class="admin-style">
+ 					<g:if test="${admin==1}"> (Administrator)</g:if>
+				</span>
 			</div>
   			<div id="vertical-menu">
-				<ul>
+  				<div class="nav-blue-box"></div>
+  				<div class="nav-ecke-oben" ></div>
+				<ul class="nav-rahmen">
 					<!-- Bearbeitungsübersicht / Entscheidungsübersicht  -->
 					<g:if test="${controllerName=='queueEntry'}">
 						<g:if test="${actionName=='list'}">
@@ -87,7 +92,7 @@
 					
 					<!-- Eingelieferte Objekte (AIP) -->
 					<g:if test="${controllerName=='object'}">
-						<g:if test="${actionName=='list' || actionName=='archived' || actionName=='working'}">
+						<g:if test="${actionName=='list' || actionName=='archived' || actionName=='working' || actionName=='show'}">
 							<li class="aktuell"><g:link controller="object" action="list">Eingelieferte Objekte (AIP)</g:link></li>
 						</g:if>
 						<g:else>
@@ -115,7 +120,7 @@
 					</g:else>
 					
 					<!-- Hinweise zur Ansteuerung über externe Systeme -->
-					<g:if test="${controllerName=='info'}">
+					<g:if test="${controllerName=='info' || controllerName=='automatedRetrieval' || controllerName=='status'}">
 						<li class="aktuell"><g:link controller="info">Hinweise zur Ansteuerung über externe Systeme</g:link></li>
 					</g:if>
 					<g:else>
@@ -139,7 +144,7 @@
 					</g:else>
 					
 					<!-- System-Eventsteuerung -->
-					<g:if test="${controllerName=='systemEvent'}">
+					<g:if test="${controllerName=='systemEvent' || controllerName=='cbNode'}">
 						<li class="aktuell"><g:link controller="systemEvent">System-Eventsteuerung</g:link></li>
 					</g:if>
 					<g:else>	
@@ -148,7 +153,8 @@
 					
 					<!-- Adminfunktionen -->
 					<g:if test="${admin==1}">
-						<g:if test="${controllerName=='cbtalk'}">
+						<g:if test="${controllerName=='cbtalk' || controllerName=='user' || controllerName=='role' 
+									|| controllerName=='userRole' || controllerName=='preservationSystem' || controllerName=='formatMapping'}">
 							<li class="aktuell"><g:link controller="cbtalk">Adminfunktionen</g:link></li>
 						</g:if>
 						<g:else>
@@ -159,9 +165,16 @@
 			</div>
 		</g:else>
 		
+		<g:if test="${actionName=='auth'}">
+			<div class="page-body" style="margin-left: 0px;" >
+				<g:layoutBody/>
+			</div>
+		</g:if>
+		<g:else>
 		<div class="page-body">
 			<g:layoutBody/> 
 		</div> 
+		</g:else>
 		<div align="center">
 			<div id="footer" role="contentinfo">
 				<g:meta name="app.name"/> 

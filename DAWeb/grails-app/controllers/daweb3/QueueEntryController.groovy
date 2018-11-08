@@ -41,6 +41,10 @@ class QueueEntryController {
         redirect(action: "list", params: params)
     }
 
+	def cancel() {
+		redirect(action: "list")
+	}
+	
     def list() {
 		def contractorList
 		def cbNodeList = CbNode.list()
@@ -341,12 +345,18 @@ class QueueEntryController {
 		User user = springSecurityService.currentUser
 		def queueEntries
 		def admin = 0;
+		def adminAnzeige = 0;
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			admin = 1;
 		} 
 		if (user.authorities.any { it.authority == "ROLE_PSADMIN"}) {
 			admin = 1;
 		} 
+		
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			adminAnzeige = 1;
+		}
+		
 		if (params.search==null){
 			if (admin != 1) {
 				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn and q.question is not null and q.question !='' and (q.status like '%5' OR q.status like '%4')",
@@ -356,7 +366,7 @@ class QueueEntryController {
 				
 			}
 			[queueEntryInstanceList: queueEntries,
-				admin:admin, user:user ]
+				admin:adminAnzeige, user:user ]
 		}
 	}
 	/**

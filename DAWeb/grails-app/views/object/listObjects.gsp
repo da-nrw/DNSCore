@@ -4,22 +4,22 @@
 	<head>
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'object.label', default: 'Object')}" />
-		<title>Liste der Objekte</title>
+		<title>Auswahl Objekte Formate</title>
 	</head>
 	<body>
 		<div class="page-body">
-		<h1>Liste der Objekte nach Formaten</h1>
+		<div class="blue-box"></div>
+		<h2>Auswahl Objekte nach Formaten</h2>
 			<a href="#listFormat-queueEntry" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 			 <div id="list-queueEntry" class="content scaffold-list" role="main">			
 				<table>
 				    <g:form controller="object" action="listObjects">
 	            		<tr>
-	            			<td style="width:10%">Format:</td>
-	            			<td style="width:10%"><g:textField name="most_recent_formats" value="${params.most_recent_formats}" size="30"/></td>
+	            			<td style="width:5%; padding-left: 0px;">Format:</td>
+	            			<td style="width:10%"><g:textField name="most_recent_formats" value="${params.most_recent_formats}" size="30" class="input-hoehe"/></td>
 	            			<td style="width:10%">Metadatenformat:</td>
-	            			<td style="width:30%"><g:textField name="most_recent_secondary_attributes" value="${params.most_recent_secondary_attributes}" size="15"/></td>
-	            		<tr>
-	            			<td><g:actionSubmit value="suchen" action="listObjectsSearch" /> </td>
+	            			<td style="width:20%"><g:textField name="most_recent_secondary_attributes" value="${params.most_recent_secondary_attributes}" size="30" class="input-hoehe"/></td>
+	            			<td><g:actionSubmit value="suchen" action="listObjectsSearch" class="style-buttons"/> </td>
 	            			<td> ${suLeer}</td>
 	            		</tr>
 	            	</g:form>
@@ -29,7 +29,7 @@
 			   <g:formRemote name="myForm" on404="alert('not found!')" url="[controller: 'object', action:'listObjects']"  onLoaded="queuedFor(data)">
 			    <div style="overflow:auto; height: 600px">
 	             <table>
-					 <thead>							
+					 <thead class="thead-line">							
 						<tr>
 	  					   <g:sortableColumn property="identifier" title="${message(code: 'object.identifier', default: 'Identifier')}" />
 						   <g:sortableColumn property="urn" title="${message(code: 'object.urn.label', default: 'Urn')}"  />	

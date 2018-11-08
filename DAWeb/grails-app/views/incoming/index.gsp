@@ -1,11 +1,12 @@
 <html>
 	<head>
-		<title>Verarbeitung manuell starten</title>
+		<title>Verarbeitung SIP starten</title>
 		<meta name="layout" content="main">
 	</head>
 	<body>
 		<div class="page-body">
-			<h1 id="page-header">Verarbeitung manuell starten</h1> 
+			<div class="blue-box"></div>
+			<h2 id="page-header">Verarbeitung für abgelieferte SIP starten</h2> 
 			<script type="text/javascript">
 				function toggle(source) {
 				  checkboxes = document.getElementsByName('currentFiles');
@@ -47,12 +48,12 @@
 			</g:if>
 			<g:form controller="incoming" >
 			<g:if test="${msg.isEmpty()}">
-				<div><input type="checkbox" name="waehlen" value="" id="waehlen" onClick="toggle(this)"/> Alle an-/abwählen</div><br>
+				<div class="abstand-oben"><strong><input type="checkbox" name="waehlen" value="" id="waehlen" onClick="toggle(this)"/> Alle an-/abwählen</strong></div><br>
 				<g:each in="${filelist}" var="currentFile" status="i">
 				    <p><g:checkBox name="currentFiles" value="${currentFile.getName()}" checked="false" onClick="deselect(this)"/>  ${currentFile.getName()}</p>
 				</g:each>
 				<br>
-				<g:actionSubmit value="Starten" action="save"/>
+				<g:actionSubmit value="Starten" action="save" class="style-buttons"/>
 			</g:if>
 			</g:form>
 		</div>

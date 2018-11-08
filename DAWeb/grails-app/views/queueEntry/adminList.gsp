@@ -4,7 +4,7 @@
 	<head>
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'queueEntry.label', default: 'QueueEntry')}" />
-		<title>Status der Verarbeitung - Admin</title>
+		<title>Bearbeitungsübersicht - Admin</title>
 		<r:require modules="periodicalupdater, jqueryui"/>
 		 <jqui:resources/>
  		<asset:stylesheet src="accordion.css" />
@@ -55,18 +55,19 @@
 	</head>
 	<body>
 		<div class="page-body">
- 			<a href="#list-queueEntry" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-			<h1>Bearbeitungsübersicht</h1>		
+ 			<a href="#list-queueEntry" class="skip" tabindex="-1">
+ 			<g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
+			<div class="blue-box"></div>
+			<h2>Bearbeitungsübersicht</h2>		
 			<g:if test="${  !params.search }">
-				<i>Aktualieseren der Seite:&nbsp; </i>
-				<input id="stopper" type="button" onclick="stopUpdater();disabled=true;" value="stoppen"/>
-				 &nbsp;
-				<input id="starter" type="button" onclick="startUpdater();disabled=true;" disabled  value="starten"/>
+				<div class="page-body-input page-body-input-position">
+					<i>Aktualieseren der Seite:&nbsp; </i>
+					<input id="stopper" class="style-start-stop" type="button" onclick="stopUpdater();disabled=true;" value="stoppen"/>
+					 &nbsp;
+					<input id="starter" class="style-start-stop" type="button" onclick="startUpdater();disabled=true;" disabled  value="starten"/>
+	    		</div>
 	    	</g:if> <br>
-			<g:if test="${flash.message}">
-				<div class="message" role="status">${flash.message}</div>
-			</g:if><br>
-			<button class="accordion">Filter
+			<button class="accordion abstand-oben">Filter
 			  	<g:if test="${params.search}"><br>
 		    		<g:if test="${!params.search?.status.isEmpty()}">
 		    		<span style="margin-right: 25px" ><i>Status: </i>${params.search?.status}</span>
@@ -88,25 +89,25 @@
 		    		</g:if> 
 		    	</g:if> 
 			</button>
-			<div class="panel">
+			<div class="panel abstand-oben">
 	          <g:form name="searchForm" id="filterform" action="list">
 	             <table>
 	            	<tr>
 	            		<td>Status:</td>
-	            			<td><g:textField name="search.status" value="${params.search?.status}" size="5"/></td>
+	            			<td><g:textField name="search.status" value="${params.search?.status}" size="5" class="input-hoehe"/></td>
 	            		</tr>
 	            		
 	            		<tr>
 	            			<td>Originalname:</td>
-	            			<td><g:textField name="search.obj.origName" value="${params.search?.obj?.origName}" size="50"/></td>
+	            			<td><g:textField name="search.obj.origName" value="${params.search?.obj?.origName}" size="50" class="input-hoehe"/></td>
 	            		</tr>
 	            		<tr>
 	            			<td>URN:</td>
-	            			<td><g:textField name="search.obj.urn" value="${params.search?.obj?.urn}" size="50"/></td>
+	            			<td><g:textField name="search.obj.urn" value="${params.search?.obj?.urn}" size="50" class="input-hoehe"/></td>
 	            		</tr>
 	            			<tr>
 	            			<td>Identifier:</td>
-	            			<td><g:textField name="search.obj.identifier" value="${params.search?.obj?.identifier}" size="50"/></td>
+	            			<td><g:textField name="search.obj.identifier" value="${params.search?.obj?.identifier}" size="50" class="input-hoehe"/></td>
 	            		</tr>
 	           			<tr>
 	            			<td>Contractor:</td>
@@ -133,8 +134,8 @@
 	            		<tr>
 	            			<td></td>
 	            			<td>
-	            				<g:submitButton name="submit" value="Filter anwenden"/>
-		           				<g:submitButton name="loeschen" type="submit" value="Filter löschen"/>
+	            				<g:submitButton class="style-buttons" name="submit" value="Filter anwenden"/>
+		           				<g:submitButton class="style-buttons" name="loeschen" type="submit" value="Filter löschen"/>
 		           			</td>
 		           			<g:javascript>
 	           					$(document).ready(function(){
@@ -161,28 +162,39 @@
 	            		</tr>
 	            	</table>     
 	          </g:form>
-	           <script>
-					var acc = document.getElementsByClassName("accordion");
-					var i;
-					for (i = 0; i < acc.length; i++) {
-					    acc[i].onclick = function(){
-					        this.classList.toggle("active", true);
-					        var panel = this.nextElementSibling;
-					        if (panel.style.display == "block") {
-					            panel.style.display = "none";
-					        } else {
-					            panel.style.display = "block";
-					        }		
-					    }
-					}
-				</script>
+ 	          <script>  
+ 					var acc = document.getElementsByClassName("accordion");
+ 					var i;
+ 					for (i = 0; i < acc.length; i++) {
+ 					    acc[i].onclick = function(){
+ 					        this.classList.toggle("active", true);
+ 					        var panel = this.nextElementSibling;
+ 					        if (panel.style.display == "block") {
+ 					            panel.style.display = "none";
+ 					        } else {
+ 					            panel.style.display = "block";
+ 					        }		
+ 					    }
+ 					}
+  				</script> 
 	        </div>
+<!-- 			<g:if test="${  !params.search }"> -->
+<!-- 				<div class="page-body-input page-body-input-position"> -->
+<!-- 					<i>Aktualieseren der Seite:&nbsp; </i> -->
+<!-- 					<input id="stopper" class="style-start-stop" type="button" onclick="stopUpdater();disabled=true;" value="stoppen"/> -->
+<!-- 					 &nbsp; -->
+<!-- 					<input id="starter" class="style-start-stop" type="button" onclick="startUpdater();disabled=true;" disabled  value="starten"/> -->
+<!-- 	    		</div> -->
+<!-- 	    	</g:if> <br> -->
+			<g:if test="${flash.message}">
+				<div class="message" role="status">${flash.message}</div>
+			</g:if><br>
 			<!-- This div is updated through the periodical updater -->
 			<div class="list" id="entry-list">
 				<g:include action="listSnippet" />
 			</div>
-			<button class="accordionStatus">Hinweise zu den Statuscodes: </button>			
-				<div class="panel">
+			<button class="accordionStatus ">Hinweise zu den Statuscodes: </button>			
+				<div class="panel  abstand-oben">
 					<div>
 					<p style="font-style:italic">xx0 bedeutet "wartend", xx2: bezeichnet "arbeitend" - hingegen bezeichnen xx1,xx3,xx4,xx5,xx6,xx7,xx8 einen bestimmten Fehler, Genaueres hier: <a href="https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/administration-troubleshooting.de.md" target="err" >Fehlercodes</a></p> 
 					<table>

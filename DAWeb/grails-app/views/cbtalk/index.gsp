@@ -26,22 +26,24 @@
 		</g:javascript>
   <body>
 	<div class="page-body">
+		<div class="blue-box"></div>
+		<h2>Adminfunktionen</h2>
   		<div class="nav" role="navigation">
 			<ul>
-				<li><a class="list" href="${createLink(controller: 'conversionPolicies', action: 'index')}">Conversion Policies</a></li>
-				<li><a class="list" href="${createLink(controller: 'user', action: 'index')}">Users</a></li>
-				<li><a class="list" href="${createLink(controller: 'role', action: 'index')}">Roles</a></li>
-				<li><a class="list" href="${createLink(controller: 'userRole', action: 'index')}">UserRoles</a></li>
-				<li><a class="list" href="${createLink(controller: 'PreservationSystem', action: 'index')}">PreservationSystem</a></li>
+				<li><a class="list" href="${createLink(controller: 'conversionPolicies', action: 'index')}">Konfigurierte Konversionen</a></li>
+				<li><a class="list" href="${createLink(controller: 'user', action: 'index')}">Benutzer</a></li>
+				<li><a class="list" href="${createLink(controller: 'role', action: 'index')}">Rollen</a></li>
+				<li><a class="list" href="${createLink(controller: 'userRole', action: 'index')}">Benutzer-Rollen</a></li>
+				<li><a class="list" href="${createLink(controller: 'PreservationSystem', action: 'index')}">Bestandserhaltungs-System</a></li>
 				<li><a class="list" href="${createLink(controller: 'formatMapping', action: 'map')}">Format-Mapping</a></li>
 			</ul>
 		</div>
    
-	   	<h1>CbTalk</h1>
+	   	<h3>CbTalk</h3>
 	   	<g:if test="${flash.message}">
 	    	<div class="message">${flash.message}</div>
 	   	</g:if>
-	   	<g:form action="save" method="post">
+	   	<g:form action="save" method="post" class="abstand-unten admin-fkt-form">
 			<g:submitButton name="stopFactory" value="stop Factory" />
 			<g:submitButton name="startFactory" value="start Factory" /> 
 			<g:submitButton name="showActions" value="show Actions" /> 

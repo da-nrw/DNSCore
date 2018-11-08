@@ -12,7 +12,7 @@
 		<div class="message" role="status">${flash.message}</div>
 	</g:if><br>
 <table>
-	<thead>
+	<thead class="thead-line">
 		<tr>
 			
 			<th class="sortable field-id">

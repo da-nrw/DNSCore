@@ -1,23 +1,34 @@
 button.accordion, button.accordionStatus {
-    background-color: #eee;
-    color: #444;
-    cursor: pointer;
-    padding: 10px;
-    width: 100%;
-    border: none;
-    text-align: left;
-    outline: none;
-    font-size: 15px;
-    transition: 0.4s;
+   color: #ffffff;
+  background-color: #105F85;
+  border-color: #04546B;
+  cursor: pointer;
+  padding: 5px 10px 5px 10px;
+  width: 210px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  transition: 0.4s;
+  text-align: center;
 }
 
-button.accordion.active, button.accordion:hover, 
-button.accordionStatus.active, button.accordionStatus:hover {
+
+/*button.accordion.active, button.accordion:hover, 
+button.accordionStatus.active, button.accordionStatus:hover { 
+button.accordion.active, button.accordionStatus.active {
     background-color: #ddd; 
+}*/ 
+
+button.accordion:hover, button.accordionStatus:hover,
+button.accordion:active, button.accordionStatus:active {
+  color: #ffffff;
+  background-color: #15445A;
+  border-color: #04546B;
 }
+
 
 div.panel {
-    padding: 0 18px;
+/*     padding: 0 18px; */
     display: none;
     background-color: white;
     height: float; 

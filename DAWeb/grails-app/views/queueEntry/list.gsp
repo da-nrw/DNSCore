@@ -4,7 +4,7 @@
 	<head>
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'queueEntry.label', default: 'QueueEntry')}" />
-		<title>Status der Verarbeitung</title>
+		<title>Bearbeitungsübersicht</title>
  		<r:require modules="periodicalupdater, jqueryui"/> 
  		<jqui:resources/>
  		<asset:stylesheet src="accordion.css" />
@@ -55,14 +55,18 @@
 	</head>
 	<body>
 		<div class="page-body">
-			<h1 id="page-header">Bearbeitungsübersicht</h1> 	
+			<div class="blue-box"></div>
+			<h2 id="page-header">Bearbeitungsübersicht</h2> 	
 			<g:form controller="queueEntry" action="deleteSip">
 				<g:if test="${!params.search }">
-					<i>Aktualisieren der Seite:&nbsp; </i>
-					<input id="stopper" type="button" onclick="stopUpdater();this.disabled=true;" value="stoppen"/>
-					 &nbsp;
-					<input id="starter" type="button" onclick="startUpdater();this.disabled=true;" disabled value="starten"/> 
-					<button style="float: right;" onclick="return confirm ('Wirklich alle  fehlerhaften SIP löschen?')" >fehlerhafte SIP's löschen </button>
+  					<div class="page-body-input page-body-input-position">  
+						<i>Aktualisieren der Seite:&nbsp; </i>
+						<input id="stopper" class="style-start-stop" type="button" onclick="stopUpdater();this.disabled=true;" value="stoppen"/>
+						 &nbsp;
+						<input id="starter" class="style-start-stop" type="button" onclick="startUpdater();this.disabled=true;" disabled value="starten"/>
+						</div>
+						<button class="style-buttons bearbeitungsuebersicht-extra-btn" onclick="return confirm ('Wirklich alle  fehlerhaften SIP löschen?')" >Fehlerhafte SIP's löschen </button>
+						<br>
 				</g:if> <br>
 			</g:form>
 			<button class="accordion">Filter
@@ -86,25 +90,25 @@
 	           	<table>
 	           		<tr>
 	           			<td>Status:</td>
-	           			<td><g:textField name="search.status" value="${params.search?.status}" size="5"/></td>
+	           			<td><g:textField name="search.status" value="${params.search?.status}" size="5" class="input-hoehe"/></td>
 	              	</tr>  		
 	           	  	<tr>
 	           			<td>Originalname:</td>
-	           			<td><g:textField name="search.obj.origName" value="${params.search?.obj?.origName}" size="50"/></td>
+	           			<td><g:textField name="search.obj.origName" value="${params.search?.obj?.origName}" size="50" class="input-hoehe"/></td>
 	           		</tr>
 	           		<tr>
 	           			<td>URN:</td>
-	           			<td><g:textField name="search.obj.urn" value="${params.search?.obj?.urn}" size="50"/></td>
+	           			<td><g:textField name="search.obj.urn" value="${params.search?.obj?.urn}" size="50" class="input-hoehe"/></td>
 	           		</tr>
 	           		<tr>
 	           			<td>Identifier:</td>
-	           			<td><g:textField name="search.obj.identifier" value="${params.search?.obj?.identifier}" size="50"/></td>
+	           			<td><g:textField name="search.obj.identifier" value="${params.search?.obj?.identifier}" size="50" class="input-hoehe"/></td>
 	           		</tr>
 	           		<tr>
 	           			<td></td>
 	           			<td>
-		           			<g:submitButton name="submit" value="Filter anwenden"/>
-		           			<g:submitButton name="loeschen" type="submit" value="Filter löschen"/>
+		           			<g:submitButton class="style-buttons" name="submit" value="Filter anwenden"/>
+		           			<g:submitButton class="style-buttons" name="loeschen" type="submit" value="Filter löschen"/>
 	           			</td>
 	           			<g:javascript>
 		           			$(document).ready(function(){
@@ -151,9 +155,9 @@
 				</div>
 			</div>
 			<button class="accordionStatus">Hinweise zu den Statuscodes: </button>
-			<div class="panel">
+			<div class="panel abstand-oben">
 				<div>
-					<p style="font-style:italic">xx0 bedeutet "wartend", xx2: bezeichnet "arbeitend" - hingegen bezeichnen xx1,xx3,xx4,xx5,xx6,xx7,xx8 einen bestimmten Fehler, Genaueres hier: <a href="https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/administration-troubleshooting.de.md" target="err" >Fehlercodes</a></p> 
+					<p style="font-style:italic">xx000 bedeutet "wartend", xx2: bezeichnet "arbeitend" - hingegen bezeichnen xx1,xx3,xx4,xx5,xx6,xx7,xx8 einen bestimmten Fehler, Genaueres hier: <a href="https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/administration-troubleshooting.de.md" target="err" >Fehlercodes</a></p> 
 					<table>
 						<tr><th>Statuscode</th><th>Kurzbezeichnung</th><th>Beschreibung</th></tr>
 						<tr><td>110</td><td>IngestUnpackAction</td><td>Auspacken & Vollständigkeitstests</td></tr>
