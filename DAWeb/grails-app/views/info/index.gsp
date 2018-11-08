@@ -20,8 +20,8 @@
 			<div class="blue-box"></div>
 			<h2>Hinweise zur Ansteuerung über externe Systeme (REST)</h2>
 			<ul class="style-funktion">
-				<li class="controller"><g:link controller="automatedRetrieval">Erstellung von Retrievalanfragen </g:link></li>
-				<li class="controller"><g:link controller="status" action="teaser">Abfrage der Verarbeitung und Archivierung</g:link></li>
+				<li class="controller controller-Abstand-links"><g:link controller="automatedRetrieval">Erstellung von Retrievalanfragen</g:link></li>
+				<li class="controller controller-Abstand-links"><g:link controller="status" action="teaser">Abfrage der Verarbeitung und Archivierung</g:link></li>
 			</ul>
 		</div>
 	</div>

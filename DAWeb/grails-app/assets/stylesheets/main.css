@@ -15,7 +15,7 @@ html {
 	background-image: -moz-linear-gradient(center top, #aaa, #ddd);
 	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #aaa), color-stop(1, #ddd));
 	background-image: linear-gradient(top, #aaa, #ddd);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#aaaaaa', EndColorStr = '#dddddd');
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#505050', EndColorStr = '#dddddd');
 	background-repeat: no-repeat;
 	height: 100%;
 	/* change the box model to exclude the padding from the calculation of 100% height (IE8+) */
@@ -56,7 +56,7 @@ body {
 }
 
 /* 
- *	neue Elemente vonn Überarbeitung der CSS 29.10.2018 
+ *	neue Elemente von Überarbeitung der CSS 29.10.2018 
  */
 
 #login .inner {
@@ -74,7 +74,7 @@ body {
 
 #login .inner .login_message {
     padding: 6px 25px 20px 25px;
-    color: #a70000;
+    color: #a70000 !important;
 }
 
 .fheader {
@@ -376,8 +376,12 @@ ul li.controller a:hover{
 	margin-top: 15px;
 }
 
+.thead-line{
+	border-bottom: 1px solid #dfdfdf;
+}
+
 .style-btn-2 {
-    border: 1px solid #cccccc;
+    border: 1px solid #505050;
     color: #ffffff;
     background-color: #105F85;
     border-color: #04546B;
@@ -462,10 +466,16 @@ input.button-json:hover {
     color: #505050;
     margin-top: 10px;
 }
+
 .cbtalk-ausgabe{
 	width: 800px; 
 	height: 300px;
 }
+
+.controller-Abstand-links{
+	margin-left: 0px !important;
+}
+
 /* 
  *	Ende css - Überarbeitung
  */
@@ -607,7 +617,7 @@ img {
 /* } */
 
 /* .content h1 { */
-/* 	border-bottom: 1px solid #CCCCCC; */
+/* 	border-bottom: 1px solid #505050; */
 /* 	margin: 0.8em 1em 0.3em; */
 /* 	padding: 0 0.25em; */
 /* } */
@@ -817,8 +827,8 @@ label {
 }
 
 input, select, textarea {
-	background-color: #fcfcfc;
-	border: 1px solid #cccccc;
+	background-color: #ffffff;
+	border: 1px solid #505050;
 	font-size: 1em;
 	padding: 0.2em 0.4em;
 }
@@ -854,12 +864,13 @@ input:focus, select:focus, textarea:focus {
 }
 
 .required-indicator {
-	color: #48802C;
+	color: #305C1A; 
 	display: inline-block;
 	font-weight: bold;
 	margin-left: 0.3em;
 	position: relative;
 	top: 0.1em;
+	font-size: 15px;
 }
 
 ul.one-to-many {
@@ -881,7 +892,7 @@ ul.one-to-many li.add {
 
 fieldset.embedded {
 	background-color: transparent;
-	border: 1px solid #CCCCCC;
+	border: 1px solid #505050;
 	margin-left: 0;
 	margin-right: 0;
 	padding-left: 0;
@@ -1050,6 +1061,7 @@ th.sortable a:hover {
     color: #ffffff;
     background-color: #15445A;
     border-color: #04546B;
+    height: 23px;
 }
 
 th.asc a {
@@ -1108,7 +1120,7 @@ th:hover, tr:hover {
 
 .pagination {
 	border-top: 0;
-	margin: 0;
+	margin: 10px 0 0 0;
 	padding: 0.3em 0.2em;
 	text-align: center;
 	-moz-box-shadow: 0 0 3px 1px #505050; /* New */
@@ -1157,9 +1169,9 @@ th:hover, tr:hover {
 .buttons {
 	background-color: #ffffff;
     padding: 0.5em 0.75em;
-    -moz-box-shadow: 0 0 3px 1px #aaaaaa;
-    -webkit-box-shadow: 0 0 3px 1px #aaaaaa;
-    box-shadow: 0 0 3px 1px #aaaaaa;
+    -moz-box-shadow: 0 0 3px 1px #505050;
+    -webkit-box-shadow: 0 0 3px 1px #505050;
+    box-shadow: 0 0 3px 1px #505050;
     zoom: 1;
     height: 50px;
     margin-top: 15px;

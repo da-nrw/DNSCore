@@ -15,10 +15,10 @@
 				<table>
 				    <g:form controller="object" action="listObjects">
 	            		<tr>
-	            			<td style="width:10%">Format:</td>
+	            			<td style="width:5%; padding-left: 0px;">Format:</td>
 	            			<td style="width:10%"><g:textField name="most_recent_formats" value="${params.most_recent_formats}" size="30" class="input-hoehe"/></td>
 	            			<td style="width:10%">Metadatenformat:</td>
-	            			<td style="width:20%"><g:textField name="most_recent_secondary_attributes" value="${params.most_recent_secondary_attributes}" size="15" class="input-hoehe"/></td>
+	            			<td style="width:20%"><g:textField name="most_recent_secondary_attributes" value="${params.most_recent_secondary_attributes}" size="30" class="input-hoehe"/></td>
 	            			<td><g:actionSubmit value="suchen" action="listObjectsSearch" class="style-buttons"/> </td>
 	            			<td> ${suLeer}</td>
 	            		</tr>
@@ -29,7 +29,7 @@
 			   <g:formRemote name="myForm" on404="alert('not found!')" url="[controller: 'object', action:'listObjects']"  onLoaded="queuedFor(data)">
 			    <div style="overflow:auto; height: 600px">
 	             <table>
-					 <thead>							
+					 <thead class="thead-line">							
 						<tr>
 	  					   <g:sortableColumn property="identifier" title="${message(code: 'object.identifier', default: 'Identifier')}" />
 						   <g:sortableColumn property="urn" title="${message(code: 'object.urn.label', default: 'Urn')}"  />	

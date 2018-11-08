@@ -53,7 +53,7 @@
 		       		</div>
 				</g:uploadForm><br>
 				
-				(Spaltenkopf: identifier;origName;statuscode;createddate;updateddate;erfolg;bemerkung; semikolongetrennt, EXCEL)	
+				(<strong>Spaltenkopf:</strong> identifier;origName;statuscode;createddate;updateddate;erfolg;bemerkung; </br>semikolongetrennt, EXCEL)	
 				<script language="JavaScript">
 				function toggle(source) {
 					  checkboxes = document.getElementsByName('currentFiles');
