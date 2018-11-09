@@ -1,5 +1,6 @@
 package de.uzk.hki.da.at;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -62,6 +63,17 @@ public class ATIngestLav extends AcceptanceTest {
 		assertTrue("ddbExcluded have to be false",!ath.getObject(urn1).ddbExcluded());
 		assertTrue("ddbExcluded have to be false",!ath.getObject(urn2).ddbExcluded());
 		assertTrue("ddbExcluded have to be false",!ath.getObject(urn3).ddbExcluded());
+	}
+	
+	@Test
+	public void testAIPSize() throws IOException, JDOMException {
+		System.out.println(urn1 + " filesize: "+ath.getObject(urn1).getAip_size());
+		System.out.println(urn2 + " filesize: "+ath.getObject(urn2).getAip_size());
+		System.out.println(urn3 + " filesize: "+ath.getObject(urn3).getAip_size());
+		
+		assertEquals("Wrong File Size",ath.getObject(urn1).getAip_size(),655360);
+		assertEquals("Wrong File Size",ath.getObject(urn2).getAip_size(),849920);
+		assertEquals("Wrong File Size",ath.getObject(urn3).getAip_size(),952320);
 	}
 	
 	@AfterClass
