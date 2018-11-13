@@ -52,15 +52,6 @@ dependencyManagement {
 
 dependencies {
     compile group: 'org.grails', name: 'grails-dependencies', version:'3.2.11'
-//    compile(group: 'org.apache.activemq', name: 'activemq-client', version:'5.13.5') {
-//		exclude(module: 'slf4j-api')
-//		exclude(module: 'org.slf4j')
-//		exclude(module: 'xalan')
-//		exclude(module: 'xml-apis')
-//		exclude(module: 'activemq-openwire-generator')
-//		exclude(module: 'commons-logging')
-//		exclude(module: 'spring-context')
-//    }
     compile(group: 'org.quartz-scheduler', name: 'quartz', version:'2.2.1') {
 		exclude(module: 'c3p0')
     }
@@ -150,3 +141,42 @@ assets {
 	minifyJs = true
 	minifyCss = true
 }
+
+//war {
+//	manifest {
+//		attributes(
+//			'Built-By'       : System.properties['user.name'],
+//			'Build-Timestamp': new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(new Date()),
+//			'Build-Revision' : versioning.info.commit,
+//			'Created-By'     : "Gradle ${gradle.gradleVersion}",
+//			'Build-Jdk'      : "${System.properties['java.version']} (${System.properties['java.vendor']} ${System.properties['java.vm.version']})",
+//			'Build-OS'       : "${System.properties['os.name']} ${System.properties['os.arch']} ${System.properties['os.version']}"
+//		)
+//	}
+//}
+
+war {
+	def scmRevisionNumber = System.getenv("GIT_COMMIT")
+	if (!scmRevisionNumber) {
+		scmRevisionNumber = System.getProperty('build.revision', 'UNKNOWN')
+	}
+	def buildNumber = System.getenv("BUILD_NUMBER")
+	if (!buildNumber) {
+		buildNumber = System.getProperty('build.number', 'UNKNOWN')
+	}
+  manifest {
+		attributes(
+			'Build-Time'					:  new java.text.SimpleDateFormat("EEEEE dd MMMMM yyyy HH:mm:ss").format(new Date()),
+			'Name'			 				: "Grails Application",
+			'Implementation-Title'			: "daweb3",
+		 	'Implementation-Version'		: grailsAppVersion, //System.getenv("scmRevisionEnvironment"),
+			'Grails-Version'				: grailsVersion,
+			'Implementation-Build-Number'	: buildNumber , //System.getenv("BUILD_NUMBER"),
+			'Implementation-SCM-Revision'	: scmRevisionNumber //System.getenv("GIT_COMMIT")
+		)
+	}
+}
+
+
+
+
