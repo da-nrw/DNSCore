@@ -158,9 +158,26 @@ war {
 			'Implementation-Title'			: "daweb3",
 		 	'Implementation-Version'		: grailsAppVersion, //System.getenv("scmRevisionEnvironment"),
 			'Grails-Version'				: grailsVersion,
-			'Implementation-Build-Number'	: buildNumber , //System.getenv("BUILD_NUMBER"),
+			'Implementation-Build-Number'	: buildNumber, //System.getenv("BUILD_NUMBER"),
 			'Implementation-SCM-Revision'	: scmRevisionNumber //System.getenv("GIT_COMMIT")
 		)
+	}
+	//includes
+}
+
+processResources { 
+	def scmRevisionNumber = System.getenv("GIT_COMMIT")
+	if (!scmRevisionNumber) {
+		scmRevisionNumber = System.getProperty('build.revision', 'UNKNOWN')
+	}
+	def buildNumber = System.getenv("BUILD_NUMBER")
+	if (!buildNumber) {
+		buildNumber = System.getProperty('build.number', 'UNKNOWN')
+	}
+	include '**/application.yml' 
+	filter{ String line ->
+		line.replace("app.version.buildNumber: ", "app.version.buildNumber: ${buildNumber}")
+		
 	}
 }
 
