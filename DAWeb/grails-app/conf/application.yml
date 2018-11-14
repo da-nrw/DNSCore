@@ -88,12 +88,14 @@ grails:
             # Whether to translate GORM events into Reactor events
             # Disabled by default for performance reasons
             events: false
+            
+app.version.buildNumber: 
+    
 info:
     app:
         name: 'daweb3'
         version: '0.1'
         grailsVersion: '3.2.11'
-        
 jms:
     containers:
         standard:
