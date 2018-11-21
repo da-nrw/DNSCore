@@ -1,5 +1,7 @@
 package de.uzk.hki.da.metadata;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +17,8 @@ import org.jdom.Namespace;
 import org.jdom.xpath.XPath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.sun.org.apache.xerces.internal.util.URI;
 
 import de.uzk.hki.da.utils.C;
 import  de.uzk.hki.da.metadata.NullLastComparator;
@@ -710,7 +714,13 @@ public class MetsParser{
 		List<String> references = new ArrayList<String>();
 		for(Element fileElement : fileElements) {
 			String ref = getHref(fileElement);
-			references.add(ref);
+			try {
+				references.add(URLDecoder.decode(ref, "UTF-8"));
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+				logger.error("Error at URL decoding step: "+e.getMessage(),e);
+				references.add(ref);
+			}
 			logger.debug("Found reference "+ref);
 		}
 		logger.debug("number of existing references "+references.size());
