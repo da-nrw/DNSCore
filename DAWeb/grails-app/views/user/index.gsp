@@ -29,7 +29,7 @@
 							
 								<g:sortableColumn property="email_contact" title="${message(code: 'user.email_contact.label', default: 'Emailcontact')}" />
 							
-								<g:sortableColumn property="shortName" title="${message(code: 'user.shortName.label', default: 'Short Name')}" />
+								<g:sortableColumn property="contractorShortName" title="${message(code: 'user.shortName.label', default: 'Short Name')}" />
 							
 								<g:sortableColumn property="username" title="${message(code: 'user.username.label', default: 'Username')}" />
 								
@@ -49,7 +49,7 @@
 							
 								<td><g:link action="show" id="${userInstance.id}">${fieldValue(bean: userInstance, field: "email_contact")}</g:link></td>
 							
-								<td>${fieldValue(bean: userInstance, field: "shortName")}</td>
+								<td>${fieldValue(bean: userInstance, field: "contractorShortName")}</td>
 							
 								<td>${fieldValue(bean: userInstance, field: "username")}</td>
 								

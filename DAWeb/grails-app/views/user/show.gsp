@@ -36,12 +36,10 @@
 					</li>
 					</g:if>
 				
-					<g:if test="${userInstance?.shortName}">
+					<g:if test="${userInstance?.contractorShortName}">
 					<li class="fieldcontain">
 						<span id="shortName-label" class="property-label"><g:message code="user.shortName.label" default="Short Name" /></span>
-						
-							<span class="property-value" aria-labelledby="shortName-label"><g:fieldValue bean="${userInstance}" field="shortName"/></span>
-						
+						<span class="property-value" aria-labelledby="shortName-label"><g:fieldValue bean="${userInstance}" field="contractorShortName"/></span>
 					</li>
 					</g:if>
 				

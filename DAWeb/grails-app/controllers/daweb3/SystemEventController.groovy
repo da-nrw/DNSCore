@@ -48,7 +48,7 @@ class SystemEventController {
 		ceu.setEncoding(response)
         respond SystemEvent.findAllByUserAndNode(user,node), 
 				model:[systemEventInstanceCount: SystemEvent.count(), 
-						user: user, admin: admin] 
+						user: user.username, admin: admin] 
 		
     }
 
@@ -74,7 +74,7 @@ class SystemEventController {
 		se.setNode(node)
 		se.setUser(user)
 		ceu.setEncoding(response)
-        respond se, model:[user:user, admin: admin]
+        respond se, model:[user:user.username, admin: admin]
     }
 
     @Transactional
@@ -110,7 +110,7 @@ class SystemEventController {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'systemEventInstance.label', default: 'SystemEvent'), systemEventInstance.id])
                 redirect systemEventInstance
             }
-            '*' { respond systemEventInstance, [status: CREATED] , [user:user, admin: admin] }
+            '*' { respond systemEventInstance, [status: CREATED] , [user:user.username, admin: admin] }
         }
     }
 

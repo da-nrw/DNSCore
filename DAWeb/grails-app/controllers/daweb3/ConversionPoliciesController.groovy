@@ -67,7 +67,7 @@ class ConversionPoliciesController {
 		
         [conversionPoliciesInstanceList: ConversionPolicies.list(params), 
 			conversionPoliciesInstanceTotal: ConversionPolicies.count(),
-			formatMappList : fmMap, user:user, admin: admin]
+			formatMappList : fmMap, user:user.username, admin: admin]
     }
 
 	@Secured(['ROLE_PSADMIN'])
@@ -77,7 +77,7 @@ class ConversionPoliciesController {
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			admin = 1;
 		}
-        [conversionPoliciesInstance: new ConversionPolicies(params), admin: admin, user: user]
+        [conversionPoliciesInstance: new ConversionPolicies(params), admin: admin, user: user.username]
 	}
 
 	@Secured(['ROLE_PSADMIN'])
@@ -118,7 +118,7 @@ class ConversionPoliciesController {
 				
         if (!conversionPoliciesInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'conversionPolicies.label', default: 'ConversionPolicies'), id])
-            redirect(action: "list", model:[user:user, admin:adminAnzeige])
+            redirect(action: "list", model:[user:user.username, admin:adminAnzeige])
             return
         } 
 		
@@ -132,7 +132,7 @@ class ConversionPoliciesController {
 		mapping = fm.findAll("from FormatMapping where puid = :puid", [puid : conversionPoliciesInstance.source_format])
 		ext = mapping.extension
 		
-        [conversionPoliciesInstance: conversionPoliciesInstance, adminAllg: admin, admin: adminAnzeige, user: user,
+        [conversionPoliciesInstance: conversionPoliciesInstance, adminAllg: admin, admin: adminAnzeige, user: user.username,
 			extension : ext.replace("[", "").replace("]","")]
     }
 
@@ -147,11 +147,11 @@ class ConversionPoliciesController {
 		def conversionPoliciesInstance = ConversionPolicies.get(id)
 	    if (!conversionPoliciesInstance) {
 	        flash.message = message(code: 'default.not.found.message', args: [message(code: 'conversionPolicies.label', default: 'ConversionPolicies'), id])
-	        redirect(action: "list", model:[admin: admin, user: user])
+	        redirect(action: "list", model:[admin: admin, user: username])
 	        return
 	    }
 
-        [conversionPoliciesInstance: conversionPoliciesInstance, admin: admin, user: user]
+        [conversionPoliciesInstance: conversionPoliciesInstance, admin: admin, user: username]
     } 
 
 	@Secured(['ROLE_PSADMIN'])

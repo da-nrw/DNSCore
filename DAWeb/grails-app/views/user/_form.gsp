@@ -8,12 +8,12 @@
 	<g:textField name="email_contact" required="" value="${userInstance?.email_contact}" class="input-hoehe"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'shortName', 'error')} required">
+<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'contractorShortName', 'error')} required">
 	<label for="shortName">
-		<g:message code="user.shortName.label" default="Short Name" />
+		<g:message code="user.contractorShortName.label" default="Short Name" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="shortName" required="" value="${userInstance?.shortName}" class="input-hoehe"/>
+	<g:textField name="contractorshortName" required="" value="${userInstance?.contractorShortName}" class="input-hoehe"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'username', 'error')} required">

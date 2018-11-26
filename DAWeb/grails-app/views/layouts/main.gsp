@@ -151,6 +151,16 @@
 						<li><g:link controller="systemEvent">System-Eventsteuerung</g:link></li>
 					</g:else>
 					
+					<!--  Benutzer verwalten neue Funktionalität: 1 Contractor mehrere Benutzer -->
+					<g:if test="${admin==0}">
+	  					<g:if test="${controllerName=='user'}">  
+							<li class="aktuell"><g:link controller="user" action="indexUser">Benutzer verwalten</g:link></li>
+						</g:if>
+						<g:else>	
+							<li><g:link controller="user" action="indexUser">Benutzer verwalten</g:link></li>
+						</g:else>
+					</g:if>
+					
 					<!-- Adminfunktionen -->
 					<g:if test="${admin==1}">
 						<g:if test="${controllerName=='cbtalk' || controllerName=='user' || controllerName=='role' 

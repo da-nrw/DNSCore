@@ -37,7 +37,7 @@ class User  implements Serializable {
 	 transient springSecurityService
 	 
 	 int id
-	 String shortName
+	 String contractorShortName
 	 
 	 String username 
 	 String password 
@@ -65,7 +65,7 @@ class User  implements Serializable {
 
 	static constraints = {
 		email_contact blank: false
-		shortName blank: false, unique: true
+		contractorShortName blank: false //, unique: true
 		username blank: false, unique: true
 		password blank: false, password:true
 		description(nullable:true)
@@ -86,6 +86,7 @@ class User  implements Serializable {
 		deltaOnUrn column: 'delta_on_urn'
 		friendly_file_exts column: 'friendly_file_exts'
 		provider_type column:'provider_type' //DANRW-1446
+		contractorShortName column: 'short_name'
 	}
 	
 	Set<Role> getAuthorities() { 
@@ -110,6 +111,6 @@ class User  implements Serializable {
 	static transients = ['springSecurityService']
 
 	String toString() {
-		return "$shortName"
+		return "$contractorShortName"
 	}
 }

@@ -202,7 +202,7 @@ class StatusController {
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			admin = 1;
 		}
-		[user: user, admin: admin]
+		[user: user.username, admin: admin]
 	}
 	
 	

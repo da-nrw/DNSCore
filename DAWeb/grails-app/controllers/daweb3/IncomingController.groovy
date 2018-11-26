@@ -34,9 +34,9 @@ class IncomingController {
 	def springSecurityService
 	
     def index = { 
-		def user = springSecurityService.currentUser
+		def user = springSecurityService.currentUser 
 		
-		def relativeDir = user.getShortName() + "/incoming"
+		def relativeDir = user.getContractorShortName() + "/incoming"
 		def baseFolder =  grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
 //		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
 		def msg = ""
@@ -70,7 +70,7 @@ class IncomingController {
 		}
 			[filelist:filelist,
 			 msg:msg,
-			 user: user, admin: admin]
+			 user: user.username, admin: admin]
 	}
 	
 	def save = {
@@ -83,9 +83,9 @@ class IncomingController {
 			 log.info "Datei ${it}" 
 			 
 			 File source = new File(grailsApplication.config.getProperty('localNode.userAreaRootPath') +"/" 
-				 		+ user.getShortName() + "/incoming/" + it);
+				 		+ user.getContractorShortName() + "/incoming/" + it);
 			File target =  new File(grailsApplication.config.getProperty('localNode.ingestAreaRootPath')
-				 		+"/"+user.getShortName() + "/"+ it)
+				 		+"/"+user.getContractorShortName() + "/"+ it)
 			if (target.exists()) {
 				msg = "Datei existiert bereits ${it}"
 				[msg:msg]

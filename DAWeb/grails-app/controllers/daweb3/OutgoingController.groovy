@@ -33,7 +33,7 @@ class OutgoingController {
 	
     def index() {
 		def user = springSecurityService.currentUser
-		def relativeDir = user.getShortName() + "/outgoing"
+		def relativeDir = user.getContractorShortName() + "/outgoing"
 		def baseFolder = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
 		def baseDir
 		def filelist = []
@@ -60,7 +60,7 @@ class OutgoingController {
 		}
 		[filelist:filelist,
 			msg:msg,
-			user:user, admin:admin]
+			user:user.username, admin:admin]
 
 		
 	}
@@ -71,8 +71,8 @@ class OutgoingController {
 		def idn = params.filename.substring(0,params.filename.length()-4)
 		log.debug("Setting read status of object <" + idn + ">")
 		User user = springSecurityService.currentUser
-		def que = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn and q.obj.identifier=:idn",
-             [csn: user.getShortName(),
+		def que = QueueEntry.findAll("from QueueEntry as q where q.obj.user.contractorShortName=:csn and q.obj.identifier=:idn",
+             [csn: user.getContractorShortName(),
 				idn: idn])
 		que.each {
 			
@@ -86,7 +86,7 @@ class OutgoingController {
 		}
 		def redirecturl = request.getHeader('referer');
 		if (grailsApplication.config.transferNode.downloadLinkPrefix && grailsApplication.config.getProperty('transferNode.downloadLinkPrefix').trim().length() > 0) {
-			redirecturl = grailsApplication.config.getProperty('transferNode.downloadLinkPrefix') +"/"+   user.getShortName()  + "/outgoing/" + params.filename
+			redirecturl = grailsApplication.config.getProperty('transferNode.downloadLinkPrefix') +"/"+   user.getContractorShortName()  + "/outgoing/" + params.filename
 		}
 		redirect(url:redirecturl)
 	}

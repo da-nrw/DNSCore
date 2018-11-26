@@ -36,7 +36,7 @@ class AutomatedRetrievalController {
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			admin = 1;
 		}
-		[user: user, admin:admin]
+		[user: user.username, admin:admin]
 	}
     
 	
@@ -51,7 +51,7 @@ class AutomatedRetrievalController {
 		def instance = Object.findByIdentifier(jsonObject['identifier'])
 		try {
 		if (instance!=null) {
-			if (instance.user.shortName != user.getShortName()) {
+			if (instance.user.shortName != user.getContractorShortName()) {
 				result.msg = "Sie haben nicht die nötigen Berechtigungen, um das Objekt " + jsonObject['identifier'] + " anzufordern!"
 				render result as JSON
 				return
@@ -64,7 +64,7 @@ class AutomatedRetrievalController {
 		}
 		instance = Object.findByUrn(jsonObject['urn'])
 		if (instance!=null) {
-			if (instance.user.shortName != user.getShortName()) {
+			if (instance.user.shortName != user.getContractorShortName()) {
 				result.msg = "Sie haben nicht die nötigen Berechtigungen, um das Objekt "+ jsonObject['urn'] + " anzufordern!"
 				render result as JSON
 				return
@@ -77,7 +77,7 @@ class AutomatedRetrievalController {
 		}
 		instance = Object.findByOrigName(jsonObject['origName'])
 		if (instance!=null) {
-			if (instance.user.shortName != user.getShortName()) {
+			if (instance.user.shortName != user.getContractorShortName()) {
 				result.msg = "Sie haben nicht die nötigen Berechtigungen, um das Objekt "+ jsonObject['origName'] + " anzufordern!"
 				render result as JSON
 				return

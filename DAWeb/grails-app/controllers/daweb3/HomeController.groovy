@@ -34,12 +34,11 @@ class HomeController {
 	
 	def springSecurityService
 	def index() {
-		def username = springSecurityService.currentUser
+		def username = springSecurityService.currentUser.username
 		def admin = 0;
 		def adminAnzeige = 0;
 		
-		User us = springSecurityService.currentUser
-		
+		//User us = springSecurityService.currentUser
 		User user = User.findByUsername(username)
 		
 		if (user.authorities.any { it.authority == "ROLE_PSADMIN"}) {
@@ -52,7 +51,7 @@ class HomeController {
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			adminAnzeige = 1;
 		}
-
+		
 		render(view:"/index", model:[admin:adminAnzeige,user:username])
 	}
 

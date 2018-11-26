@@ -49,6 +49,7 @@ class QueueEntryController {
 		def contractorList
 		def cbNodeList = CbNode.list()
 		User user = springSecurityService.currentUser
+		def username =  user.username
 		def admin = 0;
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			admin = 1;
@@ -56,29 +57,30 @@ class QueueEntryController {
 		if (admin == 1) {	
 			contractorList = User.list()
 		} else {
-			contractorList = User.findAll("from User as c where c.shortName=:csn",
-	        [csn: user.getShortName()])
+			contractorList = User.findAll("from User as c where c.contractorShortName=:csn",
+	        [csn: user.getContractorShortName()])
 		}
 		
 		[contractorList:contractorList,
 		cbNodeList:cbNodeList,
-		user:user]
+		user:username]
 		
 		// different List View per Role
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			
 		render(view:"adminList", model:[contractorList:contractorList,
-		cbNodeList:cbNodeList, user:user, admin: admin ]);
+		cbNodeList:cbNodeList, user:username, admin: admin ]);
 		} else {
 			render (view:"list", model:[contractorList:contractorList,
 						cbNodeList:cbNodeList,
-						user:user, admin: admin]);
+						user:username, admin: admin]);
 		}
 	}
     
 
     def listSnippet() {
 		User us = springSecurityService.currentUser
+		def username =  us.username
     	def queueEntries = null	
 		def periodical = true;	
 		def contractorList = User.list()
@@ -90,9 +92,9 @@ class QueueEntryController {
 		if (!params.search){
 				
 			if (admin != 1) {
-				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn "
+				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.contractorShortName=:csn "
 					+ (params.sort ? " order by q.${params.sort} ${params.order}": ''),
-	             [csn: us.getShortName()]
+	             [csn: us.getContractorShortName()]
 				 )
 			} else {
 				admin = 1;
@@ -140,7 +142,7 @@ class QueueEntryController {
 						obj {
 								
 								user {
-									eq("shortName", us.getShortName())								
+									eq("contractorShortName", us.getContractorShortName())								
 								}
 						}
 					}
@@ -151,7 +153,7 @@ class QueueEntryController {
 						projections {
 							obj {
 									user {
-										eq("shortName", params.search.user)
+										eq("contractorShortName", params.search.user)
 									}
 								}
 							}	
@@ -165,10 +167,10 @@ class QueueEntryController {
 		if (us.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 				render(view:"adminListSnippet", model:[queueEntryInstanceList: queueEntries, 
 						admin:admin, periodical:periodical, 
-						contractorList:contractorList, user:us]);
+						contractorList:contractorList, user:username]);
 		} else render(view:"listSnippet", model:[queueEntryInstanceList: queueEntries, 
 						admin:admin, periodical:periodical,
-						contractorList:contractorList, user:us]);
+						contractorList:contractorList, user:username]);
     }
 	
 	/** 
@@ -343,6 +345,7 @@ class QueueEntryController {
 	def listRequests () {
 		
 		User user = springSecurityService.currentUser
+		def username =  user.username
 		def queueEntries
 		def admin = 0;
 		def adminAnzeige = 0;
@@ -359,14 +362,14 @@ class QueueEntryController {
 		
 		if (params.search==null){
 			if (admin != 1) {
-				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn and q.question is not null and q.question !='' and (q.status like '%5' OR q.status like '%4')",
-				 [csn: user.shortName])
+				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.contractorShortName=:csn and q.question is not null and q.question !='' and (q.status like '%5' OR q.status like '%4')",
+				 [csn: user.contractorShortName])
 			} else {
 				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.question is not null and q.question !='' and (q.status like '%5' OR q.status like '%4')")
 				
 			}
 			[queueEntryInstanceList: queueEntries,
-				admin:adminAnzeige, user:user ]
+				admin:adminAnzeige, user:username ]
 		}
 	}
 	/**
@@ -406,13 +409,13 @@ class QueueEntryController {
 		User us = springSecurityService.currentUser
 		def queueEntries = null
 		
-		log.info("fehlerhafte SIP's des Contractors "  + us.getShortName()) +  " werden gelöscht.";
+		log.info("fehlerhafte SIP's des Contractors "  + us.getContractorShortName()) +  " werden gelöscht.";
 		def contractorList = User.list()
 			try {
-			   queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn" + 
+			   queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.contractorShortName=:csn" + 
 				   " and q.status < '400' and ( q.status like ('%1') or q.status like ('%3') " + 
 				   " or  q.status like ('%4') or q.status like ('%6')) ", 
-             [csn: us.getShortName()]
+             [csn: us.getContractorShortName()]
 			 )
 			 flash.message = " (" + queueEntries.size() + ") Pakete zur Löschung vorgesehen! "
 			queueEntries.each {

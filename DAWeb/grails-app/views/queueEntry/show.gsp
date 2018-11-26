@@ -62,10 +62,10 @@
 						
 					</li>
 				</g:if>
-				<g:if test="${queueEntryInstance?.obj.getUser().getShortName()}">
+				<g:if test="${queueEntryInstance?.obj.getUser().getContractorShortName()}">
 					<li class="fieldcontain">
 						<span id="contractorShortName-label" class="property-label"><g:message code="queueEntry.contractorShortName.label" default="Contractor Short Name" /></span>
-						<span class="property-value" aria-labelledby="contractorShortName-label">${queueEntryInstance?.obj.getUser().getShortName()}</span>
+						<span class="property-value" aria-labelledby="contractorShortName-label">${queueEntryInstance?.obj.getUser().getContractorShortName()}</span>
 					</li>
 				</g:if>
 				<g:if test="${queueEntryInstance?.createdAt}">

@@ -29,19 +29,20 @@ class UserController {
     
 	static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 	static CharacterEncodingUtils  ceu = new CharacterEncodingUtils()
-	
     def index(Integer max) {
 		def user = springSecurityService.currentUser
 		def admin = 0;
-		
+					
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			admin = 1;
 		}
         params.max = Math.min(max ?: 10, 100)
 		ceu.setEncoding(response)
         respond User.list(params), model:[userInstanceCount: User.count(), user:user, admin:admin]
+		
     }
 
+	
     def show(User userInstance) {
 		def user = springSecurityService.currentUser
 		def admin = 0;
@@ -98,7 +99,8 @@ class UserController {
 		ceu.setEncoding(response)
         respond userInstance, model:[ user:user, admin:admin ]
     }
-
+	
+	
     @Transactional
     def update(User userInstance) {
 		
@@ -146,7 +148,7 @@ class UserController {
             '*'{ render status: NO_CONTENT }
         }
     }
-
+	
     protected void notFound() {
         request.withFormat {
             form {
@@ -156,4 +158,59 @@ class UserController {
             '*'{ render status: NOT_FOUND }
         }
     }
+	
+	/*
+	 * 
+	 * DANRW-1568: zu einem Contractor soll es mehrere Benutzer geben. Nun soll jeder Benutzer
+	 * 			   seine Benutzerdaten selber pflegen können 
+	 */
+	
+	def indexUser() {
+		def user = springSecurityService.currentUser;
+		def admin = 0;
+		def userInstance;
+		userInstance = User.find("from User as c where c.username=:usn", [usn: user.getUsername()])
+		render (view: 'indexUser',  model: [user:user.username, admin:admin, userInstance:userInstance]);
+		
+	}
+	
+	def editUser(User userInstance) {
+		def user = springSecurityService.currentUser
+		def admin = 0;
+		
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
+		ceu.setEncoding(response)
+		respond userInstance, model:[ user:user.username, admin:admin ]
+	}
+
+	def cancelUser() {
+		redirect(action: "indexUser", id: params.id)
+	}
+	
+	@Transactional
+	def updateUser(User userInstance) {
+		ceu.setEncoding(response)
+		if (userInstance == null) {
+			notFound()
+			return
+		}
+		
+		if (userInstance.hasErrors()) {
+			respond userInstance.errors, view:'editUser'
+			return
+		}
+		
+		userInstance.save flush:true
+		
+		request.withFormat {
+			form {
+				flash.message = message(code: 'default.updated.message', args: [message(code: 'User.label', default: 'User'), userInstance.id])
+				redirect (params: [User: userInstance], action:"indexUser")
+			}
+			
+			'*User'{ respond userInstance, [status: OK], view: indexUser }
+		}
+	}
 }

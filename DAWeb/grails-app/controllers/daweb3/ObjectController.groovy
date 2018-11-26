@@ -144,10 +144,11 @@ class ObjectController {
 		} else {
 		
 			User user = springSecurityService.currentUser
+			def username =  user.username
 	
 			def contractorList = User.list()
 			def admin = 0;
-			def relativeDir = user.getShortName() + "/outgoing"
+			def relativeDir = user.getContractorShortName() + "/outgoing"
 			def filterOn = params.filterOn;
 			if (filterOn==null) filterOn=0
 			def objArt = "gesamten"
@@ -231,7 +232,7 @@ class ObjectController {
 						if	( !params.searchContractorName.isEmpty() || params.searchContractorName != "") {
 							filterOn=1
 							createAlias( "user", "c" )
-							eq("c.shortName", params.searchContractorName)
+							eq("c.contractorShortName", params.searchContractorName)
 						}
 					}
 				}
@@ -261,7 +262,7 @@ class ObjectController {
 					admin: admin,
 					baseFolder: baseFolder,
 					contractorList: contractorList,
-					user: user ,
+					user: username ,
 					objArt: objArt
 				]);
 			} else render(view:"list", model:[	objectInstanceList: objects,
@@ -274,7 +275,7 @@ class ObjectController {
 					totalObjs: totalObjs,
 					baseFolder: baseFolder,
 					contractorList: contractorList,
-					user: user ,
+					user: username,
 					objArt: objArt
 				]);
 		}
@@ -403,7 +404,7 @@ class ObjectController {
 				result.msg += "${object.urn} - NICHT GEFUNDEN. "
 				result.success = false
 			} else {
-				if (object.user.shortName != user.getShortName()) {
+				if (object.user.contractorShortName != user.getContractorShortName()) {
 					result.msg += "${object.urn} - KEINE BERECHTIGUNG. "
 					result.success = false
 				} else {
@@ -437,7 +438,7 @@ class ObjectController {
 			result.msg = "Das Objekt ${object.urn} konnte nicht gefunden werden!"
 		}
 		else {
-			if (object.user.shortName != user.getShortName()) {
+			if (object.user.contractorShortName != user.getContractorShortName()) {
 				
 				result.msg = "Sie haben nicht die nötigen Berechtigungen, um das Objekt ${object.urn} anzufordern!"
 
@@ -546,7 +547,7 @@ class ObjectController {
 
 		if (object != null) {
 
-			log.debug "object.contractor.shortName: " + object.user.shortName
+			log.debug "object.contractor.contractorShortName: " + object.user.contractorShortName
 
 			try {
 				def ids= grailsApplication.config.getProperty('localNode.id')
@@ -573,10 +574,11 @@ class ObjectController {
 	def getObjects(int status) {
 		
 		User user = springSecurityService.currentUser
-		
-		def contractorList = User.list()
+		def username =  user.username
+
+				def contractorList = User.list()
 		def admin = 0;
-		def relativeDir = user.getShortName() + "/outgoing"
+		def relativeDir = user.getContractorShortName() + "/outgoing"
 		def filterOn = params.filterOn;
 		if (filterOn==null) filterOn=0
 	
@@ -686,7 +688,7 @@ class ObjectController {
 					if	( !params.searchContractorName.isEmpty() || params.searchContractorName != "") {
 						filterOn=1
 						createAlias( "user", "c" )
-						eq("c.shortName", params.searchContractorName)
+						eq("c.contractorShortName", params.searchContractorName)
 					}
 				}
 			}
@@ -717,7 +719,7 @@ class ObjectController {
 				admin: admin,
 				baseFolder: baseFolder,
 				contractorList: contractorList,
-				user: user,
+				user: username,
 				objArt: objArt
 //				statusQueue: statusQueue
 			]);
@@ -731,7 +733,7 @@ class ObjectController {
 				totalObjs: totalArchivedObjects,
 				baseFolder: baseFolder,
 				contractorList: contractorList,
-				user: user,
+				user: username,
 				objArt: objArt
 //				statusQueue: statusQueue
 			]);

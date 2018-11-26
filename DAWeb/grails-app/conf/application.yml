@@ -55,6 +55,7 @@ grails:
               - {pattern: '/info/**', access: ['ROLE_CONTRACTOR']}
               - {pattern: '/conversionPolicies/**', access: ['ROLE_CONTRACTOR']}
               - {pattern: '/cbtalk/**', access: ['ROLE_NODEADMIN']}
+              - {pattern: '/user/*User/**', access: ['ROLE_CONTRACTOR']}
               - {pattern: '/user/**', access: ['ROLE_PSADMIN']}
               - {pattern: '/userRole/**', access: ['ROLE_PSADMIN']}
               - {pattern: '/role/**', access: ['ROLE_PSADMIN']}
