@@ -29,7 +29,7 @@
 							
 								<g:sortableColumn property="email_contact" title="${message(code: 'user.email_contact.label', default: 'Emailcontact')}" />
 							
-								<g:sortableColumn property="contractorShortName" title="${message(code: 'user.shortName.label', default: 'Short Name')}" />
+								<g:sortableColumn property="contractorShortName" title="${message(code: 'user.shortName.label', default: 'Contractor Name')}" />
 							
 								<g:sortableColumn property="username" title="${message(code: 'user.username.label', default: 'Username')}" />
 								

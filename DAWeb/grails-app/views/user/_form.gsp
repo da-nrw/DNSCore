@@ -10,10 +10,11 @@
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'contractorShortName', 'error')} required">
 	<label for="shortName">
-		<g:message code="user.contractorShortName.label" default="Short Name" />
+		<g:message code="user.contractorShortName.label" default="Contractor Name" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="contractorshortName" required="" value="${userInstance?.contractorShortName}" class="input-hoehe"/>
+<!-- 	<g:textField name="contractorshortName" required="" value="${userInstance?.contractorShortName}" class="input-hoehe"/> -->
+ 	<g:select id="contractor" required="" name="contractorShortName" from="${User.findAll().unique { it.contractorShortName.trim() }}" optionKey="contractorShortName" keys="${contractorList}" value="${userInstance?.contractorShortName}" noSelection="['':'-Bitte wählen-']" /> 
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'username', 'error')} required">
@@ -37,7 +38,7 @@
 		<g:message code="user.provider_type.label" default="Provider Type" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="providerType" name="provider_type" from="${['Archiv','Bibliothek','Museum']}" keys="${['Archiv','Bibliothek','Museum']}" value="${userInstance?.provider_type}" />
+	<g:select id="providerType" required="" name="provider_type" from="${['Archiv','Bibliothek','Museum']}" keys="${['Archiv','Bibliothek','Museum']}" value="${userInstance?.provider_type}" noSelection="['':'-Bitte wählen-']" />
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'friendly_file_exts', 'error')} ">

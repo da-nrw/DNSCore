@@ -20,6 +20,7 @@ package daweb3
 
 
 import static org.springframework.http.HttpStatus.*
+
 import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
@@ -29,6 +30,7 @@ class UserController {
     
 	static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 	static CharacterEncodingUtils  ceu = new CharacterEncodingUtils()
+	
     def index(Integer max) {
 		def user = springSecurityService.currentUser
 		def admin = 0;
@@ -42,7 +44,6 @@ class UserController {
 		
     }
 
-	
     def show(User userInstance) {
 		def user = springSecurityService.currentUser
 		def admin = 0;
@@ -61,6 +62,7 @@ class UserController {
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			admin = 1;
 		}
+		
 		ceu.setEncoding(response)
         respond new User(params),  model:[ user:user, admin:admin]
     }
@@ -96,8 +98,11 @@ class UserController {
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			admin = 1;
 		}
+
+		//def contractorsList = User.findAll().unique { it.contractorShortName.trim() }
+			 
 		ceu.setEncoding(response)
-        respond userInstance, model:[ user:user, admin:admin ]
+        respond userInstance, model:[ user:user, admin:admin]
     }
 	
 	
