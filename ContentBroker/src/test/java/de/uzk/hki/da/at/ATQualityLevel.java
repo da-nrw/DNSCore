@@ -37,7 +37,7 @@ public class ATQualityLevel extends AcceptanceTest {
 
 	private static final String ORIG_NAME = "ATQualityTest";
 	
-	private static final String  FAKE_SUBCONVERTER_PUID="x-fmt/266";
+	private static final String FAKE_SUBCONVERTER_PUID="x-fmt/266";
 
 	//private static final String ALIEN_NAME = "ATKeepModDates";
 
@@ -47,7 +47,7 @@ public class ATQualityLevel extends AcceptanceTest {
 	public void setUp() throws IOException {
 	}
 	
-////	
+	
 	@Test
 	public void testMinimalQualityLevelPremis4OK() throws IOException {
 		String origName=SOURCE_NAME_MINIMAL_4+"PremisOK";
@@ -229,58 +229,67 @@ public class ATQualityLevel extends AcceptanceTest {
 	public void deltaTest() throws IOException {		
 		ath.putSIPtoIngestArea(SOURCE_NAME_2, C.FILE_EXTENSION_TGZ, ORIG_NAME_DELTA);
 		ath.awaitObjectState(ORIG_NAME_DELTA, Object.ObjectStatus.InWorkflow);
- 		ath.waitForObjectPublishedState(ORIG_NAME_DELTA,0);
+ 		//ath.waitForObjectPublishedState(ORIG_NAME_DELTA,0);
  		ath.awaitObjectState(ORIG_NAME_DELTA, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+System.out.println("deltaTest 111");
  		
  		Object obbi = ath.getObject(ORIG_NAME_DELTA);
 		idiName = obbi.getIdentifier();
  		assertEquals("Object Level: "+obbi.getQuality_flag(),obbi.getQuality_flag(),2);
  		assertEquals("Package count: "+obbi.getPackages().size(),obbi.getPackages().size(),1);
+ 		System.out.println("deltaTest 1112");
  		
 		ath.putSIPtoIngestArea(SOURCE_NAME_3, C.FILE_EXTENSION_TGZ, ORIG_NAME_DELTA);
 		ath.awaitObjectState(ORIG_NAME_DELTA, Object.ObjectStatus.InWorkflow);
-		ath.waitForDefinedPublishedState(ORIG_NAME_DELTA);
 		ath.awaitObjectState(ORIG_NAME_DELTA, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+		ath.waitForDefinedPublishedState(ORIG_NAME_DELTA);
+	
 		
 		obbi = ath.getObject(ORIG_NAME_DELTA);
  		assertEquals("Object Level: "+obbi.getQuality_flag(),obbi.getQuality_flag(),3);
 		assertEquals("Package count: "+obbi.getPackages().size(),obbi.getPackages().size(),2);
+		System.out.println("deltaTest 1114");
 		
 		ath.putSIPtoIngestArea(SOURCE_NAME_4_WithNonSupportedF, C.FILE_EXTENSION_TGZ, ORIG_NAME_DELTA);
 		ath.awaitObjectState(ORIG_NAME_DELTA, Object.ObjectStatus.InWorkflow);
-		ath.waitForDefinedPublishedState(ORIG_NAME_DELTA);
 		ath.awaitObjectState(ORIG_NAME_DELTA, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+		ath.waitForDefinedPublishedState(ORIG_NAME_DELTA);
+		
 		
 		obbi = ath.getObject(ORIG_NAME_DELTA);
  		assertEquals("Object Level: "+obbi.getQuality_flag(),obbi.getQuality_flag(),4);
 		assertEquals("Package count: "+obbi.getPackages().size(),obbi.getPackages().size(),3);
+		System.out.println("deltaTest 1115");
 		
 		ath.putSIPtoIngestArea(SOURCE_NAME_5, C.FILE_EXTENSION_TGZ, ORIG_NAME_DELTA);
 		ath.awaitObjectState(ORIG_NAME_DELTA, Object.ObjectStatus.InWorkflow);
-		ath.waitForDefinedPublishedState(ORIG_NAME_DELTA);
 		ath.awaitObjectState(ORIG_NAME_DELTA, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+		ath.waitForDefinedPublishedState(ORIG_NAME_DELTA);
 		
 		obbi = ath.getObject(ORIG_NAME_DELTA);
  		assertEquals("Object Level: "+obbi.getQuality_flag(),obbi.getQuality_flag(),5);
 		assertEquals("Package count: "+obbi.getPackages().size(),obbi.getPackages().size(),4);
+		System.out.println("deltaTest 1116");
 		
 		ath.putSIPtoIngestArea(SOURCE_NAME_3, C.FILE_EXTENSION_TGZ, ORIG_NAME_DELTA);
 		ath.awaitObjectState(ORIG_NAME_DELTA, Object.ObjectStatus.InWorkflow);
-		ath.waitForDefinedPublishedState(ORIG_NAME_DELTA);
 		ath.awaitObjectState(ORIG_NAME_DELTA, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+		ath.waitForDefinedPublishedState(ORIG_NAME_DELTA);
 		
 		obbi = ath.getObject(ORIG_NAME_DELTA);
  		assertEquals("Object Level: "+obbi.getQuality_flag(),obbi.getQuality_flag(),3);
 		assertEquals("Package count: "+obbi.getPackages().size(),obbi.getPackages().size(),5);
+		System.out.println("deltaTest 1117");
 		
 		ath.putSIPtoIngestArea(SOURCE_NAME_2, C.FILE_EXTENSION_TGZ, ORIG_NAME_DELTA);
 		ath.awaitObjectState(ORIG_NAME_DELTA, Object.ObjectStatus.InWorkflow);
-		ath.waitForDefinedPublishedState(ORIG_NAME_DELTA);
 		ath.awaitObjectState(ORIG_NAME_DELTA, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+		ath.waitForDefinedPublishedState(ORIG_NAME_DELTA);
 		
 		obbi = ath.getObject(ORIG_NAME_DELTA);
  		assertEquals("Object Level: "+obbi.getQuality_flag(),obbi.getQuality_flag(),2);
 		assertEquals("Package count: "+obbi.getPackages().size(),obbi.getPackages().size(),6);
+		System.out.println("deltaTest 1118");
 				
 		idiName = obbi.getIdentifier();
 	}

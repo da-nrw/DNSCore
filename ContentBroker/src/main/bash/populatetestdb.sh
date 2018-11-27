@@ -59,8 +59,8 @@ then
 	    "INSERT INTO conversion_routines (id,name,target_suffix,type,psystem_id) VALUES (5,'PUB_PDF','pdf','de.uzk.hki.da.convert.PublishPDFConversionStrategy',1);"
     
          #QualityLevel Fake Conversions
-        "INSERT INTO conversion_routines(id, target_suffix, type,name,params,psystem_id) values(11,'pdf','de.uzk.hki.da.convert.CLIConversionStrategy','LZA_DOCX','convert input +compress output',1);"
-		"INSERT INTO conversion_policies(id, presentation, source_format,conversion_routine_id,psystem_id) values(11,false,'fmt/40',11,1);"
+        "INSERT INTO conversion_routines(id, target_suffix, type,name,params,psystem_id) values(11,'pdf','de.uzk.hki.da.convert.CLIConversionStrategy','LZA_CHI','QuAl1ty level test conversion instruction',1);"
+		"INSERT INTO conversion_policies(id, presentation, source_format,conversion_routine_id,psystem_id) values(11,false,'fmt/300',11,1);"
         
         "INSERT INTO conversion_policies (id,psystem_id,source_format,conversion_routine_id,presentation,format_type) VALUES (1,1,'fmt/353',1,false,'LZA');"
         "INSERT INTO conversion_policies (id,psystem_id,source_format,conversion_routine_id,presentation) VALUES (2,1,'fmt/353',2,true);"
