@@ -64,7 +64,7 @@ class StatusController {
 				
 				def spackages = inst.packages.sort{it.id}
 				spackages.each() {pack ->
-					result.packages.add(pack.name)
+					result.packages.add(pack.delta)
 				}
 				result = [:]
 				results.result.add(result)
@@ -177,7 +177,7 @@ class StatusController {
 				//}
 				def spackages = instance.packages.sort{it.id}
 				spackages.each() {pack ->
-					result.packages.add(pack.name)
+					result.packages.add(pack.delta)
 				} 
 				results.result.add(result)
 				result = [:]
