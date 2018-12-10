@@ -142,7 +142,8 @@ public class C {
 	public static final String EDM_OBJECT = "edm:object";
 	public static final String EDM_PROVIDER = "edm:provider";
 	public static final String EDM_HAS_TYPE = "edm:hasType";
-	public static final String EDM_RIGHTS = "dc:rights";
+	public static final String DC_RIGHTS = "dc:rights";
+	public static final String EDM_RIGHTS = "edm:rights";
 	public static final String EDM_EXTENT = "dcterms:extent";
 	public static final String INDEX_INSTITUTION_TYPE ="@institutionType";
 	// Other

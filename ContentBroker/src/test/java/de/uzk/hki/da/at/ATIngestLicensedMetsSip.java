@@ -342,6 +342,7 @@ public class ATIngestLicensedMetsSip extends AcceptanceTest {
 		assertTrue(providetCho.size()==1);
 		for(Element pcho : providetCho) {
 			assertTrue(license==null? pcho.getChild("rights", C.DC_NS)==null : pcho.getChild("rights", C.DC_NS).getValue().equals(license.getHref()));
+			assertTrue(license==null? pcho.getChild("rights", C.EDM_NS)==null : pcho.getChild("rights", C.EDM_NS).getValue().equals(license.getHref()));
 		}
 		
 		////	testIndex
@@ -354,6 +355,7 @@ public class ATIngestLicensedMetsSip extends AcceptanceTest {
 		jsonObj = jsonObj.getJSONObject("edm:aggregatedCHO");
 		 try{
 			 assertTrue(jsonObj.getJSONArray("dc:rights").get(0).toString().equals(license.getHref()));
+			 assertTrue(jsonObj.getJSONArray("edm:rights").get(0).toString().equals(license.getHref()));
 		 }catch(JSONException e){
 			 assertTrue(license==null);
          }

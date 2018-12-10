@@ -121,7 +121,7 @@ public class MetsParserTest {
 		
 		assertEquals(null,mp.getLicenseForWholeMets());
 		assertTrue(mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md2684319").get(C.EDM_RIGHTS).isEmpty());
-		
+		assertTrue(mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md2684319").get(C.DC_RIGHTS).isEmpty());
 	}
 	
 	@Test
@@ -134,6 +134,7 @@ public class MetsParserTest {
 		
 		assertEquals(mLicense,mp.getLicenseForWholeMets());
 		assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1937630").get(C.EDM_RIGHTS).get(0));
+		assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1937630").get(C.DC_RIGHTS).get(0));
 	}
 	
 	
@@ -155,6 +156,10 @@ public class MetsParserTest {
 
 			assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.EDM_RIGHTS).get(0));
 			assertTrue(mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1617166").get(C.EDM_RIGHTS).isEmpty());;
+			
+			assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.DC_RIGHTS).get(0));
+			assertTrue(mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1617166").get(C.DC_RIGHTS).isEmpty());;
+		
 		}
 		
 		@Test
@@ -168,6 +173,8 @@ public class MetsParserTest {
 			assertEquals(null,mp.getLicenseForWholeMets());
 			assertTrue(mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.EDM_RIGHTS).isEmpty());
 			assertTrue(mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1617166").get(C.EDM_RIGHTS).isEmpty());
+			assertTrue(mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.DC_RIGHTS).isEmpty());
+			assertTrue(mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1617166").get(C.DC_RIGHTS).isEmpty());
 		}
 		
 	
@@ -183,6 +190,8 @@ public class MetsParserTest {
 		assertEquals(mLicense,mp.getLicenseForWholeMets());
 		assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.EDM_RIGHTS).get(0));
 		assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1617166").get(C.EDM_RIGHTS).get(0));
+		assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.DC_RIGHTS).get(0));
+		assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1617166").get(C.DC_RIGHTS).get(0));
 	}
 
 	

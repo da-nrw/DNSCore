@@ -741,8 +741,9 @@ public class MetsParser{
 			
 //			Title
 			dmdSecInfo.put(C.EDM_TITLE, getTitle(e));
-			
-			dmdSecInfo.put(C.EDM_RIGHTS, getAccessConditions(e));
+			List<String> accessConditions= getAccessConditions(e);
+			dmdSecInfo.put(C.DC_RIGHTS,accessConditions);
+			dmdSecInfo.put(C.EDM_RIGHTS,accessConditions);
 //			identifier
 			dmdSecInfo.put(C.EDM_IDENTIFIER, getIdentifier(e));
 			
