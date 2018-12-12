@@ -242,7 +242,12 @@
                 "type": "string"
             },
             "edm:rights": {
-                "type": "string"
+                "properties": {
+                    "@id": {
+                        "type": "string",
+                        "index": "not_analyzed"
+                    }
+                }
             },
             "id": {
                 "type": "string"
