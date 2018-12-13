@@ -333,8 +333,8 @@ public class UpdateMetadataAction extends AbstractAction {
 			Iterator it = replacements.entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry entry = (Map.Entry)it.next();
-				DAFile sourceFile = (DAFile)entry.getKey();
-				if(file.getAbsolutePath().contains(File.separator+sourceFile.getRelative_path())) {
+				DAFile sourceFile = (DAFile)entry.getKey();//TODO sourcefileNameEncoded=encode(sourceFile.getRelative_path())
+				if(file.getAbsolutePath().contains(File.separator+sourceFile.getRelative_path())) {//Decode(file.getAbsolutePath())
 					fileExists = true;
 					targetDAFile = (DAFile)entry.getValue();
 					logger.info("DAFile "+sourceFile+" has been converted to "+targetDAFile+"! Rewrite the reference ...");
