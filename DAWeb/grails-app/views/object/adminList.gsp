@@ -139,10 +139,10 @@
 		            			<td>Contractor:</td>
 		            			<td>
 		            				<g:if test="${params.searchContractorName  == null || params.searchContractorName.isEmpty()}" >
-		            					<g:select id="user" name="searchContractorName" from="${contractorList}" optionKey="shortName" noSelection="['':'-Bitte wählen-']" value="${objectInstance?.contractorList?.shortName}" class="many-to-one"/>
+		            					<g:select id="user" name="searchContractorName" from="${contractorList}" optionKey="contractorShortName" noSelection="['':'-Bitte wählen-']" value="${objectInstance?.contractorList?.contractorShortName}" class="many-to-one"/>
 		            				</g:if>
 		            				<g:if test="${params.searchContractorName  != null && !params.searchContractorName.isEmpty()}" >
-		            					<g:select id="user" name="searchContractorName" from="${contractorList}" optionKey="shortName" noSelection="['':'-Bitte wählen-']" value="${params.searchContractorName}" class="many-to-one"/>
+		            					<g:select id="user" name="searchContractorName" from="${contractorList}" optionKey="contractorShortName" noSelection="['':'-Bitte wählen-']" value="${params.searchContractorName}" class="many-to-one"/>
 		            				</g:if>
 		            			</td>
 	            			</tr>
@@ -243,8 +243,9 @@
 							
 								<td><g:link action="show" id="${objectInstance.id}">${objectInstance.getFormattedUrn()}</g:link></td>
 							
-								<td>${fieldValue(bean: objectInstance, field: "user")}</td>
-							
+<!-- 								<td>${fieldValue(bean: objectInstance, field: "user")}</td> -->
+								<td> ${fieldValue(bean: objectInstance.user, field: "contractorShortName")} </td>
+				
 								<td>${fieldValue(bean: objectInstance, field: "origName")}</td>
 								<td>${objectInstance.getFormattedCreatedDate()}</td>
 								<td>${objectInstance.getFormattedModifiedDate()}</td>

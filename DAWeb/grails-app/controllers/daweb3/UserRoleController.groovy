@@ -3,6 +3,7 @@ package daweb3
 
 
 import static org.springframework.http.HttpStatus.*
+
 import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
@@ -56,16 +57,17 @@ class UserRoleController {
 		}
 		
 		ceu.setEncoding(response)
-        respond new UserRole(params), model: [ user: user, admin: admin]
+        respond new UserRole(params), model: [ user: user, admin: admin ] 
     }
 	
 	def cancel() {
 		redirect(action: "show",  id: params.id)
 	}
 
-    @Transactional
+    @Transactional 
     def save(UserRole userRoleInstance) {
 		ceu.setEncoding(response)
+		
         if (userRoleInstance == null) {
             notFound()
             return
@@ -75,9 +77,11 @@ class UserRoleController {
             respond userRoleInstance.errors, view:'create'
             return
         }
+		User user = User.findByUsername( params.user.username )
+		//params.user.id = user.id
 
-        userRoleInstance.save flush:true
-
+		userRoleInstance.save flush:true
+		
         request.withFormat {
             form {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'userRoleInstance.label', default: 'UserRole'), ""])

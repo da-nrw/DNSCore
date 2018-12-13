@@ -38,7 +38,7 @@
 							
 								<td><g:link action="show" params="${userRoleInstance.getPKId()}">${fieldValue(bean: userRoleInstance, field: "role")}</g:link></td>
 							
-								<td>${fieldValue(bean: userRoleInstance, field: "user")}</td>
+								<td>${fieldValue(bean: userRoleInstance, field: "user.username")}</td>
 							
 							</tr>
 						</g:each>

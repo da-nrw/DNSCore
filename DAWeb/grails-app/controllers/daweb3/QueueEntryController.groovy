@@ -68,8 +68,7 @@ class QueueEntryController {
 		// different List View per Role
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			
-		render(view:"adminList", model:[contractorList:contractorList,
-		cbNodeList:cbNodeList, user:username, admin: admin ]);
+		render(view:"adminList", model:[cbNodeList:cbNodeList, user:username, admin: admin ]);
 		} else {
 			render (view:"list", model:[contractorList:contractorList,
 						cbNodeList:cbNodeList,
@@ -92,7 +91,7 @@ class QueueEntryController {
 		if (!params.search){
 				
 			if (admin != 1) {
-				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.contractorShortName=:csn "
+				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.contractorShortName=:csn "	
 					+ (params.sort ? " order by q.${params.sort} ${params.order}": ''),
 	             [csn: us.getContractorShortName()]
 				 )
@@ -109,10 +108,12 @@ class QueueEntryController {
 					render(view:"adminListSnippet", model:[
 						queueEntryInstanceList: queueEntries, 
 						admin:admin, periodical:periodical, 
-						contractorList:contractorList, user:us]);
+						//contractorList:contractorList, 
+						user:us]);
 			} else render(view:"listSnippet", model:[queueEntryInstanceList: queueEntries, 
 						admin:admin, periodical:periodical, 
-						contractorList:contractorList, user:us]);
+						//contractorList:contractorList, 
+						user:us]);
 			
 		} else {
 			
@@ -179,6 +180,7 @@ class QueueEntryController {
     def show() {
         
 		User user = springSecurityService.currentUser
+		 
 		def admin = 0;
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			admin = 1;
@@ -197,7 +199,7 @@ class QueueEntryController {
 				error = it.toString()
 			}
 		}
-        [queueEntryInstance: queueEntryInstance, systemInfo:error, admin: admin, user: user]
+        [queueEntryInstance: queueEntryInstance, systemInfo:error, admin: admin, user: user.username]
     }
 	
 	/**
@@ -410,7 +412,7 @@ class QueueEntryController {
 		def queueEntries = null
 		
 		log.info("fehlerhafte SIP's des Contractors "  + us.getContractorShortName()) +  " werden gelöscht.";
-		def contractorList = User.list()
+		//def contractorList = User.list()
 			try {
 			   queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.contractorShortName=:csn" + 
 				   " and q.status < '400' and ( q.status like ('%1') or q.status like ('%3') " + 

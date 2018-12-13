@@ -113,10 +113,10 @@
 	            			<td>Contractor:</td>
 	            			<td>
 	            				<g:if test="${params.search?.user == null}" >
-	            					<g:select id="user" name="search.user" from="${contractorList}" optionKey="shortName" noSelection="[null:'Alle auswählen']" required="" value="${objectInstance?.contractorList?.shortName}" class="many-to-one"/>
+	            					<g:select id="user" name="search.user" from="${contractorList}" optionKey="contractorShortName" noSelection="[null:'Alle auswählen']" required="" value="${objectInstance?.contractorList?.contractorShortName}" class="many-to-one"/>
 	            				</g:if>
 	            				<g:if test="${params.search?.user != null && !params.search?.user.isEmpty()}" >
-	            					<g:select id="user" name="search.user" from="${contractorList}" optionKey="shortName" noSelection="[null:'Alle auswählen']" required="" value="${params.search?.user}" class="many-to-one"/>
+	            					<g:select id="user" name="search.user" from="${contractorList}" optionKey="contractorShortName" noSelection="[null:'Alle auswählen']" required="" value="${params.search?.user}" class="many-to-one"/>
 	            				</g:if>
 	            			</td>
 	            		</tr>

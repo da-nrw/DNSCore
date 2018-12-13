@@ -1,7 +1,5 @@
 <%@ page import="daweb3.UserRole" %>
 
-
-
 <div class="fieldcontain ${hasErrors(bean: userRoleInstance, field: 'role', 'error')} required">
 	<label for="role">
 		<g:message code="userRole.role.label" default="Role" />
@@ -15,6 +13,7 @@
 		<g:message code="userRole.user.label" default="User" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="user" name="user.id" from="${daweb3.User.list()}" optionKey="id" required="" value="${userRoleInstance?.user?.id}" class="many-to-one"/>
-</div>
-
+	 	<g:select id="user" name="user.id" from="${ daweb3.User.list() }" optionKey="id" required="" value="${userRoleInstance?.user?.id}" class="many-to-one"/>
+<!-- 	    <g:select id="user" name="user.username"  from="${daweb3.User.list(sort:"username").username}"  required="" value="${userRoleInstance?.user?.id}" class="any-to-one"/> -->
+	    
+</div> 

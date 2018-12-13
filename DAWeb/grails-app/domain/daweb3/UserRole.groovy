@@ -89,5 +89,4 @@ class UserRole implements Serializable {
 	def getPKId() {
 		return ['userId': user.id, 'roleId': role.id]
 	}
-
 }

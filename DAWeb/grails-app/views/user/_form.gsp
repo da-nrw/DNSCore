@@ -14,7 +14,7 @@
 		<span class="required-indicator">*</span>
 	</label>
 <!-- 	<g:textField name="contractorshortName" required="" value="${userInstance?.contractorShortName}" class="input-hoehe"/> -->
- 	<g:select id="contractor" required="" name="contractorShortName" from="${User.findAll().unique { it.contractorShortName.trim() }}" optionKey="contractorShortName" keys="${contractorList}" value="${userInstance?.contractorShortName}" noSelection="['':'-Bitte wählen-']" /> 
+ 	<g:select id="contractor" required="" name="contractorShortName" from="${User.findAll().unique { it.contractorShortName.trim() }}" optionKey="contractorShortName" value="${userInstance?.contractorShortName}" noSelection="['':'-Bitte wählen-']" /> 
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'username', 'error')} required">

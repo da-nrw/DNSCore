@@ -23,25 +23,19 @@
 				<div class="message" role="status">${flash.message}</div>
 				</g:if>
 				<ol class="property-list userRole">
-				
 					<g:if test="${userRoleInstance?.role}">
-					<li class="fieldcontain">
-						<span id="role-label" class="property-label"><g:message code="userRole.role.label" default="Role" /></span>
-						
+						<li class="fieldcontain">
+							<span id="role-label" class="property-label"><g:message code="userRole.role.label" default="Role" /></span>
 							<span class="property-value" aria-labelledby="role-label"><g:link controller="role" action="show" id="${userRoleInstance?.role?.id}">${userRoleInstance?.role?.encodeAsHTML()}</g:link></span>
-						
-					</li>
+						</li>
 					</g:if>
 				
 					<g:if test="${userRoleInstance?.user}">
-					<li class="fieldcontain">
-						<span id="user-label" class="property-label"><g:message code="userRole.user.label" default="User" /></span>
-						
-							<span class="property-value" aria-labelledby="user-label"><g:link controller="user" action="show" id="${userRoleInstance?.user?.id}">${userRoleInstance?.user?.encodeAsHTML()}</g:link></span>
-						
-					</li>
+						<li class="fieldcontain">
+							<span id="user-label" class="property-label"><g:message code="userRole.user.label" default="User" /></span>
+							<span class="property-value" aria-labelledby="user-label"><g:link controller="user" action="show" id="${userRoleInstance?.user?.id}">${userRoleInstance?.user?.username?.encodeAsHTML()}</g:link></span>
+						</li>
 					</g:if>
-				
 				</ol>
 				<g:form url="[resource:userRoleInstance, action:'delete']" method="DELETE">
 					<fieldset class="buttons">

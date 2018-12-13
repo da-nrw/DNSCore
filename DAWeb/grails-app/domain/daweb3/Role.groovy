@@ -18,8 +18,6 @@ class Role implements Serializable {
 	int id
 	
 	Role(String authority) {
-		print "  ## Role ## "
-	 
 //		this()
 		this.authority = authority
 	}
@@ -34,7 +32,6 @@ class Role implements Serializable {
 	}
 
 	String toString() {
-		print ("ROLE:   " + authority + " (ID: "+id+")" )
 		return authority + " (ID: "+id+")" ;
 	}
 }

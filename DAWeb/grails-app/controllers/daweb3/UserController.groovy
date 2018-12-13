@@ -21,6 +21,8 @@ package daweb3
 
 import static org.springframework.http.HttpStatus.*
 
+import javax.management.relation.RoleList
+
 import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
@@ -98,11 +100,9 @@ class UserController {
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			admin = 1;
 		}
-
-		//def contractorsList = User.findAll().unique { it.contractorShortName.trim() }
-			 
+		
 		ceu.setEncoding(response)
-        respond userInstance, model:[ user:user, admin:admin]
+        respond userInstance, model:[ user:user, admin:admin ]
     }
 	
 	

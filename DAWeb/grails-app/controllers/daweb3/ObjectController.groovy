@@ -146,7 +146,7 @@ class ObjectController {
 			User user = springSecurityService.currentUser
 			def username =  user.username
 	
-			def contractorList = User.list()
+		//	def contractorList = User.list()
 			def admin = 0;
 			def relativeDir = user.getContractorShortName() + "/outgoing"
 			def filterOn = params.filterOn;
@@ -161,12 +161,18 @@ class ObjectController {
 					params.remove("searchContractorName")
 				}
 			}
-			def c1 = Object.createCriteria()
-			def objectsTotalForCont = c1.list() {
-				eq("user.id", user.id)
-				between("objectState", 50,200)
-			}
-			def totalObjs = objectsTotalForCont.size();
+			
+			// DANRW-1568
+			def  objectsTotalForCount = Object.findAll("from Object as o where o.user.contractorShortName=:csn",
+			[csn: user.getContractorShortName()])
+			
+			
+//			def c1 = Object.createCriteria()
+//			def objectsTotalForCont = c1.list() {
+//				eq("user.id", user.id)
+//				between("objectState", 50,200)
+//			}
+			def totalObjs = objectsTotalForCount.size();
 			
 			def c = Object.createCriteria()
 			log.debug(params.toString())
@@ -224,8 +230,10 @@ class ObjectController {
 					admin = 1;
 				}
 				if (admin==0) {
-					
-					eq("user.id", user.id)
+					// DANRW-1568
+					createAlias( "user", "c" )
+					eq("c.contractorShortName",  user.getContractorShortName())
+					//eq("user.id", user.id)
 				}
 				if (admin==1) {
 					if (params.searchContractorName!=null) {
@@ -239,6 +247,8 @@ class ObjectController {
 				between("objectState", 50,200)
 				order(params.sort ?: "id", params.order ?: "desc")
 			}
+			 
+			
 			log.debug("Search " + params.search)
 			// workaround: make ALL params accessible for following http-requests
 			def paramsList = params.search?.collectEntries { key, value -> ['search.'+key, value]}
@@ -251,7 +261,6 @@ class ObjectController {
 				paramsList.putAt("searchDateStart", params?.searchDateStart);
 				paramsList.putAt("searchDateEnd", params?.searchDateEnd);
 			}
-			
 			if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 				render(view:"adminList", model:[	objectInstanceList: objects,
 					objectInstanceTotal: objects.getTotalCount(),
@@ -261,7 +270,7 @@ class ObjectController {
 					paginate: true,
 					admin: admin,
 					baseFolder: baseFolder,
-					contractorList: contractorList,
+					//contractorList: contractorList,
 					user: username ,
 					objArt: objArt
 				]);
@@ -274,7 +283,7 @@ class ObjectController {
 					admin: 0,
 					totalObjs: totalObjs,
 					baseFolder: baseFolder,
-					contractorList: contractorList,
+				//	contractorList: contractorList,
 					user: username,
 					objArt: objArt
 				]);
@@ -447,8 +456,6 @@ class ObjectController {
 					String lnid = grailsApplication.config.getProperty('localNode.id')
 					log.debug("Create Retrieval job on node id: " + lnid)
 					
-					println ("Create Retrieval job on node id: " + lnid)
-					
 					CbNode cbn = CbNode.get(Integer.parseInt(lnid))
 					qu.createJob( object ,"900", cbn.getName())
 					
@@ -576,7 +583,7 @@ class ObjectController {
 		User user = springSecurityService.currentUser
 		def username =  user.username
 
-				def contractorList = User.list()
+		//def contractorList = User.list()
 		def admin = 0;
 		def relativeDir = user.getContractorShortName() + "/outgoing"
 		def filterOn = params.filterOn;
@@ -594,13 +601,11 @@ class ObjectController {
 			}
 		}
 		
-		def c1 = Object.createCriteria()
-		def objectsArchivedForCount = c1.list() {
-			eq("user.id", user.id)
-			eq("objectState", status)
-		}
-		def totalArchivedObjects = objectsArchivedForCount.size();
+		// DANRW-1568
+		def  objectsArchivedForCount = Object.findAll("from Object as o where o.user.contractorShortName=:csn and o.objectState=:status",
+			[csn: user.getContractorShortName(), status: status])
 		
+		def totalArchivedObjects = objectsArchivedForCount.size();
 		
 		def c = Object.createCriteria() 
 		log.debug(params.toString())
@@ -612,17 +617,14 @@ class ObjectController {
 				 }
 			}
 					
-			def cStatus = Object.createCriteria()
-			List<Object> listObject= cStatus.list(){
-				eq("user.id", user.id)
-				eq("objectState", status)
-			};
-			
-//			for ( int i= 0; i < listObject.size(); i++) {
-//				int id =  listObject.getAt(i).id;
-//				statusQueue = QueueEntry.findAll("from QueueEntry as q where q.obj.id = :data_pk", 
-//					[data_pk: id]);
-// 			}	
+//			def cStatus = Object.createCriteria()
+//			List<Object> listObject= cStatus.list(){
+//				eq("user.id", user.id)
+//				eq("objectState", status)
+//			};
+			// DANRW-1568
+			def  listObject = Object.findAll("from Object as o where o.user.contractorShortName=:csn and o.objectState=:status",
+				[csn: user.getContractorShortName(), status: status])
 		}
 		
 		def objects = c.list(max: params.max, offset: params.offset ?: 0) {
@@ -668,6 +670,7 @@ class ObjectController {
 					gt(st,ds)
 				}
 			}
+		
 			if (ds==null && de!=null ) {
 				if (ds.equals("0") || !de.equals("0")) {
 					filterOn=1
@@ -680,8 +683,9 @@ class ObjectController {
 				admin = 1;
 			}
 			if (admin==0) {
-				
-				eq("user.id", user.id)
+				createAlias( "user", "c" )
+				eq("c.contractorShortName",  user.getContractorShortName())
+				//eq("user.id", user.id)
 			}
 			if (admin==1) {
 				if (params.searchContractorName!=null) {
@@ -718,7 +722,7 @@ class ObjectController {
 				paginate: true,
 				admin: admin,
 				baseFolder: baseFolder,
-				contractorList: contractorList,
+			//	contractorList: contractorList,
 				user: username,
 				objArt: objArt
 //				statusQueue: statusQueue
@@ -732,7 +736,7 @@ class ObjectController {
 				admin: 0,
 				totalObjs: totalArchivedObjects,
 				baseFolder: baseFolder,
-				contractorList: contractorList,
+				//contractorList: contractorList,
 				user: username,
 				objArt: objArt
 //				statusQueue: statusQueue
