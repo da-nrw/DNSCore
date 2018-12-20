@@ -76,7 +76,6 @@ class UserController {
             notFound()
             return
         }
-
         if (userInstance.hasErrors()) {
             respond userInstance.errors, view:'create'
             return

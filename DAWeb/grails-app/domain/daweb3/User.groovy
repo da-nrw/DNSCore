@@ -111,7 +111,7 @@ class User  implements Serializable {
 	static transients = ['springSecurityService']
 
 	String toString() {
-		//return "$contractorShortName"
+		//return "$contractorShortName" 
 		return username
 	} 
 }

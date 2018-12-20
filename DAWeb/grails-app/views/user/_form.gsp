@@ -9,12 +9,11 @@
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'contractorShortName', 'error')} required">
-	<label for="shortName">
+	<label for="contractorShortName">
 		<g:message code="user.contractorShortName.label" default="Contractor Name" />
 		<span class="required-indicator">*</span>
 	</label>
-<!-- 	<g:textField name="contractorshortName" required="" value="${userInstance?.contractorShortName}" class="input-hoehe"/> -->
- 	<g:select id="contractor" required="" name="contractorShortName" from="${User.findAll().unique { it.contractorShortName.trim() }}" optionKey="contractorShortName" value="${userInstance?.contractorShortName}" noSelection="['':'-Bitte wählen-']" /> 
+	<g:textField name="contractorShortName" required="" value="${userInstance?.contractorShortName}" class="input-hoehe"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'username', 'error')} required">
