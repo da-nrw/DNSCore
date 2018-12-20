@@ -165,6 +165,7 @@ public class LidoParser {
 				String id = objectId + "-" + getLidoRecID(lidoElement);
 				logger.debug("ID: " + id);
 				lidoElementInfo.put(C.EDM_TITLE, getTitle(lidoElement));
+				lidoElementInfo.put(C.DC_RIGHTS, getRecordRights(lidoElement));
 				lidoElementInfo.put(C.EDM_RIGHTS, getRecordRights(lidoElement));
 				lidoElementInfo.put(C.EDM_PUBLISHER, getPlaces(lidoElement));
 				lidoElementInfo.put(C.EDM_DATE_ISSUED, getDate(lidoElement));
