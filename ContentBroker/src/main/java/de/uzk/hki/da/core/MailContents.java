@@ -84,8 +84,10 @@ public class MailContents {
 		if (!StringUtilities.isNotSet(message)) {
 			msg += "\n" + message ;
 		}
+		List<String> allMailAdrList = obj.getContractor().getAllEmailAdrForContratcor(obj.getContractor().getShort_name());
+		
 		try {
-			this.queueMail(preservationSystem.getAdmin(), obj.getContractor(), subject, msg);
+			this.queueMail(preservationSystem.getAdmin(), obj.getContractor(), allMailAdrList, subject, msg);
 		} catch (MessagingException e) {
 			logger.error("Sending email problem report for " +  obj.getIdentifier() + " failed");
 		}
@@ -97,9 +99,9 @@ public class MailContents {
 		String subject = "[" + PRESERVATION_SYSTEM_NAME + "] Entscheidung erforderlich für "+obj.getIdentifier();
 		// DANRW-1523: Mailtext korrigiert
 		String msg = "Bitte treffen Sie eine Entscheidung in der DAWeb-Maske \"Entscheidungsübersicht\" zu dem Paket mit Identifier " + obj.getIdentifier();
-		
+		List<String> allMailAdrList = obj.getContractor().getAllEmailAdrForContratcor(obj.getContractor().getShort_name());
 		try {
-			this.queueMail(preservationSystem.getAdmin(), obj.getContractor(), subject, msg);
+			this.queueMail(preservationSystem.getAdmin(), obj.getContractor(), allMailAdrList, subject, msg);
 		} catch (MessagingException e) {
 			logger.error("Sending email problem report for " +  obj.getIdentifier() + " failed");
 		}
@@ -119,7 +121,7 @@ public class MailContents {
 
 		String subject = "[" + PRESERVATION_SYSTEM_NAME + "] Problem Report für " + obj.getIdentifier();
 		try {
-			this.queueMail(preservationSystem.getAdmin(), localNode.getAdmin(), subject, msg);
+			this.queueMailNodeAdmin(preservationSystem.getAdmin(), localNode.getAdmin(), subject, msg);
 		} catch (MessagingException e) {
 			logger.error("Sending email problem report for " +  obj.getIdentifier() + " failed");
 		}
@@ -139,8 +141,9 @@ public class MailContents {
 		String msg = "Ihr angefordertes Objekt mit dem Identifier \""+ object.getIdentifier() + "\" (Originalname " + object.getOrig_name() + ") wurde unter Ihrem Outgoing Ordner unter " 
 				+ object.getContractor().getShort_name() + "/outgoing/"+ object.getIdentifier() +".tar abgelegt und steht jetzt"
 				+ " zum Retrieval bereit!\n\n";
+		List<String> allMailAdrList = object.getContractor().getAllEmailAdrForContratcor(object.getContractor().getShort_name());
 		try {
-			this.queueMail(preservationSystem.getAdmin(),object.getContractor(), subject, msg);
+			this.queueMail(preservationSystem.getAdmin(),object.getContractor(), allMailAdrList, subject, msg);
 		} catch (MessagingException e) {
 			logger.error("Sending email retrieval reciept for " + object.getIdentifier() + "failed", e);
 		}
@@ -160,8 +163,9 @@ public class MailContents {
 		String msg = "Ihr abgegebenes SIP " + delta + "Paket mit dem Namen \""+ object.getLatestPackage().getContainerName() + "\" wurde aus der Verarbeitungswarteschlange "+
 				"entfernt. Die Datei kann so nicht vom DNS verarbeitet werden. Korrigieren Sie ggfs. das Paket und bitte versuchen "
 						+ "Sie eine erneute Ablieferung. Das Paket wurde nicht archiviert. ";
+		List<String> allMailAdrList = object.getContractor().getAllEmailAdrForContratcor(object.getContractor().getShort_name());
 		try {
-			this.queueMail(preservationSystem.getAdmin(),object.getContractor(), subject, msg);
+			this.queueMail(preservationSystem.getAdmin(), object.getContractor(), allMailAdrList, subject, msg);
 		} catch (MessagingException e) {
 			logger.error("Sending email retrieval reciept for " + object.getIdentifier() + "failed", e);
 		}
@@ -191,13 +195,15 @@ public class MailContents {
 			"Identifier: " + obj.getIdentifier() + "\n" +
 			"URN: " + obj.getUrn();
 		}
+
+		List<String> allMailAdrList = obj.getContractor().getAllEmailAdrForContratcor(obj.getContractor().getShort_name());
 		
 		logger.debug(subject);
 		logger.debug("");
 		logger.debug(msg);
 		
 		try {
-			this.queueMail(preservationSystem.getAdmin(), obj.getContractor(), subject, msg);
+			this.queueMail(preservationSystem.getAdmin(), obj.getContractor(), allMailAdrList, subject, msg);
 		} catch (MessagingException e) {
 			logger.error("Sending email reciept for " + obj.getIdentifier() + " failed",e);
 			return false;
@@ -218,12 +224,14 @@ public class MailContents {
 					" ist nicht konsistent. SIP Paketname ist: " + obj.getLatestPackage().getContainerName() +". Folgende Files sind nicht in den mitgelieferten Metadaten referenziert: "
 					+ missingReferences+". Die Verarbeitung findet dennoch statt.";
 		
+		List<String> allMailAdrList = obj.getContractor().getAllEmailAdrForContratcor(obj.getContractor().getShort_name());
+		
 		logger.info(subject);
 		logger.info("");
 		logger.info(msg);
 		
 		try {
-			this.queueMail(preservationSystem.getAdmin(), obj.getContractor(), subject, msg);
+			this.queueMail(preservationSystem.getAdmin(), obj.getContractor(), allMailAdrList, subject, msg);
 		} catch (MessagingException e) {
 			logger.error("Sending email reciept for " + obj.getIdentifier() + " failed",e);
 			return false;
@@ -250,7 +258,7 @@ public class MailContents {
 		
 		if (email!=null && !email.equals("")) {
 		try {
-			this.queueMail(preservationSystem.getAdmin(), localNode.getAdmin(), subject, msg);
+			this.queueMailNodeAdmin(preservationSystem.getAdmin(), localNode.getAdmin(), subject, msg);
 		} catch (MessagingException ex) {
 			logger.error("Sending email reciept for " + object.getIdentifier() + " failed",ex);
 		}
@@ -267,7 +275,10 @@ public class MailContents {
 	public void userExceptionCreateUserReport(UserExceptionManager uem,UserException e,Object object) {
 		if (object==null) throw new IllegalArgumentException("object must not be null");
 		
-		String email = object.getContractor().getEmailAddress();
+		List<String> allMailAdrList = object.getContractor().getAllEmailAdrForContratcor(object.getContractor().getShort_name());
+		System.out.println("allMailAdrList: " + allMailAdrList);
+		
+		
 		String subject = "[" + PRESERVATION_SYSTEM_NAME + "] Fehlerreport für " + object.getIdentifier();
 		String message = uem.getMessage(e.getUserExceptionId());
 		
@@ -275,25 +286,32 @@ public class MailContents {
 			 .replace("%CONTAINER_NAME", object.getLatestPackage().getContainerName())
 			 .replace("%ERROR_INFO", e.getErrorInfo());
 				
+		logger.debug("Sending mail to List: " + allMailAdrList + "\n" + subject + "\n" + message);
 		
-		logger.debug("Sending mail to: " + email + "\n" + subject + "\n" + message);
-		
-		if (email == null){
+		if (allMailAdrList.size() == 0) {
 			logger.warn(object.getContractor().getShort_name() + " has no valid email address!");		
 			return;
 		}
 		try {
-			this.queueMail(preservationSystem.getAdmin(), object.getContractor(), subject, message);
+			this.queueMail(preservationSystem.getAdmin(), object.getContractor(), allMailAdrList, subject, message);
 		} catch (MessagingException ex) {
 			logger.error("Sending email reciept for " + object.getIdentifier() + " failed", ex);
 		}
 	}	
 
-	protected void queueMail(User fromUser, User toUser, String subject, String message) throws MessagingException{
+	protected void queueMail(User fromUser, User contractor, List<String> sendMailAdrList,
+			String subject, String message) throws MessagingException{
+		String fromAddress = fromUser.getEmailAddress();
+		Boolean isReport = contractor.isMailsPooled();
+		Mail.queueMail(localNode.getName(), fromAddress, sendMailAdrList, subject, message, isReport);
+		
+	}
+
+	protected void queueMailNodeAdmin(User fromUser, User toUser, String subject, String message) throws MessagingException{
 		String fromAddress = fromUser.getEmailAddress();
 		String toAddress = toUser.getEmailAddress();
 		Boolean isReport = toUser.isMailsPooled();
 		
-		Mail.queueMail(localNode.getName(), fromAddress, toAddress, subject, message, isReport);
+		Mail.queueMailNodeAdmin(localNode.getName(), fromAddress, toAddress, subject, message, isReport);
 	}
 }

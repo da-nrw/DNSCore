@@ -20,6 +20,7 @@
 package de.uzk.hki.da.service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Address;
@@ -60,7 +61,7 @@ public class Mail {
 	 * @throws MessagingException
 	 *             the messaging exception
 	 */
-	public static void queueMail(String nodeName, String fromAdress, String toAdress, String subject, String mailText, Boolean pooled) throws MessagingException {
+	public static void queueMailNodeAdmin(String nodeName, String fromAdress, String toAdress, String subject, String mailText, Boolean pooled) throws MessagingException {
 		logger.debug("from: " + fromAdress);
 		logger.debug("to: " + toAdress);
 		logger.debug("subject: " + subject);
@@ -80,6 +81,49 @@ public class Mail {
 
 		pMail.setFromAddress(fromAdress);
 		pMail.setToAddress(toAdress);
+		pMail.setSubject(subject);
+		pMail.setMessage(mailText);
+		pMail.setNodeName(nodeName);
+		
+		Transaction transi = session.beginTransaction();
+		session.save(pMail);
+		transi.commit();
+
+		session.close();
+	}
+	
+	public static void queueMail(String nodeName, String fromAddress, List<String> sendMailAdrList, String subject,
+			String mailText, Boolean pooled) {
+		
+		logger.debug("from: " + fromAddress);
+		logger.debug("to list: " + sendMailAdrList.toString());
+		logger.debug("subject: " + subject);
+		logger.debug("body: " + mailText);
+		
+		System.out.println("To List: " + sendMailAdrList.toString() + " -- from: " + fromAddress);
+		
+		String toAddresses = "";
+		for (int i= 0; i < sendMailAdrList.size(); i++) {
+			if (toAddresses.equals("")) {
+				toAddresses = sendMailAdrList.get(i);
+			} else {
+				toAddresses = toAddresses.concat(";").concat(sendMailAdrList.get(i));
+			}
+		}
+		
+		System.out.println("toAddresses: " + toAddresses);
+		
+		org.hibernate.Session session = HibernateUtil.openSession();
+
+		PendingMail pMail = new PendingMail();
+
+		pMail.setCreated(new Date());
+		pMail.setRetries(0);
+		pMail.setPooled(Boolean.TRUE == pooled);
+
+		pMail.setFromAddress(fromAddress);
+	//	pMail.setSendToListOfAdresses(sendMailAdrList);
+		pMail.setToAddress(toAddresses);
 		pMail.setSubject(subject);
 		pMail.setMessage(mailText);
 		pMail.setNodeName(nodeName);
@@ -121,4 +165,37 @@ public class Mail {
 		Transport.send(message);
 		logger.info(subject + " was sent!");
 	}
+	
+//	public static void sendMail(String smtpHost, String fromAdress, List<String> toAllAdresses, String subject, String mailText) throws MessagingException {
+//		logger.debug("from: " + fromAdress);
+//		logger.debug("to: " + toAllAdresses);
+//		logger.debug("subject: " + subject);
+//		logger.debug("body: " + mailText);
+//		if (toAdress.toLowerCase().startsWith("noreply")) {
+//			logger.debug("was not sent due to noreply");
+//			return;
+//		}
+//
+//		Properties props = new Properties();
+//		// props.setProperty("mail.smtp.host", "mail.lvrintern.lvr.de");
+//		if (smtpHost != null) {
+//			props.setProperty("mail.smtp.host", smtpHost);
+//		}
+//		
+//		Session session = Session.getInstance(props, null);
+//		MimeMessage message = new MimeMessage(session);
+//
+//		message.setContent(mailText, "text/plain; charset=utf-8");
+//		message.setSubject(subject);
+//
+//		Address toAddress = new InternetAddress(toAdress);
+//		Address fromAddress = new InternetAddress(fromAdress);
+//		message.setFrom(fromAddress);
+//		message.setRecipient(Message.RecipientType.TO, toAddress);
+//
+//		Transport.send(message);
+//		logger.info(subject + " was sent!");
+//	}
+
+
 }

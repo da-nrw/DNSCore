@@ -141,7 +141,7 @@ public class RepairService {
 		String to = node.getAdmin().getEmailAddress();
 		if (to!= null && !to.equals("")) {
 			try {
-				Mail.queueMail(node.getName(), 
+				Mail.queueMailNodeAdmin(node.getName(), 
 						pSystem.getAdmin().getEmailAddress(),
 						to, 	
 						subject, 

@@ -115,7 +115,8 @@ public class MailWorker extends Worker {
 		trans.commit();
 	}
 
-	public void sendPooledTo(String toAddr, ArrayList<PendingMail> toMails, ArrayList<PendingMail> mailsSent, ArrayList<PendingMail> mailsFailed) {
+	//public void sendPooledTo(String toAddr, ArrayList<PendingMail> toMails, ArrayList<PendingMail> mailsSent, ArrayList<PendingMail> mailsFailed) {
+		private void sendPooledTo(String toAddr, ArrayList<PendingMail> toMails, ArrayList<PendingMail> mailsSent, ArrayList<PendingMail> mailsFailed) {
 
 		TreeMap<String, ArrayList<PendingMail>> reportMap = new TreeMap<String, ArrayList<PendingMail>>();
 		for (int iii = 0; iii < toMails.size(); iii++) {

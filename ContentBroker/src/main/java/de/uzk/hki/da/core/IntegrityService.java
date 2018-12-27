@@ -131,7 +131,7 @@ public class IntegrityService {
 		String subject = "[" + "da-nrw".toUpperCase() +  "] Problem Report für " + obj.getIdentifier();
 		if (to!= null && !to.equals("")) {
 			try {
-				Mail.queueMail(nodeName ,from , to, subject, 
+				Mail.queueMailNodeAdmin(nodeName ,from , to, subject, 
 						"Es gibt ein Problem mit dem Objekt an Ihrem Knoten " + obj.getContractor().getShort_name()+ "/" + obj.getIdentifier(),
 						mailsPooled);
 			} catch (MessagingException e) {

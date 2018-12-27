@@ -34,8 +34,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+
+import de.uzk.hki.da.service.HibernateUtil;
 
 
 
@@ -362,5 +365,18 @@ public class User{
 		this.useMetsUrn = useMetsUrn;
 	}
 	
-	
+	@SuppressWarnings("unchecked")
+	public List<String> getAllEmailAdrForContratcor(String contractorName) {
+		List<String> emailAdrList = null;
+		
+		Session session = HibernateUtil.openSession();
+		session.beginTransaction();
+		
+		emailAdrList = session.createQuery("select emailAddress from User where short_name = :shortName").
+				setParameter("shortName",  contractorName).list();
+		
+		session.close();
+		
+		return emailAdrList;
+	}
 }

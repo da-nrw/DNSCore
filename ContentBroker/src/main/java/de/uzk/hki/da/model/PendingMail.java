@@ -1,6 +1,7 @@
 package de.uzk.hki.da.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * The Class PendingMail.
@@ -45,6 +47,19 @@ public class PendingMail {
 
 	@Column(name="node_name", columnDefinition="varchar(255)")
 	String nodeName;
+
+	@Transient
+	List<String> sendToListOfAdresses;
+	
+	@Transient
+	public List<String> getSendToListOfAdresses() {
+		return sendToListOfAdresses;
+	}
+
+	@Transient
+	public void setSendToListOfAdresses(List<String> sendToListOfAdresses) {
+		this.sendToListOfAdresses = sendToListOfAdresses;
+	}
 
 	public int getId() {
 		return id;
