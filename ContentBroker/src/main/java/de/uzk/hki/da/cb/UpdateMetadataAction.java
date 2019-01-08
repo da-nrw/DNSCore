@@ -22,6 +22,8 @@ package de.uzk.hki.da.cb;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -325,21 +327,38 @@ public class UpdateMetadataAction extends AbstractAction {
 		List<Element> metsFileElemens = mms.getFileElements();
 		for(Element metsFileElement : metsFileElemens) {
 			String href = mms.getHref(metsFileElement);
-			logger.info("Reference: "+href);
+			String hrefDec = URLDecoder.decode(href,"UTF-8");
+			boolean reverseEncoding = !hrefDec.equals(href);
+			
+			
+			logger.info("Reference: "+href+" decoded:"+hrefDec);
 			DAFile targetDAFile = null;
 			File file = XMLUtils.getRelativeFileFromReference(href, metsFile);
+			File fileDecoded= XMLUtils.getRelativeFileFromReference(hrefDec, metsFile);
 			Boolean fileExists = false;
 			String mimetype = "";
 			Iterator it = replacements.entrySet().iterator();
+			
+			
+
+			
+			
 			while (it.hasNext()) {
 				Map.Entry entry = (Map.Entry)it.next();
 				DAFile sourceFile = (DAFile)entry.getKey();//TODO sourcefileNameEncoded=encode(sourceFile.getRelative_path())
-				if(file.getAbsolutePath().contains(File.separator+sourceFile.getRelative_path())) {//Decode(file.getAbsolutePath())
+				
+				//String srcFileName=
+				if(fileDecoded.getAbsolutePath().contains(File.separator+sourceFile.getRelative_path())) {//Decode(file.getAbsolutePath())
 					fileExists = true;
 					targetDAFile = (DAFile)entry.getValue();
 					logger.info("DAFile "+sourceFile+" has been converted to "+targetDAFile+"! Rewrite the reference ...");
 					mimetype = targetDAFile.getMimeType();
-					targetPath = href.replace(file.getName(), wa.toFile(targetDAFile).getName());
+					if(reverseEncoding){
+						//targetPath = href.replace(file.getName(), wa.toFile(targetDAFile).getName());
+						targetPath = href.replace(file.getName(), URLEncoder.encode(wa.toFile(targetDAFile).getName(),"UTF-8"));
+					}else{
+						targetPath = href.replace(file.getName(), wa.toFile(targetDAFile).getName());
+					}
 					addRefToFileNameConvertRewritingCountMap(href);
 					if(unreferencedConvertedFiles.get(sourceFile)!=null) {
 						unreferencedConvertedFiles.remove(sourceFile);
@@ -348,9 +367,17 @@ public class UpdateMetadataAction extends AbstractAction {
 				} 
 			}
 			if(!fileExists && o.isDelta() && !isPresMode()) {
-				List<String> referenceWithMimetype = getCorrReferencesAndMimetypeInDelta(mms, href, friendlyExts);
-				if(!referenceWithMimetype.isEmpty()&&referenceWithMimetype!=null) {
-					targetPath = referenceWithMimetype.get(0);
+				List<String> referenceWithMimetype =null;
+				if(reverseEncoding){	
+					referenceWithMimetype = getCorrReferencesAndMimetypeInDelta(mms, hrefDec, friendlyExts);
+				}else{
+					referenceWithMimetype = getCorrReferencesAndMimetypeInDelta(mms, href, friendlyExts);
+				}
+				if(referenceWithMimetype!=null &&!referenceWithMimetype.isEmpty()) {
+					if(reverseEncoding)
+						targetPath =  URLEncoder.encode(referenceWithMimetype.get(0),"UTF-8");
+					else
+						targetPath = referenceWithMimetype.get(0);
 					mimetype = referenceWithMimetype.get(1);
 					fileExists = true;
 				}

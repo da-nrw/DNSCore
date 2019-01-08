@@ -26,6 +26,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 
@@ -149,7 +151,11 @@ public class MetsMetadataStructure extends MetadataStructure {
 		
 		for (int i=0; i<metsFileElements.size(); i++) { 
 			Element fileElement = (Element) metsFileElements.get(i);
-			if(metsParser.getHref(fileElement).equals(currentHref)) {
+			String fileHref=metsParser.getHref(fileElement);
+			String fileHrefDecoded=URLDecoder.decode(fileHref,"UTF-8");
+			boolean reverseEncoding= !fileHrefDecoded.equals(fileHref);
+			if(fileHrefDecoded.equals(currentHref)) {
+				//String encodedReplacement=URLEncoder.encode(targetHref, "UTF-8");
 				setHref(fileElement, targetHref);
 				setMimetype(fileElement, mimetype);
 				setLoctype(fileElement, loctype);
