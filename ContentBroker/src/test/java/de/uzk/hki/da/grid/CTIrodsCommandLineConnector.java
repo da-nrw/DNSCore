@@ -227,7 +227,12 @@ public class CTIrodsCommandLineConnector {
 		String destColl = new File(dao3).getParentFile().getAbsolutePath();
 		iclc.unregColl(destColl);
 		assertFalse(iclc.exists(destColl));
-		new File(workingRescPhysicalPath + "/aip/connector/urn3.tar").createNewFile();
+		File fileToCreate=new File(workingRescPhysicalPath + "/aip/connector/urn3.tar");
+		System.out.println("testIReg(): Try to create emptyFile " + fileToCreate.getAbsolutePath());
+		System.out.println("testIReg(): destColl " + destColl);
+		System.out.println("testIReg(): dao3 " + dao3);
+		System.out.println("testIReg(): workingRescPhysicalPath " + workingRescPhysicalPath);
+		fileToCreate.createNewFile();
 		iclc.ireg(new File(workingRescPhysicalPath + "/aip/connector/"), workingResc, destColl, true);
 		assertTrue(iclc.exists(destColl));;
 		assertTrue(iclc.exists(dao3));
