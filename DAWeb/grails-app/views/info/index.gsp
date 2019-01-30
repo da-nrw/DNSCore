@@ -22,6 +22,7 @@
 			<ul class="style-funktion">
 				<li class="controller controller-Abstand-links"><g:link controller="automatedRetrieval">Erstellung von Retrievalanfragen</g:link></li>
 				<li class="controller controller-Abstand-links"><g:link controller="status" action="teaser">Abfrage der Verarbeitung und Archivierung</g:link></li>
+				<li class="controller controller-Abstand-links"><g:link controller="delete" action="deleter">Löschen fehlerhafter Pakete</g:link></li>
 			</ul>
 		</div>
 	</div>
