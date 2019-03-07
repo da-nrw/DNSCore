@@ -91,7 +91,7 @@ public class ATContractIngestDelta extends AcceptanceTest{
 		
 
 		System.out.println(ORIG_NAME+ " filesize: "+o.getAip_size()); //size
-		assertEquals("Wrong File Size",o.getAip_size(),1075200);
+		assertEquals("Wrong File Size",o.getAip_size(),1062912);
 
 		boolean exi3 = repositoryFacade.fileExists(o.getIdentifier(), collName, JPG_STREAM_ID);
 		assertFalse(exi3);

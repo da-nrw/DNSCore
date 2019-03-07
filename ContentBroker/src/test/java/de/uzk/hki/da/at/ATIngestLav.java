@@ -71,9 +71,9 @@ public class ATIngestLav extends AcceptanceTest {
 		System.out.println(urn2 + " filesize: "+ath.getObject(urn2).getAip_size());
 		System.out.println(urn3 + " filesize: "+ath.getObject(urn3).getAip_size());
 		
-		assertEquals("Wrong File Size",ath.getObject(urn1).getAip_size(),655360);
-		assertEquals("Wrong File Size",ath.getObject(urn2).getAip_size(),849920);
-		assertEquals("Wrong File Size",ath.getObject(urn3).getAip_size(),952320);
+		assertEquals("Wrong File Size",ath.getObject(urn1).getAip_size(),647168);
+		assertEquals("Wrong File Size",ath.getObject(urn2).getAip_size(),846336);
+		assertEquals("Wrong File Size",ath.getObject(urn3).getAip_size(),944640);
 	}
 	
 	@AfterClass
