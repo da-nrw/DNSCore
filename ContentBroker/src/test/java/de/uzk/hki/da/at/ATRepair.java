@@ -27,7 +27,7 @@ import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.Path;
 
 public class ATRepair extends AcceptanceTest {
-
+	final int MAX_RETRY=100;
 	protected String zoneName = "c-i";
 	@Before
 	public void setUp() throws IOException {
@@ -93,7 +93,7 @@ public class ATRepair extends AcceptanceTest {
 					session.refresh(pack);
 					repair = pack.getRepair();
 					knockOut++;
-					if (knockOut > 30) {
+					if (knockOut > MAX_RETRY) {
 						String msg = "Local package not repaired. Failed: " + file;
 						System.out.println(msg);
 						fail(msg);
@@ -164,7 +164,7 @@ public class ATRepair extends AcceptanceTest {
 					session.refresh(copy);
 					newCS = copy.getChecksum();
 					knockOut++;
-					if (knockOut > 30){
+					if (knockOut > MAX_RETRY){
 						String msg = "Recomputing of Checksum not performed. Failed: " + foreignName;
 						System.out.println(msg);
 						fail(msg);
@@ -185,7 +185,7 @@ public class ATRepair extends AcceptanceTest {
 					session.refresh(copy);
 					newCS = copy.getChecksum();
 					knockOut++;
-					if (knockOut > 30){
+					if (knockOut > MAX_RETRY){
 						String msg = "Foreign package not repaired. Failed: " + foreignName;
 						System.out.println(msg);
 						fail(msg);
