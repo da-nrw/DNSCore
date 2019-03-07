@@ -15,7 +15,7 @@ import org.openqa.selenium.remote.DesiredCapabilities
 
 // default driver ...
 driver = { 
-	System.setProperty('webdriver.phantomjs.bin', '/opt/phantomjs/bin/phantomjs')
+	System.setProperty('webdriver.phantomjs.bin', '/bin/phantomjs')
 	driver =  new PhantomJSDriver()
 //	System.setProperty('webdriver.firefox.bin', '/home/gabender/Programme/firefox/firefox');
 //	driver = new FirefoxDriver()
