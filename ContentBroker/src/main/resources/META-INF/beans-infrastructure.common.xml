@@ -91,9 +91,14 @@
         <property name="localNodeId" value="${localNode.id}" />
         <property name="gridFacade" ref="${cb.implementation.grid:fakeGridFacade}" />
      </bean>
+	<bean id="repairWorker" class="de.uzk.hki.da.core.RepairWorker" init-method="init">
+		<property name="localNodeId" value="${localNode.id}" />
+		<property name="zoneName" value="${irods.zone}" />
+		<property name="replDestinations" value="${localNode.replDestinations}" />
+	</bean>
     <bean id="checksumWorker" class="de.uzk.hki.da.core.ChecksumWorker" init-method="init">
-        <property name="localNodeId" value="${localNode.id}" />
-        <property name="secondaryCopyPrefix" value="federated" />
+        <property name="localNodeId" value="${checksumNode.id:${localNode.id}}" />
+        <property name="secondaryCopyPrefix" value="${checksumNode.secondaryCopyPrefix:federated}" />
         <property name="gridFacade" ref="${cb.implementation.grid:fakeGridFacade}" />
         <property name="trustChecksumForDays" value="${checksumWorker.trustChecksumForDays}" />
         <property name="allowedNumOfCopyjobs" value="${checksumWorker.allowedNumOfCopyjobs}" />

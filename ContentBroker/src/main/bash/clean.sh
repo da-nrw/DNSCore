@@ -10,7 +10,8 @@ then
 	irm -rf /ci/pips/institution/TEST   2>/dev/null
 	irm -rf /ci/pips/public/TEST        2>/dev/null
 	
-	irm -rf /CN/federated/ci/aip/TEST/        2>/dev/null
+	irm -rf /ci/CN/federated/c-i/aip/TEST/    2>/dev/null
+	irm -rf /ci/CN/federated/zoneA/aip/TEST/  2>/dev/null
 	
 	rm -r /ci/storage/GridCacheArea/aip/TEST 
 	mkdir /ci/storage/GridCacheArea/aip/TEST
@@ -23,8 +24,10 @@ then
 	mkdir -p /ci/storage/IngestArea/noBagit/TEST
 	rm -rf /ci/archiveStorage/aip
 	mkdir /ci/archiveStorage/aip
-	src/main/bash/rebuildIndex.sh
+	rm -rf /ci/archiveStorage/CN/federated/c-i/aip/TEST
+	rm -rf /ci/archiveStorage/CN/federated/zoneA/aip/TEST
 
+	src/main/bash/rebuildIndex.sh
 else
 	src/main/bash/cleanHSQLDB.sh
 fi

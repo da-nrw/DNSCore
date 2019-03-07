@@ -69,7 +69,7 @@ public class FormatDetectionService {
 	}
 	
 	public boolean isXml(File f) throws IOException {
-		if(this.detectMimeType(f).equals("application/xml")) {
+		if(!f.isDirectory() && this.detectMimeType(f).equals("application/xml")) {
 			return true;
 		} else {
 			return false;

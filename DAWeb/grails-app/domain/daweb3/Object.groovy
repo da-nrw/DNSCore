@@ -1,6 +1,7 @@
-package daweb3
-import java.text.SimpleDateFormat;
+package daweb3 
 
+import java.text.DateFormat
+import java.text.SimpleDateFormat;
 
 /*
  DA-NRW Software Suite | ContentBroker
@@ -34,7 +35,7 @@ class Object {
     }
 	
 	static hasMany = [packages: Package]
-    
+	
     static mapping = {
 		table 'objects'
 		version false
@@ -43,13 +44,17 @@ class Object {
 		packages joinTable: [key: 'objects_data_pk', column: 'packages_id']
 		createdAt column: 'created_at'
 		modifiedAt column: 'modified_at'
-    }	
+		objectState column: 'object_state'
+    }
+	
+	
 	int id
 	String urn
 	String identifier
 	User user
 	String origName
-	int object_state
+	
+	int objectState
 	int published_flag
 	
 	// due to now unused iRODS functions these fields are still strings, should be 
@@ -65,7 +70,6 @@ class Object {
 	String most_recent_secondary_attributes
 	Boolean ddb_exclusion
 	
-	
 	String getIdAsString() {
 		return id.toString();
 	}
@@ -77,20 +81,19 @@ class Object {
 	 * https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md
 	 */
 	def getStatusCode() {
-
-		if ( object_state == 50 ) return 2
-		if ( object_state == 60 ) return 2
-		if ( object_state == 51 ) return 1
-		if (object_state == 100 ) return 0
+		if ( objectState == 50 ) return 2
+		if ( objectState == 60 ) return 2
+		if ( objectState == 51 ) return 1
+		if (objectState == 100 ) return 0
 		return 1;
 	}
 	
 	def getPublicPresLink() {
 		
 		if (identifier!=null && identifier!="" && identifier!="NULL") {
-			def grailsApplication = new Object().domainClass.grailsApplication
-			def ctx = grailsApplication.mainContext
-			def config = grailsApplication.config
+			def grailsAppl =  new ObjectController().grailsApplication //.getDomainClass("Object").grailsAppl
+			def ctx = grailsAppl.mainContext
+			def config = grailsAppl.config
 			
 			def preslink = config.fedora.urlPrefix + "danrw:"+ identifier
 			return preslink
@@ -100,7 +103,7 @@ class Object {
 	def getInstPresLink() {
 		
 		if (identifier!=null && identifier!="" && identifier!="NULL") {
-			def grailsApplication = new Object().domainClass.grailsApplication
+			def grailsApplication = new ObjectController().grailsApplication
 			def ctx = grailsApplication.mainContext
 			def config = grailsApplication.config
 			
@@ -117,17 +120,17 @@ class Object {
 	 */
 	
 	boolean isInWorkflowButton() {
-		if (object_state==50) {
+		if (objectState==50) {
 			return true;
 		}
 		return false;
 	}
 	
 	String getTextualObjectState() {
-		String state = (String)object_state
-		if (object_state==100) {
+		String state = (String)objectState
+		if (objectState==100) {
 			state = "archived"
-		} else if (object_state==50) {
+		} else if (objectState==50) {
 			state = "Object is in transient state"
 		} else {
 			state = "archived - but check needed"
@@ -167,13 +170,13 @@ class Object {
 	}
 	
 	static Date convertDateIntoDate(String sDate) {
-
-		if (sDate!=null && sDate!="") {
+		if (sDate!=null && sDate!="") { 
 		try {
-				SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss")
+				SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm")
 				Date dt = df.parse(sDate)
 				return dt
 			} catch (Exception ex) { 
+				println ("convertDateIntoDate: " + ex);
 				return null;
 			}
 		}
@@ -181,7 +184,6 @@ class Object {
 	}
 
 	static String convertDateIntoStringDate(String sDate) {
-
 		if (sDate!=null && sDate!="") {
 		try {
 				SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss")
@@ -191,6 +193,7 @@ class Object {
 				return null;
 			}
 		}
+		
 		return null;
 	}
 }

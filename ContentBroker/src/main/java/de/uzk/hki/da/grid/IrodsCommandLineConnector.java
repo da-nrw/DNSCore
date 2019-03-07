@@ -443,11 +443,19 @@ public class IrodsCommandLineConnector {
 		String coll_name = FilenameUtils.getFullPath(dao);
 		String data_name =  FilenameUtils.getName(dao);
 		coll_name = coll_name.substring(0,coll_name.length()-1);
-
-		String commandAsArray[] = new String[]{
-				"iquest", "\"SELECT "  + field.toUpperCase() +"  where COLL_NAME = \'"+ coll_name+"\' and DATA_NAME = \'"+ data_name+"\'" 
-		}; 
+		String commandAsArray[]=null;
+		if(!data_name.isEmpty()){//specific file
+			commandAsArray = new String[]{
+					"iquest", "\"SELECT "  + field.toUpperCase() +"  where COLL_NAME = \'"+ coll_name+"\' and DATA_NAME = \'"+ data_name+"\'" 
+			}; 
+		}else{//directory
+			commandAsArray = new String[]{
+					"iquest", "\"SELECT "  + field.toUpperCase() +"  where COLL_NAME = \'"+ coll_name+"\'" 
+			}; 
+		}
+		logger.info("iquest: "+Arrays.toString(commandAsArray));
 		String iquest = executeIcommand(commandAsArray);
+		logger.info("iquest result: "+iquest);
 		try {
 			return parseResultForAVUField(iquest, field);
 		} catch (IOException e) {
@@ -466,13 +474,24 @@ public class IrodsCommandLineConnector {
 	 */
 	private String parseResultForAVUField(String result, String field) throws IOException {
 		String[] props = result.split("------------------------------------------------------------");
+		final String SUM="sum(";
 		for (int i=0;i<props.length; i++) {
 			Properties properties = new Properties();
 			StringReader sr = new StringReader(props[i]);
 			properties.load(sr);
 			sr.close();
 			if (properties.get(field)!=null) {
+				logger.info("iquest avu: "+properties.get(field).toString());
 				return properties.get(field).toString();
+			}else if(field.toLowerCase().contains(SUM)){//capture the case field="SUM(FIELDNAME)"
+				String fieldNoSum=field.trim();
+				if(fieldNoSum.toLowerCase().indexOf(SUM)==0 && fieldNoSum.endsWith(")")){
+					fieldNoSum=fieldNoSum.substring(SUM.length(), fieldNoSum.length()-1);
+					if (properties.get(fieldNoSum)!=null) {
+						logger.info("iquest sum avu: "+properties.get(fieldNoSum).toString());
+						return properties.get(fieldNoSum).toString();
+					}
+				}
 			}
 		}
 		return "";

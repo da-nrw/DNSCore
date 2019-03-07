@@ -130,12 +130,14 @@ public class ChecksumWorker extends Worker{
     					cs = gridFacade.reComputeAndGetChecksumInCustody(dest);
     					csType=gridFacade.getChecksumType();
     					cs64=GenericChecksum.encodeBase64(cs);
-    					logger.info("checksum in custody is " + cs + " for " + dest);
+    					logger.info("checksum in custody is " + cs + " Algorithm: "+csType+ " for " + dest);
+        				updateCopy(copy, csType, cs,cs64);
     				} else if (copy.getChecksumDate().before(oneMonthAgo.getTime())) {
     					cs = gridFacade.reComputeAndGetChecksumInCustody(dest);
     					csType=gridFacade.getChecksumType();
     					cs64=GenericChecksum.encodeBase64(cs);
-    					logger.info("recompute old checksum in custody, now is " + cs + " for " + dest);
+    					logger.info("recompute old checksum in custody, now is " + cs + " Algorithm: "+csType+" for " + dest);
+        				updateCopy(copy,csType, cs,cs64);
     				} else {
     					cs = copy.getChecksum();
     					csType=copy.getChecksumType();
@@ -144,7 +146,10 @@ public class ChecksumWorker extends Worker{
     				}
     				updateCopy(copy,csType, cs,cs64);
     				
-    			} else logger.error(dest + " does not exist.");
+    			} else { 
+    				updateCopy(copy, "","","");
+    				logger.error(dest + " does not exist.");
+				}
     			
     		} catch (Exception e) {
     			logger.error("Error in ChecksumWorker " + e.getMessage(),e);

@@ -117,6 +117,9 @@ public class CTIrodsFacade {
 	public void setUp() throws Exception {
 		temp = createTestFile();
 		checksum = GenericChecksum.getChecksumForLocalFile(temp);
+
+		if (!isc.collectionExists(testCollLogicalPath))
+			isc.createCollection(testCollLogicalPath);
 	}
 	
 	/**

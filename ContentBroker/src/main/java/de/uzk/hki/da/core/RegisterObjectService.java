@@ -145,9 +145,10 @@ public class RegisterObjectService {
 	
 	private void updateExistingObject(Object obj,String containerName){
 		Package newPkg = new Package();
-		newPkg.setName(generateNewPackageName(obj));
+		int max = obj.getLatestPackage().getDelta();
+		newPkg.setDelta(max + 1);
 		newPkg.setContainerName(containerName);
-		if (obj.getObject_state()<50) throw new UserException(UserExceptionId.DELTA_RECIEVED_BEFORE_ARCHIVED, "Delta Record für ein nicht fertig archiviertes Objekt");
+		if (obj.getObject_state()<100) throw new UserException(UserExceptionId.DELTA_RECIEVED_BEFORE_ARCHIVED, "Delta Record für ein nicht fertig archiviertes Objekt");
 		obj.getPackages().add(newPkg);
 	}
 	
@@ -159,7 +160,7 @@ public class RegisterObjectService {
 		obj.setObject_state(Object.ObjectStatus.InitState);
 		
 		Package newPkg = new Package();
-		newPkg.setName("1");
+		newPkg.setDelta(1);
 		newPkg.setContainerName(containerName);
 		obj.getPackages().add(newPkg);
 		
@@ -213,27 +214,6 @@ public class RegisterObjectService {
 		}
 		return (Object) l.get(0);
 	}
-			
-	
-	
-	
-	
-	
-	
-	
-	/**
-	 * If the Packages contains names like 1,2 the newly created name will be 3.
-	 *
-	 * @param packs the packs
-	 * @return the string
-	 */
-	private String generateNewPackageName(Object obj){
-		String max=obj.getLatestPackage().getName();
-		return Integer.toString(Integer.parseInt( max )+1);		
-	}
-
-	
-	
 	
 	/**
 	 * Generates a URN of the form [nameSpace]-[node_id]-[number].
@@ -250,8 +230,6 @@ public class RegisterObjectService {
 
 		return base + (new URNCheckDigitGenerator()).checkDigit( base );
 	}
-
-	
 	
 	/**
 	 * Increments the urn_index of node and writes it back to the 

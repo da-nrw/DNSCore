@@ -90,7 +90,7 @@ public class DeleteObjectActionTests extends ConcreteActionUnitTest{
 	
 	@Test
 	public void testSetDeletePackage() throws FileNotFoundException, UserException, IOException{
-		Package p2 = new Package(); p2.setName("2"); p2.setContainerName("testcontainer.tgz");
+		Package p2 = new Package(); p2.setDelta(2); p2.setContainerName("testcontainer.tgz");
 		o.getPackages().add(p2);
 		action.implementation();
 

@@ -50,10 +50,10 @@ public class CTChecksumWorker {
 	Node node;
 	String origName = "ATUseCaseChecksumWorker"; 
 	String data_name = "123456.pack_1.tar";
-	String coll = "zoneA/cn/aip/TEST/123456";
+	String coll = "zoneA/aip/TEST/123456";
 	String dao = coll + "/" + data_name;
 	IrodsCommandLineConnector iclc;
-	String fedprefix = "federated";
+	String fedprefix = "CN/federated";
 	String fedcoll = fedprefix + "/" + coll;
 	String feddao =  fedcoll + "/" + data_name;
 	String checksum = "";
@@ -167,7 +167,10 @@ public class CTChecksumWorker {
 		Copy recopy = (Copy) session.get(Copy.class,id);
 		assertEquals("abcdef5",recopy.getChecksum());
 		assertNotNull(recopy.getChecksumDate());
-		assertTrue(recopy.getChecksumDate().after(initchecksumdate));
+		
+		Date reCSDate = recopy.getChecksumDate(); 
+		int cmpDt = reCSDate.compareTo(initchecksumdate);
+		assertTrue(cmpDt == 0);
 		session.close();
 		
 	}

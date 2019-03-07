@@ -470,15 +470,14 @@ public class AcceptanceTestHelper {
 			String packageType,
 			String metadataFile) throws IOException{
 		
-		String PACKAGE_NAME = "1";
 		int timeout = 2000;
 		
 		if (createddate==null) createddate = new Date();
 		String urn =   URN_NBN_DE_DANRW+identifier;
-		gridFacade.put(Path.makeFile(TC.TEST_ROOT_AT,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR), 
-				new RelativePath(testContractor.getUsername(),identifier,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR).toString(), sp, null);
+		gridFacade.put(Path.makeFile(TC.TEST_ROOT_AT,identifier+".pack_1" + C.FILE_EXTENSION_TAR), 
+				new RelativePath(testContractor.getUsername(),identifier,identifier+".pack_1" + C.FILE_EXTENSION_TAR).toString(), sp, null);
 		int i = 0;
-		while (!gridFacade.storagePolicyAchieved(new RelativePath(testContractor.getUsername(),identifier,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR).toString(), sp, null, null)) {
+		while (!gridFacade.storagePolicyAchieved(new RelativePath(testContractor.getUsername(),identifier,identifier+".pack_1" + C.FILE_EXTENSION_TAR).toString(), sp, null, null)) {
 			try {
 				Thread.sleep(timeout);
 			} catch (InterruptedException e) {} // no problem
@@ -499,18 +498,19 @@ public class AcceptanceTestHelper {
 		object.setLast_checked(createddate);
 		object.setOrig_name(originalName);
 		Package pkg = new Package();
-		pkg.setName(PACKAGE_NAME);
+		pkg.setDelta(1);
 		pkg.setContainerName(originalName+"."+C.FILE_EXTENSION_TGZ);
 		
 		Copy copy = new Copy();
-		String checksum=GenericChecksum.getChecksumForLocalFile(Path.makeFile(TC.TEST_ROOT_AT,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR));
+		String checksum=GenericChecksum.getChecksumForLocalFile(Path.makeFile(TC.TEST_ROOT_AT,identifier+".pack_1"+C.FILE_EXTENSION_TAR));
 		
 		pkg.setChecksum(checksum);
 		copy.setChecksum(checksum);
 		copy.setChecksumBase64(GenericChecksum.encodeBase64(checksum));
 		copy.setChecksumType(GenericChecksum.DEFAULT_CHECKSUM_ALGO.toString());
 		copy.setChecksumDate(new Date());
-		for (Copy c:pkg.getCopies()) c.getId();
+		for (Copy c:pkg.getCopies()) 
+			c.getId();
 		pkg.getCopies().add(copy);
 		object.getPackages().add(pkg);
 		

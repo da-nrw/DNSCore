@@ -26,6 +26,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -54,7 +56,16 @@ public class Copy {
 	// INST/CONT/aip/ID/ID.pack_pn.tar
 	private String path;
 	
+	private Integer repair;
 	
+	@ManyToOne
+	@JoinColumn(name = "node_id")
+	private Node node;
+	
+	@ManyToOne
+	@JoinColumn(name = "pkg_id")
+	private Package pack;
+
 	public String getChecksum() {
 		return checksum;
 	}
@@ -103,6 +114,37 @@ public class Copy {
 		this.checksumBase64 = checksumBase64;
 	}
 	
-	
-	
+	public Integer getRepair() {
+		return repair;
+	}
+
+	public void setRepair(Integer repair) {
+		this.repair = repair;
+	}
+
+	public Node getNode() {
+		return node;
+	}
+
+	public void setNode(Node node) {
+		this.node = node;
+	}
+
+	public Package getPack() {
+		return pack;
+	}
+
+	public void setPack(Package pack) {
+		this.pack = pack;
+	}
+
+	public String getPackName() {
+		if (this.getPack() == null){
+			return "";
+		}
+		if (this.getRepair() == null || this.getRepair() == 0){
+			return this.getPack().getDelta().toString();
+		}
+		return this.getPack().getDelta().toString() + "_" + this.getRepair(); 
+	}
 }

@@ -105,7 +105,7 @@ public class TESTHelper {
 		contractor.setEmailAddress("noreply");
 		
 		Package pkg = new Package();
-		pkg.setName("1");
+		pkg.setDelta(1);
 		pkg.setId(1);
 		pkg.setContainerName("testcontainer.tgz");
 		

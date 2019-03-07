@@ -21,7 +21,7 @@ package daweb3
 /**
  * @Author Jens Peters
  */
-import de.uzk.hki.da.core.ActionDescription
+//import de.uzk.hki.da.core.ActionDescription
 import javax.jms.ObjectMessage
 import javax.jms.TextMessage
 
@@ -36,18 +36,35 @@ class CbtalkController {
 	def jmsService
 	def cbtalkService
 	def cberrorService
-
-	def index() { 	
-		if (grailsApplication.config.localNode.id==null || grailsApplication.config.localNode.id=="")
+	def springSecurityService
+	
+	def index() { 
+		def user = springSecurityService.currentUser
+		def admin = 0;
+		
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
+		if (grailsApplication.config.getProperty('localNode.id')==null || 
+			grailsApplication.config.getProperty('localNode.id')=="")
 		flash.message = "LOCALNODE.ID not set!"
+		
+		[user:user, admin:admin]	
 	}
 	def messageSnippet() {
 		def messages = cbtalkService.getMessages()
 		def errors = cberrorService.getMessages()
 		def date = new Date();
+		def user = springSecurityService.currentUser
+		def admin = 0;
+		
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
 		[messages: messages,
 			errors: errors,
-			date: date]
+			date: date,
+			admin: admin]
 	}
 	
 	def save() {
@@ -83,16 +100,13 @@ class CbtalkController {
 		}
 		log.debug(message)
 		try {
-		jmsService.send(queue:queue, message)
+			jmsService.send(queue: queue, message, "standard", null)
 		} catch (Exception e) {
 			flash.message= "Fehler in der Sendekommunikation mit dem ActiveMQ Broker! " + e.getCause()
-			log.error(e);
+			//log.error(e);
 		}
 		redirect(action: "index")
 		
 	} 
-	
-	
-		
 		
 }

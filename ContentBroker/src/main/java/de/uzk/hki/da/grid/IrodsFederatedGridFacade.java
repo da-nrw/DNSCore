@@ -35,6 +35,8 @@ import org.slf4j.LoggerFactory;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.WorkArea;
+import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.MD5Checksum;
 import de.uzk.hki.da.utils.StringUtilities;
 
 
@@ -211,6 +213,28 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		}
 	}
 	
+	
+	@Override
+	public long getFileSize(String contrObj) throws IOException {
+		String address_dest = "/" + irodsSystemConnector.getZone() + "/" + WorkArea.AIP + "/" + contrObj;
+		try {
+			IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
+			String ireturn = iclc.iquestDataObjectField(address_dest, "SUM(DATA_SIZE)");
+			logger.info("ireturn(" + ireturn + ") for " + address_dest);
+			if (ireturn != null && !ireturn.trim().isEmpty()) {
+				logger.info("Size(" + ireturn + ") for " + address_dest);
+				return new Long(ireturn);
+			}else{
+				logger.error("Error Size(" + ireturn + ") for " + address_dest);
+			}
+
+		} catch (Exception e) {
+			logger.error("Catched Exception " + e.getMessage());
+		}
+		
+		return C.UNKNOWN_FILESIZE;
+	}
+
 	@Override
 	public boolean remove(String dest) {
 		IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
@@ -220,6 +244,23 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 			logger.error("Unable to remove the aip file from local repl directory");
 			return false;
 		}
+	}
+
+	@Override
+	public void get(File destination, String gridFileAdress) throws IOException  { 
+		getFile(irodsSystemConnector.getZone(),destination,gridFileAdress);
+	}
+	
+	@Override
+	public void getFederated(String federatedZone, File destination, String gridFileAdress) throws IOException  { 
+		getFile(irodsSystemConnector.getZone()+ "/" + WorkArea.FEDERATED+ "/"+federatedZone,destination,gridFileAdress);
+	}
+	
+	
+	private void getFile(String zone, File destination, String gridFileAdress) throws IOException  { 
+		IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
+		String prefixedGridFileAdress = "/" + zone+ "/" + WorkArea.AIP + "/" + gridFileAdress;
+		iclc.get(destination, prefixedGridFileAdress);
 	}
 	
 }

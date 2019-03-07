@@ -7,30 +7,61 @@ import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
 class UserRoleController {
-
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+	
+	def springSecurityService
+    
+	static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 	static CharacterEncodingUtils ceu = new CharacterEncodingUtils()
 	
     def index(Integer max) {
+		
+		def user = springSecurityService.currentUser
+		def admin = 0;
+		
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
+		
         params.max = Math.min(max ?: 10, 100)
 		ceu.setEncoding(response)
-        respond UserRole.list(params), model:[userRoleInstanceCount: UserRole.count()]
+        respond UserRole.list(params), model:[userRoleInstanceCount: UserRole.count(), user:user, admin:admin]
     }
 
 	def show(Long userId, Long roleId) {
-		def userRoleInstance = UserRole.get(userId, roleId)
+		ceu.setEncoding(response)
+		def user = springSecurityService.currentUser
+		def admin = 0;
+		
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
+		
+ 		def userRoleInstance = UserRole.get(userId, roleId)
+		
 		if (!userRoleInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'userRoleInstance.label', default: 'userRoleInstance not found'), id])
 			redirect(action: "list")
 			return
 		}
-		[userRoleInstance: userRoleInstance]
+		[userRoleInstance: userRoleInstance, user: user, admin: admin]
 	}
 
     def create() {
+		
+		def user = springSecurityService.currentUser
+		def admin = 0;
+		
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
+		
 		ceu.setEncoding(response)
-        respond new UserRole(params)
+        respond new UserRole(params), model: [ user: user, admin: admin]
     }
+	
+	def cancel() {
+		redirect(action: "show",  id: params.id)
+	}
 
     @Transactional
     def save(UserRole userRoleInstance) {
@@ -57,13 +88,21 @@ class UserRoleController {
     }
 
    def edit(Long userId, Long roleId) {
+	   
+	   def user = springSecurityService.currentUser
+	   def admin = 0;
+	   
+	   if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+		   admin = 1;
+	   }
+	   
 		def userRoleInstance = UserRole.get(userId, roleId)
 		if (!userRoleInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'userRoleInstance.label', default: 'userRoleInstance not found'), id])
 			redirect(action: "list")
 			return
 		}
-		[userRoleInstance: userRoleInstance]
+		[userRoleInstance: userRoleInstance,  user: user, admin: admin]
 	}
 
     @Transactional

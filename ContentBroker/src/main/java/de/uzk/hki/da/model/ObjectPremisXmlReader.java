@@ -587,15 +587,26 @@ public class ObjectPremisXmlReader{
 									 .getFirstChildElement("objectIdentifierValue", PREMIS_NS)
 									 .getValue();
 		int index1 = packageId.indexOf('_');
-		int index2 = packageId.indexOf(".tar");
-		String packageName;
-		if (index1 < 0 || index2 < 0)
-			packageName = packageId;
-		else
-			packageName = packageId.substring(index1 + 1, index2);
+		int index3 = packageId.indexOf(".tar");
+		Integer delta=0;
+		Integer repair;
 		
 		Package pkg = new Package();
-		pkg.setName(packageName);
+		if (index1 >= 0 && index3 > 0)	{
+			String deltaString = packageId.substring(index1 + 1, index3);
+			int index2 = deltaString.indexOf('_'); 
+			if (index2 < 0){
+				delta = Integer.parseInt(deltaString);
+			}else{
+				deltaString = packageId.substring(index1 + 1, index2);
+				delta = Integer.parseInt(deltaString);
+				deltaString = packageId.substring(index2 + 1, index3);
+				repair = Integer.parseInt(deltaString);
+				pkg.setRepair(repair);
+			}
+		}
+		
+		pkg.setDelta(delta);
 		
 		Element originalNameEl = objectEl.getFirstChildElement("originalName", PREMIS_NS);
 		if (originalNameEl != null)

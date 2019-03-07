@@ -11,6 +11,14 @@ rm -r conf
 rm target/installation/config.properties
 rm target/installation/hibernateCentralDB.cfg.xml
 
+irm -rf /ci/aip/TEST
+rm -rf /ci/archiveStorage/aip/TEST
+
+irm -rf /ci/CN/federated/c-i/aip/TEST
+rm -rf /ci/archiveStorage/CN/federated/ci/aip/TEST
+
+irm -rf /ci/CN/federated/zoneA/aip/TEST
+rm -rf /ci/archiveStorage/CN/federated/zoneA/aip/TEST
 
 sqls=(
 	"DELETE FROM events;"
