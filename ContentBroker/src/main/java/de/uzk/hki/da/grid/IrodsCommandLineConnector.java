@@ -41,7 +41,7 @@ import de.uzk.hki.da.utils.StringUtilities;
  */
 public class IrodsCommandLineConnector {
 	/** configured checksum type in irods configs */
-	static final String CHECKSUM_TYPE=GenericChecksum.Algorithm.SHA256.toString();//GenericChecksum.Algorithm.SHA256.toString(); GenericChecksum.Algorithm.MD5.toString();
+	static final String CHECKSUM_TYPE=GenericChecksum.DEFAULT_CHECKSUM_ALGO.toString();//GenericChecksum.Algorithm.SHA256.toString(); GenericChecksum.Algorithm.MD5.toString();
 	/** CommandLineConnector */
 	private CommandLineConnector clc;
 	/** The logger. */

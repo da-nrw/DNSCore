@@ -142,9 +142,9 @@ public class ChecksumWorker extends Worker{
     					cs = copy.getChecksum();
     					csType=copy.getChecksumType();
     					cs64=copy.getChecksumBase64();
-    					logger.info("Checksum does not yet need recomputation. Checksum is " + cs);
+    					logger.info("Checksum does not yet need recomputation. Checksum is "+csType+" " + cs+" "+cs64);
     				}
-    				updateCopy(copy,csType, cs,cs64);
+    				
     				
     			} else { 
     				updateCopy(copy, "","","");
