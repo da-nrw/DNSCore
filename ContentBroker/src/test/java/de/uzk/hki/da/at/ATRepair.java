@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -28,6 +29,7 @@ import de.uzk.hki.da.utils.Path;
 
 public class ATRepair extends AcceptanceTest {
 	final int MAX_RETRY=200;
+	final static SimpleDateFormat DATE_FORM = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	protected String zoneName = "c-i";
 	@Before
 	public void setUp() throws IOException {
@@ -88,7 +90,7 @@ public class ATRepair extends AcceptanceTest {
 				int knockOut = 0;
 				Integer repair = 0;
 				do {
-					System.out.println("Wait local package be repaired. " + knockOut);
+					System.out.println("Wait local package be repaired. " + knockOut+ " "+DATE_FORM.format(new Date()));
 					Thread.sleep(2000);
 					session.refresh(pack);
 					repair = pack.getRepair();
@@ -159,7 +161,7 @@ public class ATRepair extends AcceptanceTest {
 				
 				int knockOut = 0; 
 				do {
-					System.out.println("Wait Recomputing of Checksum. " + knockOut);
+					System.out.println("Wait Recomputing of Checksum. " + knockOut+" "+DATE_FORM.format(new Date()));
 					Thread.sleep(2000);
 					session.refresh(copy);
 					newCS = copy.getChecksum();
@@ -180,7 +182,7 @@ public class ATRepair extends AcceptanceTest {
 				
 				knockOut = 0;
 				do {
-					System.out.println("Wait remote package to be repaired. " + knockOut);
+					System.out.println("Wait remote package to be repaired. " + knockOut+" "+DATE_FORM.format(new Date()));
 					Thread.sleep(2000);
 					session.refresh(copy);
 					newCS = copy.getChecksum();

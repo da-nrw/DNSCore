@@ -74,9 +74,11 @@ public class ATIngestLav extends AcceptanceTest {
 		double diff1=(ath.getObject(urn1).getAip_size()-647168)/(ath.getObject(urn1).getAip_size()+1);
 		double diff2=(ath.getObject(urn1).getAip_size()-846336)/(ath.getObject(urn1).getAip_size()+1);
 		double diff3=(ath.getObject(urn1).getAip_size()-944640)/(ath.getObject(urn1).getAip_size()+1);
-		assertTrue("Wrong File Size d1: "+diff1,Math.abs(diff1)<3);
-		assertTrue("Wrong File Size d2: "+diff2,Math.abs(diff2)<3);
-		assertTrue("Wrong File Size d3: "+diff3,Math.abs(diff3)<3);
+		
+		// 4% difference will be tolerated
+		assertTrue("Wrong File Size d1: "+diff1,Math.abs(diff1)<4);
+		assertTrue("Wrong File Size d2: "+diff2,Math.abs(diff2)<4);
+		assertTrue("Wrong File Size d3: "+diff3,Math.abs(diff3)<4);
 	}
 	
 	@AfterClass
