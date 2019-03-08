@@ -28,20 +28,43 @@ import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
 class PreservationSystemController {
-
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+	
+	def springSecurityService
+    
+	static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 	static CharacterEncodingUtils  ceu = new CharacterEncodingUtils()
 	
     def index(Integer max) {
+		
+		def user = springSecurityService.currentUser
+		def admin = 0;
+		
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
+		
         params.max = Math.min(max ?: 10, 100)
 		ceu.setEncoding(response)
-        respond PreservationSystem.list(params), model:[preservationSystemInstanceCount: PreservationSystem.count()]
+        respond PreservationSystem.list(params), 
+				model:[preservationSystemInstanceCount: PreservationSystem.count(), 
+						user: user, admin:admin]
     }
 
     def show(PreservationSystem preservationSystemInstance) {
+		def user = springSecurityService.currentUser
+		def admin = 0;
+		
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
 		ceu.setEncoding(response)
-        respond preservationSystemInstance
+        respond preservationSystemInstance, model:[user: user, admin: admin]
     }
+	
+	def cancel() {
+		redirect(action: "show",  id: params.id)
+	}
+
 
     @Transactional
     def save(PreservationSystem preservationSystemInstance) {
@@ -68,8 +91,14 @@ class PreservationSystemController {
     }
 
     def edit(PreservationSystem preservationSystemInstance) {
+		def user = springSecurityService.currentUser
+		def admin = 0;
+		
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
 		ceu.setEncoding(response)
-        respond preservationSystemInstance
+        respond preservationSystemInstance, model:[user: user, admin: admin]
     }
 
     @Transactional

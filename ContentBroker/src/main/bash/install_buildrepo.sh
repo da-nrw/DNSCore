@@ -3,6 +3,9 @@
 # author: Daniel M. de Oliveira
 # Jens Peters
 
+echo "PWD: " `pwd`
+cd /ci/DNSCore/ContentBroker
+echo "PWD: " `pwd`
 REVISION_NUMBER=`git rev-parse HEAD`
 TARGET=/ci/BuildRepository/installation.$REVISION_NUMBER
 

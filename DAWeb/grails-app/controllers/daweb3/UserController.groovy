@@ -24,24 +24,44 @@ import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
 class UserController {
-
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+	
+	def springSecurityService
+    
+	static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 	static CharacterEncodingUtils  ceu = new CharacterEncodingUtils()
 	
     def index(Integer max) {
+		def user = springSecurityService.currentUser
+		def admin = 0;
+		
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
         params.max = Math.min(max ?: 10, 100)
 		ceu.setEncoding(response)
-        respond User.list(params), model:[userInstanceCount: User.count()]
+        respond User.list(params), model:[userInstanceCount: User.count(), user:user, admin:admin]
     }
 
     def show(User userInstance) {
+		def user = springSecurityService.currentUser
+		def admin = 0;
+		
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
 		ceu.setEncoding(response)
-        respond userInstance
+        respond userInstance, model:[ user:user, admin:admin]
     }
 
     def create() {
+		def user = springSecurityService.currentUser
+		def admin = 0;
+		
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
 		ceu.setEncoding(response)
-        respond new User(params)
+        respond new User(params),  model:[ user:user, admin:admin]
     }
 
     @Transactional
@@ -69,12 +89,19 @@ class UserController {
     }
 
     def edit(User userInstance) {
+		def user = springSecurityService.currentUser
+		def admin = 0;
+		
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
 		ceu.setEncoding(response)
-        respond userInstance
+        respond userInstance, model:[ user:user, admin:admin ]
     }
 
     @Transactional
     def update(User userInstance) {
+		
 		ceu.setEncoding(response)
         if (userInstance == null) {
             notFound()
@@ -97,6 +124,10 @@ class UserController {
         }
     }
 
+	def cancel() {
+		redirect(action: "show",  id: params.id)
+	}
+	
     @Transactional
     def delete(User userInstance) {
 

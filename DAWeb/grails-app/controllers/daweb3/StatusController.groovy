@@ -38,7 +38,6 @@ class StatusController {
 	def springSecurityService
 	
 	def index() {
-	
 		def result = [:]
 		def results = [:]
 		
@@ -47,7 +46,8 @@ class StatusController {
 		// listall objects of Contractor
 		results.result = []
 		if (params.listallobjects) {
-			def objects = Object.findAllByUserAndObject_stateGreaterThan(contractor, 49)
+			def objects = Object.findAllByUserAndObjectStateGreaterThan(contractor, 49)
+			
 			objects.each()  { inst ->
 				result.type = "Object"
 				result.status = inst.getTextualObjectState()
@@ -63,11 +63,13 @@ class StatusController {
 				
 				def spackages = inst.packages.sort{it.id}
 				spackages.each() {pack ->
-					result.packages.add(pack.name)
+					//result.packages.add(pack.container_name)
+					result.packages.add(pack.delta)
 				}
 				result = [:]
 				results.result.add(result)
 			}
+			
 			render results as JSON
 			return
 		}
@@ -138,13 +140,13 @@ class StatusController {
 		}  
 		
 		if (params.urn) {
-				rList = Object.findAllByUserAndUrnAndObject_stateBetween(contractor, params.urn,50,100)
+			rList = Object.findAllByUserAndUrnAndObjectStateBetween(contractor, params.urn,50,100)
 		}
 		if (params.origName) {
-				rList = Object.findAllByUserAndOrigNameAndObject_stateBetween(contractor, params.origName,50,100)
+				rList = Object.findAllByUserAndOrigNameAndObjectStateBetween(contractor, params.origName,50,100)
 		} 
 		if (params.identifier) {
-				rList = Object.findAllByUserAndIdentifierAndObject_stateBetween(contractor, params.identifier,50,100)	
+				rList = Object.findAllByUserAndIdentifierAndObjectStateBetween(contractor, params.identifier,50,100)	
 		}
 		if (params.containerName) {
 			def criteria = Object.createCriteria ()
@@ -174,7 +176,8 @@ class StatusController {
 				//}
 				def spackages = instance.packages.sort{it.id}
 				spackages.each() {pack ->
-					result.packages.add(pack.name)
+					//result.packages.add(pack.container_name)
+					result.packages.add(pack.delta)
 				} 
 				results.result.add(result)
 				result = [:]
@@ -191,9 +194,15 @@ class StatusController {
 		render results as JSON
 		return
 	}
+	
+	
 	def teaser() {
-		
-		
+		def admin = 0
+		User user = springSecurityService.currentUser
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
+		[user: user, admin: admin]
 	}
 	
 	

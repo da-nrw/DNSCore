@@ -46,8 +46,8 @@
 	}
 </script>
 <div style="overflow:auto; height: 600px">
-<table>
-	<thead>
+<table class="abstand-oben">
+	<thead class="thead-line">
 		<tr><g:if test="${params.search?.status != null && params.search?.status.length()==3}">
 			<th>
 			Auswahl
@@ -93,7 +93,8 @@
 		<g:set var="showRetryAll" value="false" />
 		<g:each in="${queueEntryInstanceList}" status="i" var="queueEntryInstance">
 			<g:set var="statusType" value="status-type-${queueEntryInstance.status[-1]}" />
-			<tr class="${ ((i % 2) == 0 ? 'odd' : 'even') + ' ' + statusType}">
+				<tr class="${ ((i % 2) == 0 ? 'odd' : 'even')}">
+<!-- 			<tr class="${ ((i % 2) == 0 ? 'odd' : 'even') + ' ' + statusType}"> -->
 				<g:if test="${params.search?.status != null && params.search?.status.length()==3}">
 					<td><g:checkBox name="modifyIds" value="${queueEntryInstance.getId()}" checked="false"  onClick="deselect(this)"/></td>
 				</g:if>
@@ -109,13 +110,13 @@
 					<g:if test="${queueEntryInstance.showRetryButton()}">
 								<g:set var="showRetryAll" value="true" />
 								<g:link action="queueRetry" id="${queueEntryInstance.id}">
-									<g:img style="width:16px; height:16px" uri="/images/icons/exchange32.png" title="Workflow für Paket neu starten" alt="Workflow für Objekt neu starten"/>
+									<asset:image style="width:16px; height:16px" src="/icons/exchange32.png" title="Workflow für Paket neu starten" alt="Workflow für Objekt neu starten"/>
 								</g:link>
 					</g:if>
 					<g:if test="${queueEntryInstance.showRecoverButton() || queueEntryInstance.showRecoverButtonAfterSomeTime() }">
 						<g:set var="showRecoverAll" value="true" />
 						<g:link action="queueRecover" id="${queueEntryInstance.id}">
-							<g:img style="width:16px; height:16px" uri="/images/icons/back-icon.png"
+							<asset:image style="width:16px; height:16px" src="/icons/back-icon.png"
 									title="${message(code: 'default.workflow.icon.restart', default: 'Gesamten Workflow für Paket neu starten')}" 
 									alt="${message(code: 'default.workflow.icon.restart', default: 'Gesamten Workflow für Paket neu starten')}"/>
 					</g:link>
@@ -123,7 +124,7 @@
 					<g:if test="${ queueEntryInstance.showDeletionButton()}">
 					<g:set var="showDeleteAll" value="true" />
 					<g:link onclick="return confirm('Eintrag löschen. Sind Sie sicher?');" action="queueDelete" id="${queueEntryInstance.id}">
-						<g:img style="width:16px; height:16px" uri="/images/icons/list_remove.png" 
+						<asset:image style="width:16px; height:16px" src="/icons/list_remove.png" 
 									title="${message(code: 'default.workflow.icon.delete', default: 'Paket löschen')}" 
 									alt="${message(code: 'default.workflow.icon.delete', default: 'Paket löschen')}"/>
 					</g:link>
@@ -168,7 +169,7 @@
 											alt="${message(code: 'default.workflow.icon.restart', default: 'Gesamten Workflow für Paket neu starten')}"/></a>
 					</g:if>
 					<g:if test="${ showDeleteAll == "true" }">
-						<a onClick="return subForm('Alle Pakete löschen. Sind Sie sicher?','../queueDeleteAll');" ><img src="${resource(dir: 'images/icons', file: 'list_remove.png')}" style="width:16px; height:16px"/ title="${message(code: 'default.workflow.icon.delete', default: 'Paket löschen')}" 
+						<a onClick="return subForm('Alle Pakete löschen. Sind Sie sicher?','../queueDeleteAll');" ><img src="${resource(dir: 'images/icons', file: 'list_remove.png')}" style="width:16px; height:16px" title="${message(code: 'default.workflow.icon.delete', default: 'Paket löschen')}" 
 											alt="${message(code: 'default.workflow.icon.delete', default: 'Paket löschen')}"></a>
 					</g:if>
 				</td>

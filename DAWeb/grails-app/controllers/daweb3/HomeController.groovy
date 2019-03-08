@@ -1,6 +1,7 @@
 package daweb3
 
 import grails.plugin.springsecurity.SpringSecurityService
+import grails.plugin.springsecurity.annotation.Secured
 
 /*
  DA-NRW Software Suite | ContentBroker
@@ -26,25 +27,33 @@ import grails.plugin.springsecurity.SpringSecurityService
  * @author Jens Peters
  *
  */
+@Secured(closure= {true})
 class HomeController {
-
+	
+	static navigationScope = 'admin'
 	
 	def springSecurityService
 	def index() {
 		def username = springSecurityService.currentUser
 		def admin = 0;
+		def adminAnzeige = 0;
+		
+		User us = springSecurityService.currentUser
+		
 		User user = User.findByUsername(username)
 		
-		if (user.authorities.any { it.authority == "ROLE_PSADMIN" 
-							}) {
+		if (user.authorities.any { it.authority == "ROLE_PSADMIN"}) {
 			admin = 1;
 		}
-		if (user.authorities.any { it.authority == "ROLE_NODEADMIN"
-							}) {
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN"}) {
 			admin = 1;
 		}
 		
-		render(view:"/index", model:[admin:admin,user:username])
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			adminAnzeige = 1;
+		}
+
+		render(view:"/index", model:[admin:adminAnzeige,user:username])
 	}
 
 }
