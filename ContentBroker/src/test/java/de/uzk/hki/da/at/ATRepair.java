@@ -27,7 +27,7 @@ import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.Path;
 
 public class ATRepair extends AcceptanceTest {
-	final int MAX_RETRY=100;
+	final int MAX_RETRY=200;
 	protected String zoneName = "c-i";
 	@Before
 	public void setUp() throws IOException {
