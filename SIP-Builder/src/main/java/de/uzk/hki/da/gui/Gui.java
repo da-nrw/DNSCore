@@ -4295,11 +4295,13 @@ public class Gui extends JFrame {
 			settingsOverview += "Nein\n";
 
 		settingsOverview += "\nMigrationsbedingung: " + (String) migrationDropDown.getSelectedItem();
-		if (premisLicenseRadioButton.isSelected()) {
-			settingsOverview += "\nLizenzangaben: Im SIP-Builder festgelegt : "
-					+ licenseDropDown.getSelectedItem().toString();
-		} else if (metadataLicenseRadioButton.isSelected()) {
-			settingsOverview += "\nLizenzangaben: Aus den Metadaten übernehmen ";
+		if (publicRights.getAllowPublication()) {
+			if (premisLicenseRadioButton.isSelected()) {
+				settingsOverview += "\nLizenzangaben: Im SIP-Builder festgelegt : "
+						+ licenseDropDown.getSelectedItem().toString();
+			} else if (metadataLicenseRadioButton.isSelected()) {
+				settingsOverview += "\nLizenzangaben: Aus den Metadaten übernehmen ";
+			}
 		}
 		return settingsOverview;
 	}

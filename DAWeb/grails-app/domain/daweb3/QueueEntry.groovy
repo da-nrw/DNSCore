@@ -24,9 +24,11 @@ package daweb3
 */
 import java.text.SimpleDateFormat;
 import org.hibernate.criterion.CriteriaSpecification
+import org.hibernate.sql.JoinType
 
 class QueueEntry {
 	
+	private static final String WORKFLOW_STATUS_DIGIT_WAITING_FOR_DECISION="645";  
 	private static final String WORKFLOW_STATUS_DIGIT_USER_ERROR="4";
 	private static final String WORKFLOW_STATUS_DIGIT_WAITING="0";
 	private static final String WORKFLOW_STATUS_DIGIT_WORKING="2";
@@ -67,8 +69,8 @@ class QueueEntry {
 	
 	static List getAllQueueEntriesForShortNameAndUrn(String shortName, String urn) {
 		return createCriteria().list  {
-			createAlias('obj', 'o', CriteriaSpecification.INNER_JOIN)
-			createAlias('o.user', 'user', CriteriaSpecification.INNER_JOIN)
+			createAlias('obj', 'o', JoinType.INNER_JOIN.getJoinTypeValue()) //CriteriaSpecification.INNER_JOIN)
+			createAlias('o.user', 'user', JoinType.INNER_JOIN) // CriteriaSpecification.INNER_JOIN)
 			eq("user.shortName", shortName)
 			eq("o.urn", urn)
 		}
@@ -101,6 +103,49 @@ class QueueEntry {
 	
 	Integer getStatusAsInteger() {
 		return Integer.parseInt(status);
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	boolean showTrafficLightGreen() {
+		def checkfor = [
+			WORKFLOW_STATUS_DIGIT_WAITING ,
+			WORKFLOW_STATUS_DIGIT_WORKING]
+		def ch = status[-1]
+		if (checkfor.contains(ch)) return true;
+		return false;
+	}
+
+	/**
+	 * 	
+	 * @return
+	 */
+	boolean showTrafficLightYellow() {
+		def checkfor = [
+			WORKFLOW_STATUS_DIGIT_WAITING_FOR_DECISION]
+		def ch = status
+		if (checkfor.contains(ch)) return true;
+		return false;
+	}
+
+	
+	/**
+	 * 
+	 * @return
+	 */
+	boolean showTrafficLightRed() {
+		def checkfor = [
+		WORKFLOW_STATUS_DIGIT_ERROR_BAD_CONFIGURATION ,
+		WORKFLOW_STATUS_DIGIT_ERROR_BAD_ROLLBACK,
+		WORKFLOW_STATUS_DIGIT_ERROR_MODEL_INCONSISTENT,
+		WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET,
+		WORKFLOW_STATUS_DIGIT_USER_ERROR,
+		WORKFLOW_STATUS_DIGIT_ERROR_PROPERLY_HANDLED]	
+		def ch = status[-1]
+		if (checkfor.contains(ch)) return true;
+		return false;
 	}
 	
 	/**

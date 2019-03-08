@@ -10,9 +10,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
+import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -344,6 +346,16 @@ public class ATIngestLicensedMetsSip extends AcceptanceTest {
 			assertTrue(license==null? pcho.getChild("rights", C.DC_NS)==null : pcho.getChild("rights", C.DC_NS).getValue().equals(license.getHref()));
 		}
 		
+		Element edmLicElem=edmDoc1.getRootElement().getChild("Aggregation",C.ORE_NS).getChild("rights", C.EDM_NS);
+		//((Attribute)edmDoc1.getRootElement().getChild("Aggregation",C.ORE_NS).getChild("rights", C.EDM_NS).getAttributes().get(0)).getValue()
+		if(license==null ^ edmLicElem==null){
+			assertTrue(false);
+		}
+		if(license!=null){
+			String	edmLicString=((Attribute)edmLicElem.getAttributes().get(0)).getValue();
+			assertTrue (edmLicString.equals(license.getHref()));
+		}
+		
 		////	testIndex
 		String jsonString=metadataIndex.getIndexedMetadata(PORTAL_CI_TEST, obj.getIdentifier());
 		JSONObject jsonObj = (new JSONObject(jsonString)).getJSONObject("hits");
@@ -351,9 +363,14 @@ public class ATIngestLicensedMetsSip extends AcceptanceTest {
 		
 		jsonObj = jsonObj.getJSONArray("hits").getJSONObject(0);
 		jsonObj = jsonObj.getJSONObject("_source");
-		jsonObj = jsonObj.getJSONObject("edm:aggregatedCHO");
+		JSONObject jsonObjCHO = jsonObj.getJSONObject("edm:aggregatedCHO");
 		 try{
-			 assertTrue(jsonObj.getJSONArray("dc:rights").get(0).toString().equals(license.getHref()));
+			 assertTrue(jsonObjCHO.getJSONArray("dc:rights").get(0).toString().equals(license.getHref()));		
+		 }catch(JSONException e){ assertTrue(license==null);  }
+		 try{
+			 JSONObject esLicObj=jsonObj.getJSONArray("edm:rights").getJSONObject(0);
+			 String esLicStr= esLicObj.getString("@id");
+			 assertTrue(esLicStr.equals(license.getHref()));
 		 }catch(JSONException e){
 			 assertTrue(license==null);
          }

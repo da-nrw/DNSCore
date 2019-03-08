@@ -235,6 +235,7 @@ private synchronized Object fetchObject(String origName) {
 						csvEntry.put("createddate", formatDate(job.getCreatedAt()));
 						csvEntry.put("updateddate", formatDate(job.getModifiedAt()));
 					} else {
+						csvEntry.put("statuscode", null);//If Object is not in Workflow the statuscode have to be empty(null)
 						csvEntry.put("createddate", formatDate(o.getCreatedAt()));
 						csvEntry.put("updateddate", formatDate(o.getModifiedAt()));
 					}

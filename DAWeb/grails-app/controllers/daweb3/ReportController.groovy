@@ -29,11 +29,15 @@ class ReportController {
 		def user = springSecurityService.currentUser
 		
 		def relativeDir = user.getShortName()
-		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
-		def httpurl = grailsApplication.config.transferNode.downloadLinkPrefix +"/"+   user.getShortName()  + "/outgoing"
+		def baseFolder = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
+		def httpurl = grailsApplication.config.getProperty('transferNode.downloadLinkPrefix') +"/"+   user.getShortName()  + "/outgoing"
 		
 		def msgN = ""
 		def baseDir;		
+		def admin = 0;
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
 		
 		def msg = null;
 		msg = params.get("msg");
@@ -41,7 +45,7 @@ class ReportController {
 		if (msg!=null) {
 		msg = msg + " " + msgN
 		} else msg = msgN
-			[msg:msg,httpurl:httpurl]
+			[msg:msg,httpurl:httpurl, user:user, admin: admin]
 	}
 	
 	def save() {
@@ -50,7 +54,7 @@ class ReportController {
 		def user = springSecurityService.currentUser
 		
 		def relativeDir = user.getShortName() + "/incoming"
-		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
+		def baseFolder = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
 		
 		def uploadedfile = request.getFile("file");
 		if (!uploadedfile.isEmpty()) {
@@ -64,23 +68,23 @@ class ReportController {
 	
 	def start(){
 			def user = springSecurityService.currentUser
-			CbNode node = CbNode.findById(grailsApplication.config.localNode.id);
+			CbNode node = CbNode.findById(grailsApplication.config.getProperty('localNode.id'));
 			SystemEvent se = new SystemEvent();
 			se.setType("CreateStatusReportEvent");
 			se.setUser(user);
 			se.setNode(node);
-			se.save();
+			se.save flush:true
 			return redirect(action: "index", params: [msg: "Auftrag zur Erstellung eines Statusreports erfolgreich erstellt!"])
 	}
 	
 	def retrieval(){
 		def user = springSecurityService.currentUser
-		CbNode node = CbNode.findById(grailsApplication.config.localNode.id);
+		CbNode node = CbNode.findById(grailsApplication.config.getProperty('localNode.id'));
 		SystemEvent se = new SystemEvent();
 		se.setType("CreateRetrievalRequestsEvent");
 		se.setUser(user);
 		se.setNode(node);
-		se.save();
+		se.save flush:true
 		return redirect(action: "index", params: [msg: "Auftrag zum massenhaften Retrieval erfolgreich erstellt!"])
 		
 	} 
@@ -88,7 +92,7 @@ class ReportController {
 	def delete = {
 		def user = springSecurityService.currentUser
 		def relativeDir = user.getShortName() + "/incoming"
-		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
+		def baseFolder = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
 		
 		def files = params.list("currentFiles")
 
@@ -110,8 +114,8 @@ class ReportController {
 		def msgN;
 		def currentFileOutgoing = []
 		def relativeDir = user.getShortName()
-		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
-		def httpurl = grailsApplication.config.transferNode.downloadLinkPrefix +"/"+   user.getShortName()  + "/outgoing"
+		def baseFolder = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
+		def httpurl = grailsApplication.config.getProperty('transferNode.downloadLinkPrefix') +"/"+   user.getShortName()  + "/outgoing"
 		
 		try {
 			baseDir = new File(baseFolder + "/outgoing")
@@ -139,7 +143,7 @@ class ReportController {
 		def msgN;
 		def currentFileIncoming = []
 		def relativeDir = user.getShortName()
-		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
+		def baseFolder = grailsApplication.config.localNode.getProperty('userAreaRootPath') + "/" + relativeDir
 		try {
 			baseDir = new File(baseFolder + "/incoming")
 			if (!baseDir.exists()) {

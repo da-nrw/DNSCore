@@ -15,5 +15,5 @@
 		<g:message code="cbNode.name.label" default="Name" />
 		
 	</label>
-	<g:textField name="name" value="${cbNodeInstance?.name}"/>
+	<g:textField name="name" value="${cbNodeInstance?.name}"  class="input-hoehe"/>
 </div>

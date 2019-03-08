@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Hinweise zur Verwaltung der DNS durch externe Systeme</title>
+	<title>Hinweise zur Ansteuerung über externe Systeme</title>
 	<meta name="layout" content="main">
 		<style type="text/css" media="screen">
 			#controller-list ul {
@@ -15,18 +15,16 @@
 		</style>
 </head>
 <body>
-
-	<div class="nav" role="navigation">
-		<ul>
-			<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-		</ul>
-	</div>
-	<div id="controller-list" role="navigation"  style="margin: 0.8em 0 0.3em">
-		<h2>REST Funktionen:</h2>
-		<ul>
-			<li class="controller"><g:link controller="automatedRetrieval">Erstellung von Retrievalanfragen </g:link></li>
-			<li class="controller"><g:link controller="status" action="teaser">Abfrage der Verarbeitung und Archivierung</g:link></li>
-		</ul>
+	<div class="page-body">
+		<div id="controller-list" role="navigation">
+			<div class="blue-box"></div>
+			<h2>Hinweise zur Ansteuerung über externe Systeme (REST)</h2>
+			<ul class="style-funktion">
+				<li class="controller controller-Abstand-links"><g:link controller="automatedRetrieval">Erstellung von Retrievalanfragen</g:link></li>
+				<li class="controller controller-Abstand-links"><g:link controller="status" action="teaser">Abfrage der Verarbeitung und Archivierung</g:link></li>
+				<li class="controller controller-Abstand-links"><g:link controller="delete" action="deleter">Löschen fehlerhafter Pakete</g:link></li>
+			</ul>
+		</div>
 	</div>
 </body>
 </html>

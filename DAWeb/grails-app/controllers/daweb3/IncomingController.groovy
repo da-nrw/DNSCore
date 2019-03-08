@@ -18,6 +18,8 @@ package daweb3
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 import java.io.File
+import grails.converters.JSON
+import grails.util.Environment
 
 /**
  * 
@@ -35,11 +37,19 @@ class IncomingController {
 		def user = springSecurityService.currentUser
 		
 		def relativeDir = user.getShortName() + "/incoming"
-		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
+		def baseFolder =  grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
+//		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
 		def msg = ""
 		def baseDir;
 		def filelist = []
+		def admin = 0;
+		 
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
+		
 		try {
+			
 			baseDir = new File(baseFolder)
 			if (!baseDir.exists()) {
 				msg = "Benutzerordner nicht gefunden"
@@ -59,7 +69,8 @@ class IncomingController {
 	
 		}
 			[filelist:filelist,
-			 msg:msg]
+			 msg:msg,
+			 user: user, admin: admin]
 	}
 	
 	def save = {
@@ -71,25 +82,28 @@ class IncomingController {
 		files.each {
 			 log.info "Datei ${it}" 
 			 
-			 File source = new File(grailsApplication.config.localNode.userAreaRootPath +"/" 
+			 File source = new File(grailsApplication.config.getProperty('localNode.userAreaRootPath') +"/" 
 				 		+ user.getShortName() + "/incoming/" + it);
-			File target =  new File(grailsApplication.config.localNode.ingestAreaRootPath
+			File target =  new File(grailsApplication.config.getProperty('localNode.ingestAreaRootPath')
 				 		+"/"+user.getShortName() + "/"+ it)
 			if (target.exists()) {
 				msg = "Datei existiert bereits ${it}"
 				[msg:msg]
 				
-				redirect(action:"index")
+				redirect(action: "index")
 			}
 			 try {
 				 boolean fileMoved = source.renameTo(target);
-				 if (!fileMoved) msg = "Fehler bei der Erstellung eines Arbeitsauftrages fuer ${it}"
-			 	log.error "Fehler bei der Erstellung der Datei " + target.getAbsolutePath();
+				 if (!fileMoved) {
+					 msg = "Fehler bei der Erstellung eines Arbeitsauftrages fuer ${it}"
+					 log.error "Fehler bei der Erstellung der Datei " + target.getAbsolutePath();
+				 }
+					 
 			} catch (Exception e) {
 				msg = "Exception beim Verschieben der Datei ${it}"
 				log.error "Datei ${it} Exception " + e.printStackTrace()
 			}
-				}
+		}
 		[msg:msg]
 		redirect(action:"index")
 	}

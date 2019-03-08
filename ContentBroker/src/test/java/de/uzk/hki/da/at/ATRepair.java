@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +28,8 @@ import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.Path;
 
 public class ATRepair extends AcceptanceTest {
-
+	final int MAX_RETRY=200;
+	final static SimpleDateFormat DATE_FORM = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	protected String zoneName = "c-i";
 	@Before
 	public void setUp() throws IOException {
@@ -55,13 +57,16 @@ public class ATRepair extends AcceptanceTest {
 
 			Writer writer = null;
 			try {
+				System.out.println("Try to modify: "+file +" file is exists: "+file.exists());
 				writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "utf-8"));
 				writer.write("Kaputnik");
-			} catch (IOException ex) {
-				fail("writing to file " + file + " failed");
+			} catch (Exception ex) {
+				fail("writing to file " + file + " failed"+ "\n" +
+						ex.getMessage() + "\n" + ex.toString());
 			} finally {
 				try {
-					writer.close();
+					if(writer!=null)
+						writer.close();
 				} catch (Exception ex) {
 					fail(ex.getMessage() + "\n" + ex.toString());
 				}
@@ -85,12 +90,12 @@ public class ATRepair extends AcceptanceTest {
 				int knockOut = 0;
 				Integer repair = 0;
 				do {
-					System.out.println("Wait local package be repaired. " + knockOut);
+					System.out.println("Wait local package be repaired. " + knockOut+ " "+DATE_FORM.format(new Date()));
 					Thread.sleep(2000);
 					session.refresh(pack);
 					repair = pack.getRepair();
 					knockOut++;
-					if (knockOut > 30) {
+					if (knockOut > MAX_RETRY) {
 						String msg = "Local package not repaired. Failed: " + file;
 						System.out.println(msg);
 						fail(msg);
@@ -156,12 +161,12 @@ public class ATRepair extends AcceptanceTest {
 				
 				int knockOut = 0; 
 				do {
-					System.out.println("Wait Recomputing of Checksum. " + knockOut);
+					System.out.println("Wait Recomputing of Checksum. " + knockOut+" "+DATE_FORM.format(new Date()));
 					Thread.sleep(2000);
 					session.refresh(copy);
 					newCS = copy.getChecksum();
 					knockOut++;
-					if (knockOut > 30){
+					if (knockOut > MAX_RETRY){
 						String msg = "Recomputing of Checksum not performed. Failed: " + foreignName;
 						System.out.println(msg);
 						fail(msg);
@@ -177,12 +182,12 @@ public class ATRepair extends AcceptanceTest {
 				
 				knockOut = 0;
 				do {
-					System.out.println("Wait remote package to be repaired. " + knockOut);
+					System.out.println("Wait remote package to be repaired. " + knockOut+" "+DATE_FORM.format(new Date()));
 					Thread.sleep(2000);
 					session.refresh(copy);
 					newCS = copy.getChecksum();
 					knockOut++;
-					if (knockOut > 30){
+					if (knockOut > MAX_RETRY){
 						String msg = "Foreign package not repaired. Failed: " + foreignName;
 						System.out.println(msg);
 						fail(msg);

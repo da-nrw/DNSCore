@@ -3,6 +3,9 @@
 # author: Daniel M. de Oliveira
 # Jens Peters
 
+echo "PWD: " `pwd`
+cd /ci/DNSCore/ContentBroker
+echo "PWD: " `pwd`
 REVISION_NUMBER=`git rev-parse HEAD`
 TARGET=/ci/BuildRepository/installation.$REVISION_NUMBER
 
@@ -10,7 +13,10 @@ mkdir $TARGET
 mkdir $TARGET/ContentBroker
 mkdir $TARGET/DAWeb
 mkdir $TARGET/SipBuilder
+mkdir $TARGET/RegressionTestCB
 
+
+cp -r /ci/DNSCore/RegressionTestCB/target/installation $TARGET/RegressionTestCB
 
 cd /ci/DNSCore/ContentBroker
 cp -r target/installation $TARGET/ContentBroker

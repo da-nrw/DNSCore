@@ -406,6 +406,7 @@ public class SIPFactory {
 		boolean publicationBool=contractRights.getPublicRights().getAllowPublication();
 		boolean instPublicationBool=contractRights.getInstitutionRights().getAllowPublication();
 		
+
 		//activate to be able to create wrong licensed test sips
 		//publicationBool=false;
 		//instPublicationBool=false;
@@ -467,8 +468,10 @@ public class SIPFactory {
 		//publicationBool=false;
 		//premisLicenseBool=false;
 		//publicationBool=false;
+
 		//end
-		if(premisLicenseBool && (metsLicenseBool || lidoLicenseBool)){
+
+		if(publicationBool && premisLicenseBool && (metsLicenseBool || lidoLicenseBool)){
 			return Feedback.DUPLICATE_LICENSE_DATA;
 		}
 		
@@ -476,7 +479,7 @@ public class SIPFactory {
 			return Feedback.PUBLICATION_NO_LICENSE;
 		}
 		
-		logger.info("License is satisfiable: Premis-License:"+premisLicenseBool+" Mets-License:"+metsLicenseBool+" Lido-License:"+lidoLicenseBool+ " Publication-Decision:"+publicationBool);
+		logger.info("License is satisfiable: Premis-License:"+premisLicenseBool+" Mets-License:"+metsLicenseBool+" Lido-License:"+lidoLicenseBool+ " Publication-Decision:"+publicationBool+" InstPublication-Decision:"+instPublicationBool);
 		
 		
 		return Feedback.SUCCESS;
