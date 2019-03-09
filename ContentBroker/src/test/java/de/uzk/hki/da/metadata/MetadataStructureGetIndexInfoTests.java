@@ -150,7 +150,7 @@ public class MetadataStructureGetIndexInfoTests {
 	*/
 	@Test
 	public void testMultilevelMETSappendAccessCondition() throws FileNotFoundException, JDOMException, IOException {
-		MetsLicense testLicense=new MetsLicense("https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
+		MetsLicense testLicense=new MetsLicense("use and reproduction","https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
 		File metsFile = Path.make("export_mets.xml").toFile();
 		
 		//file for modifications
@@ -182,7 +182,7 @@ public class MetadataStructureGetIndexInfoTests {
 	
 	@Test
 	public void testSimpleMETSappendAccessCondition() throws FileNotFoundException, JDOMException, IOException {
-		MetsLicense testLicense=new MetsLicense("https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
+		MetsLicense testLicense=new MetsLicense("use and reproduction","https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
 		File metsFile = Path.make("simpleMetsNoLicense.xml").toFile();
 		
 		//file for modifications

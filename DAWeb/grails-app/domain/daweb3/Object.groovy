@@ -45,6 +45,7 @@ class Object {
 		createdAt column: 'created_at'
 		modifiedAt column: 'modified_at'
 		objectState column: 'object_state'
+		aipSize column: 'aip_size'
     }
 	
 	
@@ -55,6 +56,7 @@ class Object {
 	String origName
 	
 	int objectState
+	long aipSize
 	int published_flag
 	
 	// due to now unused iRODS functions these fields are still strings, should be 
