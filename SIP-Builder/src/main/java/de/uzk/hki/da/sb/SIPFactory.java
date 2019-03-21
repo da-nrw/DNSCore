@@ -403,6 +403,7 @@ public class SIPFactory {
 		boolean premisLicenseBool=contractRights.getCclincense()!=null;
 		boolean metsLicenseBool=false;
 		boolean lidoLicenseBool=false;
+		boolean hasPipMetadataBool=false;
 		boolean publicationBool=contractRights.getPublicRights().getAllowPublication();
 		boolean instPublicationBool=contractRights.getInstitutionRights().getAllowPublication();
 		
@@ -438,6 +439,7 @@ public class SIPFactory {
 						return Feedback.INVALID_LICENSE_DATA_IN_METADATA;
 					else
 						metsLicenseBool = true;
+					hasPipMetadataBool=true;
 				}else if (metadataFileWithType.containsValue(C.CB_PACKAGETYPE_LIDO)) {
 					ArrayList<File> lidoFiles = new ArrayList<File>();
 	
@@ -458,6 +460,9 @@ public class SIPFactory {
 						return Feedback.INVALID_LICENSE_DATA_IN_METADATA;
 					else
 						lidoLicenseBool = true;
+					hasPipMetadataBool=true;
+				}else {
+					hasPipMetadataBool=false;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -477,6 +482,10 @@ public class SIPFactory {
 		
 		if(publicationBool && !premisLicenseBool && !metsLicenseBool&& !lidoLicenseBool){
 			return Feedback.PUBLICATION_NO_LICENSE;
+		}
+		
+		if(publicationBool && !hasPipMetadataBool){
+			return Feedback.NO_METADATA_FOR_PIP;
 		}
 		
 		logger.info("License is satisfiable: Premis-License:"+premisLicenseBool+" Mets-License:"+metsLicenseBool+" Lido-License:"+lidoLicenseBool+ " Publication-Decision:"+publicationBool+" InstPublication-Decision:"+instPublicationBool);
@@ -1172,6 +1181,15 @@ public class SIPFactory {
 									+ folder.getName()
 									+ "\" konnte der Lieferung nicht hinzugefügt werden.\n"+
 									"Die Lizenzangaben sind nicht vorhanden: Um publizieren zu können, muss eine gültige Lizenz angegeben werden.",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				case NO_METADATA_FOR_PIP:
+					messageWriter
+					.showMessage(
+							"Das SIP \""
+									+ folder.getName()
+									+ "\" konnte der Lieferung nicht hinzugefügt werden.\n"+
+									"Für eine Publikation sind portalrelevante Metadaten (z.B. METS,LIDO) zwingend erforderlich",
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				case ABORT:

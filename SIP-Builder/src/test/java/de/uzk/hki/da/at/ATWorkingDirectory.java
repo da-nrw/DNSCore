@@ -21,6 +21,8 @@ import de.uzk.hki.da.utils.FolderUtils;
 public class ATWorkingDirectory {
 	public static final File CONTRACT_RIGHT_LICENSED = new File("target/installation/conf" + File.separator + "standardRightsLicense.xml"); //standardRightsLicense.xml   standardRights.xml
 	public static final File CONTRACT_RIGHT_NON_LICENSED = new File("target/installation/conf" + File.separator + "standardRightsNonLicense.xml"); //standardRightsLicense.xml   standardRights.xml
+	public static final File CONTRACT_RIGHT_LICENSED_ONLY_INST_PUB = new File("target/installation/conf" + File.separator + "standardRightsLicenseInstPub.xml"); //standardRightsLicense.xml   standardRights.xml
+	
 	
 	private static String sip1 = "ATWorkingDirectory.tgz";
 	
