@@ -54,15 +54,15 @@
 			<button class="accordion">Filter
 				<g:if test="${params.search}"><br>
 		    		<g:if test="${!params.search?.origName.isEmpty()}">
-		    			<span style="margin-right: 25px"><i>Originalname: </i>${params.search?.origName}</span>
+		    			<span style="margin-right: 25px"><i>Originalname: ${params.search?.origName}</i></span>
 		    		</g:if> 
 		    		<g:if test="${params.search?.urn}">
 			    		<g:if test="${!params.search?.urn.isEmpty()}"> 
-			    			 <span style="margin-right: 25px"><i>URN: </i>${params.search?.urn}</span>
+			    			 <span style="margin-right: 25px"><i>URN: ${params.search?.urn}</i></span>
 			    		</g:if>  
 			    	</g:if>
 		    		<g:if test="${!params.search?.identifier.isEmpty()}">
-		    			<span style="margin-right: 25px"><i>Identifier: </i>${params.search?.identifier}</span>
+		    			<span style="margin-right: 25px"><i>Identifier: ${params.search?.identifier}</i></span>
 		    		</g:if> 
 		    		<div>
 						<g:if test="${params.searchDateType != null} "> 
@@ -71,12 +71,12 @@
 			    		</g:if>   
 			    		<g:if test="${params.searchDateStart != null}">
 			    			<g:if test="${params.searchDateStart != '0'}">
-			    				<span style="margin-right: 25px"><i>Von Datum: </i>${params.searchDateStart}</span>
+			    				<span style="margin-right: 25px"><i>Von Datum: ${params.searchDateStart}</i></span>
 			    			</g:if>
 			    		</g:if> 	
 			    		<g:if test="${params.searchDateEnd != null}">
 			    			<g:if test="${params.searchDateEnd != '0'}">
-			    				<span style="margin-right: 25px"><i>Bis Datum: </i>${params.searchDateEnd}</span>
+			    				<span style="margin-right: 25px"><i>Bis Datum: ${params.searchDateEnd}</i></span>
 			    			</g:if>
 			    		</g:if> 
 			    	</div>
