@@ -147,15 +147,15 @@ Die Spalte "Umgesetzt" beschreibt den Umsetzungssstatus mögliche Ausprägungen 
 </tr></thead><tbody>
 <tr>
 <td><sub>
-objectMeasurementsWrap/objectMeasurementsSet/displayObjectMeasurement $1 </sub></td>
+objectMeasurementsWrap/objectMeasurementsSet<br>/displayObjectMeasurement</sub></td>
 <td><sub>dcterms.extend</sub></td>
-<td><sub>dcterms.extend = $1<br> </sub></td>
+<td><sub><br> </sub></td>
 <td><sub>Umfang</sub></td>
 <td><sub>Nächstes Build</sub></td>
     </tr>
   <tr>
   <td><sub>
-administrativeMetadata/resourceWrap/resourceSet/resourceType/term/addedSearchTerm</sub></td>
+administrativeMetadata/resourceWrap/resourceSet/resourceType<br>/term/addedSearchTerm</sub></td>
 <td><sub>dc:type<br>edm:type</sub></td>
 <td><sub> </sub></td>
 <td><sub>Inhalt wird grosgeschrieben: <br>'image'->'IMAGE'</sub></td>
@@ -237,7 +237,7 @@ administrativeMetadata/recordWrap/recordSource<br>/legalBodyName/appellationValu
   
  <tr><td>
 <sub>
-administrativeMetadata/resourceWrap/resourceSet/rightsResource<br>/rightsHolder/legalBodyName/appellationValue </sub></td>
+administrativeMetadata/resourceWrap<br>/resourceSet/rightsResource<br>/rightsHolder/legalBodyName/appellationValue </sub></td>
 <td><sub>edm.intermediateProvider </sub></td>
 <td><sub></sub></td>
 <td><sub>Inhaber Nutzungsrecht ???</sub></td>
