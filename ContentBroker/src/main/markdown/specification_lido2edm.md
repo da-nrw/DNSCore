@@ -52,12 +52,20 @@ Die Spalte "Umgesetzt" beschreibt den Umsetzungssstatus mögliche Ausprägungen 
 <td><sub>Nächstes Build</sub></td>
 </tr>
  <tr>
-<td><sub> eventSet/event/eventDate $1<br> </sub></td>
-<td><sub>dcterms:issued<br>dcterms:iscreated</sub></td>
-<td><sub>dcterms:issued = $1  <br>
-  -Es sollte identifiziert werden welche der Datumsangaben, richtig zu created und issued eingeordnet werden können. <br>Eventl. mithilfe von &lteventType/&gt lösbar.  <br>-Momentan werden alle Datumsangaben zu dcterms:issued gemappt.</sub></td>
+<td><sub> eventSet/event/eventDate<br> </sub></td>
+<td><sub>dcterms:issued</sub></td>
+<td><sub>  <br>
+   <br>Momentan werden alle Datumsangaben zu dcterms:issued gemappt.</sub></td>
 <td><sub>Jahr</sub></td>
 <td><sub>Build 1856</sub></td>
+</tr>
+ <tr>
+<td><sub> eventSet/event/eventDate<br> </sub></td>
+<td><sub>dcterms:iscreated</sub></td>
+<td><sub> 
+ Es sollte identifiziert werden welche der Datumsangaben, richtig zu created und issued eingeordnet werden können. <br>Eventl. mithilfe von &lteventType/&gt lösbar. </sub></td>
+<td><sub>Jahr</sub></td>
+<td><sub>Voschlag</sub></td>
 </tr>
 <tr>
 <td><sub> -event/eventPlace/displayPlace <br>
