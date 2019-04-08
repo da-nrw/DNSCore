@@ -80,7 +80,7 @@ Die Spalte "Umgesetzt" beschreibt den Umsetzungssstatus mögliche Ausprägungen 
 <td><sub>dcterms:spatial <br> (edm:currentLocation)</sub></td>
 <td><sub> </sub></td>
 <td><sub> </sub></td>
-<td><sub>Vorschlag</sub></td>
+<td><sub><b>Nächstes Build</b></sub></td>
 </tr>
  
  
