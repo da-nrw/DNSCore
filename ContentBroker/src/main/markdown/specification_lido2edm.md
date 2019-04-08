@@ -71,7 +71,7 @@ Die Spalte "Umgesetzt" beschreibt den Umsetzungssstatus mögliche Ausprägungen 
 -event/eventPlace/place/namePlaceSet </sub></td>
 <td><sub> dc:publisher</sub></td>
 <td><sub>-Portal liest Ort/Verlag aus dem Publisher-Feld aus<br>Jira-Ticket:1587 <br> dc:publisher->DA-NRW-Portal(Erschienen)</sub></td>
-<td><sub>Ort/Verlag</sub></td>
+<td><sub>Erschienen</sub></td>
 <td><sub>Build: 1856</sub></td>
 </tr>
   <tr>
