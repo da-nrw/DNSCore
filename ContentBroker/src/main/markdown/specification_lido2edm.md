@@ -3,7 +3,7 @@
 Da auch Elternelemente in den XML-basierten Metadatenschemata relevant sein können, werden die Mappings werden in der Punktnotation bzw. in Form von jQuery/CSS-Selektoren dargestellt
 
 Die Spalte "Quelle" gibt an, aus welchem Namensraum und Feldern aus dem LIDO die relevante Daten für das Mapping bezogen werden können.
-$1 bis $n können als Platzhalter für die Merging-Regeln verwendet werden.
+$1 bis $n können, sofern dies erforderlich ist, als Platzhalter für die Merging-Regeln verwendet werden
 
 Die Spalte "Mapping zu EDM" gibt an, wohin die aus der Quelle bezogenen Daten in das EDM geschrieben werden sollen.
 
@@ -14,7 +14,7 @@ Die Spalte "Portal" beschreibt, in welchem Feld die inhalte im Portal eingesehen
 Die Spalte "Umgesetzt" beschreibt den Umsetzungssstatus mögliche Ausprägungen ""(Leer), "Vorschlag", "Review durch ULB", "In Umsetzung", "Build XYZ".
 
 
-### Mapping für Titel im Portal:
+### Mapping der Grobbeschreibung im Portal:
 
 <table><thead><tr>
 <th><sub>Quelle LIDO</sub></th>
@@ -48,7 +48,7 @@ Die Spalte "Umgesetzt" beschreibt den Umsetzungssstatus mögliche Ausprägungen 
 <td><sub> eventSet/event/eventDate $1<br> </sub></td>
 <td><sub>dc:date</sub></td>
 <td><sub> dc:date = $1  <br></sub></td>
-<td><sub>Jahr</sub></td>
+<td><sub></sub></td>
 <td><sub>Nächstes Build</sub></td>
 </tr>
  <tr>
@@ -81,8 +81,61 @@ Die Spalte "Umgesetzt" beschreibt den Umsetzungssstatus mögliche Ausprägungen 
 <td><sub>dcterms:spatial <br> (edm:currentLocation)</sub></td>
 <td><sub> </sub></td>
 <td><sub> </sub></td>
-<td><sub>Nächstes Build</sub></td>
+<td><sub>Vorschlag</sub></td>
 </tr>
+ 
+ 
+ <tr>
+<td><sub>
+objectMeasurementsWrap/objectMeasurementsSet<br>/displayObjectMeasurement</sub></td>
+<td><sub>dcterms.extend</sub></td>
+<td><sub><br> </sub></td>
+<td><sub>Umfang</sub></td>
+<td><sub>Nächstes Build</sub></td>
+    </tr>
+  <tr>
+  <td><sub>
+administrativeMetadata/resourceWrap/resourceSet/resourceType<br>/term/addedSearchTerm</sub></td>
+<td><sub>dc:type<br>edm:type</sub></td>
+<td><sub> </sub></td>
+<td><sub>Inhalt wird großgeschrieben: <br>'image'->'IMAGE'</sub></td>
+<td><sub>Nächstes Build</sub></td>
+    </tr>
+  <tr>
+  <td><sub>
+descriptiveMetadata/eventWrap/eventSet<br>/event/materialsTech/eventMaterialsTech/displayMaterialsTech</sub></td>
+<td><sub>dcterms.medium <br></sub></td>
+<td><sub> </sub></td>
+<td><sub>Material/Technik ???</sub></td>
+<td><sub>Vorschlag</sub></td>
+  </tr>
+  <tr>
+  <td><sub>
+descriptiveMetadata/eventWrap/eventSet<br>/event/Wrap/eventSet/event<br>/eventDescriptionSet/descriptiveNoteValue</sub></td>
+<td><sub>???<br>dcterms:provenance<br> dc:description</sub></td>
+<td><sub> </sub></td>
+<td><sub>Herkunft/Provenienz ???</sub></td>
+<td><sub>Vorschlag</sub></td>
+  </tr>
+  <tr>
+  <td><sub>
+objectRelationWrap/subjectSet<br>/subject[type=Stichwort]/subjectConcept</sub></td>
+<td><sub>dc:subject<br>skos:prefLabel</sub></td>
+<td><sub> </sub></td>
+<td><sub></sub></td>
+<td><sub></sub></td>
+  </tr>
+  <tr>
+  <td><sub>
+objectRelationWrap/subjectSet<br>/subject[type=Schlagwort]/subjectConcept</sub></td>
+<td><sub>??? <br>dc:type</sub></td>
+<td><sub> </sub></td>
+<td><sub></sub></td>
+<td><sub></sub></td>
+
+</tr>
+
+
 </tbody></table>
 
 
@@ -166,7 +219,7 @@ objectMeasurementsWrap/objectMeasurementsSet<br>/displayObjectMeasurement</sub><
 administrativeMetadata/resourceWrap/resourceSet/resourceType<br>/term/addedSearchTerm</sub></td>
 <td><sub>dc:type<br>edm:type</sub></td>
 <td><sub> </sub></td>
-<td><sub>Inhalt wird grosgeschrieben: <br>'image'->'IMAGE'</sub></td>
+<td><sub>Inhalt wird großgeschrieben: <br>'image'->'IMAGE'</sub></td>
 <td><sub>Nächstes Build</sub></td>
     </tr>
   <tr>
@@ -203,6 +256,25 @@ objectRelationWrap/subjectSet/subject[type=Schlagwort]/subjectConcept</sub></td>
 
 </tr></tbody></table>
 
+### Mapping für Institutionstyp
+<table><thead><tr>
+<th><sub>Quelle Mods</sub></th>
+<th><sub>Mapping zu EDM</sub></th>
+<th><sub>Bemerkung</sub></th>
+<th><sub>Portal</sub></th>
+<th><sub>Umgesetzt</sub></th>
+</tr></thead><tbody><tr>
+<td><sub>
+</sub></td>
+<td><sub>@InstitutionType
+</sub></td>
+<td><sub>-Sofern der Contractor in der 'users'-Tabelle in der  
+'provider_type'-Spalte einen nicht leeren String-Wert enthält, wird dieser in den Index als Wert der @institutionType-Variable übernommen.<br>
+@InstitutionType=Archiv|Museum|Bibliothek</sub></td>
+<td><sub>Für die Einschränkung der Suche auf einen Institutionstyp (Archiv, Museum, Bibliothek ...)</sub></td>
+<td><sub>Build: 1954</sub></td>
+</tr>
+</tbody></table>
 
 ### Mapping für Thumbnail
 <table><thead><tr>
