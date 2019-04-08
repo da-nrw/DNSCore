@@ -35,27 +35,26 @@ Die Spalte "Umgesetzt" beschreibt den Umsetzungssstatus mögliche Ausprägungen 
 <td><sub>dc:description</sub></td>
 <td><sub> dc:description = $1  <br></sub></td>
 <td><sub>Beschreibung</sub></td>
-<td><sub>Nächstes Build</sub></td>
+<td><sub><b>Nächstes Build</b></sub></td>
 </tr>
 <tr>
 <td><sub>repositoryWrap/repositorySet/workID[type="inventory number"]  $1<br> </sub></td>
 <td><sub>dc.identifier</sub></td>
 <td><sub> dc.identifier = $1  <br></sub></td>
 <td><sub> Inventarnummer ???</sub></td>
-<td><sub>Nächstes Build</sub></td>
+<td><sub><b>Nächstes Build</b></sub></td>
 </tr>
 <tr>
 <td><sub> eventSet/event/eventDate $1<br> </sub></td>
 <td><sub>dc:date</sub></td>
 <td><sub> dc:date = $1  <br></sub></td>
 <td><sub></sub></td>
-<td><sub>Nächstes Build</sub></td>
+<td><sub><b>Nächstes Build</b></sub></td>
 </tr>
  <tr>
 <td><sub> eventSet/event/eventDate<br> </sub></td>
 <td><sub>dcterms:issued</sub></td>
-<td><sub>  <br>
-   <br>Momentan werden alle Datumsangaben zu dcterms:issued gemappt.</sub></td>
+<td><sub>Momentan werden alle Datumsangaben zu dcterms:issued gemappt.</sub></td>
 <td><sub>Jahr</sub></td>
 <td><sub>Build 1856</sub></td>
 </tr>
@@ -91,19 +90,19 @@ objectMeasurementsWrap/objectMeasurementsSet<br>/displayObjectMeasurement</sub><
 <td><sub>dcterms.extend</sub></td>
 <td><sub><br> </sub></td>
 <td><sub>Umfang</sub></td>
-<td><sub>Nächstes Build</sub></td>
+<td><sub><b>Nächstes Build</b></sub></td>
     </tr>
   <tr>
   <td><sub>
-administrativeMetadata/resourceWrap/resourceSet/resourceType<br>/term/addedSearchTerm</sub></td>
+administrativeMetadata/resourceWrap/resourceSet<br>/resourceType/term/addedSearchTerm</sub></td>
 <td><sub>dc:type<br>edm:type</sub></td>
 <td><sub> </sub></td>
 <td><sub>Inhalt wird großgeschrieben: <br>'image'->'IMAGE'</sub></td>
-<td><sub>Nächstes Build</sub></td>
+<td><sub><b>Nächstes Build</b></sub></td>
     </tr>
   <tr>
   <td><sub>
-descriptiveMetadata/eventWrap/eventSet<br>/event/materialsTech/eventMaterialsTech/displayMaterialsTech</sub></td>
+descriptiveMetadata/eventWrap/eventSet/event<br>/materialsTech/eventMaterialsTech/displayMaterialsTech</sub></td>
 <td><sub>dcterms.medium <br></sub></td>
 <td><sub> </sub></td>
 <td><sub>Material/Technik ???</sub></td>
@@ -184,7 +183,7 @@ objectRelationWrap/subjectSet<br>/subject[type=Schlagwort]/subjectConcept</sub><
   Anzeige DA NRW Portal: bisher mit Institution kombiniert
   </sub></td>
 <td><sub>Person</sub></td>
-<td><sub>Nächstes Build</sub></td>
+<td><sub><b>Nächstes Build</b></sub></td>
   </tr>
   <tr>
  <td><sub>
@@ -199,62 +198,6 @@ objectRelationWrap/subjectSet<br>/subject[type=Schlagwort]/subjectConcept</sub><
 </tbody></table>
 
 
-<table><thead><tr>
-<th><sub>Quelle LIDO</sub></th>
-<th><sub>Mapping zu EDM</sub></th>
-<th><sub>Bemerkung</sub></th>
-<th><sub>Portal</sub></th>
-<th><sub>Umgesetzt</sub></th>
-</tr></thead><tbody>
-<tr>
-<td><sub>
-objectMeasurementsWrap/objectMeasurementsSet<br>/displayObjectMeasurement</sub></td>
-<td><sub>dcterms.extend</sub></td>
-<td><sub><br> </sub></td>
-<td><sub>Umfang</sub></td>
-<td><sub>Nächstes Build</sub></td>
-    </tr>
-  <tr>
-  <td><sub>
-administrativeMetadata/resourceWrap/resourceSet/resourceType<br>/term/addedSearchTerm</sub></td>
-<td><sub>dc:type<br>edm:type</sub></td>
-<td><sub> </sub></td>
-<td><sub>Inhalt wird großgeschrieben: <br>'image'->'IMAGE'</sub></td>
-<td><sub>Nächstes Build</sub></td>
-    </tr>
-  <tr>
-  <td><sub>
-descriptiveMetadata/eventWrap/eventSet<br>/event/materialsTech/eventMaterialsTech/displayMaterialsTech</sub></td>
-<td><sub>dcterms.medium <br></sub></td>
-<td><sub> </sub></td>
-<td><sub>Material/Technik ???</sub></td>
-<td><sub>Vorschlag</sub></td>
-  </tr>
-  <tr>
-  <td><sub>
-descriptiveMetadata/eventWrap/eventSet<br>/event/Wrap/eventSet/event/eventDescriptionSet/descriptiveNoteValue</sub></td>
-<td><sub>???<br>dcterms:provenance<br> dc:description</sub></td>
-<td><sub> </sub></td>
-<td><sub>Herkunft/Provenienz ???</sub></td>
-<td><sub>Vorschlag</sub></td>
-  </tr>
-  <tr>
-  <td><sub>
-objectRelationWrap/subjectSet/subject[type=Stichwort]/subjectConcept</sub></td>
-<td><sub>dc:subject<br>skos:prefLabel</sub></td>
-<td><sub> </sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-  </tr>
-  <tr>
-  <td><sub>
-objectRelationWrap/subjectSet/subject[type=Schlagwort]/subjectConcept</sub></td>
-<td><sub>??? <br>dc:type</sub></td>
-<td><sub> </sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-
-</tr></tbody></table>
 
 ### Mapping für Institutionstyp
 <table><thead><tr>
@@ -312,7 +255,7 @@ administrativeMetadata/recordWrap/recordSource<br>/legalBodyName/appellationValu
 <td><sub>edm.dataProvider 	</sub></td>
 <td><sub>Wie kombiniert man?<br>edm.dataProvider=$1 + $2  </sub></td>
 <td><sub>Institution ???</sub></td>
-<td><sub>Nächstes Build</sub></td>
+<td><sub><b>Nächstes Build</b></sub></td>
 </tr>
   
  <tr><td>
@@ -321,7 +264,7 @@ administrativeMetadata/resourceWrap<br>/resourceSet/rightsResource<br>/rightsHol
 <td><sub>edm.intermediateProvider </sub></td>
 <td><sub></sub></td>
 <td><sub>Inhaber Nutzungsrecht ???</sub></td>
-<td><sub>Nächstes Build</sub></td>
+<td><sub><b>Nächstes Build</b></sub></td>
 </tr>
 
  <tr><td>
@@ -330,7 +273,7 @@ administrativeMetadata/resourceWrap<br>/resourceSet/rightsResource<br>/rightsHol
 <td><sub>edm.provider </sub></td>
 <td><sub></sub></td>
 <td><sub></sub></td>
-<td><sub>Nächstes Build</sub></td>
+<td><sub><b>Nächstes Build</b></sub></td>
 </tr>
 
 <tr>
