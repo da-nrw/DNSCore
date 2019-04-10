@@ -153,7 +153,7 @@ public abstract class MetadataStructure {
 	private void addNewElementToParent(PreservationSystem preservationSystem, String id, String elementName, String elementValue, Element parent, Document edmDoc) {
 		Element eName = edmDoc.createElement(elementName);
 		if(elementName.equals(C.EDM_HAS_VIEW) || elementName.equals(C.EDM_IS_PART_OF) || elementName.equals(C.EDM_HAS_PART) 
-				|| elementName.equals(C.EDM_IS_SHOWN_BY) || elementName.equals(C.EDM_OBJECT)) {
+				|| elementName.equals(C.EDM_IS_SHOWN_BY) || elementName.equals(C.EDM_OBJECT)|| elementName.equals(C.EDM_RIGHTS)) {
 			if(elementName.equals(C.EDM_IS_PART_OF) || elementName.equals(C.EDM_HAS_PART)) {
 				elementValue = preservationSystem.getUrisCho()+"/"+elementValue;
 			}

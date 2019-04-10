@@ -121,12 +121,21 @@
 							<g:link url="${objectInstance.getInstPresLink() }" target="_blank"><span class="property-value" aria-labelledby="urn-label">Institutionelle Derivate (PIP)</span></g:link>
 						</g:if>
 						</li>
-					<li class="fieldcontain">
-						<span id="urn-label" class="property-label">Technischer Name:</span>
-						<span class="property-value" aria-labelledby="urn-label">${objectInstance?.identifier}</span>
-						
-					</li>
-					
+						<li class="fieldcontain">
+							<span id="urn-label" class="property-label">Technischer Name:</span>
+							<span class="property-value" aria-labelledby="urn-label">${objectInstance?.identifier}</span>
+						</li>
+						<li class="fieldcontain">
+							<span id="urn-label" class="property-label">Größe in Byte:</span>
+							<span class="property-value" aria-labelledby="urn-label">
+								<g:if test="${objectInstance?.aipSize<= 0}">
+									0
+								</g:if>
+								<g:else>
+									${objectInstance?.aipSize}
+								</g:else>
+							</span>
+						</li>
 					</g:if>
 					
 					

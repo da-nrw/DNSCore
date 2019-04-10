@@ -5,14 +5,21 @@
 */
 
 
+import java.awt.Dimension
+
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
 import org.openqa.selenium.phantomjs.PhantomJSDriver
-//import org.openqa.selenium.remote.RemoteWebDriver
+import org.openqa.selenium.remote.DesiredCapabilities
 
 // default driver ...
-driver = { new FirefoxDriver() }
+driver = { 
+	System.setProperty('webdriver.phantomjs.bin', '/bin/phantomjs')
+	driver =  new PhantomJSDriver()
+//	System.setProperty('webdriver.firefox.bin', '/home/gabender/Programme/firefox/firefox');
+//	driver = new FirefoxDriver()
+}
 
 environments {
 	
@@ -28,10 +35,10 @@ environments {
 			
 			driver = { new FirefoxDriver() }
 		}
-	
-		phantomJs {
-			driver = { new PhantomJSDriver() }
-		}
+//	
+//		phantomJs {
+//			driver = { new PhantomJSDriver() }
+//		}
 		
 	}
 	

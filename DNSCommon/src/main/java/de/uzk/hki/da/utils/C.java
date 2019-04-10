@@ -142,7 +142,8 @@ public class C {
 	public static final String EDM_OBJECT = "edm:object";
 	public static final String EDM_PROVIDER = "edm:provider";
 	public static final String EDM_HAS_TYPE = "edm:hasType";
-	public static final String EDM_RIGHTS = "dc:rights";
+	public static final String DC_RIGHTS = "dc:rights";
+	public static final String EDM_RIGHTS = "edm:rights";
 	public static final String EDM_EXTENT = "dcterms:extent";
 	public static final String INDEX_INSTITUTION_TYPE ="@institutionType";
 	// Other
@@ -199,6 +200,8 @@ public class C {
 	public static final String KIND_OF_SIPBUILDING_SINGLE_WITH_TARGET_FOLDER_NAME="Einzelnes SIP mit dem angegebenen Namen aus dem Quellordner erstellen";
 	public static final String KIND_OF_SIPBUILDING_MULTIPLE="SIPs aus Unterordnern des Quellverzeichnisses erstellen";
 	public static final String KIND_OF_SIPBUILDING_NESTED="SIPs aus verzweigter Ordnerstruktur erstellen (nur METS)";
+
+	public static final long UNKNOWN_FILESIZE = -1;
 	
 }
 

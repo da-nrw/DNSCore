@@ -353,6 +353,21 @@ public class AcceptanceTest {
 		icl.mkCollection("/"+localNode.getIdentifier() + "/pips/institution/"+testContractor.getUsername());
 		icl.mkCollection("/"+localNode.getIdentifier() + "/pips/public/"+testContractor.getUsername());
 		
+		//loeschen der pfade 
+		// /krz/federated/lvr/aip/TEST/
+		// /hbz/federated/lvr/aip/TEST/
+		for(Node n:localNode.getCooperatingNodes()) {
+			String fedPath="/"+n.getIdentifier() + "/federated/"+localNode.getIdentifier()+"/aip/"+testContractor.getUsername();
+			System.out.println("remove federated Path: "+fedPath);
+			icl.remove(fedPath);
+		}
+		for(Node n:localNode.getCooperatingNodes()) {
+			String fedPath="/"+n.getIdentifier() + "/federated/"+localNode.getIdentifier()+"/aip/"+testContractor.getUsername();
+			System.out.println("create federated Path: "+fedPath);
+			icl.mkCollection(fedPath);
+		}
+		
+		
 		/**distributedConversionAdapter.remove("work/TEST");
 		distributedConversionAdapter.remove("aip/TEST");
 		distributedConversionAdapter.remove("pips/institution/TEST");
