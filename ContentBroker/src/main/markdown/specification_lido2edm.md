@@ -64,7 +64,7 @@ Die Spalte "Umgesetzt" beschreibt den Umsetzungssstatus mögliche Ausprägungen 
 <td><sub> 
  Es sollte identifiziert werden welche der Datumsangaben, richtig zu created und issued eingeordnet werden können. <br>Eventl. mithilfe von &lteventType/&gt lösbar. </sub></td>
 <td><sub>Jahr</sub></td>
-<td><sub>Voschlag</sub></td>
+<td><sub>Vorschlag</sub></td>
 </tr>
 <tr>
 <td><sub> -event/eventPlace/displayPlace <br>
