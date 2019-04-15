@@ -12,7 +12,7 @@ public class BearbeitungsuebersichtPage extends Page {
  
 	static url = "/daweb3/queueEntry/list"
 	
-	static at = { title ==~ /Bearbeitungsübersicht|queueEntry/ }
+	static at = { title ==~ "Bearbeitungsübersicht" }
 	
 	static content = {
 		bearbeitungsform { $("form") }

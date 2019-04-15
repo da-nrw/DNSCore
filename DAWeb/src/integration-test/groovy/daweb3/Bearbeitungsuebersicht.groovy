@@ -11,8 +11,8 @@ import javax.annotation.Resource as Slow
 
 /**
  * 
- * @author jens Peters
- * tests Login Page of Spring Security
+ * @author Gaby Bender
+ * tests Seite Bearbeitungsübersicht
  */
 @Slow
 @Stepwise
