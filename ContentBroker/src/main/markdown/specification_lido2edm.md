@@ -9,7 +9,7 @@ Die Spalte "Mapping zu EDM" gibt an, wohin die aus der Quelle bezogenen Daten in
 
 Die Spalte "Bemerkung" beschreibt, wie mehrere Felder aus der Quelle in einem oder mehreren EDM-Feldern kombiniert werden.
 
-Die Spalte "Portal" beschreibt, in welchem Feld die inhalte im Portal eingesehen werden können. Nicht alle verarbeiteten Felder werden in der Portal-Ansicht angezeigt.
+Die Spalte "Portal" beschreibt, in welchem Feld die Inhalte im Portal eingesehen werden können. Nicht alle verarbeiteten Felder werden in der Portal-Ansicht angezeigt.
 
 Die Spalte "Umgesetzt" beschreibt den Umsetzungssstatus mögliche Ausprägungen ""(Leer), "Vorschlag", "Review durch ULB", "In Umsetzung", "Build XYZ".
 
@@ -24,14 +24,14 @@ Die Spalte "Umgesetzt" beschreibt den Umsetzungssstatus mögliche Ausprägungen 
 <th><sub>Umgesetzt</sub></th>
 </tr></thead><tbody>
 <tr>
-<td><sub> titleWrap/titleSet/appellationValue $1<br> </sub></td>
+<td><sub>titleWrap.titleSet.appellationValue $1 </br></sub></td>
 <td><sub>dc.title</sub></td>
-<td><sub> dc:title = $1  <br></sub></td>
+<td><sub> dc:title = $1  </br></sub></td>
 <td><sub>Titel</sub></td>
 <td><sub>Build 1856</sub></td>
 </tr>
 <tr>
-<td><sub> descriptiveMetadata/objectIdentificationWrap<br>/objectDescriptionWrap<br>/objectDescriptionSet/descriptiveNoteValue $1<br> </sub></td>
+<td><sub> descriptiveMetadata.objectIdentificationWrap.objectDescriptionWrap.objectDescriptionSet.descriptiveNoteValue $1 </sub></td>
 <td><sub>dc:description</sub></td>
 <td><sub> dc:description = $1  <br></sub></td>
 <td><sub>Beschreibung</sub></td>
@@ -41,7 +41,7 @@ Die Spalte "Umgesetzt" beschreibt den Umsetzungssstatus mögliche Ausprägungen 
 <td><sub>repositoryWrap/repositorySet/workID[type="inventory number"]  $1<br> </sub></td>
 <td><sub>dc.identifier</sub></td>
 <td><sub> dc.identifier = $1  <br></sub></td>
-<td><sub> Inventarnummer ???</sub></td>
+<td><sub>Identifier</sub></td>
 <td><sub><b>Nächstes Build</b></sub></td>
 </tr>
 <tr>
@@ -251,16 +251,16 @@ edm:hasView
 <tr>
 <td>
 <sub>
-administrativeMetadata/recordWrap/recordSource<br>/legalBodyName/appellationValue $1<br>kombiniert mit ISIL<br> administrativeMetadata/recordWrap/recordSource<br>/legalBodyID $2</sub></td>
+administrativeMetadata/recordWrap/recordSource<br>/legalBodyName/appellationValue $1<br>kombiniert mit ISIL<br> administrativeMetadata/recordWrap/recordSource<br />/legalBodyID $2</sub></td>
 <td><sub>edm.dataProvider 	</sub></td>
-<td><sub>Wie kombiniert man?<br>edm.dataProvider=$1 + $2  </sub></td>
+<td><sub>Wie kombiniert man?<br />edm.dataProvider=$1 + $2  </sub></td>
 <td><sub>Institution ???</sub></td>
 <td><sub><b>Nächstes Build</b></sub></td>
 </tr>
   
  <tr><td>
 <sub>
-administrativeMetadata/resourceWrap<br>/resourceSet/rightsResource<br>/rightsHolder/legalBodyName/appellationValue </sub></td>
+administrativeMetadata.resourceWrap.resourceSet.rightsResource.rightsHolder.legalBodyName.appellationValue </sub></td>
 <td><sub>edm.intermediateProvider </sub></td>
 <td><sub></sub></td>
 <td><sub>Inhaber Nutzungsrecht ???</sub></td>
