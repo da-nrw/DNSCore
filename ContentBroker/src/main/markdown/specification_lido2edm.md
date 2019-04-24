@@ -13,6 +13,12 @@ Die Spalte "Portal" beschreibt, in welchem Feld die Inhalte im Portal eingesehen
 
 Die Spalte "Umgesetzt" beschreibt den Umsetzungssstatus mögliche Ausprägungen ""(Leer), "Vorschlag", "Review durch ULB", "In Umsetzung", "Build XYZ".
 
+Zur besseren Lesbarkeit werden die Wrapper der LIDO-Spezifikation wie folgt abgekürzt:
+
+*lidoWrap = entfällt, da Root-Element*
+
+
+
 
 ### Mapping der Grobbeschreibung im Portal:
 
