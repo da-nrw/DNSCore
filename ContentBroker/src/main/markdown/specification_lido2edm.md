@@ -13,12 +13,33 @@ Die Spalte "Portal" beschreibt, in welchem Feld die Inhalte im Portal eingesehen
 
 Die Spalte "Umgesetzt" beschreibt den Umsetzungssstatus mögliche Ausprägungen ""(Leer), "Vorschlag", "Review durch ULB", "In Umsetzung", "Build XYZ".
 
-Zur besseren Lesbarkeit werden die Wrapper der LIDO-Spezifikation wie folgt abgekürzt:
+Zur besseren Lesbarkeit werden in der folgenden Tabelle die untersten vier Hierarchie-Ebenen der LIDO-Spezifikation wie folgt behandelt:
 
-*lidoWrap = entfällt, da Root-Element*
+<ul>
+   <li><b>lidoWrap</b> - wird weggelassen, da Root-Element des gesamten Dokuments</li>
+   <ul>
+      <li><b>lido</b> - wird weggelassen, da Record-Element</li>
+      <br />
+      <ul>
+         <li><b>descriptiveMetadata</b> - wird mit <b>dM</b> abgekürzt</li>
+         <ul>
+            <li><b>objectClassificationWrap</b> - wird mit <b>oC-W</b> abgekürzt</li>
+            <li><b>objectIdentificationWrap</b> - wird mit <b>oI-W</b> abgekürzt</li>
+            <li><b>eventWrap</b> - wird mit <b>e-W</b> abgekürzt</li>
+            <li><b>objectRelationWrap</b> - wird mit <b>oR-W</b> abgekürzt</li>
+            <br />
+         </ul>
+         <li><b>administrativeMetadata</b> - wird mit <b>aD</b> abgekürzt</li>
+         <ul>
+            <li><b>rightsWorkWrap</b> - wird mit <b>rW-W</b> abgekürzt</li>
+            <li><b>recordWrap</b> - wird mit <b>r-W</b> abgekürzt</li>
+            <li><b>resourceWrap</b> - wird mit <b>rsrc-W</b> abgekürzt</li>
+         </ul>
+      </ul>
+   </ul>
+</ul>
 
-
-
+Beispiele
 
 ### Mapping der Grobbeschreibung im Portal:
 
@@ -30,42 +51,42 @@ Zur besseren Lesbarkeit werden die Wrapper der LIDO-Spezifikation wie folgt abge
 <th><sub>Umgesetzt</sub></th>
 </tr></thead><tbody>
 <tr>
-<td><sub>titleWrap.titleSet.appellationValue $1 </br></sub></td>
+<td><sub> dM.oI-W.titleWrap.titleSet.appellationValue </br></sub></td>
 <td><sub>dc.title</sub></td>
-<td><sub> dc:title = $1  </br></sub></td>
+<td><sub> dc:title </br></sub></td>
 <td><sub>Titel</sub></td>
 <td><sub>Build 1856</sub></td>
 </tr>
 <tr>
-<td><sub> descriptiveMetadata.objectIdentificationWrap.objectDescriptionWrap.objectDescriptionSet.descriptiveNoteValue $1 </sub></td>
+<td><sub> dM.oI-W.objectDescriptionWrap.objectDescriptionSet.descriptiveNoteValue </sub></td>
 <td><sub>dc:description</sub></td>
-<td><sub> dc:description = $1  <br></sub></td>
+<td><sub> dc:description  <br></sub></td>
 <td><sub>Beschreibung</sub></td>
 <td><sub><b>Nächstes Build</b></sub></td>
 </tr>
 <tr>
-<td><sub>repositoryWrap/repositorySet/workID[type="inventory number"]  $1<br> </sub></td>
+<td><sub> dM.oI-W.repositoryWrap.repositorySet.workID[type="inventory number"]  $1<br> </sub></td>
 <td><sub>dc.identifier</sub></td>
 <td><sub> dc.identifier = $1  <br></sub></td>
 <td><sub>Identifier</sub></td>
 <td><sub><b>Nächstes Build</b></sub></td>
 </tr>
 <tr>
-<td><sub> eventSet/event/eventDate $1<br> </sub></td>
+<td><sub> e-W.eventSet.event.eventDate <br> </sub></td>
 <td><sub>dc:date</sub></td>
-<td><sub> dc:date = $1  <br></sub></td>
+<td><sub> dc:date <br></sub></td>
 <td><sub></sub></td>
 <td><sub><b>Nächstes Build</b></sub></td>
 </tr>
  <tr>
-<td><sub> eventSet/event/eventDate<br> </sub></td>
+<td><sub> e-W.eventSet.event.eventDate<br> </sub></td>
 <td><sub>dcterms:issued</sub></td>
 <td><sub>Momentan werden alle Datumsangaben zu dcterms:issued gemappt.</sub></td>
 <td><sub>Jahr</sub></td>
 <td><sub>Build 1856</sub></td>
 </tr>
  <tr>
-<td><sub> eventSet/event/eventDate<br> </sub></td>
+<td><sub> e-W.eventSet.event.eventDate<br> </sub></td>
 <td><sub>dcterms:iscreated</sub></td>
 <td><sub> 
  Es sollte identifiziert werden welche der Datumsangaben, richtig zu created und issued eingeordnet werden können. <br>Eventl. mithilfe von &lteventType/&gt lösbar. </sub></td>
@@ -99,40 +120,35 @@ objectMeasurementsWrap/objectMeasurementsSet<br>/displayObjectMeasurement</sub><
 <td><sub><b>Nächstes Build</b></sub></td>
     </tr>
   <tr>
-  <td><sub>
-administrativeMetadata/resourceWrap/resourceSet<br>/resourceType/term/addedSearchTerm</sub></td>
+  <td><sub>aD.rsrc-Wrap.resourceSet.resourceType.term.addedSearchTerm</sub></td>
 <td><sub>dc:type<br>edm:type</sub></td>
 <td><sub> </sub></td>
 <td><sub>Inhalt wird großgeschrieben: <br>'image'->'IMAGE'</sub></td>
 <td><sub><b>Nächstes Build</b></sub></td>
     </tr>
   <tr>
-  <td><sub>
-descriptiveMetadata/eventWrap/eventSet/event<br>/materialsTech/eventMaterialsTech/displayMaterialsTech</sub></td>
+  <td><sub>dM.e-W.eventSet.event.materialsTech.eventMaterialsTech.displayMaterialsTech</sub></td>
 <td><sub>dcterms.medium <br></sub></td>
 <td><sub> </sub></td>
 <td><sub>Material/Technik ???</sub></td>
 <td><sub>Vorschlag</sub></td>
   </tr>
   <tr>
-  <td><sub>
-descriptiveMetadata/eventWrap/eventSet<br>/event/Wrap/eventSet/event<br>/eventDescriptionSet/descriptiveNoteValue</sub></td>
+  <td><sub> mD.e-W.eventSet.event/Wrap/eventSet/event<br>/eventDescriptionSet/descriptiveNoteValue</sub></td>
 <td><sub>???<br>dcterms:provenance<br> dc:description</sub></td>
 <td><sub> </sub></td>
 <td><sub>Herkunft/Provenienz ???</sub></td>
 <td><sub>Vorschlag</sub></td>
   </tr>
   <tr>
-  <td><sub>
-objectRelationWrap/subjectSet<br>/subject[type=Stichwort]/subjectConcept</sub></td>
+  <td><sub>dM.oR-W.subjectSet.subject[type=Stichwort].subjectConcept</sub></td>
 <td><sub>dc:subject<br>skos:prefLabel</sub></td>
 <td><sub> </sub></td>
 <td><sub></sub></td>
 <td><sub></sub></td>
   </tr>
   <tr>
-  <td><sub>
-objectRelationWrap/subjectSet<br>/subject[type=Schlagwort]/subjectConcept</sub></td>
+  <td><sub>dM.oR-W.subjectSet.subject[type=Schlagwort].subjectConcept</sub></td>
 <td><sub>??? <br>dc:type</sub></td>
 <td><sub> </sub></td>
 <td><sub></sub></td>
