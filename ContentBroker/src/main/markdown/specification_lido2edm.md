@@ -52,14 +52,14 @@ Zur besseren Lesbarkeit werden in der folgenden Tabelle die untersten vier Hiera
 <tr>
 <td><sub> dM.oI-W.titleWrap.titleSet.appellationValue </br></sub></td>
 <td><sub>dc.title</sub></td>
-<td><sub> dc:title </br></sub></td>
+<td><sub> Pflichtfeld EDM, wenn keine Beschreibung, Pflichtfeld DA-NRW Portal </br></sub></td>
 <td><sub>Titel</sub></td>
 <td><sub>Build 1856</sub></td>
 </tr>
 <tr>
 <td><sub> dM.oI-W.objectDescriptionWrap.objectDescriptionSet.descriptiveNoteValue </sub></td>
 <td><sub>dc:description</sub></td>
-<td><sub> dc:description  <br></sub></td>
+<td><sub>  Pflichtfeld EDM, wenn keine Beschreibung <br></sub></td>
 <td><sub>Beschreibung</sub></td>
 <td><sub><b>Nächstes Build</b></sub></td>
 </tr>
@@ -75,40 +75,37 @@ Zur besseren Lesbarkeit werden in der folgenden Tabelle die untersten vier Hiera
 <th><sub>Umgesetzt</sub></th>
 </tr></thead><tbody>
 <tr>
-<td><sub> dM.oI-W.repositoryWrap.repositorySet.workID[type="inventory number"]  $1<br> </sub></td>
-<td><sub>dc.identifier</sub></td>
-<td><sub> dc.identifier = $1  <br></sub></td>
-<td><sub>Identifier</sub></td>
-<td><sub><b>Nächstes Build</b></sub></td>
+<td><sub>
+<b>wenn:</b> <br>
+ e-W.eventSet.event.eventType.term == 'creation' || 'production' <br> 
+ e-W.eventSet.event.eventDate<br>
+<b>dann:</b> <br>
+ e-W.eventSet.event.eventDate = $1 <br>
+ </sub></td>
+<td><sub>dcterms:created</sub></td>
+<td><sub>Mögliche Werte für eventType sind [hier](http://www.lido-schema.org/schema/v1.0/lido-v1.0-schema-listing.html) aufgelistet </sub></td>
+<td><sub>Jahr</sub></td>
+<td><sub> Nicht umgesetzt </sub></td>
+</tr>
+<tr>
+<td><sub>
+<b>wenn:</b> <br>
+ e-W.eventSet.event.eventType.term == 'publication' <br> 
+ e-W.eventSet.event.eventDate<br>
+<b>dann:</b> <br>
+ e-W.eventSet.event.eventDate = $1 <br>
+ </sub></td>
+<td><sub>dcterms:issued</sub></td>
+<td><sub>Mögliche Werte für eventType sind [hier](http://www.lido-schema.org/schema/v1.0/lido-v1.0-schema-listing.html) aufgelistet </sub></td>
+<td><sub>Jahr</sub></td>
+<td><sub> Nicht umgesetzt </sub></td>
 </tr>
 <tr>
 <td><sub> e-W.eventSet.event.eventDate <br> </sub></td>
 <td><sub>dc:date</sub></td>
 <td><sub> dc:date <br></sub></td>
-<td><sub></sub></td>
+<td><sub> Wenn keine Spezifikation des Datums in den LIDO-Daten, dann dc:date </sub></td>
 <td><sub><b>Nächstes Build</b></sub></td>
-</tr>
- <tr>
-<td><sub>
-<b>wenn:</b> <br>
- e-W.eventSet.event.eventType.term == 'creation' <br> 
- e-W.eventSet.event.eventDate<br>
-<b>dann:</b> <br>
- e-W.eventSet.event.eventDate = $1 <br>
- 
- </sub></td>
-<td><sub>dcterms:iscreated</sub></td>
-<td><sub></sub></td>
-<td><sub>Jahr</sub></td>
-<td><sub> </sub></td>
-</tr>
- <tr>
-<td><sub> e-W.eventSet.event.eventDate<br> </sub></td>
-<td><sub>dcterms:iscreated</sub></td>
-<td><sub> 
- Es sollte identifiziert werden welche der Datumsangaben, richtig zu created und issued eingeordnet werden können. <br>Eventl. mithilfe von &lteventType/&gt lösbar. </sub></td>
-<td><sub>Jahr</sub></td>
-<td><sub>Vorschlag</sub></td>
 </tr>
 <tr>
 <td><sub> -event/eventPlace/displayPlace <br>
