@@ -39,9 +39,8 @@ Zur besseren Lesbarkeit werden in der folgenden Tabelle die untersten vier Hiera
    </ul>
 </ul>
 
-Beispiele
 
-### Mapping der Grobbeschreibung im Portal:
+### Mapping für Titel und Beschreibung im Portal:
 
 <table><thead><tr>
 <th><sub>Quelle LIDO</sub></th>
@@ -64,6 +63,17 @@ Beispiele
 <td><sub>Beschreibung</sub></td>
 <td><sub><b>Nächstes Build</b></sub></td>
 </tr>
+</tbody></table>
+
+### Mapping für beschreibende Metadaten im Portal:
+
+<table><thead><tr>
+<th><sub>Quelle LIDO</sub></th>
+<th><sub>Mapping zu EDM</sub></th>
+<th><sub>Bemerkung</sub></th>
+<th><sub>Portal</sub></th>
+<th><sub>Umgesetzt</sub></th>
+</tr></thead><tbody>
 <tr>
 <td><sub> dM.oI-W.repositoryWrap.repositorySet.workID[type="inventory number"]  $1<br> </sub></td>
 <td><sub>dc.identifier</sub></td>
@@ -79,11 +89,18 @@ Beispiele
 <td><sub><b>Nächstes Build</b></sub></td>
 </tr>
  <tr>
-<td><sub> e-W.eventSet.event.eventDate<br> </sub></td>
-<td><sub>dcterms:issued</sub></td>
-<td><sub>Momentan werden alle Datumsangaben zu dcterms:issued gemappt.</sub></td>
+<td><sub>
+<b>wenn:</b> <br>
+ e-W.eventSet.event.eventType.term == 'creation' <br> 
+ e-W.eventSet.event.eventDate<br>
+<b>dann:</b> <br>
+ e-W.eventSet.event.eventDate = $1 <br>
+ 
+ </sub></td>
+<td><sub>dcterms:iscreated</sub></td>
+<td><sub></sub></td>
 <td><sub>Jahr</sub></td>
-<td><sub>Build 1856</sub></td>
+<td><sub> </sub></td>
 </tr>
  <tr>
 <td><sub> e-W.eventSet.event.eventDate<br> </sub></td>
@@ -309,3 +326,87 @@ administrativeMetadata/resourceWrap/resourseSet<br>/rightsResource/rightsType/co
 
 
 </tbody></table>
+
+### Zusätzliche Mappings für Europeana
+<table><thead><tr>
+<th><sub>Quelle LIDO</sub></th>
+<th><sub>Mapping zu EDM</sub></th>
+<th><sub>Bemerkung</sub></th>
+<th><sub>Portal</sub></th>
+<th><sub>Umgesetzt</sub></th>
+</tr></thead><tbody><tr>
+<td><sub> </sub></td>
+<td><sub>edm.ProvidedCHO.dc.description</sub></td>
+<td><sub></sub></td>
+<td><sub></sub></td>
+<td><sub></sub></td>
+</tr>
+<td><sub> lidoRecId</sub></td>
+<td><sub>edm.ProvidedCHO.dc.identifier</sub></td>
+<td><sub> der lokale Identifier zumeist mit Isil kombiniert </sub></td>
+<td><sub>Identifier</sub></td>
+<td><sub></sub></td>
+</tr>
+<tr>
+<td><sub>
+mods.language.mods.languageTerm[authority=iso639-2b]\[type=code] </sub></td>
+<td><sub>edm.ProvidedCHO.dc.language</sub></td>
+<td><sub></sub></td>
+<td><sub></sub></td>
+<td><sub></sub></td>
+</tr>
+<tr>
+<td><sub>
+"Digitales Archiv NRW" </sub></td>
+<td><sub> edm.provider</sub></td>
+<td><sub></sub></td>
+<td><sub></sub></td>
+<td><sub></sub></td>
+</tr><tr>
+<td><sub>
+mods.genre[authority=marcg] </sub></td>
+<td><sub> edm.ProvidedCHO.dc.type</sub></td>
+<td><sub></sub></td>
+<td><sub></sub></td>
+<td><sub></sub></td>
+</tr>
+<tr>
+<td><sub>
+<b>wenn:</b>
+dM.oC-W.classificationWrap[type=type] == 'europeana:type"' <br>
+<b>dann:</b> dM.oC-W.classificationWrap.term = $1 <br>
+<b>sonst:</b>
+</sub></td>
+<td><sub>edm.ProvidedCHO.dc.type =$1 <br> edm.ProvidedCHO.edm.type =$1</sub></td>
+<td><sub></sub></td>
+<td><sub></sub></td>
+<td><sub></sub></td>
+</tr>
+<tr>
+<td><sub>
+</sub></td>
+<td><sub></sub></td>
+<td><sub></sub></td>
+<td><sub></sub></td>
+<td><sub></sub></td>
+</tr>
+<tr>
+<td><sub>
+</sub></td>
+<td><sub></sub></td>
+<td><sub></sub></td>
+<td><sub></sub></td>
+<td><sub></sub></td>
+</tr>
+<tr>
+</tr>
+<tr>
+<td><sub>
+mods.accessCondition[type="use and reproduction"].attr('xlink:href') </sub></td>
+<td><sub>edm.rights  </sub></td>
+<td><sub></sub></td>
+<td><sub>Nutzungsrechte</sub></td>
+<td><sub>Build 2046</sub></td>
+</tr>
+</tbody></table>
+
