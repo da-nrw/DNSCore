@@ -51,22 +51,42 @@ Zur besseren Lesbarkeit werden in der folgenden Tabelle die untersten vier Hiera
 </tr></thead><tbody>
 <tr>
 <td><sub> dM.oI-W.titleWrap.titleSet.appellationValue </br></sub></td>
-<td><sub>dc.title</sub></td>
-<td><sub> Pflichtfeld EDM, wenn keine Beschreibung, Pflichtfeld DA-NRW Portal </br></sub></td>
+<td><sub> edm:ProvidedCHO.dc.title</sub></td>
+<td><sub> EDM-Pflichtfeld, wenn keine Beschreibung vorhanden, Pflichtfeld DA-NRW Portal </br></sub></td>
 <td><sub>Titel</sub></td>
 <td><sub>Build 1856</sub></td>
 </tr>
 <tr>
 <td><sub> dM.oI-W.objectDescriptionWrap.objectDescriptionSet.descriptiveNoteValue </sub></td>
-<td><sub>dc:description</sub></td>
-<td><sub>  Pflichtfeld EDM, wenn keine Beschreibung <br></sub></td>
+<td><sub>edm.ProvidedCHO.dc.description</sub></td>
+<td><sub> EDM-Pflichtfeld, wenn kein Titel vorhanden <br></sub></td>
 <td><sub>Beschreibung</sub></td>
 <td><sub><b>Nächstes Build</b></sub></td>
 </tr>
 </tbody></table>
 
-### Mapping für beschreibende Metadaten im Portal:
+### Mapping auf Person(en) / Institution(en) im Portal
+<table><thead><tr>
+<th><sub>Quelle LIDO</sub></th>
+<th><sub>Mapping zu EDM</sub></th>
+<th><sub>Bemerkung</sub></th>
+<th><sub>Portal</sub></th>
+<th><sub>Umgesetzt</sub></th>
+</tr></thead><tbody>
+<tr>
+ <td><sub>
+ e-W.eventSet.event.eventActor.actorInRole.actor.nameActorSet.appellationValue $1 <br>
+  </sub></td>
+<td><sub> edm:ProvidedCHO.dc.creator</sub></td>
+<td><sub> EDM: Empfohlenes Feld. <br />Die Rolle eines Beitragenden existiert in der aktuellen LIDO-Spezifikation bisher nicht. Sollten Personen nicht als Creator definiert werden, müssten dafür noch Erkennungsmerkmale definiert werden. </sub></td>
+<td><sub>Person</sub></td>
+<td><sub>Vorschlag </sub></td>
+</tr>
 
+</tbody></table>
+
+
+### Mapping für beschreibende Metadaten im Portal:
 <table><thead><tr>
 <th><sub>Quelle LIDO</sub></th>
 <th><sub>Mapping zu EDM</sub></th>
@@ -82,9 +102,9 @@ Zur besseren Lesbarkeit werden in der folgenden Tabelle die untersten vier Hiera
 <b>dann:</b> <br>
  e-W.eventSet.event.eventDate = $1 <br>
  </sub></td>
-<td><sub>dcterms:created</sub></td>
-<td><sub>Mögliche Werte für eventType sind [hier](http://www.lido-schema.org/schema/v1.0/lido-v1.0-schema-listing.html) aufgelistet </sub></td>
-<td><sub>Jahr</sub></td>
+<td><sub> edm:ProvidedCHO.dcterms.created</sub></td>
+<td><sub>Mögliche Werte für eventType sind <a href="(http://www.lido-schema.org/schema/v1.0/lido-v1.0-schema-listing.html" target="_blank">hier</a> aufgelistet </sub></td>
+<td><sub>Erstellt</sub></td>
 <td><sub> Nicht umgesetzt </sub></td>
 </tr>
 <tr>
@@ -95,48 +115,41 @@ Zur besseren Lesbarkeit werden in der folgenden Tabelle die untersten vier Hiera
 <b>dann:</b> <br>
  e-W.eventSet.event.eventDate = $1 <br>
  </sub></td>
-<td><sub>dcterms:issued</sub></td>
-<td><sub>Mögliche Werte für eventType sind [hier](http://www.lido-schema.org/schema/v1.0/lido-v1.0-schema-listing.html) aufgelistet </sub></td>
-<td><sub>Jahr</sub></td>
+<td><sub> edm:ProvidedCHO.dcterms.issued</sub></td>
+<td><sub>Mögliche Werte für eventType sind <a href="(http://www.lido-schema.org/schema/v1.0/lido-v1.0-schema-listing.html" target="_blank">hier</a> aufgelistet</sub></td>
+<td><sub>Erschienen</sub></td>
 <td><sub> Nicht umgesetzt </sub></td>
 </tr>
 <tr>
-<td><sub> e-W.eventSet.event.eventDate <br> </sub></td>
-<td><sub>dc:date</sub></td>
-<td><sub> dc:date <br></sub></td>
+<td><sub><b> wenn</b>
+<br />e-W.eventSet.event.eventType not exists || e-W.eventSet.event.eventType == null  <br> 
+<b>dann:</b> 
+<br> e-W.eventSet.event.eventDate</sub></td>
+<td><sub> edm:ProvidedCHO.dc.date</sub></td>
 <td><sub> Wenn keine Spezifikation des Datums in den LIDO-Daten, dann dc:date </sub></td>
+<td><sub> Zeitangabe <br></sub></td>
 <td><sub><b>Nächstes Build</b></sub></td>
-</tr>
-<tr>
-<td><sub> -event/eventPlace/displayPlace <br>
--event/eventPlace/place/namePlaceSet </sub></td>
-<td><sub> dc:publisher</sub></td>
-<td><sub>-Portal liest Ort/Verlag aus dem Publisher-Feld aus<br>Jira-Ticket:1587 <br> dc:publisher->DA-NRW-Portal(Erschienen)</sub></td>
-<td><sub>Erschienen</sub></td>
-<td><sub>Build: 1856</sub></td>
 </tr>
   <tr>
 <td><sub> -event/eventPlace/displayPlace<br>
 -event/eventPlace/place/namePlaceSet</sub></td>
-<td><sub>dcterms:spatial <br> (edm:currentLocation)</sub></td>
+<td><sub> edm:ProvidedCHO.dcterms.spatial <br> (edm:currentLocation)</sub></td>
 <td><sub> </sub></td>
 <td><sub> </sub></td>
 <td><sub><b>Nächstes Build</b></sub></td>
 </tr>
- 
- 
  <tr>
 <td><sub>
 objectMeasurementsWrap/objectMeasurementsSet<br>/displayObjectMeasurement</sub></td>
-<td><sub>dcterms.extend</sub></td>
+<td><sub> edm:ProvidedCHO.dcterms.extend</sub></td>
 <td><sub><br> </sub></td>
 <td><sub>Umfang</sub></td>
 <td><sub><b>Nächstes Build</b></sub></td>
     </tr>
   <tr>
   <td><sub>aD.rsrc-Wrap.resourceSet.resourceType.term.addedSearchTerm</sub></td>
-<td><sub>dc:type<br>edm:type</sub></td>
-<td><sub> </sub></td>
+<td><sub> edm:ProvidedCHO.dc.type<br>edm:type</sub></td>
+<td><sub> Pflichtfeld </sub></td>
 <td><sub>Inhalt wird großgeschrieben: <br>'image'->'IMAGE'</sub></td>
 <td><sub><b>Nächstes Build</b></sub></td>
     </tr>
@@ -167,9 +180,13 @@ objectMeasurementsWrap/objectMeasurementsSet<br>/displayObjectMeasurement</sub><
 <td><sub> </sub></td>
 <td><sub></sub></td>
 <td><sub></sub></td>
-
 </tr>
-
+<td><sub> lidoRecId</sub></td>
+<td><sub>edm.ProvidedCHO.dc.identifier</sub></td>
+<td><sub> der lokale Identifier zumeist mit Isil kombiniert </sub></td>
+<td><sub>Identifier</sub></td>
+<td><sub></sub></td>
+</tr>
 
 </tbody></table>
 
@@ -200,37 +217,6 @@ objectMeasurementsWrap/objectMeasurementsSet<br>/displayObjectMeasurement</sub><
 <td><sub>Verweis</sub></td>
 <td><sub>Build: 1856</sub></td>
 </tr>
-</tbody></table>
-
-
-### Mapping auf Person(en) / Institution(en) im Portal
-<table><thead><tr>
-<th><sub>Quelle LIDO</sub></th>
-<th><sub>Mapping zu EDM</sub></th>
-<th><sub>Bemerkung</sub></th>
-<th><sub>Portal</sub></th>
-<th><sub>Umgesetzt</sub></th>
-</tr></thead><tbody><tr>
-<td><sub>
- eventWrap/eventSet/event/eventActor/displayActorInRole $1 <br>
-  </sub></td>
-<td><sub>dc:creator</sub></td>
-<td><sub>dc:creator = $1 <br>
-  Anzeige DA NRW Portal: bisher mit Institution kombiniert
-  </sub></td>
-<td><sub>Person</sub></td>
-<td><sub><b>Nächstes Build</b></sub></td>
-  </tr>
-  <tr>
- <td><sub>
- eventWrap/eventSet/event/eventActor/actorInRole/actor/nameActorSet/appelationValue $1 <br>
-  </sub></td>
-<td><sub>dc:contributer</sub></td>
-<td><sub>dc:contributer = $1 </sub></td>
-<td><sub>Person</sub></td>
-<td><sub>Vorschlag </sub></td>
-</tr>
-
 </tbody></table>
 
 
@@ -287,7 +273,7 @@ edm:hasView
 <tr>
 <td>
 <sub>
-administrativeMetadata/recordWrap/recordSource<br>/legalBodyName/appellationValue $1<br>kombiniert mit ISIL<br> administrativeMetadata/recordWrap/recordSource<br />/legalBodyID $2</sub></td>
+aM.r-W.recordSource.legalBodyName/appellationValue $1<br>kombiniert mit ISIL<br> administrativeMetadata/recordWrap/recordSource<br />/legalBodyID $2</sub></td>
 <td><sub>edm.dataProvider 	</sub></td>
 <td><sub>Wie kombiniert man?<br />edm.dataProvider=$1 + $2  </sub></td>
 <td><sub>Institution ???</sub></td>
@@ -324,7 +310,8 @@ administrativeMetadata/resourceWrap/resourseSet<br>/rightsResource/rightsType/co
 
 </tbody></table>
 
-### Zusätzliche Mappings für Europeana
+### Spezielle Mappings für Europeana
+#### Provider = Gebende Institution
 <table><thead><tr>
 <th><sub>Quelle LIDO</sub></th>
 <th><sub>Mapping zu EDM</sub></th>
@@ -332,18 +319,21 @@ administrativeMetadata/resourceWrap/resourseSet<br>/rightsResource/rightsType/co
 <th><sub>Portal</sub></th>
 <th><sub>Umgesetzt</sub></th>
 </tr></thead><tbody><tr>
-<td><sub> </sub></td>
-<td><sub>edm.ProvidedCHO.dc.description</sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
+<td><sub> dM.oI-W.repositoryWrap.repositorySet.repositoryName.legalBodyName.appellationValue</sub></td>
+<td><sub> ore:Aggregation.edm.Provider</sub></td>
+<td><sub>Pflichtfeld, Der Repository-Betreiber wird hier als datenprovider aufgefasst</sub></td>
+<td><sub>Datengeber</sub></td>
+<td><sub>Vorschlag</sub></td>
 </tr>
-<td><sub> lidoRecId</sub></td>
-<td><sub>edm.ProvidedCHO.dc.identifier</sub></td>
-<td><sub> der lokale Identifier zumeist mit Isil kombiniert </sub></td>
-<td><sub>Identifier</sub></td>
-<td><sub></sub></td>
-</tr>
+</tbody></table>
+
+<table><thead><tr>
+<th><sub>Quelle LIDO</sub></th>
+<th><sub>Mapping zu EDM</sub></th>
+<th><sub>Bemerkung</sub></th>
+<th><sub>Portal</sub></th>
+<th><sub>Umgesetzt</sub></th>
+</tr></thead><tbody>
 <tr>
 <td><sub>
 mods.language.mods.languageTerm[authority=iso639-2b]\[type=code] </sub></td>
@@ -406,4 +396,18 @@ mods.accessCondition[type="use and reproduction"].attr('xlink:href') </sub></td>
 <td><sub>Build 2046</sub></td>
 </tr>
 </tbody></table>
-
+le>ion[type="use and reproduction"].attr('xlink:href') </sub></td>
+<td><sub>edm.rights  </sub></td>
+<td><sub></sub></td>
+<td><sub>Nutzungsrechte</sub></td>
+<td><sub>Build 2046</sub></td>
+</tr>
+</tbody></table>
+le>>ion[type="use and reproduction"].attr('xlink:href') </sub></td>
+<td><sub>edm.rights  </sub></td>
+<td><sub></sub></td>
+<td><sub>Nutzungsrechte</sub></td>
+<td><sub>Build 2046</sub></td>
+</tr>
+</tbody></table>
+le>
