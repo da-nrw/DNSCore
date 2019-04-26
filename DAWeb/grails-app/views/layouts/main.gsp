@@ -7,8 +7,10 @@
 	        <g:layoutTitle default="Grails"/>
 	    </title>
 	    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-		<asset:link rel="icon" href="apple-touch-icon.png" type="image/x-ico" />
-		<asset:link rel="icon" href="apple-touch-icon-retina.png" sizes="114x114" type="image/x-ico" />
+<!-- 		<asset:link rel="icon" href="apple-touch-icon.png" type="image/x-ico" /> -->
+<!-- 		<asset:link rel="icon" href="apple-touch-icon-retina.png" sizes="114x114" type="image/x-ico" /> -->
+		<asset:link rel="icon" href="/icons/favicon.ico" type="image/x-ico" />
+ 		<asset:link rel="icon" href="/icons/favicon.ico" sizes="114x114" type="image/x-ico" />
  		<asset:link rel="shortcut icon" href="/icons/favicon.ico" type="image/x-icon" /> 
 		<asset:stylesheet src="main.css"/>
 		<asset:stylesheet src="mobile.css"/>
