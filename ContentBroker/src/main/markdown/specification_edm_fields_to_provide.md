@@ -37,13 +37,6 @@ TEXT,	VIDEO,	SOUND,	IMAGE,	3D
 <td> dc:title </td>
 <td> Pflichtfeld, wenn kein dc:description vorhanden 
 </td>
-<td> nein </td>
-<td> nein </td>
-</tr>
-<tr>
-<td> dc:title </td>
-<td> Pflichtfeld, wenn kein dc:description vorhanden 
-</td>
 <td> ja </td>
 <td> ja </td>
 </tr>
