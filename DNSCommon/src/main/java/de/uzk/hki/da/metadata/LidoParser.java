@@ -159,7 +159,7 @@ public class LidoParser {
 		HashMap<String, HashMap<String, List<String>>> indexInfo = new HashMap<String, HashMap<String, List<String>>>();
 		try {
 			HashMap<String, List<String>> lidoElementInfo;
-			List<Element> lidoElements = getLidoElements();
+			List<Element> lidoElements = getLidoElements(); 
 			for (Element lidoElement : lidoElements) {
 				lidoElementInfo = new HashMap<String, List<String>>();
 				String id = objectId + "-" + getLidoRecID(lidoElement);
@@ -168,7 +168,63 @@ public class LidoParser {
 				lidoElementInfo.put(C.DC_RIGHTS, getRecordRights(lidoElement));
 				lidoElementInfo.put(C.EDM_RIGHTS, getRecordRights(lidoElement));
 				lidoElementInfo.put(C.EDM_PUBLISHER, getPlaces(lidoElement));
+				//lidoElementInfo.put(C.EDM_SPATIAL, getPlaces(lidoElement)); edm:currentLocation dcterms:spatial
 				lidoElementInfo.put(C.EDM_DATE_ISSUED, getDate(lidoElement));
+				
+				
+				
+				
+				
+//				Names
+				List<String> creators = new ArrayList<String>();
+				List<String> contributors = new ArrayList<String>();
+				for(Element actor : getEventActor(lidoElement)) {
+					String creator = getCreator(actor);
+					String contributor = getContributor(actor);
+					if(!creator.equals("")) {
+						creators.add(creator);
+					}
+					if(!contributor.equals("")) {
+						contributors.add(contributor);
+					}
+				}
+				lidoElementInfo.put(C.EDM_CREATOR, creators);
+				lidoElementInfo.put(C.EDM_CONTRIBUTOR, contributors);
+			/*	lidoElementInfo.put(C.DC_DESCRIPTION, getDescription());
+				lidoElementInfo.put(C.EDM_IDENTIFIER, getIdentifier(e));
+				
+//				Date && Place
+				List<String> datesIssued = new ArrayList<String>();
+				List<String> datesCreated = new ArrayList<String>();
+				List<String> publishers = new ArrayList<String>();
+				for(Element origInfo : getOrigInfoElements(e)) {
+					String dateIssued = getDateIssued(origInfo);
+					String dateCreated = getDateCreated(origInfo);
+					String publisher = getPublisher(origInfo);
+					if(!dateIssued.equals("")) {
+						datesIssued.add(dateIssued);
+					}
+					if(!dateCreated.equals("")) {
+						datesCreated.add(dateCreated);
+					}
+					if(!publisher.equals("")) {
+						publishers.add(publisher);
+					}
+				}
+				lidoElementInfo.put(C.EDM_DATE_ISSUED, datesIssued);
+				lidoElementInfo.put(C.EDM_DATE_CREATED, datesCreated);
+				lidoElementInfo.put(C.EDM_PUBLISHER, publishers);
+				
+				
+				List<String> allPhysicalDescr = getPhysicalDescriptionFromDmdId(objectId, id);
+				if (!allPhysicalDescr.isEmpty()) {
+					lidoElementInfo.put(C.EDM_EXTENT, allPhysicalDescr);
+				}
+				
+//				dataProvider
+				lidoElementInfo.put(C.EDM_DATA_PROVIDER, getDataProvider());
+				*/
+				
 				List<String> references = getReferencesFromLidoElement(lidoElement);
 				if (references != null && !references.isEmpty()) {
 					List<String> shownBy = new ArrayList<String>();
@@ -187,6 +243,34 @@ public class LidoParser {
 			new RuntimeException("Unable to parse the lido file for edm serialization.");
 		}
 		return indexInfo;
+	}
+
+	private String getContributor(Element actor) {
+		// TODO Auto-generated method stub
+		return "";
+	}
+
+	private String getCreator(Element actor) {
+		String namePartValue = "";
+		try {
+			Element actDisplay = actor.getChild("displayActorInRule", C.LIDO_NS);
+			if(actDisplay!=null && !actDisplay.getValue().trim().isEmpty())
+				namePartValue=actDisplay.getValue();
+		} catch (Exception e) {
+			logger.debug("No creator found!");
+		}
+		return namePartValue;
+	}
+
+	private List<Element> getEventActor(Element lidoElement) {
+		List<Element> ret=new ArrayList<Element>();
+		try {
+			ret = lidoElement.getChild("descriptiveMetadata", C.LIDO_NS).getChild("eventWrap", C.LIDO_NS)
+					.getChild("eventSet", C.LIDO_NS).getChild("event", C.LIDO_NS).getChildren("eventActor", C.LIDO_NS);
+					
+		} catch (Exception e) {
+		}
+		return ret;
 	}
 
 	public List<String> getReferencesFromLidoElement(Element lidoElement) {

@@ -56,39 +56,41 @@
 	<body>
 		<div class="page-body">
 			<div class="blue-box"></div>
-			<h2 id="page-header">Bearbeitungsübersicht</h2> 	
+			<h2 id="page-header">Bearbeitungsübersicht</h2> 
+			<div>	
 			<g:form controller="queueEntry" action="deleteSip">
-				<g:if test="${!params.search }">
+				<g:if test="${!params.search} || ${params.search}">
   					<div class="page-body-input page-body-input-position">  
 						<i>Aktualisieren der Seite:&nbsp; </i>
 						<input id="stopper" class="style-start-stop" type="button" onclick="stopUpdater();this.disabled=true;" value="stoppen"/>
 						 &nbsp;
 						<input id="starter" class="style-start-stop" type="button" onclick="startUpdater();this.disabled=true;" disabled value="starten"/>
-						</div>
-						<button class="style-buttons bearbeitungsuebersicht-extra-btn" onclick="return confirm ('Wirklich alle  fehlerhaften SIP löschen?')" >Fehlerhafte SIP's löschen </button>
-						<br>
+					</div>
+					<button class="style-buttons bearbeitungsuebersicht-extra-btn" onclick="return confirm ('Wirklich alle  fehlerhaften SIP löschen?')" >Fehlerhafte SIP's löschen </button>
+					<br>
 				</g:if> <br>
 			</g:form>
+			</div>
 			<button class="accordion">Filter
 				<g:if test="${params.search }"><br>
 		    		<g:if test="${!params.search?.status.isEmpty()}">
-		    		<span style="margin-right: 25px"><i>Status: </i>${params.search?.status}</span>
+		    			<span style="margin-right: 25px"><i>Status: ${params.search?.status} </i></span>
 		    		</g:if> 
 		    		<g:if test="${!params.search?.obj?.origName.isEmpty()}">
-		    			<span style="margin-right: 25px"><i>Originalname: </i>${params.search?.obj?.origName}</span>
+		    			<span style="margin-right: 25px"><i>Originalname: ${params.search?.obj?.origName}</i></span>
 		    		</g:if> 
 		    		<g:if test="${params.search?.urn}">
 			    		<g:if test="${!params.search?.obj?.urn.isEmpty()}">
-			    			 <span style="margin-right: 25px"><i>URN: </i>${params.search?.obj?.urn}</span>
+			    			 <span style="margin-right: 25px"><i>URN: ${params.search?.obj?.urn}</i></span>
 			    		</g:if> 
 			    	</g:if>
 		    		<g:if test="${!params.search?.obj?.identifier.isEmpty()}">
-		    			<span style="margin-right: 25px"><i>Identifier: </i>${params.search?.obj?.identifier}</span>
+		    			<span style="margin-right: 25px"><i>Identifier: ${params.search?.obj?.identifier}</i></span>
 		    		</g:if> 
 		    	</g:if> 
 			</button>
 			<div class="panel">
-	          <g:form name="searchForm" id="filterform" action="list">
+	          <g:form name="searchForm" id="filterform" action="list"> 
 	           	<table>
 	           		<tr>
 	           			<td>Status:</td>
