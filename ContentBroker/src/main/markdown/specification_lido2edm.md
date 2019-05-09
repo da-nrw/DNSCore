@@ -9,38 +9,12 @@ Die Spalte "Mapping zu EDM" gibt an, wohin die aus der Quelle bezogenen Daten in
 
 Die Spalte "Bemerkung" beschreibt, wie mehrere Felder aus der Quelle in einem oder mehreren EDM-Feldern kombiniert werden.
 
-Die Spalte "Portal" beschreibt, in welchem Feld die Inhalte im Portal eingesehen werden können. Nicht alle verarbeiteten Felder werden in der Portal-Ansicht angezeigt.
+Die Spalte "Portal" beschreibt, in welchem Feld die inhalte im Portal eingesehen werden können. Nicht alle verarbeiteten Felder werden in der Portal-Ansicht angezeigt.
 
 Die Spalte "Umgesetzt" beschreibt den Umsetzungssstatus mögliche Ausprägungen ""(Leer), "Vorschlag", "Review durch ULB", "In Umsetzung", "Build XYZ".
 
-Zur besseren Lesbarkeit werden in der folgenden Tabelle die untersten vier Hierarchie-Ebenen der LIDO-Spezifikation wie folgt behandelt:
 
-<ul>
-   <li><b>lidoWrap</b> - wird weggelassen, da Root-Element des gesamten Dokuments</li>
-   <ul>
-      <li><b>lido</b> - wird weggelassen, da Record-Element</li>
-      <br />
-      <ul>
-         <li><b>descriptiveMetadata</b> - wird mit <b>dM</b> abgekürzt</li>
-         <ul>
-            <li><b>objectClassificationWrap</b> - wird mit <b>oC-W</b> abgekürzt</li>
-            <li><b>objectIdentificationWrap</b> - wird mit <b>oI-W</b> abgekürzt</li>
-            <li><b>eventWrap</b> - wird mit <b>e-W</b> abgekürzt</li>
-            <li><b>objectRelationWrap</b> - wird mit <b>oR-W</b> abgekürzt</li>
-            <br />
-         </ul>
-         <li><b>administrativeMetadata</b> - wird mit <b>aD</b> abgekürzt</li>
-         <ul>
-            <li><b>rightsWorkWrap</b> - wird mit <b>rW-W</b> abgekürzt</li>
-            <li><b>recordWrap</b> - wird mit <b>r-W</b> abgekürzt</li>
-            <li><b>resourceWrap</b> - wird mit <b>rsrc-W</b> abgekürzt</li>
-         </ul>
-      </ul>
-   </ul>
-</ul>
-
-
-### Mapping für Titel und Beschreibung im Portal:
+### Mapping der Grobbeschreibung im Portal:
 
 <table><thead><tr>
 <th><sub>Quelle LIDO</sub></th>
@@ -50,143 +24,116 @@ Zur besseren Lesbarkeit werden in der folgenden Tabelle die untersten vier Hiera
 <th><sub>Umgesetzt</sub></th>
 </tr></thead><tbody>
 <tr>
-<td><sub> dM.oI-W.titleWrap.titleSet.appellationValue </br></sub></td>
-<td><sub> edm:ProvidedCHO.dc.title</sub></td>
-<td><sub> EDM-Pflichtfeld, wenn keine Beschreibung vorhanden, Pflichtfeld DA-NRW Portal </br></sub></td>
+<td><sub> titleWrap/titleSet/appellationValue $1<br> </sub></td>
+<td><sub>dc.title</sub></td>
+<td><sub> dc:title = $1  <br></sub></td>
 <td><sub>Titel</sub></td>
 <td><sub>Build 1856</sub></td>
 </tr>
 <tr>
-<td><sub> dM.oI-W.objectDescriptionWrap.objectDescriptionSet.descriptiveNoteValue </sub></td>
-<td><sub>edm.ProvidedCHO.dc.description</sub></td>
-<td><sub> EDM-Pflichtfeld, wenn kein Titel vorhanden <br></sub></td>
+<td><sub> descriptiveMetadata/objectIdentificationWrap<br>/objectDescriptionWrap<br>/objectDescriptionSet/descriptiveNoteValue $1<br> </sub></td>
+<td><sub>dc:description</sub></td>
+<td><sub> dc:description = $1  <br></sub></td>
 <td><sub>Beschreibung</sub></td>
 <td><sub><b>Nächstes Build</b></sub></td>
 </tr>
-</tbody></table>
-
-### Mapping auf Person(en) / Institution(en) im Portal
-<table><thead><tr>
-<th><sub>Quelle LIDO</sub></th>
-<th><sub>Mapping zu EDM</sub></th>
-<th><sub>Bemerkung</sub></th>
-<th><sub>Portal</sub></th>
-<th><sub>Umgesetzt</sub></th>
-</tr></thead><tbody>
 <tr>
- <td><sub>
- e-W.eventSet.event.eventActor.actorInRole.actor.nameActorSet.appellationValue $1 <br>
-  </sub></td>
-<td><sub> edm:ProvidedCHO.dc.creator</sub></td>
-<td><sub> EDM: Empfohlenes Feld. <br />Die Rolle eines Beitragenden existiert in der aktuellen LIDO-Spezifikation bisher nicht. Sollten Personen nicht als Creator definiert werden, müssten dafür noch Erkennungsmerkmale definiert werden. </sub></td>
-<td><sub>Person</sub></td>
-<td><sub>Vorschlag </sub></td>
-</tr>
-
-</tbody></table>
-
-
-### Mapping für beschreibende Metadaten im Portal:
-<table><thead><tr>
-<th><sub>Quelle LIDO</sub></th>
-<th><sub>Mapping zu EDM</sub></th>
-<th><sub>Bemerkung</sub></th>
-<th><sub>Portal</sub></th>
-<th><sub>Umgesetzt</sub></th>
-</tr></thead><tbody>
-<tr>
-<td><sub>
-<b>wenn:</b> <br>
- e-W.eventSet.event.eventType.term == 'creation' || 'production' <br> 
- e-W.eventSet.event.eventDate<br>
-<b>dann:</b> <br>
- e-W.eventSet.event.eventDate = $1 <br>
- </sub></td>
-<td><sub> edm:ProvidedCHO.dcterms.created</sub></td>
-<td><sub>Mögliche Werte für eventType sind <a href="(http://www.lido-schema.org/schema/v1.0/lido-v1.0-schema-listing.html" target="_blank">hier</a> aufgelistet </sub></td>
-<td><sub>Erstellt</sub></td>
-<td><sub> Nicht umgesetzt </sub></td>
-</tr>
-<tr>
-<td><sub>
-<b>wenn:</b> <br>
- e-W.eventSet.event.eventType.term == 'publication' <br> 
- e-W.eventSet.event.eventDate<br>
-<b>dann:</b> <br>
- e-W.eventSet.event.eventDate = $1 <br>
- </sub></td>
-<td><sub> edm:ProvidedCHO.dcterms.issued</sub></td>
-<td><sub>Mögliche Werte für eventType sind <a href="(http://www.lido-schema.org/schema/v1.0/lido-v1.0-schema-listing.html" target="_blank">hier</a> aufgelistet</sub></td>
-<td><sub>Erschienen</sub></td>
-<td><sub> Nicht umgesetzt </sub></td>
-</tr>
-<tr>
-<td><sub><b> wenn</b>
-<br />e-W.eventSet.event.eventType not exists || e-W.eventSet.event.eventType == null  <br> 
-<b>dann:</b> 
-<br> e-W.eventSet.event.eventDate</sub></td>
-<td><sub> edm:ProvidedCHO.dc.date</sub></td>
-<td><sub> Wenn keine Spezifikation des Datums in den LIDO-Daten, dann dc:date </sub></td>
-<td><sub> Zeitangabe <br></sub></td>
+<td><sub>repositoryWrap/repositorySet/workID[type="inventory number"]  $1<br> </sub></td>
+<td><sub>dc.identifier</sub></td>
+<td><sub> dc.identifier = $1  <br></sub></td>
+<td><sub> Inventarnummer ???</sub></td>
 <td><sub><b>Nächstes Build</b></sub></td>
+</tr>
+<tr>
+<td><sub> eventSet/event/eventDate $1<br> </sub></td>
+<td><sub>dc:date</sub></td>
+<td><sub> dc:date = $1  <br></sub></td>
+<td><sub></sub></td>
+<td><sub><b>Nächstes Build</b></sub></td>
+</tr>
+ <tr>
+<td><sub> eventSet/event/eventDate<br> </sub></td>
+<td><sub>dcterms:issued</sub></td>
+<td><sub>Momentan werden alle Datumsangaben zu dcterms:issued gemappt.</sub></td>
+<td><sub>Jahr</sub></td>
+<td><sub>Build 1856</sub></td>
+</tr>
+ <tr>
+<td><sub> eventSet/event/eventDate<br> </sub></td>
+<td><sub>dcterms:iscreated</sub></td>
+<td><sub> 
+ Es sollte identifiziert werden welche der Datumsangaben, richtig zu created und issued eingeordnet werden können. <br>Eventl. mithilfe von &lteventType/&gt lösbar. </sub></td>
+<td><sub>Jahr</sub></td>
+<td><sub>Vorschlag</sub></td>
+</tr>
+<tr>
+<td><sub> -event/eventPlace/displayPlace <br>
+-event/eventPlace/place/namePlaceSet </sub></td>
+<td><sub> dc:publisher</sub></td>
+<td><sub>-Portal liest Ort/Verlag aus dem Publisher-Feld aus<br>Jira-Ticket:1587 <br> dc:publisher->DA-NRW-Portal(Erschienen)</sub></td>
+<td><sub>Erschienen</sub></td>
+<td><sub>Build: 1856</sub></td>
 </tr>
   <tr>
 <td><sub> -event/eventPlace/displayPlace<br>
 -event/eventPlace/place/namePlaceSet</sub></td>
-<td><sub> edm:ProvidedCHO.dcterms.spatial <br> (edm:currentLocation)</sub></td>
+<td><sub>dcterms:spatial <br> (edm:currentLocation)</sub></td>
 <td><sub> </sub></td>
 <td><sub> </sub></td>
 <td><sub><b>Nächstes Build</b></sub></td>
 </tr>
+ 
+ 
  <tr>
 <td><sub>
 objectMeasurementsWrap/objectMeasurementsSet<br>/displayObjectMeasurement</sub></td>
-<td><sub> edm:ProvidedCHO.dcterms.extend</sub></td>
+<td><sub>dcterms.extend</sub></td>
 <td><sub><br> </sub></td>
 <td><sub>Umfang</sub></td>
 <td><sub><b>Nächstes Build</b></sub></td>
     </tr>
   <tr>
-  <td><sub>aD.rsrc-Wrap.resourceSet.resourceType.term.addedSearchTerm</sub></td>
-<td><sub> edm:ProvidedCHO.dc.type<br>edm:type</sub></td>
-<td><sub> Pflichtfeld </sub></td>
+  <td><sub>
+administrativeMetadata/resourceWrap/resourceSet<br>/resourceType/term/addedSearchTerm</sub></td>
+<td><sub>dc:type<br>edm:type</sub></td>
+<td><sub> </sub></td>
 <td><sub>Inhalt wird großgeschrieben: <br>'image'->'IMAGE'</sub></td>
 <td><sub><b>Nächstes Build</b></sub></td>
     </tr>
   <tr>
-  <td><sub>dM.e-W.eventSet.event.materialsTech.eventMaterialsTech.displayMaterialsTech</sub></td>
+  <td><sub>
+descriptiveMetadata/eventWrap/eventSet/event<br>/materialsTech/eventMaterialsTech/displayMaterialsTech</sub></td>
 <td><sub>dcterms.medium <br></sub></td>
 <td><sub> </sub></td>
 <td><sub>Material/Technik ???</sub></td>
 <td><sub>Vorschlag</sub></td>
   </tr>
   <tr>
-  <td><sub> mD.e-W.eventSet.event/Wrap/eventSet/event<br>/eventDescriptionSet/descriptiveNoteValue</sub></td>
+  <td><sub>
+descriptiveMetadata/eventWrap/eventSet<br>/event/Wrap/eventSet/event<br>/eventDescriptionSet/descriptiveNoteValue</sub></td>
 <td><sub>???<br>dcterms:provenance<br> dc:description</sub></td>
 <td><sub> </sub></td>
 <td><sub>Herkunft/Provenienz ???</sub></td>
 <td><sub>Vorschlag</sub></td>
   </tr>
   <tr>
-  <td><sub>dM.oR-W.subjectSet.subject[type=Stichwort].subjectConcept</sub></td>
+  <td><sub>
+objectRelationWrap/subjectSet<br>/subject[type=Stichwort]/subjectConcept</sub></td>
 <td><sub>dc:subject<br>skos:prefLabel</sub></td>
 <td><sub> </sub></td>
 <td><sub></sub></td>
 <td><sub></sub></td>
   </tr>
   <tr>
-  <td><sub>dM.oR-W.subjectSet.subject[type=Schlagwort].subjectConcept</sub></td>
+  <td><sub>
+objectRelationWrap/subjectSet<br>/subject[type=Schlagwort]/subjectConcept</sub></td>
 <td><sub>??? <br>dc:type</sub></td>
 <td><sub> </sub></td>
 <td><sub></sub></td>
 <td><sub></sub></td>
+
 </tr>
-<td><sub> lidoRecId</sub></td>
-<td><sub>edm.ProvidedCHO.dc.identifier</sub></td>
-<td><sub> der lokale Identifier zumeist mit Isil kombiniert </sub></td>
-<td><sub>Identifier</sub></td>
-<td><sub></sub></td>
-</tr>
+
 
 </tbody></table>
 
@@ -217,6 +164,37 @@ objectMeasurementsWrap/objectMeasurementsSet<br>/displayObjectMeasurement</sub><
 <td><sub>Verweis</sub></td>
 <td><sub>Build: 1856</sub></td>
 </tr>
+</tbody></table>
+
+
+### Mapping auf Person(en) / Institution(en) im Portal
+<table><thead><tr>
+<th><sub>Quelle LIDO</sub></th>
+<th><sub>Mapping zu EDM</sub></th>
+<th><sub>Bemerkung</sub></th>
+<th><sub>Portal</sub></th>
+<th><sub>Umgesetzt</sub></th>
+</tr></thead><tbody><tr>
+<td><sub>
+ eventWrap/eventSet/event/eventActor/displayActorInRole $1 <br>
+  </sub></td>
+<td><sub>dc:creator</sub></td>
+<td><sub>dc:creator = $1 <br>
+  Anzeige DA NRW Portal: bisher mit Institution kombiniert
+  </sub></td>
+<td><sub>Person</sub></td>
+<td><sub><b>Nächstes Build</b></sub></td>
+  </tr>
+  <tr>
+ <td><sub>
+ eventWrap/eventSet/event/eventActor/actorInRole/actor/nameActorSet/appelationValue $1 <br>
+  </sub></td>
+<td><sub>dc:contributer</sub></td>
+<td><sub>dc:contributer = $1 </sub></td>
+<td><sub>Person</sub></td>
+<td><sub>Vorschlag </sub></td>
+</tr>
+
 </tbody></table>
 
 
@@ -273,16 +251,16 @@ edm:hasView
 <tr>
 <td>
 <sub>
-aM.r-W.recordSource.legalBodyName/appellationValue $1<br>kombiniert mit ISIL<br> administrativeMetadata/recordWrap/recordSource<br />/legalBodyID $2</sub></td>
+administrativeMetadata/recordWrap/recordSource<br>/legalBodyName/appellationValue $1<br>kombiniert mit ISIL<br> administrativeMetadata/recordWrap/recordSource<br>/legalBodyID $2</sub></td>
 <td><sub>edm.dataProvider 	</sub></td>
-<td><sub>Wie kombiniert man?<br />edm.dataProvider=$1 + $2  </sub></td>
+<td><sub>Wie kombiniert man?<br>edm.dataProvider=$1 + $2  </sub></td>
 <td><sub>Institution ???</sub></td>
 <td><sub><b>Nächstes Build</b></sub></td>
 </tr>
   
  <tr><td>
 <sub>
-administrativeMetadata.resourceWrap.resourceSet.rightsResource.rightsHolder.legalBodyName.appellationValue </sub></td>
+administrativeMetadata/resourceWrap<br>/resourceSet/rightsResource<br>/rightsHolder/legalBodyName/appellationValue </sub></td>
 <td><sub>edm.intermediateProvider </sub></td>
 <td><sub></sub></td>
 <td><sub>Inhaber Nutzungsrecht ???</sub></td>
@@ -309,105 +287,3 @@ administrativeMetadata/resourceWrap/resourseSet<br>/rightsResource/rightsType/co
 
 
 </tbody></table>
-
-### Spezielle Mappings für Europeana
-#### Provider = Gebende Institution
-<table><thead><tr>
-<th><sub>Quelle LIDO</sub></th>
-<th><sub>Mapping zu EDM</sub></th>
-<th><sub>Bemerkung</sub></th>
-<th><sub>Portal</sub></th>
-<th><sub>Umgesetzt</sub></th>
-</tr></thead><tbody><tr>
-<td><sub> dM.oI-W.repositoryWrap.repositorySet.repositoryName.legalBodyName.appellationValue</sub></td>
-<td><sub> ore:Aggregation.edm.Provider</sub></td>
-<td><sub>Pflichtfeld, Der Repository-Betreiber wird hier als datenprovider aufgefasst</sub></td>
-<td><sub>Datengeber</sub></td>
-<td><sub>Vorschlag</sub></td>
-</tr>
-</tbody></table>
-
-<table><thead><tr>
-<th><sub>Quelle LIDO</sub></th>
-<th><sub>Mapping zu EDM</sub></th>
-<th><sub>Bemerkung</sub></th>
-<th><sub>Portal</sub></th>
-<th><sub>Umgesetzt</sub></th>
-</tr></thead><tbody>
-<tr>
-<td><sub>
-mods.language.mods.languageTerm[authority=iso639-2b]\[type=code] </sub></td>
-<td><sub>edm.ProvidedCHO.dc.language</sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-</tr>
-<tr>
-<td><sub>
-"Digitales Archiv NRW" </sub></td>
-<td><sub> edm.provider</sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-</tr><tr>
-<td><sub>
-mods.genre[authority=marcg] </sub></td>
-<td><sub> edm.ProvidedCHO.dc.type</sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-</tr>
-<tr>
-<td><sub>
-<b>wenn:</b>
-dM.oC-W.classificationWrap[type=type] == 'europeana:type"' <br>
-<b>dann:</b> dM.oC-W.classificationWrap.term = $1 <br>
-<b>sonst:</b>
-</sub></td>
-<td><sub>edm.ProvidedCHO.dc.type =$1 <br> edm.ProvidedCHO.edm.type =$1</sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-</tr>
-<tr>
-<td><sub>
-</sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-</tr>
-<tr>
-<td><sub>
-</sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-</tr>
-<tr>
-</tr>
-<tr>
-<td><sub>
-mods.accessCondition[type="use and reproduction"].attr('xlink:href') </sub></td>
-<td><sub>edm.rights  </sub></td>
-<td><sub></sub></td>
-<td><sub>Nutzungsrechte</sub></td>
-<td><sub>Build 2046</sub></td>
-</tr>
-</tbody></table>
-le>ion[type="use and reproduction"].attr('xlink:href') </sub></td>
-<td><sub>edm.rights  </sub></td>
-<td><sub></sub></td>
-<td><sub>Nutzungsrechte</sub></td>
-<td><sub>Build 2046</sub></td>
-</tr>
-</tbody></table>
-le>>ion[type="use and reproduction"].attr('xlink:href') </sub></td>
-<td><sub>edm.rights  </sub></td>
-<td><sub></sub></td>
-<td><sub>Nutzungsrechte</sub></td>
-<td><sub>Build 2046</sub></td>
-</tr>
-</tbody></table>
-le>
