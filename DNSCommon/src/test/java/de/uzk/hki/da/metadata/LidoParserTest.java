@@ -76,7 +76,7 @@ public class LidoParserTest {
 	}
 	
 	
-		@Test
+	@Test
 	public void testDifferentLicenseMultipleAM()throws JDOMException, IOException{
 			LidoLicense lidoLicense=new LidoLicense("http://creativecommons.org/licenses/by/3.0/de/","CC BY 3.0 DE");
 			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
