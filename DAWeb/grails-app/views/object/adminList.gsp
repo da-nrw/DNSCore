@@ -53,9 +53,11 @@
 		    		<g:if test="${!params.search?.origName.isEmpty()}">
 		    			<span style="margin-right: 25px"><i>Originalname: </i>${params.search?.origName}</span>
 		    		</g:if> 
-		    		<g:if test="${!params.search?.urn.isEmpty()}">
-		    			 <span style="margin-right: 25px"><i>URN: </i>${params.search?.urn}</span>
-		    		</g:if> 
+		    		<g:if test="${params.search?.urn}">
+			    		<g:if test="${!params.search?.urn.isEmpty()}">
+			    			 <span style="margin-right: 25px"><i>URN: </i>${params.search?.urn}</span>
+			    		</g:if> 
+			    	</g:if>
 		    		<g:if test="${!params.search?.identifier.isEmpty()}">
 		    			<span style="margin-right: 25px"><i>Identifier: </i>${params.search?.identifier}</span>
 		    		</g:if> 

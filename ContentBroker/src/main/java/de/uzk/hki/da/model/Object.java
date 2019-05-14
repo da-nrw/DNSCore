@@ -185,6 +185,9 @@ public class Object {
 	
 	@Column(name="license_flag")
 	private int license_flag=C.LICENSEFLAG_UNDEFINED;
+	
+	@Column(name="aip_size")
+	private long aip_size=C.UNKNOWN_FILESIZE; //as ByteCount
 
 	/** The rights. */
 	@Transient
@@ -898,6 +901,20 @@ public class Object {
 		
 		return files;
 	}
+
+
+	public long getAip_size() {
+		return aip_size;
+	}
+
+	/**
+	 * Expect Byte count
+	 * @param aip_size
+	 */
+	public void setAip_size(long aip_size) {
+		this.aip_size = aip_size;
+	}
+	
 	
 	
 	

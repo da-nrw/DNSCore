@@ -59,7 +59,7 @@
  			<g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 			<div class="blue-box"></div>
 			<h2>Bearbeitungsübersicht</h2>		
-			<g:if test="${  !params.search }">
+			<g:if test="${!params.search} || ${params.search}">
 				<div class="page-body-input page-body-input-position">
 					<i>Aktualieseren der Seite:&nbsp; </i>
 					<input id="stopper" class="style-start-stop" type="button" onclick="stopUpdater();disabled=true;" value="stoppen"/>
@@ -75,9 +75,11 @@
 		    		<g:if test="${!params.search?.obj?.origName.isEmpty()}">
 		    			<span style="margin-right: 25px"><i>Originalname: </i>${params.search?.obj?.origName}</span>
 		    		</g:if> 
-		    		<g:if test="${!params.search?.obj?.urn.isEmpty()}">
-		    			 <span style="margin-right: 25px"><i>URN: </i>${params.search?.obj?.urn}</span>
-		    		</g:if> 
+		    		<g:if test="${params.search?.urn}">
+			    		<g:if test="${!params.search?.obj?.urn.isEmpty()}">
+			    			 <span style="margin-right: 25px"><i>URN: </i>${params.search?.obj?.urn}</span>
+			    		</g:if> 
+			    	</g:if>
 		    		<g:if test="${!params.search?.obj?.identifier.isEmpty()}">
 		    			<span style="margin-right: 25px"><i>Identifier: </i>${params.search?.obj?.identifier}</span>
 		    		</g:if> 

@@ -8,8 +8,6 @@ DNSCore
 
 
 
------
-
 The Core System of the DA-NRW Software Suite.
   
 The DNS software relies 
@@ -76,6 +74,7 @@ Prerequisites:
     export MAVEN_OPTS='-Dfile.encoding=UTF-8'
     export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
     export LANG='de_DE.UTF-8'
+
 
 
 

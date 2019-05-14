@@ -51,6 +51,7 @@ grails:
               - {pattern: '/incoming/**', access: ['ROLE_CONTRACTOR']}
               - {pattern: '/outgoing/**', access: ['ROLE_CONTRACTOR']}
               - {pattern: '/status/**', access: ['ROLE_CONTRACTOR']}
+              - {pattern: '/delete/**', access: ['ROLE_CONTRACTOR']}
               - {pattern: '/package/**', access: ['ROLE_CONTRACTOR']}
               - {pattern: '/info/**', access: ['ROLE_CONTRACTOR']}
               - {pattern: '/conversionPolicies/**', access: ['ROLE_CONTRACTOR']}
