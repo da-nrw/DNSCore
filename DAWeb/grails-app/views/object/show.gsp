@@ -54,9 +54,8 @@
 					<g:if test="${objectInstance?.user}">
 					<li class="fieldcontain">
 						<span id="contractor-label" class="property-label"><g:message code="object.user.label" default="Contractor" /></span>
-						
-							<span class="property-value" aria-labelledby="contractor-label">${objectInstance?.user?.encodeAsHTML()}</span>
-						
+<!-- 						<span class="property-value" aria-labelledby="contractor-label">${objectInstance?.user?.encodeAsHTML()}</span> -->
+						<span class="property-value" aria-labelledby="contractor-label">${objectInstance?.user?.contractorShortName?.encodeAsHTML()}</span>
 					</li>
 					</g:if>
 				
