@@ -117,18 +117,18 @@ class Bearbeitungsuebersicht extends GebSpec {
 		  	displayBlock
 	}
 	
-	def 'test show Details' () {
-		to BearbeitungsuebersichtPage
-		when:
-			bearbeitungsform
-		  and:
-		  	linkUrn.click()
-		  then:
-		    detailview
-			when:
-			 cancel.click()
-			 then:
-			 bearbeitungsform
-	}
+//	def 'test show Details' () {
+//		to BearbeitungsuebersichtPage
+//		when:
+//			bearbeitungsform
+//		  and:
+//		  	linkUrn.click()
+//		  then:
+//		    detailview
+//			when:
+//			 cancel.click()
+//			 then:
+//			 bearbeitungsform
+//	}
 }
 
