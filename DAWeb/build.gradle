@@ -1,6 +1,5 @@
 apply plugin: 'java'
 apply plugin: 'maven'
-apply plugin: 'maven-publish'
 apply plugin: 'groovy'
 apply plugin: 'eclipse'
 apply plugin: 'war'
@@ -28,6 +27,7 @@ buildscript {
 
 	repositories {
 		mavenLocal()
+		mavenCentral()
 		maven { url "https://repo.grails.org/grails/core" }
 	}
 
@@ -41,6 +41,7 @@ buildscript {
 
 repositories {
 	 mavenLocal()
+	 mavenCentral()
 	 maven { url "https://repo.grails.org/grails/core" }
 	 maven { url "https://repo.grails.org/grails/plugins/"}
 }
@@ -55,6 +56,11 @@ dependencies {
     compile(group: 'org.quartz-scheduler', name: 'quartz', version:'2.2.1') {
 		exclude(module: 'c3p0')
     }
+	
+	// https://mvnrepository.com/artifact/org.fortasoft/gradle-maven-plugin
+	compile group: 'org.fortasoft', name: 'gradle-maven-plugin', version: '1.0.8'
+	
+	
     compile group: 'org.grails', name: 'grails-datastore-rest-client', version:'5.0.0.RC2'
     compile group: 'org.grails.plugins', name: 'jquery-date-time-picker', version:'0.2.0'
     compile group: 'org.grails.plugins', name: 'jms', version:'2.0.0.RC2'
@@ -91,7 +97,7 @@ dependencies {
     runtime group: 'org.hsqldb', name: 'hsqldb', version:'2.3.3'
     runtime group: 'org.apache.activemq', name: 'activemq-spring', version:'5.11.1'
     runtime group: 'postgresql', name: 'postgresql', version:'9.0-801.jdbc4'
-    runtime group: 'org.grails.plugins', name: 'jquery', version:'1.11.0.2'
+    runtime group: 'org.grails.plugins', name: 'jquery', version:'1.11.1'
 	runtime group: 'org.grails.plugins', name: 'hibernate5'
 	runtime group: 'org.hibernate', name: 'hibernate-core', version: '5.1.3.Final'
 	runtime group: 'org.hibernate', name: 'hibernate-ehcache', version: '5.1.3.Final'
