@@ -3,6 +3,7 @@ package de.uzk.hki.da.metadata;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import org.jdom.Document;
@@ -71,6 +72,149 @@ public class LidoParser {
 		return titles;
 	}
 
+	private List<String> getDescription(Element lidoElement) {
+		HashSet<String> descries = new HashSet<String>();
+		List<Element> elis = null;
+		try {
+			Element element = lidoElement.getChild("descriptiveMetadata", C.LIDO_NS);
+			element = element.getChild("objectIdentificationWrap", C.LIDO_NS);
+			element = element.getChild("objectDescriptionWrap", C.LIDO_NS);
+			elis = element.getChildren("objectDescriptionSet", C.LIDO_NS);
+		} catch (Exception e) {
+			logger.error("No Extent Element found!");
+			return new ArrayList<String>(descries);
+		}
+
+		for (Element ele : elis) {
+			try {
+				Element element = ele.getChild("descriptiveNoteValue", C.LIDO_NS);
+				String descry = element.getValue();
+				descries.add(descry);
+			} catch (Exception e) {
+				logger.error("No Extent Element found!");
+			}
+		}
+		return new ArrayList<String>(descries);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private List<String> getIdentifier(Element lidoElement) {
+		String inve = "";
+		try {
+			List<Element> workies = lidoElement.getChild("descriptiveMetadata", C.LIDO_NS)
+					.getChild("objectIdentificationWrap", C.LIDO_NS)
+					.getChild("repositoryWrap", C.LIDO_NS)
+					.getChild("repositorySet", C.LIDO_NS)
+					.getChildren("workID", C.LIDO_NS);
+			
+			for (Element worky :  workies) {
+				String typpi = worky.getAttributeValue("type",  C.LIDO_NS);
+				if ("inventory number".equals(typpi)) {
+					inve = worky.getValue();
+					break;
+				}
+			}
+		} catch (Exception e) {
+			logger.error("No title Identifier:workID found!");
+		}
+
+		String ise = "";
+		try {
+			List<Element> isies = lidoElement.getChild("administrativeMetadata", C.LIDO_NS)
+					.getChild("resourceWrap", C.LIDO_NS)
+					.getChild("resourceSet", C.LIDO_NS)
+					.getChild("resourceSource", C.LIDO_NS)
+					.getChildren("legalBodyID", C.LIDO_NS);
+			
+			for (Element isy :  isies) {
+				String sourcy = isy.getAttributeValue("source",  C.LIDO_NS);
+				if ("isil".equals(sourcy)) {
+					ise = isy.getValue();
+					break;
+				}
+			}
+		} catch (Exception e) {
+			logger.error("No identifier legalBodyID Element found!");
+		}
+
+		List<String> ret = new ArrayList<String>();
+		if (inve != null && !inve.equals("")) {
+			if (ise != null && !ise.equals("")) {
+				ret.add(inve + " " + ise);
+			} else {
+				ret.add(inve);
+			}
+		} else {
+			if (ise != null && !ise.equals("")) {
+				ret.add(ise);
+			}
+		}
+		
+		return  ret;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<String> getDataProvider(Element lidoElement) {
+		String legalBodyName = "";
+		try {
+			legalBodyName = lidoElement.getChild("administrativeMetadata", C.LIDO_NS)
+						.getChild("resourceWrap", C.LIDO_NS)
+						.getChild("resourceSet", C.LIDO_NS)
+						.getChild("resourceSource", C.LIDO_NS)
+						.getChild("legalBodyName", C.LIDO_NS)
+						.getChild("appellationValue", C.LIDO_NS)
+						.getValue();
+		} catch (Exception e) {
+			logger.error("No legalBodyName Element found!");
+		}
+
+		String legalBodyID = "";
+		try {
+			legalBodyID = lidoElement.getChild("administrativeMetadata", C.LIDO_NS)
+					.getChild("resourceWrap", C.LIDO_NS)
+					.getChild("resourceSet", C.LIDO_NS)
+					.getChild("resourceSource", C.LIDO_NS)
+					.getChild("legalBodyID", C.LIDO_NS).getValue();
+			
+		} catch (Exception e) {
+			logger.error("No legalBodyID Element found!");
+		}
+
+		List<String> ret = new ArrayList<String>();
+		if (legalBodyName != null && !legalBodyName.equals("")) {
+			if (legalBodyID != null && !legalBodyID.equals("")) {
+				ret.add(legalBodyName + " " + legalBodyID);
+			} else {
+				ret.add(legalBodyName);
+			}
+		} else {
+			if (legalBodyID != null && !legalBodyID.equals("")) {
+				ret.add(legalBodyID);
+			}
+		}
+		
+		return  ret;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<String> getRightsHolder(Element lidoElement) {
+		List<String> rightsHolder = new ArrayList<String>();
+		try {
+			String holder = lidoElement.getChild("administrativeMetadata", C.LIDO_NS)
+					.getChild("resourceWrap", C.LIDO_NS)
+					.getChild("resourceSet", C.LIDO_NS)
+					.getChild("rightsResource", C.LIDO_NS)
+					.getChild("rightsHolder", C.LIDO_NS)
+					.getChild("legalBodyName", C.LIDO_NS)
+					.getChild("appellationValue", C.LIDO_NS)
+					.getValue();
+			rightsHolder.add(holder);
+		} catch (Exception e) {
+			logger.error("No RightsHolder Element found!");
+		}
+		return rightsHolder;
+	}
+	
 	@SuppressWarnings("unchecked")
 	private List<String> getRecordRights(Element lidoElement) {
 		List<String> rightIds = new ArrayList<String>();
@@ -87,11 +231,14 @@ public class LidoParser {
 	@SuppressWarnings("unchecked")
 	private List<String> getDate(Element lidoElement) {
 		List<String> dates = new ArrayList<String>();
+		Element event;
 		List<Element> eventDateChildren = new ArrayList<Element>();
 		try {
-			eventDateChildren = lidoElement.getChild("descriptiveMetadata", C.LIDO_NS).getChild("eventWrap", C.LIDO_NS)
-					.getChild("eventSet", C.LIDO_NS).getChild("event", C.LIDO_NS).getChild("eventDate", C.LIDO_NS)
-					.getChildren();
+			event = lidoElement.getChild("descriptiveMetadata", C.LIDO_NS).getChild("eventWrap", C.LIDO_NS)
+					.getChild("eventSet", C.LIDO_NS).getChild("event", C.LIDO_NS);
+			String eviType =event.getAttributeValue("eventType");
+			
+			eventDateChildren = event.getChild("eventDate", C.LIDO_NS).getChildren();
 		} catch (Exception e) {
 			 logger.debug("No eventDate element found!");
 		}
@@ -116,6 +263,136 @@ public class LidoParser {
 			}
 		}
 		return dates;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<String> getType(Element lidoElement) {
+		HashSet<String> extents = new HashSet<String>();
+		List<Element> elis = null;
+		try {
+			Element element = lidoElement.getChild("administrativeMetadata", C.LIDO_NS);
+			element = element.getChild("resourceWrap", C.LIDO_NS);
+
+			elis = element.getChildren("resourceSet", C.LIDO_NS);
+		} catch (Exception e) {
+			logger.error("No Type Element found!");
+			return new ArrayList<String>(extents);
+		}
+
+		for (Element ele : elis) {
+			try {
+				Element element = ele.getChild("resourceType", C.LIDO_NS);
+				element = element.getChild("term", C.LIDO_NS);
+				String ext = element.getValue();
+				ext = ext.toUpperCase();
+				extents.add(ext);
+			} catch (Exception e) {
+				logger.error("No Type Element found!");
+			}
+		}
+		return new ArrayList<String>(extents);
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<String> getProvenance(Element lidoElement) {
+		HashSet<String> extents = new HashSet<String>();
+		List<Element> elis = null;
+		try {
+			Element element = lidoElement.getChild("descriptiveMetadata", C.LIDO_NS);
+			element = element.getChild("eventWrap", C.LIDO_NS);
+
+			elis = element.getChildren("eventSet", C.LIDO_NS);
+		} catch (Exception e) {
+			logger.error("No Extent Element found!");
+			return new ArrayList<String>(extents);
+		}
+
+		for (Element ele : elis) {
+			try {
+				Element element = ele.getChild("event", C.LIDO_NS);
+				element = element.getChild("eventDescriptionSet", C.LIDO_NS);
+				element = element.getChild("descriptiveNoteValue", C.LIDO_NS);
+				String ext = element.getValue();
+				extents.add(ext);
+			} catch (Exception e) {
+				logger.error("No Extent Element found!");
+			}
+		}
+		return new ArrayList<String>(extents);
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<String> getProvider(Element lidoElement) {
+		HashSet<String> providers = new HashSet<String>();
+		List<Element> elis = null;
+		try {
+			Element element = lidoElement.getChild("descriptiveMetadata", C.LIDO_NS);
+			element = element.getChild("objectIdentificationWrap", C.LIDO_NS);
+			elis = element.getChildren("repositoryWrap", C.LIDO_NS);
+		} catch (Exception e) {
+			logger.error("No Provider Element found!");
+			return new ArrayList<String>(providers);
+		}
+
+		for (Element ele : elis) {
+			try {
+				Element element = ele.getChild("repositorySet", C.LIDO_NS);
+				element = element.getChild("repositoryName", C.LIDO_NS);
+				element = element.getChild("legalBodyName", C.LIDO_NS);
+				element = element.getChild("appellationValue", C.LIDO_NS);
+				String provider = element.getValue();
+				providers.add(provider);
+			} catch (Exception e) {
+				logger.error("No Provider Element found!");
+			}
+		}
+		return new ArrayList<String>(providers);
+	}
+
+	
+	@SuppressWarnings("unchecked")
+	private List<String> getMaterialsTech(Element lidoElement) {
+		List<String> extents = new ArrayList<String>();
+		List<Element> elis = null;
+		try {
+			Element element = lidoElement.getChild("descriptiveMetadata", C.LIDO_NS);
+			element = element.getChild("eventWrap", C.LIDO_NS);
+
+			elis = element.getChildren("eventSet", C.LIDO_NS);
+		} catch (Exception e) {
+			logger.error("No Extent Element found!");
+			return extents;
+		}
+
+		for (Element ele : elis) {
+			try {
+				Element element = ele.getChild("event", C.LIDO_NS);
+				element = element.getChild("eventMaterialsTech", C.LIDO_NS);
+				element = element.getChild("displayMaterialsTech", C.LIDO_NS);
+				String ext = element.getValue();
+				extents.add(ext);
+			} catch (Exception e) {
+				logger.error("No Extent Element found!");
+			}
+		}
+		return extents;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<String> getExtent(Element lidoElement) {
+		List<String> extents = new ArrayList();
+		try {
+			Element element = lidoElement.getChild("descriptiveMetadata", C.LIDO_NS);
+			element = element.getChild("objectIdentificationWrap", C.LIDO_NS);
+			element = element.getChild("objectMeasurementsWrap", C.LIDO_NS);
+			element = element.getChild("objectMeasurementsSet", C.LIDO_NS);
+			element = element.getChild("displayObjectMeasurements", C.LIDO_NS);
+			String ext = element.getValue();
+			extents.add(ext);
+		} catch (Exception e) {
+			logger.error("No Extent Element found!");
+		}
+		return extents;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -167,13 +444,12 @@ public class LidoParser {
 				lidoElementInfo.put(C.EDM_TITLE, getTitle(lidoElement));
 				lidoElementInfo.put(C.DC_RIGHTS, getRecordRights(lidoElement));
 				lidoElementInfo.put(C.EDM_RIGHTS, getRecordRights(lidoElement));
-				lidoElementInfo.put(C.EDM_PUBLISHER, getPlaces(lidoElement));
-				//lidoElementInfo.put(C.EDM_SPATIAL, getPlaces(lidoElement)); edm:currentLocation dcterms:spatial
-				lidoElementInfo.put(C.EDM_DATE_ISSUED, getDate(lidoElement));
-				
-				
-				
-				
+				lidoElementInfo.put(C.DC_RIGHTS_HOLDER, getRightsHolder(lidoElement));
+				//lidoElementInfo.put(C.EDM_PUBLISHER, getPlaces(lidoElement));
+				lidoElementInfo.put(C.EDM_SPATIAL, getPlaces(lidoElement)); 
+				// edm:currentLocation dcterms:spatial
+				lidoElementInfo.put(C.EDM_DATE, getDate(lidoElement));
+				lidoElementInfo.put(C.EDM_TYPE, getType(lidoElement));
 				
 //				Names
 				List<String> creators = new ArrayList<String>();
@@ -190,9 +466,9 @@ public class LidoParser {
 				}
 				lidoElementInfo.put(C.EDM_CREATOR, creators);
 				lidoElementInfo.put(C.EDM_CONTRIBUTOR, contributors);
-			/*	lidoElementInfo.put(C.DC_DESCRIPTION, getDescription());
-				lidoElementInfo.put(C.EDM_IDENTIFIER, getIdentifier(e));
-				
+				lidoElementInfo.put(C.EDM_DESCRIPTION, getDescription(lidoElement));
+				lidoElementInfo.put(C.EDM_IDENTIFIER, getIdentifier(lidoElement));
+				/*				
 //				Date && Place
 				List<String> datesIssued = new ArrayList<String>();
 				List<String> datesCreated = new ArrayList<String>();
@@ -221,9 +497,11 @@ public class LidoParser {
 					lidoElementInfo.put(C.EDM_EXTENT, allPhysicalDescr);
 				}
 				
-//				dataProvider
-				lidoElementInfo.put(C.EDM_DATA_PROVIDER, getDataProvider());
 				*/
+				lidoElementInfo.put(C.EDM_EXTENT, getExtent(lidoElement));
+				lidoElementInfo.put(C.EDM_DATA_PROVIDER, getDataProvider(lidoElement));
+				lidoElementInfo.put(C.EDM_PROVIDER, getProvider(lidoElement));
+				lidoElementInfo.put(C.EDM_PROVENANCE, getProvenance(lidoElement));
 				
 				List<String> references = getReferencesFromLidoElement(lidoElement);
 				if (references != null && !references.isEmpty()) {
@@ -253,7 +531,7 @@ public class LidoParser {
 	private String getCreator(Element actor) {
 		String namePartValue = "";
 		try {
-			Element actDisplay = actor.getChild("displayActorInRule", C.LIDO_NS);
+			Element actDisplay = actor.getChild("displayActorInRole", C.LIDO_NS);
 			if(actDisplay!=null && !actDisplay.getValue().trim().isEmpty())
 				namePartValue=actDisplay.getValue();
 		} catch (Exception e) {
