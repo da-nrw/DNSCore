@@ -58,7 +58,7 @@ dependencies {
     }
 	
 	// https://mvnrepository.com/artifact/org.fortasoft/gradle-maven-plugin
-	compile group: 'org.fortasoft', name: 'gradle-maven-plugin', version: '1.0.8'
+	compileOnly  group: 'org.fortasoft', name: 'gradle-maven-plugin', version: '1.0.8'
 	
 	
     compile group: 'org.grails', name: 'grails-datastore-rest-client', version:'5.0.0.RC2'
@@ -186,7 +186,4 @@ processResources {
 		
 	}
 }
-
-
-
 
