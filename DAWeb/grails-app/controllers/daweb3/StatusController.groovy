@@ -106,31 +106,31 @@ class StatusController {
 			result.origName = instance.obj.origName
 			result.identifier = instance.obj.identifier
 			if (instance.status.endsWith("1")) {
-				queueResult = "package in progress error : (" + instance.status + ")"
+				queueResult = "package in progress error : (" + instance.status + ") " + instance.errorText
 			}
 			if (instance.status.endsWith("3")) {
-				queueResult = "package in progress error : (" + instance.status + ")"
+				queueResult = "package in progress error : (" + instance.status + ") " + instance.errorText
 			}
 			if (instance.status.endsWith("4")) {
-				queueResult = "package in progress error : (" + instance.status + ")"
+				queueResult = "package in progress error : (" + instance.status + ") " + instance.errorText
 			}
 			if (instance.status.endsWith("5")) {
-				queueResult = "package in progress error : (" + instance.status + ")"
+				queueResult = "package in progress error : (" + instance.status + ") " + instance.errorText
 			}
 			if (instance.status.endsWith("6")) {
-				queueResult = "package in progress error : (" + instance.status + ")"
+				queueResult = "package in progress error : (" + instance.status + ") " + instance.errorText
 			}
 			if (instance.status.endsWith("7")) {
-				queueResult = "package in progress error : (" + instance.status + ")"
+				queueResult = "package in progress error : (" + instance.status + ") " + instance.errorText
 			}
 			if (instance.status.endsWith("8")) {
-				queueResult = "package in progress error : (" + instance.status + ")"
+				queueResult = "package in progress error : (" + instance.status + ") " + instance.errorText
 			}
 			if (instance.status.endsWith("0")) {
-				queueResult = "package in progress waiting : (" + instance.status + ")"
+				queueResult = "package in progress error : (" + instance.status + ") " + instance.errorText
 			}
 			if (instance.status.endsWith("2")) {
-				queueResult = "package in progress working : (" + instance.status + ")"
+				queueResult = "package in progress error : (" + instance.status + ")"
 			}
 			result.status =queueResult
 			
