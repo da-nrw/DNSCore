@@ -197,7 +197,7 @@ public abstract class AbstractAction implements Runnable {
 			actionFactory.setOnHalt(true,e.getMessage());
 			reportTechnicalError(e);
 		
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			errorText = e.getMessage();
 			reportTechnicalError(e);
 		} finally {
@@ -397,7 +397,7 @@ public abstract class AbstractAction implements Runnable {
 		sendJMSException(e);
 	}
 
-	protected void reportTechnicalError(Exception e){
+	protected void reportTechnicalError(Throwable e){
 		j.setErrorText(e.getMessage());
 		logger.error(this.getClass().getName()+": Exception in action: ",e);
 		new MailContents(preservationSystem,n).abstractActionCreateAdminReport(e, o, this);
@@ -410,7 +410,7 @@ public abstract class AbstractAction implements Runnable {
 	 * @author Jens Peters
 	 * @param e
 	 */
-	private void sendJMSException(Exception e) {
+	private void sendJMSException(Throwable e) {
 	
 		String txt =  e.getMessage(); 
 		if (StringUtilities.isSet(txt)) {
