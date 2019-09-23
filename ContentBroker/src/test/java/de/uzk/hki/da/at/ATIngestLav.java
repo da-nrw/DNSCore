@@ -179,20 +179,6 @@ public class ATIngestLav extends AcceptanceTest {
 		}
 		
 		assertTrue(edmDoc1.getRootElement().getChild("Aggregation", C.ORE_NS).getChild("dataProvider", C.EDM_NS).getValue().contains("Landesarchiv NRW"));
-		assertTrue(edmDoc1.getRootElement().getChild("Aggregation", C.ORE_NS).getChild("isShownBy", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
-				.contains(preservationSystem.getUrisFile()+"/"+object1.getIdentifier()+"/_6d8889c54cd506f75be230bd630cd70d.jpg"));
-		
-		@SuppressWarnings("unchecked")
-		List<Element> references = edmDoc1.getRootElement().getChild("Aggregation", C.ORE_NS).getChildren("hasView", C.EDM_NS);
-		assertTrue(references.size()==8);
-		for(Element ref : references) {
-			String r = ref.getAttributeValue("resource", C.RDF_NS);
-			if(r.endsWith(".jpg")) {
-				assertTrue(r.startsWith("http://"));
-			} else {
-				assertTrue(r.equals("_MD5hashes.txt") || r.endsWith("_R_NW_1000-44985_0001.xml"));
-			}
-		}
 		
 ////		testIndex
 		assertTrue(metadataIndex.getIndexedMetadata(PORTAL_CI_TEST, object1.getIdentifier()+"-dmd00016").contains("Nr. 44985"));

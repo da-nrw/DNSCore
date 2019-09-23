@@ -93,7 +93,7 @@ public class Job {
 	
 	private String dynamic_nondisclosure_limit_institution;
 
-	@Column(name="error_text")
+	@Column(name="error_text", columnDefinition="varchar(2040)")
 	private String errorText;
 
 	@Column(columnDefinition="varchar(50)")
