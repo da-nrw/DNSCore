@@ -80,17 +80,27 @@ public class MetsParser{
 		return urn;
 	}
 	
+	
 	/**
 	 * 
 	 * Method search in each dmdSec for license and return one license instance, only if each dmdSec contains same license, otherwise method causes exceptions.
 	 * @return
 	 */
 	public MetsLicense getLicenseForWholeMets() {
+		return getLicenseForWholeMets(false);
+	}
+	
+	/**
+	 * 
+	 * Method search in each dmdSec for license and return one license instance, only if each dmdSec contains same license, otherwise method causes exceptions.
+	 * @return
+	 */
+	protected MetsLicense getLicenseForWholeMets(boolean quiet) {
 		ArrayList<MetsLicense> licenseAl=new ArrayList<MetsLicense>();
 		@SuppressWarnings("unchecked")
 		List<Element> dmdSecs = metsDoc.getRootElement().getChildren("dmdSec", METS_NS);
 		for(Element dmdSec : dmdSecs) {
-			licenseAl.add(getLicense(dmdSec));
+			licenseAl.add(getLicense(dmdSec,quiet));
 		}
 		if(licenseAl.size()==0)
 			return null;
@@ -99,8 +109,9 @@ public class MetsParser{
 		if(licenseAl.get(0)==null) //all licenses are null
 			return null;
 		if(!licenseAl.get(0).equals(licenseAl.get(licenseAl.size()-1))) //first and last element have to be same in sorted array
-			throw new RuntimeException("METS contains different licenses("+licenseAl.size()+") e.g.:"+licenseAl.get(licenseAl.size()-1)+" "+licenseAl.get(0));
-		
+			if(!quiet)
+				throw new RuntimeException("METS contains different licenses("+licenseAl.size()+") e.g.:"+licenseAl.get(licenseAl.size()-1)+" "+licenseAl.get(0));
+		logger.debug("Recognized License in METS("+licenseAl.size()+") "+licenseAl.get(0));
 		return licenseAl.get(0);
 	}
 	
@@ -110,30 +121,40 @@ public class MetsParser{
 	 * @param dmdSec
 	 * @return metsLicense
 	 */
-	public MetsLicense getLicense(Element dmdSec) {
-		MetsLicense metsLicense = null;
-
-		List<Element> accessCondition = new ArrayList<Element>();
+	protected MetsLicense getLicense(Element dmdSec, boolean quiet) {
+		MetsLicense metsLicenseReturn = null;
+		List<MetsLicense> metsLicenseList = new ArrayList<MetsLicense>();
+		List<Element> accessConditionList = new ArrayList<Element>();
 		try {
-			accessCondition = getModsXmlData(dmdSec).getChildren("accessCondition", C.MODS_NS);
+			accessConditionList = getModsXmlData(dmdSec).getChildren("accessCondition", C.MODS_NS);
 		} catch (Exception e) {
 			logger.debug("No accessCondition element found! "+e.getMessage());
 		}
-		if(accessCondition.size()>1)
-			throw new RuntimeException("dmdSec contains multiple licenses (accessCondition-Elements), unsuported");
-		try {
-			if(accessCondition.size()==1){
-				metsLicense=new MetsLicense();
-				metsLicense.setText(accessCondition.get(0).getValue());
-				metsLicense.setHref(accessCondition.get(0).getAttributeValue("href", XLINK_NS));
-				metsLicense.setType(accessCondition.get(0).getAttributeValue("type"));
-				metsLicense.setDisplayLabel(accessCondition.get(0).getAttributeValue("displayLabel"));
+
+		for(Element accessCondition:accessConditionList){
+			try {
+				MetsLicense metsLicense=new MetsLicense();
+				metsLicense.setHref(accessCondition.getAttributeValue("href", XLINK_NS));
+				metsLicense.setType(accessCondition.getAttributeValue("type"));
+				metsLicense.setText(accessCondition.getValue());
+				metsLicense.setDisplayLabel(accessCondition.getAttributeValue("displayLabel"));
+				
+				if(metsLicense.getType()!=null && metsLicense.getType().equals(metsLicense.USE_AND_REP_TYPE))
+					metsLicenseList.add(metsLicense);
+			} catch (Exception e) {
+				logger.debug("No valid accessCondition element found! "+e.getMessage());
 			}
-		} catch (Exception e) {
-			logger.debug("No valid accessCondition element found! "+e.getMessage());
 		}
-		
-		return metsLicense;
+
+		Collections.sort(metsLicenseList, new NullLastComparator<MetsLicense>());
+
+		if(metsLicenseList.size()>=1){
+			metsLicenseReturn=metsLicenseList.get(0);
+			if(quiet!=true && metsLicenseList.size()>1)
+				throw new RuntimeException("dmdSec contains multiple licenses (accessCondition-Elements), unsuported");
+		}
+
+		return metsLicenseReturn;
 	}
 	
 	private List<String> getPhysicalDescriptionFromDmdId(String dmdID,String objectId) {
@@ -741,8 +762,9 @@ public class MetsParser{
 			
 //			Title
 			dmdSecInfo.put(C.EDM_TITLE, getTitle(e));
-			
-			dmdSecInfo.put(C.EDM_RIGHTS, getAccessConditions(e));
+			List<String> accessConditions= getAccessConditions(e);
+			dmdSecInfo.put(C.DC_RIGHTS,accessConditions);
+			dmdSecInfo.put(C.EDM_RIGHTS,accessConditions);
 //			identifier
 			dmdSecInfo.put(C.EDM_IDENTIFIER, getIdentifier(e));
 			
@@ -797,12 +819,12 @@ public class MetsParser{
 			}
 			
 			List<String> allReferences = getReferencesFromDmdId(id, ObjectId);
-			
+/*** Alle Referenzen für alle Objekte ist Stuss und erzeugt unter Umstaenden OutOfMemmoryError	
 //			LAV
 			if(allReferences==null || allReferences.isEmpty()) {
 				allReferences = getReferences();
 			}
-			
+*/		
 			if(titlePageRefs!=null & !titlePageRefs.isEmpty()) {
 				List<String> references = new ArrayList<String>();
 				references.add(titlePageRefs.get(0));
@@ -841,34 +863,17 @@ public class MetsParser{
 		}
 		return indexInfo;
 	}
-	
-
-
 
 	
 	public  List<String> getAccessConditions(Element dmdSec) {
-		String link=null;
-		String displayLabel=null;
-		String text=null;
-		//String ret="";
 		List<String> retList = new ArrayList<String>();
-		
 		try {
-			Element modsXmlData = getModsXmlData(dmdSec);
-			//gibt nur das erste lizenz element zurueck
-			Element accessCondition = modsXmlData.getChild("accessCondition", C.MODS_NS);
-			
-			text=accessCondition.getText();
-			link=accessCondition.getAttributeValue("href",XLINK_NS);
-			displayLabel=accessCondition.getAttributeValue("displayLabel");
-			
-			if(link==null || link.trim().isEmpty()){			
+			MetsLicense mLic=getLicense(dmdSec,false);
+			if(mLic==null || mLic.getHref().trim().isEmpty()){			
 				logger.error("Attribute accessCondition.href does not exist!!!");
-				//retList.add(displayLabel+this.titleSparator+text);
 			}else{
-				retList.add(link);
+				retList.add(mLic.getHref());
 			}
-			return retList;
 		} catch(Exception e) {
 			logger.error("Element accessCondition does not exist!!!");
 		}

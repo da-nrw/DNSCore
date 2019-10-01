@@ -83,6 +83,7 @@ public class FetchPIPsActionTest extends ConcreteActionUnitTest {
 	public void overwriteExistingPIPs() throws FileNotFoundException, IOException{
 		assertFalse(makeMetadataFile(PREMIS,WorkArea.PUBLIC).exists());
 		assertFalse(makeMetadataFile(PREMIS,WorkArea.WA_INSTITUTION ).exists());
+		action.getObject().setLicense_flag(C.LICENSEFLAG_PREMIS);
 		action.implementation();
 		assertTrue(makeMetadataFile(PREMIS,WorkArea.PUBLIC).exists());
 		assertTrue(makeMetadataFile(PREMIS,WorkArea.WA_INSTITUTION ).exists());
@@ -130,6 +131,7 @@ public class FetchPIPsActionTest extends ConcreteActionUnitTest {
 	
 	@Test
 	public void movePIPs() throws FileNotFoundException, IOException {
+		action.getObject().setLicense_flag(C.LICENSEFLAG_PREMIS);
 		action.implementation();
 		assertFalse(makePIPSourceFolder(WorkArea.PUBLIC).exists());
 		assertFalse(makePIPSourceFolder(WorkArea.WA_INSTITUTION).exists());

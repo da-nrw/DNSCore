@@ -396,7 +396,7 @@
 		<dependency>
 			<groupId>org.apache.tika</groupId>
 			<artifactId>tika-core</artifactId>
-			<version>1.0</version>
+			<version>1.20</version><!-- 1.0 --> <!-- 1.19.1-->
 		</dependency>
 		<dependency>
 			<groupId>com.yourmediashelf.fedora.client</groupId>
@@ -462,7 +462,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>4.0.0.RELEASE</version>
+			<version>4.3.18.RELEASE</version><!-- 4.0.0.RELEASE --> <!-- 4.3.17.RELEASE -->
 			<exclusions>
 		        <exclusion>
 		            <groupId>commons-logging</groupId>
@@ -474,7 +474,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>4.0.0.RELEASE</version>
+			<version>4.3.18.RELEASE</version><!-- 4.0.0.RELEASE --> <!-- 4.3.17.RELEASE -->
 		</dependency>
 		
 		<dependency>
@@ -551,7 +551,7 @@
 		<dependency>
 			<groupId>org.apache.pdfbox</groupId>
 			<artifactId>pdfbox</artifactId>
-			<version>1.8.12</version>
+			<version>2.0.15</version><!-- 1.8.16 --> <!-- 1.8.12 --> 
 			<exclusions>
 				<exclusion>
 					<groupId>log4j</groupId>
@@ -562,7 +562,7 @@
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-all</artifactId>
-			<version>5.8.0</version>
+			<version>5.8.0</version> <!-- 5.8.0--> <!-- 5.15.7-->
 		</dependency>
 		<dependency>
 			<groupId>org.apache.xbean</groupId>
@@ -572,7 +572,7 @@
 		<dependency>
 			<groupId>org.apache.pdfbox</groupId>
 			<artifactId>preflight</artifactId>
-			<version>1.8.2</version>
+			<version>2.0.15</version> <!-- 1.8.2 -->
 			<exclusions>
 				<exclusion>
 					<groupId>log4j</groupId>

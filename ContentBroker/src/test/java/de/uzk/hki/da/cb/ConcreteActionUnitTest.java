@@ -107,7 +107,9 @@ public class ConcreteActionUnitTest {
 		o.getPackages().add(pkg);
 		o.setUrn(URN);
 		o.setInitial_node("testnode");
-		o.setLicense_flag(C.LICENSEFLAG_METS);
+		//o.setLicense_flag(C.LICENSEFLAG_METS);
+		//o.setLicense_flag(C.LICENSEFLAG_NO_LICENSE);
+		o.setLicense_flag(C.LICENSEFLAG_UNDEFINED);
 		j = new Job();
 		j.setObject(o);
 		

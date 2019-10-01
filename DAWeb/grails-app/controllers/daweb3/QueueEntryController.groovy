@@ -25,27 +25,27 @@ package daweb3
  * @Author Jens Peters
  * @Author Sebastian Cuy 
  */
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
 import grails.plugin.springsecurity.annotation.Secured
-import org.hibernate.criterion.CriteriaSpecification;
-
-import org.springframework.aop.TrueClassFilter;
-import org.springframework.dao.DataIntegrityViolationException
 
 class QueueEntryController {
-
 	
-	def springSecurityService
+	static navigationScope = 'admin'
+	
+	def springSecurityService 
 	def cberrorService
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 	static QueueUtils que = new QueueUtils();
-	
-    def index() {
+   
+	 def index() {
         redirect(action: "list", params: params)
     }
 
+	def cancel() {
+		redirect(action: "list")
+	}
+	
     def list() {
-		
 		def contractorList
 		def cbNodeList = CbNode.list()
 		User user = springSecurityService.currentUser
@@ -61,11 +61,18 @@ class QueueEntryController {
 		}
 		
 		[contractorList:contractorList,
-		cbNodeList:cbNodeList]
+		cbNodeList:cbNodeList,
+		user:user]
+		
 		// different List View per Role
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			
 		render(view:"adminList", model:[contractorList:contractorList,
-		cbNodeList:cbNodeList]);
+		cbNodeList:cbNodeList, user:user, admin: admin ]);
+		} else {
+			render (view:"list", model:[contractorList:contractorList,
+						cbNodeList:cbNodeList,
+						user:user, admin: admin]);
 		}
 	}
     
@@ -81,7 +88,6 @@ class QueueEntryController {
 		}
 
 		if (!params.search){
-
 				
 			if (admin != 1) {
 				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn "
@@ -96,10 +102,15 @@ class QueueEntryController {
 			}
 			[queueEntryInstanceList: queueEntries,
 				admin:admin, periodical:periodical,
-				contractorList:contractorList ]
+				contractorList:contractorList, user:us ]
 			if (us.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
-					render(view:"adminListSnippet", model:[queueEntryInstanceList: queueEntries, admin:admin, periodical:periodical, contractorList:contractorList]);
-			} else render(view:"listSnippet", model:[queueEntryInstanceList: queueEntries, admin:admin, periodical:periodical, contractorList:contractorList]);
+					render(view:"adminListSnippet", model:[
+						queueEntryInstanceList: queueEntries, 
+						admin:admin, periodical:periodical, 
+						contractorList:contractorList, user:us]);
+			} else render(view:"listSnippet", model:[queueEntryInstanceList: queueEntries, 
+						admin:admin, periodical:periodical, 
+						contractorList:contractorList, user:us]);
 			
 		} else {
 			
@@ -152,15 +163,26 @@ class QueueEntryController {
 			
 		}
 		if (us.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
-				render(view:"adminListSnippet", model:[queueEntryInstanceList: queueEntries, admin:admin, periodical:periodical, contractorList:contractorList]);
-		} else render(view:"listSnippet", model:[queueEntryInstanceList: queueEntries, admin:admin, periodical:periodical, contractorList:contractorList]);
+				render(view:"adminListSnippet", model:[queueEntryInstanceList: queueEntries, 
+						admin:admin, periodical:periodical, 
+						contractorList:contractorList, user:us]);
+		} else render(view:"listSnippet", model:[queueEntryInstanceList: queueEntries, 
+						admin:admin, periodical:periodical,
+						contractorList:contractorList, user:us]);
     }
 	
 	/** 
 	 * Generates detailed view for one item (SIP) in workflow
 	 */
     def show() {
-        def queueEntryInstance = QueueEntry.get(params.id)
+        
+		User user = springSecurityService.currentUser
+		def admin = 0;
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
+		
+		def queueEntryInstance = QueueEntry.get(params.id)
         if (!queueEntryInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'queueEntry.label', default: 'QueueEntry'), params.id])
             redirect(action: "list")
@@ -173,7 +195,7 @@ class QueueEntryController {
 				error = it.toString()
 			}
 		}
-        [queueEntryInstance: queueEntryInstance, systemInfo:error]
+        [queueEntryInstance: queueEntryInstance, systemInfo:error, admin: admin, user: user]
     }
 	
 	/**
@@ -181,6 +203,8 @@ class QueueEntryController {
 	 */
 	@Secured(['ROLE_NODEADMIN'])
 	def queueRetry() {
+		
+		print("QueEntryController: queueEntry")
 		def queueEntryInstance = QueueEntry.get(params.id)
 		if (queueEntryInstance) {
 			def status = queueEntryInstance.getStatus()
@@ -202,6 +226,8 @@ class QueueEntryController {
 	 */
 	@Secured(['ROLE_NODEADMIN'])
 	def queueRetryAll() {
+		
+		print("QueEntryController: queueRetryAll")
 		
 				def modifyIds = params.list("modifyIds")
 				def msg = ""
@@ -231,6 +257,9 @@ class QueueEntryController {
 	 */
 	@Secured(['ROLE_NODEADMIN'])
 	def queueRecover() {
+		
+		print("QueEntryController: queueRecover")
+		
 		try {
 			def res = que.modifyJob(params.id, "600")
 			flash.message = "Paket zurückgesetzt! " + res 
@@ -246,6 +275,9 @@ class QueueEntryController {
 	 */
 	@Secured(['ROLE_NODEADMIN'])
 	def queueRecoverAll() {
+		
+		print("QueEntryController: queueRecoverAll")
+		
 		try {
 			def modifyIds = params.list("modifyIds");
 					def msg = ""
@@ -267,12 +299,14 @@ class QueueEntryController {
 	 */
 	@Secured(['ROLE_NODEADMIN'])
 	def queueDelete() {
+		
 		try {
 			def res = que.modifyJob(params.id, "800")
-			flash.message = "Paket zur Löschung vorgesehen! " + res
+			flash.message = "Paket zur Löschung vorgesehen! " + res 
 		} catch (Exception e) {
 			log.error("Löschung aus Workflow fehlgeschlagen für " + params.id + " " + e.printStackTrace())
-			flash.message = "Löschung aus Workflow fehlgeschlagen!"
+			print("Löschung aus Workflow fehlgeschlagen für " + params.id + " " + e.printStackTrace())
+			flash.message = "Löschung aus Workflow fehlgeschlagen!" 
 		}
 		redirect(action: "list")
 	}
@@ -282,6 +316,7 @@ class QueueEntryController {
 	 */
 	@Secured(['ROLE_NODEADMIN'])
 	def queueDeleteAll() {
+		
 		try {
 			
 			def modifyIds = params.list("modifyIds")
@@ -289,7 +324,7 @@ class QueueEntryController {
 					def msg = ""
 					modifyIds.each {
 						que.modifyJob(it, "800")
-					}
+					}params
 					flash.message = " (" +modifyIds.size() + ") Pakete zur Löschung vorgesehen! "
 			
 		} catch (Exception e) {
@@ -306,24 +341,33 @@ class QueueEntryController {
 	 * @return
 	 */
 	def listRequests () {
+		
 		User user = springSecurityService.currentUser
 		def queueEntries
 		def admin = 0;
+		def adminAnzeige = 0;
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			admin = 1;
+		} 
+		if (user.authorities.any { it.authority == "ROLE_PSADMIN"}) {
+			admin = 1;
+		} 
+		
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			adminAnzeige = 1;
 		}
+		
 		if (params.search==null){
 			if (admin != 1) {
 				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn and q.question is not null and q.question !='' and (q.status like '%5' OR q.status like '%4')",
 				 [csn: user.shortName])
 			} else {
-				admin = true;
 				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.question is not null and q.question !='' and (q.status like '%5' OR q.status like '%4')")
 				
 			}
 			[queueEntryInstanceList: queueEntries,
-				admin:admin ]
-	}
+				admin:adminAnzeige, user:user ]
+		}
 	}
 	/**
 	 * Applies status and functionality to answer with yes on migration requests
@@ -345,6 +389,7 @@ class QueueEntryController {
 	 * Applies status and functionality to answer with yes on migration requests
 	 */
 	def performRequestNo() {
+		
 		try {
 			def res = que.modifyJob(params.id, "640", "NO")
 			flash.message = "Antwort Nein! " + res
@@ -354,6 +399,31 @@ class QueueEntryController {
 		}
 		redirect(action: "listRequests")
 		return
+	}
+
+	
+	def deleteSip() {
+		User us = springSecurityService.currentUser
+		def queueEntries = null
+		
+		log.info("fehlerhafte SIP's des Contractors "  + us.getShortName()) +  " werden gelöscht.";
+		def contractorList = User.list()
+			try {
+			   queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn" + 
+				   " and q.status < '400' and ( q.status like ('%1') or q.status like ('%3') " + 
+				   " or  q.status like ('%4') or q.status like ('%6')) ", 
+             [csn: us.getShortName()]
+			 )
+			 flash.message = " (" + queueEntries.size() + ") Pakete zur Löschung vorgesehen! "
+			queueEntries.each {
+				que.modifyJob(it.id.toString(), "800")
+			}			
+		} catch (Exception e) {
+			log.error("Löschungen aus Workflow fehlgeschlagen" + e.printStackTrace())
+			flash.message = "Löschungen aus Workflow fehlgeschlagen!"
+		}
+		
+		redirect(action: "list")
 	}
 
 }

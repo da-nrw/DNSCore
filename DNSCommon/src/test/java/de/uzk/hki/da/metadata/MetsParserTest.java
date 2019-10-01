@@ -72,14 +72,6 @@ public class MetsParserTest {
 		assertTrue(elements.get(C.EDM_DATA_PROVIDER).size()==1 
 				&& (elements.get(C.EDM_DATA_PROVIDER).get(0).equals("Landesarchiv NRW")));
 	
-		assertTrue(elements.get(C.EDM_HAS_VIEW).size()==8
-				&& elements.get(C.EDM_HAS_VIEW).contains("http://data.danrw.de/file/1-2015110919/_6d8889c54cd506f75be230bd630cd70d.jpg")
-				&& elements.get(C.EDM_HAS_VIEW).contains("http://data.danrw.de/file/1-2015110919/_03a62f462ff81be6d6db280be6a8e4c6.jpg")
-				&& elements.get(C.EDM_HAS_VIEW).contains("http://data.danrw.de/file/1-2015110919/_f1b9c8446da0b8b14c10061a3a81949c.jpg")
-				&& elements.get(C.EDM_HAS_VIEW).contains("http://data.danrw.de/file/1-2015110919/_d88477ff445fe329a2dac01d3fddc7a8.jpg")
-				&& elements.get(C.EDM_HAS_VIEW).contains("http://data.danrw.de/file/1-2015110919/_2fee28672e542ff0a12556552d059cc6.jpg")
-				&& elements.get(C.EDM_HAS_VIEW).contains("_MD5hashes.txt")
-				&& elements.get(C.EDM_HAS_VIEW).contains("_ggsg_0001.xml"));
 	}
 	
 	@Test
@@ -121,12 +113,12 @@ public class MetsParserTest {
 		
 		assertEquals(null,mp.getLicenseForWholeMets());
 		assertTrue(mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md2684319").get(C.EDM_RIGHTS).isEmpty());
-		
+		assertTrue(mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md2684319").get(C.DC_RIGHTS).isEmpty());
 	}
 	
 	@Test
 	public void testReadAccessConditionExist()throws JDOMException, IOException{
-		MetsLicense mLicense=new MetsLicense("https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
+		MetsLicense mLicense=new MetsLicense("use and reproduction","https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		FileReader fr1 = new FileReader(licenseMetsFile);
 		Document lavMets = builder.build(fr1);
@@ -134,12 +126,13 @@ public class MetsParserTest {
 		
 		assertEquals(mLicense,mp.getLicenseForWholeMets());
 		assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1937630").get(C.EDM_RIGHTS).get(0));
+		assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1937630").get(C.DC_RIGHTS).get(0));
 	}
 	
 	
 		@Test
 	public void testReadAccessConditionInMultilevelMETSDifferent()throws JDOMException, IOException{
-			MetsLicense mLicense=new MetsLicense("https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
+			MetsLicense mLicense=new MetsLicense("use and reproduction","https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
 			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 			FileReader fr1 = new FileReader(differentLicenseMultiMetsFile);
 			Document lavMets = builder.build(fr1);
@@ -155,11 +148,15 @@ public class MetsParserTest {
 
 			assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.EDM_RIGHTS).get(0));
 			assertTrue(mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1617166").get(C.EDM_RIGHTS).isEmpty());;
+			
+			assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.DC_RIGHTS).get(0));
+			assertTrue(mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1617166").get(C.DC_RIGHTS).isEmpty());;
+		
 		}
 		
 		@Test
 		public void testReadAccessConditionInMultilevelMETSNo()throws JDOMException, IOException{
-			MetsLicense mLicense=new MetsLicense("https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
+			MetsLicense mLicense=new MetsLicense("use and reproduction","https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
 			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 			FileReader fr1 = new FileReader(noLicenseMultiMetsFile);
 			Document lavMets = builder.build(fr1);
@@ -168,13 +165,15 @@ public class MetsParserTest {
 			assertEquals(null,mp.getLicenseForWholeMets());
 			assertTrue(mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.EDM_RIGHTS).isEmpty());
 			assertTrue(mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1617166").get(C.EDM_RIGHTS).isEmpty());
+			assertTrue(mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.DC_RIGHTS).isEmpty());
+			assertTrue(mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1617166").get(C.DC_RIGHTS).isEmpty());
 		}
 		
 	
 	
 	@Test
 	public void testReadAccessConditionInMultilevelMETSSame()throws JDOMException, IOException{
-		MetsLicense mLicense=new MetsLicense("https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
+		MetsLicense mLicense=new MetsLicense("use and reproduction","https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
 		FileReader fr1 = new FileReader(sameLicenseMultiMetsFile);
 		Document lavMets = builder.build(fr1);
@@ -183,6 +182,8 @@ public class MetsParserTest {
 		assertEquals(mLicense,mp.getLicenseForWholeMets());
 		assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.EDM_RIGHTS).get(0));
 		assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1617166").get(C.EDM_RIGHTS).get(0));
+		assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.DC_RIGHTS).get(0));
+		assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1617166").get(C.DC_RIGHTS).get(0));
 	}
 
 	

@@ -21,18 +21,32 @@ package daweb3
  */
 
 
+
+import java.awt.Queue
+
+import org.hibernate.criterion.CriteriaSpecification
+import org.hibernate.sql.JoinType
+
 import grails.converters.*
+import grails.core.GrailsApplication
 
 
 class ObjectController {
 
+	
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 	static QueueUtils qu = new QueueUtils();
 
 	def springSecurityService
+	boolean archivedObjects = false;
+	boolean workingObjects = false;
 
 	def index() {
 		redirect(action: "list", params: params)
+	}
+	
+	def cancel(){
+		redirect(action: "list")
 	}
 
 	/**
@@ -58,7 +72,10 @@ class ObjectController {
 		 def List<String> extList = new ArrayList<String>()
 		 def String name = ""
 		 def List<String> nameList = new ArrayList<String>();
-		
+		 User user = springSecurityService.currentUser
+		 if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			 admin = 1;
+		 }
 		 // access table objects
 		 objects = Object.findAll("from Object as o where o.most_recent_formats like :formats " +
 			 " or o.most_recent_secondary_attributes like :attributes)"   ,
@@ -109,35 +126,24 @@ class ObjectController {
 				 nameList.add(name)
 				 
 			 } // end of object - list
-			 render (view:'listObjects', model:[objects:objects, extension:extList, name:nameList]);
+			 render (view:'listObjects', model:[objects:objects, extension:extList, name:nameList, user:user, admin:admin]);
 		 }
  	} 
 	 
+	def listAll () {
+		archivedObjects = false;
+		workingObjects = false;
+		redirect(action: "list", params: params)
+	}
+	 
 	def list() {
-		User user = springSecurityService.currentUser
-
-		def contractorList = User.list()
-		def admin = 0;
-		def relativeDir = user.getShortName() + "/outgoing"
-		def filterOn = params.filterOn;
-		if (filterOn==null) filterOn=0
-
-		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
-		params.max = Math.min(params.max ? params.int('max') : 50, 200)
-
-		if (params.searchContractorName){
-			if(params.searchContractorName=="null"){
-				params.remove("searchContractorName")
-			}
-		}
-		def c1 = Object.createCriteria()
-		def objtsTotalForCont = c1.list() {
-			eq("user.id", user.id)
-			between("object_state", 50,200)
-		}
-		def totalObjs = objtsTotalForCont.size();
+		if (archivedObjects ) {
+			getObjects(100);
+		} else if (workingObjects) {
+			getObjects(50);
+		} else {
 		
-		
+<<<<<<< HEAD
 		def c = Object.createCriteria()
 		log.debug(params.toString())
 		def objects = c.list(max: params.max, offset: params.offset ?: 0) {
@@ -164,14 +170,104 @@ class ObjectController {
 			if (ds!=null || de!=null) {
 				if ( params.searchDateType.equals("null") ) {
 					params.searchDateType = "createdAt"
-				} else {
-					st =  params.searchDateType;
-				}
-			} else {
-				if ( params.searchDateType.equals("null") ) {
-					params.remove("searchDateType")
+=======
+			User user = springSecurityService.currentUser
+	
+			def contractorList = User.list()
+			def admin = 0;
+			def relativeDir = user.getShortName() + "/outgoing"
+			def filterOn = params.filterOn;
+			if (filterOn==null) filterOn=0
+			def objArt = "gesamten"
+	
+			def baseFolder = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
+			params.max = Math.min(params.max ? params.int('max') : 50, 200)
+	
+			if (params.searchContractorName){
+				if(params.searchContractorName=="null"){
+					params.remove("searchContractorName")
 				}
 			}
+			def c1 = Object.createCriteria()
+			def objectsTotalForCont = c1.list() {
+				eq("user.id", user.id)
+				between("objectState", 50,200)
+			}
+			def totalObjs = objectsTotalForCont.size();
+			
+			def c = Object.createCriteria()
+			log.debug(params.toString())
+			def objects = c.list(max: params.max, offset: params.offset ?: 0) {
+				if (params.search) params.search.each { key, value ->
+					if (value!="") filterOn=1
+					like(key, "%" + value + "%")
+				}
+				
+				log.debug("Date as Strings " + params.searchDateStart + " and " + params.searchDateEnd)
+				
+				def ds = params.searchDateStart
+				def de = params.searchDateEnd
+	
+				def st = "createdAt"; 
+				String searchDateType = params.searchDateType;
+							
+				if (ds!=null || de!=null ) {
+					if (!ds.equals("0") || !de.equals("0")) {
+						if ( params.searchDateType.equals("null") ) {
+							params.searchDateType = "createdAt"
+						} else {
+							st =  params.searchDateType;
+						}
+					}
+>>>>>>> master
+				} else {
+					if ( params.searchDateType.equals("null") ) {
+						params.remove("searchDateType")
+					}
+				}
+				
+				if (ds!=null  && de!=null)  {
+					if (!ds.equals("0") && !de.equals("0")) {
+						filterOn=1
+						log.debug("Objects between " + ds + " and " + de)
+						between(st, ds, de)
+					}
+				}
+				if (ds!=null && de==null ) {
+					if (!ds.equals("0") && de.equals("0")) {
+						filterOn=1
+						log.debug("Objects greater than " + ds)
+						gt(st,ds)
+					}
+				}
+				if (ds==null && de!=null ) {
+					if (ds.equals("0") || !de.equals("0")) {
+						filterOn=1
+						log.debug("Objects lower than " + de)
+						lt(st,de)
+					}
+				}
+	
+				if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+					admin = 1;
+				}
+				if (admin==0) {
+					
+					eq("user.id", user.id)
+				}
+				if (admin==1) {
+					if (params.searchContractorName!=null) {
+						if	( !params.searchContractorName.isEmpty() || params.searchContractorName != "") {
+							filterOn=1
+							createAlias( "user", "c" )
+							eq("c.shortName", params.searchContractorName)
+						}
+					}
+				}
+				between("objectState", 50,200)
+				order(params.sort ?: "id", params.order ?: "desc")
+			}
+<<<<<<< HEAD
 		
 			if (ds!=null && de!=null) {
 				filterOn=1
@@ -182,13 +278,22 @@ class ObjectController {
 				filterOn=1
 				log.debug("Objects greater than " + ds)
 				gt(st,ds)
-			}
-			if (ds==null && de!=null) {
-				filterOn=1
-				log.debug("Objects lower than " + de)
-				lt(st,de)
+=======
+			log.debug("Search " + params.search)
+			// workaround: make ALL params accessible for following http-requests
+			def paramsList = params.search?.collectEntries { key, value -> ['search.'+key, value]}
+			if(params.searchContractorName){
+				paramsList.putAt("searchContractorName", params?.searchContractorName)
+>>>>>>> master
 			}
 			
+			if (paramsList != null) {
+				paramsList.putAt("searchDateType", params?.searchDateType);
+				paramsList.putAt("searchDateStart", params?.searchDateStart);
+				paramsList.putAt("searchDateEnd", params?.searchDateEnd);
+			}
+			
+<<<<<<< HEAD
 			if (params.searchQualityLevel!=null /*&& !params.searchQualityLevel.equals("null")*/) {
 				if(params.searchQualityLevel?.isInteger()){
 					filterOn=1
@@ -252,6 +357,35 @@ class ObjectController {
 				baseFolder: baseFolder,
 				contractorList: contractorList
 			]);
+=======
+			if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+				render(view:"adminList", model:[	objectInstanceList: objects,
+					objectInstanceTotal: objects.getTotalCount(),
+					searchParams: params.search,
+					filterOn: filterOn,
+					paramsList: paramsList,
+					paginate: true,
+					admin: admin,
+					baseFolder: baseFolder,
+					contractorList: contractorList,
+					user: user ,
+					objArt: objArt
+				]);
+			} else render(view:"list", model:[	objectInstanceList: objects,
+					objectInstanceTotal: objects.getTotalCount(),
+					searchParams: params.search,
+					filterOn: filterOn,
+					paramsList: paramsList,
+					paginate: true,
+					admin: 0,
+					totalObjs: totalObjs,
+					baseFolder: baseFolder,
+					contractorList: contractorList,
+					user: user ,
+					objArt: objArt
+				]);
+		}
+>>>>>>> master
 	}
 
 	def show() {
@@ -278,8 +412,8 @@ class ObjectController {
 		}
 		def urn = objectInstance.urn
 		urn = urn.replaceAll(~"\\+",":")
-		def sortedPackages = objectInstance.packages.sort{it.id}
-		def preslink = grailsApplication.config.fedora.urlPrefix +urn.replaceAll(~"urn:nbn:de:danrw-", "")
+		def sortedPackages = objectInstance.packages.sort{ it.id }
+		def preslink = grailsApplication.config.getProperty('fedora.urlPrefix') +urn.replaceAll(~"urn:nbn:de:danrw-", "")
 		
 		/*
 		 * DANRW-1417: extension about the access to the table format_mapping
@@ -313,7 +447,13 @@ class ObjectController {
 			} // end of object - list
 		}
 		[objectInstance: objectInstance,
-			urn:urn,preslink:preslink,sortedPackages:sortedPackages, extensionSip:extListSip, extensionDip:extListDip]
+			urn:urn,
+			preslink:preslink,
+			sortedPackages:sortedPackages, 
+			extensionSip:extListSip, 
+			extensionDip:extListDip,
+			user: user, admin: admin
+		]
 	
 	}
 
@@ -376,7 +516,7 @@ class ObjectController {
 					result.success = false
 				} else {
 					try {
-						CbNode cbn = CbNode.get(grailsApplication.config.localNode.id)
+						CbNode cbn = CbNode.get(grailsApplication.config.getProperty('localNode.id'))
 
 						qu.createJob( object ,"900", cbn.getName()) + "\n"
 						result.msg += "${object.urn} - OK. "
@@ -406,17 +546,22 @@ class ObjectController {
 		}
 		else {
 			if (object.user.shortName != user.getShortName()) {
+				
 				result.msg = "Sie haben nicht die nötigen Berechtigungen, um das Objekt ${object.urn} anzufordern!"
 
 			} else {
 				try {
-					String lnid = grailsApplication.config.localNode.id
+					String lnid = grailsApplication.config.getProperty('localNode.id')
 					log.debug("Create Retrieval job on node id: " + lnid)
-
+					
+					println ("Create Retrieval job on node id: " + lnid)
+					
 					CbNode cbn = CbNode.get(Integer.parseInt(lnid))
 					qu.createJob( object ,"900", cbn.getName())
+					
 					result.msg = "Objekt ${object.urn} erfolgreich angefordert."
 					result.success = true
+					
 				} catch ( Exception e ) {
 				/*
 				 * DANRW-1419: error messages must be better specified
@@ -426,7 +571,7 @@ class ObjectController {
 				 */
 					if (e instanceof RuntimeException) {
 						result.msg = e.getMessage() +  " ${object.urn}" 
-					} else 
+					} else  
 					if (e instanceof IllegalArgumentException) { 
 						if (e.getMessage().equals("Object is not valid")) {
 							result.msg = "Objekt ${object.urn} konnte nicht angefordert werden. Das Object ist ungültig."
@@ -440,6 +585,7 @@ class ObjectController {
 				}
 			}
 		}
+		
 		render result as JSON
 	}
 
@@ -455,7 +601,7 @@ class ObjectController {
 		if ( object == null ) result.msg += "Das Objekt ${object.urn} konnte nicht gefunden werden!"
 		else {
 			try {
-				String lnid = grailsApplication.config.localNode.id
+				String lnid = grailsApplication.config.getProperty('localNode.id')
 				log.debug("Create Rebuild PIP job on node id: " + lnid)
 				CbNode cbn = CbNode.get(Integer.parseInt(lnid))
 				qu.createJob( object ,"700", cbn.getName())
@@ -511,7 +657,7 @@ class ObjectController {
 			log.debug "object.contractor.shortName: " + object.user.shortName
 
 			try {
-				def ids= grailsApplication.config.localNode.id
+				def ids= grailsApplication.config.getProperty('localNode.id')
 				CbNode cbn = CbNode.get(Integer.valueOf(ids))
 				qu.createJob( object, "5000" , cbn.getName())
 				result.msg = "Das Objekt mit der URN ${object.urn} wurde zur Überprüfung in die Queue eingestellt!"
@@ -532,4 +678,183 @@ class ObjectController {
 		[paramsList:paramsList]
 	}	
 	
+	def getObjects(int status) {
+		
+		User user = springSecurityService.currentUser
+		
+		def contractorList = User.list()
+		def admin = 0;
+		def relativeDir = user.getShortName() + "/outgoing"
+		def filterOn = params.filterOn;
+		if (filterOn==null) filterOn=0
+	
+		def objArt = "sich in Bearbeitung befindlichen"
+		if (status == 100) objArt="verarbeiteten"
+		
+		def baseFolder = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
+		params.max = Math.min(params.getObjectsmax ? params.int('max') : status, status)
+	
+		if (params.searchContractorName){
+			if(params.searchContractorName=="null"){
+				params.remove("searchContractorName")
+			}
+		}
+		
+		def c1 = Object.createCriteria()
+		def objectsArchivedForCount = c1.list() {
+			eq("user.id", user.id)
+			eq("objectState", status)
+		}
+		def totalArchivedObjects = objectsArchivedForCount.size();
+		
+		
+		def c = Object.createCriteria() 
+		log.debug(params.toString())
+		def statusQueue
+		if (status == 50) {
+			if ( params.search != null) {
+	 			if (params.search.urn.isEmpty()) {
+					 params.search.remove("urn");
+				 }
+			}
+					
+			def cStatus = Object.createCriteria()
+			List<Object> listObject= cStatus.list(){
+				eq("user.id", user.id)
+				eq("objectState", status)
+			};
+			
+//			for ( int i= 0; i < listObject.size(); i++) {
+//				int id =  listObject.getAt(i).id;
+//				statusQueue = QueueEntry.findAll("from QueueEntry as q where q.obj.id = :data_pk", 
+//					[data_pk: id]);
+// 			}	
+		}
+		
+		def objects = c.list(max: params.max, offset: params.offset ?: 0) {
+			
+			if (params.search) params.search.each { key, value ->
+				if (value!="") filterOn=1
+				like(key, "%" + value + "%")
+			}
+			
+			log.debug("Date as Strings " + params.searchDateStart + " and " + params.searchDateEnd)
+			
+			def ds = params.searchDateStart
+			def de = params.searchDateEnd
+	
+			def st = "createdAt";
+			String searchDateType = params.searchDateType;
+						
+			if (ds!=null || de!=null ) {
+				if (!ds.equals("0") || !de.equals("0")) {
+					if ( params.searchDateType.equals("null") ) {
+						params.searchDateType = "createdAt"
+					} else {
+						st =  params.searchDateType;
+					}
+				}
+			} else {
+				if ( params.searchDateType.equals("null") ) {
+					params.remove("searchDateType")
+				}
+			}
+			
+			if (ds!=null  && de!=null)  {
+				if (!ds.equals("0") && !de.equals("0")) {
+					filterOn=1
+					log.debug("Objects between " + ds + " and " + de)
+					between(st, ds, de)
+				}
+			}
+			if (ds!=null && de==null ) {
+				if (!ds.equals("0") && de.equals("0")) {
+					filterOn=1
+					log.debug("Objects greater than " + ds)
+					gt(st,ds)
+				}
+			}
+			if (ds==null && de!=null ) {
+				if (ds.equals("0") || !de.equals("0")) {
+					filterOn=1
+					log.debug("Objects lower than " + de)
+					lt(st,de)
+				}
+			}
+	
+			if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+				admin = 1;
+			}
+			if (admin==0) {
+				
+				eq("user.id", user.id)
+			}
+			if (admin==1) {
+				if (params.searchContractorName!=null) {
+					if	( !params.searchContractorName.isEmpty() || params.searchContractorName != "") {
+						filterOn=1
+						createAlias( "user", "c" )
+						eq("c.shortName", params.searchContractorName)
+					}
+				}
+			}
+			eq("objectState", status)
+			order(params.sort ?: "id", params.order ?: "desc")
+			
+		}
+		log.debug("Search " + params.search)
+		// workaround: make ALL params accessible for following http-requests
+		def paramsList = params.search?.collectEntries { key, value -> ['search.'+key, value]}
+		if(params.searchContractorName){
+			paramsList.putAt("searchContractorName", params?.searchContractorName)
+		}
+		
+		if (paramsList != null) {
+			paramsList.putAt("searchDateType", params?.searchDateType);
+			paramsList.putAt("searchDateStart", params?.searchDateStart);
+			paramsList.putAt("searchDateEnd", params?.searchDateEnd);
+		}
+		
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			render(view:"adminList", model:[	objectInstanceList: objects,
+				objectInstanceTotal: objects.getTotalCount(),
+				searchParams: params.search,
+				filterOn: filterOn,
+				paramsList: paramsList,
+				paginate: true,
+				admin: admin,
+				baseFolder: baseFolder,
+				contractorList: contractorList,
+				user: user,
+				objArt: objArt
+//				statusQueue: statusQueue
+			]);
+		} else render(view:"list", model:[	objectInstanceList: objects,
+				objectInstanceTotal: objects.getTotalCount(),
+				searchParams: params.search,
+				filterOn: filterOn,
+				paramsList: paramsList,
+				paginate: true,
+				admin: 0,
+				totalObjs: totalArchivedObjects,
+				baseFolder: baseFolder,
+				contractorList: contractorList,
+				user: user,
+				objArt: objArt
+//				statusQueue: statusQueue
+			]);
+		
+	}
+	
+	def archived() {
+		archivedObjects = true;
+		workingObjects = false;
+		getObjects(100);
+	}
+	
+	def working() {
+		archivedObjects = false;
+		workingObjects = true;
+		getObjects(50);
+	}
 }

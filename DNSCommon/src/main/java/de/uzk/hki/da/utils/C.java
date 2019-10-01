@@ -139,9 +139,12 @@ public class C {
 	public static final String EDM_AGGREGATED_CHO= "edm:aggregatedCHO";
 	public static final String EDM_CONTRIBUTOR = "dc:contributor";
 	public static final String EDM_CREATOR = "dc:creator";
+	public static final String EDM_DATE = "dc:date";
+	public static final String EDM_DESCRIPTION = "dc:description";
 	public static final String EDM_DATE_ISSUED = "dcterms:issued";
 	public static final String EDM_DATE_CREATED = "dcterms:created";
 	public static final String EDM_PUBLISHER = "dc:publisher";
+	public static final String EDM_SPATIAL = "dcterms:spatial";
 	public static final String EDM_IS_PART_OF = "dcterms:isPartOf";
 	public static final String EDM_HAS_PART = "dcterms:hasPart";
 	public static final String EDM_TITLE = "dc:title";
@@ -154,8 +157,12 @@ public class C {
 	public static final String EDM_OBJECT = "edm:object";
 	public static final String EDM_PROVIDER = "edm:provider";
 	public static final String EDM_HAS_TYPE = "edm:hasType";
-	public static final String EDM_RIGHTS = "dc:rights";
+	public static final String EDM_TYPE = "edm:type";
+	public static final String DC_RIGHTS_HOLDER = "dc:rightsHolder";
+	public static final String DC_RIGHTS = "dc:rights";
+	public static final String EDM_RIGHTS = "edm:rights";
 	public static final String EDM_EXTENT = "dcterms:extent";
+	public static final String EDM_PROVENANCE = "dcterms:provenance";
 	public static final String INDEX_INSTITUTION_TYPE ="@institutionType";
 	// Other
 	public static final String LOCAL_NODE_BEAN_NAME = "localNode";
@@ -221,6 +228,8 @@ public class C {
 	public static final String KIND_OF_SIPBUILDING_NESTED="SIPs aus verzweigter Ordnerstruktur erstellen (nur METS)";
 
 	public static final String PREMIS = "premis.xml";
+	public static final long UNKNOWN_FILESIZE = -1;
+
 }
 
 

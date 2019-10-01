@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mets:mets xmlns:mets="http://www.loc.gov/METS/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mods="http://www.loc.gov/mods/v3" xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/mets.xsd http://www.w3.org/1999/xlink http://www.loc.gov/standards/xlink/xlink.xsd http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd" xmlns:dv="http://dfg-viewer.de/">
+  
+
+<mets:dmdSec ID="dmdSec_id32044">
+<!--https://videos.pexels.com/videos/aerial-shot-of-city-854336-->
+<mets:mdWrap MDTYPE="MODS" MIMETYPE="text/xml">
+<mets:xmlData>
+<mods version="3.3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd" xmlns:mods="http://www.loc.gov/mods/v3" xmlns="http://www.loc.gov/mods/v3">
+<identifier type="1">mov</identifier><mods:titleInfo xmlns:mods="http://www.loc.gov/mods/v3"><mods:title>MultimediaTest</mods:title></mods:titleInfo>
+<mods:name xmlns:mods="http://www.loc.gov/mods/v3" type="personal"><mods:displayForm>mov</mods:displayForm></mods:name><mods:originInfo xmlns:mods="http://www.loc.gov/mods/v3"><mods:place><mods:placeTerm type="text"></mods:placeTerm></mods:place><mods:dateIssued>2018</mods:dateIssued></mods:originInfo>
+<accessCondition type="use and reproduction" xlink:href="https://creativecommons.org/publicdomain/zero/1.0/" displayLabel="CC0-Lizenz (v1.0)">CC0 1.0 Public Domain Dedication</accessCondition>
+</mods>
+</mets:xmlData>
+</mets:mdWrap>
+</mets:dmdSec>
+
+<mets:dmdSec ID="dmdSec_id32045">
+<mets:mdWrap MDTYPE="MODS" MIMETYPE="text/xml">
+<mets:xmlData>
+<mods version="3.3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd" xmlns:mods="http://www.loc.gov/mods/v3" xmlns="http://www.loc.gov/mods/v3">
+<identifier type="1">mpf</identifier><mods:titleInfo xmlns:mods="http://www.loc.gov/mods/v3"><mods:title>MultimediaTest</mods:title></mods:titleInfo>
+<mods:name xmlns:mods="http://www.loc.gov/mods/v3" type="personal"><mods:displayForm>mpf</mods:displayForm></mods:name><mods:originInfo xmlns:mods="http://www.loc.gov/mods/v3"><mods:place><mods:placeTerm type="text"></mods:placeTerm></mods:place><mods:dateIssued>2018</mods:dateIssued></mods:originInfo>
+<accessCondition type="use and reproduction" xlink:href="https://creativecommons.org/publicdomain/zero/2.0/" displayLabel="CC0-Lizenz (v2.0)">CC0 2.0 Public Domain Dedication</accessCondition>
+</mods>
+</mets:xmlData>
+</mets:mdWrap>
+</mets:dmdSec>
+
+<mets:dmdSec ID="dmdSec_id32046">
+<mets:mdWrap MDTYPE="MODS" MIMETYPE="text/xml">
+<mets:xmlData>
+<mods version="3.3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd" xmlns:mods="http://www.loc.gov/mods/v3" xmlns="http://www.loc.gov/mods/v3">
+<identifier type="1">ogg</identifier><mods:titleInfo xmlns:mods="http://www.loc.gov/mods/v3"><mods:title>MultimediaTest</mods:title></mods:titleInfo>
+<mods:name xmlns:mods="http://www.loc.gov/mods/v3" type="personal"><mods:displayForm>ogg</mods:displayForm></mods:name><mods:originInfo xmlns:mods="http://www.loc.gov/mods/v3"><mods:place><mods:placeTerm type="text"></mods:placeTerm></mods:place><mods:dateIssued>2018</mods:dateIssued></mods:originInfo>
+<accessCondition type="use and reproduction" xlink:href="https://creativecommons.org/publicdomain/zero/1.0/" displayLabel="CC0-Lizenz (v1.0)">CC0 1.0 Public Domain Dedication</accessCondition>
+</mods>
+</mets:xmlData>
+</mets:mdWrap>
+</mets:dmdSec>
+
+<mets:dmdSec ID="dmdSec_id32047">
+<mets:mdWrap MDTYPE="MODS" MIMETYPE="text/xml">
+<mets:xmlData>
+<mods version="3.3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd" xmlns:mods="http://www.loc.gov/mods/v3" xmlns="http://www.loc.gov/mods/v3">
+<identifier type="1">wav</identifier><mods:titleInfo xmlns:mods="http://www.loc.gov/mods/v3"><mods:title>MultimediaTest</mods:title></mods:titleInfo>
+<mods:name xmlns:mods="http://www.loc.gov/mods/v3" type="personal"><mods:displayForm>wav</mods:displayForm></mods:name><mods:originInfo xmlns:mods="http://www.loc.gov/mods/v3"><mods:place><mods:placeTerm type="text"></mods:placeTerm></mods:place><mods:dateIssued>2018</mods:dateIssued></mods:originInfo>
+<accessCondition type="use and reproduction" xlink:href="https://creativecommons.org/publicdomain/zero/1.0/" displayLabel="CC0-Lizenz (v1.0)">CC0 1.0 Public Domain Dedication</accessCondition>
+</mods>
+</mets:xmlData>
+</mets:mdWrap>
+</mets:dmdSec>
+
+
+<mets:amdSec ID="amdSec_id32047"><mets:rightsMD ID="rightsMD"><mets:mdWrap MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS"><mets:xmlData><dv:rights><dv:owner>Digitales Archiv NRW</dv:owner><dv:ownerContact/><dv:ownerLogo>http://www.danrw.de/images/logos/danrw-dfg-viewer.png</dv:ownerLogo><dv:ownerSiteUrl>http://www.danrw.de</dv:ownerSiteUrl></dv:rights></mets:xmlData></mets:mdWrap></mets:rightsMD><mets:digiprovMD ID="digiprovMD"><mets:mdWrap MDTYPE="OTHER" MIMETYPE="text/xml" OTHERMDTYPE="DVLINKS"><mets:xmlData><dv:links/></mets:xmlData></mets:mdWrap></mets:digiprovMD></mets:amdSec>
+
+<mets:amdSec ID="amdSec_id32046"><mets:rightsMD ID="rightsMD"><mets:mdWrap MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS"><mets:xmlData><dv:rights><dv:owner>Digitales Archiv NRW</dv:owner><dv:ownerContact/><dv:ownerLogo>http://www.danrw.de/images/logos/danrw-dfg-viewer.png</dv:ownerLogo><dv:ownerSiteUrl>http://www.danrw.de</dv:ownerSiteUrl></dv:rights></mets:xmlData></mets:mdWrap></mets:rightsMD><mets:digiprovMD ID="digiprovMD"><mets:mdWrap MDTYPE="OTHER" MIMETYPE="text/xml" OTHERMDTYPE="DVLINKS"><mets:xmlData><dv:links/></mets:xmlData></mets:mdWrap></mets:digiprovMD></mets:amdSec>
+
+<mets:amdSec ID="amdSec_id32045"><mets:rightsMD ID="rightsMD"><mets:mdWrap MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS"><mets:xmlData><dv:rights><dv:owner>Digitales Archiv NRW</dv:owner><dv:ownerContact/><dv:ownerLogo>http://www.danrw.de/images/logos/danrw-dfg-viewer.png</dv:ownerLogo><dv:ownerSiteUrl>http://www.danrw.de</dv:ownerSiteUrl></dv:rights></mets:xmlData></mets:mdWrap></mets:rightsMD><mets:digiprovMD ID="digiprovMD"><mets:mdWrap MDTYPE="OTHER" MIMETYPE="text/xml" OTHERMDTYPE="DVLINKS"><mets:xmlData><dv:links/></mets:xmlData></mets:mdWrap></mets:digiprovMD></mets:amdSec>
+
+<mets:amdSec ID="amdSec_id32044"><mets:rightsMD ID="rightsMD"><mets:mdWrap MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS"><mets:xmlData><dv:rights><dv:owner>Digitales Archiv NRW</dv:owner><dv:ownerContact/><dv:ownerLogo>http://www.danrw.de/images/logos/danrw-dfg-viewer.png</dv:ownerLogo><dv:ownerSiteUrl>http://www.danrw.de</dv:ownerSiteUrl></dv:rights></mets:xmlData></mets:mdWrap></mets:rightsMD><mets:digiprovMD ID="digiprovMD"><mets:mdWrap MDTYPE="OTHER" MIMETYPE="text/xml" OTHERMDTYPE="DVLINKS"><mets:xmlData><dv:links/></mets:xmlData></mets:mdWrap></mets:digiprovMD></mets:amdSec>
+
+
+<mets:fileSec>
+<mets:fileGrp USE="DEFAULT_id32044"><mets:file ID="item_32044" MIMETYPE="video/quicktime"><mets:FLocat xlink:href="589734978Mov.mov" LOCTYPE="URL"/></mets:file></mets:fileGrp>
+<mets:fileGrp USE="DEFAULT_id32045"><mets:file ID="item_32045" MIMETYPE="video/mp4"><mets:FLocat xlink:href="589734978Mp4.mp4" LOCTYPE="URL"/></mets:file></mets:fileGrp>
+<mets:fileGrp USE="DEFAULT_id32046"><mets:file ID="item_32046" MIMETYPE="audio/ogg"><mets:FLocat xlink:href="rotating_bicycle_bell-1Ogg.ogg" LOCTYPE="URL"/></mets:file></mets:fileGrp>
+<mets:fileGrp USE="DEFAULT_id32047"><mets:file ID="item_32047" MIMETYPE="audio/x-wav"><mets:FLocat xlink:href="rotating_bicycle_bell-1Wav.wav" LOCTYPE="URL"/></mets:file></mets:fileGrp>
+</mets:fileSec>
+
+<mets:structMap TYPE="LOGICAL">
+ <mets:div DMDID="dmdSec_id32044" ADMID="amdSec_id32044" ID="item_32044" TYPE="title_page"/>
+ <mets:div DMDID="dmdSec_id32045" ADMID="amdSec_id32045" ID="item_32045" TYPE="title_page"/>
+ <mets:div DMDID="dmdSec_id32046" ADMID="amdSec_id32046" ID="item_32046" TYPE="title_page"/>
+ <mets:div DMDID="dmdSec_id32047" ADMID="amdSec_id32047" ID="item_32047" TYPE="title_page"/>
+</mets:structMap>
+
+<mets:structLink>
+<mets:smLink xlink:from="item_32044" xlink:to="div_32044"/>
+<mets:smLink xlink:from="item_32045" xlink:to="div_32045"/>
+<mets:smLink xlink:from="item_32046" xlink:to="div_32046"/>
+<mets:smLink xlink:from="item_32047" xlink:to="div_32047"/>
+</mets:structLink>
+
+<mets:structMap TYPE="PHYSICAL">
+<mets:div TYPE="physSequence" ID="physroot">
+<mets:div TYPE="page" ORDER="1" ORDERLABEL="1" ID="div_32044"><mets:fptr FILEID="item_32044"/></mets:div>
+<mets:div TYPE="page" ORDER="1" ORDERLABEL="1" ID="div_32045"><mets:fptr FILEID="item_32045"/></mets:div>
+<mets:div TYPE="page" ORDER="1" ORDERLABEL="1" ID="div_32046"><mets:fptr FILEID="item_32046"/></mets:div>
+<mets:div TYPE="page" ORDER="1" ORDERLABEL="1" ID="div_32047"><mets:fptr FILEID="item_32047"/></mets:div>
+
+</mets:div>
+</mets:structMap>
+
+</mets:mets>

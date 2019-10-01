@@ -1,5 +1,6 @@
 package de.uzk.hki.da.at;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -62,6 +63,22 @@ public class ATIngestLav extends AcceptanceTest {
 		assertTrue("ddbExcluded have to be false",!ath.getObject(urn1).ddbExcluded());
 		assertTrue("ddbExcluded have to be false",!ath.getObject(urn2).ddbExcluded());
 		assertTrue("ddbExcluded have to be false",!ath.getObject(urn3).ddbExcluded());
+	}
+	
+	@Test
+	public void testAIPSize() throws IOException, JDOMException {
+		System.out.println(urn1 + " filesize: "+ath.getObject(urn1).getAip_size());
+		System.out.println(urn2 + " filesize: "+ath.getObject(urn2).getAip_size());
+		System.out.println(urn3 + " filesize: "+ath.getObject(urn3).getAip_size());
+		
+		double diff1=(ath.getObject(urn1).getAip_size()-647168)/(ath.getObject(urn1).getAip_size()+1);
+		double diff2=(ath.getObject(urn1).getAip_size()-846336)/(ath.getObject(urn1).getAip_size()+1);
+		double diff3=(ath.getObject(urn1).getAip_size()-944640)/(ath.getObject(urn1).getAip_size()+1);
+		
+		// 4% difference will be tolerated
+		assertTrue("Wrong File Size d1: "+diff1,Math.abs(diff1)<4);
+		assertTrue("Wrong File Size d2: "+diff2,Math.abs(diff2)<4);
+		assertTrue("Wrong File Size d3: "+diff3,Math.abs(diff3)<4);
 	}
 	
 	@AfterClass
@@ -162,20 +179,6 @@ public class ATIngestLav extends AcceptanceTest {
 		}
 		
 		assertTrue(edmDoc1.getRootElement().getChild("Aggregation", C.ORE_NS).getChild("dataProvider", C.EDM_NS).getValue().contains("Landesarchiv NRW"));
-		assertTrue(edmDoc1.getRootElement().getChild("Aggregation", C.ORE_NS).getChild("isShownBy", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
-				.contains(preservationSystem.getUrisFile()+"/"+object1.getIdentifier()+"/_6d8889c54cd506f75be230bd630cd70d.jpg"));
-		
-		@SuppressWarnings("unchecked")
-		List<Element> references = edmDoc1.getRootElement().getChild("Aggregation", C.ORE_NS).getChildren("hasView", C.EDM_NS);
-		assertTrue(references.size()==8);
-		for(Element ref : references) {
-			String r = ref.getAttributeValue("resource", C.RDF_NS);
-			if(r.endsWith(".jpg")) {
-				assertTrue(r.startsWith("http://"));
-			} else {
-				assertTrue(r.equals("_MD5hashes.txt") || r.endsWith("_R_NW_1000-44985_0001.xml"));
-			}
-		}
 		
 ////		testIndex
 		assertTrue(metadataIndex.getIndexedMetadata(PORTAL_CI_TEST, object1.getIdentifier()+"-dmd00016").contains("Nr. 44985"));

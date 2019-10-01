@@ -38,35 +38,29 @@ class FormatMappingController {
 		FormatMapping formatMapping = new FormatMapping()
 		def formatMappings = null
 		def msg = null;
-	   
-		// access table format_mapping
-		formatMappings = formatMapping.findAll("from FormatMapping  order by puid")
+		def admin = 0;
 		
+		if (springSecurityService.currentUser.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
+	   
+		if (params.order != null ) {
+			formatMappings = formatMapping.findAll("from FormatMapping  order by ${params.sort} ")
+		} else {
+			formatMappings = formatMapping.findAll("from FormatMapping  order by puid desc")
+		}
+			
 		msg  = params.get("msg");
 
 		// list of results
 		[formatMappings : formatMappings, msg:msg]
 				
-		render (view: 'map', model: [formatMappings : formatMappings, msg:msg]);
+		render (view: 'map', model: [formatMappings : formatMappings, msg:msg,
+							 user: springSecurityService.currentUser,
+						 admin: admin]);
 		
 	}
-	
-	/**
-	 * mapSnippet: refresh the list
-	 * @return
-	 */
-	def mapSnippet(){
-		FormatMapping formatMappingSn = new FormatMapping()
-		def formatMappingSnFind = null
-	   
-		// access table format_mapping
-		formatMappingSnFind = formatMappingSn.findAll("from FormatMapping order by puid")
 		
-		// list of results
-		[formatMappingSnFind : formatMappingSnFind]
-		
-	}
-	
 	/**
 	 * read the xml-File und fill the table format_mapping 
 	 * @return
@@ -75,7 +69,7 @@ class FormatMappingController {
 		def user = springSecurityService.currentUser
 		def relativeDir = user.getShortName() + "/incoming"
 		
-		def baseFolder = grailsApplication.config.localNode.userAreaRootPath + "/" + relativeDir
+		def baseFolder = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
 		def msg
 		def baseDir
 		def incomingXmlFile
@@ -125,9 +119,16 @@ class FormatMappingController {
 				mapping.formatName = it.@Name.toString()
 				mapping.creationDate = new Date() 
 				
-				mapping.save()
+//				mapping.save()
+				def ms = mapping.save flush:true
+				if (!ms) {
+					println ("mapping.save: " + ms);
+					mapping.errors.allErrors.each {
+						println it
+					}
+				}
 			}
-			
+ 		redirect (action: "map")
 		} catch (e) {
 			msg = "Benutzerordner " + baseFolder + " oder Datei " + fileToParse + " existiert nicht!"
 			log.error(msg, e) 

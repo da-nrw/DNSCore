@@ -15,7 +15,7 @@
 		<g:message code="object.origName.label" default="Orig Name" />
 		
 	</label>
-	<g:textField name="origName" value="${objectInstance?.origName}"/>
+	<g:textField name="origName" value="${objectInstance?.origName}" class="input-hoehe"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: objectInstance, field: 'packages', 'error')} ">
@@ -31,6 +31,6 @@
 		<g:message code="object.urn.label" default="Urn" />
 		
 	</label>
-	<g:textField name="urn" value="${objectInstance?.urn}"/>
+	<g:textField name="urn" value="${objectInstance?.urn}" class="input-hoehe"/>
 </div>
 
