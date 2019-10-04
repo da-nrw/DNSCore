@@ -1,4 +1,4 @@
-docs_dir: '/home/docs/checkouts/readthedocs.org/user_builds/dnscore/checkouts/latest/contentbroker/src/main/markdown'
+docs_dir: '/home/docs/checkouts/readthedocs.org/user_builds/dnscore/checkouts/latest/ContentBroker/src/main/markdown'
 extra_css:
 - https://assets.readthedocs.org/static/css/badge_only.css
 - https://assets.readthedocs.org/static/css/readthedocs-doc-embed.css
@@ -8,4 +8,4 @@ extra_javascript:
 - https://assets.readthedocs.org/static/javascript/readthedocs-analytics.js
 google_analytics: null
 site_name: DNSCore
-site_dir: '/home/docs/checkouts/readthedocs.org/user_builds/dnscore/checkouts/latest/contentbroker/src/main/java'
+site_dir: '/home/docs/checkouts/readthedocs.org/user_builds/dnscore/checkouts/latest/ContentBroker/src/main/java'
