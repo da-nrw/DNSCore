@@ -1,4 +1,4 @@
-docs_dir: DNSCore/ContentBroker/main/
+docs_dir: DNSCore/ContentBroker/src/main/markdown/
 extra_css:
 - https://assets.readthedocs.org/static/css/badge_only.css
 - https://assets.readthedocs.org/static/css/readthedocs-doc-embed.css
