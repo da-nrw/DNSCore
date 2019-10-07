@@ -143,34 +143,6 @@ class ObjectController {
 			getObjects(50);
 		} else {
 		
-<<<<<<< HEAD
-		def c = Object.createCriteria()
-		log.debug(params.toString())
-		def objects = c.list(max: params.max, offset: params.offset ?: 0) {
-
-			/*
-			 *like fuer alle  oder nur fuer die value!="" ??
-			 */
-			if (params.search) {
-				params.search.each 
-				{ key, value ->
-						if (!(value==""/* && value=="null" && value==null*/)) {
-							filterOn=1
-							like(key, "%" + value + "%")
-						}
-						
-				}
-			}
-			log.debug("Date as Strings " + params.searchDateStart + " and " + params.searchDateEnd)
-			def ds = daweb3.Object.convertDateIntoDate(params.searchDateStart)
-			def de = daweb3.Object.convertDateIntoDate(params.searchDateEnd)
-
-			def st = "createdAt"; 
-			String searchDateType = params.searchDateType;
-			if (ds!=null || de!=null) {
-				if ( params.searchDateType.equals("null") ) {
-					params.searchDateType = "createdAt"
-=======
 			User user = springSecurityService.currentUser
 	
 			def contractorList = User.list()
@@ -198,11 +170,26 @@ class ObjectController {
 			def c = Object.createCriteria()
 			log.debug(params.toString())
 			def objects = c.list(max: params.max, offset: params.offset ?: 0) {
-				if (params.search) params.search.each { key, value ->
+				/*if (params.search) params.search.each { key, value ->
 					if (value!="") filterOn=1
 					like(key, "%" + value + "%")
-				}
+				}*/
 				
+
+				/*
+				 *like fuer alle  oder nur fuer die value!="" ??
+				 */
+				if (params.search) {
+					params.search.each 
+					{ key, value ->
+							if (!(value==""/* && value=="null" && value==null*/)) {
+								filterOn=1
+								like(key, "%" + value + "%")
+							}
+							
+					}
+				}
+
 				log.debug("Date as Strings " + params.searchDateStart + " and " + params.searchDateEnd)
 				
 				def ds = params.searchDateStart
@@ -219,7 +206,6 @@ class ObjectController {
 							st =  params.searchDateType;
 						}
 					}
->>>>>>> master
 				} else {
 					if ( params.searchDateType.equals("null") ) {
 						params.remove("searchDateType")
@@ -247,6 +233,15 @@ class ObjectController {
 						lt(st,de)
 					}
 				}
+				
+				if (params.searchQualityLevel!=null /*&& !params.searchQualityLevel.equals("null")*/) {
+					if(params.searchQualityLevel?.isInteger()){
+						filterOn=1
+						log.debug("QualityLevel filter on :"+params.searchQualityLevel)
+						eq("quality_flag", Integer.valueOf(params.searchQualityLevel))
+						//between("quality_flag", params.searchQualityLevel,params.searchQualityLevel+1)
+					}
+				}
 	
 				if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 					admin = 1;
@@ -267,24 +262,13 @@ class ObjectController {
 				between("objectState", 50,200)
 				order(params.sort ?: "id", params.order ?: "desc")
 			}
-<<<<<<< HEAD
-		
-			if (ds!=null && de!=null) {
-				filterOn=1
-				log.debug("Objects between " + ds + " and " + de)
-				between(st, ds, de)
-			}
-			if (ds!=null && de==null) {
-				filterOn=1
-				log.debug("Objects greater than " + ds)
-				gt(st,ds)
-=======
+
 			log.debug("Search " + params.search)
 			// workaround: make ALL params accessible for following http-requests
 			def paramsList = params.search?.collectEntries { key, value -> ['search.'+key, value]}
 			if(params.searchContractorName){
 				paramsList.putAt("searchContractorName", params?.searchContractorName)
->>>>>>> master
+
 			}
 			
 			if (paramsList != null) {
@@ -293,71 +277,7 @@ class ObjectController {
 				paramsList.putAt("searchDateEnd", params?.searchDateEnd);
 			}
 			
-<<<<<<< HEAD
-			if (params.searchQualityLevel!=null /*&& !params.searchQualityLevel.equals("null")*/) {
-				if(params.searchQualityLevel?.isInteger()){
-					filterOn=1
-					log.debug("QualityLevel filter on :"+params.searchQualityLevel)
-					eq("quality_flag", Integer.valueOf(params.searchQualityLevel))
-					//between("quality_flag", params.searchQualityLevel,params.searchQualityLevel+1)
-				}
-			}
 
-			if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
-				admin = 1;
-			}
-			if (admin==0) {
-				
-				eq("user.id", user.id)
-			}
-			if (admin==1) {
-				if (params.searchContractorName!=null) {
-					filterOn=1
-					createAlias( "user", "c" )
-					eq("c.shortName", params.searchContractorName)
-				}
-			}
-			between("object_state", 50,200)
-			order(params.sort ?: "id", params.order ?: "desc")
-			
-		}
-		log.debug("Search " + params.search)
-
-		// workaround: make ALL params accessible for following http-requests
-		def paramsList = params.search?.collectEntries { key, value -> ['search.'+key, value]}
-		if(params.searchContractorName){
-			paramsList.putAt("searchContractorName", params?.searchContractorName)
-		}
-		
-		if (paramsList != null) {
-			paramsList.putAt("searchDateType", params?.searchDateType);
-			paramsList.putAt("searchDateStart", params?.searchDateStart);
-			paramsList.putAt("searchDateEnd", params?.searchDateEnd);
-		}
-	
-		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
-			render(view:"adminList", model:[	objectInstanceList: objects,
-				objectInstanceTotal: objects.getTotalCount(),
-				searchParams: params.search,
-				filterOn: filterOn,
-				paramsList: paramsList,
-				paginate: true,
-				admin: admin,
-				baseFolder: baseFolder,
-				contractorList: contractorList
-			]);
-		} else render(view:"list", model:[	objectInstanceList: objects,
-				objectInstanceTotal: objects.getTotalCount(),
-				searchParams: params.search,
-				filterOn: filterOn,
-				paramsList: paramsList,
-				paginate: true,
-				admin: 0,
-				totalObjs: totalObjs,
-				baseFolder: baseFolder,
-				contractorList: contractorList
-			]);
-=======
 			if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 				render(view:"adminList", model:[	objectInstanceList: objects,
 					objectInstanceTotal: objects.getTotalCount(),
@@ -385,7 +305,6 @@ class ObjectController {
 					objArt: objArt
 				]);
 		}
->>>>>>> master
 	}
 
 	def show() {

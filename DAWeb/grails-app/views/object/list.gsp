@@ -216,6 +216,8 @@
 								<g:sortableColumn property="origName" title="${message(code: 'object.origName.label', default: 'Orig Name')}" />
 								<g:sortableColumn property="createdAt" title="${message(code: 'object.created.label', default: 'Erstellt')}" />
 								<g:sortableColumn property="modifiedAt" title="${message(code: 'object.modified.label', default: 'Geändert')}" />
+								<g:sortableColumn property="quality_flag" title="${message(code: 'object.quality_flag', default: 'Qualitätsstufe')}" />
+				
 								<th style="text-align: center">Publ.</th>
 								<th style="text-align: center">Anfordern				
 									<g:if test="${!paginate}">
