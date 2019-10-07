@@ -122,78 +122,22 @@ class StatusController {
 				}
 			} 
 			
-			if (instance.status.endsWith("1")) {
+			if (instance.status.endsWith("1") |
+				instance.status.endsWith("3") |
+				instance.status.endsWith("4") |
+				instance.status.endsWith("5") |
+				instance.status.endsWith("6") |
+				instance.status.endsWith("7") |
+				instance.status.endsWith("8") |
+				instance.status.endsWith("0") ) {
 				queueResult = "package in progress error: (" + instance.status + ") "
 				statusInt = Integer.parseInt(instance.status)
 				if (!instance.errorText.equals("")) {
-					statusLongDescription = ["package in progress error: (" + instance.status + ") ", instance.errorText]
+					statusLongDescription = instance.errorText
 				} else {
 					statusLongDescription = "package in progress error: (" + instance.status + ") "
 				}
-			}
-			if (instance.status.endsWith("3")) {
-				queueResult = "package in progress error: (" + instance.status + ") "
-				statusInt = Integer.parseInt(instance.status)
-				if (!instance.errorText.equals("")) {
-					statusLongDescription = ["package in progress error: (" + instance.status + ") ", instance.errorText]
-				} else {
-					statusLongDescription = "package in progress error: (" + instance.status + ") "
-				}
-			}
-			if (instance.status.endsWith("4")) {
-				queueResult = "package in progress error: (" + instance.status + ") "
-				statusInt = Integer.parseInt(instance.status)
-				if (!instance.errorText.equals("")) {
-					statusLongDescription = ["package in progress error: (" + instance.status + ") ", instance.errorText]
-				} else {
-					statusLongDescription = "package in progress error: (" + instance.status + ") "
-				}
-			}
-			if (instance.status.endsWith("5")) {
-				queueResult = "package in progress error: (" + instance.status + ") "
-				statusInt = Integer.parseInt(instance.status)
-				if (!instance.errorText.equals("")) {
-					statusLongDescription = ["package in progress error: (" + instance.status + ") ", instance.errorText]
-				} else {
-					statusLongDescription = "package in progress error: (" + instance.status + ") "
-				}
-			}
-			if (instance.status.endsWith("6")) {
-				queueResult = "package in progress error: (" + instance.status + ") "
-				statusInt = Integer.parseInt(instance.status)
-				if (!instance.errorText.equals("")) {
-					statusLongDescription = ["package in progress error: (" + instance.status + ") ", instance.errorText]
-				} else {
-					statusLongDescription = "package in progress error: (" + instance.status + ") "
-				}
-			}
-			if (instance.status.endsWith("7")) {
-				queueResult = "package in progress error: (" + instance.status + ") "
-				statusInt = Integer.parseInt(instance.status)
-				if (!instance.errorText.equals("")) {
-					statusLongDescription = ["package in progress error: (" + instance.status + ") ", instance.errorText]
-				} else {
-					statusLongDescription = "package in progress error: (" + instance.status + ") "
-				}
-			}
-			if (instance.status.endsWith("8")) {
-				queueResult = "package in progress error: (" + instance.status + ") "
-				statusInt = Integer.parseInt(instance.status)
-				if (!instance.errorText.equals("")) {
-					statusLongDescription = ["package in progress error: (" + instance.status + ") ", instance.errorText]
-				} else {
-					statusLongDescription = "package in progress error: (" + instance.status + ") "
-				}
-			}
-			if (instance.status.endsWith("0")) {
-				queueResult = "package in progress error: (" + instance.status + ") "
-				statusInt = Integer.parseInt(instance.status)
-				if (!instance.errorText.equals("")) {
-					statusLongDescription = ["package in progress error: (" + instance.status + ") ", instance.errorText]
-				} else {
-					statusLongDescription = "package in progress error: (" + instance.status + ") "
-				}
-			}
+			}	
 			if (instance.status.endsWith("2")) {
 				queueResult = "package in progress error: (" + instance.status + ") "
 				statusInt = Integer.parseInt(instance.status)
