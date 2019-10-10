@@ -19,6 +19,7 @@
 package de.uzk.hki.da.format;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.uzk.hki.da.model.KnownError;
@@ -35,6 +36,7 @@ public class SimpleFileWithFileFormat implements FileWithFileFormat {
 	File file;
 	String formatPUID;
 	String secondary;
+	private List<RuntimeException> getUnknownIdentificationErrorList=new ArrayList<RuntimeException>();
 
 	public SimpleFileWithFileFormat(File f){
 		this.file=f;
@@ -81,6 +83,11 @@ public class SimpleFileWithFileFormat implements FileWithFileFormat {
 		return "SimpleFileWithFileFormat [" + (file != null ? "file=" + file + ", " : "")
 				+ (formatPUID != null ? "formatPUID=" + formatPUID + ", " : "")
 				+ (secondary != null ? "secondary=" + secondary : "") + "]";
+	}
+
+	@Override
+	public List<RuntimeException> getUnknownIdentificationErrorList() {
+		return getUnknownIdentificationErrorList;
 	}
 	
 

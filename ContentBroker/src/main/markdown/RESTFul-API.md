@@ -114,8 +114,9 @@ The only difference between the two responses is the field 'package' in the suce
     curl -v -H "Accept: application/json" X GET -u username --url "https://server/daweb3/status/index?identifier=1-201909122271"
 
 ### Example Response    
-{"result":[{"type":"Object","status":"archived","statusInt":100,"statusLongDescription":"archived","urn":"urn:nbn:de:danrw-1-201909122271","contractor":"TEST","origName":"AirportFireService1WorringerPlatz","identifier":"1-201909122271","packages":[1]}]}
-   
+
+{"result":[{"type":"Object","status":"archived","statusInt":100,"statusLongDescription":"archived","urn":"urn:nbn:de:danrw-1-201909122271","contractor":"TEST","origName":"AirportFireService1WorringerPlatz","identifier":"1-201909122271","qualityLevel": "4","packages":[1]}]}
+
 ## Authentification
 
 Contractors must authenticate with BASIC AUTH. Credentials are same as contractor's.

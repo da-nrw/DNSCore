@@ -58,6 +58,7 @@ public class ContractRights {
 	private ConversionCondition conversionCondition;
 	boolean ddbExclusion;
 	private CCLicense cclincense;
+	private int minimalIngestQuality;
 
 
 	public enum ConversionCondition { NONE, NOTIFY, CONFIRM };
@@ -194,6 +195,12 @@ public class ContractRights {
 		else
 			ddbExclusion = false;
 		
+		Element minimalIngestQualityEl = root.getFirstChildElement("minimalIngestQualityLevel");
+		if (minimalIngestQualityEl != null)
+			minimalIngestQuality = Integer.parseInt(minimalIngestQualityEl.getValue());
+		else
+			minimalIngestQuality = 0;
+		
 		Element publicationLicenseEl = root.getFirstChildElement("publicationLicense");
 		if(publicationLicenseEl!=null){
 			String hrefAttribute=publicationLicenseEl.getAttribute("href").getValue();
@@ -314,6 +321,14 @@ public class ContractRights {
 
 	public void setCclincense(CCLicense cclincense) {
 		this.cclincense = cclincense;
+	}
+
+	public int getMinimalIngestQuality() {
+		return minimalIngestQuality;
+	}
+
+	public void setMinimalIngestQuality(int minimalIngestQuality) {
+		this.minimalIngestQuality = minimalIngestQuality;
 	}
 	
 	

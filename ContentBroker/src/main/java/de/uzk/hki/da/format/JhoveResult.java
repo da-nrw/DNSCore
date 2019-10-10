@@ -114,7 +114,10 @@ public class JhoveResult {
 	}
 
 	public boolean isValid() {
-		//return status.equalsIgnoreCase(StatusWellFormedAndValid) || format.equalsIgnoreCase("XML");
+		if(status.equalsIgnoreCase(StatusWellFormedAndNotValid) && format.equalsIgnoreCase("XML")){ //XML Validierung durch JHove verlauft auch fur valide xml files nicht immer erfolgreich
+			logger.debug("JhoveResult::isValid(): StatusWellFormedAndNotValid for XML file, will be accept as StatusWellFormedAndValid: ("+this+")");
+			return true;
+		}
 		return status.equalsIgnoreCase(StatusWellFormedAndValid);
 	}
 

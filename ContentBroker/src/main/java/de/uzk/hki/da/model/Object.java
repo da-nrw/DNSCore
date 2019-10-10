@@ -145,6 +145,9 @@ public class Object {
 	/** The published_flag. */
 	private int published_flag=C.PUBLISHEDFLAG_UNDEFINED;
 	
+	@Column(name="quality_flag", columnDefinition="INTEGER DEFAULT "+C.QUALITYFLAG_DEFAULT)
+	private int quality_flag=C.QUALITYFLAG_DEFAULT;
+	
 	
 	/** The last_checked. */
 	private Date last_checked;
@@ -196,6 +199,9 @@ public class Object {
 	/** The agents. */
 	@Transient
 	private Set<Agent> agents = new HashSet<Agent>();
+	
+	@Transient
+	private int minimalIngestQLevel=-1;
 	
 	/** The contractor. */
 	@ManyToOne
@@ -902,6 +908,21 @@ public class Object {
 		return files;
 	}
 
+	public int getQuality_flag() {
+		return quality_flag;
+	}
+
+	public void setQuality_flag(int quality_flag) {
+		this.quality_flag = quality_flag;
+	}
+
+	public int getMinimalIngestQLevel() {
+		return minimalIngestQLevel;
+	}
+
+	public void setMinimalIngestQLevel(int minimalIngestQLevel) {
+		this.minimalIngestQLevel = minimalIngestQLevel;
+	}
 
 	public long getAip_size() {
 		return aip_size;
@@ -914,10 +935,6 @@ public class Object {
 	public void setAip_size(long aip_size) {
 		this.aip_size = aip_size;
 	}
-	
-	
-	
-	
-	
+
 	
 }

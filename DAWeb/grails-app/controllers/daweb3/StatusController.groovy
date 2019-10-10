@@ -58,6 +58,7 @@ class StatusController {
 				result.urn = inst.urn
 				result.contractor = inst.user.shortName
 				result.origName = inst.origName
+				result.qualityLevel = inst.getFormattedQualityLevel()
 				def packages = []
 				result.packages = packages
 				//inst.packages.each() {pack ->
@@ -111,6 +112,7 @@ class StatusController {
 			result.contractor = instance.obj.user.shortName;
 			result.origName = instance.obj.origName
 			result.identifier = instance.obj.identifier
+
 			if (instance.errorText == null) {
 				instance.errorText = "";
 			} else {
@@ -180,6 +182,7 @@ class StatusController {
 				result.contractor = instance.user.shortName
 				result.origName = instance.origName
 				result.identifier = instance.identifier
+				result.qualityLevel = instance.getFormattedQualityLevel()
 				def packages = []
 				result.packages = packages;
 				

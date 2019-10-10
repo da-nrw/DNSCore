@@ -30,7 +30,7 @@ cp -r src/main/markdown/* $1/documentation
 cp -r src/main/xslt $1/conf
 cp src/main/xsd/premis.xsd $1/conf
 cp src/main/xsd/xlink.xsd $1/conf
-cp src/main/xsd/v1/danrw-contract-v1-01.xsd $1/conf
+cp src/main/xsd/v1/danrw-contract-v1-02.xsd $1/conf
 cp src/main/resources/frame.jsonld $1/conf
 cp src/main/conf/PDFA_def.ps $1/conf
 mkdir $1/activemq-data

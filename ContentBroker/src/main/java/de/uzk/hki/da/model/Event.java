@@ -45,6 +45,7 @@ import javax.persistence.Transient;
 @Entity
 @Table(name="events")
 public class Event {
+	public static final int MAX_DETAIL_STR_LEN=1000;
 	
 	/** The id. */
 	@Id
@@ -112,6 +113,8 @@ public class Event {
 		SIP_CREATION_ID,
 		/** Virus scan */
 		VIRUS_SCAN_ID
+		
+		
 	}
 	
 	/**

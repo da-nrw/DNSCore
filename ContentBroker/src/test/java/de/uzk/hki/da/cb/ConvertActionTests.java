@@ -39,6 +39,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.test.TC;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
@@ -80,6 +81,8 @@ public class ConvertActionTests extends ConcreteActionUnitTest{
 				"de.uzk.hki.da.convert.CLIConversionStrategy",
 				"cp input output",
 				"*");
+		
+
 		
 		ConversionInstruction ci1 = new ConversionInstruction();
 		
@@ -174,5 +177,37 @@ public class ConvertActionTests extends ConcreteActionUnitTest{
 		action.rollback();
 		
 		assertEquals(tiffile,d.getLasttDAFile());
+	}
+
+	/**
+	 * Check if failed Conversion generate Quality-Event instead of break the IngestWorkflow
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	public void testConversionExceptionToQualityEvent() throws IOException{
+		ConversionRoutine failRoutine = new ConversionRoutine(
+				"FAIL",
+				"de.uzk.hki.da.convert.CLIConversionStrategy",
+				"fail",
+				"*");
+		
+		DAFile f1 = new DAFile(REPNAME+"a","abcFAIL.xml");
+		ConversionInstruction ciFail = new ConversionInstruction();
+		ciFail.setSource_file(f1);
+		ciFail.setConversion_routine(failRoutine);
+		ciFail.setTarget_folder("");
+		
+		Document document1 = new Document(f1);
+		o.getDocuments().add(document1);
+		j.getConversion_instructions().add(ciFail);
+		action.implementation();
+		
+		boolean hasQualityFaultConversationEvent=false;
+		for(Event e:action.getObject().getLatestPackage().getEvents()){
+			if(e.getType().equals(C.EVENT_TYPE_QUALITY_FAULT_CONVERSION) && e.getSource_file().equals(ciFail.getSource_file()))
+				hasQualityFaultConversationEvent=true;
+		}
+		assertTrue("Kein "+C.EVENT_TYPE_QUALITY_FAULT_CONVERSION+" ist generiert worden",hasQualityFaultConversationEvent);
 	}
 }

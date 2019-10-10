@@ -64,6 +64,13 @@
 		    		<g:if test="${!params.search?.identifier.isEmpty()}">
 		    			<span style="margin-right: 25px"><i>Identifier: ${params.search?.identifier}</i></span>
 		    		</g:if> 
+		    		<g:if test="${!params.search?.searchQualityLevel?.isEmpty()}">
+	    					<g:if test="${params.searchQualityLevel == '1'}">Qualitätsstufe: 1</g:if>
+	    					<g:if test="${params.searchQualityLevel == '2'}">Qualitätsstufe: 2</g:if>
+	    					<g:if test="${params.searchQualityLevel == '3'}">Qualitätsstufe: 3</g:if>
+	    					<g:if test="${params.searchQualityLevel == '4'}">Qualitätsstufe: 4</g:if>
+	    					<g:if test="${params.searchQualityLevel == '5'}">Qualitätsstufe: 5</g:if>
+		    		</g:if> 
 		    		<div>
 						<g:if test="${params.searchDateType != null} "> 
 		   					<g:if test="${params.searchDateType == 'createdAt'}">Datumsbereich erstellt</g:if>
@@ -98,6 +105,12 @@
 	            			<td>Identifier:</td>
 	            			<td><g:textField name="search.identifier" value="${params.search?.identifier}" size="50" class="input-hoehe"/></td>
 	            		</tr>
+	            			<tr>
+            				<td>Qualitätsstufe:</td>
+            				<td>
+	            			<g:select id="qualityLevel" name="searchQualityLevel" from="${['Stufe 1','Stufe 2','Stufe 3','Stufe 4','Stufe 5']}" keys="${['1','2','3','4','5']}" value="${params.searchQualityLevel}" noSelection="[null:'Bitte auswählen']" />
+	            			</td>
+            			</tr>
 		            		<tr>
 		            		<td>Datumsbereich:</td>
 		            		<td>
@@ -188,6 +201,7 @@
 				<g:if test="${flash.message}">
 					<div class="message" role="status">${flash.message}</div>
 				</g:if>
+
 							
 				<g:formRemote name="myForm" on404="alert('not found!')" 
 	            url="[controller: 'object', action:'queueAllForRetrieval']" 
@@ -202,6 +216,8 @@
 								<g:sortableColumn property="origName" title="${message(code: 'object.origName.label', default: 'Orig Name')}" />
 								<g:sortableColumn property="createdAt" title="${message(code: 'object.created.label', default: 'Erstellt')}" />
 								<g:sortableColumn property="modifiedAt" title="${message(code: 'object.modified.label', default: 'Geändert')}" />
+								<g:sortableColumn property="quality_flag" title="${message(code: 'object.quality_flag', default: 'Qualitätsstufe')}" />
+				
 								<th style="text-align: center">Publ.</th>
 								<th style="text-align: center">Anfordern				
 									<g:if test="${!paginate}">
@@ -231,6 +247,7 @@
 								<td>${fieldValue(bean: objectInstance, field: "origName")}</td>
 								<td>${objectInstance.getFormattedCreatedDate()}</td>
 								<td>${objectInstance.getFormattedModifiedDate()}</td>
+								<td>${objectInstance.getFormattedQualityLevelNoZero()}</td>
 								<td>	
 									<g:if test="${objectInstance.getPublished_flag()==1}">
 										<g:link url="${objectInstance.getPublicPresLink()}" target="_blank"><asset:image width="16px" height="16px" src="/icons/globe.png"/></g:link>
