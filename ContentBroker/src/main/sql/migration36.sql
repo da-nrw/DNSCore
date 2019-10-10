@@ -19,7 +19,11 @@ ALTER TABLE conversion_policies ADD COLUMN format_type varchar(20);
 update conversion_policies SET format_type='LZA' WHERE presentation IS False;
 update conversion_policies SET format_type='LZA' WHERE (source_format='fmt/353' or source_format='fmt/354' or source_format='fmt/5' or source_format='x-fmt/392' or source_format='fmt/141');
 /*fmt/353=TIFF    fmt/354=PDF/A1b    fmt/5=AudioVideo Interleaved Format   x-fmt/392=JP2   fmt/141=WaveformAudio*/
+
 /*update conversion_policies SET format_type='NONLZA' WHERE format_type IS NULL or format_type <> 'LZA';*/
+
+/*Nach dem UAK-Beschluss ist jpg auch LZA-Format*/
+update conversion_policies SET format_type='LZA' WHERE (source_format='fmt/41' or source_format='fmt/42' or source_format='fmt/43'or source_format='fmt/44' or source_format='x-fmt/390' or source_format='x-fmt/391' or source_format='x-fmt/398' );
 commit;
 
 /*remove unused depricated column*/
