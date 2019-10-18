@@ -396,7 +396,7 @@
 		<dependency>
 			<groupId>org.apache.tika</groupId>
 			<artifactId>tika-core</artifactId>
-			<version>1.20</version><!-- 1.0 --> <!-- 1.19.1-->
+			<version>1.22</version><!-- 1.0 --> <!-- 1.19.1-->
 		</dependency>
 		<dependency>
 			<groupId>com.yourmediashelf.fedora.client</groupId>
