@@ -245,10 +245,12 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 	@Override
 	public void deleteFromIndex(String indexName, String objectID) throws MetadataIndexException, RepositoryException {
 		logger.debug("Delete object "+objectID+" from index "+indexName+"...");
+		String delRequestStr=hosts[0]+"/"+indexName+"/"+C.ORE_AGGREGATION+"/_query?q=_id:"+objectID+""+"*";
+		logger.debug("Delete Request: "+delRequestStr);
 		try{
 			DefaultHttpClient httpClient = new DefaultHttpClient();
 			HttpDelete deleteRequest = 
-					new HttpDelete(hosts[0]+"/"+indexName+"/"+C.ORE_AGGREGATION+"/_query?q=_id:"+objectID+""+"*");
+					new HttpDelete(delRequestStr);
 			HttpResponse response = httpClient.execute(deleteRequest);
 	
 			int statusCode = response.getStatusLine().getStatusCode();
@@ -259,7 +261,7 @@ public class ElasticsearchMetadataIndex implements MetadataIndex {
 	        httpClient.getConnectionManager().shutdown();
 		} catch (Exception e) {
 			throw new RepositoryException("Unable to delete the object with id "+objectID+"from elasticsearch index", e);
-		}	
+		}
 	}
 	
 	public String[] getHosts() {
