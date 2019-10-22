@@ -69,7 +69,7 @@ then
         "INSERT INTO conversion_policies (id,psystem_id,source_format,conversion_routine_id,presentation) VALUES (5,1,'fmt/4',2,true);"
         "INSERT INTO conversion_policies (id,psystem_id,source_format,conversion_routine_id,presentation) VALUES (6,1,'fmt/16',4,true);"
         "INSERT INTO conversion_policies (id,psystem_id,source_format,conversion_routine_id,presentation) VALUES (7,1,'fmt/354',4,true);"
-        "INSERT INTO conversion_policies (id,psystem_id,source_format,conversion_routine_id,presentation,format_type) VALUES (8,1,'fmt/43',3,false,'LZA');"
+    #    "INSERT INTO conversion_policies (id,psystem_id,source_format,conversion_routine_id,presentation,format_type) VALUES (8,1,'fmt/43',3,false,'LZA');"
         "INSERT INTO conversion_policies (id,psystem_id,source_format,conversion_routine_id,presentation) VALUES (9,1,'fmt/43',2,true);"
         "INSERT INTO conversion_policies (id,psystem_id,source_format,conversion_routine_id,presentation) VALUES (10,1,'fmt/18',5,true);"
         "INSERT INTO subformat_identification_strategy_puid_mappings (id,format_puid,subformat_identification_strategy_name) VALUES (1,'fmt/101','de.uzk.hki.da.format.XMLSubformatIdentifier');"

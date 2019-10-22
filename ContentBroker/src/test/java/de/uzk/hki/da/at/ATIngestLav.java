@@ -71,14 +71,14 @@ public class ATIngestLav extends AcceptanceTest {
 		System.out.println(urn2 + " filesize: "+ath.getObject(urn2).getAip_size());
 		System.out.println(urn3 + " filesize: "+ath.getObject(urn3).getAip_size());
 		
-		double diff1=(ath.getObject(urn1).getAip_size()-647168)/(ath.getObject(urn1).getAip_size()+1);
-		double diff2=(ath.getObject(urn1).getAip_size()-846336)/(ath.getObject(urn1).getAip_size()+1);
-		double diff3=(ath.getObject(urn1).getAip_size()-944640)/(ath.getObject(urn1).getAip_size()+1);
+		double diff1=(ath.getObject(urn1).getAip_size()-188416.0)/(ath.getObject(urn1).getAip_size()+1);
+		double diff2=(ath.getObject(urn2).getAip_size()-235008.0)/(ath.getObject(urn2).getAip_size()+1);
+		double diff3=(ath.getObject(urn3).getAip_size()-256512.0)/(ath.getObject(urn3).getAip_size()+1);
 		
 		// 4% difference will be tolerated
-		assertTrue("Wrong File Size d1: "+diff1,Math.abs(diff1)<4);
-		assertTrue("Wrong File Size d2: "+diff2,Math.abs(diff2)<4);
-		assertTrue("Wrong File Size d3: "+diff3,Math.abs(diff3)<4);
+		assertTrue("Wrong File Size d1: "+diff1,Math.abs(diff1)<0.03);
+		assertTrue("Wrong File Size d2: "+diff2,Math.abs(diff2)<0.03);
+		assertTrue("Wrong File Size d3: "+diff3,Math.abs(diff3)<0.03);
 	}
 	
 	@AfterClass
