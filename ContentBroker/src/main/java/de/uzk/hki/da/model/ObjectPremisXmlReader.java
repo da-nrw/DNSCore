@@ -230,7 +230,9 @@ public class ObjectPremisXmlReader{
 		
 		event.setDate(readDate(el.getFirstChildElement("eventDateTime", PREMIS_NS).getValue()));
 		
-		if (eventType.equals("CONVERT"))
+		/*if (eventType.equals("CONVERT"))
+			event.setDetail(el.getFirstChildElement("eventDetail", PREMIS_NS).getValue());*/
+		if (el.getFirstChildElement("eventDetail", PREMIS_NS)!=null && el.getFirstChildElement("eventDetail", PREMIS_NS).getValue()!=null)
 			event.setDetail(el.getFirstChildElement("eventDetail", PREMIS_NS).getValue());
 		
 		event.setAgent_type(Agent.getTypeForIdType(el.getFirstChildElement("linkingAgentIdentifier", PREMIS_NS)
@@ -269,7 +271,17 @@ public class ObjectPremisXmlReader{
 		if (eventType.toUpperCase().equals(C.EVENT_TYPE_CONVERT)
 				|| eventType.toUpperCase().equals(C.EVENT_TYPE_COPY)
 				|| eventType.toUpperCase().equals(C.EVENT_TYPE_CREATE)
+
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_CONVERSION)
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_VALIDATION)	
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_IDENTIFICATION)
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1)
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2)
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_3)
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4)
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_5)
 				|| eventType.toUpperCase().equals(C.EVENT_TYPE_CONVERSION_SUPRESSED)) {
+
 			for (Package pkg : object.getPackages()) {
 				for (DAFile f : pkg.getFiles()) {
 					if (sourceFile.equals("") && outcomeFile.equals("")
@@ -282,7 +294,14 @@ public class ObjectPremisXmlReader{
 					
 					if (sourceFile.equals(f.getRep_name() + "/" + f.getRelative_path())) {
 						event.setSource_file(f);
-						if (event.getTarget_file() != null) {
+						if (event.getTarget_file() != null || eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_CONVERSION)
+								|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_VALIDATION)
+								|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_IDENTIFICATION)
+								|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1)
+								|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2)
+								|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_3)
+								|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4)
+								||eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_5)) {
 							pkg.getEvents().add(event);
 							eventAdded = true;
 							break;
@@ -321,7 +340,8 @@ public class ObjectPremisXmlReader{
 		if (!eventAdded) {
 			if (eventType.toUpperCase().equals("SIP_CREATION")
 					// DANRW-1452: Virus-Scan result must be print in the premis-file
-					|| eventType.toUpperCase().equals(C.EVENT_TYPE_VIRUS_SCAN))
+					|| eventType.toUpperCase().equals(C.EVENT_TYPE_VIRUS_SCAN)
+					)
 				object.getPackages().get(0).getEvents().add(event);
 			else
 				throw new RuntimeException("Premis file is not consistent: couldn't find object(s) referenced by event "
@@ -381,6 +401,18 @@ public class ObjectPremisXmlReader{
 			
 			Element ddbExclusionEl = rightsExtEl.getFirstChildElement("DDBexclusion", C.CONTRACT_NS);
 			object.setDdbExclusion(ddbExclusionEl != null);
+			
+			Element minimalIngestQualityLevelEl = rightsExtEl.getFirstChildElement("minimalIngestQualityLevel", C.CONTRACT_NS);
+			if(minimalIngestQualityLevelEl!=null){
+				int minimalLevel=Integer.parseInt(minimalIngestQualityLevelEl.getValue());
+				if(minimalLevel>=0){
+					logger.debug("Set Recognized MinimalIngestQLevel: " + minimalLevel);
+					object.setMinimalIngestQLevel(minimalLevel);
+				}else{
+					logger.debug("Recognized Invalid MinimalIngestQLevel: " + minimalLevel);
+				}
+			}
+			
 			
 			Element licenseEl = rightsExtEl.getFirstChildElement("publicationLicense", C.CONTRACT_NS);
 			if(licenseEl!=null){

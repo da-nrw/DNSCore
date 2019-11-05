@@ -111,7 +111,7 @@ public class CTFileFormatFacadeExtractTests {
 		} catch (ConnectionException e) {
 			fail();
 		} catch (Exception e) {
-			fail();
+			fail(e.getClass()+"\n"+e.getStackTrace()[0]+"\n"+e.getMessage());
 		}
 	}
 

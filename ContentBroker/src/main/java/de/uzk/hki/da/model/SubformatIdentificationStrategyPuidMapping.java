@@ -42,7 +42,8 @@ public class SubformatIdentificationStrategyPuidMapping {
 	 * Primary key.
 	 * */
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.AUTO)//GenerationType.IDENTITY
+	@Column(unique = true, nullable = false)
 	private int id;
 
 	

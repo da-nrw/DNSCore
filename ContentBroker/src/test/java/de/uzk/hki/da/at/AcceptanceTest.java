@@ -192,7 +192,29 @@ public class AcceptanceTest {
 		return oldUsePublicMets;
 	}
 	
-	
+	/**
+	 * Modify the minimalQualityLevel in User-Table and return the old minimalQualityLevel.
+	 * 
+	 * @param minimalQuality
+	 * @return
+	 */
+	public static int setTestUserMinimalQualityLevel(int minimalQuality) {
+		Session session = HibernateUtil.openSession();
+		Transaction transaction = session.beginTransaction();
+		Query query = session
+				.createQuery("SELECT u FROM User u where username = '" + testContractor.getUsername() + "'");
+
+		@SuppressWarnings("unchecked")
+		List<User> users = query.list();
+		User testUser = users.get(0);
+		int oldQualityLevel = testUser.getMinimalIngestQualityLevel();
+		testUser.setMinimalIngestQualityLevel(minimalQuality);
+		session.save(testUser);
+		transaction.commit();
+		session.close();
+
+		return oldQualityLevel;
+	}
 	
 	@BeforeClass
 	public static void setUpAcceptanceTest() throws IOException{
@@ -356,6 +378,21 @@ public class AcceptanceTest {
 		icl.mkCollection("/"+localNode.getIdentifier() + "/repl/"+testContractor.getUsername());
 		icl.mkCollection("/"+localNode.getIdentifier() + "/pips/institution/"+testContractor.getUsername());
 		icl.mkCollection("/"+localNode.getIdentifier() + "/pips/public/"+testContractor.getUsername());
+		
+		//loeschen der pfade 
+		// /krz/federated/lvr/aip/TEST/
+		// /hbz/federated/lvr/aip/TEST/
+		for(Node n:localNode.getCooperatingNodes()) {
+			String fedPath="/"+n.getIdentifier() + "/federated/"+localNode.getIdentifier()+"/aip/"+testContractor.getUsername();
+			System.out.println("remove federated Path: "+fedPath);
+			icl.remove(fedPath);
+		}
+		for(Node n:localNode.getCooperatingNodes()) {
+			String fedPath="/"+n.getIdentifier() + "/federated/"+localNode.getIdentifier()+"/aip/"+testContractor.getUsername();
+			System.out.println("create federated Path: "+fedPath);
+			icl.mkCollection(fedPath);
+		}
+		
 		
 		/**distributedConversionAdapter.remove("work/TEST");
 		distributedConversionAdapter.remove("aip/TEST");

@@ -22,6 +22,7 @@ package de.uzk.hki.da.cb;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,9 +35,12 @@ import de.uzk.hki.da.format.ConnectionException;
 import de.uzk.hki.da.format.FileFormatException;
 import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
+import de.uzk.hki.da.format.QualityLevelException;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.WorkArea;
+import de.uzk.hki.da.model.Event.IdType;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.CommaSeparatedList;
@@ -61,10 +65,7 @@ import de.uzk.hki.da.utils.Path;
  * @author Daniel M. de Oliveira
  */
 public class CheckFormatsAction extends AbstractAction {
-
-
 	private FileFormatFacade fileFormatFacade;
-
 
 	@Override
 	public void checkConfiguration() {
@@ -126,7 +127,9 @@ public class CheckFormatsAction extends AbstractAction {
 	
 	/**
 	 * Scans every file in files with jhove and sets the pathToJhoveOutput
-	 * property accordingly
+	 * property accordingly.
+	 * 
+	 * Throwed exception by JHove are transformed to quality level events
 	 * 
 	 * @param files
 	 * @throws IOException 
@@ -140,15 +143,36 @@ public class CheckFormatsAction extends AbstractAction {
 			String fileName = DigestUtils.md5Hex(f.getRelative_path());
 			
 			if (!new File(dir).exists()) new File(dir).mkdirs();
-			if (f.getRelative_path().toLowerCase().equals("premis.xml") || !f.getRelative_path().toLowerCase().endsWith(".xml")) {
-				File target = Path.makeFile(dir,fileName);
-				logger.debug("will write jhove output to: "+target);
-				
+			if (f.getRelative_path().toLowerCase().equals("premis.xml")
+					|| !f.getRelative_path().toLowerCase().endsWith(".xml")) {
+				File target = Path.makeFile(dir, fileName);
+				logger.debug("will write jhove output to: " + target);
+
 				try {
-					if (!fileFormatFacade.extract(wa.toFile(f), target,f.getFormatPUID())) 
+					if (!fileFormatFacade.extract(wa.toFile(f), target, f.getFormatPUID()))
 						throw new RuntimeException("Unknown error during metadata file extraction.");
 				} catch (ConnectionException e) {
-					throw new SubsystemNotAvailableException("fileFormatFacade.extract() could not connect.",e);
+					throw new SubsystemNotAvailableException("fileFormatFacade.extract() could not connect.", e);
+				} catch (QualityLevelException e) { 
+					// execution won't be interrupted by Exception. Exceptions will be transformed to 
+					// quality level events
+					logger.debug("Validation failed by QualityLevelException: " + e);
+					if (!o.getLatestPackage().getFiles().contains(f)) {
+						logger.debug("QualityLevelException is not for Latest Package: " + e);
+					} else {
+						Event qualityEvent = new Event();
+						qualityEvent.setAgent_name(n.getName());
+						qualityEvent.setAgent_type(C.AGENT_TYPE_NODE);
+						qualityEvent.setDate(new Date());
+						qualityEvent.setType(C.EVENT_TYPE_QUALITY_FAULT_VALIDATION);
+						qualityEvent.setSource_file(f);
+						String msg = e.getType() + " " + e.getMessage();
+						if (msg.length() > Event.MAX_DETAIL_STR_LEN)
+							msg = msg.substring(0, Event.MAX_DETAIL_STR_LEN);
+						qualityEvent.setDetail(msg);
+						logger.debug("QualityEvent created: " + qualityEvent);
+						o.getLatestPackage().getEvents().add(qualityEvent);
+					}
 				}
 			} else logger.debug("Skipping jhove validation for xml file "+f.getRelative_path());
 		}
@@ -199,15 +223,7 @@ public class CheckFormatsAction extends AbstractAction {
 		}
 		return originalFormatsSet;
 	}
-	
-
-	
-	
-	
-	
-	
-	
-	
+		
 	
 	@Override
 	public void rollback() throws Exception {

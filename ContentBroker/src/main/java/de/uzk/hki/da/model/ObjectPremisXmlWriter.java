@@ -47,6 +47,7 @@ import de.uzk.hki.da.model.Event.IdType;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.GenericChecksum;
 import de.uzk.hki.da.utils.Path;
+import nu.xom.Element;
 
 
 /**
@@ -164,15 +165,26 @@ public class ObjectPremisXmlWriter {
 					|| e.getType().toUpperCase().equals(C.EVENT_TYPE_CONVERSION_SUPRESSED)){
 				logger.debug("Serializing convert event: "+e);
 				createConvertEventElement(e);
-			} else
+			}  else
 				// DANRW-1452: Event virus-scan
 				if (e.getType().toUpperCase().equals(C.EVENT_TYPE_VIRUS_SCAN)) {
 				logger.debug("Serializing scan event: "+e);
 				createVirusEventElement(object,pkg.getName(), e);
-			} else{
+			} else if (e.getType().toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_CONVERSION) ||
+					e.getType().toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_VALIDATION)||
+					e.getType().toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_IDENTIFICATION)||
+					e.getType().toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1) ||
+					e.getType().toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2) ||
+					e.getType().toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_3) ||
+					e.getType().toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4) ||
+					e.getType().toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_5)) {
+				logger.debug("Serializing convert event: "+e);
+				createQualityLevelEventElement(object,pkg.getName(), e);
+			} else {
 				logger.debug("Serializing package event:"+e);
 				createPackageEventElement(object, pkg, e);
-			}
+			} 
+
 		}
 	}
 	
@@ -250,6 +262,66 @@ public class ObjectPremisXmlWriter {
 		
 		createCloseElement(1);
 	}
+	
+	/**
+	 * createVirusEventElement: DANRW-1452: new event in case of successful virus-scan
+	 * @param pkgName 
+	 * @param e
+	 */
+	private void createQualityLevelEventElement(Object object, String pkgName, Event e) throws XMLStreamException {
+		createOpenElement("event", 1);
+		createOpenElement("eventIdentifier", 2);
+			createTextElement("eventIdentifierType", e.getType(), 3);
+			if(e.getSource_file()!=null)//if no sourcefile -> QualityEvent is for Package
+				createTextElement("eventIdentifierValue", e.getSource_file().getRep_name() + "/" + e.getSource_file().getRelative_path(), 3);
+			else
+				createTextElement("eventIdentifierValue", object.getIdentifier(), 3);
+		createCloseElement(2);
+		createTextElement("eventType", e.getType(), 2);
+		if (e.getDate() != null)
+			createTextElement("eventDateTime", formatDate(e.getDate()), 2);
+		
+		if (e.getDetail() != null)
+			createTextElement("eventDetail", e.getDetail(), 2);
+
+		if (e.getOutcome() != null)
+		{
+			createOpenElement("eventOutcomeInformation", 2);
+				createTextElement("eventOutcome", e.getOutcome(), 3);
+			createCloseElement(2);
+		}
+
+		Agent a = new Agent();
+		a.setType(e.getAgent_type());
+		a.setName(e.getAgent_name());
+		//a.setLongName(e.getAgent_long_name());
+		agents.add(a);
+		
+		createOpenElement("linkingAgentIdentifier", 2);
+		createTextElement("linkingAgentIdentifierType", a.getIdentifierType(), 3);
+		createTextElement("linkingAgentIdentifierValue", a.getName(), 3);
+		createCloseElement(2);
+		
+		if (e.getSource_file()!=null) {
+			createOpenElement("linkingObjectIdentifier", 2);
+			createTextElement("linkingObjectIdentifierType", "FILE_PATH", 3);
+			createTextElement("linkingObjectIdentifierValue", e.getSource_file().getRep_name() + "/" + e.getSource_file().getRelative_path(), 3);
+			createTextElement("linkingObjectRole", "source", 3);
+			createCloseElement(2);
+		}else{
+			logger.debug("Quality Event has no SourceFile: "+e);
+			//throw new RuntimeException("No SourceFile defined: "+e);
+		}
+		
+		createOpenElement("linkingObjectIdentifier", 2);
+		createTextElement("linkingObjectIdentifierType", "PACKAGE_NAME", 3);
+		createTextElement("linkingObjectIdentifierValue", object.getOrig_name() +".tar", 3);
+		createTextElement("linkingObjectRole", "outcome", 3);
+		createCloseElement(2);
+
+		createCloseElement(1);
+	}
+
 
 
 	
@@ -426,7 +498,6 @@ public class ObjectPremisXmlWriter {
 	private void createPackageEventElement(Object object,Package pkg,Event event) throws XMLStreamException {
 		
 		logger.debug("Start serializing event /" + event.getIdType().toString()+"/"+event.getIdentifier());
-		
 		createOpenElement("event", 1);
 			createOpenElement("eventIdentifier", 2);
 				createTextElement("eventIdentifierType", event.getIdType().toString(), 3);
@@ -669,6 +740,11 @@ public class ObjectPremisXmlWriter {
 		
 		if (object.ddbExcluded())
 			createEmptyElement("DDBexclusion", 4);
+		if(object.getMinimalIngestQLevel()>-1){
+			createOpenElement("minimalIngestQualityLevel", 4);
+			writer.writeCharacters(String.valueOf(object.getMinimalIngestQLevel()));
+			writer.writeEndElement();
+		}
 		if (right.getPremisLicense()!=null){
 			PremisLicense pl=right.getPremisLicense();
 			createOpenElement("publicationLicense", 4);

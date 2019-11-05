@@ -61,6 +61,13 @@
 		    		<g:if test="${!params.search?.identifier.isEmpty()}">
 		    			<span style="margin-right: 25px"><i>Identifier: </i>${params.search?.identifier}</span>
 		    		</g:if> 
+		    		<g:if test="${!params.search?.searchQualityLevel?.isEmpty()}">
+	    					<g:if test="${params.searchQualityLevel == '1'}">Qualitätsstufe: 1</g:if>
+	    					<g:if test="${params.searchQualityLevel == '2'}">Qualitätsstufe: 2</g:if>
+	    					<g:if test="${params.searchQualityLevel == '3'}">Qualitätsstufe: 3</g:if>
+	    					<g:if test="${params.searchQualityLevel == '4'}">Qualitätsstufe: 4</g:if>
+	    					<g:if test="${params.searchQualityLevel == '5'}">Qualitätsstufe: 5</g:if>
+		    		</g:if> 
 		    		<g:if test="${params.searchContractorName != null}">
 		    			<g:if test="${!params.searchContractorName.isEmpty()}">
 		    				<span style="margin-right: 25px"><i>Contractor: </i>${params.searchContractorName}</span>
@@ -100,7 +107,12 @@
 	            			<td>Identifier:</td>
 	            			<td><g:textField name="search.identifier" value="${params.search?.identifier}" size="50" class="input-hoehe"/></td>
 	            		</tr>
-	            		
+	            		<tr>
+            				<td>Qualitätsstufe:</td>
+            				<td>
+	            			<g:select id="qualityLevel" name="searchQualityLevel" from="${['Stufe 1','Stufe 2','Stufe 3','Stufe 4','Stufe 5']}" keys="${['1','2','3','4','5']}" value="${params.searchQualityLevel}" noSelection="[null:'Bitte auswählen']" />
+	            			</td>
+            			</tr>
 	            		<tr>
 	            			<td>Datumsbereich:	</td>	
 		            		<td>
@@ -217,7 +229,7 @@
 								<g:sortableColumn property="origName" title="${message(code: 'object.origName.label', default: 'Orig Name')}" />
 								<g:sortableColumn property="createdAt" title="${message(code: 'object.created.label', default: 'Erstellt')}" />
 								<g:sortableColumn property="modifiedAt" title="${message(code: 'object.modified.label', default: 'Geändert')}" />
-								
+								<g:sortableColumn property="quality_flag" title="${message(code: 'object.quality_flag', default: 'Qualitätsstufe')}" />
 								<g:if test="${admin}">
 									<g:sortableColumn style="text-align: center" property="objectState" title="${message(code: 'object.objectState.label', default: 'Objekt Status')}" />
 									<th style="text-align: center">Überprüfen</th>
@@ -250,7 +262,7 @@
 								<td>${fieldValue(bean: objectInstance, field: "origName")}</td>
 								<td>${objectInstance.getFormattedCreatedDate()}</td>
 								<td>${objectInstance.getFormattedModifiedDate()}</td>
-								
+								<td>${objectInstance.getFormattedQualityLevelNoZero()}</td>
 								<td style="text-align: center">
 									<g:if test="${statusCode == 1}">
 										<asset:image style="width:16px; height:16px" src="/icons/warning32.png"/>

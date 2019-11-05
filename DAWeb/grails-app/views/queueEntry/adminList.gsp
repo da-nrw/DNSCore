@@ -59,7 +59,7 @@
  			<g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 			<div class="blue-box"></div>
 			<h2>Bearbeitungsübersicht</h2>		
-			<g:if test="${  !params.search }">
+			<g:if test="${!params.search} || ${params.search}">
 				<div class="page-body-input page-body-input-position">
 					<i>Aktualieseren der Seite:&nbsp; </i>
 					<input id="stopper" class="style-start-stop" type="button" onclick="stopUpdater();disabled=true;" value="stoppen"/>

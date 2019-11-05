@@ -36,6 +36,7 @@ public class SimplifiedCommandLineConnector {
 			LoggerFactory.getLogger(SimplifiedCommandLineConnector.class);
 	
 	private CommandLineConnector cl;
+	private String errorMessages;
 	
 	public SimplifiedCommandLineConnector() {
 		this.cl = new CommandLineConnector();
@@ -53,6 +54,7 @@ public class SimplifiedCommandLineConnector {
 	public boolean execute(String cmd[]) {
 	
 		logger.trace("SimplifiedCommandLineConnector executing conversion command: {}", cmd.toString());
+		errorMessages=null;
 		ProcessInformation pi = null;
 		try {
 			pi = cl.runCmdSynchronously( cmd );
@@ -65,9 +67,15 @@ public class SimplifiedCommandLineConnector {
 			logger.error("cli conversion failed!\n\nstdOut: ------ \n\n\n"+
 					pi.getStdOut()+"\n\n ----- end of stdOut\n\nstdErr: ------ \n\n\n"+
 					pi.getStdErr()+"\n\n ----- end of stdErr");
+			errorMessages=pi.getStdErr()+"\n"+pi.getStdOut();
 			return false;
 		}
 		
 		return true;
 	}
+
+	public String getErrorMessages() {
+		return errorMessages;
+	}
+	
 }

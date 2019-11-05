@@ -800,7 +800,8 @@ public class Cli {
 		System.out.println("   -destination=\"[Pfad]\"     Angabe des Zielordners, in dem die SIPs erstellt werden sollen");
 		System.out.println("");
 		System.out.println("   -default                  Standardrechte verwenden (Standard)");
-		System.out.println("   -premis=\"[Pfad]\"          Angabe der Contract Rights durch eine Premis-Datei");
+/*Vorläufige deaktivierung der -premis Option. kollidiert momentan stark mit der -rights option */ 
+		//System.out.println("   -premis=\"[Pfad]\"          Angabe der Contract Rights durch eine Premis-Datei");
 		System.out.println("   -rights=\"[Pfad]\"          Angabe der Contract Rights durch eine vormals per SIP-Builder erstellte Rechte-Datei");
 		System.out.println("");
 		System.out.println("   -multiple                 "+C.KIND_OF_SIPBUILDING_MULTIPLE);

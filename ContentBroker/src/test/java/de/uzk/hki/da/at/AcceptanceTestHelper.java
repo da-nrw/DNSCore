@@ -248,7 +248,7 @@ public class AcceptanceTestHelper {
 
 	
 	void waitForDefinedPublishedState(String origName) {
-		waitForObjectPublishedState(origName, -1);
+		waitForObjectPublishedState(origName, 3);
 	}
 
 	void waitForObjectPublishedState(String origName,int publishedFlag) {
@@ -261,11 +261,11 @@ public class AcceptanceTestHelper {
 				System.out.println("Object not found (yet). ");
 				continue;
 			}
-			System.out.println("Awaiting object to be published. Identifier: "+o.getIdentifier()+
+			System.out.println("Awaiting object to be published("+publishedFlag+"). Identifier: "+o.getIdentifier()+
 					". Orig name: "+o.getOrig_name()+". Published flag: "+o.getPublished_flag()+". ");
 			
 			if (publishedFlag==0 && o.getPublished_flag()==0) break;
-			else
+			else if(o.getPublished_flag() !=-1)
 				if ((o.getPublished_flag() & publishedFlag) >0) break; // Binary and operator!!!
 		}
 	}

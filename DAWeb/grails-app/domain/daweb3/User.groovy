@@ -24,6 +24,8 @@ package daweb3
 //import groovy.transform.EqualsAndHashCode
 //import groovy.transform.ToString
 
+import javax.persistence.Column
+
 import groovy.transform.EqualsAndHashCode;
 import groovy.transform.ToString;
 
@@ -50,6 +52,7 @@ class User  implements Serializable {
 	 
 	 boolean mailsPooled
 	 boolean usePublicMets
+	 boolean useMetsUrn = false // DANRW-1597
 	 boolean useVirusScan = true //DANRW-1511: standardmäßig wird gescannt
 	 boolean deltaOnUrn
 	 
@@ -82,6 +85,7 @@ class User  implements Serializable {
 		passwordExpired column: 'passwordexpired'
 		mailsPooled column: 'mails_pooled'
 		usePublicMets column: 'use_public_mets'
+		useMetsUrn column: 'use_mets_urn' 
 		useVirusScan column: 'use_virus_scan'//DANRW-1511
 		deltaOnUrn column: 'delta_on_urn'
 		friendly_file_exts column: 'friendly_file_exts'

@@ -19,6 +19,7 @@
 
 package de.uzk.hki.da.convert;
 
+import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -117,7 +118,8 @@ public class PublishPDFConversionStrategyTests {
 		
 		// contract states that the PDF should have 7 pages
 		PDDocument targetDoc = PDDocument.load(targetFile);
-		assertEquals(7, targetDoc.getDocumentCatalog().getAllPages().size());
+//		assertEquals(7, targetDoc.getDocumentCatalog().getAllPages().size());
+		assertEquals(7,targetDoc.getPages().getCount());
 		
 		targetFile = wa.toFile(events.get(1).getTarget_file());
 		assertTrue(targetFile.exists());
@@ -125,7 +127,8 @@ public class PublishPDFConversionStrategyTests {
 		
 		// contract has no restrictions for institution, PDF should have
 		targetDoc = PDDocument.load(targetFile);
-		assertEquals(227, targetDoc.getDocumentCatalog().getAllPages().size());
+//		assertEquals(227, targetDoc.getDocumentCatalog().getAllPages().size());
+		assertEquals(227, targetDoc.getPages().getCount());
 		
 	}
 		
