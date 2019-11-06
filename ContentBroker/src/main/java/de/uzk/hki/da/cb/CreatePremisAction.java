@@ -52,6 +52,8 @@ import de.uzk.hki.da.model.PremisXmlValidator;
 import de.uzk.hki.da.model.PublicationRight;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.utils.FolderUtils;
+import de.uzk.hki.da.utils.GenericChecksum;
+import de.uzk.hki.da.utils.GenericChecksum.Algorithm;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -143,6 +145,22 @@ public class CreatePremisAction extends AbstractAction {
 		File newPREMISXml = Path.make(wa.dataPath(), 
 				o.getNameOfLatestBRep(),PREMIS).toFile();
 		logger.trace("trying to write new Premis file at " + newPREMISXml.getAbsolutePath());
+		
+		for(DAFile f:newPREMISObject.getLatestPackage().getFiles()) {
+			
+			Algorithm checksumType=GenericChecksum.recognizeAlgorithmFromChecksum(f.getChksum());
+			//if different Algorithms -> migrate checksum if file is consistent
+			if(!checksumType.equals(GenericChecksum.DEFAULT_CHECKSUM_ALGO_FOR_DAF)) {
+				String checkSumOld = GenericChecksum.getChecksumForLocalFile(GenericChecksum.DEFAULT_CHECKSUM_ALGO_FOR_DAF,wa.toFile(f));
+				if(!checkSumOld.equals(f.getChksum()))
+					new RuntimeException("DAFile Checksum is not consitent: in premis is "+checksumType+" type, saved checksum is "+f.getChksum()+" but recomputed is "+checkSumOld);
+				logger.info("DAFile Checksum will be recomputed, in couse of different checksumtype (old type: "+checksumType+", new type: "+GenericChecksum.DEFAULT_CHECKSUM_ALGO_FOR_DAF+")");
+				String checkSumNew = GenericChecksum.getChecksumForLocalFile(GenericChecksum.DEFAULT_CHECKSUM_ALGO_FOR_DAF,wa.toFile(f));
+				logger.info("DAFile Checksum will be recomputed, in couse of different checksumtype (old: "+checkSumOld+", new: "+checkSumNew+") ");
+
+				f.setChksum(checkSumNew);
+			}
+		}
 		new ObjectPremisXmlWriter().serialize(newPREMISObject, newPREMISXml,Path.make(wa.dataPath(),WorkArea.TMP_JHOVE));
 		
 		try {

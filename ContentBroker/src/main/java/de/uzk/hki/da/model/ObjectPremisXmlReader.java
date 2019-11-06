@@ -700,9 +700,25 @@ public class ObjectPremisXmlReader{
 		Element charEl = objectEl.getFirstChildElement("objectCharacteristics", PREMIS_NS);
 		f.setChksum(stringValue(charEl.getFirstChildElement("fixity", PREMIS_NS).getFirstChildElement("messageDigest", PREMIS_NS)));
 		String checksumType=stringValue(charEl.getFirstChildElement("fixity", PREMIS_NS).getFirstChildElement("messageDigestAlgorithm", PREMIS_NS));
-		if(checksumType==null || !checksumType.trim().equals(GenericChecksum.DEFAULT_CHECKSUM_ALGO_FOR_DAF))
-			new RuntimeException("DAFile Checksum is not consitent in premis is "+checksumType+" type, ContentBroker uses "+GenericChecksum.DEFAULT_CHECKSUM_ALGO_FOR_DAF);
-				
+		if(checksumType==null || !checksumType.trim().equals(GenericChecksum.recognizeAlgorithmFromChecksum(f.getChksum()).toString()))
+			new RuntimeException("DAFile Checksum is not consitent in premis is "+checksumType+" type, but checksum itself is "+GenericChecksum.recognizeAlgorithmFromChecksum(f.getChksum()));
+		if(!GenericChecksum.recognizeAlgorithmFromChecksum(f.getChksum()).equals(GenericChecksum.DEFAULT_CHECKSUM_ALGO_FOR_DAF)) {
+			logger.info("DAFile Checksumtype should be migrated (old type: "+checksumType+", new type: "+GenericChecksum.DEFAULT_CHECKSUM_ALGO_FOR_DAF+"), checksum: "+f.getChksum());
+			
+		}
+		//different Algorithms -> migrate checksum if file is consistent
+		/*if(!GenericChecksum.recognizeAlgorithmFromChecksum(f.getChksum()).equals(GenericChecksum.DEFAULT_CHECKSUM_ALGO_FOR_DAF)) {
+			String checkSumOld = GenericChecksum.getChecksumForLocalFile(GenericChecksum.DEFAULT_CHECKSUM_ALGO_FOR_DAF,wa.toFile(f));
+			if(!checkSumOld.equals(f.getChksum()))
+				new RuntimeException("DAFile Checksum is not consitent: in premis is "+checksumType+" type, saved checksum is "+f.getChksum()+" but recomputed is "+checkSumOld);
+			logger.info("DAFile Checksum will be recomputed, in couse of different checksumtype (old type: "+checksumType+", new type: "+GenericChecksum.DEFAULT_CHECKSUM_ALGO_FOR_DAF+")");
+			String checkSumNew = GenericChecksum.getChecksumForLocalFile(GenericChecksum.DEFAULT_CHECKSUM_ALGO_FOR_DAF,wa.toFile(f));
+			logger.info("DAFile Checksum will be recomputed, in couse of different checksumtype (old: "+checkSumOld+", new: "+checkSumNew+") ");
+			
+			
+			f.setChksum(checkSumNew);
+		}*/
+		
 		Element sizeEl = charEl.getFirstChildElement("size", PREMIS_NS);
 		f.setSize(sizeEl.getValue());
 		
