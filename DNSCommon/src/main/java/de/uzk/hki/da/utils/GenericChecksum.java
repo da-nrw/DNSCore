@@ -11,12 +11,14 @@ public class GenericChecksum {
 	static final int BUFFER_SIZE=1024*4;
 	public static final Algorithm DEFAULT_CHECKSUM_ALGO=Algorithm.MD5;//Algorithm.SHA256; 
 	public static final Algorithm DEFAULT_CHECKSUM_ALGO_FOR_DAF=Algorithm.SHA512;//Algorithm.MD5;
+	
 	public static enum Algorithm{MD5("MD5"),SHA1("SHA-1"),SHA256("SHA-256"),SHA384("SHA-384"),SHA512("SHA-512");
 		private final String algoName;
 		private Algorithm(final String algo) {
 	        this.algoName = algo;
 	    }
 	    @Override public String toString() { return algoName; }
+	    //@Override public boolean equals(Object a) { return a.toString().equals(algoName); }
 	};
 	
 	public static String getChecksumForLocalFile(File file) throws IOException {

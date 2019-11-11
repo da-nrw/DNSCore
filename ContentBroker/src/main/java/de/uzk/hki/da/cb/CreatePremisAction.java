@@ -159,6 +159,7 @@ public class CreatePremisAction extends AbstractAction {
 				logger.info("DAFile Checksum will be recomputed, in couse of different checksumtype (old: "+checkSumOld+", new: "+checkSumNew+") ");
 
 				f.setChksum(checkSumNew);
+				
 			}
 		}
 		new ObjectPremisXmlWriter().serialize(newPREMISObject, newPREMISXml,Path.make(wa.dataPath(),WorkArea.TMP_JHOVE));

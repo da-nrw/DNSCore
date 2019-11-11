@@ -699,11 +699,12 @@ public class ObjectPremisXmlReader{
 		
 		Element charEl = objectEl.getFirstChildElement("objectCharacteristics", PREMIS_NS);
 		f.setChksum(stringValue(charEl.getFirstChildElement("fixity", PREMIS_NS).getFirstChildElement("messageDigest", PREMIS_NS)));
-		String checksumType=stringValue(charEl.getFirstChildElement("fixity", PREMIS_NS).getFirstChildElement("messageDigestAlgorithm", PREMIS_NS));
-		if(checksumType==null || !checksumType.trim().equals(GenericChecksum.recognizeAlgorithmFromChecksum(f.getChksum()).toString()))
-			new RuntimeException("DAFile Checksum is not consitent in premis is "+checksumType+" type, but checksum itself is "+GenericChecksum.recognizeAlgorithmFromChecksum(f.getChksum()));
-		if(!GenericChecksum.recognizeAlgorithmFromChecksum(f.getChksum()).equals(GenericChecksum.DEFAULT_CHECKSUM_ALGO_FOR_DAF)) {
-			logger.info("DAFile Checksumtype should be migrated (old type: "+checksumType+", new type: "+GenericChecksum.DEFAULT_CHECKSUM_ALGO_FOR_DAF+"), checksum: "+f.getChksum());
+		String checksumTypePremis=stringValue(charEl.getFirstChildElement("fixity", PREMIS_NS).getFirstChildElement("messageDigestAlgorithm", PREMIS_NS));
+		String checksumTypeRecognized=GenericChecksum.recognizeAlgorithmFromChecksum(f.getChksum()).toString();
+		if(checksumTypePremis==null || !checksumTypePremis.trim().equals(checksumTypeRecognized))
+			new RuntimeException("DAFile Checksum is not consitent in premis is "+checksumTypePremis+" type, but checksum itself is "+checksumTypeRecognized);
+		if(!checksumTypeRecognized.equals(GenericChecksum.DEFAULT_CHECKSUM_ALGO_FOR_DAF.toString())) {
+			logger.info("DAFile Checksumtype should be migrated (old type premis: "+checksumTypePremis+", recognized type:"+checksumTypeRecognized+" new type: "+GenericChecksum.DEFAULT_CHECKSUM_ALGO_FOR_DAF+"), checksum: "+f.getChksum());
 			
 		}
 		//different Algorithms -> migrate checksum if file is consistent

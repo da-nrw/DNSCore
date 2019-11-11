@@ -137,7 +137,10 @@ public class ChecksumWorker extends Worker{
     					csType=gridFacade.getChecksumType();
     					cs64=GenericChecksum.encodeBase64(cs);
     					logger.info("recompute old checksum in custody, now is " + cs + " Algorithm: "+csType+" for " + dest);
-        				updateCopy(copy,csType, cs,cs64);
+        				if(!copy.getChecksum().equals(cs)) {
+        					logger.error("recomputed checksum is not same as old Checksum" + cs +" vs " +copy.getChecksum()+" Algorithm Now: "+csType+" Algorithm Old "+copy.getChecksumType()+" for " + dest);
+        				}
+    					updateCopy(copy,csType, cs,cs64);
     				} else {
     					cs = copy.getChecksum();
     					csType=copy.getChecksumType();
@@ -147,7 +150,7 @@ public class ChecksumWorker extends Worker{
     				
     				
     			} else { 
-    				updateCopy(copy, "","","");
+    				//updateCopy(copy, "","","");
     				logger.error(dest + " does not exist.");
 				}
     			
