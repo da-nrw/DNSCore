@@ -118,6 +118,14 @@
 	<g:checkBox name="enabled" value="${userInstance?.enabled}" />
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: userInstance, field: 'minIngestQualityLevel', 'error')} ">
+	<label for="minIngestQualityLevel">
+		<g:message code="user.minqualitylevel.label" default="Mindest-Qualitätsstufe" />
+		
+	</label>
+	<g:select id="minIngestQualityLevel" name="minIngestQualityLevel" from="${['0','1','2', '3', '4', '5']}" keys="${['0','1','2', '3', '4', '5']}" value="${userInstance?.minIngestQualityLevel}" />
+</div>
+
 
 
 <div class="fieldcontain ${hasErrors(bean: userInstance, field: 'passwordExpired', 'error')} ">
