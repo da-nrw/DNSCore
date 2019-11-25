@@ -523,8 +523,11 @@ public class SIPFactory {
 			if (rightsSourcePremisFile != null)
 				premisWriter.createPremisFile(this, premisFile,
 						rightsSourcePremisFile, packageName);
-			else
+			else{
+				if(this.getContractRights().getMinimalIngestQuality()>0)
+					logger.info("Take over minimal ingest quality: "+this.getContractRights().getMinimalIngestQuality());
 				premisWriter.createPremisFile(this, premisFile, packageName);
+			}
 		} catch (Exception e) {
 			logger.error(
 					"Failed to create premis file "

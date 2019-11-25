@@ -72,8 +72,14 @@
 		<property name="name" value="IngestCheckFormatsAction" />
 		<property name="fileFormatFacade" ref="fileFormatFacade" />
 	</bean>
-	<bean id="IngestCreatePremisAction" class="de.uzk.hki.da.cb.CreatePremisAction" scope="prototype">
+	<bean id="IngestQualityLevelCheckAction" class="de.uzk.hki.da.cb.QualityLevelCheckAction"
+		scope="prototype">
 		<property name="startStatus" value="270" />
+		<property name="endStatus" value="290" />
+		<property name="name" value="IngestConvertForPresentationAction" />
+	</bean>
+	<bean id="IngestCreatePremisAction" class="de.uzk.hki.da.cb.CreatePremisAction" scope="prototype">
+		<property name="startStatus" value="290" />
 		<property name="endStatus" value="310" />
 		<property name="name" value="IngestCreatePremisAction" />
 		<property name="fileFormatFacade" ref="fileFormatFacade" />

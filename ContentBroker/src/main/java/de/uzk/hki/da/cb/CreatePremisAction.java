@@ -50,6 +50,7 @@ import de.uzk.hki.da.model.ObjectPremisXmlWriter;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PremisXmlValidator;
 import de.uzk.hki.da.model.PublicationRight;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
@@ -113,7 +114,7 @@ public class CreatePremisAction extends AbstractAction {
 		newPREMISObject.setContractor(o.getContractor());
 		newPREMISObject.setDdbExclusion(o.ddbExcluded());
 		newPREMISObject.setLicense_flag(o.getLicense_flag());
-		
+		newPREMISObject.setMinimalIngestQLevel(o.getMinimalIngestQLevel());
 	
 		Object sipPREMISObject = parsePremisFile(
 				new File(Path.make(wa.dataPath(),o.getNameOfLatestBRep(),PREMIS).toString().replace("+b", "+a")));
@@ -142,7 +143,7 @@ public class CreatePremisAction extends AbstractAction {
 		File newPREMISXml = Path.make(wa.dataPath(), 
 				o.getNameOfLatestBRep(),PREMIS).toFile();
 		logger.trace("trying to write new Premis file at " + newPREMISXml.getAbsolutePath());
-		new ObjectPremisXmlWriter().serialize(newPREMISObject, newPREMISXml,Path.make(wa.dataPath(),"jhove_temp"));
+		new ObjectPremisXmlWriter().serialize(newPREMISObject, newPREMISXml,Path.make(wa.dataPath(),WorkArea.TMP_JHOVE));
 		
 		try {
 			if (!PremisXmlValidator.validatePremisFile(newPREMISXml))
@@ -262,7 +263,7 @@ public class CreatePremisAction extends AbstractAction {
 		return ingestEventElement;		
 	}
 	
-	private Object parsePremisFile(File premisFile) {
+	public static Object parsePremisFile(File premisFile) {
 		
 		Object premisData;
 		

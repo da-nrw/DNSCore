@@ -43,6 +43,7 @@ public class C {
 	
 	public static final String MIMETYPE_IMAGE_JPEG = "image/jpeg";
 	public static final String MIMETYPE_TEXT_XML = "text/xml";
+	public static final String UNRECOGNIZED_PUID = "UNDEFINED";
 	
 	
 	// Presentation Metadata related 	
@@ -76,6 +77,17 @@ public class C {
 	public static final String EVENT_TYPE_CONVERT = "CONVERT";
 	public static final String EVENT_TYPE_CONVERSION_SUPRESSED = "CONVERSION_SUPRESSED";
 	public static final String EVENT_TYPE_VIRUS_SCAN = "VIRUS_SCAN";
+	//public static final String EVENT_TYPE_QUALITY_SCAN = "QUALITY_SCAN";
+	public static final String  EVENT_TYPE_QUALITY_CHECK_LEVEL_5="QUALITY_CHECK_LEVEL_5";
+	public static final String  EVENT_TYPE_QUALITY_CHECK_LEVEL_4="QUALITY_CHECK_LEVEL_4";
+	public static final String  EVENT_TYPE_QUALITY_CHECK_LEVEL_3="QUALITY_CHECK_LEVEL_3";
+	public static final String  EVENT_TYPE_QUALITY_CHECK_LEVEL_2="QUALITY_CHECK_LEVEL_2";
+	public static final String  EVENT_TYPE_QUALITY_CHECK_LEVEL_1="QUALITY_CHECK_LEVEL_1";
+
+	public static final String  EVENT_TYPE_QUALITY_FAULT_VALIDATION="QUALITY_FAULT_VALIDATION";
+	public static final String  EVENT_TYPE_QUALITY_FAULT_CONVERSION="QUALITY_FAULT_CONVERSION";
+	public static final String  EVENT_TYPE_QUALITY_FAULT_IDENTIFICATION="QUALITY_FAULT_IDENTIFICATION";
+
 	public static final String AGENT_TYPE_NODE = "NODE";
 	
 	// Error messages
@@ -89,7 +101,7 @@ public class C {
 	// File system
 	public static final Path CONF = new RelativePath("conf");
 	public static final String PREMIS_XSD_PATH = "conf/premis.xsd";
-	public static final String CONTRACT_XSD_PATH = "conf/danrw-contract-v1-01.xsd";
+	public static final String CONTRACT_XSD_PATH = "conf/danrw-contract-v1-02.xsd";
 	public static final String CONFIG_PROPS = "conf/config.properties";
 	public static final String XLINK_XSD_PATH = "conf/xlink.xsd";
 	public static final File HIBERNATE_CFG = new RelativePath(CONF,"hibernateCentralDB.cfg.xml").toFile();
@@ -97,7 +109,7 @@ public class C {
 	public static final String PREMIS_XML = "premis.xml";
 	public static final File XLINK_XSD_TEST = new File("src/main/xsd/xlink.xsd");
 	public static final File PREMIS_XSD_TEST = new File("src/main/xsd/premis.xsd");
-	public static final File CONTRACT_XSD_TEST = new File("src/main/xsd/v1/danrw-contract-v1-01.xsd");
+	public static final File CONTRACT_XSD_TEST = new File("src/main/xsd/v1/danrw-contract-v1-02.xsd");
 	public static final String FIDO_GLUE_SCRIPT = "fido.sh";
 	public static final Path FIDO_INSTALLATION = new RelativePath("fido");
 	public static final String CONFIGURE_SCRIPT = "configure.sh"; 
@@ -108,7 +120,7 @@ public class C {
 	public static final String XSI_NS = "http://www.w3.org/2001/XMLSchema-instance";
 	public static final String CONTRACT_NS = "http://www.danrw.de/contract/v1";
 	public static final String CONTRACT_V1_URL = "http://www.danrw.de/contract/v1";
-	public static final String CONTRACT_V1_SCHEMA_LOCATION = "http://www.danrw.de/schemas/contract/v1/danrw-contract-v1-01.xsd";
+	public static final String CONTRACT_V1_SCHEMA_LOCATION = "http://www.danrw.de/schemas/contract/v1/danrw-contract-v1-02.xsd";
 
 	public static final Namespace METS_NS = Namespace.getNamespace("http://www.loc.gov/METS/");
 	public static final Namespace XLINK_NS = Namespace.getNamespace("xlink","http://www.w3.org/1999/xlink");
@@ -127,9 +139,12 @@ public class C {
 	public static final String EDM_AGGREGATED_CHO= "edm:aggregatedCHO";
 	public static final String EDM_CONTRIBUTOR = "dc:contributor";
 	public static final String EDM_CREATOR = "dc:creator";
+	public static final String EDM_DATE = "dc:date";
+	public static final String EDM_DESCRIPTION = "dc:description";
 	public static final String EDM_DATE_ISSUED = "dcterms:issued";
 	public static final String EDM_DATE_CREATED = "dcterms:created";
 	public static final String EDM_PUBLISHER = "dc:publisher";
+	public static final String EDM_SPATIAL = "dcterms:spatial";
 	public static final String EDM_IS_PART_OF = "dcterms:isPartOf";
 	public static final String EDM_HAS_PART = "dcterms:hasPart";
 	public static final String EDM_TITLE = "dc:title";
@@ -142,9 +157,12 @@ public class C {
 	public static final String EDM_OBJECT = "edm:object";
 	public static final String EDM_PROVIDER = "edm:provider";
 	public static final String EDM_HAS_TYPE = "edm:hasType";
+	public static final String EDM_TYPE = "edm:type";
+	public static final String DC_RIGHTS_HOLDER = "dc:rightsHolder";
 	public static final String DC_RIGHTS = "dc:rights";
 	public static final String EDM_RIGHTS = "edm:rights";
 	public static final String EDM_EXTENT = "dcterms:extent";
+	public static final String EDM_PROVENANCE = "dcterms:provenance";
 	public static final String INDEX_INSTITUTION_TYPE ="@institutionType";
 	// Other
 	public static final String LOCAL_NODE_BEAN_NAME = "localNode";
@@ -179,6 +197,13 @@ public class C {
 	public static final int PUBLISHEDFLAG_PUBLIC = 1;
 	public static final int PUBLISHEDFLAG_UNDEFINED = -1;
 	
+	public static final int QUALITYFLAG_DEFAULT = 0;
+	public static final int QUALITYFLAG_LEVEL_1 = 1;
+	public static final int QUALITYFLAG_LEVEL_2 = 2;
+	public static final int QUALITYFLAG_LEVEL_3 = 3;
+	public static final int QUALITYFLAG_LEVEL_4 = 4;
+	public static final int QUALITYFLAG_LEVEL_5 = 5;
+
 	public static final int LICENSEFLAG_UNDEFINED = -1;
 	public static final int LICENSEFLAG_NO_LICENSE = 0;
 	public static final int LICENSEFLAG_PREMIS = 1;
@@ -187,6 +212,7 @@ public class C {
 	public static final int LICENSEFLAG_LIDO = 4;
 	public static final int PRESERVATIONSYS_LICENSE_VALIDATION_YES = 1;
 	public static final int PRESERVATIONSYS_LICENSE_VALIDATION_NO = 0;
+
 	
 	public static final String ORE_AGGREGATION = "ore:Aggregation";
 	
@@ -201,8 +227,9 @@ public class C {
 	public static final String KIND_OF_SIPBUILDING_MULTIPLE="SIPs aus Unterordnern des Quellverzeichnisses erstellen";
 	public static final String KIND_OF_SIPBUILDING_NESTED="SIPs aus verzweigter Ordnerstruktur erstellen (nur METS)";
 
+	public static final String PREMIS = "premis.xml";
 	public static final long UNKNOWN_FILESIZE = -1;
-	
+
 }
 
 

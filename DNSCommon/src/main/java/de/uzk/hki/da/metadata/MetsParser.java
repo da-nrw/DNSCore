@@ -819,12 +819,12 @@ public class MetsParser{
 			}
 			
 			List<String> allReferences = getReferencesFromDmdId(id, ObjectId);
-			
+/*** Alle Referenzen für alle Objekte ist Stuss und erzeugt unter Umstaenden OutOfMemmoryError	
 //			LAV
 			if(allReferences==null || allReferences.isEmpty()) {
 				allReferences = getReferences();
 			}
-			
+*/		
 			if(titlePageRefs!=null & !titlePageRefs.isEmpty()) {
 				List<String> references = new ArrayList<String>();
 				references.add(titlePageRefs.get(0));

@@ -25,7 +25,7 @@ cp src/main/xml/standardRights.xml $INSTALLATION/conf/standardRights.xml
 
 cp src/main/xml/fileExtensions.xml $INSTALLATION/conf
 
-wget $URL$CONTRACT -O $INSTALLATION/conf/schemas/contract/v1/$CONTRACT
+wget $URL$CONTRACT -O $INSTALLATION/conf/schemas/contract/v1/$CONTRACT --no-check-certificate
 rc=$?; if [[ $rc != 0 ]]; then 
 	echo "CONTRACT at   NOT AVAILABLE!"	
 	exit $rc; 

@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FileSystemUtils;
@@ -31,10 +32,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.format.KnownFormatCmdLineErrors;
+import de.uzk.hki.da.format.QualityLevelException;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.WorkArea;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.Path;
 
@@ -83,10 +86,27 @@ public class ConverterService {
 		
 		for (ConversionInstruction ci:conversionInstructions){
 			waitUntilThereIsSufficientSpaceOnCacheResource(wa.dataPath().toString(),2097152,10000);
-			
-			List<Event> partialResults = executeConversionInstruction(wa,ci,object);
-			
-			results.addAll(partialResults);
+			try{
+				List<Event> partialResults = executeConversionInstruction(wa,ci,object);
+				results.addAll(partialResults);
+			}catch(RuntimeException e){
+				logger.debug("Conversion failed by exeption: "+e);
+				Event qualityEvent = new Event();
+				
+				qualityEvent.setDate(new Date());
+				qualityEvent.setAgent_name(object.getInitial_node());
+				qualityEvent.setAgent_type(C.AGENT_TYPE_NODE);
+				qualityEvent.setType(C.EVENT_TYPE_QUALITY_FAULT_CONVERSION);
+				qualityEvent.setSource_file(ci.getSource_file());
+				String msg=QualityLevelException.Type.CONVERSION+" | "+ci.getConversion_routine()+" | "+e.getMessage();
+				if(msg.length()>Event.MAX_DETAIL_STR_LEN)
+					msg=msg.substring(0,Event.MAX_DETAIL_STR_LEN);
+				qualityEvent.setDetail(msg);
+
+				logger.debug("QualityEvent created: "+qualityEvent);
+				object.getLatestPackage().getEvents().add(qualityEvent);
+				//results.add(qualityEvent); //if the quality-events are passing to calling method, it have to be insured to expect not only CONVERT events
+			}
 		}
 
 		logger.info("Resulting Events");

@@ -36,7 +36,9 @@ public class ATIngestUnpackedSIPNoBagit extends AcceptanceTest {
 	 */
 	private void putSIPtoIngestAreaNoBagit(String sourcePackageName,String ext,String originalName)  throws IOException {
 		if (localNode==null) throw new IllegalStateException();
-		if (localNode.getIngestAreaNoBagitRootPath()==null) throw new IllegalStateException();
+		if (localNode.getIngestAreaNoBagitRootPath()==null ) throw new IllegalStateException("localNode.getIngestAreaNoBagitRootPath get null");
+		if (!localNode.getIngestAreaNoBagitRootPath().toFile().exists()) throw new IllegalStateException(""+localNode.getIngestAreaNoBagitRootPath());
+		System.out.println("ATIngestUnpackedSIPNoBagit::putSIPtoIngestAreaNoBagit(): "+localNode.getIngestAreaNoBagitRootPath().toFile());
 		File source;
 		File target;
 		if (StringUtilities.isSet(ext)){

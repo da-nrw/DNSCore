@@ -17,4 +17,5 @@
 	<userExceptionMessage id="INVALID_USER_FILE_FORMAT">Bei einer Datei im Paket %OBJECT_IDENTIFIER wurde ein Formatfehler erkannt. Sie können den Fehler in der Webmaske bestätigen und das Paket dennoch archivieren. Es wird auf mögliche Probleme in der zukünftigen Bestandserhaltung hingewiesen.\n\nMeldung:\n%ERROR_INFO\n </userExceptionMessage>
 	<userExceptionMessage id="VIRUS_DETECTED">Ihr eingeliefertes Paket mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert werden.\n\nGrund: Es enthält einen Virus. </userExceptionMessage>
 	<userExceptionMessage id="INVALID_LICENSE_DATA">Ihr eingeliefertes Paket mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert werden.\n\nGrund: Es enthält invalide Lizenzangaben. </userExceptionMessage>
+	<userExceptionMessage id="QUALITY_BELOW_REQUIRED">Ihr eingeliefertes Paket mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert werden.\n\nGrund: Die Mindestqualitätsstufe für das Paket ist unterschritten. </userExceptionMessage>
 </userExceptionMessages>

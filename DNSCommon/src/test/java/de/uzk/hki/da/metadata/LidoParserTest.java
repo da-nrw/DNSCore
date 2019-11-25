@@ -50,11 +50,11 @@ public class LidoParserTest {
 		assertTrue(elements.get(C.EDM_TITLE).size()==1
 					&& (elements.get(C.EDM_TITLE).get(0).equals("Nudelmaschine in Originalverpackung")  ));
 			
-		assertTrue(elements.get(C.EDM_PUBLISHER).contains("Overath") 
-					&& elements.get(C.EDM_PUBLISHER).contains("Italien"));
+		assertTrue(elements.get(C.EDM_SPATIAL).contains("Overath") 
+					&& elements.get(C.EDM_SPATIAL).contains("Italien"));
 			
-		assertTrue(elements.get(C.EDM_DATE_ISSUED).size()==1 
-					&& (elements.get(C.EDM_DATE_ISSUED).get(0).equals("01.01.1970-31.12.1989")));
+		assertTrue(elements.get(C.EDM_DATE).size()==1 
+					&& (elements.get(C.EDM_DATE).get(0).equals("01.01.1970-31.12.1989")));
 			
 		assertTrue(elements.get(C.EDM_RIGHTS).size()==1 
 					&& (elements.get(C.EDM_RIGHTS).get(0).equals("http://creativecommons.org/licenses/by/3.0/de/")));
@@ -66,11 +66,11 @@ public class LidoParserTest {
 		assertTrue(elements2.get(C.EDM_TITLE).size()==1
 					&& (elements2.get(C.EDM_TITLE).get(0).equals("Küchenmaschine")));
 			
-		assertTrue(elements2.get(C.EDM_PUBLISHER).contains("Bergisch Gladbach"));
+		assertTrue(elements2.get(C.EDM_SPATIAL).contains("Bergisch Gladbach"));
 			
-		assertTrue(elements2.get(C.EDM_DATE_ISSUED).size()==2 
-					&& (elements2.get(C.EDM_DATE_ISSUED).contains("01.01.1950-31.12.1969")||
-							elements2.get(C.EDM_DATE_ISSUED).contains("01.01.1950-31.12.1959")	));
+		assertTrue(elements2.get(C.EDM_DATE).size()==2 
+					&& (elements2.get(C.EDM_DATE).contains("01.01.1950-31.12.1969")||
+							elements2.get(C.EDM_DATE).contains("01.01.1950-31.12.1959")	));
 		assertTrue(elements2.get(C.EDM_RIGHTS).size()==1 
 					&& (elements2.get(C.EDM_RIGHTS).get(0).equals("http://creativecommons.org/licenses/by/3.0/de/")));		
 	}

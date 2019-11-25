@@ -47,6 +47,7 @@ class QueueEntry {
 	Object obj
 	String question
 	String answer
+	String errorText
 
     static constraints = {
 		status(nullable:false)
@@ -54,6 +55,7 @@ class QueueEntry {
 		modifiedAt(nullable:true)
 		question(nullable:true)
 		answer(nullable:true)
+		errorText(nullable:true)
 	}
 	
 	static mapping = {
@@ -64,8 +66,8 @@ class QueueEntry {
 		// necessary because dateCreated and dateModified seem to be reserved by grails
 		createdAt column: 'created_at'
 		modifiedAt column: 'modified_at'
+		errorText column: 'error_text'
 	}
-	
 	
 	static List getAllQueueEntriesForShortNameAndUrn(String shortName, String urn) {
 		return createCriteria().list  {

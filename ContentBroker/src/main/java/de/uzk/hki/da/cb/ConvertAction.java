@@ -85,15 +85,14 @@ public class ConvertAction extends AbstractAction {
 		
 		// The publication related ConversionStrategies rely on the information from the contract.
 		o.setRights(getObjectRights()); 
-		
+		try{
 		events = 
-			new ConverterService(o.getLatestPackage().isPruneExceptions(),knownFormatCmdLineErrors).convertBatch(
-				wa,	o, 
-				new ArrayList(j.getConversion_instructions()));
-		
+			new ConverterService(o.getLatestPackage().isPruneExceptions(),knownFormatCmdLineErrors).convertBatch(wa,o,new ArrayList(j.getConversion_instructions()));
+		}catch(RuntimeException e){
+			logger.debug("RuntimeException: "+e.getStackTrace()[0]+"\n"+e);
+		}
 		listFiles(o);
 		extendObject(o,events);
-		
 		j.getConversion_instructions().clear();
 		return true;
 	}
@@ -127,17 +126,15 @@ public class ConvertAction extends AbstractAction {
 	 * Extracts the information from the events generated during the conversion batch
 	 * and translates it into a proper object model structure. 
 	 */
-	private void extendObject(Object o,List<Event> events) {
-		
-		for (Event e:events){
-	
+	private void extendObject(Object o, List<Event> events) {
+		for (Event e : events) {
 			o.getLatestPackage().getFiles().add(e.getTarget_file());
 			if (e.getTarget_file()==null) {
 				logger.debug("target file is null");
 				continue;
 			}
 			addDAFileToDocument(o,e.getTarget_file());
-			
+
 			o.getLatestPackage().getEvents().add(e);
 		}
 	}
