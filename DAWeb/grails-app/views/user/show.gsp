@@ -107,6 +107,18 @@
 						
 					</li>
 					</g:if>
+					
+					<g:if test="${userInstance?.enabled}">
+					<li class="fieldcontain">
+						<span id="enabled-label" class="property-label">
+							<g:message code="user.minIngestQualityLevel.label" default="Mindest-Qualitätsstufe" />
+						</span>
+						<span class="property-value" aria-labelledby="minIngestQualityLevel-label">
+							<g:fieldValue bean="${userInstance}" field="minIngestQualityLevel"/>
+						</span>
+						
+					</li>
+					</g:if>
 				
 					<g:if test="${userInstance?.passwordExpired}">
 					<li class="fieldcontain">
