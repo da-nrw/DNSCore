@@ -35,6 +35,8 @@
 								
 								<g:sortableColumn property="provider_type" title="${message(code: 'user.provider_type.label', default: 'Provider Type')}" />
 							
+								<g:sortableColumn property="password" title="${message(code: 'user.minqualitylevel.label', default: 'Mindest-Qualitätsstufe')}" />
+							
 								<g:sortableColumn property="password" title="${message(code: 'user.password.label', default: 'Password')}" />
 							
 								<g:sortableColumn property="description" title="${message(code: 'user.description.label', default: 'Description')}" />
@@ -54,6 +56,8 @@
 								<td>${fieldValue(bean: userInstance, field: "username")}</td>
 								
 								<td>${fieldValue(bean: userInstance, field: "provider_type")}</td>
+								
+								<td>${fieldValue(bean: userInstance, field: "minIngestQualityLevel")}</td>
 							
 								<td>${fieldValue(bean: userInstance, field: "password")}</td>
 								
