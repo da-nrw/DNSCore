@@ -20,6 +20,8 @@ grails:
               chainMap:
                 - pattern: /status/**
                   filters: JOINED_FILTERS, -exceptionTranslationFilter
+                - pattern: /delete/**
+                  filters: JOINED_FILTERS, -exceptionTranslationFilter
                 - pattern: /assets/**
                   filters: none
                 - pattern: /**/js/**
