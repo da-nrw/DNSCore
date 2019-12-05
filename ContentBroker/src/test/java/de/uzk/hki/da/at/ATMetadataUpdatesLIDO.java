@@ -89,7 +89,7 @@ public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 			}
 		}
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		String LidoFileName = "LIDO-Testexport2014-07-04-FML-Auswahl.xml";
 		Document doc = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, LidoFileName).toFile()));
@@ -117,7 +117,7 @@ public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 	public void testPres() throws FileNotFoundException, JDOMException, IOException{
 		
 		FileReader frLido = new FileReader(ath.loadFileFromPip(object.getIdentifier(), "LIDO.xml"));
-		SAXBuilder lidoSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder lidoSaxBuilder = XMLUtils.createValidatingSaxBuilder();
 		Document doc = lidoSaxBuilder.build(frLido);
 		
 		List<String> lidoUrls =  mh.getLIDOURL(doc);
@@ -136,7 +136,7 @@ public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
 		
 		FileReader frLido = new FileReader(ath.loadFileFromPip(object.getIdentifier(), "EDM.xml"));
-		SAXBuilder lidoSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder lidoSaxBuilder = XMLUtils.createValidatingSaxBuilder();
 		Document doc = lidoSaxBuilder.build(frLido);
 	
 		List<Element> providetCho = doc.getRootElement().getChildren("ProvidedCHO", C.EDM_NS);

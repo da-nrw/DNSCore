@@ -107,7 +107,7 @@ public class ATTimeBasedPublication extends AcceptanceTest{
 		String prefix = preservationSystem.getUrisFile() + File.separator + object.getIdentifier() + File.separator;
 		String should = prefix + "_0c32b463b540e3fee433961ba5c491d6.jpg"; 
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 
 		Document publDoc = builder.build(new FileInputStream(publFile));
 		assertEquals(should, getUrl(publDoc));

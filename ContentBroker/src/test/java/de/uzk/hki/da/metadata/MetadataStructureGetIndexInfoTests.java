@@ -163,7 +163,7 @@ public class MetadataStructureGetIndexInfoTests {
 			mms.appendAccessCondition(metsTMP, testLicense.getHref(), testLicense.getDisplayLabel(), testLicense.getText());
 			
 			//read the written result
-			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+			SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 			FileReader fr1 = new FileReader(metsTMPFullPath);
 			org.jdom.Document metsDoc = builder.build(fr1);
 			MetsParser mp = new MetsParser(metsDoc);
@@ -195,7 +195,7 @@ public class MetadataStructureGetIndexInfoTests {
 			mms.appendAccessCondition(metsTMP, testLicense.getHref(), testLicense.getDisplayLabel(), testLicense.getText());
 			
 			//read the written result
-			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+			SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 			FileReader fr1 = new FileReader(metsTMPFullPath);
 			org.jdom.Document metsDoc = builder.build(fr1);
 			MetsParser mp = new MetsParser(metsDoc);

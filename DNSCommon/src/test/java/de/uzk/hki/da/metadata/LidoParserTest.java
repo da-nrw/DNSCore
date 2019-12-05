@@ -36,7 +36,7 @@ public class LidoParserTest {
 	
 	@Test
 	public void testGetIndexInfoFromLavMets() throws JDOMException, IOException, JaxenException {
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		FileReader fr1 = new FileReader(licenseLidoFile);
 		Document lidoDoc = builder.build(fr1);
 		LidoParser lp = new LidoParser(lidoDoc);
@@ -79,7 +79,7 @@ public class LidoParserTest {
 	@Test
 	public void testDifferentLicenseMultipleAM()throws JDOMException, IOException{
 			LidoLicense lidoLicense=new LidoLicense("http://creativecommons.org/licenses/by/3.0/de/","CC BY 3.0 DE");
-			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+			SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 			FileReader fr1 = new FileReader(noLicenseMultiLidoErrorFile);
 			Document lidoDoc = builder.build(fr1);
 			LidoParser lp = new LidoParser(lidoDoc);
@@ -100,7 +100,7 @@ public class LidoParserTest {
 	@Test
 	public void testLicenseInMultilevelLido()throws JDOMException, IOException{
 		LidoLicense lidoLicense=new LidoLicense("http://creativecommons.org/licenses/by/3.0/de/","CC BY 3.0 DE");
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		FileReader fr1 = new FileReader(licenseLidoFile);
 		Document lidoDoc = builder.build(fr1);
 		LidoParser lp = new LidoParser(lidoDoc);
@@ -112,7 +112,7 @@ public class LidoParserTest {
 	
 	@Test
 	public void testNoLicenseInLido()throws JDOMException, IOException{
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		FileReader fr1 = new FileReader(noLicenseLidoFile);
 		Document lidoDoc = builder.build(fr1);
 		LidoParser lp = new LidoParser(lidoDoc);
@@ -124,7 +124,7 @@ public class LidoParserTest {
 	
 	@Test
 	public void testNoLicenseInLidoMultipleAM()throws JDOMException, IOException{
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		FileReader fr1 = new FileReader(noLicenseMultiAMLidoFile);
 		Document lidoDoc = builder.build(fr1);
 		LidoParser lp = new LidoParser(lidoDoc);

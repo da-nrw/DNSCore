@@ -52,7 +52,7 @@ public class XMLUtils {
 	    public void warning(SAXParseException spe) throws SAXException {
 	        String message = "Warning: " + getParseExceptionInfo(spe);
 	        out.println(message);
-	        throw new SAXException(message);
+	        //throw new SAXException(message);
 	    }
 	        
 	    public void error(SAXParseException spe) throws SAXException {
@@ -74,7 +74,7 @@ public class XMLUtils {
 	 * @author Sebastian Cuy
 	 * @return the SAXBuilder
 	 */
-	public static SAXBuilder createNonvalidatingSaxBuilder() {
+	public static SAXBuilder createValidatingSaxBuilder() {
 		SAXBuilder builder =  new SAXBuilder(true); //new SAXBuilder(false);
 		builder.setValidation(true);
 		builder.setErrorHandler(myHandler);
@@ -85,8 +85,9 @@ public class XMLUtils {
 		builder.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
 		return builder;
 	}
+
 	
-	public static SAXParser createNonvalidatingSaxParser() throws ParserConfigurationException, SAXException {
+	public static SAXParser createValidatingSaxParser() throws ParserConfigurationException, SAXException {
 		
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		factory.setValidating(true);
@@ -101,7 +102,7 @@ public class XMLUtils {
 	}
 
 	public static Document getDocumentFromXMLFile(File file) throws IOException, JDOMException {
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();	
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();	
 		
 		FileInputStream fileInputStream = new FileInputStream(file);
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
