@@ -60,6 +60,8 @@ class User  implements Serializable {
 	 String friendly_file_exts
 	 String email_contact
 	 String forbidden_nodes
+	 
+	 Integer minIngestQualityLevel
 
 	User(String username, String password) {
 		this.username = username
@@ -90,6 +92,7 @@ class User  implements Serializable {
 		deltaOnUrn column: 'delta_on_urn'
 		friendly_file_exts column: 'friendly_file_exts'
 		provider_type column:'provider_type' //DANRW-1446
+		minIngestQualityLevel column:'minimal_ingest_quality_level' //DANRW-1613
 	}
 	
 	Set<Role> getAuthorities() { 
