@@ -154,12 +154,18 @@
 							<span class="property-value" aria-labelledby="origName-label">${objectInstance.getFormattedModifiedDate()}</span>
 					</li>
 					</g:if>
-						<g:if test="${objectInstance?.static_nondisclosure_limit}">
+					<g:if test="${objectInstance.getFormattedQualityLevelNoZero()}">
 						<li class="fieldcontain">
-						<span id="origName-label" class="property-label">Startdatum einer Veröffentlichung</span>
-						
-							<span class="property-value" aria-labelledby="origName-label">${objectInstance.static_nondisclosure_limit}</span>
+						<span id="qualityFlag-label" class="property-label"><g:message code="object.modified.label" default="Qualitätsstufe" /></span>
+							<span class="property-value" aria-labelledby="qualityFlag-label">${objectInstance.getFormattedQualityLevelNoZero()}</span>
 					</li>
+					</g:if>
+				
+					<g:if test="${objectInstance?.static_nondisclosure_limit}">
+						<li class="fieldcontain">
+							<span id="origName-label" class="property-label">Startdatum einer Veröffentlichung</span>
+							<span class="property-value" aria-labelledby="origName-label">${objectInstance.static_nondisclosure_limit}</span>
+						</li>
 					</g:if>
 						<g:if test="${objectInstance?.dynamic_nondisclosure_limit}">
 						<li class="fieldcontain">
