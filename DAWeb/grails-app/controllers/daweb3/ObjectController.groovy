@@ -77,10 +77,14 @@ class ObjectController {
 			 admin = 1;
 		 }
 		 // access table objects
+		 def mostRecentSecondAtt
+		 if (object.most_recent_secondary_attributes != null) {
+			 mostRecentSecondAtt = object.most_recent_secondary_attributes.toUpperCase();
+		 }
 		 objects = Object.findAll("from Object as o where o.most_recent_formats like :formats " +
 			 " or o.most_recent_secondary_attributes like :attributes)"   ,
 			  [formats:'%'+object.most_recent_formats+'%',
-			  attributes:"%"+object.most_recent_secondary_attributes+"%"])
+			  attributes:"%"+ mostRecentSecondAtt +"%"])
 		
 		 // list of results
 		 [ objects:objects ]
