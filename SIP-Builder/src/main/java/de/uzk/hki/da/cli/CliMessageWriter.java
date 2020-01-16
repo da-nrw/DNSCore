@@ -19,8 +19,7 @@
 
 package de.uzk.hki.da.cli;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
 import de.uzk.hki.da.sb.MessageWriter;
 
@@ -31,8 +30,7 @@ import de.uzk.hki.da.sb.MessageWriter;
  */
 public class CliMessageWriter extends MessageWriter{
 
-	private static Logger logger = LogManager.getLogger(CliMessageWriter.class);
-	
+	private Logger logger = Logger.getLogger(CliMessageWriter.class);
 	UserInput standardAnswerAlwaysOverwrite = UserInput.NO;
 	UserInput standardAnswerIgnoreWrongReferencesInMetadata = UserInput.NO;
 	

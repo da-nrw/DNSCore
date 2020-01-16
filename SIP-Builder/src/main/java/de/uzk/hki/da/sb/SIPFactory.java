@@ -34,8 +34,7 @@ import javax.swing.JOptionPane;
 import org.apache.commons.io.FileExistsException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.input.SAXBuilder;
 
@@ -69,7 +68,7 @@ import de.uzk.hki.da.metadata.NullLastComparator;
 
 public class SIPFactory {
 
-	private Logger logger = LogManager.getLogger(SIPFactory.class);
+	private static Logger logger = Logger.getLogger(SIPFactory.class);
 
 	private String sourcePath = null;
 	private String destinationPath = null;

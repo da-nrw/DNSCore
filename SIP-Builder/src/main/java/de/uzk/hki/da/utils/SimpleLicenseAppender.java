@@ -10,15 +10,14 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Scanner;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
 import de.uzk.hki.da.sb.Feedback;
 
 public class SimpleLicenseAppender extends ExistingSIPModifier {
 	static final String DEFAULT_LICENSE="                <publicationLicense href=\"https://creativecommons.org/licenses/by-sa/4.0/\" displayLabel=\"CC-BY-SA-Lizenz (v4.0)\">CC v4.0 International Lizenz: Namensnennung - Weitergabe unter gleichen Bedingungen</publicationLicense>";
 	static final String TMP_FILE=".tmp";
-	private static Logger logger = LogManager.getLogger(SimpleLicenseAppender.class);
+	private static Logger logger = Logger.getLogger(SimpleLicenseAppender.class);
 	
 	protected Feedback doModificationOnSIPData(File unpackedSIPDir) throws IOException{
 		File premisFileIN=new File(unpackedSIPDir,C.PREMIS_XML);

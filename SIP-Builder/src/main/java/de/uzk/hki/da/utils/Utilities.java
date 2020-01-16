@@ -34,8 +34,7 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 
 import de.uzk.hki.da.metadata.ContractRights.ConversionCondition;
 import de.uzk.hki.da.metadata.EadParser;
@@ -54,7 +53,7 @@ import de.uzk.hki.da.sb.SIPFactory.KindOfSIPBuilding;
  */
 public class Utilities {
 	
-	private static Logger logger = LogManager.getLogger(Utilities.class );
+	private static Logger logger = Logger.getLogger(Utilities.class );
 	/**
 	 * String to enum translation method
 	 * 

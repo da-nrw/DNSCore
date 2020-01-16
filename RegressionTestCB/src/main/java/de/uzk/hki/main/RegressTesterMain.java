@@ -6,7 +6,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Map;
+import java.util.Enumeration;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
@@ -17,17 +17,14 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Appender;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.log4j.Appender;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.junit.runner.Description;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
-
 import de.uzk.hki.da.at.AcceptanceTestHelper;
 import de.uzk.hki.da.utils.FolderUtils;
 
@@ -212,18 +209,9 @@ public class RegressTesterMain {
 	    //root.addAppender(fAppender);
 	    
 	    //Set log4j
-	    LogManager.getRootLogger().atLevel(Level.INFO);
-
-		final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
-		final Configuration config = ctx.getConfiguration();
-		
-		for ( final  Map.Entry<String, Appender> appenders : config.getAppenders().entrySet() ) {
-			config.getRootLogger().removeAppender(appenders.getValue().getName());
-		}
-	    
-//		Log.getRootLogger().setLevel(Level.INFO);
-//		for(Enumeration e=Logger.getRootLogger().getAllAppenders();e.hasMoreElements();)
-//			Logger.getRootLogger().removeAppender((Appender)e.nextElement());
+		Logger.getRootLogger().setLevel(Level.INFO);
+		for(Enumeration e=Logger.getRootLogger().getAllAppenders();e.hasMoreElements();)
+			Logger.getRootLogger().removeAppender((Appender)e.nextElement());
 		/*Layout layout = new PatternLayout("%d [%t] %-5p %c %x - %m%n");
 		try {
 			Logger.getRootLogger().addAppender(new FileAppender(layout,"RegressionTest"+System.currentTimeMillis()+".log",true));

@@ -22,7 +22,6 @@ package de.uzk.hki.da.main;
 import java.awt.Color;
 import java.io.File;
 import java.io.FileDescriptor;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -37,17 +36,10 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 
 import org.apache.commons.lang.SystemUtils;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.appender.ConsoleAppender;
-import org.apache.logging.log4j.core.config.Configuration;
-import org.apache.logging.log4j.core.config.ConfigurationFactory;
-import org.apache.logging.log4j.core.config.ConfigurationSource;
-import org.apache.logging.log4j.core.config.LoggerConfig;
-import org.apache.logging.log4j.core.config.xml.XmlConfigurationFactory;
-import org.apache.logging.log4j.core.layout.PatternLayout;
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.log4j.TTCCLayout;
 
 import de.uzk.hki.da.cli.Cli;
 import de.uzk.hki.da.gui.Gui;
@@ -61,13 +53,19 @@ import de.uzk.hki.da.sb.Feedback;
  */
 public class SIPBuilder {
 	
-	private static final Logger logger = LogManager.getLogger(SIPBuilder.class);
+	private static Logger logger = Logger.getRootLogger();
 	
 	private static Properties properties;
 
 	public static void main(String[] args) {
     	
-        logger.debug("Start des SIP-Builder");
+		TTCCLayout layout = new TTCCLayout();
+		layout.setDateFormat("yyyy'-'MM'-'dd' 'HH':'mm':'ss");
+		layout.setThreadPrinting(false);
+	    ConsoleAppender consoleAppender = new ConsoleAppender(layout);
+	    logger.addAppender( consoleAppender );
+        logger.setLevel(Level.DEBUG);
+        
         properties = new Properties();
 		try {
 			properties.load(new InputStreamReader((ClassLoader.getSystemResourceAsStream("configuration/config.properties"))));
@@ -96,15 +94,14 @@ public class SIPBuilder {
 			confFolderPath = "conf";
 			dataFolderPath = "data";
 		}
-	    logger.info("ConfFolderPath:"+confFolderPath);
+	    System.out.println("ConfFolderPath:"+confFolderPath);
 	    if (args.length == 0)
 	    	startGUIMode(confFolderPath, dataFolderPath);
 	    else
 		    startCLIMode(confFolderPath, dataFolderPath, args);
     }
     
-
-	/**
+    /**
      * Starts the SIP-Builder in GUI mode
      * 
      * @param confFolderPath Path to conf folder

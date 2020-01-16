@@ -27,8 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.apache.tika.Tika;
 
 /**
@@ -37,7 +36,7 @@ import org.apache.tika.Tika;
 
 public class FormatDetectionService {
 	
-	private Logger logger = LogManager.getLogger(FormatDetectionService.class);
+	private Logger logger = Logger.getLogger(FormatDetectionService.class);
 	
 	String eadPattern = ".*(?s)\\A.{0,1000}\\x3cead[^\\x3c]{0,1000}\\x3ceadheader.*";
 	String metsPattern = ".*(?s)\\A.{0,1000}\\x3c([^: ]+:)?mets[^\\xce]{0,100}xmlns:?[^=]{0,10}=\"http://www.loc.gov/METS.*";
