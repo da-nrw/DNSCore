@@ -18,7 +18,8 @@ import nu.xom.Element;
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -29,7 +30,7 @@ import org.xml.sax.XMLReader;
  *
  */
 public class FileExtensions {
-	private Logger logger = Logger.getLogger(FileExtensions.class);
+	private Logger logger = LogManager.getLogger(FileExtensions.class);
 
 	/**
 	 * 

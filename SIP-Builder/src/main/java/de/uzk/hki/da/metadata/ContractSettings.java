@@ -31,7 +31,8 @@ import nu.xom.Element;
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -44,7 +45,7 @@ import org.xml.sax.XMLReader;
  */
 public class ContractSettings {
 
-	private Logger logger = Logger.getLogger(ContractSettings.class);
+	private static Logger logger = LogManager.getLogger(ContractSettings.class);
 	
 	private String[] duration = new String[4];
 	private String[] widthImage = new String[3];
