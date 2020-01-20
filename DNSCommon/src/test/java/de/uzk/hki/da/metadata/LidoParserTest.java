@@ -137,7 +137,7 @@ public class LidoParserTest {
 	
 	@Test
 	public void testExtent()throws JDOMException, IOException{
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		String objectId="Test-Object-100 - Schloß Neersen";
 		LidoLicense lic=new LidoLicense("http://creativecommons.org/licenses/by/4.0/", "CC BY 4.0");
 		FileReader fr1 = new FileReader(metadataLidoFile);
