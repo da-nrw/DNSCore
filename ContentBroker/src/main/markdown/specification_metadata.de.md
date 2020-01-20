@@ -36,8 +36,8 @@ Für die Präsentation der Daten im (HBZ-)Portal werden die aus spartenspezifisc
 Die Informationen darüber, Welche Metadatenfelder genau ihren Weg zum Portal finden, können Sie folgenden spartenspezifischen Tabellen entnehmen:
 
 1. [EAD](https://wiki1.hbz-nrw.de/display/DANOPEN/EAD+zu+EDM)
-1. [METS](https://wiki1.hbz-nrw.de/display/DANOPEN/METSMods+zu+EDM) 
-1. [LIDO](https://wiki1.hbz-nrw.de/display/DANOPEN/LIDO+to+EDM)
+1. [METS](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_mets2edm.de.md) 
+1. [LIDO](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_lido2edm.md)
 
 
 ## Anforderungen an die Metadaten im DNSCore
