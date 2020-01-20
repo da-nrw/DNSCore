@@ -33,6 +33,7 @@ public class LidoParserTest {
 	private static File noLicenseMultiAMLidoFile = Path.makeFile(WORK_AREA_ROOT_PATH, "LIDO-NoLicenseMultipleAM.xml");
 	private static File noLicenseLidoFile = Path.makeFile(WORK_AREA_ROOT_PATH, "LIDO-NoLicense.xml");
 	
+	private static File metadataLidoFile = Path.makeFile(WORK_AREA_ROOT_PATH, "SchlossNeersenLIDO201911.xml");
 	
 	@Test
 	public void testGetIndexInfoFromLavMets() throws JDOMException, IOException, JaxenException {
@@ -132,5 +133,19 @@ public class LidoParserTest {
 		assertEquals(null,lp.getLicenseForWholeLido());
 		assertTrue(lp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-ISIL/lido/Inventarnummer-1").get(C.EDM_RIGHTS).isEmpty());
 		assertTrue(lp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-ISIL/lido/Inventarnummer-2").get(C.EDM_RIGHTS).isEmpty());		
+	}
+	
+	@Test
+	public void testExtent()throws JDOMException, IOException{
+		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		String objectId="Test-Object-100 - Schloß Neersen";
+		LidoLicense lic=new LidoLicense("http://creativecommons.org/licenses/by/4.0/", "CC BY 4.0");
+		FileReader fr1 = new FileReader(metadataLidoFile);
+		Document lidoDoc = builder.build(fr1);
+		LidoParser lp = new LidoParser(lidoDoc);
+		HashMap<String, HashMap<String, List<String>>> indexInfo=lp.getIndexInfo("Test-Object");
+		assertEquals(lic,lp.getLicenseForWholeLido());
+		assertTrue(indexInfo.get(objectId).get(C.EDM_EXTENT).get(0).equals("29 x 41 cm"));
+		assertTrue(indexInfo.get(objectId).get(C.EDM_RIGHTS).get(0).equals(lic.getHref()));		
 	}
 }
