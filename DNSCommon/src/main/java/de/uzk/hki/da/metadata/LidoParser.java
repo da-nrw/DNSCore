@@ -380,7 +380,7 @@ public class LidoParser {
 
 	@SuppressWarnings("unchecked")
 	private List<String> getExtent(Element lidoElement) {
-		List<String> extents = new ArrayList();
+		List<String> extents = new ArrayList<String>();
 		try {
 			Element before;
 			Element element = lidoElement.getChild("descriptiveMetadata", C.LIDO_NS);
