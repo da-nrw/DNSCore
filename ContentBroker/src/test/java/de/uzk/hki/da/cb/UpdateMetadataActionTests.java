@@ -209,7 +209,7 @@ public class UpdateMetadataActionTests {
 		
 		action.implementation();
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		Document doc = builder.build(new FileReader(new File(workAreaPath + "/work/TEST/23/data/pips/public/mets.xml")));
 
 		String url = doc.getRootElement()

@@ -42,7 +42,7 @@ public class ATUseCaseIngestArchivDuisburg extends AcceptanceTest{
 	@Test
 	public void testFileIdGenInPres() throws FileNotFoundException, JDOMException, IOException {
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		Document doc = builder.build(new FileReader(ath.loadFileFromPip(object.getIdentifier(), "1175/mets_1175.xml")));
 		List<Element> metsFileElements = mh.getMetsFileElements(doc);
 		
@@ -53,7 +53,7 @@ public class ATUseCaseIngestArchivDuisburg extends AcceptanceTest{
 		assertEquals(URL, mh.getMetsLoctype(fileElement));
 		assertEquals(C.MIMETYPE_IMAGE_JPEG, mh.getMimetypeInMets(fileElement));
 		
-		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder eadSaxBuilder = XMLUtils.createValidatingSaxBuilder();
 		Document eadDoc = eadSaxBuilder.build(new FileReader(ath.loadFileFromPip(object.getIdentifier(), EAD_XML)));
 		EadParser ep = new EadParser(eadDoc);
 		

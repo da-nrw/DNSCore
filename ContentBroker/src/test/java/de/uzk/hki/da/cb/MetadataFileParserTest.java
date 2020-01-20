@@ -73,7 +73,7 @@ public class MetadataFileParserTest {
 		lidoFile = Path.make(workAreaRootPathPath, "replacementsTest", LIDO_FILENAME).toFile();
 		lidoStructure = new LidoMetadataStructure(Path.make(workAreaRootPathPath, "data"), lidoFile, documents);
 		
-		builder = XMLUtils.createNonvalidatingSaxBuilder();
+		builder = XMLUtils.createValidatingSaxBuilder();
 	}
 	
 	@AfterClass

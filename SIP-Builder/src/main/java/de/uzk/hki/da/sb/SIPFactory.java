@@ -430,7 +430,7 @@ public class SIPFactory {
 						if (metadataFileWithType.get(f).equals(C.CB_PACKAGETYPE_METS))
 							metsFiles.add(f);
 					for (File f : metsFiles) {// assuming more as usual mets is allowed (check is done by FormatDetectionService) e.g. publicMets for testcase-creation
-						SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+						SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 						Document metsDoc = builder.build(f);
 						MetsParser mp = new MetsParser(metsDoc);
 						licenseMetsFile.add(mp.getLicenseForWholeMets());
@@ -451,7 +451,7 @@ public class SIPFactory {
 						if (metadataFileWithType.get(f).equals(C.CB_PACKAGETYPE_LIDO))
 							lidoFiles.add(f);
 					for (File f : lidoFiles) {// assuming more as one metadata is allowed (check is done by FormatDetectionService) 
-						SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+						SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 						Document metsDoc = builder.build(f);
 						LidoParser lp = new LidoParser(metsDoc);
 						licenseLidoFile.add(lp.getLicenseForWholeLido());

@@ -231,7 +231,7 @@ public class UpdateMetadataActionEADMultilevelPackagesTest extends ConcreteActio
 		
 		action.implementation();
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		Document doc = builder.build(new FileReader(Path.make(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_TEMP_PIP_REP_PUBLIC,"mets_361/mets_2_32044.xml").toFile()));
 		assertEquals("http://data.danrw.de/file/identifier/renamed002.tif", getURL(doc));
 		assertEquals("URL", getLoctype(doc));
@@ -258,7 +258,7 @@ public class UpdateMetadataActionEADMultilevelPackagesTest extends ConcreteActio
 		
 		action.implementation();
 		
-		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder eadSaxBuilder = XMLUtils.createValidatingSaxBuilder();
 		
 		Document eadDocPub = eadSaxBuilder.build(new FileReader(Path.make(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_TEMP_PIP_REP_PUBLIC,"EAD.xml").toFile()));
 		List<String> eadRefs = getMetsRefsInEad(eadDocPub);

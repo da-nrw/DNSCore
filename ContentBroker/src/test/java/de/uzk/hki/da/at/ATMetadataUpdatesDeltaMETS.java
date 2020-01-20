@@ -75,7 +75,7 @@ public class ATMetadataUpdatesDeltaMETS extends AcceptanceTest{
 			}
 		}
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		String metsFileName = "export_mets.xml";
 		FileReader fr = new FileReader(Path.make(tmpObjectDirPath, bRep, metsFileName).toFile());
 		Document doc = builder.build(fr);
@@ -222,7 +222,7 @@ public class ATMetadataUpdatesDeltaMETS extends AcceptanceTest{
 	public void testPres() throws FileNotFoundException, JDOMException, IOException{
 		
 		object = ath.getObject(ORIG_NAME_ORIG);
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		FileReader fr = new FileReader(ath.loadDefaultMetsFileFromPip(object.getIdentifier()));
 		Document doc = builder.build(fr);
 		

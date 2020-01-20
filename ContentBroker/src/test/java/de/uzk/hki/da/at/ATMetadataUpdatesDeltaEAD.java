@@ -78,7 +78,7 @@ public class ATMetadataUpdatesDeltaEAD extends AcceptanceTest{
 			}
 		}
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		FileReader fr1 = new FileReader(Path.make(tmpObjectDirPath, bRep, "mets_2_32044.xml").toFile());
 		Document doc1 = builder.build(fr1);
 		List<Element> metsFileElements1 = mh.getMetsFileElements(doc1);
@@ -123,7 +123,7 @@ public class ATMetadataUpdatesDeltaEAD extends AcceptanceTest{
 	@Test
 	public void testPres() throws FileNotFoundException, JDOMException, IOException {
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		
 		FileReader fr1 = new FileReader(ath.loadFileFromPip(o.getIdentifier(), "mets_2_32044.xml"));
 		Document doc1 = builder.build(fr1);
@@ -177,7 +177,7 @@ public class ATMetadataUpdatesDeltaEAD extends AcceptanceTest{
 		
 		
 		FileReader fr = new FileReader(ath.loadFileFromPip(o.getIdentifier(), EAD_XML));
-		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder eadSaxBuilder = XMLUtils.createValidatingSaxBuilder();
 		Document eadDoc = eadSaxBuilder.build(fr);
 		EadParser ep = new EadParser(eadDoc);
 		

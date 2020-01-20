@@ -114,7 +114,7 @@ public class ATRestructureActionScanVirus extends AcceptanceTest{
  		} 
  		assertTrue(new File(unpackedObjectPath + "data/" + repBName + "/premis.xml").exists()); 
  		 
- 		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder(); 
+ 		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder(); 
  		Document doc; 
  		try { 
  			doc = builder.build(new File(unpackedObjectPath +  "data/" +repBName + "/premis.xml")); 

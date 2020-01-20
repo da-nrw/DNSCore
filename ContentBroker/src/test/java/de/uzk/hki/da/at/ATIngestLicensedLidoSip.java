@@ -193,7 +193,7 @@ public class ATIngestLicensedLidoSip extends AcceptanceTest {
 
 	public void checkLicenseInMetadata(Object obj,LidoLicense license) throws IOException, JDOMException{
 
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		//testPIPMets
 		File lidoFile1 = ath.loadDefaultLidoFileFromPip(obj.getIdentifier());
 		assertTrue(lidoFile1.exists());
