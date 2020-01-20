@@ -58,7 +58,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import de.uzk.hki.da.main.SIPBuilder;
 import de.uzk.hki.da.metadata.ContractRights;
@@ -83,7 +84,7 @@ import de.uzk.hki.da.utils.Utilities;
  */
 public class Gui extends JFrame {
 
-	private static Logger logger = Logger.getLogger(Gui.class);
+	private static Logger logger = LogManager.getLogger(Gui.class);
 
 	private static final long serialVersionUID = -2783837120567684391L;
 
