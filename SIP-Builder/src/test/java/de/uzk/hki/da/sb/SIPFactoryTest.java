@@ -37,10 +37,9 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.TTCCLayout;
+import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,7 +59,7 @@ import de.uzk.hki.da.utils.FolderUtils;
  */
 public class SIPFactoryTest {
 
-	private Logger logger = Logger.getLogger(SIPFactory.class);
+	private Logger logger = LogManager.getLogger(SIPFactory.class);
 	String pathToResourcesFolder = "src/test/resources/SIPFactoryTests/";
 	SIPFactory sipFactory = new SIPFactory();
 	CliMessageWriter cliMessageWriter = new CliMessageWriter();
@@ -75,8 +74,7 @@ public class SIPFactoryTest {
 		sipFactory = new SIPFactory();
 		sipFactory.setProgressManager(progressManager);
 		sipFactory.setMessageWriter(cliMessageWriter);
-		
-		setUpLogger();
+		sipFactory.setLogger(logger);
 		
 		Properties properties = new Properties();
 		try {
@@ -462,14 +460,4 @@ public class SIPFactoryTest {
 		return false;
 	}
 
-	
-	private void setUpLogger() {
-		TTCCLayout layout = new TTCCLayout();
-		layout.setDateFormat("yyyy'-'MM'-'dd' 'HH':'mm':'ss");
-		layout.setThreadPrinting(false);
-	    ConsoleAppender consoleAppender = new ConsoleAppender(layout);
-	    logger.addAppender( consoleAppender );
-        logger.setLevel(Level.INFO);
-		sipFactory.setLogger(logger);
-	}
 }

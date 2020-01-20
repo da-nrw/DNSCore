@@ -4,7 +4,8 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import de.uzk.hki.da.pkg.SipArchiveBuilder;
 import de.uzk.hki.da.sb.Feedback;
@@ -12,7 +13,7 @@ import de.uzk.hki.da.sb.ProgressManager;
 import de.uzk.hki.da.sb.SIPFactory;
 
 public abstract class ExistingSIPModifier {
-	private static Logger logger = Logger.getLogger( ExistingSIPModifier.class );
+	private static Logger logger = LogManager.getLogger( ExistingSIPModifier.class );
 	SIPFactory sipFactory;
 	SipArchiveBuilder sipArchiveBuilder;
 

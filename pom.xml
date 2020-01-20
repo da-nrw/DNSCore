@@ -30,8 +30,13 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
-    </repositories>
 
+	  <repository>
+	    <id>HTTPRep</id>
+	    <name>HTTP repository</name>
+	    <url>http://insecure.repo1.maven.org/maven2</url>
+	  </repository>
+	</repositories>
 
     <build>
         <pluginManagement>
