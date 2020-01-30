@@ -28,7 +28,7 @@
 
 Several runtime settings are needed by DA-Web. All the parameters needed for the app have to reside under the Tomcat Server's home in folder .grails, assuming the Tomcat's servers home at /home/tomcat/, there must be a file *called /home/tomcat/.grails/daweb3_properties.groovy*.
 Most of the parameters are the same as in config.properties of ContentBroker.
-A documented template can be found here: [daweb3_properties.groovy](./daweb3_properties.groovy)
+A documented template can be found here: [daweb3_properties.groovy](DNSCore/master/ContentBroker/src/main/markdown/daweb_setup.md)
 
 ### Build DA-Web WAR
 
