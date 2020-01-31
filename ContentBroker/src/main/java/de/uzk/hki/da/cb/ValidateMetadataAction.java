@@ -174,7 +174,7 @@ public class ValidateMetadataAction extends AbstractAction {
 				MetsLicense licenseMetsFile =null;
 				MetsLicense licensePublicMetsFile = null;
 				for (DAFile f : metsFiles) {//over all mets-files (max 2), amount is checked by previous actions
-					SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+					SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 					MetsParser mp = new MetsParser(builder.build(wa.toFile(f).getAbsolutePath()));
 					logger.debug("Check license in mets file: "+f.getRelative_path());
 					if(f.getRelative_path().equalsIgnoreCase(C.PUBLIC_METS)){
@@ -221,7 +221,7 @@ public class ValidateMetadataAction extends AbstractAction {
 				List<DAFile> lidoFiles = getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_LIDO);
 				LidoLicense licenseLidoFile =null;
 				for (DAFile f : lidoFiles) {//over all lido-files, amount is checked by previous actions
-					SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+					SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 					LidoParser lp = new LidoParser(builder.build(wa.toFile(f).getAbsolutePath()));
 					licenseLidoFile=lp.getLicenseForWholeLido();
 					hasLidoLicense=(licenseLidoFile!=null);

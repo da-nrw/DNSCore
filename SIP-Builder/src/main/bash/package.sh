@@ -19,6 +19,7 @@ cp src/main/bash/SipBuilder-Unix.sh $INSTALLATION/
 cp src/main/binary/SipBuilder-Windows.exe $INSTALLATION/
 
 cp src/main/xml/standardRightsLicense.xml $INSTALLATION/conf/standardRightsLicense.xml
+cp src/main/xml/standardRightsLicenseInstPub.xml $INSTALLATION/conf/standardRightsLicenseInstPub.xml
 cp src/main/xml/standardRights.xml $INSTALLATION/conf/standardRightsNonLicense.xml
 cp src/main/xml/standardRights.xml $INSTALLATION/conf/standardRights.xml
 

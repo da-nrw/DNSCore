@@ -50,7 +50,7 @@ public class ATMetadataUpdatesNewDDBEad extends AcceptanceTest{
 	public void testPres() throws FileNotFoundException, JDOMException, IOException {
 		FileReader frMets = new FileReader(ath.loadFileFromPip(o.getIdentifier(), "mets_1_280920.xml"));
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		Document doc = builder.build(frMets);
 		List<Element> metsFileElements = mh.getMetsFileElements(doc);
 		Element fileElement = metsFileElements.get(0);
@@ -61,7 +61,7 @@ public class ATMetadataUpdatesNewDDBEad extends AcceptanceTest{
 		frMets.close();
 		
 		FileReader frEad = new FileReader(ath.loadFileFromPip(o.getIdentifier(),EAD_XML));
-		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder eadSaxBuilder = XMLUtils.createValidatingSaxBuilder();
 		Document eadDoc = eadSaxBuilder.build(frEad);
 		EadParser ep = new EadParser(eadDoc);
 		
@@ -84,7 +84,7 @@ public class ATMetadataUpdatesNewDDBEad extends AcceptanceTest{
 	@Test
 	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
 		FileReader frEdm = new FileReader(ath.loadFileFromPip(o.getIdentifier(), "EDM.xml"));
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		Document doc = builder.build(frEdm);
 		@SuppressWarnings("unchecked")
 		List<Element> providetCho = doc.getRootElement().getChildren("ProvidedCHO", C.EDM_NS);

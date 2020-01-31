@@ -322,7 +322,7 @@ public class ATIngestLicensedMetsSip extends AcceptanceTest {
 
 	public void checkLicenseInMetadata(Object obj,MetsLicense license) throws IOException, JDOMException{
 
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		if(license!=null){
 			//testPIPMets
 			File metsFile1 = ath.loadDefaultMetsFileFromPip(obj.getIdentifier());

@@ -380,14 +380,28 @@ public class LidoParser {
 
 	@SuppressWarnings("unchecked")
 	private List<String> getExtent(Element lidoElement) {
-		List<String> extents = new ArrayList();
+		List<String> extents = new ArrayList<String>();
 		try {
+			Element before;
 			Element element = lidoElement.getChild("descriptiveMetadata", C.LIDO_NS);
 			element = element.getChild("objectIdentificationWrap", C.LIDO_NS);
 			element = element.getChild("objectMeasurementsWrap", C.LIDO_NS);
 			element = element.getChild("objectMeasurementsSet", C.LIDO_NS);
+			before=element;
 			element = element.getChild("displayObjectMeasurements", C.LIDO_NS);
 			String ext = element.getValue();
+			String unit="";
+			element = before.getChild("objectMeasurements", C.LIDO_NS);
+			
+			if(element!=null)
+				element = element.getChild("measurementsSet", C.LIDO_NS);
+			if(element!=null)
+				element = element.getChild("measurementUnit", C.LIDO_NS);
+			if(element!=null) {
+				unit=element.getValue();
+				ext+=" "+unit;
+			}
+			
 			extents.add(ext);
 		} catch (Exception e) {
 			logger.error("No Extent Element found!");
