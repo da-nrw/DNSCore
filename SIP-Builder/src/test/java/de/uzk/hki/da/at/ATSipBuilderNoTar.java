@@ -1,22 +1,18 @@
 package de.uzk.hki.da.at;
 
-import gov.loc.repository.bagit.Bag;
-import gov.loc.repository.bagit.BagFactory;
-import gov.loc.repository.bagit.utilities.SimpleResult;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import static org.junit.Assert.assertTrue;
-
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.pkg.BagitUtils;
 import de.uzk.hki.da.utils.FolderUtils;
 
 /**
@@ -50,7 +46,7 @@ public class ATSipBuilderNoTar {
 
 		File source = new File(sourceDir, "ATSipBuilderNoTar/ATSipBuilderNoTarSingle");
 		
- 		String cmd = "./SipBuilder-Unix.sh -rights=\""+ATWorkingDirectory.CONTRACT_RIGHT_LICENSED.getAbsolutePath()+"\" -source=\""+source.getAbsolutePath()+ "/\" -destination=\""+
+ 		String cmd = "./SipBuilder-Unix.sh -rights=\""+ATWorkingDirectory.CONTRACT_RIGHT_NON_LICENSED.getAbsolutePath()+"\" -source=\""+source.getAbsolutePath()+ "/\" -destination=\""+
  						targetDir.getAbsolutePath()+"/\" -noTar";
  		
  		p=Runtime.getRuntime().exec(cmd, null, new File("target/installation"));
@@ -82,14 +78,11 @@ public class ATSipBuilderNoTar {
 	    	 noTarFolder = new File(targetDir.getAbsolutePath() + File.separator + "data" + File.separator +  directorys[0].getName());
 		}
 	    
-		assertTrue(new File(noTarFolder + File.separator + "bag-info.txt").exists());
-		assertTrue(new File(noTarFolder + File.separator + "bagit.txt").exists());
-		assertTrue(new File(noTarFolder + File.separator + "manifest-md5.txt").exists());
-		assertTrue(new File(noTarFolder + File.separator + "tagmanifest-md5.txt").exists());
+		assertTrue(BagitUtils.isBagItStyle(noTarFolder));
 		assertTrue(new File(noTarFolder + File.separator + "data/NoTar.bmp").exists());
 		assertTrue(new File(noTarFolder + File.separator + "data/premis.xml").exists());
 				
-		assertTrue(validateBagIt(noTarFolder));
+		assertTrue(BagitUtils.bagIsValid(noTarFolder));
 	}
 	
 	/**
@@ -101,7 +94,7 @@ public class ATSipBuilderNoTar {
 
 		File source = new File(sourceDir, "ATSipBuilderNoTar/ATSipBuilderNoTarMultiple");
 		
- 		String cmd = "./SipBuilder-Unix.sh -rights=\""+ATWorkingDirectory.CONTRACT_RIGHT_LICENSED.getAbsolutePath()+"\" -source=\""+source.getAbsolutePath()+"/\" -destination=\""+
+ 		String cmd = "./SipBuilder-Unix.sh -rights=\""+ATWorkingDirectory.CONTRACT_RIGHT_NON_LICENSED.getAbsolutePath()+"\" -source=\""+source.getAbsolutePath()+"/\" -destination=\""+
  						targetDir.getAbsolutePath()+"/\" -noTar";
  		
  		p=Runtime.getRuntime().exec(cmd, null, new File("target/installation"));
@@ -132,10 +125,7 @@ public class ATSipBuilderNoTar {
 	    	 String dirName = directorys[i].getName();
 	    	 noTarFolder = new File(targetDir.getAbsolutePath() + File.separator +  "data" + File.separator + dirName);
 	
-			assertTrue(new File(noTarFolder + File.separator + "bag-info.txt").exists());
-			assertTrue(new File(noTarFolder + File.separator + "bagit.txt").exists());
-			assertTrue(new File(noTarFolder + File.separator + "manifest-md5.txt").exists());
-			assertTrue(new File(noTarFolder + File.separator + "tagmanifest-md5.txt").exists());
+	    	 assertTrue(BagitUtils.isBagItStyle(noTarFolder));
 			assertTrue(new File(noTarFolder + File.separator + "data/premis.xml").exists());
 			if (StringUtils.equals(dirName.trim(), "noTar1")) {
 				assertTrue(new File(noTarFolder + File.separator + "data/NoTar1.bmp").exists());
@@ -143,7 +133,7 @@ public class ATSipBuilderNoTar {
 				assertTrue(new File(noTarFolder + File.separator + "data/NoTar2.bmp").exists());
 			}
 					
-			assertTrue(validateBagIt(noTarFolder));
+			assertTrue(BagitUtils.bagIsValid(noTarFolder));
 	    }
 	}
 	
@@ -151,7 +141,7 @@ public class ATSipBuilderNoTar {
 	public void testDestDir() throws IOException {
 			File source = new File(sourceDir, "ATSipBuilderNoTar/ATSipBuilderNoTarDestDir");
 		
- 		String cmd = "./SipBuilder-Unix.sh -rights=\""+ATWorkingDirectory.CONTRACT_RIGHT_LICENSED.getAbsolutePath()+"\" -source=\""+source.getAbsolutePath()+"/\" -destination=\""+
+ 		String cmd = "./SipBuilder-Unix.sh -rights=\""+ATWorkingDirectory.CONTRACT_RIGHT_NON_LICENSED.getAbsolutePath()+"\" -source=\""+source.getAbsolutePath()+"/\" -destination=\""+
  						targetDir.getAbsolutePath()+"/\" -noTar" + " -destDir=\"test";
  		
  		p=Runtime.getRuntime().exec(cmd, null, new File("target/installation"));
@@ -186,28 +176,14 @@ public class ATSipBuilderNoTar {
 	    
 		System.out.println("### noTarFolder: " + noTarFolder);
 		
-		assertTrue(new File(noTarFolder + File.separator + "bag-info.txt").exists());
-		assertTrue(new File(noTarFolder + File.separator + "bagit.txt").exists());
-		assertTrue(new File(noTarFolder + File.separator + "manifest-md5.txt").exists());
-		assertTrue(new File(noTarFolder + File.separator + "tagmanifest-md5.txt").exists());
+		assertTrue(BagitUtils.isBagItStyle(noTarFolder));
 		assertTrue(new File(noTarFolder + File.separator + "data/NoTar.bmp").exists());
 		assertTrue(new File(noTarFolder + File.separator + "data/premis.xml").exists());
 				
-		assertTrue(validateBagIt(noTarFolder));
+		assertTrue(BagitUtils.bagIsValid(noTarFolder));
 		
 		
 	}
 	
-	/**
-	 * @param folder The folder to check
-	 * @return true if the BagIt metadata is valid, otherwise false
-	 */
-	private boolean validateBagIt(File folder) {
-		
-		BagFactory bagFactory = new BagFactory();
-		Bag bag = bagFactory.createBag(folder);
-		SimpleResult result = bag.verifyValid();
-		return result.isSuccess();
-	}
 	
 }

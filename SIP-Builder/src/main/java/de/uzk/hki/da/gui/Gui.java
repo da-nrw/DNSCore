@@ -107,7 +107,7 @@ public class Gui extends JFrame {
 
 	String confFolderPath, dataFolderPath;
 
-	int startPanelWidth = 750;
+	int startPanelWidth = 760; //750
 	int startPanelHeight = 526;
 
 	// GUI Elements
@@ -1529,7 +1529,7 @@ public class Gui extends JFrame {
 
 		// startPanel
 		startPanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
-		backgroundStartImageLabel.setBounds(0, 0, 750, 526);
+		backgroundStartImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 		welcomeLabel.setBounds(255, 70, 300, 40);
 		welcomeArea.setBounds(255, 100, 420, 120);
 
@@ -1550,7 +1550,7 @@ public class Gui extends JFrame {
 		goToLoadStandardButton.setBounds(575, 445, 90, 20);
 
 		// loadStandardPanel
-		loadStandardPanel.setBounds(0, 0, 750, 526);
+		loadStandardPanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 		rightsLabel.setBounds(255, 70, 300, 20);
 		rightsAreaOne.setBounds(255, 100, 430, 85);
 		loadContractButton.setBounds(350, 189, 90, 20);
@@ -1559,10 +1559,10 @@ public class Gui extends JFrame {
 		rightsAreaThree.setBounds(255, 283, 430, 100);
 		goBackToStartButton.setBounds(450, 445, 90, 20);
 		goToPublicButton.setBounds(575, 445, 90, 20);
-		backgroundLoadStandardImageLabel.setBounds(0, 0, 750, 526);
+		backgroundLoadStandardImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 
 		// publicPanel
-		publicPanel.setBounds(0, 0, 750, 526);
+		publicPanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 		publicLabel.setBounds(255, 70, 300, 20);
 		publicArea.setBounds(255, 100, 400, 40);
 		publicAllowRadioButton.setBounds(251, 150, 40, 20);
@@ -1571,10 +1571,10 @@ public class Gui extends JFrame {
 		publicDDBCheckBox.setBounds(251, 285, 190, 20);
 		goBackToLoadStandardButton.setBounds(450, 445, 90, 20);
 		goToLicenseButton.setBounds(575, 445, 90, 20);
-		backgroundPublicImageLabel.setBounds(0, 0, 750, 526);
+		backgroundPublicImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 
 		// publicLicensePanel
-		publicLicensePanel.setBounds(0, 0, 750, 526);
+		publicLicensePanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 		licenseLabel.setBounds(255, 70, 300, 20);
 		licenseDropDown.setEditable(false);
 		licenseDropDown.setEnabled(false);
@@ -1586,10 +1586,10 @@ public class Gui extends JFrame {
 		licenseTextField.setBounds(275, 295, 430, 20);
 		goBackToPublicButton.setBounds(450, 445, 90, 20);
 		goToPublicTempButton.setBounds(575, 445, 90, 20);
-		backgroundLicenseImageLabel.setBounds(0, 0, 750, 526);
+		backgroundLicenseImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 
 		// publicTempPanel
-		publicTempPanel.setBounds(0, 0, 750, 526);
+		publicTempPanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 		publicStartLabel.setBounds(255, 70, 300, 20);
 		publicNoTempRestrictionRadioButton.setBounds(251, 100, 215, 20);
 		publicTempRadioButton.setBounds(251, 125, 215, 20);
@@ -1599,17 +1599,17 @@ public class Gui extends JFrame {
 		publicLawIdDropDown.setBounds(255, 232, 310, 20);
 		goBackToLicenseOrInstitutionButton.setBounds(450, 445, 90, 20);
 		goToPublicRestrictionButton.setBounds(575, 445, 90, 20);
-		backgroundPublicTempImageLabel.setBounds(0, 0, 750, 526);
+		backgroundPublicTempImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 
 		// publicRestrictionPanel
-		publicRestrictionPanel.setBounds(0, 0, 750, 526);
+		publicRestrictionPanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 		publicRestrictionHeadlineLabel.setBounds(255, 70, 350, 20);
 		publicRestrictionArea.setBounds(255, 100, 360, 40);
 		publicTabbedPane.setBounds(255, 140, 380, 295);
 		goBackToPublicTempButton.setBounds(450, 445, 90, 20);
 		goToInstitutionButton.setBounds(575, 445, 90, 20);
 
-		backgroundPublicRestrictionImageLabel.setBounds(0, 0, 750, 526);
+		backgroundPublicRestrictionImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 
 		// publicRestrictionTextPanel
 		publicTextRestrictionCheckBox.setBounds(6, 10, 212, 20);
@@ -1645,17 +1645,17 @@ public class Gui extends JFrame {
 		publicVideoDurationDropDown.setBounds(10, 134, 100, 20);
 
 		// institutionPanel
-		institutionPanel.setBounds(0, 0, 750, 526);
+		institutionPanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 		institutionLabel.setBounds(255, 70, 300, 20);
 		institutionArea.setBounds(255, 100, 400, 90);
 		institutionAllowRadioButton.setBounds(251, 210, 40, 20);
 		institutionDenyRadioButton.setBounds(251, 235, 60, 20);
 		goBackToPublicRestrictionOrPublicButton.setBounds(450, 445, 90, 20);
 		goToInstitutionTempButton.setBounds(575, 445, 90, 20);
-		backgroundInstitutionImageLabel.setBounds(0, 0, 750, 526);
+		backgroundInstitutionImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 
 		// institutionTempPanel
-		institutionTempPanel.setBounds(0, 0, 750, 526);
+		institutionTempPanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 		institutionStartLabel.setBounds(255, 70, 300, 20);
 		institutionNoTempRestrictionRadioButton.setBounds(251, 100, 215, 20);
 		institutionTempRadioButton.setBounds(251, 125, 215, 20);
@@ -1665,16 +1665,16 @@ public class Gui extends JFrame {
 		institutionLawIdDropDown.setBounds(255, 232, 310, 20);
 		goBackToInstitutionButton.setBounds(450, 445, 90, 20);
 		goToInstitutionRestrictionOrPublicButton.setBounds(575, 445, 90, 20);
-		backgroundInstitutionTempImageLabel.setBounds(0, 0, 750, 526);
+		backgroundInstitutionTempImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 
 		// institutionRestrictionPanel
-		institutionRestrictionPanel.setBounds(0, 0, 750, 526);
+		institutionRestrictionPanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 		institutionRestrictionHeadlineLabel.setBounds(255, 70, 350, 20);
 		institutionRestrictionArea.setBounds(255, 100, 360, 40);
 		institutionTabbedPane.setBounds(255, 140, 380, 295);
 		goBackToInstitutionTempButton.setBounds(450, 445, 90, 20);
 		goToMigrationButton.setBounds(575, 445, 90, 20);
-		backgroundInstitutionRestrictionImageLabel.setBounds(0, 0, 750, 526);
+		backgroundInstitutionRestrictionImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 
 		// institutionRestrictionTextPanel
 		institutionTextRestrictionCheckBox.setBounds(6, 10, 212, 20);
@@ -1710,17 +1710,17 @@ public class Gui extends JFrame {
 		institutionVideoDurationDropDown.setBounds(10, 134, 100, 20);
 
 		// migrationPanel
-		migrationPanel.setBounds(0, 0, 750, 526);
+		migrationPanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 		migrationConversionLabel.setBounds(255, 70, 330, 20);
 		migrationArea.setBounds(255, 100, 450, 125);
 		migrationConditionLabel.setBounds(255, 225, 115, 20);
 		migrationDropDown.setBounds(370, 227, 240, 20);
 		goBackToInstitutionRestrictionOrTempButton.setBounds(450, 445, 90, 20);
 		goToSaveButton.setBounds(575, 445, 90, 20);
-		backgroundMigrationImageLabel.setBounds(0, 0, 750, 526);
+		backgroundMigrationImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 
 		// savePanel
-		savePanel.setBounds(0, 0, 750, 526);
+		savePanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 		saveLabel.setBounds(255, 70, 300, 20);
 		settingsOverviewInfoArea.setBounds(255, 100, 450, 25);
 		settingsOverviewArea.setBounds(255, 130, 450, 205);
@@ -1728,10 +1728,10 @@ public class Gui extends JFrame {
 		saveButton.setBounds(400, 390, 90, 20);
 		goBackToMigrationButton.setBounds(450, 445, 90, 20);
 		goToCreateButton.setBounds(575, 445, 90, 20);
-		backgroundSaveImageLabel.setBounds(0, 0, 750, 526);
+		backgroundSaveImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 
 		// createPanel
-		createPanel.setBounds(0, 0, 750, 526);
+		createPanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 		createLabel.setBounds(255, 70, 350, 20);
 		createArea.setBounds(255, 100, 400, 110);
 		compressionCheckBox.setBounds(251, 220, 175, 20);
@@ -1742,7 +1742,7 @@ public class Gui extends JFrame {
 		createButton.setBounds(575, 445, 90, 20);
 		abortButton.setBounds(575, 445, 90, 20);
 		quitButton.setBounds(575, 445, 90, 20);
-		backgroundCreateImageLabel.setBounds(0, 0, 750, 526);
+		backgroundCreateImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 	}
 
 	/**

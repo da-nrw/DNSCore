@@ -45,7 +45,7 @@ public class MetsParserTest {
 	@Test
 	public void testGetIndexInfoFromLavMets() throws JDOMException, IOException, JaxenException {
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		FileReader fr1 = new FileReader(lavMetsFile);
 		Document lavMets = builder.build(fr1);
 		MetsParser mp = new MetsParser(lavMets);
@@ -77,7 +77,7 @@ public class MetsParserTest {
 	@Test
 	public void testGetIndexInfoFromUlbMets() throws JDOMException, IOException {
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		FileReader fr1 = new FileReader(ulbMetsFile);
 		Document lavMets = builder.build(fr1);
 		MetsParser mp = new MetsParser(lavMets);
@@ -106,7 +106,7 @@ public class MetsParserTest {
 	
 	@Test
 	public void testReadAccessConditionNonExist()throws JDOMException, IOException{
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		FileReader fr1 = new FileReader(noLicenseMetsFile);
 		Document lavMets = builder.build(fr1);
 		MetsParser mp = new MetsParser(lavMets);
@@ -119,7 +119,7 @@ public class MetsParserTest {
 	@Test
 	public void testReadAccessConditionExist()throws JDOMException, IOException{
 		MetsLicense mLicense=new MetsLicense("use and reproduction","https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		FileReader fr1 = new FileReader(licenseMetsFile);
 		Document lavMets = builder.build(fr1);
 		MetsParser mp = new MetsParser(lavMets);
@@ -133,7 +133,7 @@ public class MetsParserTest {
 		@Test
 	public void testReadAccessConditionInMultilevelMETSDifferent()throws JDOMException, IOException{
 			MetsLicense mLicense=new MetsLicense("use and reproduction","https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
-			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+			SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 			FileReader fr1 = new FileReader(differentLicenseMultiMetsFile);
 			Document lavMets = builder.build(fr1);
 			MetsParser mp = new MetsParser(lavMets);
@@ -157,7 +157,7 @@ public class MetsParserTest {
 		@Test
 		public void testReadAccessConditionInMultilevelMETSNo()throws JDOMException, IOException{
 			MetsLicense mLicense=new MetsLicense("use and reproduction","https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
-			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+			SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 			FileReader fr1 = new FileReader(noLicenseMultiMetsFile);
 			Document lavMets = builder.build(fr1);
 			MetsParser mp = new MetsParser(lavMets);
@@ -174,7 +174,7 @@ public class MetsParserTest {
 	@Test
 	public void testReadAccessConditionInMultilevelMETSSame()throws JDOMException, IOException{
 		MetsLicense mLicense=new MetsLicense("use and reproduction","https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		FileReader fr1 = new FileReader(sameLicenseMultiMetsFile);
 		Document lavMets = builder.build(fr1);
 		MetsParser mp = new MetsParser(lavMets);

@@ -88,7 +88,7 @@ public class ATIngestLav extends AcceptanceTest {
 	@Test
 	public void testPIPMets() throws IOException, JDOMException {
 
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		File metsFile1 = ath.loadFileFromPip(object1.getIdentifier(), "METS.xml");
 		Document mets1 = builder.build
 				(new FileReader(metsFile1));
@@ -134,7 +134,7 @@ public class ATIngestLav extends AcceptanceTest {
 	@Test
 	public void testPIPEdm1() throws IOException, JDOMException {
 
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		File edmFile1 = ath.loadFileFromPip(object1.getIdentifier(), "EDM.xml");
 		Document edmDoc1 = builder.build
 				(new FileReader(edmFile1));

@@ -116,7 +116,7 @@ public class ATPremisCreationDelta extends PREMISBase {
 		
 		assertTrue(new File(dataFolder + repB2Name + "/premis.xml").exists());
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		Document doc;
 		try {
 			doc = builder.build(new File(dataFolder + repB2Name + "/premis.xml"));

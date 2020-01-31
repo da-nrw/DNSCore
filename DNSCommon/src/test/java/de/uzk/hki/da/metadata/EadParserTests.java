@@ -33,7 +33,7 @@ public class EadParserTests {
 		boolean metsReference1exists = false;
 		boolean metsReference2exists = false;
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		FileReader fr1 = new FileReader(ddbEadFile);
 		Document ddbEadDoc = builder.build(fr1);
 		EadParser ep = new EadParser(ddbEadDoc);

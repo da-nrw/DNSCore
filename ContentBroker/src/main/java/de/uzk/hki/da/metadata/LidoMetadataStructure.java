@@ -51,7 +51,7 @@ public class LidoMetadataStructure extends MetadataStructure{
 		lidoFile = metadataFile;
 		currentDocuments = documents;
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();		
 		FileInputStream fileInputStream = new FileInputStream(Path.makeFile(workPath,metadataFile.getPath()));
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
 		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
@@ -115,7 +115,7 @@ public class LidoMetadataStructure extends MetadataStructure{
 	 * @throws JDOMException
 	 */
 	public void appendRightsResource(File targetLidoFile, String licenseHref, String displayLabel) throws IOException, JDOMException {
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();	
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();	
 		
 		FileInputStream fileInputStream = new FileInputStream(Path.makeFile(workPath,targetLidoFile.getPath()));
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);

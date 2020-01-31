@@ -78,7 +78,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		
 		eadFile = metadataFile;
 
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();		
 		FileInputStream fileInputStream = new FileInputStream(Path.makeFile(workPath,eadFile.getPath()));
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
 		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
@@ -253,7 +253,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 	}
 	
 	private Document getMetsDocument(File metsFile) throws JDOMException, IOException {
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();		
 		FileInputStream fileInputStream = new FileInputStream(metsFile);
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
 		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
@@ -281,7 +281,7 @@ public class EadMetsMetadataStructure extends MetadataStructure{
 		
 		File targetEadFile = eadFile;
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();		
 		FileInputStream fileInputStream = new FileInputStream(Path.makeFile(workPath,eadFile.getPath()));
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
 		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");

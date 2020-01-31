@@ -123,7 +123,8 @@ public class SIPBuilder {
     	UIManager.put("CheckBox.disabledText", Color.LIGHT_GRAY);
 
     	Gui gui = new Gui(confFolderPath, dataFolderPath);
-    	gui.setBounds(100, 100, 750, 520);
+    	gui.setBounds(100, 100, 760, 530);
+    	//gui.setBounds(100, 100, 750, 520);
     	gui.setResizable(false);
     	gui.setVisible(true);
     	gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
