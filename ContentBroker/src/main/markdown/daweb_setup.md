@@ -49,5 +49,5 @@ The DaWeb interface could be executed locally with command *grails run-app* but 
 
 ### Encode Database Password
 
-To encode your own DB Password for production, you must have a groovy compiler (and at least a checkout of the class) run
-groovy grails-app/utils/de/uzk/hki/da/utils/DESCodec.groovy <your password>
+To encode your own DB Password for production, you must have a groovy compiler (and at least a checkout of the class). Then run the command 
+*groovy grails-app/utils/de/uzk/hki/da/utils/DESCodec.groovy <your password>* 
