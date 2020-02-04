@@ -8,7 +8,7 @@ Achtung: Bitte löschen Sie nicht auf "eigene Faust" von der WorkArea, vor allem
 
 **Überlick gewinnen:**
 
-Einsicht in die [DA-Web Adminoberfläche](../../../../DAWeb/doc/contentBroker_administration.md), Anmeldung als Knotenadmin. Dort laufen alle Systemmeldungen auf.
+Einsicht in die [DA-Web Adminoberfläche](contentBroker_administration.md), Anmeldung als Knotenadmin. Dort laufen alle Systemmeldungen auf.
 
 ## Das ganze System "hängt" scheinbar
 

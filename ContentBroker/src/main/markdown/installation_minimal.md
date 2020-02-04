@@ -28,7 +28,7 @@ the basic version you easily can extend the software by the other components if 
 configuration settings. We think this is a great way for administrators to get up and running quickly while
 getting an understanding of the basic behaviour and configuration possibilities of the software.
 
-A second [tutorial](preparing_irods_for_dnscore.md) then describes
+A second [tutorial](installation_irods_cb.md) then describes
 how to convert the existing DNSCore into a full-fledged installation including the iRODS storage layer.
 
 **Note** that if you want to learn how to build a new version of the software from scratch, using the build system and the deploy scripts, look [here](development_deploy.md).
@@ -36,7 +36,7 @@ how to convert the existing DNSCore into a full-fledged installation including t
 ## Prerequisites
 
 * Python > 2.7
-* Oracle Java 1.6 
+* Oracle Java 1.8 
 * PostgreSQL > 9.0
 
 ## ContentBroker
@@ -58,7 +58,7 @@ Create a directory somewhere on your filesystem into which you can install your 
 <pre>
     ./install.sh [...]/ContentBroker (make sure there is no trailing slash!)
 </pre>
-1. As feature set, choose (n)ode (explanation of different feature sets [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/system_configuration.md))
+1. As feature set, choose (n)ode 
 1. Download a fake glue [script](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/bash/ffmpeg.sh.fake) 
 that will ensure you don't have to install ffmpeg for now.
 1. Replace [...]/ContentBroker/ffmpeg.sh by the ffmpeg.sh.fake file you downloaded

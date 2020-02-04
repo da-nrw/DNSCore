@@ -4,8 +4,8 @@
 
 _**Achtung**: Die eingesetzte Version von Elasticsearch muss der der Elasticsearch-Java-Library im ContentBroker entsprechen (momentan: 0.90.3)._
 
-Die Installationsmethode hängt vom eingesetzten Betriebssystem ab. Empfohlen wird die Intallation unter Linux aus dem DEB- oder RPM-Repository (siehe http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/setup-repositories.html). Bei Installation einer dieser Pakete wird gleichzeitig ein Service eingerichtet, damit Elasticsearch nicht manuell gestartet werden muss. Weitere Informationen zur Installation finden sich unter: http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/setup.html
-
+Die Installationsmethode hängt vom eingesetzten Betriebssystem ab. Empfohlen wird die Intallation unter Linux aus dem DEB- oder RPM-Repository (siehe https://www.elastic.co/guide/en/elasticsearch/reference/current/targz.html). 
+Bei Installation einer dieser Pakete wird gleichzeitig ein Service eingerichtet, damit Elasticsearch nicht manuell gestartet werden muss. Weitere Informationen zur Installation finden sich unter: https://www.elastic.co/guide/en/elasticsearch/reference/current/setup.html
     rpm --import http://packages.elasticsearch.org/GPG-KEY-elasticsearch
     cd /etc/yum.repos.d/
     vi elasticsearch.repo
@@ -56,4 +56,4 @@ Achten Sie auf die Angabe des richtigen Indexes!
 In der elasticsearch 0.90 sollte in der /etc/elasticsearch/elasticsearch.yml die folgende Zeile hinzugefügt werden
 script.groovy.sandbox.enabled: false
 
-http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/modules-scripting.html
+https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html
