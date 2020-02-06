@@ -95,36 +95,7 @@ Zur besseren Lesbarkeit werden in der folgenden Tabelle die untersten vier Hiera
 <th><sub>Umgesetzt</sub></th>
 </tr></thead><tbody>
 <tr>
-<td><sub>
-<b>wenn:</b> <br>
- e-W.eventSet.event.eventType.term == 'creation' || 'production' <br> 
- e-W.eventSet.event.eventDate<br>
-<b>dann:</b> <br>
- e-W.eventSet.event.eventDate = $1 <br>
- </sub></td>
-<td><sub> edm:ProvidedCHO.dcterms.created</sub></td>
-<td><sub>Mögliche Werte für eventType sind <a href="(http://www.lido-schema.org/schema/v1.0/lido-v1.0-schema-listing.html" target="_blank">hier</a> aufgelistet </sub></td>
-<td><sub>Erstellt</sub></td>
-<td><sub> Nicht umgesetzt </sub></td>
-</tr>
-<tr>
-<td><sub>
-<b>wenn:</b> <br>
- e-W.eventSet.event.eventType.term == 'publication' <br> 
- e-W.eventSet.event.eventDate<br>
-<b>dann:</b> <br>
- e-W.eventSet.event.eventDate = $1 <br>
- </sub></td>
-<td><sub> edm:ProvidedCHO.dcterms.issued</sub></td>
-<td><sub>Mögliche Werte für eventType sind <a href="(http://www.lido-schema.org/schema/v1.0/lido-v1.0-schema-listing.html" target="_blank">hier</a> aufgelistet</sub></td>
-<td><sub>Erschienen</sub></td>
-<td><sub> Nicht umgesetzt </sub></td>
-</tr>
-<tr>
-<td><sub><b> wenn</b>
-<br />e-W.eventSet.event.eventType not exists || e-W.eventSet.event.eventType == null  <br> 
-<b>dann:</b> 
-<br> e-W.eventSet.event.eventDate</sub></td>
+<td><sub> e-W.eventSet.event.eventDate.displayDate</sub></td>
 <td><sub> edm:ProvidedCHO.dc.date</sub></td>
 <td><sub> Wenn keine Spezifikation des Datums in den LIDO-Daten, dann dc:date </sub></td>
 <td><sub> Zeitangabe <br></sub></td>
