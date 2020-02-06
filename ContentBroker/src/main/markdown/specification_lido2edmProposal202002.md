@@ -61,7 +61,7 @@ Zur besseren Lesbarkeit werden in der folgenden Tabelle die untersten vier Hiera
 <td><sub>edm.ProvidedCHO.dc.description</sub></td>
 <td><sub> EDM-Pflichtfeld, wenn kein Titel vorhanden <br></sub></td>
 <td><sub>Beschreibung</sub></td>
-<td><sub><b>Build: 2086</b></sub></td>
+<td><sub>Build: 2086</sub></td>
 </tr>
 </tbody></table>
 
@@ -99,7 +99,7 @@ Zur besseren Lesbarkeit werden in der folgenden Tabelle die untersten vier Hiera
 <td><sub> edm:ProvidedCHO.dc.date</sub></td>
 <td><sub> Wenn keine Spezifikation des Datums in den LIDO-Daten, dann dc:date </sub></td>
 <td><sub> Zeitangabe <br></sub></td>
-<td><sub><b>Nächstes Build</b></sub></td>
+<td><sub>Build: 2086</sub></td>
 </tr>
   <tr>
 <td><sub> -event/eventPlace/displayPlace<br>
@@ -107,7 +107,7 @@ Zur besseren Lesbarkeit werden in der folgenden Tabelle die untersten vier Hiera
 <td><sub> edm:ProvidedCHO.dcterms.spatial <br> (edm:currentLocation)</sub></td>
 <td><sub> </sub></td>
 <td><sub> </sub></td>
-<td><sub><b>Build: 2086</b></sub></td>
+<td><sub>Build: 2086</sub></td>
 </tr>
  <tr>
 <td><sub>
@@ -115,14 +115,14 @@ objectMeasurementsWrap/objectMeasurementsSet<br>/displayObjectMeasurement</sub><
 <td><sub> edm:ProvidedCHO.dcterms.extend</sub></td>
 <td><sub><br> </sub></td>
 <td><sub>Umfang</sub></td>
-<td><sub><b>Nächstes Build</b></sub></td>
+<td><sub>Build: 2086</sub></td>
     </tr>
   <tr>
   <td><sub>aD.rsrc-Wrap.resourceSet.resourceType.term</sub></td>
 <td><sub>edm:type</sub></td>
 <td><sub> Pflichtfeld </sub></td>
 <td><sub>Inhalt wird großgeschrieben: <br>'image'->'IMAGE'</sub></td>
-<td><sub><b>Nächstes Build</b></sub></td>
+<td><sub>Build: 2086</sub></td>
     </tr>
 <td><sub> lidoRecId</sub></td>
 <td><sub>edm.ProvidedCHO.dc.identifier</sub></td>
