@@ -61,7 +61,7 @@ Zur besseren Lesbarkeit werden in der folgenden Tabelle die untersten vier Hiera
 <td><sub>edm.ProvidedCHO.dc.description</sub></td>
 <td><sub> EDM-Pflichtfeld, wenn kein Titel vorhanden <br></sub></td>
 <td><sub>Beschreibung</sub></td>
-<td><sub><b>Nächstes Build</b></sub></td>
+<td><sub><b>Build: 2086</b></sub></td>
 </tr>
 </tbody></table>
 
@@ -75,12 +75,12 @@ Zur besseren Lesbarkeit werden in der folgenden Tabelle die untersten vier Hiera
 </tr></thead><tbody>
 <tr>
  <td><sub>
- e-W.eventSet.event.eventActor.actorInRole.actor.nameActorSet.appellationValue $1 <br>
+ e-W.eventSet.event.eventActor.displayActorInRole $1 <br>
   </sub></td>
 <td><sub> edm:ProvidedCHO.dc.creator</sub></td>
 <td><sub> EDM: Empfohlenes Feld. <br />Die Rolle eines Beitragenden existiert in der aktuellen LIDO-Spezifikation bisher nicht. Sollten Personen nicht als Creator definiert werden, müssten dafür noch Erkennungsmerkmale definiert werden. </sub></td>
 <td><sub>Person</sub></td>
-<td><sub>Vorschlag </sub></td>
+<td><sub>Build: 2086</sub></td>
 </tr>
 
 </tbody></table>
@@ -103,11 +103,11 @@ Zur besseren Lesbarkeit werden in der folgenden Tabelle die untersten vier Hiera
 </tr>
   <tr>
 <td><sub> -event/eventPlace/displayPlace<br>
--event/eventPlace/place/namePlaceSet</sub></td>
+-event/eventPlace/place/namePlaceSet/appellationValue</sub></td>
 <td><sub> edm:ProvidedCHO.dcterms.spatial <br> (edm:currentLocation)</sub></td>
 <td><sub> </sub></td>
 <td><sub> </sub></td>
-<td><sub><b>Nächstes Build</b></sub></td>
+<td><sub><b>Build: 2086</b></sub></td>
 </tr>
  <tr>
 <td><sub>
@@ -118,40 +118,12 @@ objectMeasurementsWrap/objectMeasurementsSet<br>/displayObjectMeasurement</sub><
 <td><sub><b>Nächstes Build</b></sub></td>
     </tr>
   <tr>
-  <td><sub>aD.rsrc-Wrap.resourceSet.resourceType.term.addedSearchTerm</sub></td>
-<td><sub> edm:ProvidedCHO.dc.type<br>edm:type</sub></td>
+  <td><sub>aD.rsrc-Wrap.resourceSet.resourceType.term</sub></td>
+<td><sub>edm:type</sub></td>
 <td><sub> Pflichtfeld </sub></td>
 <td><sub>Inhalt wird großgeschrieben: <br>'image'->'IMAGE'</sub></td>
 <td><sub><b>Nächstes Build</b></sub></td>
     </tr>
-  <tr>
-  <td><sub>dM.e-W.eventSet.event.materialsTech.eventMaterialsTech.displayMaterialsTech</sub></td>
-<td><sub>dcterms.medium <br></sub></td>
-<td><sub> </sub></td>
-<td><sub>Material/Technik ???</sub></td>
-<td><sub>Vorschlag</sub></td>
-  </tr>
-  <tr>
-  <td><sub> mD.e-W.eventSet.event/Wrap/eventSet/event<br>/eventDescriptionSet/descriptiveNoteValue</sub></td>
-<td><sub>???<br>dcterms:provenance<br> dc:description</sub></td>
-<td><sub> </sub></td>
-<td><sub>Herkunft/Provenienz ???</sub></td>
-<td><sub>Vorschlag</sub></td>
-  </tr>
-  <tr>
-  <td><sub>dM.oR-W.subjectSet.subject[type=Stichwort].subjectConcept</sub></td>
-<td><sub>dc:subject<br>skos:prefLabel</sub></td>
-<td><sub> </sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-  </tr>
-  <tr>
-  <td><sub>dM.oR-W.subjectSet.subject[type=Schlagwort].subjectConcept</sub></td>
-<td><sub>??? <br>dc:type</sub></td>
-<td><sub> </sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-</tr>
 <td><sub> lidoRecId</sub></td>
 <td><sub>edm.ProvidedCHO.dc.identifier</sub></td>
 <td><sub> der lokale Identifier zumeist mit Isil kombiniert </sub></td>
