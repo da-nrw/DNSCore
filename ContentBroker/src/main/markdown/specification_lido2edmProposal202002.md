@@ -225,7 +225,7 @@ aM.r-W.recordSource.legalBodyName/appellationValue $1<br>kombiniert mit ISIL<br>
   
  <tr><td>
 <sub>
-administrativeMetadata/resourceWrap/resourceSet/<br>/rightsResource/rightsHolder/legalBodyName/appellationValue </sub></td>
+aM/r-W/resourceSet/rightsResource/<br/>/rightsHolder/legalBodyName/appellationValue </sub></td>
 <td><sub>edm.intermediateProvider </sub></td>
 <td><sub></sub></td>
 <td><sub>Inhaber Nutzungsrecht ???</sub></td>
@@ -243,7 +243,7 @@ administrativeMetadata/resourceWrap/resourceSet/<br>/rightsResource/rightsHolder
 
 <tr>
 <td><sub>
-administrativeMetadata/resourceWrap/resourseSet<br>/rightsResource/rightsType/conceptID $1 </sub></td>
+aM/r-W/resourseSet<br>/rightsResource/rightsType/conceptID $1 </sub></td>
 <td><sub>edm.ProvidedCHO.dc.rights=$1 <br> ore:Aggregation/edm:aggregatedCHO<br>/edm.rights[rdf:resource=$1] </sub></td>
 <td><sub>Lizenz-URL</sub></td>
 <td><sub>Nutzungsrechte</sub></td>
