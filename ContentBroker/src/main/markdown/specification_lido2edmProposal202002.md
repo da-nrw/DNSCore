@@ -225,7 +225,7 @@ aM.r-W.recordSource.legalBodyName/appellationValue $1<br>kombiniert mit ISIL<br>
   
  <tr><td>
 <sub>
-administrativeMetadata.resourceWrap.resourceSet.rightsResource.rightsHolder.legalBodyName.appellationValue </sub></td>
+administrativeMetadata/resourceWrap/resourceSet/<br>/rightsResource/rightsHolder/legalBodyName/appellationValue </sub></td>
 <td><sub>edm.intermediateProvider </sub></td>
 <td><sub></sub></td>
 <td><sub>Inhaber Nutzungsrecht ???</sub></td>
