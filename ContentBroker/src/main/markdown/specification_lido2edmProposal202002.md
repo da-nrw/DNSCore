@@ -339,18 +339,3 @@ mods.accessCondition[type="use and reproduction"].attr('xlink:href') </sub></td>
 <td><sub>Build 2046</sub></td>
 </tr>
 </tbody></table>
-le>ion[type="use and reproduction"].attr('xlink:href') </sub></td>
-<td><sub>edm.rights  </sub></td>
-<td><sub></sub></td>
-<td><sub>Nutzungsrechte</sub></td>
-<td><sub>Build 2046</sub></td>
-</tr>
-</tbody></table>
-le>>ion[type="use and reproduction"].attr('xlink:href') </sub></td>
-<td><sub>edm.rights  </sub></td>
-<td><sub></sub></td>
-<td><sub>Nutzungsrechte</sub></td>
-<td><sub>Build 2046</sub></td>
-</tr>
-</tbody></table>
-le>
