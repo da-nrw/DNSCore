@@ -218,8 +218,8 @@ edm:hasView
 <sub>
 aM.r-W.recordSource.legalBodyName/appellationValue $1<br>kombiniert mit ISIL<br> administrativeMetadata/recordWrap/recordSource<br />/legalBodyID $2</sub></td>
 <td><sub>edm.dataProvider 	</sub></td>
-<td><sub>Wie kombiniert man?<br />edm.dataProvider=$1 + $2  </sub></td>
-<td><sub>Institution ???</sub></td>
+<td><sub>edm.dataProvider=$1 + $2  </sub></td>
+<td><sub>Besitzende Institution</sub></td>
 <td><sub><b>Nächstes Build</b></sub></td>
 </tr>
   
