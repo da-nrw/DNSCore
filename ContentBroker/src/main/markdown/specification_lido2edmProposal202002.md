@@ -220,7 +220,7 @@ aM.r-W.recordSource.legalBodyName/appellationValue $1<br>kombiniert mit ISIL<br>
 <td><sub>edm.dataProvider 	</sub></td>
 <td><sub>edm.dataProvider=$1 + $2  </sub></td>
 <td><sub>Besitzende Institution</sub></td>
-<td><sub><b>Nächstes Build</b></sub></td>
+<td><sub>Build: 2086></sub></td>
 </tr>
   
  <tr><td>
