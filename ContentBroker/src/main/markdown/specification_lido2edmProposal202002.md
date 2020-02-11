@@ -236,7 +236,7 @@ administrativeMetadata/resourceWrap/resourceSet/<br>/rightsResource/rightsHolder
 <sub>
 </sub>"Digitales Archiv NRW"</td>
 <td><sub>edm.provider </sub></td>
-<td><sub></sub></td>
+<td><sub>Pflichtfeld, Der Repository-Betreiber wird hier als datenprovider aufgefasst</sub></td>
 <td><sub></sub></td>
 <td><sub><b>Nächstes Build</b></sub></td>
 </tr>
