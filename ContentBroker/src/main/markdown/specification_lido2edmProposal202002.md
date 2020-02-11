@@ -128,7 +128,7 @@ objectMeasurementsWrap/objectMeasurementsSet<br>/displayObjectMeasurement</sub><
 <td><sub>edm.ProvidedCHO.dc.identifier</sub></td>
 <td><sub> der lokale Identifier zumeist mit Isil kombiniert </sub></td>
 <td><sub>Identifier</sub></td>
-<td><sub></sub></td>
+<td><sub>Build: 2086</sub></td>
 </tr>
 
 </tbody></table>
