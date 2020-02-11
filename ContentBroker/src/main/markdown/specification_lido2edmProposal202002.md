@@ -223,14 +223,6 @@ aM.r-W.recordSource.legalBodyName/appellationValue $1<br>kombiniert mit ISIL<br>
 <td><sub>Build: 2086</sub></td>
 </tr>
   
- <tr><td>
-<sub>
-aM/r-W/resourceSet/rightsResource/<br/>/rightsHolder/legalBodyName/appellationValue </sub></td>
-<td><sub>edm.intermediateProvider </sub></td>
-<td><sub></sub></td>
-<td><sub>Inhaber Nutzungsrecht ???</sub></td>
-<td><sub><b>Nächstes Build</b></sub></td>
-</tr>
 
  <tr><td>
 <sub>
