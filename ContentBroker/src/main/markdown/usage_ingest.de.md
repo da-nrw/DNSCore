@@ -17,7 +17,7 @@ Ingest beschreibt den Prozess der Übergabe eines SIP an das System bzw. die Üb
 2\. Der Contractor wartet, bis die Übertragung abgeschlossen ist.<br>
 3\. Der Contractor öffnet die DAWeb-Maske "Startseite"->"Verarbeitung für abgelieferte SIP starten".<br>
 
-![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/ingest1.png)
+![](ingest1.png)
 
 4\. In dieser Maske sollte nun das im "incoming" Ordner abgelegte SIP namentlich aufgeführt sein.<br>
 5\. Der Contractor markiert dieses Paket mit einem Häkchen für die Verarbeitung und betätigt den "Starten" Button am unteren Ende der Seite.<br>
@@ -28,7 +28,7 @@ Ingest beschreibt den Prozess der Übergabe eines SIP an das System bzw. die Üb
 
 In der DAWeb Maske "Verarbeitungsübersicht" kann der Contractor eine Übersicht über die derzeit in Verarbeitung befindlichen Pakete bekommen.
 
-![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/queue.png)
+![](queue.png)
 
 Diese Übersicht dient der Information. Über alle relevanten Ereignisse hinsichtlich der Verarbeitung eines SIP informiert das System den Nutzer in jedem Fall per Email Report.
 
