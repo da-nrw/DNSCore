@@ -285,33 +285,7 @@ mods.language.mods.languageTerm[authority=iso639-2b]\[type=code] </sub></td>
 <td><sub></sub></td>
 <td><sub></sub></td>
 </tr>
-<tr>
-<td><sub>
-"Digitales Archiv NRW" </sub></td>
-<td><sub> edm.provider</sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-</tr><tr>
-<td><sub>
-mods.genre[authority=marcg] </sub></td>
-<td><sub> edm.ProvidedCHO.dc.type</sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-</tr>
-<tr>
-<td><sub>
-<b>wenn:</b>
-dM.oC-W.classificationWrap[type=type] == 'europeana:type"' <br>
-<b>dann:</b> dM.oC-W.classificationWrap.term = $1 <br>
-<b>sonst:</b>
-</sub></td>
-<td><sub>edm.ProvidedCHO.dc.type =$1 <br> edm.ProvidedCHO.edm.type =$1</sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-</tr>
+   
 <tr>
 <td><sub>
 </sub></td>
@@ -319,23 +293,5 @@ dM.oC-W.classificationWrap[type=type] == 'europeana:type"' <br>
 <td><sub></sub></td>
 <td><sub></sub></td>
 <td><sub></sub></td>
-</tr>
-<tr>
-<td><sub>
-</sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
-</tr>
-<tr>
-</tr>
-<tr>
-<td><sub>
-mods.accessCondition[type="use and reproduction"].attr('xlink:href') </sub></td>
-<td><sub>edm.rights  </sub></td>
-<td><sub></sub></td>
-<td><sub>Nutzungsrechte</sub></td>
-<td><sub>Build 2046</sub></td>
 </tr>
 </tbody></table>
