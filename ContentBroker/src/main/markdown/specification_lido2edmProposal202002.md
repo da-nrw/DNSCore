@@ -135,11 +135,9 @@ objectMeasurementsWrap/objectMeasurementsSet<br>/displayObjectMeasurement</sub><
 <td><sub>Build: 2086</sub></td>
     </tr>
 <td><sub> $1=descriptiveMetadata/objectIdentificationWrap/repositoryWrap/repositorySet/workID
-
-  mit lido:type="inventory number"
-<br>
+  mit lido:type="inventory number"</sub>
+<br/><br/><sub>
 $2=administrativeMetadata/resourceWrap/resourceSet/resourceSource/legalBodyID
-
   mit lido:source="ISIL"</sub></td>
 <td><sub>edm.ProvidedCHO.dc.identifier</sub></td>
 <td><sub> der lokale Identifier zumeist mit Isil kombiniert </sub></td>
@@ -260,7 +258,7 @@ aM.r-W.recordSource.legalBodyName/appellationValue $1<br>kombiniert mit ISIL<br>
 <tr>
 <td><sub>
 aM/r-W/resourseSet<br>/rightsResource/rightsType/conceptID $1 </sub></td>
-<td><sub>-edm.ProvidedCHO.dc.rights=$1 <br> -ore:Aggregation/edm:aggregatedCHO<br>/edm.rights[rdf:resource=$1] </sub></td>
+<td><sub>edm.ProvidedCHO.dc.rights=$1 <br><br> ore:Aggregation/edm:aggregatedCHO<br>/edm.rights[rdf:resource=$1] </sub></td>
 <td><sub>Lizenz-URL</sub></td>
 <td><sub>Nutzungsrechte</sub></td>
 <td><sub>Build 1954</sub></td>
