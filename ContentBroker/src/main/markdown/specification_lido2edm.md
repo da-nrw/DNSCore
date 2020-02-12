@@ -141,7 +141,7 @@ Zur besseren Lesbarkeit werden in der folgenden Tabelle die untersten vier Hiera
  <tr>
 <td><sub>
 objectMeasurementsWrap/objectMeasurementsSet<br>/displayObjectMeasurement</sub></td>
-<td><sub> edm:ProvidedCHO.dcterms.extend</sub></td>
+<td><sub> edm:ProvidedCHO.dcterms.extent</sub></td>
 <td><sub><br> </sub></td>
 <td><sub>Umfang</sub></td>
 <td><sub><b>Nächstes Build</b></sub></td>
