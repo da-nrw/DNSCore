@@ -71,9 +71,9 @@ public class ATIngestLav extends AcceptanceTest {
 		System.out.println(urn2 + " filesize: "+ath.getObject(urn2).getAip_size());
 		System.out.println(urn3 + " filesize: "+ath.getObject(urn3).getAip_size());
 		
-		double diff1=(ath.getObject(urn1).getAip_size()-188416.0)/(ath.getObject(urn1).getAip_size()+1);
-		double diff2=(ath.getObject(urn2).getAip_size()-235008.0)/(ath.getObject(urn2).getAip_size()+1);
-		double diff3=(ath.getObject(urn3).getAip_size()-256512.0)/(ath.getObject(urn3).getAip_size()+1);
+		double diff1=(ath.getObject(urn1).getAip_size()-218112.0)/(ath.getObject(urn1).getAip_size()+1); // Before XML Validation by Jhove 188416
+		double diff2=(ath.getObject(urn2).getAip_size()-264704.0)/(ath.getObject(urn2).getAip_size()+1); // Before XML Validation by Jhove 235008
+		double diff3=(ath.getObject(urn3).getAip_size()-287744.0)/(ath.getObject(urn3).getAip_size()+1); // Before XML Validation by Jhove 256512
 		
 		// 4% difference will be tolerated
 		assertTrue("Wrong File Size d1: "+diff1,Math.abs(diff1)<0.03);
@@ -181,6 +181,7 @@ public class ATIngestLav extends AcceptanceTest {
 		assertTrue(edmDoc1.getRootElement().getChild("Aggregation", C.ORE_NS).getChild("dataProvider", C.EDM_NS).getValue().contains("Landesarchiv NRW"));
 		
 ////		testIndex
-		assertTrue(metadataIndex.getIndexedMetadata(PORTAL_CI_TEST, object1.getIdentifier()+"-dmd00016").contains("Nr. 44985"));
+		String ident=metadataIndex.getIndexedMetadata(PORTAL_CI_TEST, object1.getIdentifier()+"-dmd00016");
+		assertTrue("Identifier Test failed: "+ident,ident.contains("Nr. 44985"));
 	}
 }
