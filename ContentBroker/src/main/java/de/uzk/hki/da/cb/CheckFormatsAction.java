@@ -151,7 +151,7 @@ public class CheckFormatsAction extends AbstractAction {
 					if (!fileFormatFacade.extract(wa.toFile(f), target, f.getFormatPUID()))
 						throw new RuntimeException("Unknown error during metadata file extraction.");
 				} catch (ConnectionException e) {
-					throw new SubsystemNotAvailableException("fileFormatFacade.extract() could not connect.", e);
+					throw new SubsystemNotAvailableException("fileFormatFacade.extract() could not connect. "+e.getMessage(), e);
 				} catch (QualityLevelException e) { 
 					// execution won't be interrupted by Exception. Exceptions will be transformed to 
 					// quality level events

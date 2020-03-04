@@ -71,10 +71,11 @@ public class JhoveResult {
 		try {
 			Document doc = parser.build(reader);
 			Element root = doc.getRootElement();
-			Elements repInfo = root.getChildElements("repInfo", "http://hul.harvard.edu/ois/xml/ns/jhove");
-			String statusString = repInfo.get(0).getChildElements("status", "http://hul.harvard.edu/ois/xml/ns/jhove").get(0).getChild(0).getValue();
+			String nsUri=root.getNamespaceURI();
+			Elements repInfo = root.getChildElements("repInfo", nsUri);
+			String statusString = repInfo.get(0).getChildElements("status", nsUri).get(0).getChild(0).getValue();
 			ret.setStatus(statusString);
-			Elements formatElems=repInfo.get(0).getChildElements("format", "http://hul.harvard.edu/ois/xml/ns/jhove");
+			Elements formatElems=repInfo.get(0).getChildElements("format", nsUri);
 			String formatString ="";
 			if(formatElems.size()>=1){
 				formatString = formatElems.get(0).getChild(0).getValue();
@@ -82,11 +83,11 @@ public class JhoveResult {
 			ret.setFormat(formatString);
 			StringBuilder messagesStringBuilder = new StringBuilder();
 
-			Elements messagesElement = repInfo.get(0).getChildElements("messages", "http://hul.harvard.edu/ois/xml/ns/jhove");
+			Elements messagesElement = repInfo.get(0).getChildElements("messages", nsUri);
 			if (messagesElement.size() == 0)
 				ret.setMessage(null);
 			else {
-				Elements messages = messagesElement.get(0).getChildElements("message", "http://hul.harvard.edu/ois/xml/ns/jhove");
+				Elements messages = messagesElement.get(0).getChildElements("message", nsUri);
 
 				for (int messageNum = 0; messageNum < messages.size(); messageNum++) {
 					Element iterMessage = messages.get(messageNum);

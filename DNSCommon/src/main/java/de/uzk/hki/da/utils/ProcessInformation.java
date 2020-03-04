@@ -87,4 +87,11 @@ public class ProcessInformation {
 	public void setExitValue(int exitValue) {
 		this.exitValue = exitValue;
 	}
+
+	@Override
+	public String toString() {
+		return "ProcessInformation [stdErr=" + stdErr + ", stdOut=" + stdOut + ", exitValue=" + exitValue + "]";
+	}
+	
+	
 }

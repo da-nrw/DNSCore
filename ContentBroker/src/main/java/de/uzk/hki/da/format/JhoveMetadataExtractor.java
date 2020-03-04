@@ -23,6 +23,7 @@ package de.uzk.hki.da.format;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -51,6 +52,8 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 	private static final Logger logger = LoggerFactory.getLogger(JhoveMetadataExtractor.class);
 	private List<JHoveParameterMapping> possibleOptions=null;
 	private List<FormatMapping> pronomMimetypeList=null;
+	//static final String ErrorPattern="ErrorMessage";
+	static final String[] ErrorPatterns=new String[] {"ErrorMessage","severity=\"error\""};
 	
 	/**
 	 * {@link #pronomMimetypeList} can be long, binary comparator is useful to achieve better performance O(log(N)) instead of O(N)
@@ -128,12 +131,13 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 			jhResult = JhoveResult.parseJHoveXML(extractedMetadata.getAbsolutePath());
 		} catch (Exception e) {
 			logger.error("JHove outputfile(" + extractedMetadata.getAbsolutePath() + ") not interpretable: " + e.getMessage());
+			logger.debug("JHove Parsing Failed! ", e);
 			throw new QualityLevelException(QualityLevelException.Type.VALIDATION,"JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + jhResult);
 			
 		}
 
 		if (!jhResult.isValid()){
-			logger.warn("JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + jhResult);
+			logger.error("JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + jhResult);
 			throw new QualityLevelException(QualityLevelException.Type.VALIDATION,"JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + jhResult);
 		}
 	}
@@ -151,17 +155,16 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 
 
 	private String[] jhoveCmd(File extractedMetadata, String filePath, String typeOptions) {
-		return new String[] {
-                SHELL, JHOVE_BIN, "-c", JHOVE_CONF, "-h", "XML",typeOptions,
-                filePath, "-o", extractedMetadata.getAbsolutePath() };
+		return new String[] {SHELL, JHOVE_BIN, "-c", JHOVE_CONF, "-h", "XML",typeOptions,
+	                filePath, "-o", extractedMetadata.getAbsolutePath() };
 	}
 
 
 	private String[] jhoveCmdSkipWholeFileParsing(File extractedMetadata, String filePath, String typeOptions) {
-		return new String[] {
-                SHELL, JHOVE_BIN, "-c", JHOVE_CONF, "-h", "XML", typeOptions,
-                "-s", // skip parsing of the whole file
-                filePath, "-o", extractedMetadata.getAbsolutePath() };
+		return new String[] {  SHELL, JHOVE_BIN, "-c", JHOVE_CONF, "-h", "XML", typeOptions,
+	                "-s", // skip parsing of the whole file
+	                filePath, "-o", extractedMetadata.getAbsolutePath() };
+
 	}
 	
 	
@@ -172,10 +175,18 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 		if (pi==null) {
 			throw new ConnectionException("Call to JHOVE terminated with empty ProcessInformation");
 		}
-		if (pi.getExitValue()!=0) {
+		if (pi.getExitValue()!=0|| !pi.getStdOut().isEmpty() ||  !pi.getStdErr().isEmpty()) {
+			logger.debug("ExitValue from jhove cmd: "+pi.getExitValue());
 			logger.debug("StdOut from jhove cmd: "+pi.getStdOut());
 			logger.debug("StdErr from jhove cmd: "+pi.getStdErr());
 		}
+		//else if(pi.getStdOut()!=null && pi.getStdOut().contains(ErrorPattern)) {
+		if(pi.getStdOut()!=null && Arrays.stream(ErrorPatterns).parallel().anyMatch(pi.getStdOut()::contains)) {
+			logger.debug("Jhove-StdOut contains some of ErrorPatterStrings >>"+Arrays.toString(ErrorPatterns)+"<<, the execution might be failed : \n"+pi.toString());
+			
+			throw new RuntimeException("Jhove-Call failed: "+pi.toString());
+		}
+		
 		return pi.getExitValue();
 	}
 

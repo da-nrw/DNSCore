@@ -31,10 +31,27 @@
 # ***************************************************************************
 EXTRA_JARS=""
 
-JHOVE_HOME=CONTENTBROKER_ROOT/jhove
-
 # NOTE: Nothing below this line should be edited
 #############################################################################
+
+# Infer JHOVE_HOME from script location
+SCRIPT="${0}"
+
+# Resolve absolute and relative symlinks
+while [ -h "${SCRIPT}" ]; do
+    LS=$( ls -ld "${SCRIPT}" )
+    LINK=$( expr "${LS}" : '.*-> \(.*\)$' )
+    if expr "${LINK}" : '/.*' > /dev/null; then
+        SCRIPT="${LINK}"
+    else
+        SCRIPT="$( dirname "${SCRIPT}" )/${LINK}"
+    fi
+done
+
+# Store absolute location
+CWD="$( pwd )"
+JHOVE_HOME="$( cd "$(dirname "${SCRIPT}" )" && pwd )"
+cd "${CWD}" || exit
 
 # Create Java class path
 CP="${JHOVE_HOME}/bin/*"
@@ -42,16 +59,8 @@ if [ -n "${EXTRA_JARS}" ]; then
     CP="${CP}:${EXTRA_JARS}"
 fi
 
-# Retrieve a copy of all command line arguments to pass to the application.
-ARGS=""
-for ARG do
-    ARGS="$ARGS $ARG"
-done
-
 # Set default configuration location
 CONFIG="${JHOVE_HOME}/conf/jhove.conf"
 
 # Set class path and invoke Java
-
-#java -classpath "${CP}" Jhove -c "${CONFIG}" "${@}"
-java $JAVA_OPTS -classpath "${CP}" Jhove $ARGS
+java -classpath "${CP}" JhoveView -c "${CONFIG}" "${@}"

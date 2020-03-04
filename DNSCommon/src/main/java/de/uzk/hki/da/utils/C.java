@@ -117,7 +117,7 @@ public class C {
 
 	// Xml
 	public static final String OWL_SAMEAS = "http://www.w3.org/2002/07/owl#sameAs";
-	public static final String XSI_NS = "http://www.w3.org/2001/XMLSchema-instance";
+	public static final String XSI_NS_URI = "http://www.w3.org/2001/XMLSchema-instance";
 	public static final String CONTRACT_NS = "http://www.danrw.de/contract/v1";
 	public static final String CONTRACT_V1_URL = "http://www.danrw.de/contract/v1";
 	public static final String CONTRACT_V1_SCHEMA_LOCATION = "http://www.danrw.de/schemas/contract/v1/danrw-contract-v1-02.xsd";
@@ -132,6 +132,7 @@ public class C {
 	public static final Namespace DC_NS = Namespace.getNamespace("http://purl.org/dc/elements/1.1/");
 	public static final Namespace DCTERMS_NS = Namespace.getNamespace("http://purl.org/dc/terms/");
 	public static final Namespace DV = Namespace.getNamespace("http://dfg-viewer.de/");
+	public static final Namespace XSI_NS = Namespace.getNamespace("xsi",XSI_NS_URI);
 	public static final String EAD_XPATH_EXPRESSION = "//daoloc/@href";
 	
 	public static final String EDM_PROVIDED_CHO = "edm:ProvidedCHO";
