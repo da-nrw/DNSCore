@@ -1349,7 +1349,10 @@ public class SIPFactory {
 							.replace(
 									new File(f.getParent()).getAbsolutePath()
 											+ File.separator, "")
-							.replace(ext, "");
+							;
+					//.replace(ext, "");
+					relFilePathWithoutExtension=relFilePathWithoutExtension.substring(0,relFilePathWithoutExtension.length()-ext.length());
+							
 					logger.debug("relFilePathWithoutExtension: "
 							+ relFilePathWithoutExtension);
 
