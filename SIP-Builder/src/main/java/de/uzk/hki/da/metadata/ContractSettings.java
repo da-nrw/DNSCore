@@ -38,6 +38,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
+import de.uzk.hki.da.utils.XMLUtils;
+
 /**
  * Contains the selectable values for certain restriction settings shown in the drop down boxes in GUI mode
  * 
@@ -82,6 +84,8 @@ public class ContractSettings {
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		try {
 			xmlReader = spf.newSAXParser().getXMLReader();
+			//xml persistence without schema-> validation without schema not possible
+			//xmlReader=XMLUtils.createValidatingSaxParser().getXMLReader();
 		} catch (Exception e) {
 			throw new IOException("Error creating SAX parser", e);
 		}

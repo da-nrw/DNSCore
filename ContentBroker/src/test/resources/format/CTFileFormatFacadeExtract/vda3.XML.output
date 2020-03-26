@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jhove xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schema.openpreservation.org/ois/xml/ns/jhove" xsi:schemaLocation="http://schema.openpreservation.org/ois/xml/ns/jhove https://schema.openpreservation.org/ois/xml/xsd/jhove/1.8/jhove.xsd" name="Jhove" release="1.22.1" date="2019-04-17">
- <date>2020-02-25T11:41:50+00:00</date>
+ <date>2020-03-09T06:40:54+00:00</date>
  <repInfo uri="/ci/DNSCore/ContentBroker/src/test/resources/format/CTFileFormatFacadeExtract/vda3.XML">
   <reportingModule release="1.4.1" date="2019-04-17">ASCII-hul</reportingModule>
   <lastModified>2019-02-22T08:47:26+00:00</lastModified>

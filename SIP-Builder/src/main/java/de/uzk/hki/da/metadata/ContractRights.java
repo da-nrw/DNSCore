@@ -36,6 +36,7 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
 import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.XMLUtils;
 import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Element;
@@ -150,6 +151,8 @@ public class ContractRights {
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		try {
 			xmlReader = spf.newSAXParser().getXMLReader();
+			//xml persistence without schema-> validation without schema not possible
+			//xmlReader=XMLUtils.createValidatingSaxParser().getXMLReader();
 		} catch (Exception e) {
 			throw new IOException("Error creating SAX parser", e);
 		}

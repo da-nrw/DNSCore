@@ -35,6 +35,7 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
 import de.uzk.hki.da.metadata.PremisXmlReaderNodeFactory;
+import de.uzk.hki.da.utils.XMLUtils;
 import nu.xom.Attribute;
 import nu.xom.Builder;
 import nu.xom.Document;
@@ -97,7 +98,8 @@ public class RightsSectionURNMetsXmlReader {
 		XMLReader xmlReader = null;
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		try {
-			xmlReader = spf.newSAXParser().getXMLReader();
+			//xmlReader = spf.newSAXParser().getXMLReader();
+			xmlReader=XMLUtils.createValidatingSaxParser().getXMLReader();
 		} catch (Exception e) {
 			fileInputStream.close();
 			bomInputStream.close();

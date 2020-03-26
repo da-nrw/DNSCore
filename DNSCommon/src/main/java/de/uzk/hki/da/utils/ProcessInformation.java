@@ -26,10 +26,10 @@ package de.uzk.hki.da.utils;
 public class ProcessInformation {
 
 	/** The std err. */
-	private String stdErr;
+	private String stdErr="";
 	
 	/** The std out. */
-	private String stdOut;
+	private String stdOut="";
 	
 	/** The exit value. */
 	private int exitValue;
