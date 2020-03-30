@@ -93,6 +93,7 @@
 					<archive>
 						<manifestEntries>
 							<buildNumber>${env.BUILD_NUMBER}</buildNumber>
+                            <Multi-Release>true</Multi-Release> 
 						</manifestEntries>
 						<manifest>
 							<mainClass>de.uzk.hki.da.main.SIPBuilder</mainClass>

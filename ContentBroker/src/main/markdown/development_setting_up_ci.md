@@ -27,8 +27,8 @@ Please start with installing the following components to your machine first:
 
 * Python > 2.7
 * http2lib module for python
-* Postgres > 9.0
-* Oracle Java 1.6
+* Postgres > 9.3
+* Oracle Java 1.8
 * ImageMagick
 * git
 * Maven
@@ -144,7 +144,7 @@ Create the following collections
 
 ## Install Fedora
 
-While executing the following steps, compare the fedora [installation](https://github.com/da-nrw/prepscripts/blob/master/doc/install_fedora.md) documtn.
+While executing the following steps, compare the fedora [installation](install_fedora.de.md) document.
 
 in your config/install.properties set the following entries accordingly
 

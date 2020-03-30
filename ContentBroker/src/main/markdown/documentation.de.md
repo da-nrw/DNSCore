@@ -71,7 +71,7 @@ Die hier untergebrachten Dokumentationen setzen den Einsatz von DNSCore unter be
 Um DNSCore effektiv bauen, testen und ausliefern zu können, sollten die folgenden Dokus gelesen werden:
 
 * Bauen und Testen der DNSCore ([englisch](development_deploy.md))
-* Bauen und Ausliefern DAWeb ([english](../../../../DAWeb/doc/setup.md))
+* Bauen und Ausliefern DAWeb ([english](daweb_setup.md))
 * Aufsetzen von Continuous Integration für DNSCore builds ([englisch](development_setting_up_ci.md))
 * Systemkomponenten im Überblick ([english](components_connectors.md))
 * 3rd Party Module ([english](3rdPartyTools.md))

@@ -5,7 +5,7 @@ Jede premis.xml die innerhalb des DNS verwendet wird, unterliegt den folgenden S
 * http://www.loc.gov/standards/premis/v2/premis-v2-2.xsd
 * http://www.danrw.de/schemas/contract/v1/danrw-contract-1.xsd 
 * Ergänzung im Namespace V1 zu Lizenzen: [danrw-contract-1.01.xsd](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/xsd/v1/danrw-contract-v1-01.xsd) (unter der URL https://www.danrw.de/schemas/contract/v1/danrw-contract-v1-01.xsd)
-* Beabsichtigte Ergänzung um Mindest-Quualitätsstufe im Namespace V1: [danrw-contract-v1-02.xsd](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/xsd/v1/danrw-contract-v1-02.xsd) (vsstl. Feb. 2019 unter der URL http://www.danrw.de/schemas/contract/v1/danrw-contract-v1-02.xsd)
+* Beabsichtigte Ergänzung um Mindest-Qualitätsstufe im Namespace V1: [danrw-contract-v1-02.xsd](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/xsd/v1/danrw-contract-v1-02.xsd) (vsstl. Feb. 2019 unter der URL http://www.danrw.de/schemas/contract/v1/danrw-contract-v1-02.xsd)
 
 
 

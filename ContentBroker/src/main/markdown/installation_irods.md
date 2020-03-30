@@ -56,7 +56,7 @@ Several hardware platforms are supported by iRODS "out-of-the-box", but having a
     irepl, ils, iput, irsync, iget
     iadmin
 
-1. You are able to create resources (Please take a look at documentation at www.irods.org how to create iRODS resources). 
+1. You are able to create resources (Please take a look at documentation at https://irods.org/ how to create iRODS resources). 
 
 ### iRODS Installation
 

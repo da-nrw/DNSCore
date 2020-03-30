@@ -15,11 +15,11 @@ Zur Verwaltung von Präsentationsderivaten (sog. PIP - eine spezielle Form eines
 
 #### Testpakete für automatisierte Tests:
 
-* [ATTimeBasedPublInstOnly_id.pack_1.tar](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATTimeBasedPublInstOnly_id.pack_1.tar) 
-* [ATTimeBasedPublNoPubWithLawSet_id.pack_1.tar](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATTimeBasedPublNoPubWithLawSet_id.pack_1.tar) 
-* [ATTimeBasedPublNoPubWithStartDateSet_id.pack_1.tar](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATTimeBasedPublNoPubWithStartDateSet_id.pack_1.tar) 
-* [ATTimeBasedPublPublishNothing_id.pack_1.tar](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATTimeBasedPublPublishNothing_id.pack_1.tar) 
-* [ATTimeBasedPublAllPublic_id.pack_1.tar](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATTimeBasedPublAllPublic_id.pack_1.tar) 
+* [ATTimeBasedPublInstOnly_id.pack_1.tar](../../test/resources/at/ATTimeBasedPublInstOnly_id.pack_1.tar) 
+* [ATTimeBasedPublNoPubWithLawSet_id.pack_1.tar](../../test/resources/at/ATTimeBasedPublNoPubWithLawSet_id.pack_1.tar) 
+* [ATTimeBasedPublNoPubWithStartDateSet_id.pack_1.tar](../../test/resources/at/ATTimeBasedPublNoPubWithStartDateSet_id.pack_1.tar) 
+* [ATTimeBasedPublPublishNothing_id.pack_1.tar](../../test/resources/at/ATTimeBasedPublPublishNothing_id.pack_1.tar) 
+* [ATTimeBasedPublAllPublic_id.pack_1.tar](../../test/resources/at/ATTimeBasedPublAllPublic_id.pack_1.tar) 
 
 ## Darüberhinaus sollte mittels händischer Tests die zeitgesteuerte Veröffentlichung überprüft werden: 
 
@@ -32,7 +32,7 @@ Zur Verwaltung von Präsentationsderivaten (sog. PIP - eine spezielle Form eines
 
 #### Ablauf
 
-1. Die Datei [ATTimeBasedPublAllPublicManuell.bmp](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATTimeBasedPublAllPublicManuell.bmp) herunterladen.
+1. Die Datei [ATTimeBasedPublAllPublicManuell.bmp](../../test/resources/at/ATTimeBasedPublAllPublicManuell.bmp) herunterladen.
 2. Mittels SIPBuilder mehrere Test-Pakete aufbauen. Dabei jeweils unterschiedliche Veröffentlichungsdaten definieren.
 3. Die Tespakete im Incoming Ordner unter *jeweils eindeutigen* Namen ablegen und die Verarbeitung starten (Maske "Verarbeitung für abgelieferte SIP starten")
 4. Warten auf die Bestätigungsmail für die Objekte.
