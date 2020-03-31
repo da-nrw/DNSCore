@@ -209,6 +209,8 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 			return true;
 		}else {
 			System.out.println(" .... FAIL");
+			System.out.println(pi.getStdOut());
+			System.out.println(pi.getStdErr());
 			return false;
 		}
 	}
