@@ -76,6 +76,7 @@ public class ATIngestLav extends AcceptanceTest {
 		double diff3=(ath.getObject(urn3).getAip_size()-287744.0)/(ath.getObject(urn3).getAip_size()+1); // Before XML Validation by Jhove 256512
 		
 		// 4% difference will be tolerated
+		System.out.println("RelDifferenzes: "+diff1+"  "+diff2+"  "+diff3);
 		assertTrue("Wrong File Size d1: "+diff1,Math.abs(diff1)<0.03);
 		assertTrue("Wrong File Size d2: "+diff2,Math.abs(diff2)<0.03);
 		assertTrue("Wrong File Size d3: "+diff3,Math.abs(diff3)<0.03);

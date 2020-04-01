@@ -170,7 +170,8 @@ public class ATFormatValidation extends PREMISBase{
 					"\",\""+tmpFormat.format+"\",\""+tmpFormat.status+"\"));");*/
 			if(identifiedFiles.containsKey(fileName)) {
 				checkedObjects++;
-				assertEquals("Datei format in Premis weicht ab "+tmpFormat+" != "+identifiedFiles.get(fileName),identifiedFiles.get(fileName),tmpFormat);
+				System.out.println("testJhoveProperPREMISCreation: "+checkedObjects+"/"+identifiedFiles.size()+" Dateiformat in Premis abgleich "+tmpFormat+" ?? "+identifiedFiles.get(fileName));
+				assertEquals("Dateiformat in Premis weicht ab "+tmpFormat+" != "+identifiedFiles.get(fileName),identifiedFiles.get(fileName),tmpFormat);
 			}else {
 				throw new RuntimeException("Unknown File in Premis: "+fileName+" \n "+tmpFormat);
 			}
