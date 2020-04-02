@@ -90,6 +90,8 @@ public class ATFormatValidation extends PREMISBase{
 	private Object object = null;
 	
 	private HashMap<String,IdentifiedFormat> identifiedFiles=new HashMap<String,IdentifiedFormat> (){{
+		//activated xml validation
+		/*
 		put("waveFile.wav",new IdentifiedFormat("fmt/141","waveFile.wav","WAVE-hul","WAVE","Well-Formed and valid"));
 		put("aifFile.aiff",new IdentifiedFormat("fmt/414","aifFile.aiff","AIFF-hul","AIFF","Well-Formed and valid"));
 		put("gifFile.gif",new IdentifiedFormat("fmt/4","gifFile.gif","GIF-hul","GIF","Well-Formed and valid"));
@@ -102,6 +104,23 @@ public class ATFormatValidation extends PREMISBase{
 		put("premis.xml",new IdentifiedFormat("fmt/101","premis.xml","XML-hul","XML","Well-Formed, but not valid"));
 		put("tifFile.tif",new IdentifiedFormat("fmt/353","tifFile.tif","TIFF-hul","TIFF","Well-Formed and valid"));
 		put("txtFile.txt.gz",new IdentifiedFormat("x-fmt/266","txtFile.txt.gz","GZIP-kb","GZIP","Well-Formed and valid"));
+	*/
+	
+	
+		//deactivated xml validation
+		put("htmlFile.html",new IdentifiedFormat("fmt/471","htmlFile.html","UTF8-hul","UTF-8","Well-Formed and valid"));
+		put("jp2File.jp2",new IdentifiedFormat("x-fmt/392","jp2File.jp2","JPEG2000-hul","JPEG 2000","Well-Formed and valid"));
+		put("jpegFile.jpg",new IdentifiedFormat("fmt/43","jpegFile.jpg","JPEG-hul","JPEG","Well-Formed and valid"));
+		put("pdfAFile.pdf",new IdentifiedFormat("fmt/95","pdfAFile.pdf","PDF-hul","PDF","Well-Formed and valid"));
+		put("pdfFile.pdf",new IdentifiedFormat("fmt/19","pdfFile.pdf","PDF-hul","PDF","Well-Formed and valid"));
+		put("pngFile.png",new IdentifiedFormat("fmt/11","pngFile.png","PNG-gdm","PNG","Well-Formed and valid"));
+		put("premis.xml",new IdentifiedFormat("fmt/101","premis.xml","UTF8-hul","UTF-8","Well-Formed and valid"));
+		put("tifFile.tif",new IdentifiedFormat("fmt/353","tifFile.tif","TIFF-hul","TIFF","Well-Formed and valid"));
+		put("txtFile.txt.gz",new IdentifiedFormat("x-fmt/266","txtFile.txt.gz","GZIP-kb","GZIP","Well-Formed and valid"));
+		put("waveFile.wav",new IdentifiedFormat("fmt/141","waveFile.wav","WAVE-hul","WAVE","Well-Formed and valid"));
+		put("aifFile.aiff",new IdentifiedFormat("fmt/414","aifFile.aiff","AIFF-hul","AIFF","Well-Formed and valid"));
+		put("gifFile.gif",new IdentifiedFormat("fmt/4","gifFile.gif","GIF-hul","GIF","Well-Formed and valid"));
+
 	}};
 	
 	
