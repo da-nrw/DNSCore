@@ -120,7 +120,7 @@ public class JhoveResult {
 		if(status.equalsIgnoreCase(StatusWellFormedAndNotValid) && format.equalsIgnoreCase("XML")){ //XML Validierung durch JHove verlauft auch fur valide xml files nicht immer erfolgreich
 			logger.debug("JhoveResult::isValid(): StatusWellFormedAndNotValid for XML file, will be accept as StatusWellFormedAndValid: ("+this+")");
 			return true;
-		}
+		}//else if //SSLHandshakeException && Not well-formed && XML
 		return status.equalsIgnoreCase(StatusWellFormedAndValid);
 	}
 
