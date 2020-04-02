@@ -71,9 +71,9 @@ public class ATIngestLav extends AcceptanceTest {
 		System.out.println(urn2 + " filesize: "+ath.getObject(urn2).getAip_size());
 		System.out.println(urn3 + " filesize: "+ath.getObject(urn3).getAip_size());
 		
-		double diff1=(ath.getObject(urn1).getAip_size()-218112.0)/(ath.getObject(urn1).getAip_size()+1); // Before XML Validation by Jhove 188416
-		double diff2=(ath.getObject(urn2).getAip_size()-264704.0)/(ath.getObject(urn2).getAip_size()+1); // Before XML Validation by Jhove 235008
-		double diff3=(ath.getObject(urn3).getAip_size()-287744.0)/(ath.getObject(urn3).getAip_size()+1); // Before XML Validation by Jhove 256512
+		double diff1=(ath.getObject(urn1).getAip_size()-188416.0)/(ath.getObject(urn1).getAip_size()+1); // Before XML Validation by Jhove 188416, after validation 218112
+		double diff2=(ath.getObject(urn2).getAip_size()-235008.0)/(ath.getObject(urn2).getAip_size()+1); // Before XML Validation by Jhove 235008, after validation 264704
+		double diff3=(ath.getObject(urn3).getAip_size()-256512.0)/(ath.getObject(urn3).getAip_size()+1); // Before XML Validation by Jhove 256512, after validation 287744
 		
 		// 4% difference will be tolerated
 		System.out.println("RelDifferenzes: "+diff1+"  "+diff2+"  "+diff3);
