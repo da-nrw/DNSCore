@@ -23,6 +23,7 @@ package daweb3
 
 
 import java.awt.Queue
+import java.lang.reflect.InvocationTargetException
 
 import org.hibernate.criterion.CriteriaSpecification
 import org.hibernate.sql.JoinType
@@ -195,14 +196,14 @@ class ObjectController {
 				}
 
 				log.debug("Date as Strings " + params.searchDateStart + " and " + params.searchDateEnd)
-				
 				def ds = params.searchDateStart
 				def de = params.searchDateEnd
 	
 				def st = "createdAt"; 
 				String searchDateType = params.searchDateType;
-							
+				
 				if (ds!=null || de!=null ) {
+					
 					if (!ds.equals("0") || !de.equals("0")) {
 						if ( params.searchDateType.equals("null") ) {
 							params.searchDateType = "createdAt"
@@ -211,26 +212,28 @@ class ObjectController {
 						}
 					}
 				} else {
+					
 					if ( params.searchDateType.equals("null") ) {
 						params.remove("searchDateType")
 					}
 				}
 				
-				if (ds!=null  && de!=null)  {
+				if (ds!=null  && !ds.equals("") && !ds.equals(" ") &&
+					de!=null   && !de.equals("") && !de.equals(" "))  {
 					if (!ds.equals("0") && !de.equals("0")) {
 						filterOn=1
 						log.debug("Objects between " + ds + " and " + de)
 						between(st, ds, de)
 					}
 				}
-				if (ds!=null && de==null ) {
+				if (ds!=null  && !ds.equals("") && !ds.equals(" ")  && de==null ) {
 					if (!ds.equals("0") && de.equals("0")) {
 						filterOn=1
 						log.debug("Objects greater than " + ds)
 						gt(st,ds)
 					}
 				}
-				if (ds==null && de!=null ) {
+				if (ds==null && de!=null && !de.equals("") && !de.equals(" ")) {
 					if (ds.equals("0") || !de.equals("0")) {
 						filterOn=1
 						log.debug("Objects lower than " + de)
@@ -246,14 +249,16 @@ class ObjectController {
 						//between("quality_flag", params.searchQualityLevel,params.searchQualityLevel+1)
 					}
 				}
-	
+				
 				if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 					admin = 1;
 				}
+				
 				if (admin==0) {
 					
 					eq("user.id", user.id)
 				}
+				
 				if (admin==1) {
 					if (params.searchContractorName!=null) {
 						if	( !params.searchContractorName.isEmpty() || params.searchContractorName != "") {
@@ -263,10 +268,11 @@ class ObjectController {
 						}
 					}
 				}
+				
 				between("objectState", 50,200)
 				order(params.sort ?: "id", params.order ?: "desc")
 			}
-
+			
 			log.debug("Search " + params.search)
 			// workaround: make ALL params accessible for following http-requests
 			def paramsList = params.search?.collectEntries { key, value -> ['search.'+key, value]}
@@ -477,8 +483,6 @@ class ObjectController {
 					String lnid = grailsApplication.config.getProperty('localNode.id')
 					log.debug("Create Retrieval job on node id: " + lnid)
 					
-					println ("Create Retrieval job on node id: " + lnid)
-					
 					CbNode cbn = CbNode.get(Integer.parseInt(lnid))
 					qu.createJob( object ,"900", cbn.getName())
 					
@@ -532,7 +536,6 @@ class ObjectController {
 				result.success = true
 			} catch ( Exception e ) {
 				result.msg = "Auftrag zur Erstellung neuer Präsentationsformate für ${object.urn} konnte nicht angelegt werden."
-				println e
 			}
 		}
 		render result as JSON
@@ -560,7 +563,6 @@ class ObjectController {
 				result.success = true
 			} catch ( Exception e ) {
 				result.msg = "Auftrag zur Indizierung für ${object.urn} konnte nicht angelegt werden."
-				println e
 			}
 		}
 		render result as JSON
@@ -588,7 +590,6 @@ class ObjectController {
 			} catch(Exception e) {
 				result.msg = "Fehler bei der Erstellung des Arbeitsauftrages zur Überprüfung des Objekts mit der URN ${object.urn}. Bitte wenden Sie sich an einen Administrator."
 				log.error(result.msg)
-				println e
 			}
 		}
 		render result as JSON
