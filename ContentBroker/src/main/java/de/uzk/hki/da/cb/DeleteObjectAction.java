@@ -25,6 +25,7 @@ import java.io.IOException;
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.MailContents;
 import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
@@ -35,8 +36,6 @@ import de.uzk.hki.da.utils.Path;
  * @author Daniel M. de Oliveira
  */
 public class DeleteObjectAction extends AbstractAction {
-
-	
 	public DeleteObjectAction() {
 		setKILLATEXIT(true);
 	}
@@ -61,6 +60,9 @@ public class DeleteObjectAction extends AbstractAction {
 		else 
 		if (o.getPackages().size()>1){
 			o.getPackages().remove(o.getLatestPackage());
+			logger.info("Setting object_state back to: " + Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow );
+			// DANRW-1624 Set object_state to 100
+			o.setObject_state(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		}
 		logger.info("Deleting object from WorkArea: "+wa.objectPath());
 		FolderUtils.deleteDirectorySafe(wa.objectPath().toFile());
@@ -95,5 +97,4 @@ public class DeleteObjectAction extends AbstractAction {
 				n.getWorkAreaRootPath(),"work",
 				o.getContractor().getShort_name(),o.getLatestPackage().getContainerName());
 	}
-
 }
