@@ -134,11 +134,11 @@ objectMeasurementsWrap/objectMeasurementsSet<br>/displayObjectMeasurement</sub><
 <td><sub>Inhalt wird großgeschrieben: <br>'image'->'IMAGE'</sub></td>
 <td><sub>Build: 2086</sub></td>
     </tr>
-<td><sub> $1=descriptiveMetadata/objectIdentificationWrap/repositoryWrap/repositorySet/workID
-  mit lido:type="inventory number"</sub>
+<td><sub> $1=dM/ol-W/repositoryWrap/repositorySet/workID[lido:type="inventory number"]
+  </sub>
 <br/><br/><sub>
-$2=administrativeMetadata/resourceWrap/resourceSet/resourceSource/legalBodyID
-  mit lido:source="ISIL"</sub></td>
+$2=aD/rsrc-W/resourceSet/resourceSource/legalBodyID[lido:source="ISIL"]
+ </sub></td>
 <td><sub>edm.ProvidedCHO.dc.identifier</sub></td>
 <td><sub> der lokale Identifier zumeist mit Isil kombiniert </sub></td>
 <td><sub>Identifier</sub></td>
@@ -151,7 +151,7 @@ objectMeasurementsWrap/objectMeasurementsSet<br>/displayObjectMeasurement</sub><
 <td><sub> edm:ProvidedCHO.dcterms.extent</sub></td>
 <td><sub><br> </sub></td>
 <td><sub>Umfang</sub></td>
-<td><sub><b>Build: 2086</b></sub></td>
+<td><sub>Build: 2086</sub></td>
     </tr>
 </tbody></table>
 
