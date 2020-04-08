@@ -31,7 +31,8 @@ import java.util.List;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -61,7 +62,7 @@ import nu.xom.Elements;
  */
 public class Cli {
 	
-	private static Logger logger = Logger.getLogger( Cli.class );
+	private static Logger logger = LogManager.getLogger(Cli.class);
 
 	private String confFolderPath;
 	private String[] args;

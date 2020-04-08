@@ -21,6 +21,8 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<include.tests>**/*DDDCDDSD*.java</include.tests>
 	</properties>
+	
+
 
 	<profiles>
 		<profile>
@@ -43,6 +45,12 @@
 
 
 	<repositories>
+	  <repository>
+	    <id>HTTPRep</id>
+	    <name>HTTP repository</name>
+	    <url>http://insecure.repo1.maven.org/maven2</url>
+	  </repository>
+	  
 		<repository>
 	      <id>central</id>
 	      <name>Maven Repository Switchboard</name>
