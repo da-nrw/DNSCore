@@ -77,13 +77,21 @@
 		   					<g:if test="${params.searchDateType == 'modifiedAt'}">Datumsbereich geändert</g:if>
 			    		</g:if>   
 			    		<g:if test="${params.searchDateStart != null}">
-			    			<g:if test="${params.searchDateStart != '0'}">
-			    				<span style="margin-right: 25px"><i>Von Datum: ${params.searchDateStart}</i></span>
+				    		<g:if test="${params.searchDateStart != ''}">
+					    		<g:if test="${params.searchDateStart != ' '}">
+					    			<g:if test="${params.searchDateStart != '0'}">
+			    						<span style="margin-right: 25px"><i>Von Datum: ${params.searchDateStart}</i></span>
+			    					</g:if>
+			    				</g:if>
 			    			</g:if>
 			    		</g:if> 	
 			    		<g:if test="${params.searchDateEnd != null}">
 			    			<g:if test="${params.searchDateEnd != '0'}">
-			    				<span style="margin-right: 25px"><i>Bis Datum: ${params.searchDateEnd}</i></span>
+				    			<g:if test="${params.searchDateEnd != ''}">
+					    			<g:if test="${params.searchDateEnd != ' '}">
+					    				<span style="margin-right: 25px"><i>Bis Datum: ${params.searchDateEnd}</i></span>
+					    			</g:if>
+					    		</g:if>
 			    			</g:if>
 			    		</g:if> 
 			    	</div>
