@@ -48,7 +48,7 @@
 		<g:elseif test="${controllerName=='logout'}"/>
 		<g:else>
 			<div id="welcome">
-				<span>Willkommen <strong>${user} </strong> !</span> 
+				<span>Willkommen<strong>${user} </strong> !</span> 
 				<span class="admin-style">
  					<g:if test="${admin==1}"> (Administrator)</g:if>
 				</span>
@@ -77,6 +77,14 @@
 						<li><g:link controller="queueEntry" action="listRequests">Entscheidungsübersicht</g:link></li>
 					</g:else>
 					
+					<!-- Verarbeitung für abgelieferte SIP starten -->
+					<g:if test="${controllerName=='incoming'}">
+						<li class="aktuell"><g:link controller="incoming">Verarbeitung für abgelieferte SIP starten</g:link></li>
+					</g:if>
+					<g:else>
+						<li><g:link controller="incoming">Verarbeitung für abgelieferte SIP starten</g:link></li>
+					</g:else>
+							
 					<!-- Auswahl Objekte nach Formaten -->
 					<g:if test="${admin==1}">
 						<g:if test="${controllerName=='object'}">
@@ -105,12 +113,12 @@
 						<li><g:link controller="object" action="list">Eingelieferte Objekte (AIP)</g:link></li>
 					</g:else>
 					
-					<!-- Verarbeitung für abgelieferte SIP starten -->
-					<g:if test="${controllerName=='incoming'}">
-						<li class="aktuell"><g:link controller="incoming">Verarbeitung für abgelieferte SIP starten</g:link></li>
+					<!-- Statistiken-->
+					<g:if test="${controllerName=='statistics'}">
+						<li class="aktuell"><g:link controller="statistics">Statistik über die eingelieferten Objekte</g:link></li>
 					</g:if>
 					<g:else>
-						<li><g:link controller="incoming">Verarbeitung für abgelieferte SIP starten</g:link></li>
+						<li><g:link controller="statistics">Statistik über die eingelieferten Objekte</g:link></li>
 					</g:else>
 						
 					<!-- Objekt entnehmen (DIP) -->
