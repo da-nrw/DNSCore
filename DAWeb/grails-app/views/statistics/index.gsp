@@ -8,9 +8,17 @@
 			<div class="blue-box"></div>
 			<h2 id="page-header">Statistik über die eingelieferten Objekte</h2> 
 			
-			
+			<g:if test="${msg}">
+				<div class="message" role="status">${msg}</div>
+			</g:if>
+			<g:form>
+				<fieldset class="abstand-oben-imp buttons ">
+					<g:actionSubmit class="pdf" action="pdfCreate"
+						value="${message(code: 'default.button.pdf.label', default: 'generate pdf')}" />
+				</fieldset>
+			</g:form>
 			<g:form controller="statistics" >
-				<h3>Speicherbelegung</h3>
+			  <h3>Speicherbelegung</h3>
 			
 				<ul class="property-list object property-list-position">
 					<li class="fieldcontain">

@@ -425,6 +425,9 @@ h2 {
 	margin-top: 10px;
 }
 
+.abstand-oben-imp {
+	margin-top: 10px !important
+}
 .abstand-unten {
 	margin-bottom: 10px;
 }
@@ -1203,7 +1206,7 @@ th:hover, tr:hover {
 	text-decoration: underline;
 }
 
-.buttons .delete, .buttons .edit, .buttons .save, .buttons .cancel, .buttons .anmelden {
+.buttons .delete, .buttons .edit, .buttons .save, .buttons .cancel, .buttons .anmelden, .buttons .pdf {
 	background-position: 0.7em center;
 	background-repeat: no-repeat;
 	text-indent: 25px;
@@ -1225,6 +1228,11 @@ th:hover, tr:hover {
 .buttons .cancel {
 	background-image: url(../images/skin/database_cancel.png);
 }
+
+.buttons .pdf {
+	background-image: url(../images/skin/pdf.png)
+}
+
 
 a.skip {
 	position: absolute;
