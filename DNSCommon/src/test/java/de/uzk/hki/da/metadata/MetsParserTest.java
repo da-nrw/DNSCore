@@ -111,7 +111,7 @@ public class MetsParserTest {
 		Document lavMets = builder.build(fr1);
 		MetsParser mp = new MetsParser(lavMets);
 		
-		assertEquals(null,mp.getLicenseForWholeMets());
+		assertEquals(null,mp.getLicensesForWholeMets().get(0));
 		assertTrue(mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md2684319").get(C.EDM_RIGHTS).isEmpty());
 		assertTrue(mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md2684319").get(C.DC_RIGHTS).isEmpty());
 	}
@@ -124,7 +124,7 @@ public class MetsParserTest {
 		Document lavMets = builder.build(fr1);
 		MetsParser mp = new MetsParser(lavMets);
 		
-		assertEquals(mLicense,mp.getLicenseForWholeMets());
+		assertEquals(mLicense,mp.getLicensesForWholeMets().get(0));
 		assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1937630").get(C.EDM_RIGHTS).get(0));
 		assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1937630").get(C.DC_RIGHTS).get(0));
 	}
@@ -140,7 +140,7 @@ public class MetsParserTest {
 			//md1616184 has accessCondition
 			//md1617166 has no accessCondition
 			try{
-				assertEquals(mLicense,mp.getLicenseForWholeMets()); //throws Exception
+				assertEquals(mLicense,mp.getLicensesForWholeMets().get(0)); //throws Exception
 			}catch(RuntimeException e){
 				assertTrue(e.getMessage().contains("null"));
 				assertTrue(e.getMessage().contains(mLicense.toString()));
@@ -162,7 +162,7 @@ public class MetsParserTest {
 			Document lavMets = builder.build(fr1);
 			MetsParser mp = new MetsParser(lavMets);
 			
-			assertEquals(null,mp.getLicenseForWholeMets());
+			assertEquals(null,mp.getLicensesForWholeMets().get(0));
 			assertTrue(mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.EDM_RIGHTS).isEmpty());
 			assertTrue(mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1617166").get(C.EDM_RIGHTS).isEmpty());
 			assertTrue(mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.DC_RIGHTS).isEmpty());
@@ -179,7 +179,7 @@ public class MetsParserTest {
 		Document lavMets = builder.build(fr1);
 		MetsParser mp = new MetsParser(lavMets);
 		
-		assertEquals(mLicense,mp.getLicenseForWholeMets());
+		assertEquals(mLicense,mp.getLicensesForWholeMets().get(0));
 		assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.EDM_RIGHTS).get(0));
 		assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1617166").get(C.EDM_RIGHTS).get(0));
 		assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.DC_RIGHTS).get(0));
