@@ -24,6 +24,8 @@ package de.uzk.hki.da.cb;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import org.jdom.JDOMException;
@@ -67,6 +69,14 @@ public class RegisterURNAction extends AbstractAction {
 	
 	
 	protected void validateURN(String urn) {
+		try {
+			@SuppressWarnings("unused")
+			URI uri = new URI(urn);
+		} catch (URISyntaxException e) {
+			throw new UserException(UserExceptionId.INVALID_URN, 
+			"Invalid URN");
+		}
+		
 		int len = urn.length();
 		int index = urn.indexOf(':'); 
 		if (index < 1 || index >= len-1) {
