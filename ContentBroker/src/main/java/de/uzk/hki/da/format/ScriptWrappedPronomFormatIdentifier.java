@@ -70,10 +70,9 @@ public class ScriptWrappedPronomFormatIdentifier implements FormatIdentifier, Co
 
 		
 		ProcessInformation pi = new CommandLineConnector().runCmdSynchronously( new String[]{
-				
 				conversionScript.getAbsolutePath(),
 				file.getAbsolutePath()
-		},null,60000);
+				},null,C.JHOVE_FIDO_TIMEOUT);
 		
 		
 		if (pi.getExitValue()!=0){
