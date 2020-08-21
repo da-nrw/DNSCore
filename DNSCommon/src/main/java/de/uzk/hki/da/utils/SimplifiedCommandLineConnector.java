@@ -62,9 +62,10 @@ public class SimplifiedCommandLineConnector {
 		ProcessInformation pi = null;
 		File redirect = null;
 		try {
-			redirect = File.createTempFile("Duppes", "log");
+			redirect = File.createTempFile("DANRWCMD", "log");
 			pi = cl.runCmdSynchronously(cmd, null, 0, redirect);
 		} catch (IOException e) {
+			redirect.delete();
 			throw new RuntimeException(e);
 		}
 		if (pi.getExitValue()!=0) {
@@ -84,23 +85,25 @@ public class SimplifiedCommandLineConnector {
 					bR.close();
 				} catch (IOException e) {
 					errorMessages = "Unable to read output";
-					try {
-						bR.close();
-						redirect.delete();
-					} catch (IOException exctasy) {
-						logger.error("Unable to close output", exctasy);
-					}
+				}
+				try {
+					bR.close();
+				} catch (IOException exctasy) {
+					logger.error("Unable to close output", exctasy);
 				}
 			} catch (FileNotFoundException exctasy) {
 				errorMessages = "Unable to open output";
 				logger.error("Unable to open output", exctasy);
 			}
+			redirect.delete();
 			
 			logger.error( this.getClass()+": Recieved return code from terminal based command: "+
 					pi.getExitValue() );
 			logger.error(errorMessages);
 			return false;
 		}
+
+		redirect.delete();
 		
 		return true;
 	}
