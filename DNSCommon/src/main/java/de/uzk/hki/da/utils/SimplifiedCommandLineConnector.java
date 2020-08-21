@@ -19,6 +19,10 @@
 
 package de.uzk.hki.da.utils;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 
 import org.slf4j.Logger;
@@ -56,18 +60,45 @@ public class SimplifiedCommandLineConnector {
 		logger.trace("SimplifiedCommandLineConnector executing conversion command: {}", cmd.toString());
 		errorMessages=null;
 		ProcessInformation pi = null;
+		File redirect = null;
 		try {
-			pi = cl.runCmdSynchronously( cmd );
+			redirect = File.createTempFile("Duppes", "log");
+			pi = cl.runCmdSynchronously(cmd, null, 0, redirect);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 		if (pi.getExitValue()!=0) {
+			try {
+				BufferedReader bR = new BufferedReader(new FileReader (redirect));
+				try {
+					int lR = 0;
+					errorMessages = new String();
+					String ls = System.lineSeparator();
+					String line = bR.readLine();
+					while (line != null && lR < 50) {
+						errorMessages += line + ls;
+						lR++;
+						line = bR.readLine();
+					}
+					
+					bR.close();
+				} catch (IOException e) {
+					errorMessages = "Unable to read output";
+					try {
+						bR.close();
+						redirect.delete();
+					} catch (IOException exctasy) {
+						logger.error("Unable to close output", exctasy);
+					}
+				}
+			} catch (FileNotFoundException exctasy) {
+				errorMessages = "Unable to open output";
+				logger.error("Unable to open output", exctasy);
+			}
+			
 			logger.error( this.getClass()+": Recieved return code from terminal based command: "+
 					pi.getExitValue() );
-			logger.error("cli conversion failed!\n\nstdOut: ------ \n\n\n"+
-					pi.getStdOut()+"\n\n ----- end of stdOut\n\nstdErr: ------ \n\n\n"+
-					pi.getStdErr()+"\n\n ----- end of stdErr");
-			errorMessages=pi.getStdErr()+"\n"+pi.getStdOut();
+			logger.error(errorMessages);
 			return false;
 		}
 		

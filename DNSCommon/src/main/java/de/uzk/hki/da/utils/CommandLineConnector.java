@@ -48,7 +48,7 @@ public class CommandLineConnector {
 	 *  
 	 * @author Daniel M. de Oliveira
 	 */
-	public ProcessInformation runCmdSynchronously(String cmd[],File workingDir,long timeout) 
+	public ProcessInformation runCmdSynchronously(String cmd[],File workingDir,long timeout,File redirect) 
 			throws IOTimeoutException,IOException{
 
 		if (timeout==0) timeout=Long.MAX_VALUE;
@@ -59,7 +59,7 @@ public class CommandLineConnector {
 		Process p = null;
 		ProcessInformation pi=null;
 		try {
-			p=startProcess(cmd, workingDir);
+			p=startProcess(cmd, workingDir, redirect);
 			waitForProcessToTerminate(p,timeout);
 			pi=assembleProcessInformation(p);
 		}
@@ -69,12 +69,15 @@ public class CommandLineConnector {
 		return pi;
 	}
 
-
+	public ProcessInformation runCmdSynchronously(String cmd[],File workingDir,long timeout) 
+			throws IOTimeoutException,IOException{
+		return runCmdSynchronously(cmd, workingDir, timeout, null);
+	}
 	/**
 	 * Convenience method for {@link #runCmdSynchronously(String[], File, long)}
 	 */
 	public ProcessInformation runCmdSynchronously(String cmd[]) throws IOTimeoutException,IOException{
-		return runCmdSynchronously(cmd, null, 0);
+		return runCmdSynchronously(cmd, null, 0, null);
 	}
 
 
@@ -83,7 +86,7 @@ public class CommandLineConnector {
 	 * @throws IOException 
 	 */
 	public ProcessInformation runCmdSynchronously(String cmd[],long timeout) throws IOTimeoutException,IOException{
-		return runCmdSynchronously(cmd, null, timeout);
+		return runCmdSynchronously(cmd, null, timeout, null);
 	}
 
 
@@ -92,7 +95,7 @@ public class CommandLineConnector {
 	 * @author Daniel M. de Oliveira
 	 */
 	public ProcessInformation runCmdSynchronously(String cmd[],File workingDir) throws IOTimeoutException,IOException{
-		return runCmdSynchronously(cmd, workingDir, 0);
+		return runCmdSynchronously(cmd, workingDir, 0, null);
 	}
 
 
@@ -104,10 +107,15 @@ public class CommandLineConnector {
 	}
 	
 	
-	private Process startProcess(String[] cmd,File workingDir) throws IOException {
+	private Process startProcess(String[] cmd, File workingDir, File redirect) throws IOException {
 		Process p=null;
 		ProcessBuilder pb = new ProcessBuilder(cmd);
 		if (workingDir!=null) pb.directory(workingDir);
+		if (redirect != null) {
+			pb.redirectErrorStream(true);
+			pb.redirectOutput(redirect);
+		}
+		
 		p = pb.start(); 
 		return p;
 	}
