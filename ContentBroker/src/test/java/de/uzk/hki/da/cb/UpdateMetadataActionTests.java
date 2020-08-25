@@ -106,6 +106,7 @@ public class UpdateMetadataActionTests {
 		PreservationSystem pSystem = new PreservationSystem();
 		pSystem.setUrisFile("http://data.danrw.de/file");
 		pSystem.setLicenseValidationTestCSNFlag(C.PRESERVATIONSYS_LICENSE_VALIDATION_YES);		
+		pSystem.setPresServer("localPost");
 		
 		action = new UpdateMetadataAction();		
 		node = new Node();

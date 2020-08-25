@@ -120,7 +120,8 @@ public abstract class MetadataStructure {
 				
 				for(String elementName : indexInfo.get(id).keySet()) {
 					Element parentNode = null;
-					if(elementName.startsWith("dc:") || elementName.startsWith("dcterms:") || elementName.equals(C.EDM_HAS_TYPE)) {
+					if(elementName.startsWith("dc:") || elementName.startsWith("dcterms:") 
+							|| elementName.equals(C.EDM_HAS_TYPE) || elementName.equals(C.EDM_TYPE) ) {
 						parentNode = providedCHO;
 					} else if(elementName.startsWith("edm:")) {
 						parentNode = aggregation;

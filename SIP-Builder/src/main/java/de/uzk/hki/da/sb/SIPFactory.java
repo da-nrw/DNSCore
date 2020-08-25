@@ -426,14 +426,16 @@ public class SIPFactory {
 					ArrayList<File> metsFiles = new ArrayList<File>();
 	
 					ArrayList<MetsLicense> licenseMetsFile = new ArrayList<MetsLicense>();
-					for (File f : metadataFileWithType.keySet())
-						if (metadataFileWithType.get(f).equals(C.CB_PACKAGETYPE_METS))
+					for (File f : metadataFileWithType.keySet()) {
+						if (metadataFileWithType.get(f).equals(C.CB_PACKAGETYPE_METS)) {
 							metsFiles.add(f);
+						}
+					}
 					for (File f : metsFiles) {// assuming more as usual mets is allowed (check is done by FormatDetectionService) e.g. publicMets for testcase-creation
 						SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 						Document metsDoc = builder.build(f);
 						MetsParser mp = new MetsParser(metsDoc);
-						licenseMetsFile.add(mp.getLicenseForWholeMets());
+						licenseMetsFile.addAll(mp.getLicensesForWholeMets());
 					}
 					Collections.sort(licenseMetsFile, new NullLastComparator<MetsLicense>());
 					if (licenseMetsFile.get(0) == null) // all licenses are null

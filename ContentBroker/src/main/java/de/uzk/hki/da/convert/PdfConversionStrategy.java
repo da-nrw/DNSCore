@@ -81,12 +81,25 @@ public class PdfConversionStrategy implements ConversionStrategy {
 				ci.getTarget_folder()).toFile().mkdirs();
 		List<Event> results = new ArrayList<Event>();
 		File result = new File(generateTargetFilePath(wa,ci));
-		String commandAsArray[] = new String[] { "gs", "-q", "-dPDFA",
-				"-dPDFACompatibilityPolicy=1", "-dBATCH", "-dNOPAUSE",
-				"-dNOOUTERSAVE", "-dUseCIEColor",
-				"-sProcessColorModel=DeviceCMYK", "-sDEVICE=pdfwrite",
-				"-sOutputFile=" + result.getAbsolutePath(), "conf/PDFA_def.ps",
+//		String commandAsArray[] = new String[] { "gs", "-q", "-dPDFA",
+//				"-dPDFACompatibilityPolicy=1", "-dBATCH", "-dNOPAUSE",
+//				"-dNOOUTERSAVE", "-dUseCIEColor",
+//				"-sProcessColorModel=DeviceCMYK", "-sDEVICE=pdfwrite",
+//				"-sOutputFile=" + result.getAbsolutePath(), "conf/PDFA_def.ps",
+//				wa.toFile(ci.getSource_file()).getAbsolutePath() };
+		
+		/*
+		 * DANRW-1634: -dUseCIEColor wird nicht mehr unterstützt stattdessen
+		 * -sColorConversionStrategie=CMYK verwendet werden
+		 */
+		String commandAsArray[] = new String[]{ "gs","-q", "-dPDFA", 
+				"-dPDFACompatibilityPolicy=1", "-dBATCH" ,"-dNOPAUSE" ,
+				"-dNOOUTERSAVE", "-sColorConversionStrategie=CMYK",
+				"-sProcessColorModel=DeviceCMYK","-sDEVICE=pdfwrite", 
+				"-sOutputFile=" + result.getAbsolutePath(),"conf/PDFA_def.ps",
 				wa.toFile(ci.getSource_file()).getAbsolutePath() };
+		
+		
 		ProcessInformation pi = null;
 		try {
 			pi = cliConnector.runCmdSynchronously(commandAsArray);

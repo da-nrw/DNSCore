@@ -89,7 +89,9 @@ public class CLIConversionStrategy implements ConversionStrategy{
 		Path.make(wa.dataPath(),object.getNameOfLatestBRep(),ci.getTarget_folder()).toFile().mkdirs();
 		
 		String[] commandAsArray = assemble(wa,ci, object.getNameOfLatestBRep());
-		if (!cliConnector.execute(commandAsArray)) throw new RuntimeException("convert did not succeed:"+cliConnector.getErrorMessages());
+		if (!cliConnector.execute(commandAsArray)) {
+			throw new RuntimeException("convert did not succeed:"+cliConnector.getErrorMessages());
+		}
 		
 		String targetSuffix= ci.getConversion_routine().getTarget_suffix();
 		if (targetSuffix.equals("*")) targetSuffix= FilenameUtils.getExtension(toAbsolutePath(wa.dataPath(),ci.getSource_file()));
