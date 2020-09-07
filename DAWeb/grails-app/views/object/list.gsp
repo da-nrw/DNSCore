@@ -235,9 +235,6 @@
 								</th>
 								<th style="text-align: center">Entnahme			
 								</th>			
-<!-- 								<g:if test="${objArt=='sich in Bearbeitung befindlichen'}"> -->
-<!-- 									<g:sortableColumn property="status" title="${message(code: 'object.modified.label', default: 'Status')}" /> -->
-<!-- 								</g:if> -->
 							</tr>
 						</thead>
 						<tbody>
@@ -277,11 +274,12 @@
 								<g:else>
 									<td style="text-align: center">Objekt in der Verarbeitung</td>
 								</g:else>
+								
 								<td style="text-align: center">
 									<g:if test="${new File(baseFolder+ "/"+ objectInstance.identifier +".tar").exists()}">
-										 <g:link controller="outgoing" action="download" params="['filename':objectInstance.identifier +'.tar']">
-											<asset:image width="16px" height="16px" src="/icons/delivery.png"/>
-										</g:link>
+										<asset:image style="width: 16px; height: 16px" src="/icons/delivery.png" 
+										title="${new File(baseFolder+ "/"+ objectInstance.identifier +".tar")}" 
+										alt="${new File(baseFolder+ "/"+ objectInstance.identifier +".tar")}"/>
 									</g:if>
 								</td>
 
