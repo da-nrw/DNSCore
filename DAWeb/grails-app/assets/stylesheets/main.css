@@ -1268,3 +1268,7 @@ a.skip {
 #vertical-menu ul li a:active {
     text-decoration: underline;
 }
+
+.outgoing-li {
+	margin-left: 20px;
+}
