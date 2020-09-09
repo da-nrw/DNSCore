@@ -64,7 +64,7 @@ public class IrodsCommandLineConnector {
 		} catch (IOException e1) {
 			throw new RuntimeException("Icommand did not succeed, not found: " + Arrays.toString(commandAsArray) + "because of " +e1);
 		}
-		if (pi.getExitValue()!=0) {
+		if (pi.getExitValue()!=0 && (!pi.getStdErr().contains("ERROR: resolve_hostname_from_hosts_config")||pi.getStdErr().indexOf("ERROR: ", pi.getStdErr().indexOf("ERROR: resolve_hostname_from_hosts_config")+1)>0 )) {
 			logger.error("Icommand did not succeed: " + Arrays.toString(commandAsArray) + " returned " +pi.getStdErr() );
 			throw new RuntimeException("Icommand did not succeed" + Arrays.toString(commandAsArray) + pi.getStdErr());
 		}
@@ -231,6 +231,7 @@ public class IrodsCommandLineConnector {
 	 * @return
 	 */
 	public String getChecksum(String destDao) {
+		//int spacingBeforeCehcksum=25; //old irods Version 38
 		String ret = "";
 		String commandAsArray[] = new String[]{
 				"ichksum",destDao
@@ -239,11 +240,13 @@ public class IrodsCommandLineConnector {
 		if (out.indexOf("ERROR")>=0) throw new RuntimeException(" Get Checksum of " + destDao + " failed !" );
 		Scanner scanner = new Scanner(out);
 		String data_name = FilenameUtils.getName(destDao);
-		if (data_name.length()>30) data_name = data_name.substring(0, 30);
+		//if (data_name.length()>30) data_name = data_name.substring(0, 30);
 		while (scanner.hasNextLine()) {
 		  String line = scanner.nextLine();
 		  if (line.contains(data_name)) {
-			  ret = line.substring(38,line.length());
+			  line=line.trim();
+			  line=line.substring(data_name.length(), line.length());
+			  ret = line.trim();
 		  }
 		}
 		scanner.close();
@@ -299,7 +302,7 @@ public class IrodsCommandLineConnector {
 	 */
 	public void unregColl(String destColl) {
 		String mKcommandAsArray[] = new String[]{
-				"irm","-rU",destColl
+				"iunreg","-r",destColl
 		};
 		executeIcommand(mKcommandAsArray);	
 	}
@@ -507,7 +510,7 @@ public class IrodsCommandLineConnector {
 	 * @author Jens Peters
 	 * @return
 	 */
-	public String itrim(String dao, String resourceName, int numberToKeep, int replNumber) {
+	public String itrim(String dao, String resourceName, int numberToKeep/*, int replNumber*/) {
 		ArrayList<String>  commandAsList = new ArrayList<String>();
 		commandAsList.add("itrim");
 		if (!resourceName.equals("")) {
@@ -516,8 +519,8 @@ public class IrodsCommandLineConnector {
 		}
 		commandAsList.add("-N");
 		commandAsList.add(String.valueOf(numberToKeep));
-		commandAsList.add("-n");
-		commandAsList.add(String.valueOf(replNumber));
+		///commandAsList.add("-n");
+		//commandAsList.add(String.valueOf(replNumber));
 		commandAsList.add(dao);
 		String[] commandAsArray = new String[commandAsList.size()];
 		commandAsArray = commandAsList.toArray(commandAsArray);
