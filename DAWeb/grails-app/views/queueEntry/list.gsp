@@ -79,7 +79,7 @@
 		    		<g:if test="${!params.search?.obj?.origName.isEmpty()}">
 		    			<span style="margin-right: 25px"><i>Originalname: ${params.search?.obj?.origName}</i></span>
 		    		</g:if> 
-		    		<g:if test="${params.search?.urn}">
+		    		<g:if test="${params.search?.obj?.urn}">
 			    		<g:if test="${!params.search?.obj?.urn.isEmpty()}">
 			    			 <span style="margin-right: 25px"><i>URN: ${params.search?.obj?.urn}</i></span>
 			    		</g:if> 

@@ -714,7 +714,19 @@ img {
 }
 
 /* css - Überarbeitung neu*/
-.nav #aktuell a{
+.nav #aktuell a {
+  color: #ffffff !important;
+  background-color: #105F85;
+  border-color: #04546B;
+}
+
+.nav #aktuell a:hover{
+  color: #ffffff !important;
+  background-color: #15445A;
+  border-color: #04546B;
+}
+
+.nav li.aktuell {
 	background-color: #fff;
     border-style: solid;
     border-width: 1px;
@@ -722,14 +734,6 @@ img {
     border-radius: 0em !important;
     color: #105F85 !important;
 }
-
-.nav #aktuell a:hover{
-  color: #ffffff !important;
-  background-color: #15445A;
-  border-color: #04546B;
-
-}
-
 .nav-ecke-oben{
       margin-left: 25px;
       height: 25px;
@@ -1272,3 +1276,4 @@ a.skip {
 .outgoing-li {
 	margin-left: 20px;
 }
+
