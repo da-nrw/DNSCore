@@ -115,10 +115,10 @@
 						
 					<!-- Angeforderte Objekt (DIP) -->
 					<g:if test="${controllerName=='outgoing'}">
-						<li class="aktuell"><g:link controller="outgoing">Angeforderte Objekt (DIP)</g:link></li>
+						<li class="aktuell"><g:link controller="outgoing">Angeforderte Objekte (DIP)</g:link></li>
 					</g:if>
 					<g:else>
-						<li><g:link controller="outgoing">Angeforderte Objekt (DIP)</g:link></li>
+						<li><g:link controller="outgoing">Angeforderte Objekte (DIP)</g:link></li>
 					</g:else>
 					
 					<!-- Hinweise zur Ansteuerung über externe Systeme -->
