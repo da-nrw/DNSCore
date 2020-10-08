@@ -62,6 +62,7 @@ public class DeleteObjectAction extends AbstractAction {
 		}
 		else 
 		if (o.getPackages().size()>1){
+			// DANRW-1642 ensure purging of package from db 
 			Session session = openSession();
 			Transaction transi = session.beginTransaction();
 			session.refresh(o);
