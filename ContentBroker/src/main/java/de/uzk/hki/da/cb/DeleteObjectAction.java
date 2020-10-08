@@ -66,11 +66,15 @@ public class DeleteObjectAction extends AbstractAction {
 			Transaction transi = session.beginTransaction();
 			session.refresh(o);
 			clearNonpersistentObjectProperties(o);
+			transi.commit();
+
+			session.refresh(o);
+			transi = session.beginTransaction();
 			de.uzk.hki.da.model.Package packi = o.getLatestPackage();
 			o.getPackages().remove(packi);
-			session.save(o);
-			session.delete(packi);
 			String debIde = packi.getContainerName() + " " + packi.getDelta();
+			session.delete(packi);
+			session.save(o);
 			transi.commit();
 			session.close();
 			logger.info("Last Package deleted: " + debIde);
