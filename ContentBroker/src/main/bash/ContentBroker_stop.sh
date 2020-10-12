@@ -24,7 +24,7 @@ if [ "$PID" == "" ]; then
 	echo "Application is not running"
 else
 	kill -15 $PID  # for graceful shutdown
-	sleep 1
+	sleep 10
 	CUR_TIME=0
 	while [[ $CUR_TIME -lt $MAX_TIME ]]
 	do
