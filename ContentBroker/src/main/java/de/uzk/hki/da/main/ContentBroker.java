@@ -175,7 +175,7 @@ public class ContentBroker {
 		        actionFactory.setPaused(true);
 		        List<ActionDescription> tmpList=actionFactory.getActionRegistry().getCurrentActionDescriptions();
 
-		        while(tmpList.isEmpty()){
+		        while(!tmpList.isEmpty()){
 		        	logger.info("Give a chance for running actions ("+tmpList.size()+") to exit themself");
 		        	for(int i=0;i<tmpList.size();i++){
 		        		ActionDescription ac=tmpList.get(i);
@@ -189,7 +189,7 @@ public class ContentBroker {
 					}
 		        }
 		        logger.info("Time is out for a 'bit gracefully shutdown', "+actionFactory.getActionRegistry().getCurrentActionDescriptions().size()+" actions are still running");
-		        //System.exit(0);
+		        System.exit(0);
 		      }
 		    });
 		
