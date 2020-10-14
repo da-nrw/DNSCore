@@ -8,6 +8,7 @@ STEP=60
 if [ "$OPTION_F" == "force" ]; then
 	MAX_TIME=60 
 	STEP=5	
+	echo "'force' parameter in use -> wait time max $MAX_TIME sec."
 fi
 
 if [ "$OPTION_F" != "force"  -a "$OPTION_F" != "nonforce"  ]; then
