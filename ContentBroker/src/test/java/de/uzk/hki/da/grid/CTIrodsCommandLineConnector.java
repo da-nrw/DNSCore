@@ -135,7 +135,7 @@ public class CTIrodsCommandLineConnector {
 	@Test
 	public void testExists() {
 		assertTrue(iclc.exists(dao));
-		assertFalse(iclc.exists("/c-i/aip/someFile.txt"));
+		assertFalse(iclc.exists("/ci/aip/someFile.txt"));
 	}
 
 	@Test
