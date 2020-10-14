@@ -28,12 +28,12 @@ else
 	CUR_TIME=0
 	while [[ $CUR_TIME -lt $MAX_TIME ]]
 	do
-		CUR_TIME=$((CUR_TIME +STEP))
 		if [  `ps --pid $PID | wc -l` -eq 1 ]; then
 			break;
 		fi
 		echo "Wait for gracefully exiting of ContentBroker $CUR_TIME/$MAX_TIME s"
 		sleep $STEP
+		CUR_TIME=$((CUR_TIME +STEP))
 	done
 	
 	if [  `ps --pid $PID | wc -l` -eq 2 ]; then
