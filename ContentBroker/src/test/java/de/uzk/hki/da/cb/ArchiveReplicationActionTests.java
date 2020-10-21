@@ -67,7 +67,7 @@ public class ArchiveReplicationActionTests {
 		c.setEmailAddress("noreply");
 		object.setContractor(c);
 		node.setAdmin(c);
-		node.setIdentifier("c-i");
+		node.setIdentifier("ci");
 		ArchiveReplicationAction action = setUpAction(node);
 		action.implementation();
 	}

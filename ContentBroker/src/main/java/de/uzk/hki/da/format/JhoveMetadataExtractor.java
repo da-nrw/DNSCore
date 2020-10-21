@@ -36,6 +36,7 @@ import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.model.FormatMapping;
 import de.uzk.hki.da.model.JHoveParameterMapping;
 import de.uzk.hki.da.service.HibernateUtil;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.IOTimeoutException;
 import de.uzk.hki.da.utils.ProcessInformation;
@@ -64,9 +65,9 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 		}};
 	
 	
-	private static final int _6_MINUTES = 360000; // ms
+	
 	private static final String JHOVE_CONF = "conf/jhove.conf";
-	private static final long JHOVE_TIMEOUT = _6_MINUTES;
+	
 	private static final String jhoveFolder = "jhove";
 	private static final String JHOVE_BIN = "jhove";
 	private static final String SHELL = "/bin/sh";
@@ -171,7 +172,7 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 	private int execCMD(String cmd[]) throws ConnectionException, IOException {
 		ProcessInformation pi=null;
 		pi = cli.runCmdSynchronously(cmd,
-                new File(jhoveFolder),JHOVE_TIMEOUT);
+                new File(jhoveFolder),C.JHOVE_FIDO_TIMEOUT);
 		if (pi==null) {
 			throw new ConnectionException("Call to JHOVE terminated with empty ProcessInformation");
 		}
@@ -199,7 +200,7 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 		try {
 			pi = cli.runCmdSynchronously(new String[] {
 			        "/bin/sh", "jhove", "-c", JHOVE_CONF, "--version" },
-			        new File(jhoveFolder),JHOVE_TIMEOUT);
+			        new File(jhoveFolder),C.JHOVE_FIDO_TIMEOUT);
 		} catch (IOException e) {
 			return false;
 		}

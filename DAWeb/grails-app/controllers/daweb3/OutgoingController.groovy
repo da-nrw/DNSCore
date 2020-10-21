@@ -60,35 +60,8 @@ class OutgoingController {
 		}
 		[filelist:filelist,
 			msg:msg,
-			user:user, admin:admin]
-
-		
-	}
-	
-	def download() {
-		// set Queue Entry to read. 
-		log.debug("Setting read status of file " + params.filename)
-		def idn = params.filename.substring(0,params.filename.length()-4)
-		log.debug("Setting read status of object <" + idn + ">")
-		User user = springSecurityService.currentUser
-		def que = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn and q.obj.identifier=:idn",
-             [csn: user.getShortName(),
-				idn: idn])
-		que.each {
-			
-			//it.setStatus("960")
-			
-			def modi = new Date()
-			log.debug("Modified at:" + modi)
-			
-			it.setModifiedAt(modi)
-			it.save();
-		}
-		def redirecturl = request.getHeader('referer');
-		if (grailsApplication.config.transferNode.downloadLinkPrefix && grailsApplication.config.getProperty('transferNode.downloadLinkPrefix').trim().length() > 0) {
-			redirecturl = grailsApplication.config.getProperty('transferNode.downloadLinkPrefix') +"/"+   user.getShortName()  + "/outgoing/" + params.filename
-		}
-		redirect(url:redirecturl)
+			user:user, admin:admin,
+			basedir:baseDir]
 	}
 
 }
