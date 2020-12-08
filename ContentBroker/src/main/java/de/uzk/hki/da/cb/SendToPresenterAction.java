@@ -227,9 +227,7 @@ public class SendToPresenterAction extends AbstractAction {
 			logger.debug("Added relationship: "+MEMBER_COLLECTION+" "+ collectionUri);
 			
 			// add oai identifier
-			if (!(preservationSystem.getClosedCollectionName()+":").equals(collection) && 
-				// don't add test packages to OAI-PMH
-				!testContractors.contains(o.getContractor().getShort_name())
+			if (!(preservationSystem.getClosedCollectionName()+":").equals(collection))
 			) {
 				String oaiId = OAI_DANRW_DE + o.getIdentifier();
 				repositoryFacade.addRelationship(o.getIdentifier(), collection, OPENARCHIVES_OAI_IDENTIFIER, oaiId);
