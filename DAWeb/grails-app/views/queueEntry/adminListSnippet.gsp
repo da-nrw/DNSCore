@@ -107,6 +107,16 @@
 					<g:link action="show" id="${queueEntryInstance.id}">
 						${fieldValue(bean: queueEntryInstance, field: "status")}
 					</g:link>
+					 
+					<g:if test="${queueEntryInstance.showRecoverButton563() }">
+						<g:set var="showRecoverAll" value="true" />
+						<g:link action="queueRecover563" id="${queueEntryInstance.id}">
+							<asset:image style="width:16px; height:16px" src="/icons/back-icon.png"
+									title="${message(code: 'default.workflow.icon.setBack', default: 'Paket auf Status 550 zurücksetzen')}" 
+									alt="${message(code: 'default.workflow.icon.setBack', default: 'aket auf Status 550 zurücksetzen')}"/>
+					</g:link>
+					</g:if> 
+					
 					<g:if test="${queueEntryInstance.showRetryButton()}">
 								<g:set var="showRetryAll" value="true" />
 								<g:link action="queueRetry" id="${queueEntryInstance.id}">
