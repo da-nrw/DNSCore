@@ -38,6 +38,8 @@ class QueueEntry {
 	private static final String WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET = "6";
 	private static final String WORKFLOW_STATUS_DIGIT_ERROR_BAD_CONFIGURATION = "7";
 	private static final String WORKFLOW_STATUS_DIGIT_UP_TO_ROLLBACK = "8";
+	// DANRW-1655 28.12.2020
+	private static final String WORKFLOW_STATUS_DIGIT_ERROR_563 = "563";
 	
 	int id
 	String status
@@ -200,6 +202,21 @@ class QueueEntry {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * @author gabender
+	 * Show RetryButton if state is 563
+	 * @return
+	 */
+	boolean showRecoverButton563() {
+		def checkfor = [
+			WORKFLOW_STATUS_DIGIT_ERROR_563]
+		def ch = status
+		if (checkfor.contains(ch)) {
+			if (getStatusAsInteger() == 563) return true;
+		}
+		return false; 
 	}
 	
 	String getIdAsString(){

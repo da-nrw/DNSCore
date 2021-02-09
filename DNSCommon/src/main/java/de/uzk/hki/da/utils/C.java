@@ -33,6 +33,8 @@ import org.jdom.Namespace;
 public class C {
 
 	public static final String FS_SEPARATOR = "/";
+	public static final int _6_MINUTES = 360000; // ms
+	public static final long JHOVE_FIDO_TIMEOUT = _6_MINUTES;
 	
 	// file extensions
 	public static final String FILE_EXTENSION_ZIP = "zip";

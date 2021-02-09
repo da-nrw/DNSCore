@@ -329,7 +329,7 @@ public class ATIngestLicensedMetsSip extends AcceptanceTest {
 			assertTrue(metsFile1.exists());
 			Document metsDoc1 = builder.build(new FileReader(metsFile1));
 			MetsParser mp = new MetsParser(metsDoc1);
-			MetsLicense lic=mp.getLicenseForWholeMets();
+			MetsLicense lic=mp.getLicensesForWholeMets().get(0);
 			assertTrue(lic!=null);	
 			assertEquals(lic, license);
 		}

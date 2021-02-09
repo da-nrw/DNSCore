@@ -1,13 +1,10 @@
 package de.uzk.hki.da.metadata;
 
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
-import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -17,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.utils.C;
-import  de.uzk.hki.da.metadata.NullLastComparator;
 
 /**
  * @author Eugen Trebunski
@@ -83,37 +79,22 @@ public class MetsParser{
 	
 	/**
 	 * 
-	 * Method search in each dmdSec for license and return one license instance, only if each dmdSec contains same license, otherwise method causes exceptions.
+	 * Method search in each dmdSec for license and return one license instance for each dmdSec  
 	 * @return
 	 */
-	public MetsLicense getLicenseForWholeMets() {
-		return getLicenseForWholeMets(false);
-	}
-	
-	/**
-	 * 
-	 * Method search in each dmdSec for license and return one license instance, only if each dmdSec contains same license, otherwise method causes exceptions.
-	 * @return
-	 */
-	protected MetsLicense getLicenseForWholeMets(boolean quiet) {
+	public List<MetsLicense> getLicensesForWholeMets() {
 		ArrayList<MetsLicense> licenseAl=new ArrayList<MetsLicense>();
 		@SuppressWarnings("unchecked")
 		List<Element> dmdSecs = metsDoc.getRootElement().getChildren("dmdSec", METS_NS);
 		for(Element dmdSec : dmdSecs) {
-			licenseAl.add(getLicense(dmdSec,quiet));
+			licenseAl.add(getLicense(dmdSec,false));
 		}
-		if(licenseAl.size()==0)
-			return null;
-		//check all licenses, all have to be the same
+
 		Collections.sort(licenseAl,new NullLastComparator<MetsLicense>());
-		if(licenseAl.get(0)==null) //all licenses are null
-			return null;
-		if(!licenseAl.get(0).equals(licenseAl.get(licenseAl.size()-1))) //first and last element have to be same in sorted array
-			if(!quiet)
-				throw new RuntimeException("METS contains different licenses("+licenseAl.size()+") e.g.:"+licenseAl.get(licenseAl.size()-1)+" "+licenseAl.get(0));
 		logger.debug("Recognized License in METS("+licenseAl.size()+") "+licenseAl.get(0));
-		return licenseAl.get(0);
+		return licenseAl;
 	}
+	
 	
 	/**
 	 * Method search in given dmdSec for license. It returns MetsLicense object or null;
@@ -329,7 +310,7 @@ public class MetsParser{
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private HashMap<String, ArrayList<String>> getParentChildInfoOfDmdIds(String objectId) {
-		HashMap parentChildDmdId = new HashMap<String, ArrayList<String>>();
+		HashMap<String, ArrayList<String>> parentChildDmdId = new HashMap<String, ArrayList<String>>();
 		String parentDmdId = "";
 		try {
 			Element rootDivElement = getUniqueRootElementInLogicalStructMap();
@@ -713,7 +694,7 @@ public class MetsParser{
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public List<Element> getFileElementsFromMetsDoc(Document doc) throws JDOMException {
-		List currentFileElements = new ArrayList<Element>();
+		List<Element> currentFileElements = new ArrayList<Element>();
 		List allNodes = metsXPath.selectNodes(doc);
 		for (java.lang.Object node : allNodes) {
 			Element fileElement = (Element) node;

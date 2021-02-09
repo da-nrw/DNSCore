@@ -29,7 +29,8 @@ public class UserException extends RuntimeException {
 		VIRUS_DETECTED,
 		INVALID_USER_FILE_FORMAT,
 		QUALITY_BELOW_REQUIRED,
-		INVALID_LICENSE_DATA
+		INVALID_LICENSE_DATA,
+		INVALID_URN
 	};
 	
 	private static final long serialVersionUID = -6346016039624940492L;

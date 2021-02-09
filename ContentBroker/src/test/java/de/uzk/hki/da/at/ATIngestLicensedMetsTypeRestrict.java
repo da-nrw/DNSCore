@@ -1,8 +1,6 @@
 package de.uzk.hki.da.at;
 
 import static org.junit.Assert.assertEquals;
-import org.json.*;
-
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -14,10 +12,11 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -26,7 +25,6 @@ import de.uzk.hki.da.metadata.MetsParser;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.utils.C;
-import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
 
@@ -99,13 +97,15 @@ public class ATIngestLicensedMetsTypeRestrict extends AcceptanceTest {
 		object1=ath.getObject(sipLicenseInMetsPartialNoLicense);
 		assertEquals(ath.getJob(sipLicenseInMetsPartialNoLicense).getStatus(),"144");
 	}
+
 	@Test
 	public void testDifferentMetsLicense() throws IOException, JDOMException, InterruptedException  {
 		setUserPublicMets(true);
 		ath.putSIPtoIngestArea(sipDifferentLicenseInMets, "tgz", sipDifferentLicenseInMets);
-		ath.waitForJobToBeInErrorStatus(sipDifferentLicenseInMets, C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
+
+		ath.awaitObjectState(sipDifferentLicenseInMets,Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		object1=ath.getObject(sipDifferentLicenseInMets);
-		assertEquals(ath.getJob(sipDifferentLicenseInMets).getStatus(),"144");
+		assertEquals(C.LICENSEFLAG_PUBLIC_METS, object1.getLicense_flag());
 	}
 	
 	@Test
@@ -129,7 +129,7 @@ public class ATIngestLicensedMetsTypeRestrict extends AcceptanceTest {
 			assertTrue(metsFile1.exists());
 			Document metsDoc1 = builder.build(new FileReader(metsFile1));
 			MetsParser mp = new MetsParser(metsDoc1);
-			MetsLicense lic=mp.getLicenseForWholeMets();
+			MetsLicense lic=mp.getLicensesForWholeMets().get(0);
 			assertTrue(lic!=null);	
 			assertEquals(lic, license);
 		}

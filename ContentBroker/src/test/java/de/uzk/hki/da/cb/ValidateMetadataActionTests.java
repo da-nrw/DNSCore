@@ -318,15 +318,10 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 	
 		o.getLatestPackage().getFiles().add(f_metsDiffLicenses);
 		o.getLatestPackage().getFiles().add(f_premisPubInst);
-		try{
-			action.implementation();
-			throw new RuntimeException("UserException not Throwed");
-		}catch(UserException e){
-			if(!e.getMessage().contains("contains different licenses"))
-				throw e;
-		}
+		action.implementation();
+
 		assertEquals(C.CB_PACKAGETYPE_METS,o.getPackage_type());
-		assertEquals(C.LICENSEFLAG_UNDEFINED,o.getLicense_flag());
+		assertEquals(C.LICENSEFLAG_METS,o.getLicense_flag());
 		assertEquals(METS_DiffLicenses_XML,o.getMetadata_file());
 	}
 	
@@ -343,15 +338,10 @@ public class ValidateMetadataActionTests extends ConcreteActionUnitTest{
 	
 		o.getLatestPackage().getFiles().add(f_metsDiffLicenses);
 		o.getLatestPackage().getFiles().add(f_premisPub);
-		try{
-			action.implementation();
-			throw new RuntimeException("UserException not Throwed");
-		}catch(UserException e){
-			if(!e.getMessage().contains("contains different licenses"))
-				throw e;
-		}
+		action.implementation();
+
 		assertEquals(C.CB_PACKAGETYPE_METS,o.getPackage_type());
-		assertEquals(C.LICENSEFLAG_UNDEFINED,o.getLicense_flag());
+		assertEquals(C.LICENSEFLAG_METS,o.getLicense_flag());
 		assertEquals(METS_DiffLicenses_XML,o.getMetadata_file());
 	}
 	

@@ -1,21 +1,91 @@
 <userExceptionMessages>
-	<userExceptionMessage id="SIP_PREMIS_NOT_FOUND">Ihr eingeliefertes Paket mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert werden.\n\nGrund: Es konnte keine PREMIS-Datei im SIP gefunden werden.</userExceptionMessage>
-	<userExceptionMessage id="INVALID_SIP_PREMIS">Ihr eingeliefertes Paket mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert werden.\n\nGrund: Die im SIP enthaltene PREMIS-Datei ist nicht valide.</userExceptionMessage>
-	<userExceptionMessage id="INVALID_OBJECT_DELTA">Das Objekt %OBJECT_IDENTIFIER wurde nicht ordnungsgemäß archiviert bzw. ist nicht valide.\nDas von Ihnen eingelieferte Delta-Paket %CONTAINER_NAME konnte dem Objekt daher nicht\nhinzugefügt werden.</userExceptionMessage>
-	<userExceptionMessage id="NOT_A_BAGIT_PACKAGE">Ihr eingeliefertes Paket mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert werden.\n\nGrund: Das Paket entspricht nicht dem BagIt-Standard.\n\nBitte stellen Sie sicher, dass das Paket nach den gültigen SIP-Spezifikationen\nfür das DA NRW gebildet wurde.</userExceptionMessage>
-	<userExceptionMessage id="INCONSISTENT_PACKAGE">Ihr eingeliefertes Paket mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert werden.\n\nGrund: Package ist nicht konsistent!\n\nMeldung:\n%ERROR_INFO\nEs ist wahrscheinlich, dass Fehler bei der Übertragung aufgetreten sind. Bitte versuchen Sie eine erneute Ablieferung.</userExceptionMessage>
-	<userExceptionMessage id="READ_SIP_PREMIS_ERROR">Ihr eingeliefertes Paket mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert werden.\n\nGrund: Die im SIP enthaltene PREMIS-Datei konnte nicht eingelesen werden.\nBitte stellen Sie sicher, dass die Datei den DA-NRW-Spezifikationen entspricht.</userExceptionMessage>
-	<userExceptionMessage id="READ_METS_ERROR">Ihr eingeliefertes Paket mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert werden.\n\nGrund: Die im SIP enthaltene METS-Datei konnte nicht eingelesen werden.\n\nFehlermeldung:\n%ERROR_INFO</userExceptionMessage>
-	<userExceptionMessage id="WATERMARK_NO_POINTSIZE">Die Präsentationsderivate für Ihr Objekt mit dem Identifier %OBJECT_IDENTIFIER konnten nicht erstellt werden.\n\nGrund: Die Schriftgröße des Wasserzeichens ist nicht in der PREMIS-Datei spezifiziert.</userExceptionMessage>
-	<userExceptionMessage id="WATERMARK_NO_GRAVITY">Die Präsentationsderivate für Ihr Objekt mit dem Identifier %OBJECT_IDENTIFIER konnten nicht erstellt werden.\n\nGrund: Die Position des Wasserzeichens ist nicht in der PREMIS-Datei spezifiziert.</userExceptionMessage>
-	<userExceptionMessage id="WATERMARK_NO_OPACITY">Die Präsentationsderivate für Ihr Objekt mit dem Identifier %OBJECT_IDENTIFIER konnten nicht erstellt werden.\n\nGrund: Die Opazität des Wasserzeichens ist nicht in der PREMIS-Datei spezifiziert.</userExceptionMessage>
-	<userExceptionMessage id="REPLACE_URLS_IN_METADATA_ERROR">Ihr eingeliefertes Paket mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert werden.\n\nGrund: Die URLs in der Datei %ERROR_INFO konnten nicht aktualisiert werden. Bitte prüfen Sie, ob die Datei dem verwendeten Metadatenstandard entspricht.</userExceptionMessage>
-	<userExceptionMessage id="RETRIEVAL_ERROR">Beim Retrieval des von Ihnen angeforderten Objekts mit dem Identifier %OBJECT_IDENTIFIER ist ein Fehler aufgetreten.\nBitte wenden Sie sich an den Knoten-Administrator.</userExceptionMessage>
-	<userExceptionMessage id="DUPLICATE_DOCUMENT_NAMES">Beim Ingest des Objektes mit dem Identifier %OBJECT_IDENTIFIER ist ein Fehler aufgetreten. Mehr als ein Dokument mit demselben Namen gefunden. Abbruch des Ingest.</userExceptionMessage>
-	<userExceptionMessage id="DUPLICATE_METADATA_FILE">Beim Ingest des Objektes mit dem Identifier %OBJECT_IDENTIFIER ist ein Fehler aufgetreten. Mehr als eine Metadatendatei wurde gefunden.</userExceptionMessage>
-	<userExceptionMessage id="DELTA_RECIEVED_BEFORE_ARCHIVED">Beim Ingest des Objektes mit dem Identifier %OBJECT_IDENTIFIER ist ein Fehler aufgetreten. Es wurde ein Delta angeliefert, obwohl das Primärobjekt noch nicht fertig archiviert wurde</userExceptionMessage>
-	<userExceptionMessage id="INVALID_USER_FILE_FORMAT">Bei einer Datei im Paket %OBJECT_IDENTIFIER wurde ein Formatfehler erkannt. Sie können den Fehler in der Webmaske bestätigen und das Paket dennoch archivieren. Es wird auf mögliche Probleme in der zukünftigen Bestandserhaltung hingewiesen.\n\nMeldung:\n%ERROR_INFO\n </userExceptionMessage>
-	<userExceptionMessage id="VIRUS_DETECTED">Ihr eingeliefertes Paket mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert werden.\n\nGrund: Es enthält einen Virus. </userExceptionMessage>
-	<userExceptionMessage id="INVALID_LICENSE_DATA">Ihr eingeliefertes Paket mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert werden.\n\nGrund: Es enthält invalide Lizenzangaben. </userExceptionMessage>
-	<userExceptionMessage id="QUALITY_BELOW_REQUIRED">Ihr eingeliefertes Paket mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert werden.\n\nGrund: Die Mindestqualitätsstufe für das Paket ist unterschritten. </userExceptionMessage>
+	<userExceptionMessage id="SIP_PREMIS_NOT_FOUND">Ihr eingeliefertes Paket
+		mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert
+		werden.\n\nGrund: Es konnte keine PREMIS-Datei im SIP gefunden werden.
+	</userExceptionMessage>
+	<userExceptionMessage id="INVALID_SIP_PREMIS">Ihr eingeliefertes Paket
+		mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert
+		werden.\n\nGrund: Die im SIP enthaltene PREMIS-Datei ist nicht valide.
+	</userExceptionMessage>
+	<userExceptionMessage id="INVALID_OBJECT_DELTA">Das Objekt
+		%OBJECT_IDENTIFIER wurde nicht ordnungsgemäß archiviert bzw. ist nicht
+		valide.\nDas von Ihnen eingelieferte Delta-Paket %CONTAINER_NAME
+		konnte dem Objekt daher nicht\nhinzugefügt werden.
+	</userExceptionMessage>
+	<userExceptionMessage id="NOT_A_BAGIT_PACKAGE">Ihr eingeliefertes Paket
+		mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert
+		werden.\n\nGrund: Das Paket entspricht nicht dem
+		BagIt-Standard.\n\nBitte stellen Sie sicher, dass das Paket nach den
+		gültigen SIP-Spezifikationen\nfür das DA NRW gebildet wurde.
+	</userExceptionMessage>
+	<userExceptionMessage id="INCONSISTENT_PACKAGE">Ihr eingeliefertes Paket
+		mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert
+		werden.\n\nGrund: Package ist nicht
+		konsistent!\n\nMeldung:\n%ERROR_INFO\nEs ist wahrscheinlich, dass
+		Fehler bei der Übertragung aufgetreten sind. Bitte versuchen Sie eine
+		erneute Ablieferung.</userExceptionMessage>
+	<userExceptionMessage id="READ_SIP_PREMIS_ERROR">Ihr eingeliefertes Paket
+		mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert
+		werden.\n\nGrund: Die im SIP enthaltene PREMIS-Datei konnte nicht
+		eingelesen werden.\nBitte stellen Sie sicher, dass die Datei den
+		DA-NRW-Spezifikationen entspricht.</userExceptionMessage>
+	<userExceptionMessage id="READ_METS_ERROR">Ihr eingeliefertes Paket
+		mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert
+		werden.\n\nGrund: Die im SIP enthaltene METS-Datei konnte nicht
+		eingelesen werden.\n\nFehlermeldung:\n%ERROR_INFO
+	</userExceptionMessage>
+	<userExceptionMessage id="WATERMARK_NO_POINTSIZE">Die Präsentationsderivate
+		für Ihr Objekt mit dem Identifier %OBJECT_IDENTIFIER konnten nicht
+		erstellt werden.\n\nGrund: Die Schriftgröße des Wasserzeichens ist
+		nicht in der PREMIS-Datei spezifiziert.</userExceptionMessage>
+	<userExceptionMessage id="WATERMARK_NO_GRAVITY">Die Präsentationsderivate
+		für Ihr Objekt mit dem Identifier %OBJECT_IDENTIFIER konnten nicht
+		erstellt werden.\n\nGrund: Die Position des Wasserzeichens ist nicht
+		in der PREMIS-Datei spezifiziert.</userExceptionMessage>
+	<userExceptionMessage id="WATERMARK_NO_OPACITY">Die Präsentationsderivate
+		für Ihr Objekt mit dem Identifier %OBJECT_IDENTIFIER konnten nicht
+		erstellt werden.\n\nGrund: Die Opazität des Wasserzeichens ist nicht
+		in der PREMIS-Datei spezifiziert.</userExceptionMessage>
+	<userExceptionMessage
+		id="REPLACE_URLS_IN_METADATA_ERROR">Ihr eingeliefertes Paket mit dem Namen %CONTAINER_NAME konnte im DA
+		NRW nicht archiviert werden.\n\nGrund: Die URLs in der Datei
+		%ERROR_INFO konnten nicht aktualisiert werden. Bitte prüfen Sie, ob
+		die Datei dem verwendeten Metadatenstandard entspricht.
+	</userExceptionMessage>
+	<userExceptionMessage id="RETRIEVAL_ERROR">Beim Retrieval des von
+		Ihnen angeforderten Objekts mit dem Identifier %OBJECT_IDENTIFIER ist
+		ein Fehler aufgetreten.\nBitte wenden Sie sich an den
+		Knoten-Administrator.</userExceptionMessage>
+	<userExceptionMessage
+		id="DUPLICATE_DOCUMENT_NAMES">Beim Ingest des Objektes mit dem Identifier %OBJECT_IDENTIFIER ist
+		ein Fehler aufgetreten. Mehr als ein Dokument mit demselben Namen
+		gefunden. Abbruch des Ingest.</userExceptionMessage>
+	<userExceptionMessage id="DUPLICATE_METADATA_FILE">Beim Ingest des Objektes
+		mit dem Identifier %OBJECT_IDENTIFIER ist ein Fehler aufgetreten. Mehr
+		als eine Metadatendatei wurde gefunden.</userExceptionMessage>
+	<userExceptionMessage
+		id="DELTA_RECIEVED_BEFORE_ARCHIVED">Beim Ingest des Objektes mit dem Identifier %OBJECT_IDENTIFIER ist
+		ein Fehler aufgetreten. Es wurde ein Delta angeliefert, obwohl das
+		Primärobjekt noch nicht fertig archiviert wurde</userExceptionMessage>
+	<userExceptionMessage
+		id="INVALID_USER_FILE_FORMAT">Bei einer Datei im Paket %OBJECT_IDENTIFIER wurde ein Formatfehler
+		erkannt. Sie können den Fehler in der Webmaske bestätigen und das
+		Paket dennoch archivieren. Es wird auf mögliche Probleme in der
+		zukünftigen Bestandserhaltung hingewiesen.\n\nMeldung:\n%ERROR_INFO\n
+	</userExceptionMessage>
+	<userExceptionMessage id="VIRUS_DETECTED">Ihr eingeliefertes Paket
+		mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert
+		werden.\n\nGrund: Es enthält einen Virus. </userExceptionMessage>
+	<userExceptionMessage id="INVALID_LICENSE_DATA">Ihr eingeliefertes Paket
+		mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert
+		werden.\n\nGrund: Es enthält invalide Lizenzangaben.
+	</userExceptionMessage>
+	<userExceptionMessage id="QUALITY_BELOW_REQUIRED">Ihr eingeliefertes Paket
+		mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert
+		werden.\n\nGrund: Die Mindestqualitätsstufe für das Paket ist
+		unterschritten. </userExceptionMessage>
+	<userExceptionMessage id="INVALID_URN">Ihr eingeliefertes Paket
+		mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert
+		werden.\n\nGrund: Die angegebene URN ist ungültig.
+	</userExceptionMessage>
 </userExceptionMessages>

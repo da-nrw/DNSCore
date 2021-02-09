@@ -112,9 +112,17 @@ public class Event {
 		/** The sip creation id. */
 		SIP_CREATION_ID,
 		/** Virus scan */
-		VIRUS_SCAN_ID
-		
-		
+		VIRUS_SCAN_ID,
+		// Quality level events
+		QUALITY_CHECK_LEVEL_5,
+		QUALITY_CHECK_LEVEL_4,
+		QUALITY_CHECK_LEVEL_3,
+		QUALITY_CHECK_LEVEL_2,
+		QUALITY_CHECK_LEVEL_1,
+
+		QUALITY_FAULT_VALIDATION,
+		QUALITY_FAULT_CONVERSION,
+		QUALITY_FAULT_IDENTIFICATION,
 	}
 	
 	/**
