@@ -301,7 +301,7 @@ public class IngestAreaScannerWorker extends Worker{
 				if (bags!=null&&bags.length>0) {
 					// we don't check for bagit consistency while UnpackAction does this and we'll get those 
 					// packs by move operation
-					logger.debug("found directory " + children[i] + " which may contain unpacked bagit");	
+					// logger.debug("found directory " + children[i] + " which may contain unpacked bagit");	
 					childrenWhichAreReady = addToList(children[i], contractorShortName, currentTimeStamp,childrenWhichAreReady);
 				} 
 			}
