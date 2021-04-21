@@ -119,12 +119,13 @@
 	            			<g:select id="qualityLevel" name="searchQualityLevel" from="${['Stufe 1','Stufe 2','Stufe 3','Stufe 4','Stufe 5']}" keys="${['1','2','3','4','5']}" value="${params.searchQualityLevel}" noSelection="[null:'Bitte auswählen']" />
 	            			</td>
             			</tr>
-		            		<tr>
+		            	<tr>
 		            		<td>Datumsbereich:</td>
 		            		<td>
 		            			<g:select id="datetype" name="searchDateType" from="${['Datum erstellt','Datum geändert']}" keys="${['createdAt','modifiedAt']}" value="${params.searchDateType}" noSelection="[null:'Bitte auswählen']" />
 		            		</td>
 						</tr>
+						
 	            		<tr>
 	            			<td>Von Datum: </td>
 	            			<td>
@@ -132,7 +133,7 @@
 	            					<g:datePicker name="searchDateStart" default="none" noSelection="['':'']" value="${params.search?.searchDateStart.date.format('TT.MM.JJJJ HH:mm')}"/>
 	            				</g:if>
 	            				<g:else>
-	            					<g:datePicker name="searchDateStart" default="none" noSelection="['':'']" value="${params.search?.searchDateStart}"/>
+	            					<g:datePicker name="searchDateStart" default="none" noSelection="['':'']" value="${new Date()}"/>
 	            				</g:else>
 	            			</td>
 	            		</tr>
@@ -143,7 +144,7 @@
 	            					<g:datePicker name="searchDateEnd" default="none" noSelection="['':'']"  value="${params.search?.searchDateEnd.date.format('dd.MM.yyyy HH:mm')}"/>
 	            				</g:if>
 	            				<g:else>
-	            					<g:datePicker name="searchDateEnd" default="none" noSelection="['':'']"  value="${params.search?.searchDateEnd}"/>
+	            					<g:datePicker name="searchDateEnd" default="none" noSelection="['':'']"  value="${new Date()}"/>
 	            				</g:else>
 	            				<% // fix for https://github.com/zoran119/grails-jquery-date-time-picker/issues/12 %>
 		            			<script type="text/javascript">

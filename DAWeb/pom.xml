@@ -26,7 +26,7 @@
 	      <id>central</id>
 	      <name>Maven Repository Switchboard</name>
 	      <layout>default</layout>
-	      <url>http://repo1.maven.org/maven2</url>
+	      <url>https://repo1.maven.org/maven2</url>
 	      <snapshots>
 	        <enabled>false</enabled>
 	      </snapshots>
@@ -436,6 +436,35 @@
 						</execution>
 					</executions>
 				</plugin>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.fortasoft</groupId>
+										<artifactId>
+											gradle-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.0.8,)
+										</versionRange>
+										<goals>
+											<goal>invoke</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
@@ -467,13 +496,6 @@
 							<goal>invoke</goal>
 						</goals>
 					</execution>
-					<!-- <execution> -->
-					<!-- <id>surefireIt</id> -->
-					<!-- <phase>integration-test</phase> -->
-					<!-- <goals> -->
-					<!-- <goal>invoke</goal> -->
-					<!-- </goals> -->
-					<!-- </execution> -->
 				</executions>
 			</plugin>
 		</plugins>

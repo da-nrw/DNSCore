@@ -24,6 +24,8 @@ package daweb3
 
 import java.awt.Queue
 import java.lang.reflect.InvocationTargetException
+import java.text.DateFormat
+import java.time.format.DateTimeFormatter
 
 import org.hibernate.criterion.CriteriaSpecification
 import org.hibernate.sql.JoinType
@@ -196,50 +198,60 @@ class ObjectController {
 				}
 
 				log.debug("Date as Strings " + params.searchDateStart + " and " + params.searchDateEnd)
-				def ds = params.searchDateStart
-				def de = params.searchDateEnd
+				def searchDateStart = params.searchDateStart //ds)
+				def searchDateEnd = params.searchDateEnd //de
 	
-				def st = "createdAt"; 
+				def st = "" //"createdAt"; 
 				String searchDateType = params.searchDateType;
-				
-				if (ds!=null || de!=null ) {
 					
-					if (!ds.equals("0") || !de.equals("0")) {
-						if ( params.searchDateType.equals("null") ) {
-							params.searchDateType = "createdAt"
-						} else {
-							st =  params.searchDateType;
-						}
+				if (searchDateStart !=null || searchDateEnd !=null ) {
+					
+					if ((!searchDateStart.equals("0") || !searchDateEnd.equals("0")) 
+						&& !searchDateType.equals("null") ) {
+						
+//						if ( params.searchDateType.equals("null") ) {
+//							params.searchDateType = "createdAt"
+//						} else {
+							st =  searchDateType;
+//						}
 					}
 				} else {
-					
-					if ( params.searchDateType.equals("null") ) {
+					if ( searchDateType.equals("null") ) {
 						params.remove("searchDateType")
 					}
 				}
 				
-				if (ds!=null  && !ds.equals("") && !ds.equals(" ") &&
-					de!=null   && !de.equals("") && !de.equals(" "))  {
-					if (!ds.equals("0") && !de.equals("0")) {
+				if (searchDateStart !=null  && !searchDateStart.equals("") && !searchDateStart.equals(" ") &&
+					searchDateEnd!=null   && !searchDateEnd.equals("") && !searchDateEnd.equals(" "))  {
+					if (!searchDateStart.equals("0") && !searchDateEnd.equals("0")) {
 						filterOn=1
-						log.debug("Objects between " + ds + " and " + de)
-						between(st, ds, de)
+						
+//						String dateTimePattern = "dd.MM.yyyy HH:mm:ss";
+//						DateTimeFormatter searchDateStartFormatter = DateTimeFormatter.ofPattern(dateTimePattern);
+////						LocalDateTime summerDay = LocalDateTime.of(2016, 7, 31, 14, 15);
+//						Date searchDateSt = DateFormat.parse(searchDateStart)
+//						System.out.println("###### searchDateStartFormatter : " +searchDateSt);
+						
+						
+						log.debug("Objects between " + searchDateStart + " and " + searchDateEnd)
+						Date sds = DateFormat.parse(searchDateStart.toString()) 
+					//	between(st, searchDateStart, searchDateEnd)
 					}
 				}
-				if (ds!=null  && !ds.equals("") && !ds.equals(" ")  && de==null ) {
-					if (!ds.equals("0") && de.equals("0")) {
-						filterOn=1
-						log.debug("Objects greater than " + ds)
-						gt(st,ds)
-					}
-				}
-				if (ds==null && de!=null && !de.equals("") && !de.equals(" ")) {
-					if (ds.equals("0") || !de.equals("0")) {
-						filterOn=1
-						log.debug("Objects lower than " + de)
-						lt(st,de)
-					}
-				}
+//				if (ds!=null  && !ds.equals("") && !ds.equals(" ")  && de==null ) {
+//					if (!ds.equals("0") && de.equals("0")) {
+//						filterOn=1
+//						log.debug("Objects greater than " + ds)
+//						gt(st,ds)
+//					}
+//				}
+//				if (ds==null && de!=null && !de.equals("") && !de.equals(" ")) {
+//					if (ds.equals("0") || !de.equals("0")) {
+//						filterOn=1
+//						log.debug("Objects lower than " + de)
+//						lt(st,de)
+//					}
+//				}
 				
 				if (params.searchQualityLevel!=null /*&& !params.searchQualityLevel.equals("null")*/) {
 					if(params.searchQualityLevel?.isInteger()){
