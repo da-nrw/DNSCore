@@ -80,7 +80,9 @@
 				    		<g:if test="${params.searchDateStart != ''}">
 					    		<g:if test="${params.searchDateStart != ' '}">
 					    			<g:if test="${params.searchDateStart != '0'}">
-			    						<span style="margin-right: 25px"><i>Von Datum: ${params.searchDateStart}</i></span>
+			    						<span style="margin-right: 25px">
+			    							<i>Von Datum: <g:formatDate date="${params.searchDateStart}" format="dd.MM.yyyy"/></i>
+			    						</span>
 			    					</g:if>
 			    				</g:if>
 			    			</g:if>
@@ -89,7 +91,9 @@
 			    			<g:if test="${params.searchDateEnd != '0'}">
 				    			<g:if test="${params.searchDateEnd != ''}">
 					    			<g:if test="${params.searchDateEnd != ' '}">
-					    				<span style="margin-right: 25px"><i>Bis Datum: ${params.searchDateEnd}</i></span>
+					    				<span style="margin-right: 25px">
+					    					<i>Bis Datum: <g:formatDate date="${params.searchDateEnd}" format="dd.MM.yyyy"/></i>
+					    				</span>
 					    			</g:if>
 					    		</g:if>
 			    			</g:if>
@@ -130,10 +134,10 @@
 	            			<td>Von Datum: </td>
 	            			<td>
 	            				<g:if test="${params.search?.searchDateStart != null}" >
-	            					<g:datePicker name="searchDateStart" default="none" noSelection="['':'']" value="${params.search?.searchDateStart.date.format('TT.MM.JJJJ HH:mm')}"/>
+	            					<g:datePicker name="searchDateStart" default="none" noSelection="['':'Bitte auswählen']" precision='day' value="${params.search?.searchDateStart.date.format('TT.MM.JJJJ')}"/>
 	            				</g:if>
 	            				<g:else>
-	            					<g:datePicker name="searchDateStart" default="none" noSelection="['':'']" value="${new Date()}"/>
+	            					<g:datePicker name="searchDateStart" default="none" noSelection="['':'Bitte auswählen']" precision='day' />
 	            				</g:else>
 	            			</td>
 	            		</tr>
@@ -141,10 +145,10 @@
 	            			<td>Bis Datum: </td>
 	            			<td>	
 	            				<g:if test="${params.search?.searchDateEnd != null}" >
-	            					<g:datePicker name="searchDateEnd" default="none" noSelection="['':'']"  value="${params.search?.searchDateEnd.date.format('dd.MM.yyyy HH:mm')}"/>
+	            					<g:datePicker name="searchDateEnd" default="none" noSelection="['':'Bitte auswählen']" precision='day' value="${params.search?.searchDateEnd.date.format('TT.MM.JJJJ')}"/>
 	            				</g:if>
 	            				<g:else>
-	            					<g:datePicker name="searchDateEnd" default="none" noSelection="['':'']"  value="${new Date()}"/>
+	            					<g:datePicker name="searchDateEnd" default="none" noSelection="['':'Bitte auswählen']" precision='day' />
 	            				</g:else>
 	            				<% // fix for https://github.com/zoran119/grails-jquery-date-time-picker/issues/12 %>
 		            			<script type="text/javascript">
