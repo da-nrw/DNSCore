@@ -202,58 +202,45 @@ class ObjectController {
 				def searchDateEnd = params.searchDateEnd //de
 	
 				def st = "" //"createdAt"; 
+				
 				String searchDateType = params.searchDateType;
-					
 				if (searchDateStart !=null || searchDateEnd !=null ) {
-					
-					if ((!searchDateStart.equals("0") || !searchDateEnd.equals("0")) 
-						&& !searchDateType.equals("null") ) {
-						
-//						if ( params.searchDateType.equals("null") ) {
-//							params.searchDateType = "createdAt"
-//						} else {
-							st =  searchDateType;
-//						}
-					}
-				} else {
-					if ( searchDateType.equals("null") ) {
-						params.remove("searchDateType")
+
+					if ((!searchDateStart.equals("0") || !searchDateEnd.equals("0"))) {
+
+						if ( searchDateType == "null")  {
+							params.searchDateType = "createdAt"
+							searchDateType = "createdAt"
+						}
 					}
 				}
-				
+				// Suchdatum Start und Ende befüllt
 				if (searchDateStart !=null  && !searchDateStart.equals("") && !searchDateStart.equals(" ") &&
-					searchDateEnd!=null   && !searchDateEnd.equals("") && !searchDateEnd.equals(" "))  {
+				searchDateEnd!=null   && !searchDateEnd.equals("") && !searchDateEnd.equals(" "))  {
 					if (!searchDateStart.equals("0") && !searchDateEnd.equals("0")) {
 						filterOn=1
-						
-//						String dateTimePattern = "dd.MM.yyyy HH:mm:ss";
-//						DateTimeFormatter searchDateStartFormatter = DateTimeFormatter.ofPattern(dateTimePattern);
-////						LocalDateTime summerDay = LocalDateTime.of(2016, 7, 31, 14, 15);
-//						Date searchDateSt = DateFormat.parse(searchDateStart)
-//						System.out.println("###### searchDateStartFormatter : " +searchDateSt);
-						
-						
+
 						log.debug("Objects between " + searchDateStart + " and " + searchDateEnd)
-						Date sds = DateFormat.parse(searchDateStart.toString()) 
-					//	between(st, searchDateStart, searchDateEnd)
+						between(searchDateType, searchDateStart, searchDateEnd)
 					}
 				}
-//				if (ds!=null  && !ds.equals("") && !ds.equals(" ")  && de==null ) {
-//					if (!ds.equals("0") && de.equals("0")) {
-//						filterOn=1
-//						log.debug("Objects greater than " + ds)
-//						gt(st,ds)
-//					}
-//				}
-//				if (ds==null && de!=null && !de.equals("") && !de.equals(" ")) {
-//					if (ds.equals("0") || !de.equals("0")) {
-//						filterOn=1
-//						log.debug("Objects lower than " + de)
-//						lt(st,de)
-//					}
-//				}
-				
-				if (params.searchQualityLevel!=null /*&& !params.searchQualityLevel.equals("null")*/) {
+
+				// Suchdatum Start gefüllt
+				if (searchDateStart != null &&  searchDateEnd == null ){
+					filterOn=1
+					log.debug("Objects greater than " + searchDateStart)
+					gt(searchDateType,searchDateStart)
+				}
+
+				// Suchdatum Ende gefüllt
+				if (searchDateStart==null && searchDateEnd!=null ) {
+					filterOn=1
+					log.debug("Objects lower than " + searchDateEnd)
+					lt(searchDateType,searchDateEnd)
+				}
+
+				if (params.searchQualityLevel!=null) {
+
 					if(params.searchQualityLevel?.isInteger()){
 						filterOn=1
 						log.debug("QualityLevel filter on :"+params.searchQualityLevel)
@@ -298,7 +285,6 @@ class ObjectController {
 				paramsList.putAt("searchDateStart", params?.searchDateStart);
 				paramsList.putAt("searchDateEnd", params?.searchDateEnd);
 			}
-			
 
 			if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 				render(view:"adminList", model:[	objectInstanceList: objects,
