@@ -77,26 +77,14 @@
 		   					<g:if test="${params.searchDateType == 'modifiedAt'}">Datumsbereich geändert</g:if>
 			    		</g:if>   
 			    		<g:if test="${params.searchDateStart != null}">
-				    		<g:if test="${params.searchDateStart != ''}">
-					    		<g:if test="${params.searchDateStart != ' '}">
-					    			<g:if test="${params.searchDateStart != '0'}">
-			    						<span style="margin-right: 25px">
-			    							<i>Von Datum: <g:formatDate date="${params.searchDateStart}" format="dd.MM.yyyy"/></i>
-			    						</span>
-			    					</g:if>
-			    				</g:if>
-			    			</g:if>
+    						<span style="margin-right: 25px">
+    							<i>Von Datum: <g:formatDate date="${params.searchDateStart}" format="dd.MM.yyyy"/></i>
+    						</span>
 			    		</g:if> 	
 			    		<g:if test="${params.searchDateEnd != null}">
-			    			<g:if test="${params.searchDateEnd != '0'}">
-				    			<g:if test="${params.searchDateEnd != ''}">
-					    			<g:if test="${params.searchDateEnd != ' '}">
-					    				<span style="margin-right: 25px">
-					    					<i>Bis Datum: <g:formatDate date="${params.searchDateEnd}" format="dd.MM.yyyy"/></i>
-					    				</span>
-					    			</g:if>
-					    		</g:if>
-			    			</g:if>
+		    				<span style="margin-right: 25px">
+		    					<i>Bis Datum: <g:formatDate date="${params.searchDateEnd}" format="dd.MM.yyyy"/></i>
+		    				</span>
 			    		</g:if> 
 			    	</div>
 		    	</g:if> 
@@ -126,7 +114,7 @@
 		            	<tr>
 		            		<td>Datumsbereich:</td>
 		            		<td>
-		            			<g:select id="datetype" name="searchDateType" from="${['Datum erstellt','Datum geändert']}" keys="${['createdAt','modifiedAt']}" value="${params.searchDateType}" noSelection="[null:'Bitte auswählen']" />
+		            			<g:select id="datetype" name="searchDateType" from="${['Datum erstellt','Datum geändert']}" keys="${['createdAt','modifiedAt']}" value="${params.searchDateType}" noSelection="[null:'-Bitte auswählen-']" />
 		            		</td>
 						</tr>
 						
@@ -134,10 +122,10 @@
 	            			<td>Von Datum: </td>
 	            			<td>
 	            				<g:if test="${params.search?.searchDateStart != null}" >
-	            					<g:datePicker name="searchDateStart" default="none" noSelection="['':'Bitte auswählen']" precision='day' value="${params.search?.searchDateStart.date.format('TT.MM.JJJJ')}"/>
+	            					<g:datePicker name="searchDateStart" default="none" noSelection="['':'']" precision="day" value="${params.searchDateStart}"/>
 	            				</g:if>
 	            				<g:else>
-	            					<g:datePicker name="searchDateStart" default="none" noSelection="['':'Bitte auswählen']" precision='day' />
+	            					<g:datePicker name="searchDateStart" default="none" noSelection="['':'']" precision="day" />
 	            				</g:else>
 	            			</td>
 	            		</tr>
@@ -145,10 +133,10 @@
 	            			<td>Bis Datum: </td>
 	            			<td>	
 	            				<g:if test="${params.search?.searchDateEnd != null}" >
-	            					<g:datePicker name="searchDateEnd" default="none" noSelection="['':'Bitte auswählen']" precision='day' value="${params.search?.searchDateEnd.date.format('TT.MM.JJJJ')}"/>
+	            					<g:datePicker name="searchDateEnd" default="none" noSelection="['':'']" precision="day" value="${params.searchDateEnd}"/>
 	            				</g:if>
 	            				<g:else>
-	            					<g:datePicker name="searchDateEnd" default="none" noSelection="['':'Bitte auswählen']" precision='day' />
+	            					<g:datePicker name="searchDateEnd" default="none" noSelection="['':'']" precision="day" />
 	            				</g:else>
 	            				<% // fix for https://github.com/zoran119/grails-jquery-date-time-picker/issues/12 %>
 		            			<script type="text/javascript">
@@ -174,9 +162,6 @@
 				                                break;                      
 				                            case 'textarea':
 				                                $(this).val('');
-				                                break;
-				            			 	case 'hidden':
-				                                $(this).val('0');
 				                                break;
 				            				case 'select-one':
 					                            $(this).val(null);
