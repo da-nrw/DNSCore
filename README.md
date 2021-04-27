@@ -8,6 +8,8 @@ DNSCore
  
 [Liste der Kernfunktionen](ContentBroker/src/main/markdown/features.de.md)
 
+[SIP_Builder HERUNTERLADEN](https://github.com/da-nrw/DNSCore/releases/download/2145release/SipBuilder-b2145.zipd)
+
  Please download the SIP-Builder [here](https://github.com/da-nrw/DNSCore/releases/download/2145release/SipBuilder-b2145.zip)
  
 The Core System of the DA-NRW Software Suite.
