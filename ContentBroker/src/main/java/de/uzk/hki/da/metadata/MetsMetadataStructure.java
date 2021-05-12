@@ -22,7 +22,6 @@ package de.uzk.hki.da.metadata;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -35,8 +34,6 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
@@ -105,8 +102,9 @@ public class MetsMetadataStructure extends MetadataStructure {
 		return metsParser.getHref(fileElement);
 	}
 	
-	public String getUrn() {
-		return metsParser.getUrn();
+	public String getUrn(String origName) {
+		String urn = metsParser.getUrn(origName);
+		return urn;
 	}
 
 	@Override
