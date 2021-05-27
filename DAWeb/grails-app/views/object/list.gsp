@@ -77,14 +77,18 @@
 		   					<g:if test="${params.searchDateType == 'modifiedAt'}">Datumsbereich geändert</g:if>
 			    		</g:if>   
 			    		<g:if test="${params.searchDateStart != null}">
-    						<span style="margin-right: 25px">
-    							<i>Von Datum: <g:formatDate date="${params.searchDateStart}" format="dd.MM.yyyy"/></i>
-    						</span>
+			    			<g:if test="${!params.searchDateStart.isEmpty()}">
+	    						<span style="margin-right: 25px">
+	    							<i>Von Datum: <g:formatDate date="${params.searchDateStart}" format="dd.MM.yyyy"/></i>
+	    						</span>
+    						</g:if>
 			    		</g:if> 	
 			    		<g:if test="${params.searchDateEnd != null}">
-		    				<span style="margin-right: 25px">
-		    					<i>Bis Datum: <g:formatDate date="${params.searchDateEnd}" format="dd.MM.yyyy"/></i>
-		    				</span>
+			    			<g:if test="${!params.searchDateEnd.isEmpty()}">
+			    				<span style="margin-right: 25px">
+			    					<i>Bis Datum: <g:formatDate date="${params.searchDateEnd}" format="dd.MM.yyyy"/></i>
+			    				</span>
+			    			</g:if>
 			    		</g:if> 
 			    	</div>
 		    	</g:if> 
@@ -108,7 +112,7 @@
 	            			<tr>
             				<td>Qualitätsstufe:</td>
             				<td>
-	            			<g:select id="qualityLevel" name="searchQualityLevel" from="${['Stufe 1','Stufe 2','Stufe 3','Stufe 4','Stufe 5']}" keys="${['1','2','3','4','5']}" value="${params.searchQualityLevel}" noSelection="[null:'Bitte auswählen']" />
+	            			<g:select id="qualityLevel" name="searchQualityLevel" from="${['Stufe 1','Stufe 2','Stufe 3','Stufe 4','Stufe 5']}" keys="${['1','2','3','4','5']}" value="${params.searchQualityLevel}" noSelection="[null:'-Bitte auswählen-']" />
 	            			</td>
             			</tr>
 		            	<tr>
