@@ -198,19 +198,21 @@ class ObjectController {
 				}
 
 				log.debug("Date as Strings " + params.searchDateStart + " and " + params.searchDateEnd)
-				def searchDateStart = params.searchDateStart //ds)
-				def searchDateEnd = params.searchDateEnd //de
+				def searchDateStart = params.searchDateStart  
+				def searchDateEnd = params.searchDateEnd 
 	
 				def st = "" //"createdAt"; 
 				
 				String searchDateType = params.searchDateType;
-				if (searchDateStart !=null || searchDateEnd !=null ) {
-
-					if ((!searchDateStart.equals("0") || !searchDateEnd.equals("0"))) {
-
-						if ( searchDateType == "null")  {
-							params.searchDateType = "createdAt"
-							searchDateType = "createdAt"
+				if (searchDateStart !=null || searchDateEnd !=null) {
+					if  (!searchDateStart.equals("0") || !searchDateEnd.equals("0")) { 
+						if	(!searchDateStart.equals(" ") || !searchDateEnd.equals(" ")){
+							if (!searchDateStart.equals("") || !searchDateEnd.equals("")) {
+								if ( searchDateType == "null")  {
+									params.searchDateType = "createdAt"
+									searchDateType = "createdAt"
+								}
+							}
 						}
 					}
 				}
@@ -284,6 +286,7 @@ class ObjectController {
 				paramsList.putAt("searchDateType", params?.searchDateType);
 				paramsList.putAt("searchDateStart", params?.searchDateStart);
 				paramsList.putAt("searchDateEnd", params?.searchDateEnd);
+				paramsList.putAt("searchQualityLevel", params?.searchQualityLevel);
 			}
 
 			if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
@@ -635,9 +638,11 @@ class ObjectController {
 		def statusQueue
 		if (status == 50) {
 			if ( params.search != null) {
-	 			if (params.search.urn.isEmpty()) {
-					 params.search.remove("urn");
-				 }
+				if (params.search.urn != null) {
+		 			if (params.search.urn.isEmpty()) {
+						 params.search.remove("urn");
+					 }
+				}
 			}
 					
 			def cStatus = Object.createCriteria()
@@ -655,55 +660,82 @@ class ObjectController {
 		
 		def objects = c.list(max: params.max, offset: params.offset ?: 0) {
 			
-			if (params.search) params.search.each { key, value ->
+			/*if (params.search) params.search.each { key, value ->
 				if (value!="") filterOn=1
 				like(key, "%" + value + "%")
+			}*/  //BEG 310530
+			
+			if (params.search) {
+				params.search.each
+				{ key, value ->
+						if (!(value==""/* && value=="null" && value==null*/)) {
+							filterOn=1
+							like(key, "%" + value + "%")
+						}
+						
+				}
 			}
 			
 			log.debug("Date as Strings " + params.searchDateStart + " and " + params.searchDateEnd)
 			
-			def ds = params.searchDateStart
-			def de = params.searchDateEnd
+			def searchDateStart = params.searchDateStart
+			def searchDateEnd = params.searchDateEnd
 	
-			def st = "createdAt";
+			def st = "" //"createdAt"; BEG 310530
 			String searchDateType = params.searchDateType;
-						
-			if (ds!=null || de!=null ) {
-				if (!ds.equals("0") || !de.equals("0")) {
-					if ( params.searchDateType.equals("null") ) {
-						params.searchDateType = "createdAt"
-					} else {
-						st =  params.searchDateType;
+				
+			if (searchDateStart !=null || searchDateEnd !=null) {
+				if  (!searchDateStart.equals("0") || !searchDateEnd.equals("0")) {
+					if	(!searchDateStart.equals(" ") || !searchDateEnd.equals(" ")){
+						if (!searchDateStart.equals("") || !searchDateEnd.equals("")) {
+							if ( searchDateType == "null")  {
+								params.searchDateType = "createdAt"
+								searchDateType = "createdAt"
+							}
+						}
 					}
-				}
-			} else {
-				if ( params.searchDateType.equals("null") ) {
-					params.remove("searchDateType")
 				}
 			}
 			
-			if (ds!=null  && de!=null)  {
-				if (!ds.equals("0") && !de.equals("0")) {
+			// Suchdatum Start und Ende befüllt
+			if (searchDateStart !=null  && !searchDateStart.equals("") && !searchDateStart.equals(" ") &&
+				searchDateEnd!=null   && !searchDateEnd.equals("") && !searchDateEnd.equals(" "))  {
+					if (!searchDateStart.equals("0") && !searchDateEnd.equals("0")) {
 					filterOn=1
-					log.debug("Objects between " + ds + " and " + de)
-					between(st, ds, de)
+					log.debug("Objects between " + searchDateStart + " and " + searchDateEnd)
+					between(st, searchDateStart, searchDateEnd)
 				}
 			}
-			if (ds!=null && de==null ) {
-				if (!ds.equals("0") && de.equals("0")) {
+			
+			// Suchdatum Start gefüllt
+			if (searchDateStart!=null && searchDateEnd==null ) {
+				if (!searchDateStart.equals("0") && searchDateEnd.equals("0")) {
 					filterOn=1
-					log.debug("Objects greater than " + ds)
-					gt(st,ds)
+					log.debug("Objects greater than " + searchDateStart)
+					gt(st,searchDateStart)
 				}
 			}
-			if (ds==null && de!=null ) {
-				if (ds.equals("0") || !de.equals("0")) {
+			
+			// Suchdatum Ende gefüllt
+			if (searchDateStart==null && searchDateEnd !=null ) {
+				if (searchDateStart.equals("0") || !searchDateEnd.equals("0")) {
 					filterOn=1
-					log.debug("Objects lower than " + de)
-					lt(st,de)
+					log.debug("Objects lower than " + searchDateEnd)
+					lt(st,searchDateEnd)
 				}
 			}
 	
+			
+			if (params.searchQualityLevel!=null) {
+
+				if(params.searchQualityLevel?.isInteger()){
+					filterOn=1
+					log.debug("QualityLevel filter on :"+params.searchQualityLevel)
+					eq("quality_flag", Integer.valueOf(params.searchQualityLevel))
+					//between("quality_flag", params.searchQualityLevel,params.searchQualityLevel+1)
+				}
+			}
+			
 			if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 				admin = 1;
 			}
@@ -735,6 +767,7 @@ class ObjectController {
 			paramsList.putAt("searchDateType", params?.searchDateType);
 			paramsList.putAt("searchDateStart", params?.searchDateStart);
 			paramsList.putAt("searchDateEnd", params?.searchDateEnd);
+			paramsList.putAt("searchQualityLevel", params?.searchQualityLevel);
 		}
 		
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
@@ -749,7 +782,6 @@ class ObjectController {
 				contractorList: contractorList,
 				user: user,
 				objArt: objArt
-//				statusQueue: statusQueue
 			]);
 		} else render(view:"list", model:[	objectInstanceList: objects,
 				objectInstanceTotal: objects.getTotalCount(),
@@ -763,7 +795,6 @@ class ObjectController {
 				contractorList: contractorList,
 				user: user,
 				objArt: objArt
-//				statusQueue: statusQueue
 			]);
 		
 	}
