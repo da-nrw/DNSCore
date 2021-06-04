@@ -161,7 +161,7 @@ public class RegisterURNAction extends AbstractAction {
 		try {
 			Path path = Path.make(wa.dataPath(), o.getLatest(o.getMetadata_file()).getRep_name());
 			MetsMetadataStructure mms = new MetsMetadataStructure(path, metsFile, documents);
-			urn = mms.getUrn();
+			urn = mms.getUrn(o.getOrig_name());
 			logger.debug("Found urn in mets: "+urn);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

@@ -72,26 +72,32 @@
 	    					<g:if test="${params.searchQualityLevel == '5'}">Qualitätsstufe: 5</g:if>
 		    		</g:if> 
 		    		<div>
-						<g:if test="${params.searchDateType != null} "> 
-		   					<g:if test="${params.searchDateType == 'createdAt'}">Datumsbereich erstellt</g:if>
-		   					<g:if test="${params.searchDateType == 'modifiedAt'}">Datumsbereich geändert</g:if>
+						<g:if test="${params.searchDateType != null} ">
+						 <g:if test="${params.searchDateStart != null}"> 
+			   					<g:if test="${params.searchDateType == 'createdAt'}">Datumsbereich erstellt</g:if>
+			   					<g:if test="${params.searchDateType == 'modifiedAt'}">Datumsbereich geändert</g:if>
+		   					</g:if>
 			    		</g:if>   
 			    		<g:if test="${params.searchDateStart != null}">
-				    		<g:if test="${params.searchDateStart != ''}">
-					    		<g:if test="${params.searchDateStart != ' '}">
-					    			<g:if test="${params.searchDateStart != '0'}">
-			    						<span style="margin-right: 25px"><i>Von Datum: ${params.searchDateStart}</i></span>
+							<g:if test="${!params.searchDateStart.equals("0")}" >
+								<g:if test="${!params.searchDateStart.equals(" ")}" >
+									<g:if  test="${!params.searchDateStart.equals("")}" >
+			    						<span style="margin-right: 25px">
+			    							<i>Von Datum: ${params.searchDateStart}</i>
+			    						</span>
 			    					</g:if>
 			    				</g:if>
 			    			</g:if>
 			    		</g:if> 	
 			    		<g:if test="${params.searchDateEnd != null}">
-			    			<g:if test="${params.searchDateEnd != '0'}">
-				    			<g:if test="${params.searchDateEnd != ''}">
-					    			<g:if test="${params.searchDateEnd != ' '}">
-					    				<span style="margin-right: 25px"><i>Bis Datum: ${params.searchDateEnd}</i></span>
-					    			</g:if>
-					    		</g:if>
+			    			<g:if test="${!params.searchDateEnd.equals("0")}" >
+								<g:if test="${!params.searchDateEnd.equals(" ")}" >
+									<g:if  test="${!params.searchDateEnd.equals("")}" >
+			    						<span style="margin-right: 25px">
+			    							<i>Von Datum: ${params.searchDateEnd}</i>
+			    						</span>
+			    					</g:if>
+			    				</g:if>
 			    			</g:if>
 			    		</g:if> 
 			    	</div>
@@ -116,23 +122,24 @@
 	            			<tr>
             				<td>Qualitätsstufe:</td>
             				<td>
-	            			<g:select id="qualityLevel" name="searchQualityLevel" from="${['Stufe 1','Stufe 2','Stufe 3','Stufe 4','Stufe 5']}" keys="${['1','2','3','4','5']}" value="${params.searchQualityLevel}" noSelection="[null:'Bitte auswählen']" />
+	            			<g:select id="qualityLevel" name="searchQualityLevel" from="${['Stufe 1','Stufe 2','Stufe 3','Stufe 4','Stufe 5']}" keys="${['1','2','3','4','5']}" value="${params.searchQualityLevel}" noSelection="[null:'-Bitte auswählen-']" />
 	            			</td>
             			</tr>
-		            		<tr>
+		            	<tr>
 		            		<td>Datumsbereich:</td>
 		            		<td>
-		            			<g:select id="datetype" name="searchDateType" from="${['Datum erstellt','Datum geändert']}" keys="${['createdAt','modifiedAt']}" value="${params.searchDateType}" noSelection="[null:'Bitte auswählen']" />
+		            			<g:select id="datetype" name="searchDateType" from="${['Datum erstellt','Datum geändert']}" keys="${['createdAt','modifiedAt']}" value="${params.searchDateType}" noSelection="[null:'-Bitte auswählen-']" />
 		            		</td>
 						</tr>
+						
 	            		<tr>
 	            			<td>Von Datum: </td>
 	            			<td>
 	            				<g:if test="${params.search?.searchDateStart != null}" >
-	            					<g:datePicker name="searchDateStart" default="none" noSelection="['':'']" value="${params.search?.searchDateStart.date.format('TT.MM.JJJJ HH:mm')}"/>
+	            					<g:datePicker name="searchDateStart" default="none" noSelection="['':'']" precision="day" value="${params.searchDateStart}"/>
 	            				</g:if>
 	            				<g:else>
-	            					<g:datePicker name="searchDateStart" default="none" noSelection="['':'']" value="${params.search?.searchDateStart}"/>
+	            					<g:datePicker name="searchDateStart" default="none" noSelection="['':'']" precision="day" />
 	            				</g:else>
 	            			</td>
 	            		</tr>
@@ -140,10 +147,10 @@
 	            			<td>Bis Datum: </td>
 	            			<td>	
 	            				<g:if test="${params.search?.searchDateEnd != null}" >
-	            					<g:datePicker name="searchDateEnd" default="none" noSelection="['':'']"  value="${params.search?.searchDateEnd.date.format('dd.MM.yyyy HH:mm')}"/>
+	            					<g:datePicker name="searchDateEnd" default="none" noSelection="['':'']" precision="day" value="${params.searchDateEnd}"/>
 	            				</g:if>
 	            				<g:else>
-	            					<g:datePicker name="searchDateEnd" default="none" noSelection="['':'']"  value="${params.search?.searchDateEnd}"/>
+	            					<g:datePicker name="searchDateEnd" default="none" noSelection="['':'']" precision="day" />
 	            				</g:else>
 	            				<% // fix for https://github.com/zoran119/grails-jquery-date-time-picker/issues/12 %>
 		            			<script type="text/javascript">
@@ -169,9 +176,6 @@
 				                                break;                      
 				                            case 'textarea':
 				                                $(this).val('');
-				                                break;
-				            			 	case 'hidden':
-				                                $(this).val('0');
 				                                break;
 				            				case 'select-one':
 					                            $(this).val(null);

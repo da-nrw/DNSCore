@@ -188,7 +188,7 @@ public class DeltaOnURNAction extends AbstractAction {
 			List<Document> dummyDocs = new ArrayList<Document>();
 			MetsMetadataStructure mms = new MetsMetadataStructure(wa.dataPath(), metsFile, dummyDocs);
 	
-			urn = mms.getUrn();
+			urn = mms.getUrn(o.getOrig_name());
 			logger.debug("URN from mets: " + urn);
 		}else{
 			logger.debug("Read URN from mets is deactivated("+getObject().getContractor().isUseMetsUrn()+"): ");
