@@ -72,22 +72,32 @@
 	    					<g:if test="${params.searchQualityLevel == '5'}">Qualitätsstufe: 5</g:if>
 		    		</g:if> 
 		    		<div>
-						<g:if test="${params.searchDateType != null} "> 
-		   					<g:if test="${params.searchDateType == 'createdAt'}">Datumsbereich erstellt</g:if>
-		   					<g:if test="${params.searchDateType == 'modifiedAt'}">Datumsbereich geändert</g:if>
+						<g:if test="${params.searchDateType != null} ">
+						 <g:if test="${params.searchDateStart != null}"> 
+			   					<g:if test="${params.searchDateType == 'createdAt'}">Datumsbereich erstellt</g:if>
+			   					<g:if test="${params.searchDateType == 'modifiedAt'}">Datumsbereich geändert</g:if>
+		   					</g:if>
 			    		</g:if>   
 			    		<g:if test="${params.searchDateStart != null}">
-			    			<g:if test="${!params.searchDateStart.isEmpty()}">
-	    						<span style="margin-right: 25px">
-	    							<i>Von Datum: <g:formatDate date="${params.searchDateStart}" format="dd.MM.yyyy"/></i>
-	    						</span>
-    						</g:if>
+							<g:if test="${!params.searchDateStart.equals("0")}" >
+								<g:if test="${!params.searchDateStart.equals(" ")}" >
+									<g:if  test="${!params.searchDateStart.equals("")}" >
+			    						<span style="margin-right: 25px">
+			    							<i>Von Datum: ${params.searchDateStart}</i>
+			    						</span>
+			    					</g:if>
+			    				</g:if>
+			    			</g:if>
 			    		</g:if> 	
 			    		<g:if test="${params.searchDateEnd != null}">
-			    			<g:if test="${!params.searchDateEnd.isEmpty()}">
-			    				<span style="margin-right: 25px">
-			    					<i>Bis Datum: <g:formatDate date="${params.searchDateEnd}" format="dd.MM.yyyy"/></i>
-			    				</span>
+			    			<g:if test="${!params.searchDateEnd.equals("0")}" >
+								<g:if test="${!params.searchDateEnd.equals(" ")}" >
+									<g:if  test="${!params.searchDateEnd.equals("")}" >
+			    						<span style="margin-right: 25px">
+			    							<i>Von Datum: ${params.searchDateEnd}</i>
+			    						</span>
+			    					</g:if>
+			    				</g:if>
 			    			</g:if>
 			    		</g:if> 
 			    	</div>

@@ -25,7 +25,6 @@ package daweb3
 import java.awt.Queue
 import java.lang.reflect.InvocationTargetException
 import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 
 import org.hibernate.criterion.CriteriaSpecification
@@ -176,8 +175,7 @@ class ObjectController {
 			def totalObjs = objectsTotalForCount.size();
 
 			def c = Object.createCriteria()
-			log.debug(params.toString())
-			println(" ## params: list: " + params.toString())
+			log.debug(params.toString()) 
 			def objects = c.list(max: params.max, offset: params.offset ?: 0) {
 				/*if (params.search) params.search.each { key, value ->
 				 if (value!="") filterOn=1
@@ -200,19 +198,21 @@ class ObjectController {
 				}
 
 				log.debug("Date as Strings " + params.searchDateStart + " and " + params.searchDateEnd)
-				def searchDateStart = params.searchDateStart //ds)
-				def searchDateEnd = params.searchDateEnd //de
-
-				def st = "" //"createdAt";
-
+				def searchDateStart = params.searchDateStart  
+				def searchDateEnd = params.searchDateEnd 
+	
+				def st = "" //"createdAt"; 
+				
 				String searchDateType = params.searchDateType;
-				if (searchDateStart !=null || searchDateEnd !=null ) {
-
-					if ((!searchDateStart.equals("0") || !searchDateEnd.equals("0"))) {
-
-						if ( searchDateType == "null")  {
-							params.searchDateType = "createdAt"
-							searchDateType = "createdAt"
+				if (searchDateStart !=null || searchDateEnd !=null) {
+					if  (!searchDateStart.equals("0") || !searchDateEnd.equals("0")) { 
+						if	(!searchDateStart.equals(" ") || !searchDateEnd.equals(" ")){
+							if (!searchDateStart.equals("") || !searchDateEnd.equals("")) {
+								if ( searchDateType == "null")  {
+									params.searchDateType = "createdAt"
+									searchDateType = "createdAt"
+								}
+							}
 						}
 					}
 				}
@@ -286,6 +286,7 @@ class ObjectController {
 				paramsList.putAt("searchDateType", params?.searchDateType);
 				paramsList.putAt("searchDateStart", params?.searchDateStart);
 				paramsList.putAt("searchDateEnd", params?.searchDateEnd);
+				paramsList.putAt("searchQualityLevel", params?.searchQualityLevel);
 			}
 
 			if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
@@ -614,6 +615,7 @@ class ObjectController {
 
 		def objArt = "sich in Bearbeitung befindlichen"
 		if (status == 100) objArt="verarbeiteten"
+		
 		def baseFolder = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
 		params.max = Math.min(params.getObjectsmax ? params.int('max') : status, status)
 
@@ -630,11 +632,16 @@ class ObjectController {
 		}
 		def totalArchivedObjects = objectsArchivedForCount.size();
 
+		
+		def c = Object.createCriteria()
 		log.debug(params.toString())
+		def statusQueu
 		if (status == 50) {
 			if ( params.search != null) {
-				if (params.search.urn.isEmpty()) {
-					params.search.remove("urn");
+				if (params.search.urn != null) {
+		 			if (params.search.urn.isEmpty()) {
+						 params.search.remove("urn");
+					 }
 				}
 			}
 
@@ -650,67 +657,85 @@ class ObjectController {
 			//					[data_pk: id]);
 			// 			}
 		}
-		def c = Object.createCriteria()
-		
-		def objects= c.list(max: params.max, offset: params.offset ?: 0) {
 
-			if (params.search) params.search.each { key, value ->
+		def objects = c.list(max: params.max, offset: params.offset ?: 0) {
+			
+			/*if (params.search) params.search.each { key, value ->
 				if (value!="") filterOn=1
 				like(key, "%" + value + "%")
+			}*/  //BEG 310530
+			
+			if (params.search) {
+				params.search.each
+				{ key, value ->
+						if (!(value==""/* && value=="null" && value==null*/)) {
+							filterOn=1
+							like(key, "%" + value + "%")
+						}
+						
+				}
 			}
 
-
 			log.debug("Date as Strings " + params.searchDateStart + " and " + params.searchDateEnd)
-
-			def searchDateStart = params.searchDateStart //ds
-			def searchDateEnd = params.searchDateEnd //de
-
-//			def st = ""; // "createdAt";
+			
+			def searchDateStart = params.searchDateStart
+			def searchDateEnd = params.searchDateEnd
+	
+			def st = "" //"createdAt"; BEG 310530
 			String searchDateType = params.searchDateType;
-					
-			if (searchDateStart !=null || searchDateEnd !=null ) {
-				if (!searchDateStart.equals("0") || !searchDateEnd.equals("0")) {
-
-					if ( searchDateType == "null")  {
-						params.searchDateType = "createdAt"
-						searchDateType = "createdAt"
+				
+			if (searchDateStart !=null || searchDateEnd !=null) {
+				if  (!searchDateStart.equals("0") || !searchDateEnd.equals("0")) {
+					if	(!searchDateStart.equals(" ") || !searchDateEnd.equals(" ")){
+						if (!searchDateStart.equals("") || !searchDateEnd.equals("")) {
+							if ( searchDateType == "null")  {
+								params.searchDateType = "createdAt"
+								searchDateType = "createdAt"
+							}
+						}
 					}
-				}
-			} else {
-				if  ( params.searchDateType.equals("null") ) {
-					params.remove("searchDateType")
 				}
 			}
 			
+			// Suchdatum Start und Ende befüllt
 			if (searchDateStart !=null  && !searchDateStart.equals("") && !searchDateStart.equals(" ") &&
 				searchDateEnd!=null   && !searchDateEnd.equals("") && !searchDateEnd.equals(" "))  {
 					if (!searchDateStart.equals("0") && !searchDateEnd.equals("0")) {
-						println ("searchDateStart: "  + searchDateStart)
-						println ("searchDateEnd: "  + searchDateEnd)
-					
-						Date searchDateStartDate = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").parse(searchDateStart);
-//						Date searchDateEndDate = new SimpleDateFormat("dd.MM.yyyy").parse(searchDateEnd);
-					
-//					filterOn=1
-//					log.debug("Objects between " + searchDateStart + " and " + searchDateEnd)
-//					between(searchDateType,  searchDateStartDate, searchDateEndDate)
+					filterOn=1
+					log.debug("Objects between " + searchDateStart + " and " + searchDateEnd)
+					between(st, searchDateStart, searchDateEnd)
 				}
 			}
-//			if (searchDateStart!=null && searchDateEnd==null ) {
-//				if (!searchDateStart.equals("0") && searchDateEnd.equals("0")) {
-//					filterOn=1
-//					log.debug("Objects greater than " + searchDateStart)
-//					gt(st,searchDateStart)
-//				}
-//			}
-//			if (searchDateStart==null && searchDateEnd!=null ) {
-//				if (searchDateStart.equals("0") || !searchDateEnd.equals("0")) {
-//					filterOn=1
-//					log.debug("Objects lower than " + searchDateEnd)
-//					lt(st,searchDateEnd)
-//				}
-//			}
+			
+			// Suchdatum Start gefüllt
+			if (searchDateStart!=null && searchDateEnd==null ) {
+				if (!searchDateStart.equals("0") && searchDateEnd.equals("0")) {
+					filterOn=1
+					log.debug("Objects greater than " + searchDateStart)
+					gt(st,searchDateStart)
+				}
+			}
+			
+			// Suchdatum Ende gefüllt
+			if (searchDateStart==null && searchDateEnd !=null ) {
+				if (searchDateStart.equals("0") || !searchDateEnd.equals("0")) {
+					filterOn=1
+					log.debug("Objects lower than " + searchDateEnd)
+					lt(st,searchDateEnd)
+				}
+			}
+	
+			
+			if (params.searchQualityLevel!=null) {
 
+				if(params.searchQualityLevel?.isInteger()){
+					filterOn=1
+					log.debug("QualityLevel filter on :"+params.searchQualityLevel)
+					eq("quality_flag", Integer.valueOf(params.searchQualityLevel))
+					//between("quality_flag", params.searchQualityLevel,params.searchQualityLevel+1)
+				}
+			}
+			
 			if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 				admin = 1;
 			}
@@ -742,11 +767,9 @@ class ObjectController {
 			paramsList.putAt("searchDateType", params?.searchDateType);
 			paramsList.putAt("searchDateStart", params?.searchDateStart);
 			paramsList.putAt("searchDateEnd", params?.searchDateEnd);
+			paramsList.putAt("searchQualityLevel", params?.searchQualityLevel);
 		}
 		
-		println(" ### params?.searchDateStart): " + params?.searchDateStart)
-		println(" ### params?.searchDateEnd): " + params?.searchDateEnd)
-
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			render(view:"adminList", model:[	objectInstanceList: objects,
 				objectInstanceTotal: objects.getTotalCount(),
@@ -759,8 +782,7 @@ class ObjectController {
 				contractorList: contractorList,
 				user: user,
 				objArt: objArt
-				//				statusQueue: statusQueue
-			]);
+				]);
 		} else render(view:"list", model:[	objectInstanceList: objects,
 				objectInstanceTotal: objects.getTotalCount(),
 				searchParams: params.search,
@@ -773,8 +795,7 @@ class ObjectController {
 				contractorList: contractorList,
 				user: user,
 				objArt: objArt
-				//				statusQueue: statusQueue
-			]);
+				]);
 
 	}
 

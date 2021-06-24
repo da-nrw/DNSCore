@@ -134,7 +134,8 @@
                         </recordInfo>
                     </relatedItem>
                     <identifier type="hbz-idn">CT002003199</identifier>
-                    <identifier type="urn">urn:nbn:de:hbz:5:1-16152</identifier>
+                    <identifier type="urn">urn:nbn:de:hbz:5:1-10</identifier>
+                    <identifier type="urn">urn:nbn:de:hbz:5:1-11</identifier>
                     <location>
                         <physicalLocation>Bm 3</physicalLocation>
                         <shelfLocator>Cd 8:1964</shelfLocator>
@@ -581,6 +582,8 @@
                             <mods:number>WH 1900/01</mods:number>
                         </mods:detail>
                     </mods:part>
+                    <identifier type="urn">urn:nbn:de:hbz:5:1-20</identifier>
+                    <identifier type="urn">urn:nbn:de:hbz:5:1-21</identifier>
                     <mods:relatedItem type="host">
                         <mods:titleInfo>
                             <mods:title>Vorlesungsverzeichnis für das ...</mods:title>
@@ -707,7 +710,7 @@
                             </mods:recordInfo>
                         </mods:relatedItem>
                         <mods:identifier type="hbz-idn">CT002003199</mods:identifier>
-                        <mods:identifier type="urn">urn:nbn:de:hbz:5:1-16152</mods:identifier>
+                        <mods:identifier type="urn">urn:nbn:de:hbz:5:1-10</mods:identifier>
                         <mods:location>
                             <mods:physicalLocation>Bm 3</mods:physicalLocation>
                             <mods:shelfLocator>Cd 8:1964</mods:shelfLocator>
