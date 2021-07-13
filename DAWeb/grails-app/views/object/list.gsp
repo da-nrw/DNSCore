@@ -49,6 +49,14 @@
 					<g:else>
 						<li><g:link url="[controller: 'object', action: 'working']">Objekte in Verarbeitung</g:link></li>
 					</g:else>
+					
+					<g:if test="${objArt=='fehlerhafte'}">
+						<li id="aktuell"><g:link
+							url="[controller: 'object', action: 'error']">fehlerhafte Objekte</g:link></li>
+					</g:if>
+					<g:else>
+						<li><g:link url="[controller: 'object', action: 'error']">fehlerhafte Objekte</g:link></li>
+					</g:else>
 				</ul>
 			</div><br>
 			<button class="accordion">Filter
@@ -209,7 +217,7 @@
 			</div>
 			
 			<div id="list-object" class="content scaffold-list" role="main">
-				<h3> Ihre ${objArt} DA-NRW Objekte(${objectInstanceList.size()} Treffer von ${totalObjs} insgesamt)</h3>
+				<h3> Ihre '${objArt}' DA-NRW Objekte (${objectInstanceList.size()} Treffer von ${totalObjs} insgesamt)</h3>
 				<g:if test="${flash.message}">
 					<div class="message" role="status">${flash.message}</div>
 				</g:if>

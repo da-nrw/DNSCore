@@ -33,26 +33,37 @@
 		<div class="nav" role="navigation">
 			<ul>
 				<g:if test="${objArt=='gesamten'}">
-					<li id="aktuell"><g:link
-							url="[action: 'listAll', controller: 'object']">alle Objekte</g:link></li>
+					<li id="aktuell">
+						<g:link	url="[action: 'listAll', controller: 'object']">alle Objekte</g:link>
+					</li>
 				</g:if>
 				<g:else>
 					<li><g:link url="[action: 'listAll', controller: 'object']">alle Objekte</g:link></li>
 				</g:else>
 				<g:if test="${objArt=='verarbeiteten'}">
-					<li id="aktuell"><g:link
-							url="[controller: 'object', action: 'archived']">archivierte Objekte</g:link></li>
+					<li id="aktuell">
+						<g:link	url="[controller: 'object', action: 'archived']">archivierte Objekte</g:link>
+					</li>
 				</g:if>
 				<g:else>
 					<li><g:link url="[controller: 'object', action: 'archived']">archivierte Objekte</g:link></li>
 				</g:else>
 				<g:if test="${objArt=='sich in Bearbeitung befindlichen'}">
-					<li id="aktuell"><g:link
-							url="[controller: 'object', action: 'working']">Objekte in Verarbeitung</g:link></li>
+					<li id="aktuell">
+					<g:link url="[controller: 'object', action: 'working']">Objekte in Verarbeitung</g:link></li>
 				</g:if>
 				<g:else>
 					<li><g:link url="[controller: 'object', action: 'working']">Objekte in Verarbeitung</g:link></li>
 				</g:else>
+				<g:if test="${objArt=='fehlerhaften'}">
+					<li id="aktuell">
+						<g:link	url="[controller: 'object', action: 'error']">fehlerhafte Objekte</g:link>
+					</li>
+				</g:if>
+				<g:else>
+					<li><g:link url="[controller: 'object', action: 'error']">fehlerhafte Objekte</g:link></li>
+				</g:else>
+				
 			</ul>
 		</div>
 		<br>
@@ -293,8 +304,8 @@
 								var="objectInstance">
 								<g:set var="statusCode" value="100" />
 								<g:if test="${admin}">
-									<g:set var="statusCode"
-										value="${objectInstance.getStatusCode()}" />
+									<g:set var="statusCode"	value="${objectInstance.getStatusCode()}" />
+									<g:set var="dataPk"	value="${objectInstance.id.toString()}" />
 								</g:if>
 								<tr class="${ ((i % 2) == 0 ? 'odd' : 'even')}">
 									<td>${fieldValue(bean: objectInstance, field:
@@ -308,17 +319,34 @@
 									<td>${objectInstance.getFormattedCreatedDate()}</td>
 									<td>${objectInstance.getFormattedModifiedDate()}</td>
 									<td>${objectInstance.getFormattedQualityLevelNoZero()}</td>
-									<td style="text-align: center"><g:if
+									<td style="text-align: center">
+									<g:if
 											test="${statusCode == 1}">
 											<asset:image style="width:16px; height:16px"
 												src="/icons/warning32.png" />
-										</g:if> <g:elseif test="${statusCode == 2}">
-											<asset:image style="width:16px; height:16px"
-												src="/icons/clock32.png" />
-										</g:elseif> <g:elseif test="${statusCode == 0}">
+										</g:if> 
+										<g:elseif test="${statusCode == 2}">
+										 	<g:if test="${objArt != "fehlerhaften" }">
+												<asset:image style="width:16px; height:16px"
+													src="/icons/clock32.png" />
+											</g:if>
+											<g:else>
+												<g:each in="${queueList}" status="j" var="queueInstance">
+													<g:set var="statusCode"	value="${queueInstance.status.toString().replace('[', ' ').replace(']','')}" />
+													<g:set var="queueObjectId"	value="${queueInstance.obj.id.toString().replace('[', ' ').replace(']','').trim()}" />
+													
+													<g:if test="${dataPk == queueObjectId}">
+														  ${statusCode}
+													</g:if> 
+												</g:each>
+											</g:else>
+										</g:elseif>
+										
+										<g:elseif test="${statusCode == 0}">
 											<asset:image style="width:16px; height:16px"
 												src="/icons/check32.png" />
-										</g:elseif></td>
+										</g:elseif>
+									</td>
 									<g:if test="${!objectInstance.isInWorkflowButton()}">
 										<td style="text-align: center"><g:remoteLink
 												action="queueForInspect" onLoaded="queuedFor(data)"
