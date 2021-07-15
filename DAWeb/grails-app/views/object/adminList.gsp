@@ -113,6 +113,14 @@
 							</span>
 						</g:if>
 					</g:if>
+					
+					<g:if test="${params.search?.initialNode != null}">
+		    			<g:if test="${!params.search?.initialNode.isEmpty() }">
+		    				<g:if test="${!params.search?.initialNode.equals('null')}">
+		    					<span style="margin-right: 25px"><i>Zuständiger Knoten: </i>${params.search?.initialNode}</span>
+		    				</g:if>
+		    			</g:if>	
+		    		</g:if>
 				</div>
 			</g:if>
 		</button>
@@ -206,6 +214,25 @@
 										noSelection="['':'-Bitte wählen-']"
 										value="${params.searchContractorName}" class="many-to-one" />
 								</g:if></td>
+						</tr>
+						<tr>
+						
+							<td>Zuständiger Knoten:</td>
+	            			<td>
+	            				<g:if test="${params.search?.initialNode == null || params.search?.initialNode .isEmpty()}" >
+	            					<g:select id="initialNode" name="search.initialNode"  
+	            					from="${cbNodeList}" optionKey="name" 
+	            					noSelection="['':'-Bitte wählen-']" 
+	            					value="${objectInstance?.cbNodeList?.name}" 
+	            					class="many-to-one"/>
+	            				</g:if>
+	            				<g:if test="${params.search?.initialNode != null && !params.search?.initialNode.isEmpty()}" >
+	            					<g:select id="initialNode" name="search.initialNode"  
+	            					 from="${cbNodeList}" optionKey="name" 
+	            					 noSelection="['':'-Bitte wählen-']" 
+	            					 value="${params.search?.initialNode}" class="many-to-one"/>
+	            				</g:if>
+	            			</td>
 						</tr>
 					</g:if>
 					<tr>

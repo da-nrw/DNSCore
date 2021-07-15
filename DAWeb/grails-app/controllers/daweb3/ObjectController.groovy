@@ -155,6 +155,7 @@ class ObjectController {
 			User user = springSecurityService.currentUser
 
 			def contractorList = User.list()
+			def cbNodeList = CbNode.list()
 			def admin = 0;
 			def relativeDir = user.getShortName() + "/outgoing"
 			def filterOn = params.filterOn;
@@ -169,6 +170,13 @@ class ObjectController {
 					params.remove("searchContractorName")
 				}
 			}
+			
+			if (params.initialNode){
+				if(params.initialNode=="null"){
+					params.remove("initialNode")
+				}
+			}
+			
 			def c1 = Object.createCriteria()
 			def objectsTotalForCount = c1.list() {
 				eq("user.id", user.id)
@@ -270,6 +278,15 @@ class ObjectController {
 							eq("c.shortName", params.searchContractorName)
 						}
 					}
+					
+					if (params.initialNode!=null) {
+						if	( !params.initialNode.isEmpty() || params.initialNode != "") {
+							filterOn=1
+							eq("initialNode", params.search.initialNode)
+						}
+					}
+					
+					
 				}
 
 				between("objectState", 50,200)
@@ -283,7 +300,12 @@ class ObjectController {
 				paramsList.putAt("searchContractorName", params?.searchContractorName)
 
 			}
+			
+			if(params.initialNode){
+				paramsList.putAt("initialNode", params?.initialNode)
 
+			}
+			
 			if (paramsList != null) {
 				paramsList.putAt("searchDateType", params?.searchDateType);
 				paramsList.putAt("searchDateStart", params?.searchDateStart);
@@ -302,7 +324,8 @@ class ObjectController {
 					baseFolder: baseFolder,
 					contractorList: contractorList,
 					user: user ,
-					objArt: objArt
+					objArt: objArt,
+					cbNodeList:cbNodeList
 				]);
 			} else render(view:"list", model:[	objectInstanceList: objects,
 					objectInstanceTotal: objects.getTotalCount(),
@@ -601,6 +624,7 @@ class ObjectController {
 	def collectSearchParams = {
 		def paramList = params.search?.collectEntries { key, value -> ['search.'+key, value]}
 		paramsList.putAt("searchContractorName", params?.searchContractorName)
+		paramsList.putAt("initialNode", params?.initialNode)
 		return
 		[paramsList:paramsList]
 	}
@@ -610,6 +634,7 @@ class ObjectController {
 		User user = springSecurityService.currentUser
 
 		def contractorList = User.list()
+		def cbNodeList = CbNode.list()
 		def admin = 0;
 		def relativeDir = user.getShortName() + "/outgoing"
 		def filterOn = params.filterOn;
@@ -637,6 +662,13 @@ class ObjectController {
 				params.remove("searchContractorName")
 			}
 		}
+		
+		if (params.initialNode){
+			if(params.initialNode=="null"){
+				params.remove("initialNode")
+			}
+		}
+		
 
 		def c1 = Object.createCriteria()
 		def statusQueue
@@ -753,7 +785,15 @@ class ObjectController {
 						eq("c.shortName", params.searchContractorName)
 					}
 				}
+			
+				if (params.initialNode!=null) {
+					if	( !params.initialNode.isEmpty() || params.initialNode != "") {
+						filterOn=1
+						eq("initialNode", params.search.initialNode)
+					}
+				}
 			}
+			
 			eq("objectState", status)
 			order(params.sort ?: "id", params.order ?: "desc")
 
@@ -799,6 +839,10 @@ class ObjectController {
 		if(params.searchContractorName){
 			paramsList.putAt("searchContractorName", params?.searchContractorName)
 		}
+		
+		if (params.initialNode) {
+			paramsList.putAt("initialNode", params?.initialNode)
+		}
 
 		if (paramsList != null) {
 			paramsList.putAt("searchDateType", params?.searchDateType);
@@ -820,6 +864,7 @@ class ObjectController {
 				contractorList: contractorList,
 				user: user,
 				objArt: objArt,
+				cbNodeList:cbNodeList,
 				queueList: queueList
 			]);
 		} else render(view:"list", model:[	objectInstanceList: objects,

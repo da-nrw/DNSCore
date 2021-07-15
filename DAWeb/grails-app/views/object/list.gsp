@@ -49,14 +49,6 @@
 					<g:else>
 						<li><g:link url="[controller: 'object', action: 'working']">Objekte in Verarbeitung</g:link></li>
 					</g:else>
-					
-					<g:if test="${objArt=='fehlerhafte'}">
-						<li id="aktuell"><g:link
-							url="[controller: 'object', action: 'error']">fehlerhafte Objekte</g:link></li>
-					</g:if>
-					<g:else>
-						<li><g:link url="[controller: 'object', action: 'error']">fehlerhafte Objekte</g:link></li>
-					</g:else>
 				</ul>
 			</div><br>
 			<button class="accordion">Filter
