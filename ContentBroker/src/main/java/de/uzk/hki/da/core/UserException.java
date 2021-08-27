@@ -30,7 +30,8 @@ public class UserException extends RuntimeException {
 		INVALID_USER_FILE_FORMAT,
 		QUALITY_BELOW_REQUIRED,
 		INVALID_LICENSE_DATA,
-		INVALID_URN
+		INVALID_URN,
+		CONVERSION_TIMEOUT
 	};
 	
 	private static final long serialVersionUID = -6346016039624940492L;

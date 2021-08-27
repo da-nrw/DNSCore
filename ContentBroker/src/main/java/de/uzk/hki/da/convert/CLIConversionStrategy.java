@@ -19,6 +19,7 @@
 
 package de.uzk.hki.da.convert;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,6 +32,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.format.KnownFormatCmdLineErrors;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.DAFile;
@@ -39,6 +42,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.IOTimeoutException;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.StringUtilities;
@@ -67,6 +71,7 @@ public class CLIConversionStrategy implements ConversionStrategy{
 	/** The cli connector. */
 	protected SimplifiedCommandLineConnector cliConnector;
 	
+	public static long timeout = 86400123;
 	
 	private String toAbsolutePath(Path dataPath,DAFile f) {
 		return dataPath.toString()+"/"+f.getRep_name()+"/"+f.getRelative_path();
@@ -89,12 +94,27 @@ public class CLIConversionStrategy implements ConversionStrategy{
 		Path.make(wa.dataPath(),object.getNameOfLatestBRep(),ci.getTarget_folder()).toFile().mkdirs();
 		
 		String[] commandAsArray = assemble(wa,ci, object.getNameOfLatestBRep());
-		if (!cliConnector.execute(commandAsArray)) {
-			throw new RuntimeException("convert did not succeed:"+cliConnector.getErrorMessages());
-		}
-		
+		String targetName = this.targetFileName(wa, ci);
 		String targetSuffix= ci.getConversion_routine().getTarget_suffix();
 		if (targetSuffix.equals("*")) targetSuffix= FilenameUtils.getExtension(toAbsolutePath(wa.dataPath(),ci.getSource_file()));
+
+		try {
+			if (!cliConnector.execute(commandAsArray, CLIConversionStrategy.timeout)) {
+				throw new RuntimeException("convert did not succeed:"+cliConnector.getErrorMessages());
+			}
+		} catch (Exception xtc) {
+			String targetDirName = wa.dataPath() + "/" + object.getNameOfLatestBRep(); 
+			Path path = Path.make(targetDirName, targetName + "." + targetSuffix);
+			File targetFile = path.toFile();
+			boolean delly = targetFile.delete();
+			logger.debug("Not convertet: delete: " + path + ": " + delly);
+			if (xtc.getCause() instanceof IOTimeoutException) {
+				throw new UserException(UserExceptionId.CONVERSION_TIMEOUT, "Zeitüberschreitung bei der Konversion");
+			}
+			
+			throw xtc;
+		}
+		
 		DAFile result = new DAFile(object.getNameOfLatestBRep(),
 				ci.getTarget_folder()+"/"+FilenameUtils.removeExtension(Matcher.quoteReplacement(
 				FilenameUtils.getName(toAbsolutePath(wa.dataPath(),ci.getSource_file())))) + "." + targetSuffix);
@@ -110,8 +130,11 @@ public class CLIConversionStrategy implements ConversionStrategy{
 		return results;
 	}
 
-	
-	
+	public String targetFileName(WorkArea wa, ConversionInstruction ci) {
+		String ret = ci.getTarget_folder() + "/" + FilenameUtils.removeExtension(
+				Matcher.quoteReplacement(FilenameUtils.getName(toAbsolutePath(wa.dataPath(), ci.getSource_file()))));
+		return ret;
+	}	
 	
 	/**
 	 * Tokenizes commandLine and replaces certain strings.
