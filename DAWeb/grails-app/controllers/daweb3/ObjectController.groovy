@@ -23,6 +23,7 @@ package daweb3
 
 
 import grails.converters.*
+import javassist.expr.Instanceof
 
 
 class ObjectController {
@@ -183,7 +184,6 @@ class ObjectController {
 				between("objectState", 50,200)
 			}
 			def totalObjs = objectsTotalForCount.size();
-
 			def c = Object.createCriteria()
 			log.debug(params.toString())
 			def objects = c.list(max: params.max, offset: params.offset ?: 0) {
@@ -210,6 +210,7 @@ class ObjectController {
 				log.debug("Date as Strings " + params.searchDateStart + " and " + params.searchDateEnd)
 				def searchDateStart = params.searchDateStart
 				def searchDateEnd = params.searchDateEnd
+			
 
 				def st = "" //"createdAt";
 
@@ -226,6 +227,7 @@ class ObjectController {
 						}
 					}
 				}
+				
 				// Suchdatum Start und Ende befüllt
 				if (searchDateStart !=null  && !searchDateStart.equals("") && !searchDateStart.equals(" ") &&
 				searchDateEnd!=null   && !searchDateEnd.equals("") && !searchDateEnd.equals(" "))  {
@@ -233,7 +235,15 @@ class ObjectController {
 						filterOn=1
 
 						log.debug("Objects between " + searchDateStart + " and " + searchDateEnd)
-						between(searchDateType, searchDateStart, searchDateEnd)
+						if (searchDateStart instanceof String) {
+							searchDateStart = Object.convertStringIntoDate(searchDateStart)
+						}
+						
+						if (searchDateEnd instanceof String) {
+							searchDateEnd = Object.convertStringIntoDate(searchDateEnd)
+						}
+						
+					 	between(searchDateType, searchDateStart, searchDateEnd)
 					}
 				}
 
@@ -285,8 +295,6 @@ class ObjectController {
 							eq("initialNode", params.search.initialNode)
 						}
 					}
-					
-					
 				}
 
 				between("objectState", 50,200)
@@ -308,8 +316,17 @@ class ObjectController {
 			
 			if (paramsList != null) {
 				paramsList.putAt("searchDateType", params?.searchDateType);
-				paramsList.putAt("searchDateStart", params?.searchDateStart);
-				paramsList.putAt("searchDateEnd", params?.searchDateEnd);
+				if (params?.searchDateStart instanceof String ) {
+					paramsList.putAt("searchDateStart", Object.convertStringIntoDate(params?.searchDateStart));
+				} else {
+					paramsList.putAt("searchDateStart", params?.searchDateStart);
+				}
+				if (params?.searchDateEnd  instanceof String) {
+					paramsList.putAt("searchDateEnd", Object.convertStringIntoDate(params?.searchDateEnd));
+				} else {
+					paramsList.putAt("searchDateEnd", params?.searchDateEnd);
+				}
+				
 				paramsList.putAt("searchQualityLevel", params?.searchQualityLevel);
 			}
 
