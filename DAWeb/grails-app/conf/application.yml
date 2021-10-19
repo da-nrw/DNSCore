@@ -194,6 +194,9 @@ grails:
     exceptionresolver:
        params:
             exclude: password
+    databinding:
+       dateFormats:
+          - 'dd.MM.yyyy'
 endpoints:
     jmx:
         unique-names: true

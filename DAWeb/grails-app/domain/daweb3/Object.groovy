@@ -54,6 +54,7 @@ class Object {
 	String identifier
 	User user
 	String origName
+	String initialNode
 	
 	int objectState
 	long aipSize
