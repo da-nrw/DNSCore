@@ -66,6 +66,7 @@ class StatisticsController {
 	Map<String, String> extListDIP
 
 	private static final long  GIGABYTE = 1024L * 1024L * 1024L;
+//	private static final long  TERABYTE = 1024L * 1024L * 1024L * 1024L;
 
 	public static final String PDF = "/ci/DNSCore/DAWeb/pdf/statistik.pdf";
 	private static Font TITLE_FONT = new Font(Font.FontFamily.TIMES_ROMAN, 18,
@@ -295,7 +296,7 @@ class StatisticsController {
 		addEmptyLine(paragraph, 1)
 
 		Paragraph aipSize = new Paragraph("AIP-Size aller bisher eingelieferten Pakete: " +
-				aipSizeGesamt + " in GigaByte",	 NORMAL_FONT)
+				aipSizeGesamt + " in TeraByte",	 NORMAL_FONT)
 
 		paragraph.add(aipSize)
 		addEmptyLine(paragraph, 1)
@@ -306,11 +307,11 @@ class StatisticsController {
 		addEmptyLine(paragraph, 1)
 
 		// Dateien
-		Paragraph dateien = new Paragraph("Dateien", SUB_TITEL_FONT);
+		Paragraph dateien = new Paragraph("Pakete", SUB_TITEL_FONT);
 		paragraph.add(dateien)
 		addEmptyLine(paragraph, 1)
 
-		Paragraph bisherArchDateien = new Paragraph("Anzahl der bisher archivierten Dateien: " +
+		Paragraph bisherArchDateien = new Paragraph("Anzahl der bisher archivierten Pakete: " +
 				archived, NORMAL_FONT)
 		paragraph.add(bisherArchDateien)
 		addEmptyLine(paragraph, 1)
@@ -321,7 +322,7 @@ class StatisticsController {
 		paragraph.add(qualitaet)
 		addEmptyLine(paragraph, 1)
 
-		Paragraph qualityLevelBisher = new Paragraph("Qualität der bisher archivierten Dateien ", NORMAL_FONT)
+		Paragraph qualityLevelBisher = new Paragraph("Qualität der bisher archivierten Pakete ", NORMAL_FONT)
 		createTableQuality(qualityLevelBisher)
 
 

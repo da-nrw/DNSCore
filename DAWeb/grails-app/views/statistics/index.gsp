@@ -34,7 +34,7 @@
 				<h3>Dateien</h3>
 				<ul class="property-list object property-list-position">
 					<li class="fieldcontain">
-						<span class="property-label">Anzahl der bisher archivierten Dateien</span>
+						<span class="property-label">Anzahl der bisher archivierten Pakete</span>
 						 <span class="property-value">${archived}</span>
 					</li>
 				</ul>
@@ -42,7 +42,7 @@
 				<h3> Qualitative Situation des Archivgutes </h3>
 				<ul class="property-list object property-list-position">
 					<li class="fieldcontain">
-						<span class="property-label">Qualität der bisher archivierten Dateien</span>
+						<span class="property-label">Qualität der bisher archivierten Pakete</span>
 						<span class="property-value" style="overflow:auto; width: 300px;">
 				             <table>
 								 <thead class="thead-line">							
