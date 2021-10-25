@@ -2,6 +2,8 @@ package daweb3
 
 import java.text.DateFormat
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 /*
  DA-NRW Software Suite | ContentBroker
@@ -198,6 +200,28 @@ class Object {
 		return null;
 	}
 
+	
+	
+	static String convertStringIntoDatString(String sDate) {
+		
+		if (sDate!=null && sDate!="") {
+			try {
+				DateFormat dateFormat = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy" )
+				dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"))
+				Date dt =  (Date)dateFormat.parse(sDate)
+				String newStrDate = new SimpleDateFormat("yyyy-MM-dd").format(dt)
+				
+//				DateFormat dtfo =  new SimpleDateFormat("yyyy-MM-dd")
+//				dtfo.setTimeZone(TimeZone.getTimeZone("GMT"))
+//				Date newDate = (Date)dtfo.parse(newStrDate)
+				return newStrDate
+			} catch (Exception ex) {
+				return null;
+			}
+		}
+	}
+	
+	
 	static Date convertStringIntoDate(String sDate) {
 		
 		if (sDate!=null && sDate!="") {
@@ -205,6 +229,7 @@ class Object {
 				DateFormat dateFormat = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy" )
 				dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"))
 				Date dt =  (Date)dateFormat.parse(sDate)
+				
 				return dt
 			} catch (Exception ex) {
 				return null;

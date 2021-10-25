@@ -316,13 +316,16 @@ class ObjectController {
 			
 			if (paramsList != null) {
 				paramsList.putAt("searchDateType", params?.searchDateType);
+				println("#################### params?.searchDateStart : " + params?.searchDateStart)
 				if (params?.searchDateStart instanceof String ) {
-					paramsList.putAt("searchDateStart", Object.convertStringIntoDate(params?.searchDateStart));
+					paramsList.putAt("searchDateStart", Object.convertStringIntoDatString(params?.searchDateStart));
+					params.putAt("searchDateStart", Object.convertStringIntoDate(params?.searchDateStart));
 				} else {
 					paramsList.putAt("searchDateStart", params?.searchDateStart);
 				}
 				if (params?.searchDateEnd  instanceof String) {
-					paramsList.putAt("searchDateEnd", Object.convertStringIntoDate(params?.searchDateEnd));
+					paramsList.putAt("searchDateEnd", Object.convertStringIntoDatString(params?.searchDateEnd));
+					params.putAt("searchDateEnd", Object.convertStringIntoDate(params?.searchDateEnd));
 				} else {
 					paramsList.putAt("searchDateEnd", params?.searchDateEnd);
 				}
@@ -330,6 +333,7 @@ class ObjectController {
 				paramsList.putAt("searchQualityLevel", params?.searchQualityLevel);
 			}
 
+	 
 			if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 				render(view:"adminList", model:[	objectInstanceList: objects,
 					objectInstanceTotal: objects.getTotalCount(),
@@ -342,7 +346,8 @@ class ObjectController {
 					contractorList: contractorList,
 					user: user ,
 					objArt: objArt,
-					cbNodeList:cbNodeList
+					cbNodeList:cbNodeList,
+					params: params
 				]);
 			} else render(view:"list", model:[	objectInstanceList: objects,
 					objectInstanceTotal: objects.getTotalCount(),
@@ -355,7 +360,8 @@ class ObjectController {
 					baseFolder: baseFolder,
 					contractorList: contractorList,
 					user: user ,
-					objArt: objArt
+					objArt: objArt,
+					params: params
 				]);
 		}
 	}

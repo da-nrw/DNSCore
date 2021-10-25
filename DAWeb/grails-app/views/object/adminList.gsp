@@ -192,9 +192,11 @@
 					<tr>
 						<td>Bis Datum:</td>
 						<td><g:if test="${params.searchDateEnd != null}">
-								<g:datePicker name="searchDateEnd" default="none" 
-									noSelection="['':'']" precision="day"
-									value="${params.searchDateEnd}" />
+								<g:if test="${!params.searchDateEnd_day != '' }">
+									<g:datePicker name="searchDateEnd" default="none" 
+										noSelection="['':'']" precision="day"
+										value="${params.searchDateEnd}" />
+								</g:if>		
 							</g:if> <g:else>
 								<g:datePicker name="searchDateEnd" 
 									noSelection="['':'']" precision="day" default="none" />
