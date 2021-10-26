@@ -56,6 +56,10 @@ public class SimplifiedCommandLineConnector {
 	 * @return true, if successful
 	 */
 	public boolean execute(String cmd[]) {
+		return this.execute(cmd, 0);
+	}
+
+	public boolean execute(String cmd[], long timeout) {
 	
 		logger.trace("SimplifiedCommandLineConnector executing conversion command: {}", cmd.toString());
 		errorMessages=null;
@@ -63,7 +67,10 @@ public class SimplifiedCommandLineConnector {
 		File redirect = null;
 		try {
 			redirect = File.createTempFile("DANRWCMD", "log");
-			pi = cl.runCmdSynchronously(cmd, null, 0, redirect);
+			pi = cl.runCmdSynchronously(cmd, null, timeout, redirect);
+		} catch (IOTimeoutException e) {
+			redirect.delete();
+			throw new RuntimeException(e);
 		} catch (IOException e) {
 			redirect.delete();
 			throw new RuntimeException(e);
