@@ -316,7 +316,6 @@ class ObjectController {
 			
 			if (paramsList != null) {
 				paramsList.putAt("searchDateType", params?.searchDateType);
-				println("#################### params?.searchDateStart : " + params?.searchDateStart)
 				if (params?.searchDateStart instanceof String ) {
 					paramsList.putAt("searchDateStart", Object.convertStringIntoDatString(params?.searchDateStart));
 					params.putAt("searchDateStart", Object.convertStringIntoDate(params?.searchDateStart));

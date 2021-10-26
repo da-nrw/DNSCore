@@ -83,7 +83,7 @@
 								<g:if test="${!params.searchDateStart.equals(" ")}" >
 									<g:if  test="${!params.searchDateStart.equals("")}" >
 			    						<span style="margin-right: 25px">
-			    							<i>Von Datum: ${params.searchDateStart}</i>
+			    							<i>Von Datum: <g:formatDate format="dd.MM.yyyy" date="${params.searchDateStart}"/></i>
 			    						</span>
 			    					</g:if>
 			    				</g:if>
@@ -94,7 +94,7 @@
 								<g:if test="${!params.searchDateEnd.equals(" ")}" >
 									<g:if  test="${!params.searchDateEnd.equals("")}" >
 			    						<span style="margin-right: 25px">
-			    							<i>Bis Datum: ${params.searchDateEnd}</i>
+			    							<i>Bis Datum: <g:formatDate format="dd.MM.yyyy" date="${params.searchDateEnd}"/></i>
 			    						</span>
 			    					</g:if>
 			    				</g:if>
