@@ -250,4 +250,11 @@ class Object {
 
 		return null;
 	}
+	
+	def long getAipSizeInMB() {
+		long aipSizeInMb
+	
+		return aipSizeInMb = aipSize / (long)1024;
+	
+	}
 }

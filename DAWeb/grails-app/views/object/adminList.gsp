@@ -98,7 +98,7 @@
 					<g:if test="${params.searchDateType != null } ">
 						<g:if test="${params.searchDateType == 'createdAt'}">Datumsbereich erstellt</g:if>
 						<g:if test="${params.searchDateType == 'modifiedAt'}">Datumsbereich geändert</g:if>
-					</g:if>
+					</g:if>grails-app/views/object/list.gsp
 					<g:if test="${params.searchDateStart != null}">
 						<g:if test="${!params.searchDateStart.equals("0")}" >
 							<g:if test="${!params.searchDateStart.equals(" ")}" >
@@ -324,6 +324,7 @@
 									<g:sortableColumn style="text-align: center"
 										property="objectState"
 										title="${message(code: 'object.objectState.label', default: 'Objekt Status')}" />
+									<th style="text-align: center">Paketgröße (MB)</th>	
 									<th style="text-align: center">Überprüfen</th>
 									<th style="text-align: center">Pres. Derivate</th>
 									<th style="text-align: center">Index</th>
@@ -359,7 +360,7 @@
 									<td>${objectInstance.getFormattedModifiedDate()}</td>
 									<td>${objectInstance.getFormattedQualityLevelNoZero()}</td>
 									<td style="text-align: center">
-									<g:if
+										<g:if
 											test="${statusCode == 1}">
 											<asset:image style="width:16px; height:16px"
 												src="/icons/warning32.png" />
@@ -386,6 +387,7 @@
 												src="/icons/check32.png" />
 										</g:elseif>
 									</td>
+									<td> ${objectInstance.getAipSizeInMB()}	</td>
 									<g:if test="${!objectInstance.isInWorkflowButton()}">
 										<td style="text-align: center">
 											<g:remoteLink
