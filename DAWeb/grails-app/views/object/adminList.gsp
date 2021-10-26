@@ -100,17 +100,25 @@
 						<g:if test="${params.searchDateType == 'modifiedAt'}">Datumsbereich geändert</g:if>
 					</g:if>
 					<g:if test="${params.searchDateStart != null}">
-						<g:if test="${params.searchDateStart != ' '}">
-							<span style="margin-right: 25px"> 
-								<i>Von Datum: <g:formatDate date="${params.searchDateStart}" format="dd.MM.yyyy" /></i>
-							</span>
+						<g:if test="${!params.searchDateStart.equals("0")}" >
+							<g:if test="${!params.searchDateStart.equals(" ")}" >
+								<g:if  test="${!params.searchDateStart.equals("")}" >
+									<span style="margin-right: 25px"> 
+										<i>Von Datum: <g:formatDate format="dd.MM.yyyy" date="${params.searchDateStart}"/></i>
+									</span>
+								</g:if>
+							</g:if>
 						</g:if>
 					</g:if>
 					<g:if test="${params.searchDateEnd != null}">
-						<g:if test="${params.searchDateEnd != ' '}">
-							<span style="margin-right: 25px"> 
-								<i>Bis Datum: <g:formatDate	date="${params.searchDateEnd}" format="dd.MM.yyyy" /></i>
-							</span>
+			    		<g:if test="${!params.searchDateEnd.equals("0")}" >
+							<g:if test="${!params.searchDateEnd.equals(" ")}" >
+								<g:if  test="${!params.searchDateEnd.equals("")}" >
+			    					<span style="margin-right: 25px"> 
+										<i>Bis Datum: <g:formatDate format="dd.MM.yyyy" date="${params.searchDateEnd}" /></i>
+									</span>
+								</g:if>
+							</g:if>
 						</g:if>
 					</g:if>
 					
@@ -164,38 +172,42 @@
 						<td>Von Datum:</td>
 						<td><g:if test="${params.searchDateStart_day != null}">
 								<g:if test="${!params.searchDateStart_day != '' }">
-									<g:datePicker name="searchDateStart" default="none"
+									<g:datePicker name="searchDateStart"
 										noSelection="['':'']" precision="day"
-										value="${params.searchDateStart}" />
+										value="${params.searchDateStart}" default="none" />
 								</g:if>
-							</g:if> <g:else>
+							</g:if> 
+							<g:else>
 								<g:datePicker name="searchDateStart" default="none"
 									noSelection="['':'']" precision="day" />
-							</g:else></td>
+							</g:else>
+							<% // fix forhttps://github.com/zoran119/grails-jquery-date-time-picker/issues/12 %> 
+							<script type="text/javascript">
+								$(document).ready(function() {
+									$("#searchDateStart").val("${params.searchDateStart}")
+								})
+							</script>
+						</td>
 					</tr>
 					<tr>
 						<td>Bis Datum:</td>
 						<td><g:if test="${params.searchDateEnd != null}">
-								<g:datePicker name="searchDateEnd" default="none"
-									noSelection="['':'']" precision="day"
-									value="${params.searchDateEnd}" />
+								<g:if test="${!params.searchDateEnd_day != '' }">
+									<g:datePicker name="searchDateEnd" default="none" 
+										noSelection="['':'']" precision="day"
+										value="${params.searchDateEnd}" />
+								</g:if>		
 							</g:if> <g:else>
-								<g:datePicker name="searchDateEnd" default="none"
-									noSelection="['':'']" precision="day" />
-							</g:else> <% // fix for
-							https://github.com/zoran119/grails-jquery-date-time-picker/issues/12
-							%> <script type="text/javascript">
-								$(document)
-										.ready(
-												function() {
-													$("#searchDateStart")
-															.val(
-																	"${params.searchDateStart}")
-													$("#searchDateEnd")
-															.val(
-																	"${params.searchDateEnd}")
-												})
-							</script></td>
+								<g:datePicker name="searchDateEnd" 
+									noSelection="['':'']" precision="day" default="none" />
+							</g:else> 
+							<% // fix forhttps://github.com/zoran119/grails-jquery-date-time-picker/issues/12 %> 
+							<script type="text/javascript">
+								$(document).ready(function() {
+									$("#searchDateEnd").val("${params.searchDateEnd}")
+								})
+							</script>
+						</td>
 					</tr>
 					<g:if test="${admin}">
 						<tr>
@@ -375,7 +387,8 @@
 										</g:elseif>
 									</td>
 									<g:if test="${!objectInstance.isInWorkflowButton()}">
-										<td style="text-align: center"><g:remoteLink
+										<td style="text-align: center">
+											<g:remoteLink
 												action="queueForInspect" onLoaded="queuedFor(data)"
 												id="${objectInstance.id}">
 												<asset:image style="width:16px; height:16px"
@@ -401,8 +414,7 @@
 											</g:remoteLink></td>
 									</g:if>
 									<g:else>
-										<td colspan="3" text-align:center">Objekt in der
-											Verarbeitung</td>
+										<td colspan="3" style="text-align:center">Objekt in der Verarbeitung</td>
 									</g:else>
 									<td><g:if test="${objectInstance.getPublished_flag()==1}">
 											<g:link url="${objectInstance.getPublicPresLink()}"
@@ -419,7 +431,8 @@
 										</g:if> <g:if test="${objectInstance.getPublished_flag()==3}">
 											<asset:image width="16px" height="16px"
 												src="/icons/globe.png" />
-										</g:if></td>
+										</g:if>
+									</td>
 									<g:if test="${!objectInstance.isInWorkflowButton()}">
 										<td style="text-align: center"><g:remoteLink
 												action="queueForRetrieval" onLoaded="queuedFor(data)"
@@ -428,9 +441,7 @@
 													src="/icons/boxdownload32.png" />
 											</g:remoteLink></td>
 									</g:if>
-									<g:else>
-										<td></td>
-									</g:else>
+									
 									<td style="text-align: center"><g:if
 											test="${new File(baseFolder+ "/"+ objectInstance.identifier +".tar").exists()}">
 											<g:link controller="outgoing" action="download"
