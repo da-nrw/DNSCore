@@ -307,6 +307,13 @@
 							<g:paginate total="${objectInstanceTotal}" params="${searchParams}" />
 						</div>
 				 	</g:if>
+				 	<g:elseif test="${objectInstanceList.size() < 49} ">
+				 		<g:if test="${objectInstanceTotal  > 50} ">
+					 		<div class="pagination">
+								<g:paginate total="${objectInstanceTotal}" params="${searchParams}" />
+							</div>
+							</g:if>
+				 	</g:elseif>
 				</g:if>  
 			</div>
 		</div>
