@@ -322,9 +322,10 @@
 									title="${message(code: 'object.quality_flag', default: 'Qualitätsstufe')}" />
 								<g:if test="${admin}">
 									<g:sortableColumn style="text-align: center"
+									property="aipSize" title="${message(code: 'object.aip_size', default: 'Paketgröße (MB)')}"/>	
+									<g:sortableColumn style="text-align: center"
 										property="objectState"
 										title="${message(code: 'object.objectState.label', default: 'Objekt Status')}" />
-									<th style="text-align: center">Paketgröße (MB)</th>	
 									<th style="text-align: center">Überprüfen</th>
 									<th style="text-align: center">Pres. Derivate</th>
 									<th style="text-align: center">Index</th>
@@ -354,11 +355,11 @@
 									<td><g:link action="show" id="${objectInstance.id}">${objectInstance.getFormattedUrn()}</g:link></td>
 
 									<td>${fieldValue(bean: objectInstance, field: "user")}</td>
-
 									<td>${fieldValue(bean: objectInstance, field: "origName")}</td>
 									<td>${objectInstance.getFormattedCreatedDate()}</td>
 									<td>${objectInstance.getFormattedModifiedDate()}</td>
 									<td>${objectInstance.getFormattedQualityLevelNoZero()}</td>
+									<td> ${objectInstance.getAipSizeInMB()}	</td>
 									<td style="text-align: center">
 										<g:if
 											test="${statusCode == 1}">
@@ -387,7 +388,6 @@
 												src="/icons/check32.png" />
 										</g:elseif>
 									</td>
-									<td> ${objectInstance.getAipSizeInMB()}	</td>
 									<g:if test="${!objectInstance.isInWorkflowButton()}">
 										<td style="text-align: center">
 											<g:remoteLink
