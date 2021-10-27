@@ -251,10 +251,10 @@ class Object {
 		return null;
 	}
 	
-	def long getAipSizeInMB() {
-		long aipSizeInMb
+	def Double getAipSizeInMB() {
+		Double aipSizeInMb
 	
-		return aipSizeInMb = aipSize / (long)1024;
+		return aipSizeInMb = Math.round((aipSize / (Double)(1024*1024)) * 100.0) /100.0;
 	
 	}
 }
