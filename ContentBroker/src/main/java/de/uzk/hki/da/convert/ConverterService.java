@@ -31,6 +31,7 @@ import org.apache.commons.io.FileSystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.format.KnownFormatCmdLineErrors;
 import de.uzk.hki.da.format.QualityLevelException;
 import de.uzk.hki.da.model.ConversionInstruction;
@@ -89,6 +90,9 @@ public class ConverterService {
 			try{
 				List<Event> partialResults = executeConversionInstruction(wa,ci,object);
 				results.addAll(partialResults);
+			}catch(UserException e){
+				logger.debug("Conversion failed by UserExeption: "+e);
+				throw e;
 			}catch(RuntimeException e){
 				logger.debug("Conversion failed by exeption: "+e);
 				Event qualityEvent = new Event();

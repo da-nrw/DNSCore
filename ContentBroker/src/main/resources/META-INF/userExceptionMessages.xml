@@ -88,4 +88,8 @@
 		mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert
 		werden.\n\nGrund: Die angegebene URN ist ungültig.
 	</userExceptionMessage>
+	<userExceptionMessage id="CONVERSION_TIMEOUT">Ihr eingeliefertes Paket
+		mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert
+		werden.\n\nGrund: Zeitüberschreitung bei der Konversion.
+	</userExceptionMessage>
 </userExceptionMessages>
