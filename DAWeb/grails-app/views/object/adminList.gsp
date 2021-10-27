@@ -98,7 +98,7 @@
 					<g:if test="${params.searchDateType != null } ">
 						<g:if test="${params.searchDateType == 'createdAt'}">Datumsbereich erstellt</g:if>
 						<g:if test="${params.searchDateType == 'modifiedAt'}">Datumsbereich geändert</g:if>
-					</g:if>
+					</g:if>grails-app/views/object/list.gsp
 					<g:if test="${params.searchDateStart != null}">
 						<g:if test="${!params.searchDateStart.equals("0")}" >
 							<g:if test="${!params.searchDateStart.equals(" ")}" >
@@ -322,6 +322,8 @@
 									title="${message(code: 'object.quality_flag', default: 'Qualitätsstufe')}" />
 								<g:if test="${admin}">
 									<g:sortableColumn style="text-align: center"
+									property="aipSize" title="${message(code: 'object.aip_size', default: 'Paketgröße (MB)')}"/>	
+									<g:sortableColumn style="text-align: center"
 										property="objectState"
 										title="${message(code: 'object.objectState.label', default: 'Objekt Status')}" />
 									<th style="text-align: center">Überprüfen</th>
@@ -353,13 +355,13 @@
 									<td><g:link action="show" id="${objectInstance.id}">${objectInstance.getFormattedUrn()}</g:link></td>
 
 									<td>${fieldValue(bean: objectInstance, field: "user")}</td>
-
 									<td>${fieldValue(bean: objectInstance, field: "origName")}</td>
 									<td>${objectInstance.getFormattedCreatedDate()}</td>
 									<td>${objectInstance.getFormattedModifiedDate()}</td>
 									<td>${objectInstance.getFormattedQualityLevelNoZero()}</td>
+									<td> ${objectInstance.getAipSizeInMB()}	</td>
 									<td style="text-align: center">
-									<g:if
+										<g:if
 											test="${statusCode == 1}">
 											<asset:image style="width:16px; height:16px"
 												src="/icons/warning32.png" />

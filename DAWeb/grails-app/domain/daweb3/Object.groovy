@@ -250,4 +250,11 @@ class Object {
 
 		return null;
 	}
+	
+	def Double getAipSizeInMB() {
+		Double aipSizeInMb
+	
+		return aipSizeInMb = Math.round((aipSize / (Double)(1024*1024)) * 100.0) /100.0;
+	
+	}
 }
