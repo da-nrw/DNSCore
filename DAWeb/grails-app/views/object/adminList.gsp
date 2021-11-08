@@ -98,19 +98,27 @@
 					<g:if test="${params.searchDateType != null } ">
 						<g:if test="${params.searchDateType == 'createdAt'}">Datumsbereich erstellt</g:if>
 						<g:if test="${params.searchDateType == 'modifiedAt'}">Datumsbereich geändert</g:if>
-					</g:if>
+					</g:if>grails-app/views/object/list.gsp
 					<g:if test="${params.searchDateStart != null}">
-						<g:if test="${params.searchDateStart != ' '}">
-							<span style="margin-right: 25px"> 
-								<i>Von Datum: <g:formatDate date="${params.searchDateStart}" format="dd.MM.yyyy" /></i>
-							</span>
+						<g:if test="${!params.searchDateStart.equals("0")}" >
+							<g:if test="${!params.searchDateStart.equals(" ")}" >
+								<g:if  test="${!params.searchDateStart.equals("")}" >
+									<span style="margin-right: 25px"> 
+										<i>Von Datum: <g:formatDate format="dd.MM.yyyy" date="${params.searchDateStart}"/></i>
+									</span>
+								</g:if>
+							</g:if>
 						</g:if>
 					</g:if>
 					<g:if test="${params.searchDateEnd != null}">
-						<g:if test="${params.searchDateEnd != ' '}">
-							<span style="margin-right: 25px"> 
-								<i>Bis Datum: <g:formatDate	date="${params.searchDateEnd}" format="dd.MM.yyyy" /></i>
-							</span>
+			    		<g:if test="${!params.searchDateEnd.equals("0")}" >
+							<g:if test="${!params.searchDateEnd.equals(" ")}" >
+								<g:if  test="${!params.searchDateEnd.equals("")}" >
+			    					<span style="margin-right: 25px"> 
+										<i>Bis Datum: <g:formatDate format="dd.MM.yyyy" date="${params.searchDateEnd}" /></i>
+									</span>
+								</g:if>
+							</g:if>
 						</g:if>
 					</g:if>
 					
@@ -164,38 +172,42 @@
 						<td>Von Datum:</td>
 						<td><g:if test="${params.searchDateStart_day != null}">
 								<g:if test="${!params.searchDateStart_day != '' }">
-									<g:datePicker name="searchDateStart" default="none"
+									<g:datePicker name="searchDateStart"
 										noSelection="['':'']" precision="day"
-										value="${params.searchDateStart}" />
+										value="${params.searchDateStart}" default="none" />
 								</g:if>
-							</g:if> <g:else>
+							</g:if> 
+							<g:else>
 								<g:datePicker name="searchDateStart" default="none"
 									noSelection="['':'']" precision="day" />
-							</g:else></td>
+							</g:else>
+							<% // fix forhttps://github.com/zoran119/grails-jquery-date-time-picker/issues/12 %> 
+							<script type="text/javascript">
+								$(document).ready(function() {
+									$("#searchDateStart").val("${params.searchDateStart}")
+								})
+							</script>
+						</td>
 					</tr>
 					<tr>
 						<td>Bis Datum:</td>
 						<td><g:if test="${params.searchDateEnd != null}">
-								<g:datePicker name="searchDateEnd" default="none"
-									noSelection="['':'']" precision="day"
-									value="${params.searchDateEnd}" />
+								<g:if test="${!params.searchDateEnd_day != '' }">
+									<g:datePicker name="searchDateEnd" default="none" 
+										noSelection="['':'']" precision="day"
+										value="${params.searchDateEnd}" />
+								</g:if>		
 							</g:if> <g:else>
-								<g:datePicker name="searchDateEnd" default="none"
-									noSelection="['':'']" precision="day" />
-							</g:else> <% // fix for
-							https://github.com/zoran119/grails-jquery-date-time-picker/issues/12
-							%> <script type="text/javascript">
-								$(document)
-										.ready(
-												function() {
-													$("#searchDateStart")
-															.val(
-																	"${params.searchDateStart}")
-													$("#searchDateEnd")
-															.val(
-																	"${params.searchDateEnd}")
-												})
-							</script></td>
+								<g:datePicker name="searchDateEnd" 
+									noSelection="['':'']" precision="day" default="none" />
+							</g:else> 
+							<% // fix forhttps://github.com/zoran119/grails-jquery-date-time-picker/issues/12 %> 
+							<script type="text/javascript">
+								$(document).ready(function() {
+									$("#searchDateEnd").val("${params.searchDateEnd}")
+								})
+							</script>
+						</td>
 					</tr>
 					<g:if test="${admin}">
 						<tr>
@@ -310,6 +322,8 @@
 									title="${message(code: 'object.quality_flag', default: 'Qualitätsstufe')}" />
 								<g:if test="${admin}">
 									<g:sortableColumn style="text-align: center"
+									property="aipSize" title="${message(code: 'object.aip_size', default: 'Paketgröße (MB)')}"/>	
+									<g:sortableColumn style="text-align: center"
 										property="objectState"
 										title="${message(code: 'object.objectState.label', default: 'Objekt Status')}" />
 									<th style="text-align: center">Überprüfen</th>
@@ -341,13 +355,13 @@
 									<td><g:link action="show" id="${objectInstance.id}">${objectInstance.getFormattedUrn()}</g:link></td>
 
 									<td>${fieldValue(bean: objectInstance, field: "user")}</td>
-
 									<td>${fieldValue(bean: objectInstance, field: "origName")}</td>
 									<td>${objectInstance.getFormattedCreatedDate()}</td>
 									<td>${objectInstance.getFormattedModifiedDate()}</td>
 									<td>${objectInstance.getFormattedQualityLevelNoZero()}</td>
+									<td> ${objectInstance.getAipSizeInMB()}	</td>
 									<td style="text-align: center">
-									<g:if
+										<g:if
 											test="${statusCode == 1}">
 											<asset:image style="width:16px; height:16px"
 												src="/icons/warning32.png" />
@@ -375,7 +389,8 @@
 										</g:elseif>
 									</td>
 									<g:if test="${!objectInstance.isInWorkflowButton()}">
-										<td style="text-align: center"><g:remoteLink
+										<td style="text-align: center">
+											<g:remoteLink
 												action="queueForInspect" onLoaded="queuedFor(data)"
 												id="${objectInstance.id}">
 												<asset:image style="width:16px; height:16px"
@@ -401,8 +416,7 @@
 											</g:remoteLink></td>
 									</g:if>
 									<g:else>
-										<td colspan="3" text-align:center">Objekt in der
-											Verarbeitung</td>
+										<td colspan="3" style="text-align:center">Objekt in der Verarbeitung</td>
 									</g:else>
 									<td><g:if test="${objectInstance.getPublished_flag()==1}">
 											<g:link url="${objectInstance.getPublicPresLink()}"
@@ -419,7 +433,8 @@
 										</g:if> <g:if test="${objectInstance.getPublished_flag()==3}">
 											<asset:image width="16px" height="16px"
 												src="/icons/globe.png" />
-										</g:if></td>
+										</g:if>
+									</td>
 									<g:if test="${!objectInstance.isInWorkflowButton()}">
 										<td style="text-align: center"><g:remoteLink
 												action="queueForRetrieval" onLoaded="queuedFor(data)"
@@ -428,9 +443,7 @@
 													src="/icons/boxdownload32.png" />
 											</g:remoteLink></td>
 									</g:if>
-									<g:else>
-										<td></td>
-									</g:else>
+									
 									<td style="text-align: center"><g:if
 											test="${new File(baseFolder+ "/"+ objectInstance.identifier +".tar").exists()}">
 											<g:link controller="outgoing" action="download"
@@ -455,6 +468,13 @@
 							params="${searchParams}" />
 					</div>
 				</g:if>
+				<g:elseif test="${objectInstanceList.size() < 49} ">
+				 		<g:if test="${objectInstanceTotal  > 50} ">
+					 		<div class="pagination">
+								<g:paginate total="${objectInstanceTotal}" params="${searchParams}" />
+							</div>
+							</g:if>
+				 	</g:elseif>
 			</g:if>
 		</div>
 	</div>

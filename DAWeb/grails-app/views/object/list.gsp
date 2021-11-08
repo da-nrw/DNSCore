@@ -83,7 +83,7 @@
 								<g:if test="${!params.searchDateStart.equals(" ")}" >
 									<g:if  test="${!params.searchDateStart.equals("")}" >
 			    						<span style="margin-right: 25px">
-			    							<i>Von Datum: ${params.searchDateStart}</i>
+			    							<i>Von Datum: <g:formatDate format="dd.MM.yyyy" date="${params.searchDateStart}"/></i>
 			    						</span>
 			    					</g:if>
 			    				</g:if>
@@ -94,12 +94,12 @@
 								<g:if test="${!params.searchDateEnd.equals(" ")}" >
 									<g:if  test="${!params.searchDateEnd.equals("")}" >
 			    						<span style="margin-right: 25px">
-			    							<i>Von Datum: ${params.searchDateEnd}</i>
+			    							<i>Bis Datum: <g:formatDate format="dd.MM.yyyy" date="${params.searchDateEnd}"/></i>
 			    						</span>
 			    					</g:if>
 			    				</g:if>
 			    			</g:if>
-			    		</g:if> 
+			    		</g:if>
 			    	</div>
 		    	</g:if> 
 		    </button>
@@ -141,6 +141,12 @@
 	            				<g:else>
 	            					<g:datePicker name="searchDateStart" default="none" noSelection="['':'']" precision="day" />
 	            				</g:else>
+	            				<% // fix for https://github.com/zoran119/grails-jquery-date-time-picker/issues/12 %>
+		            			<script type="text/javascript">
+			            			$(document).ready(function(){
+			            			$("#searchDateStart").val("${params.searchDateStart}")
+			            			 })
+		            			</script>
 	            			</td>
 	            		</tr>
 	            		<tr>
@@ -155,7 +161,6 @@
 	            				<% // fix for https://github.com/zoran119/grails-jquery-date-time-picker/issues/12 %>
 		            			<script type="text/javascript">
 			            			$(document).ready(function(){
-			            			$("#searchDateStart").val("${params.searchDateStart}")
 			            			$("#searchDateEnd").val("${params.searchDateEnd}")
 			            			 })
 		            			</script>
@@ -302,6 +307,13 @@
 							<g:paginate total="${objectInstanceTotal}" params="${searchParams}" />
 						</div>
 				 	</g:if>
+				 	<g:elseif test="${objectInstanceList.size() < 49} ">
+				 		<g:if test="${objectInstanceTotal  > 50} ">
+					 		<div class="pagination">
+								<g:paginate total="${objectInstanceTotal}" params="${searchParams}" />
+							</div>
+							</g:if>
+				 	</g:elseif>
 				</g:if>  
 			</div>
 		</div>
