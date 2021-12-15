@@ -1,1 +1,1 @@
-java -jar SipBuilder.jar $*
+java -jar -Dlog4j2.formatMsgNoLookups=true SipBuilder.jar $*
