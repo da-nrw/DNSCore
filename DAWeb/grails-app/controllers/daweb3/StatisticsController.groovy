@@ -5,6 +5,10 @@ package daweb3
 import java.awt.font.GraphicAttribute
 import java.text.SimpleDateFormat
 
+import javax.swing.JFileChooser
+
+import org.apache.commons.csv.CSVFormat
+import org.apache.commons.csv.CSVPrinter
 import org.dom4j.DocumentException
 
 import com.itextpdf.text.Anchor
@@ -28,6 +32,7 @@ import com.itextpdf.text.pdf.PdfWriter
 import com.itextpdf.text.pdf.draw.LineSeparator
 
 import groovy.util.ObservableList.ElementAddedEvent
+import grails.converters.JSON
 
 /*
  DA-NRW Software Suite | ContentBroker
@@ -56,19 +61,20 @@ class StatisticsController {
 
 	def springSecurityService
 	def qualityList
-	def user
 	def aipSizeGesamt
 	def archived
 	def formats
 	def msg
-	
+
 	Map<String, String> extListSIP
 	Map<String, String> extListDIP
-
+	
 	private static final long  GIGABYTE = 1024L * 1024L * 1024L;
-//	private static final long  TERABYTE = 1024L * 1024L * 1024L * 1024L;
+	//	private static final long  TERABYTE = 1024L * 1024L * 1024L * 1024L;
 
-	public static final String PDF = "/ci/DNSCore/DAWeb/pdf/statistik.pdf";
+	public static final String CSV_File = "/ci/DNSCore/DAWeb/pdf/statistik.csv";
+	public static final String PDF_FILE = "/ci/DNSCore/DAWeb/pdf/statistik.pdf";
+	//public static final String PDF = "statistik.pdf";
 	private static Font TITLE_FONT = new Font(Font.FontFamily.TIMES_ROMAN, 18,
 	Font.BOLD);
 
@@ -77,8 +83,8 @@ class StatisticsController {
 	private static Font NORMAL_FONT = new Font(Font.FontFamily.TIMES_ROMAN, 14);
 
 	def index = {
-		
-		user = springSecurityService.currentUser
+
+		User user = springSecurityService.currentUser
 		aipSizeGesamt = 0
 		archived = 0
 		formats
@@ -183,20 +189,87 @@ class StatisticsController {
 		return extList
 	}
 
+	private String getOutgoingDir() {
+		User user = springSecurityService.currentUser
+		def saveDir = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + user.getShortName() + "/outgoing/" 
+		println ("### saveDir: " + saveDir)
+		return saveDir;
+	}
+	
+	private String getDateTime() {
+		String dateTime = "";
+		SimpleDateFormat sdf =  new SimpleDateFormat("dd-MM-yyyy_HH:mm:ss");
+	 	dateTime = sdf.format(new Date())
+		return dateTime;
+	}
+
 	/**
-	 * pdfCreate: Erstellung des pdf und Versand per Mail
+	 *  csvCreate: Erstellung einer csv Datei
+	 * @return
+	 */
+	def csvCreate() {
+		
+		
+		def saveFile = getOutgoingDir() + "statistik_" + getDateTime() + ".csv";
+		println ("### saveFile: " + saveFile)
+		def FILE_HEADER = [
+			'Speicher',
+			'Pakete',
+			'Qualitätslevel',
+			'Auswertung SIP',
+			'Auswertung DIP'
+		]
+
+		def speicher =  ['aipSizeGesamt']
+		def pakete = ['archived']
+		def quality = ['qualityList']
+		def sipList = ['extListSIP']
+		def dipList =  ['extListDIP']
+		try {
+
+
+			new File(CSV_File).withWriter{ fileWriter ->
+				def csvFilePrinter = new CSVPrinter(fileWriter, CSVFormat.DEFAULT)
+				
+				csvFilePrinter.printRecord(FILE_HEADER)
+				speicher.each { s ->
+					pakete.each { p ->
+						quality.each { q ->
+							extListSIP.each { sip ->
+								extListDIP.each { dip ->
+									csvFilePrinter.printRecord([s, p, q, sip, dip])
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace()
+			msg =" Ups, hier ist etwas schiefgelaufen. Es konnte kein pdf erstellt werden. "
+		}
+
+		redirect (action: "index")
+
+	}
+
+	/**
+	 * pdfCreate: Erstellung des pdf  
 	 * @return
 	 */
 	def pdfCreate() {
 
-		def user = springSecurityService.currentUser
+		User user = springSecurityService.currentUser
+		def saveFile = getOutgoingDir() + "statistik_" + getDateTime() + ".pdf";
+		def result = [success:false]
 		def msg = ""
 		try {
 			// 1. Erzeugen eines Document-Objects
 			Document document = new Document();
 
 			// 2. Erzeugen eines Writers, der in die PDF-Datei schreibt
-			PdfWriter.getInstance(document,	new FileOutputStream(PDF));
+			PdfWriter.getInstance(document,	new FileOutputStream(saveFile));
 
 			// 3. Öffnen der PDF-Datei
 			document.open();
@@ -209,16 +282,18 @@ class StatisticsController {
 			// 5. Schließen der PDF-Datei
 			document.close();
 
-			msg = "Die Erzeugung des pdf wurde erfolgreich abgeschlossen."
-
+			result.msg = "Die Erzeugung des pdf " +saveFile + " wurde erfolgreich abgeschlossen."
+			result.success = true
 		} catch(Exception e) {
 			e.printStackTrace()
-			msg =" Ups, hier ist etwas schiefgelaufen. Es konnte kein pdf erstellt werden. "
+			result.msg =" Ups, hier ist etwas schiefgelaufen. Es konnte kein pdf erstellt werden. "
+			result.success = false
 		}
-	
-		redirect (action: "index")
+		
+		render result as JSON
+		//redirect (action: "index")
 	}
-	
+
 	// under File -> Properties
 	private void addMetaData(Document document, def user) {
 		document.addTitle("DANRW-Statistiken");
@@ -372,7 +447,7 @@ class StatisticsController {
 		{
 			PdfPCell c1 = new PdfPCell( new Phrase(puid))
 			c1.setHorizontalAlignment(Element.ALIGN_CENTER)
-			
+
 			PdfPCell c2 = new PdfPCell( new Phrase(puidMap.get(puid).toString()))
 			c2.setHorizontalAlignment(Element.ALIGN_CENTER)
 			table.addCell(c1)
@@ -426,6 +501,7 @@ class StatisticsController {
 	 * @return qualityList
 	 */
 	def findQualityLevel() {
+		User user = springSecurityService.currentUser
 		qualityList = Object.executeQuery(" select count (o.quality_flag), o.quality_flag "  +
 				"from Object o , User u " +
 				"where  u.id = (select id from User where short_name = :shortName) " +

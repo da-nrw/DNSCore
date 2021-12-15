@@ -1,22 +1,47 @@
+<%@ page import="daweb3.Object" %>
+<!doctype html>
 <html>
+
 	<head>
 		<title>Statistiken</title>
 		<meta name="layout" content="main">
+		<r:require module="messagebox"/> 
+		<g:javascript>
+			function created(result) {
+				var type = "error";
+				if (result.success) type = "info";
+				var messageBox = $("<div class='message-box'></div>");
+				$("#warnung").prepend(messageBox);
+				messageBox.message({
+					type: type, message: result.msg
+				});
+			}
+		</g:javascript>
 	</head>
 	<body>
+	
 		<div class="page-body">
 			<div class="blue-box"></div>
 			<h2 id="page-header">Statistik über die eingelieferten Objekte</h2> 
+			<div id="warnung"></div>
+			<a href="#index-statistics" class="skip" tabindex="-1">
+				<g:message code="default.link.skip.label" default="Skip to content&hellip;"/>
+			</a>
 			
-			<g:if test="${msg}">
-				<div class="message" role="status">${msg}</div>
-			</g:if>
 			<g:form>
+			
 				<fieldset class="abstand-oben-imp buttons ">
+				
 					<g:actionSubmit class="pdf" action="pdfCreate"
-						value="${message(code: 'default.button.pdf.label', default: 'generate pdf')}" />
+						value="${message(code: 'default.button.pdf.label', default: 'generate pdf')}" onClixk="created(data)" />
+						
+					<g:actionSubmit class="pdf" action="csvCreate"
+						value="${message(code: 'default.button.csv.label', default: 'generate csv')}" />
+				 
 				</fieldset>
 			</g:form>
+		
+				
 			<g:form controller="statistics" >
 			  <h3>Speicherbelegung</h3>
 			
