@@ -63,18 +63,18 @@ class StatisticsController {
 	def qualityList
 	def aipSizeGesamt
 	def archived
+	def pipArchived
+	def sipArchived
 	def formats
+	def usedStorage
 	def msg
 
 	Map<String, String> extListSIP
 	Map<String, String> extListDIP
-	
+
 	private static final long  GIGABYTE = 1024L * 1024L * 1024L;
 	//	private static final long  TERABYTE = 1024L * 1024L * 1024L * 1024L;
 
-	public static final String CSV_File = "/ci/DNSCore/DAWeb/pdf/statistik.csv";
-	public static final String PDF_FILE = "/ci/DNSCore/DAWeb/pdf/statistik.pdf";
-	//public static final String PDF = "statistik.pdf";
 	private static Font TITLE_FONT = new Font(Font.FontFamily.TIMES_ROMAN, 18,
 	Font.BOLD);
 
@@ -87,6 +87,9 @@ class StatisticsController {
 		User user = springSecurityService.currentUser
 		aipSizeGesamt = 0
 		archived = 0
+		pipArchived = 0
+		sipArchived = 0
+		usedStorage = 0
 		formats
 		msg = ""
 		String[] formatSIPArray
@@ -107,10 +110,22 @@ class StatisticsController {
 			// Speicherbelegung
 			aipSizeGesamt = aipSizeGesamt + objectsAll[i].aipSize
 
+			// bisher belegter Speicher
+			// du -sh ./
+			// usedStorage
+			usedStorage = runCommandGetStorage();
+
 			// Anzahl archivierter Dateien
 			if (objectsAll[i].objectState == 100) {
 				archived = archived + 1
 			}
+
+
+			// Anzahl der PIP
+			if (objectsAll[i].published_flag == 1 || objectsAll[i].published_flag == 3) {
+				pipArchived = pipArchived + 1
+			}
+
 
 			// Auswertung SIP ueber PUID
 			def originalFormat = objectsAll[i].original_formats
@@ -123,7 +138,7 @@ class StatisticsController {
 
 			}
 
-			// Auswertung DIP ueber PUID
+			// Auswertung PIP ueber PUID
 			def mostRecentFormat = objectsAll[i].most_recent_formats
 			if (mostRecentFormat != null &&  !mostRecentFormat.equals("")) {
 				if (formatDIPArray != null ) {
@@ -135,6 +150,7 @@ class StatisticsController {
 			}
 
 		}
+
 		aipSizeGesamt = aipSizeGesamt / GIGABYTE
 
 		// Qualitaetsangaben
@@ -152,8 +168,34 @@ class StatisticsController {
 			archived: archived,
 			formatsSIP: extListSIP,
 			formatsDIP: extListDIP,
-			msg:msg]
+			pipArchived: pipArchived ,
+			usedStorage: usedStorage]
 		);
+	}
+
+
+
+	private int runCommandGetStorage() {
+		User user = springSecurityService.currentUser
+
+		String aipDir ="/ci/archiveStorage/aip/TEST/" 
+		// grailsApplication.config.getProperty('localNode.userAreaRootPath')+ "/" + user.getShortName()
+		String cmd = "dh -sh "  + aipDir
+		
+		try {
+			Runtime run = Runtime.getRuntime();
+			Process proc =  run.exec(cmd);
+			proc.waitFor();
+			BufferedReader buf = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+			String line = "";
+			while (true) {
+				 line = buf.readLine()
+				 if (line == null) { System.out.println("HALLO 1: " ); break; }
+				System.out.println("HALLO: " + line ) ;
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace()
+		}
 	}
 
 	/**
@@ -191,15 +233,14 @@ class StatisticsController {
 
 	private String getOutgoingDir() {
 		User user = springSecurityService.currentUser
-		def saveDir = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + user.getShortName() + "/outgoing/" 
-		println ("### saveDir: " + saveDir)
+		def saveDir = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + user.getShortName() + "/outgoing/"
 		return saveDir;
 	}
-	
+
 	private String getDateTime() {
 		String dateTime = "";
 		SimpleDateFormat sdf =  new SimpleDateFormat("dd-MM-yyyy_HH:mm:ss");
-	 	dateTime = sdf.format(new Date())
+		dateTime = sdf.format(new Date())
 		return dateTime;
 	}
 
@@ -208,30 +249,41 @@ class StatisticsController {
 	 * @return
 	 */
 	def csvCreate() {
-		
-		
-		def saveFile = getOutgoingDir() + "statistik_" + getDateTime() + ".csv";
-		println ("### saveFile: " + saveFile)
-		def FILE_HEADER = [
-			'Speicher',
-			'Pakete',
-			'Qualitätslevel',
-			'Auswertung SIP',
-			'Auswertung DIP'
-		]
+		def result = [success:false]
 
-		def speicher =  ['aipSizeGesamt']
-		def pakete = ['archived']
+		def saveFile = getOutgoingDir() + "statistik_" + getDateTime() + ".csv";
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("Speicher")
+		sb.append(";")
+		sb.append(" Pakete")
+		sb.append(";")
+		sb.append(" Qualitaetslevel")
+		sb.append(";")
+		sb.append(" Auswertung SIP")
+		sb.append(";")
+		sb.append(" Auswertung DIP")
+		sb.append("\n")
+
+
+		println ("aipSizeGesamt: " + aipSizeGesamt + " -- archived: " + archived + "  -- qualityList: " + qualityList
+				+ "  -- extListSIP: " + extListSIP + "  --- extListDIP: " + extListDIP)
+		def speicher = aipSizeGesamt
+		def pakete = archived
 		def quality = ['qualityList']
 		def sipList = ['extListSIP']
 		def dipList =  ['extListDIP']
+
+		println(" speicher: " + speicher + "  -- pakete: " + pakete + "  -- quality: " + quality +
+				" -- sipList: " + sipList + "  --dipList: " + dipList)
+
 		try {
 
 
-			new File(CSV_File).withWriter{ fileWriter ->
+			new File(saveFile).withWriter{ fileWriter ->
 				def csvFilePrinter = new CSVPrinter(fileWriter, CSVFormat.DEFAULT)
-				
-				csvFilePrinter.printRecord(FILE_HEADER)
+
+				csvFilePrinter.printRecord(sb.toString())
 				speicher.each { s ->
 					pakete.each { p ->
 						quality.each { q ->
@@ -244,14 +296,14 @@ class StatisticsController {
 					}
 				}
 			}
+			result.msg= "Die Erzeugung der csv-Datei ${saveFile} wurde erfolgreich abgeschlossen."
+			result.success = true
 		}
 		catch(Exception e) {
 			e.printStackTrace()
-			msg =" Ups, hier ist etwas schiefgelaufen. Es konnte kein pdf erstellt werden. "
+			result.msg =" Ups, hier ist etwas schiefgelaufen. Es konnte keine csv-Datei erstellt werden. "
 		}
-
-		redirect (action: "index")
-
+		render result as JSON
 	}
 
 	/**
@@ -263,7 +315,7 @@ class StatisticsController {
 		User user = springSecurityService.currentUser
 		def saveFile = getOutgoingDir() + "statistik_" + getDateTime() + ".pdf";
 		def result = [success:false]
-		def msg = ""
+
 		try {
 			// 1. Erzeugen eines Document-Objects
 			Document document = new Document();
@@ -282,17 +334,15 @@ class StatisticsController {
 			// 5. Schließen der PDF-Datei
 			document.close();
 
-			result.msg = "Die Erzeugung des pdf " +saveFile + " wurde erfolgreich abgeschlossen."
+			result.msg= "Die Erzeugung des pdf  ${saveFile} wurde erfolgreich abgeschlossen."
 			result.success = true
 		} catch(Exception e) {
 			e.printStackTrace()
 			result.msg =" Ups, hier ist etwas schiefgelaufen. Es konnte kein pdf erstellt werden. "
-			result.success = false
 		}
-		
 		render result as JSON
-		//redirect (action: "index")
 	}
+
 
 	// under File -> Properties
 	private void addMetaData(Document document, def user) {

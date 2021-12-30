@@ -17,6 +17,9 @@
 				});
 			}
 		</g:javascript>
+	
+		
+		
 	</head>
 	<body>
 	
@@ -28,31 +31,34 @@
 				<g:message code="default.link.skip.label" default="Skip to content&hellip;"/>
 			</a>
 			
-			<g:form>
-			
-				<fieldset class="abstand-oben-imp buttons ">
-				
-					<g:actionSubmit class="pdf" action="pdfCreate"
-						value="${message(code: 'default.button.pdf.label', default: 'generate pdf')}" onClixk="created(data)" />
+			<div id="index-statistics" class="content scaffold-list" role="main">
+	              <fieldset class="abstand-oben-imp buttons ">                     
+							<g:actionSubmit class="pdf" action="pdfCreate" onClick="jQuery.ajax({type:'POST',data:jQuery(this).serialize(),url:'/statistics/pdfCreate', 
+								success:function(data,textStatus){created(data);},
+								error:function(XMLHttpRequest,textStatus,errorThrown){}});return false"
+								value="${message(code: 'default.button.pdf.label', default: 'generate pdf')}"/>
 						
-					<g:actionSubmit class="pdf" action="csvCreate"
-						value="${message(code: 'default.button.csv.label', default: 'generate csv')}" />
-				 
-				</fieldset>
-			</g:form>
-		
-				
+							<g:actionSubmit class="csv" action="csvCreate" onClick="jQuery.ajax({type:'POST',data:jQuery(this).serialize(),url:'/statistics/csvCreate', 
+								success:function(data,textStatus){created(data);},
+								error:function(XMLHttpRequest,textStatus,errorThrown){}});
+								return false" 
+								value="${message(code: 'default.button.csv.label', default: 'generate csv')}"/>
+					 </fieldset>
+			</div>
+							
 			<g:form controller="statistics" >
 			  <h3>Speicherbelegung</h3>
-			
+				
+				
 				<ul class="property-list object property-list-position">
 					<li class="fieldcontain">
 						<span class="property-label">AIP-Size aller bisher eingelieferten Pakete</span> 
 						<span class="property-value" >${aipSizeGesamt}  GigaByte</span>
 					</li>
+					
 					<li class="fieldcontain">
 						<span class="property-label">bisher belegter Speicher</span>
-						<span class="property-value">XXX  GigaByte</span>
+						<span class="property-value">${usedStorage} GigaByte</span>
 					</li>					
 				</ul>
 				
@@ -62,6 +68,12 @@
 						<span class="property-label">Anzahl der bisher archivierten Pakete</span>
 						 <span class="property-value">${archived}</span>
 					</li>
+					
+					<li class="fieldcontain">
+						<span class="property-label">Anzahl der PIP </span> 
+						<span class="property-value" >${pipArchived}  </span>
+					</li>
+					
 				</ul>
 				
 				<h3> Qualitative Situation des Archivgutes </h3>

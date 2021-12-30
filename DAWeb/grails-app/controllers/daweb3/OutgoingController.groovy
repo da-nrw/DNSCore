@@ -52,6 +52,8 @@ class OutgoingController {
 			}		
 			
 		baseDir.eachFileMatch(~/.*?\.tar/) { file -> filelist.add(file)}
+		baseDir.eachFileMatch(~/.*?\.pdf/) { file -> filelist.add(file)}
+		baseDir.eachFileMatch(~/.*?\.csv/) { file -> filelist.add(file)}
 		if (filelist.empty) msg ="Keine Dateien im Ausgangsordner gefunden";
 			
 		} catch (e) {
