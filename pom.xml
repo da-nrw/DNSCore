@@ -16,7 +16,7 @@
         <module>ContentBroker</module>
 	<module>SIP-Builder</module>
 	<module>PasswordEncryptor</module>
-	<!--<module>DAWeb</module> -->  
+	<module>DAWeb</module>   
 	<module>RegressionTestCB</module>		
     </modules>
 
