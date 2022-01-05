@@ -89,7 +89,7 @@ class StatisticsController {
 		archived = 0
 		pipArchived = 0
 		sipArchived = 0
-		usedStorage = 0
+		usedStorage = ""
 		formats
 		msg = ""
 		String[] formatSIPArray
@@ -102,19 +102,20 @@ class StatisticsController {
 		}
 
 		// Speicherbelegung
+		// bisher belegter Speicher
+		// du -sh ./
+		// usedStorage
+		 runCommandGetStorage();
+		 println ("usedStorage Ende: " + usedStorage)
 
 		def countFormats = 0
 		objectsAll = Object.findAllByUser(user);
-
+		
 		for (int i= 0; i<  objectsAll.size(); i++) {
 			// Speicherbelegung
 			aipSizeGesamt = aipSizeGesamt + objectsAll[i].aipSize
 
-			// bisher belegter Speicher
-			// du -sh ./
-			// usedStorage
-			usedStorage = runCommandGetStorage();
-
+			
 			// Anzahl archivierter Dateien
 			if (objectsAll[i].objectState == 100) {
 				archived = archived + 1
@@ -135,7 +136,7 @@ class StatisticsController {
 				} else {
 					formatSIPArray = (String[]) originalFormat.split(",")
 				}
-
+				
 			}
 
 			// Auswertung PIP ueber PUID
@@ -175,12 +176,12 @@ class StatisticsController {
 
 
 
-	private int runCommandGetStorage() {
+	private runCommandGetStorage() {
 		User user = springSecurityService.currentUser
 
 		String aipDir ="/ci/archiveStorage/aip/TEST/" 
 		// grailsApplication.config.getProperty('localNode.userAreaRootPath')+ "/" + user.getShortName()
-		String cmd = "dh -sh "  + aipDir
+		String cmd = "du -sh "  + aipDir
 		
 		try {
 			Runtime run = Runtime.getRuntime();
@@ -190,12 +191,19 @@ class StatisticsController {
 			String line = "";
 			while (true) {
 				 line = buf.readLine()
-				 if (line == null) { System.out.println("HALLO 1: " ); break; }
-				System.out.println("HALLO: " + line ) ;
+				 if (line == null) { break; }
+				String tmp = line.substring(0, line.indexOf("/")).trim()
+				if (tmp.contains("M")) {
+					tmp = tmp.replaceFirst("M", " Megabyte")
+				}  else if (tmp.contains("G")) {
+					tmp = tmp.replace("G", "Gigabyte")
+				}
+ 				usedStorage =  tmp
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace()
 		}
+		
 	}
 
 	/**

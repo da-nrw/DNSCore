@@ -58,7 +58,7 @@
 					
 					<li class="fieldcontain">
 						<span class="property-label">bisher belegter Speicher</span>
-						<span class="property-value">${usedStorage} GigaByte</span>
+						<span class="property-value">${usedStorage}</span>
 					</li>					
 				</ul>
 				
