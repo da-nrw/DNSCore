@@ -49,6 +49,7 @@ import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.SimpleLicenseAppender;
 import de.uzk.hki.da.utils.StringUtilities;
 import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.XMLUtils;
 import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Element;
@@ -661,7 +662,8 @@ public class Cli {
     	XMLReader xmlReader = null;
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		try {
-			xmlReader = spf.newSAXParser().getXMLReader();
+			//xmlReader = spf.newSAXParser().getXMLReader();
+			xmlReader=XMLUtils.createValidatingSaxParser().getXMLReader();
 		} catch (Exception e) {
 			logger.error("Failed to create SAX parser", e);
 			System.out.println("Fehler beim Einlesen der SIP-Liste: SAX-Parser konnte nicht erstellt werden.");

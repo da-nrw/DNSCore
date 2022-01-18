@@ -67,7 +67,7 @@ public class SIPBuilder {
 
 	public static void main(String[] args) {
     	
-        logger.debug("Start des SIP-Builder");
+        logger.debug("Start des SIP-Builder mit java Version " + System.getProperty("java.version"));
         properties = new Properties();
 		try {
 			properties.load(new InputStreamReader((ClassLoader.getSystemResourceAsStream("configuration/config.properties"))));
@@ -123,7 +123,8 @@ public class SIPBuilder {
     	UIManager.put("CheckBox.disabledText", Color.LIGHT_GRAY);
 
     	Gui gui = new Gui(confFolderPath, dataFolderPath);
-    	gui.setBounds(100, 100, 750, 520);
+    	gui.setBounds(100, 100, 760, 530);
+    	//gui.setBounds(100, 100, 750, 520);
     	gui.setResizable(false);
     	gui.setVisible(true);
     	gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

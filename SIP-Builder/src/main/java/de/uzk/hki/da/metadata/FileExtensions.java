@@ -25,6 +25,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
+import de.uzk.hki.da.utils.XMLUtils;
+
 /**
  * @author gbender
  *
@@ -51,7 +53,8 @@ public class FileExtensions {
 			XMLReader xmlReader = null;
 			SAXParserFactory spf = SAXParserFactory.newInstance();
 			try {
-				xmlReader = spf.newSAXParser().getXMLReader();
+				//xmlReader = spf.newSAXParser().getXMLReader();
+				xmlReader=XMLUtils.createValidatingSaxParser().getXMLReader();
 			} catch (Exception e) {
 				throw new IOException("Error creating SAX parser", e);
 			}

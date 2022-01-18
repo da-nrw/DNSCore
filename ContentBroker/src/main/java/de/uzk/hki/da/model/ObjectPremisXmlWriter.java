@@ -104,10 +104,10 @@ public class ObjectPremisXmlWriter {
 	    
 	    try {	    
 			writer.writeStartDocument(C.ENCODING_UTF_8, "1.0");
-			writer.setPrefix("xsi", C.XSI_NS);
+			writer.setPrefix("xsi", C.XSI_NS_URI);
 			  
 			createOpenElement("premis", 0);
-					createAttribute(C.XSI_NS, "schemaLocation", "info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-2.xsd");
+					createAttribute(C.XSI_NS_URI, "schemaLocation", "info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-2.xsd");
 			  		createAttribute("version", "2.2");
 					createAttribute("xmlns", "info:lc/xmlns/premis-v2");
 					createAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
@@ -198,7 +198,7 @@ public class ObjectPremisXmlWriter {
 	private void createObjectElement(String objectIdentifier, String urn, String orig_name) throws XMLStreamException{
 		
 		createOpenElement("object", 1);
-		createAttribute(C.XSI_NS, "type", "representation");
+		createAttribute(C.XSI_NS_URI, "type", "representation");
 			createOpenElement("objectIdentifier", 2);
 				createTextElement("objectIdentifierType", "OBJECT_BUSINESS_KEY", 3);
 				createTextElement("objectIdentifierValue", objectIdentifier, 3);
@@ -339,7 +339,7 @@ public class ObjectPremisXmlWriter {
 		logger.debug("Start serializing file \"" + f.toString() + "\" as object element to PREMIS");
 		
 		createOpenElement("object", 1);
-		createAttribute(C.XSI_NS, "type", "file");
+		createAttribute(C.XSI_NS_URI, "type", "file");
 		createOpenElement("objectIdentifier", 2);
 			createTextElement("objectIdentifierType", "FILE_PATH", 3);
 			createTextElement("objectIdentifierValue", f.getRep_name()+"/"+f.getRelative_path(), 3);
@@ -547,7 +547,7 @@ public class ObjectPremisXmlWriter {
 	 */
 	private void createPackageElement(Object o, Package pkg) throws XMLStreamException{
 		createOpenElement("object", 1);
-		createAttribute(C.XSI_NS, "type", "representation");
+		createAttribute(C.XSI_NS_URI, "type", "representation");
 		createOpenElement("objectIdentifier", 2);
 			createTextElement("objectIdentifierType", "PACKAGE_NAME", 3);
 			createTextElement("objectIdentifierValue", o.getIdentifier()+".pack_"+pkg.getName()+".tar", 3);

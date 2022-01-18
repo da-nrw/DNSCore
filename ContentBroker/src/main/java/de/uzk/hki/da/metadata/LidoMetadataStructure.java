@@ -3,7 +3,6 @@ package de.uzk.hki.da.metadata;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -17,8 +16,6 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
@@ -51,7 +48,7 @@ public class LidoMetadataStructure extends MetadataStructure{
 		lidoFile = metadataFile;
 		currentDocuments = documents;
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();		
 		FileInputStream fileInputStream = new FileInputStream(Path.makeFile(workPath,metadataFile.getPath()));
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
 		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
@@ -115,7 +112,7 @@ public class LidoMetadataStructure extends MetadataStructure{
 	 * @throws JDOMException
 	 */
 	public void appendRightsResource(File targetLidoFile, String licenseHref, String displayLabel) throws IOException, JDOMException {
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();	
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();	
 		
 		FileInputStream fileInputStream = new FileInputStream(Path.makeFile(workPath,targetLidoFile.getPath()));
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
@@ -124,6 +121,7 @@ public class LidoMetadataStructure extends MetadataStructure{
 		is.setEncoding("UTF-8");
 		Document lidoDoc = builder.build(is);
 		
+		@SuppressWarnings("unchecked")
 		List<Element> lidoElems= lidoDoc.getRootElement().getChildren("lido", C.LIDO_NS);
 
 		for (int i=0; i<lidoElems.size(); i++) { 
@@ -149,6 +147,7 @@ public class LidoMetadataStructure extends MetadataStructure{
 	 * @throws IOException
 	 * @throws JDOMException
 	 */
+	@SuppressWarnings("unchecked")
 	public void appendRightsResourceToLido(Element lidoElem, String licenseHref, String displayLabel) throws IOException, JDOMException {
 		List<Element> admSections= lidoElem.getChildren("administrativeMetadata", C.LIDO_NS);
 		
@@ -187,13 +186,9 @@ public class LidoMetadataStructure extends MetadataStructure{
 					logger.debug("Append to Lido new rightsType: "+newRightsTypeE.toString());
 					rightsResources.get(k).addContent(newRightsTypeE);
 				}
-				
 			}
-			
-			
 		}
 	}
-	
 	
 	/**
 	 * Method wraps given attributes into accessCondition-Element and returns it.

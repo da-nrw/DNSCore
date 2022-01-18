@@ -277,7 +277,7 @@ public class CreatePremisActionTests {
 	@SuppressWarnings({ "unchecked" })
 	private void checkPremisFile(File premisFile) {
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		Document doc;
 		try {
 			doc = builder.build(premisFile);
@@ -486,7 +486,7 @@ public class CreatePremisActionTests {
 		Element objectCharTifBRoot;
 		Element objectCharPremisARoot;
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		Document doc;
 		try {
 			doc = builder.build(workAreaRootPath + "/work/TEST/identifier_deltas/data/2013_07_31+11_54+b/premis.xml");

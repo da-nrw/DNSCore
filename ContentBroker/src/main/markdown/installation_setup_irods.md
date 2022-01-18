@@ -7,8 +7,8 @@
 Zur Datenübertragung der PIPs auf den Server, auf dem das Presentation Repository läuft wird iRODS eingesetzt.
 
 iRODS (Version 3.2) muss daher installiert sein. Siehe:
-* [iRODS installation](https://www.irods.org/index.php/Installation#Quick_Start_iRODS_Install_Instructions)
-* [Preparing iRODS for DNSCore](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/preparing_irods_for_dnscore.md)
+* [iRODS installation](https://docs.irods.org/4.1.2/manual/installation/)
+* [Preparing iRODS for DNSCore](installation_irods_cb.md)
 * Die Fileberechtigungen $defFileMode  und $defDirMode müssen in iRODS angepaßt werden. In Script: iRODS/scripts/perl/irodsctl.pl auf 
     
    

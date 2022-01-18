@@ -13,6 +13,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 import de.uzk.hki.da.metadata.PremisXmlReaderNodeFactory;
+import de.uzk.hki.da.utils.XMLUtils;
 import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Element;
@@ -58,7 +59,8 @@ public class JhoveResult {
 		XMLReader xmlReader = null;
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		try {
-			xmlReader = spf.newSAXParser().getXMLReader();
+			//xmlReader = spf.newSAXParser().getXMLReader();
+			xmlReader=XMLUtils.createValidatingSaxParser().getXMLReader();
 		} catch (Exception e) {
 			reader.close();
 			throw new IOException("Error creating SAX parser", e);
@@ -71,10 +73,11 @@ public class JhoveResult {
 		try {
 			Document doc = parser.build(reader);
 			Element root = doc.getRootElement();
-			Elements repInfo = root.getChildElements("repInfo", "http://hul.harvard.edu/ois/xml/ns/jhove");
-			String statusString = repInfo.get(0).getChildElements("status", "http://hul.harvard.edu/ois/xml/ns/jhove").get(0).getChild(0).getValue();
+			String nsUri=root.getNamespaceURI();
+			Elements repInfo = root.getChildElements("repInfo", nsUri);
+			String statusString = repInfo.get(0).getChildElements("status", nsUri).get(0).getChild(0).getValue();
 			ret.setStatus(statusString);
-			Elements formatElems=repInfo.get(0).getChildElements("format", "http://hul.harvard.edu/ois/xml/ns/jhove");
+			Elements formatElems=repInfo.get(0).getChildElements("format", nsUri);
 			String formatString ="";
 			if(formatElems.size()>=1){
 				formatString = formatElems.get(0).getChild(0).getValue();
@@ -82,11 +85,11 @@ public class JhoveResult {
 			ret.setFormat(formatString);
 			StringBuilder messagesStringBuilder = new StringBuilder();
 
-			Elements messagesElement = repInfo.get(0).getChildElements("messages", "http://hul.harvard.edu/ois/xml/ns/jhove");
+			Elements messagesElement = repInfo.get(0).getChildElements("messages", nsUri);
 			if (messagesElement.size() == 0)
 				ret.setMessage(null);
 			else {
-				Elements messages = messagesElement.get(0).getChildElements("message", "http://hul.harvard.edu/ois/xml/ns/jhove");
+				Elements messages = messagesElement.get(0).getChildElements("message", nsUri);
 
 				for (int messageNum = 0; messageNum < messages.size(); messageNum++) {
 					Element iterMessage = messages.get(messageNum);
@@ -117,7 +120,7 @@ public class JhoveResult {
 		if(status.equalsIgnoreCase(StatusWellFormedAndNotValid) && format.equalsIgnoreCase("XML")){ //XML Validierung durch JHove verlauft auch fur valide xml files nicht immer erfolgreich
 			logger.debug("JhoveResult::isValid(): StatusWellFormedAndNotValid for XML file, will be accept as StatusWellFormedAndValid: ("+this+")");
 			return true;
-		}
+		}//else if //SSLHandshakeException && Not well-formed && XML
 		return status.equalsIgnoreCase(StatusWellFormedAndValid);
 	}
 

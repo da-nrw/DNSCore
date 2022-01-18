@@ -31,6 +31,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.convert.ConverterService;
+import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.format.KnownFormatCmdLineErrors;
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.model.DAFile;
@@ -88,6 +89,9 @@ public class ConvertAction extends AbstractAction {
 		try{
 		events = 
 			new ConverterService(o.getLatestPackage().isPruneExceptions(),knownFormatCmdLineErrors).convertBatch(wa,o,new ArrayList(j.getConversion_instructions()));
+		}catch(UserException e){
+			j.getConversion_instructions().clear();
+			throw e;			
 		}catch(RuntimeException e){
 			logger.debug("RuntimeException: "+e.getStackTrace()[0]+"\n"+e);
 		}

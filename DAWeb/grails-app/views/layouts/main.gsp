@@ -113,12 +113,12 @@
 						<li><g:link controller="incoming">Verarbeitung für abgelieferte SIP starten</g:link></li>
 					</g:else>
 						
-					<!-- Objekt entnehmen (DIP) -->
+					<!-- Angeforderte Objekt (DIP) -->
 					<g:if test="${controllerName=='outgoing'}">
-						<li class="aktuell"><g:link controller="outgoing">Objekt entnehmen (DIP)</g:link></li>
+						<li class="aktuell"><g:link controller="outgoing">Angeforderte Objekte (DIP)</g:link></li>
 					</g:if>
 					<g:else>
-						<li><g:link controller="outgoing">Objekt entnehmen (DIP)</g:link></li>
+						<li><g:link controller="outgoing">Angeforderte Objekte (DIP)</g:link></li>
 					</g:else>
 					
 					<!-- Hinweise zur Ansteuerung über externe Systeme -->

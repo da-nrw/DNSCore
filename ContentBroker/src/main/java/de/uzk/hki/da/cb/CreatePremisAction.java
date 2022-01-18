@@ -150,7 +150,16 @@ public class CreatePremisAction extends AbstractAction {
 				throw new RuntimeException("PREMIS that has recently been created is not valid");
 		} catch (SAXException e) {
 			logger.error(e.getMessage());
-			throw new RuntimeException("PREMIS that has recently been created is not valid: "+e.getMessage());
+			/*
+			 * https://github.com/openpreserve/jhove/issues/111
+			 * AES doent provide XSD for the defintion AES X098B ( url for the namespace: http://www.aes.org/tcf). 
+			 * It is not an error of jhove but it is not really solveable until XSD is publicly available.
+			 * */
+			if(e.getMessage().contains("Cannot resolve 'tcf:ntscFilmFramingType' to a type definition for element 'tcf:filmFraming'")) {
+				logger.error("Exception will be eaten: "+e.getMessage());
+			}else {
+				throw new RuntimeException("PREMIS that has recently been created is not valid: "+e.getMessage());
+			}
 		}
 		logger.trace("Successfully created premis file");
 		o.getLatestPackage().getFiles().add(new DAFile(j.getRep_name()+"b",PREMIS));

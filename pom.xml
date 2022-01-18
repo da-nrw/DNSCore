@@ -9,6 +9,11 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <name>DNSCore</name>
+    
+    <properties>
+     <maven.compiler.source>1.8</maven.compiler.source>
+     <maven.compiler.target>1.8</maven.compiler.target>
+</properties>
 
 
     <modules>
@@ -16,7 +21,7 @@
         <module>ContentBroker</module>
 	<module>SIP-Builder</module>
 	<module>PasswordEncryptor</module>
-	<module>DAWeb</module> 
+	<!--<module>DAWeb</module> -->  
 	<module>RegressionTestCB</module>		
     </modules>
 
@@ -25,7 +30,7 @@
       <id>central</id>
       <name>Maven Repository Switchboard</name>
       <layout>default</layout>
-      <url>http://repo1.maven.org/maven2</url>
+      <url>https://repo1.maven.org/maven2</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
@@ -53,7 +58,7 @@
         <dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.9</version>
+			<version>4.13.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -90,7 +95,7 @@
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.6</version><!-- 2.4-->
+			<version>2.7</version><!-- 2.4-->
 		</dependency>
 			<dependency>
 			<groupId>org.jdom</groupId>

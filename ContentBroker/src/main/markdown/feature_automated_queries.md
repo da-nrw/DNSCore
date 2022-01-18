@@ -86,11 +86,11 @@ Mindestens die Spalte Originalname (origName) muss befüllt sein.
 
 #### Testpaket(e):
 
-ATUseCaseIngest1.tgz
+RheinlaenderMETS.tgz
 
 #### Durchführung:
 
-1. Die Datei ATUseCaseIngest1.tgz wird eingespielt. Es muss die Info über eine positive Archivierung erhalten worden sein.
+1. Die Datei RheinlaenderMETS.tgz wird eingespielt. Es muss die Info über eine positive Archivierung erhalten worden sein.
 2. Die [Vorlage wird heruntergeladen, bitte die RAW Filedarstellung sichern und in EXCEL geöffnet](../../../src/test/resources/at/ATCSVQueries.csv)
 2. Die EXCEL Testdatei wird mit dem vergebenen Originalnamen des AIP befüllt. 
 3. Die Excel wird gespeichert.
@@ -139,8 +139,9 @@ Die CSV Datei enthält einen Eintrag in der Spalte erfolg = false und den korrek
 
 #### Durchführung:
 
-1. Das Paket ATUseCaseIngest1.tgz wird eingeliefert
-1. *Die URL&nbsp;**[https://|https://**]**<QSERVERNAME>**/daweb3/status/index?origName=<DER ORIGNAME> wird mit dem für* *ATUseCaseIngest1.tgz vergebenen&nbsp;*{*}Originalnamen abgefragt*
+1. Das Paket RheinlaenderMETS.tgz wird eingeliefert
+1. Die URL **[https://**]**<QSERVERNAME>**/daweb3/status/index?origName=<DER ORIGNAME> wird mit dem für* *RheinlaenderMETS.tgz vergebenen 
+   Originalnamen abgefragt*
 1. Es kommt einmalig eine neue Abfrage des Benutzernamens, Passwort des Contractors.
 
 #### Akzeptanzkriterien:
@@ -149,10 +150,25 @@ Die CSV Datei enthält einen Eintrag in der Spalte erfolg = false und den korrek
 * Das fertig archivierte Objekt gibt den Status "archived" an.
 
 ```json
-https://da-nrw-q.lvr.de/daweb3/status/index?origName=EAD_Testdatensatz_2015-03-16
-{"result":[
-{"type":"Object","status":"archived","urn":"urn:nbn:de:danrw-2-20150316406969","contractor":"LVR-Test","origName":"EAD_Testdatensatz_2015-03-16","identifier":"2-20150316406969","packages":\["1"\]}
-]}
+https://da-nrw-q.lvr.de/daweb3/status/index?origName=RheinlaenderMETS
+{
+    "result": [
+      {
+        "type": "Object",
+        "status": "archived",
+        "statusInt": 100,   
+        "statusLongDescription": "archived",
+        "urn": "urn:nbn:de:danrw-2-20200122485760",
+        "contractor": "LVR-Test",
+        "origName": "RheinlaenderMETS",
+        "identifier": "2-20200122485760",
+        "qualityLevel": "5",
+        "packages": [
+            1
+        ]
+      }
+    ]
+}
 ```
 
 ## Szenario AT-ST-JSON-2: Statusabfrage eines fehlerfrei archivierten Pakets mit URN mit JSON
@@ -165,7 +181,7 @@ wie vor
 
 wie vor, nun aber mit der URL&nbsp;
 
-* [https://|https://**]**<QSERVERNAME>**/daweb3/status/index?urn=<URN> wird mit dem für*&nbsp;*ATUseCaseIngest1.tgz vergebenen&nbsp;*{*}URN abgefragt*
+* [https://**]**<QSERVERNAME>**/daweb3/status/index?urn=<URN> wird mit dem für*&nbsp;*RheinlaenderMETS.tgz vergebenen&nbsp;*{*}URN abgefragt*
 
 #### *Akzeptanzkriterien:*
 
@@ -181,7 +197,7 @@ wie vor
 
 wie vor, nun aber mit der URL
 
-* [https://|https://**]**<QSERVERNAME>**/daweb3/status/index?identifier=<IDENTIFIER> wird mit dem für*&nbsp;*ATUseCaseIngest1.tgz vergebenen&nbsp;*{*}Identifier abgefragt*
+* [https://**]**<QSERVERNAME>**/daweb3/status/index?identifier=<IDENTIFIER> wird mit dem für*&nbsp;*RheinlaenderMETS.tgz vergebenen&nbsp;*{*}Identifier abgefragt*
 
 #### Akzeptanzkriterien:
 
@@ -200,7 +216,7 @@ Testszenario ist analog wie AT-ST-JSON-1, hier nur als Szenario "Abfrage URN"
 wie vor, nun aber mit der URL: 
 
 * Die URL 
-** [https://|https://**]**<QSERVERNAME>**/daweb3/status/index?origName=<DER ORIGNAME> wird mit dem für*&nbsp;*ATUseCaseIngest1.tgz vergebenen&nbsp;*{*}Originalnamen abgefragt*
+** [https://|https://**]**<QSERVERNAME>**/daweb3/status/index?origName=<DER ORIGNAME> wird mit dem für*&nbsp;*RheinlaenderMETS.tgz vergebenen&nbsp;*{*}Originalnamen abgefragt*
 
 #### Akzeptanzkriterien:
 
@@ -219,7 +235,7 @@ wie vor
 #### Durchführung:
 
 1. Eine fehlerhaftes Paket wird eingeliefert (TODO welches)
-1. *Die URL&nbsp;**[https://|https://**]**<QSERVERNAME>**/daweb3/status/index?origName=<DER ORIGNAME> wird mit dem für*&nbsp;das fehlerhafte Paket*&nbsp;vergebenen&nbsp;*{*}Originalnamen abgefragt\*
+1. *Die URL&nbsp;**https://**]**<QSERVERNAME>**/daweb3/status/index?origName=<DER ORIGNAME> wird mit dem für*&nbsp;das fehlerhafte Paket*&nbsp;vergebenen&nbsp;*{*}Originalnamen abgefragt\*
 
 #### Akzeptanzkriterien:
 
@@ -228,8 +244,33 @@ das Object als "Object in transient state"
 
 
 ```json
-{"result":[{"type":"QueueEntry","urn":null,"contractor":"LVR-Test","origName":"AT-V-001_ATDuplicateDocumentName_2015-03-16","identifier":"2-20150316407197","status":"package in progress error : (114)"},
-{"type":"Object","status":"Object is in transient state","urn":null,"contractor":"LVR-Test","origName":"AT-V-001_ATDuplicateDocumentName_2015-03-16","identifier":"2-20150316407197","packages":["1"]}]}
+"result": [
+    {
+        "type": "QueueEntry",
+        "urn": null,
+        "contractor": "TEST",
+        "origName": "MultimediaTestSip-NOK",
+        "identifier": "1-201909112245",
+        "status": "package in progress error: (114) ",
+        "statusInt": 114,
+        "statusLongDescription": [
+        "package in progress error: (114) ",
+        "Inkonsistentes Paket![(error) Payload manifest manifest-md5.txt contains invalid file(s): [data/export_mets.xml]]"
+        ]
+        },
+        {
+        "type": "Object",
+        "status": "Object is in transient state",
+        "statusInt": 50,
+        "statusLongDescription": "Object is in transient state",
+        "urn": null,
+        "contractor": "TEST",
+        "origName": "MultimediaTestSip-NOK",
+        "identifier": "1-201909112245",
+        "packages": [1 ]
+        }
+    ]
+}
 ```
 
 
@@ -249,7 +290,7 @@ Example:
 #### Vorbedingungen:
 
 1. Login an der DAWEB
-2. Ein fertig archiviertes PAket, welches in keinem Workflow sein darf
+2. Ein fertig archiviertes Paket, welches in keinem Workflow sein darf
 
 #### Durchführung:
 
@@ -281,11 +322,11 @@ Zeichensatz ist CP1252 (Windows-Standard). Es wird angenommen, dass die Datei mi
 
 #### Testpaket(e):
 
-ATUseCaseIngest1.tgz
+RheinlaenderMETS.tgz
 
 #### Durchführung:
 
-1. Die Datei ATUseCaseIngest1.tgz wird eingespielt. Es muss die Info über eine positive Archivierung erhalten worden sein.
+1. Die Datei RheinlaenderMETS.tgz wird eingespielt. Es muss die Info über eine positive Archivierung erhalten worden sein.
 2. Die [Vorlage wird heruntergeladen und in EXCEL geöffnet](../../../src/test/resources/at/ATCSVQueries.csv)
 2. Die EXCEL Testdatei wird mit dem vergebenen Originalnamen des AIP befüllt. 
 3. Die Excel wird gespeichert.

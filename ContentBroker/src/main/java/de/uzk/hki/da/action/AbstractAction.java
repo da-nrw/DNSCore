@@ -309,7 +309,12 @@ public abstract class AbstractAction implements Runnable {
 				count++;
 				baseLogger.error(this.getClass().getName()+": Exception while committing changes to database after action: ",sqlException);
 				baseLogger.error(count+". try");
-				session.getTransaction().rollback();
+				try {
+					session.getTransaction().rollback();
+				}
+				catch (Exception rollbackXtc) {
+					baseLogger.error("rollback failed, could be normal");
+				}
 				session.close();
 				if(count==maxPermittedTryCount) {
 					reportTechnicalError(sqlException);

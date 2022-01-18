@@ -23,6 +23,7 @@ package de.uzk.hki.da.format;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -35,6 +36,7 @@ import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.model.FormatMapping;
 import de.uzk.hki.da.model.JHoveParameterMapping;
 import de.uzk.hki.da.service.HibernateUtil;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.IOTimeoutException;
 import de.uzk.hki.da.utils.ProcessInformation;
@@ -51,6 +53,8 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 	private static final Logger logger = LoggerFactory.getLogger(JhoveMetadataExtractor.class);
 	private List<JHoveParameterMapping> possibleOptions=null;
 	private List<FormatMapping> pronomMimetypeList=null;
+	//static final String ErrorPattern="ErrorMessage";
+	static final String[] ErrorPatterns=new String[] {"ErrorMessage","severity=\"error\""};
 	
 	/**
 	 * {@link #pronomMimetypeList} can be long, binary comparator is useful to achieve better performance O(log(N)) instead of O(N)
@@ -61,9 +65,9 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 		}};
 	
 	
-	private static final int _6_MINUTES = 360000; // ms
+	
 	private static final String JHOVE_CONF = "conf/jhove.conf";
-	private static final long JHOVE_TIMEOUT = _6_MINUTES;
+	
 	private static final String jhoveFolder = "jhove";
 	private static final String JHOVE_BIN = "jhove";
 	private static final String SHELL = "/bin/sh";
@@ -128,12 +132,13 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 			jhResult = JhoveResult.parseJHoveXML(extractedMetadata.getAbsolutePath());
 		} catch (Exception e) {
 			logger.error("JHove outputfile(" + extractedMetadata.getAbsolutePath() + ") not interpretable: " + e.getMessage());
+			logger.debug("JHove Parsing Failed! ", e);
 			throw new QualityLevelException(QualityLevelException.Type.VALIDATION,"JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + jhResult);
 			
 		}
 
 		if (!jhResult.isValid()){
-			logger.warn("JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + jhResult);
+			logger.error("JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + jhResult);
 			throw new QualityLevelException(QualityLevelException.Type.VALIDATION,"JHove say " + file + " (PUID: "+expectedPUID+" MIMEType:"+mimeType+" JHove Parameter:"+typeOptions+") is not valid: " + jhResult);
 		}
 	}
@@ -151,31 +156,38 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 
 
 	private String[] jhoveCmd(File extractedMetadata, String filePath, String typeOptions) {
-		return new String[] {
-                SHELL, JHOVE_BIN, "-c", JHOVE_CONF, "-h", "XML",typeOptions,
-                filePath, "-o", extractedMetadata.getAbsolutePath() };
+		return new String[] {SHELL, JHOVE_BIN, "-c", JHOVE_CONF, "-h", "XML",typeOptions,
+	                filePath, "-o", extractedMetadata.getAbsolutePath() };
 	}
 
 
 	private String[] jhoveCmdSkipWholeFileParsing(File extractedMetadata, String filePath, String typeOptions) {
-		return new String[] {
-                SHELL, JHOVE_BIN, "-c", JHOVE_CONF, "-h", "XML", typeOptions,
-                "-s", // skip parsing of the whole file
-                filePath, "-o", extractedMetadata.getAbsolutePath() };
+		return new String[] {  SHELL, JHOVE_BIN, "-c", JHOVE_CONF, "-h", "XML", typeOptions,
+	                "-s", // skip parsing of the whole file
+	                filePath, "-o", extractedMetadata.getAbsolutePath() };
+
 	}
 	
 	
 	private int execCMD(String cmd[]) throws ConnectionException, IOException {
 		ProcessInformation pi=null;
 		pi = cli.runCmdSynchronously(cmd,
-                new File(jhoveFolder),JHOVE_TIMEOUT);
+                new File(jhoveFolder),C.JHOVE_FIDO_TIMEOUT);
 		if (pi==null) {
 			throw new ConnectionException("Call to JHOVE terminated with empty ProcessInformation");
 		}
-		if (pi.getExitValue()!=0) {
+		if (pi.getExitValue()!=0|| !pi.getStdOut().isEmpty() ||  !pi.getStdErr().isEmpty()) {
+			logger.debug("ExitValue from jhove cmd: "+pi.getExitValue());
 			logger.debug("StdOut from jhove cmd: "+pi.getStdOut());
 			logger.debug("StdErr from jhove cmd: "+pi.getStdErr());
 		}
+		//else if(pi.getStdOut()!=null && pi.getStdOut().contains(ErrorPattern)) {
+		if(pi.getStdOut()!=null && Arrays.stream(ErrorPatterns).parallel().anyMatch(pi.getStdOut()::contains)) {
+			logger.debug("Jhove-StdOut contains some of ErrorPatterStrings >>"+Arrays.toString(ErrorPatterns)+"<<, the execution might be failed : \n"+pi.toString());
+			
+			throw new RuntimeException("Jhove-Call failed: "+pi.toString());
+		}
+		
 		return pi.getExitValue();
 	}
 
@@ -188,7 +200,7 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 		try {
 			pi = cli.runCmdSynchronously(new String[] {
 			        "/bin/sh", "jhove", "-c", JHOVE_CONF, "--version" },
-			        new File(jhoveFolder),JHOVE_TIMEOUT);
+			        new File(jhoveFolder),C.JHOVE_FIDO_TIMEOUT);
 		} catch (IOException e) {
 			return false;
 		}
@@ -198,6 +210,8 @@ public class JhoveMetadataExtractor implements MetadataExtractor {
 			return true;
 		}else {
 			System.out.println(" .... FAIL");
+			System.out.println(pi.getStdOut());
+			System.out.println(pi.getStdErr());
 			return false;
 		}
 	}

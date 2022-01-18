@@ -26,10 +26,10 @@ package de.uzk.hki.da.utils;
 public class ProcessInformation {
 
 	/** The std err. */
-	private String stdErr;
+	private String stdErr="";
 	
 	/** The std out. */
-	private String stdOut;
+	private String stdOut="";
 	
 	/** The exit value. */
 	private int exitValue;
@@ -87,4 +87,11 @@ public class ProcessInformation {
 	public void setExitValue(int exitValue) {
 		this.exitValue = exitValue;
 	}
+
+	@Override
+	public String toString() {
+		return "ProcessInformation [stdErr=" + stdErr + ", stdOut=" + stdOut + ", exitValue=" + exitValue + "]";
+	}
+	
+	
 }

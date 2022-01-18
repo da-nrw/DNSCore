@@ -17,6 +17,8 @@ mkdir $1/conf
 mkdir $1/documentation
 cp src/main/resources/healthCheck.avi $1/conf
 cp src/main/resources/healthCheck.tif $1/conf
+rm -rf $1/fido
+rm -rf $1/jhove
 cp -r ../3rdParty/fido/fido $1/
 cp -r ../3rdParty/jhove $1/
 cp src/main/sh/jhove $1/jhove

@@ -95,7 +95,7 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 			}
 		}
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		String metsFileName = "export_mets.xml";
 		Document doc = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, metsFileName).toFile()));
@@ -111,7 +111,7 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 		
 		assertEquals(C.CB_PACKAGETYPE_METS,object.getPackage_type());
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		metsDoc = builder.build(new FileReader(ath.loadDefaultMetsFileFromPip(object.getIdentifier())));
 		List<Element> elements = mh.getMetsFileElements(metsDoc);
 		for(Element e : elements) {
@@ -127,7 +127,7 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 	@Test
 	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
 
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		Document doc = builder.build(new FileReader(ath.loadFileFromPip(object.getIdentifier(), "EDM.xml")));
 		@SuppressWarnings("unchecked")
 		List<Element> providetCho = doc.getRootElement().getChildren("ProvidedCHO", C.EDM_NS);

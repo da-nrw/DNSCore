@@ -22,9 +22,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.MailContents;
 import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
@@ -35,8 +39,6 @@ import de.uzk.hki.da.utils.Path;
  * @author Daniel M. de Oliveira
  */
 public class DeleteObjectAction extends AbstractAction {
-
-	
 	public DeleteObjectAction() {
 		setKILLATEXIT(true);
 	}
@@ -60,7 +62,26 @@ public class DeleteObjectAction extends AbstractAction {
 		}
 		else 
 		if (o.getPackages().size()>1){
-			o.getPackages().remove(o.getLatestPackage());
+			// DANRW-1642 ensure purging of package from db 
+			Session session = openSession();
+			Transaction transi = session.beginTransaction();
+			session.refresh(o);
+			clearNonpersistentObjectProperties(o);
+			transi.commit();
+
+			session.refresh(o);
+			transi = session.beginTransaction();
+			de.uzk.hki.da.model.Package packi = o.getLatestPackage();
+			o.getPackages().remove(packi);
+			String debIde = packi.getContainerName() + " " + packi.getDelta();
+			session.delete(packi);
+			session.save(o);
+			transi.commit();
+			session.close();
+			logger.info("Last Package deleted: " + debIde);
+			logger.info("Setting object_state back to: " + Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow );
+			// DANRW-1624 Set object_state to 100
+			o.setObject_state(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 		}
 		logger.info("Deleting object from WorkArea: "+wa.objectPath());
 		FolderUtils.deleteDirectorySafe(wa.objectPath().toFile());
@@ -95,5 +116,4 @@ public class DeleteObjectAction extends AbstractAction {
 				n.getWorkAreaRootPath(),"work",
 				o.getContractor().getShort_name(),o.getLatestPackage().getContainerName());
 	}
-
 }

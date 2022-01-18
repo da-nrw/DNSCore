@@ -27,6 +27,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.model.ConversionInstruction;
 import de.uzk.hki.da.model.ConversionRoutine;
 import de.uzk.hki.da.model.DAFile;
@@ -177,5 +179,46 @@ public class CLIConversionStrategyTests {
 		strat.convertFile(new WorkArea(n,o),ci);
 		
 		assertTrue(Path.makeFile(workAreaRootPath,"work/TEST/1255/data/2012_12_12+12_12+b/3512.pdf").exists());
+	}
+
+	@Test
+	public void testGhostscriptTimeout() throws FileNotFoundException{
+		
+		Object o = TESTHelper.setUpObject("1255",new RelativePath(workAreaRootPath));
+		DAFile source =new DAFile("2012_12_12+12_12+a","3512.pdf");
+		o.getLatestPackage().getFiles().add(new DAFile("2012_12_12+12_12+a","3512.pdf"));
+		
+		CLIConversionStrategy strat= new CLIConversionStrategy();
+		strat.setObject(o);
+		ConversionRoutine conversionRoutinePdfToPdfA=  new ConversionRoutine("PDF2PDFA","",
+			"gs -dPDFA -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sProcessColorModel=DeviceGray -sOutputFile=output input","pdf");
+		
+	
+		ConversionInstruction ci= new ConversionInstruction();
+		
+		ci.setSource_file(source);
+		
+		ci.setTarget_folder("");
+		ci.setConversion_routine(conversionRoutinePdfToPdfA);
+		
+		strat.setCLIConnector(new CommandLineConnector());
+		strat.setParam("gs -dPDFA -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sProcessColorModel=DeviceGray -sOutputFile=output input");
+
+		long savedTimout = CLIConversionStrategy.timeout;
+		CLIConversionStrategy.timeout = 3;
+		
+		boolean timoutThrown = false;
+		try {
+			strat.convertFile(new WorkArea(n, o), ci);
+		} catch (UserException uxtc) {
+			if (uxtc.getUserExceptionId() == UserExceptionId.CONVERSION_TIMEOUT) {
+				timoutThrown = true;
+			}
+		} finally
+		{
+			CLIConversionStrategy.timeout = savedTimout;
+		}
+		
+		assertTrue(timoutThrown);
 	}
 }

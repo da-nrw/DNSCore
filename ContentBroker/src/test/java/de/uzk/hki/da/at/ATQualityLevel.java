@@ -88,7 +88,7 @@ public class ATQualityLevel extends AcceptanceTest {
 		ath.putSIPtoIngestArea(SOURCE_NAME_MINIMAL_5_FAIL, C.FILE_EXTENSION_TGZ, origName);
 		ath.awaitObjectState(origName, Object.ObjectStatus.InWorkflow);
 		ath.waitForJobToBeInErrorStatus(origName, C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
-		
+		System.out.println("testMinimalQualityLevelPremis5Fail: "+ath.getJob(origName).getStatus());
 		assertEquals(ath.getJob(origName).getStatus(),"274");
  		
  		Object obbi = ath.getObject(origName);
@@ -235,6 +235,7 @@ System.out.println("deltaTest 111");
  		
  		Object obbi = ath.getObject(ORIG_NAME_DELTA);
 		idiName = obbi.getIdentifier();
+		System.out.println("ATQualityLevel deltaTest Object Level: "+obbi.getQuality_flag()+" "+"Package count: "+obbi.getPackages().size());
  		assertEquals("Object Level: "+obbi.getQuality_flag(),obbi.getQuality_flag(),2);
  		assertEquals("Package count: "+obbi.getPackages().size(),obbi.getPackages().size(),1);
  		System.out.println("deltaTest 1112");

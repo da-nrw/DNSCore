@@ -17,15 +17,15 @@ Objekte können über diesen Identifier recherchiert und deren Retrieval über d
 
 1\. In der DAWeb Maske "Eingelieferte Objekte (AIP)" gibt es die Möglichkeit, die aufgelisteten Objekte per Filter einzugrenzen.
 
-![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/retrieval1.png)
+![](retrieval1.png)
 
 2\. Das so ausgewählte Objekt wird dann gelistet. Per Klick auf den "Anfordern" Button des Objektes kann dann das Retrieval angestoßen werden.
 
-![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/retrieval3.png)
+![](retrieval3.png)
 
 3\. Das System signalisiert mit folgender Meldung, dass das Retrieval erfolgreich angestoßen wurde:
 
-![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/retrieval2.png)
+![](retrieval2.png)
 
 4\. Die Verarbeitung wird dann vom System vorgenommen. Das System informiert anschließend den Nutzer per Email, sobald das DIP zur Retrieval bereitsteht.
 
@@ -38,13 +38,13 @@ Ihr angefordertes Objekt mit dem Namen "2-20150415425545" wurde unter
 Ihrem Outgoing Ordner unter TEST/outgoing/ abgelegt und steht jetzt zum Retrieval bereit!
 ``` 
 
-5\. Es taucht ein weiterer Button "Entnahme" auf. Per Klick auf den Button kann das DIP zu dem Objekt gedownloadet werden.
+5\. Es taucht ein Icon "Entnahme" auf. Sobald dieses Icon angezeigt wird steht das Paket zur Entname im Verzeichnis des Contractors zu Entnahme bereit. 
 
-![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/retrieval4.png)
+![](retrieval4.png)
 
-Das Objekt kann ebenfalls über die DAWeb Maske "Objekt entnehmen (DIP)" gedownloadet werden (per Klick auf das Paket, welches den entsprechenden Identifier trägt.
+Der Speicherplatz des Objektes kann ebenfalls über die DAWeb Maske "Angeforderte Objekte (DIP)" angesehen werden.
 
-![](https://raw.githubusercontent.com/da-nrw/DNSCore/master/ContentBroker/src/main/markdown/retrieval5.png)
+![](retrieval5.png)
 
 **Alternativ** ist es möglich, das Paket per FileShare Client (z.B. FileZilla) aus dem ihm zugeteilten Nutzungsbereich
 auf dem Knoten, dort im "outgoing"-Verzeichnis, herunterzuladen.

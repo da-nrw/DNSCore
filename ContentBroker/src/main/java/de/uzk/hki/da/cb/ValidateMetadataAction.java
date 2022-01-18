@@ -171,49 +171,57 @@ public class ValidateMetadataAction extends AbstractAction {
 			//validate mets
 			if (detectedPackageType.equals(C.CB_PACKAGETYPE_METS)){
 				List<DAFile> metsFiles = getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_METS);
-				MetsLicense licenseMetsFile =null;
-				MetsLicense licensePublicMetsFile = null;
+				List<MetsLicense> licenseMetsFile =null;
+				List<MetsLicense> licensePublicMetsFile = null;
 				for (DAFile f : metsFiles) {//over all mets-files (max 2), amount is checked by previous actions
-					SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+					SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 					MetsParser mp = new MetsParser(builder.build(wa.toFile(f).getAbsolutePath()));
 					logger.debug("Check license in mets file: "+f.getRelative_path());
 					if(f.getRelative_path().equalsIgnoreCase(C.PUBLIC_METS)){
 						usePublicMets=true;
-						licensePublicMetsFile=mp.getLicenseForWholeMets();
-						hasPublicMetsLicense=(licensePublicMetsFile!=null);
+						licensePublicMetsFile=mp.getLicensesForWholeMets();
+						hasPublicMetsLicense=(licensePublicMetsFile.size()>0 && licensePublicMetsFile.get(0) != null);
 					}else{
 						try{
-							licenseMetsFile=mp.getLicenseForWholeMets();
+							licenseMetsFile=mp.getLicensesForWholeMets();
 						}catch(Exception e){
 							logger.error(e.getMessage());
 							//bei public-mets-csn ist eine invalide Angabe der Lizenz in der export_mets akzeptabel
 							if(!o.getContractor().isUsePublicMets())
 								throw e;
 						}
-						hasMetsLicense=(licenseMetsFile!=null);
+						hasMetsLicense=(licenseMetsFile.size()>0 && licenseMetsFile.get(0) != null);
 					}
 				}
 
-				if(hasPublicMetsLicense){
-					try{
-						new URL(licensePublicMetsFile.getHref());
-					}catch(MalformedURLException e){
+				MetsLicense errorLicense = null;
+				if (hasPublicMetsLicense) {
+					try {
+						for (MetsLicense license : licensePublicMetsFile) {
+							errorLicense = license;
+							new URL(license.getHref());
+						}
+					} catch (MalformedURLException e) {
 						throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
-								"Invalide Lizenzangaben in "+C.PUBLIC_METS+": accessCondition-Element hat ein ungueltiges href-Attribut("+e.getMessage()+")",
-								"Invalide Lizenzangaben in "+C.PUBLIC_METS+": accessCondition-Element hat ein ungueltiges href-Attribut("+licensePublicMetsFile.getHref()+")");
+								"Invalide Lizenzangaben in " + C.PUBLIC_METS + ": accessCondition-Element hat ein ungueltiges href-Attribut("
+										+ e.getMessage() + ")",
+								"Invalide Lizenzangaben in " + C.PUBLIC_METS
+										+ ": accessCondition-Element hat ein ungueltiges href-Attribut("
+										+ errorLicense.getHref() + ")");
 					}
 				}else if(!hasPublicMetsLicense && hasMetsLicense){
-					try{
-						new URL(licenseMetsFile.getHref());
+					try {
+						for (MetsLicense license : licenseMetsFile) {
+							errorLicense = license;
+							new URL(license.getHref());
+						}
 					}catch(MalformedURLException e){
 						throw new UserException(UserExceptionId.INVALID_LICENSE_DATA,
 								"Invalide Lizenzangaben in METS-Metadaten: accessCondition-Element hat ein ungueltiges href-Attribut("+e.getMessage()+")",
-								"Invalide Lizenzangaben in METS-Metadaten: accessCondition-Element hat ein ungueltiges href-Attribut("+licenseMetsFile.getHref()+")");
+								"Invalide Lizenzangaben in METS-Metadaten: accessCondition-Element hat ein ungueltiges href-Attribut("
+										+ errorLicense.getHref() + ")");
 					}
 				}
-				if (usePublicMets &&((licenseMetsFile!=null && !licenseMetsFile.equals(licensePublicMetsFile)) ||
-						(licensePublicMetsFile!=null && !licensePublicMetsFile.equals(licenseMetsFile)))) // mets and public mets are different
-					logger.warn("Lizenzangaben in den METS-Metadaten sind unterschiedlich: e.g.:" + licenseMetsFile+" "	+ licensePublicMetsFile);
 			}
 
 			//check lido License
@@ -221,7 +229,7 @@ public class ValidateMetadataAction extends AbstractAction {
 				List<DAFile> lidoFiles = getFilesOfMetadataType(C.SUBFORMAT_IDENTIFIER_LIDO);
 				LidoLicense licenseLidoFile =null;
 				for (DAFile f : lidoFiles) {//over all lido-files, amount is checked by previous actions
-					SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+					SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 					LidoParser lp = new LidoParser(builder.build(wa.toFile(f).getAbsolutePath()));
 					licenseLidoFile=lp.getLicenseForWholeLido();
 					hasLidoLicense=(licenseLidoFile!=null);

@@ -175,7 +175,7 @@ public class ATInvalidTiffTagsInBigTiff extends PREMISBase{
 		assertTrue(new File(unpackedObjectPath + "data/" +  repBName + "/premis.xml").exists());
 		String objectIdentifier = object.getIdentifier();
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		Document doc;
 		try {
 			doc = builder.build(new File(unpackedObjectPath +  "data/" + repBName + "/premis.xml"));

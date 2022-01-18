@@ -9,7 +9,7 @@ The basic pattern for a conversion is as follows:
     2012_12_12+12_12+a/input.jpg -> 2012_12_12+12_12+b/input.tif
 
 We see the input and output files to reside in different
-[representation](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/aip_specification.md#representations----restructuring-contents-with-representations) 
+[representation](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_aip.md#representations----restructuring-contents-with-representations) 
 folders (also have a look at [representations](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#representation) 
 in the context of our object model). While the +a-representation contains the original files, the +b-representation contains 
 the converted file. The example you see above is to demonstrate the basic point of the conversion system how it is implemented for now:

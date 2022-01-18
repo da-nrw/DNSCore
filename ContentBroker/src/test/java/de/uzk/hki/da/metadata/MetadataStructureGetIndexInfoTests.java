@@ -163,12 +163,12 @@ public class MetadataStructureGetIndexInfoTests {
 			mms.appendAccessCondition(metsTMP, testLicense.getHref(), testLicense.getDisplayLabel(), testLicense.getText());
 			
 			//read the written result
-			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+			SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 			FileReader fr1 = new FileReader(metsTMPFullPath);
 			org.jdom.Document metsDoc = builder.build(fr1);
 			MetsParser mp = new MetsParser(metsDoc);
 			
-			assertEquals(testLicense,mp.getLicenseForWholeMets());
+			assertEquals(testLicense,mp.getLicensesForWholeMets().get(0));
 			assertEquals(testLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.EDM_RIGHTS).get(0));
 			assertEquals(testLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1617166").get(C.EDM_RIGHTS).get(0));
 			
@@ -195,12 +195,12 @@ public class MetadataStructureGetIndexInfoTests {
 			mms.appendAccessCondition(metsTMP, testLicense.getHref(), testLicense.getDisplayLabel(), testLicense.getText());
 			
 			//read the written result
-			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+			SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 			FileReader fr1 = new FileReader(metsTMPFullPath);
 			org.jdom.Document metsDoc = builder.build(fr1);
 			MetsParser mp = new MetsParser(metsDoc);
 			
-			assertEquals(testLicense,mp.getLicenseForWholeMets());
+			assertEquals(testLicense,mp.getLicensesForWholeMets().get(0));
 			assertEquals(testLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md2684319").get(C.EDM_RIGHTS).get(0));			
 		}finally{
 			FileUtils.deleteQuietly(metsTMPFullPath);

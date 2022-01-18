@@ -21,6 +21,7 @@ package de.uzk.hki.da.sb;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -45,7 +46,9 @@ import de.uzk.hki.da.metadata.LidoLicense;
 import de.uzk.hki.da.metadata.LidoParser;
 import de.uzk.hki.da.metadata.MetsLicense;
 import de.uzk.hki.da.metadata.MetsParser;
+import de.uzk.hki.da.metadata.NullLastComparator;
 import de.uzk.hki.da.metadata.PremisXmlWriter;
+import de.uzk.hki.da.pkg.BagitUtils;
 import de.uzk.hki.da.pkg.CopyUtility;
 import de.uzk.hki.da.pkg.NestedContentStructure;
 import de.uzk.hki.da.pkg.SipArchiveBuilder;
@@ -54,11 +57,10 @@ import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.FormatDetectionService;
 import de.uzk.hki.da.utils.Utilities;
 import de.uzk.hki.da.utils.XMLUtils;
-import gov.loc.repository.bagit.Bag;
-import gov.loc.repository.bagit.BagFactory;
-import gov.loc.repository.bagit.PreBag;
-import gov.loc.repository.bagit.utilities.SimpleResult;
-import de.uzk.hki.da.metadata.NullLastComparator;
+import gov.loc.repository.bagit.creator.BagCreator;
+import gov.loc.repository.bagit.domain.Bag;
+import gov.loc.repository.bagit.reader.BagReader;
+import gov.loc.repository.bagit.verify.BagVerifier;
 
 /**
  * The central SIP production class
@@ -404,6 +406,7 @@ public class SIPFactory {
 		boolean premisLicenseBool=contractRights.getCclincense()!=null;
 		boolean metsLicenseBool=false;
 		boolean lidoLicenseBool=false;
+		boolean hasPipMetadataBool=false;
 		boolean publicationBool=contractRights.getPublicRights().getAllowPublication();
 		boolean instPublicationBool=contractRights.getInstitutionRights().getAllowPublication();
 		
@@ -423,14 +426,16 @@ public class SIPFactory {
 					ArrayList<File> metsFiles = new ArrayList<File>();
 	
 					ArrayList<MetsLicense> licenseMetsFile = new ArrayList<MetsLicense>();
-					for (File f : metadataFileWithType.keySet())
-						if (metadataFileWithType.get(f).equals(C.CB_PACKAGETYPE_METS))
+					for (File f : metadataFileWithType.keySet()) {
+						if (metadataFileWithType.get(f).equals(C.CB_PACKAGETYPE_METS)) {
 							metsFiles.add(f);
+						}
+					}
 					for (File f : metsFiles) {// assuming more as usual mets is allowed (check is done by FormatDetectionService) e.g. publicMets for testcase-creation
-						SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+						SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 						Document metsDoc = builder.build(f);
 						MetsParser mp = new MetsParser(metsDoc);
-						licenseMetsFile.add(mp.getLicenseForWholeMets());
+						licenseMetsFile.addAll(mp.getLicensesForWholeMets());
 					}
 					Collections.sort(licenseMetsFile, new NullLastComparator<MetsLicense>());
 					if (licenseMetsFile.get(0) == null) // all licenses are null
@@ -439,6 +444,7 @@ public class SIPFactory {
 						return Feedback.INVALID_LICENSE_DATA_IN_METADATA;
 					else
 						metsLicenseBool = true;
+					hasPipMetadataBool=true;
 				}else if (metadataFileWithType.containsValue(C.CB_PACKAGETYPE_LIDO)) {
 					ArrayList<File> lidoFiles = new ArrayList<File>();
 	
@@ -447,7 +453,7 @@ public class SIPFactory {
 						if (metadataFileWithType.get(f).equals(C.CB_PACKAGETYPE_LIDO))
 							lidoFiles.add(f);
 					for (File f : lidoFiles) {// assuming more as one metadata is allowed (check is done by FormatDetectionService) 
-						SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+						SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 						Document metsDoc = builder.build(f);
 						LidoParser lp = new LidoParser(metsDoc);
 						licenseLidoFile.add(lp.getLicenseForWholeLido());
@@ -459,6 +465,9 @@ public class SIPFactory {
 						return Feedback.INVALID_LICENSE_DATA_IN_METADATA;
 					else
 						lidoLicenseBool = true;
+					hasPipMetadataBool=true;
+				}else {
+					hasPipMetadataBool=false;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -478,6 +487,10 @@ public class SIPFactory {
 		
 		if(publicationBool && !premisLicenseBool && !metsLicenseBool&& !lidoLicenseBool){
 			return Feedback.PUBLICATION_NO_LICENSE;
+		}
+		
+		if(publicationBool && !hasPipMetadataBool){
+			return Feedback.NO_METADATA_FOR_PIP;
 		}
 		
 		logger.info("License is satisfiable: Premis-License:"+premisLicenseBool+" Mets-License:"+metsLicenseBool+" Lido-License:"+lidoLicenseBool+ " Publication-Decision:"+publicationBool+" InstPublication-Decision:"+instPublicationBool);
@@ -548,27 +561,34 @@ public class SIPFactory {
 
 		progressManager.bagitProgress(jobId, 0.0);
 
-		BagFactory bagFactory = new BagFactory();
-		PreBag preBag = bagFactory.createPreBag(folder);
-		preBag.makeBagInPlace(BagFactory.LATEST, false);
+		Bag bag;
+		try {
+			bag = BagCreator.bagInPlace(Paths.get(folder.toURI()), Arrays.asList(BagitUtils.DEFAULT_BAGIT_ALGORITHM), false);
+		} catch (Exception e) {
+			//e.printStackTrace();
+			logger.error("Bag in folder " + folder.getAbsolutePath()+ " can not be created.\n" + e.getMessage());
+		}
 		progressManager.bagitProgress(jobId, 10.0);
 
 		if (sipBuildingProcess.isAborted())
 			return Feedback.ABORT;
 
-		Bag bag = bagFactory.createBag(folder);
-		progressManager.bagitProgress(jobId, 40.0);
+		try {
+			BagReader reader = new BagReader();
 
-		if (sipBuildingProcess.isAborted())
-			return Feedback.ABORT;
+			Bag bagVer = reader.read(Paths.get(folder.getAbsolutePath()));
+			progressManager.bagitProgress(jobId, 40.0);
+			if (sipBuildingProcess.isAborted())
+				return Feedback.ABORT;
 
-		SimpleResult result = bag.verifyValid();
-		if (result.isSuccess()) {
+			BagVerifier sut = new BagVerifier();
+			sut.isValid(bagVer, false);
+			
 			progressManager.bagitProgress(jobId, 50.0);
 			return Feedback.SUCCESS;
-		} else {
-			logger.error("Bag in folder " + folder.getAbsolutePath()
-					+ " is not valid.\n" + result.getErrorMessages());
+		}  catch (Exception  e) {
+			//e.printStackTrace();
+			logger.error("Bag in folder " + folder.getAbsolutePath()+ " is not valid.\n" + e.getMessage());
 			return Feedback.BAGIT_ERROR;
 		}
 	}
@@ -1178,6 +1198,15 @@ public class SIPFactory {
 									"Die Lizenzangaben sind nicht vorhanden: Um publizieren zu können, muss eine gültige Lizenz angegeben werden.",
 							JOptionPane.ERROR_MESSAGE);
 					return;
+				case NO_METADATA_FOR_PIP:
+					messageWriter
+					.showMessage(
+							"Das SIP \""
+									+ folder.getName()
+									+ "\" konnte der Lieferung nicht hinzugefügt werden.\n"+
+									"Für eine Publikation sind portalrelevante Metadaten (z.B. METS,LIDO) zwingend erforderlich",
+							JOptionPane.ERROR_MESSAGE);
+					return;
 				case ABORT:
 					return;
 				default:
@@ -1322,7 +1351,10 @@ public class SIPFactory {
 							.replace(
 									new File(f.getParent()).getAbsolutePath()
 											+ File.separator, "")
-							.replace(ext, "");
+							;
+					//.replace(ext, "");
+					relFilePathWithoutExtension=relFilePathWithoutExtension.substring(0,relFilePathWithoutExtension.length()-ext.length());
+							
 					logger.debug("relFilePathWithoutExtension: "
 							+ relFilePathWithoutExtension);
 

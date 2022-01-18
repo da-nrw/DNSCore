@@ -20,6 +20,7 @@ package de.uzk.hki.da.at;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -32,7 +33,7 @@ import org.junit.BeforeClass;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import de.uzk.hki.da.action.ActionFactory;
+
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.grid.IrodsCommandLineConnector;
@@ -41,7 +42,6 @@ import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.WorkArea;
-import de.uzk.hki.da.repository.ElasticsearchMetadataIndex;
 import de.uzk.hki.da.repository.MetadataIndex;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.service.HibernateUtil;
@@ -50,6 +50,9 @@ import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.PropertiesUtils;
+import gov.loc.repository.bagit.domain.Bag;
+import gov.loc.repository.bagit.reader.BagReader;
+import gov.loc.repository.bagit.verify.BagVerifier;
 
 /**
  * @author Daniel M. de Oliveira
@@ -424,8 +427,5 @@ public class AcceptanceTest {
 
 	public static String getCI_ARCHIVE_STORAGE() {
 		return CI_ARCHIVE_STORAGE;
-	}
-	
-	
-	
+	}	
 }

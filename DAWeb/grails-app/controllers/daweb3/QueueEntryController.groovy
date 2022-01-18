@@ -334,6 +334,30 @@ class QueueEntryController {
 		params.remove("modifyIds")
 		redirect(action: "list")
 	}
+	
+	
+	/**
+	 * queueRecover563: if a package is in state 563 it can be set back to state 550
+	 * @author gabender
+	 * @return
+	 */
+	@Secured(['ROLE_NODEADMIN'])
+	def queueRecover563() {
+		
+		println (" ###### start of queueRecover563 ####")
+		
+		print("QueEntryController: queueRecover563")
+		
+		try {
+			def res = que.modifyJob(params.id, "550")
+			flash.message = "Paket zurückgesetzt auf 550! " + res
+		} catch (Exception e) {
+				log.error("Recovery failed for " + params.id + " " + e.printStackTrace())
+				flash.message = "Ein Fehler trat auf beim Zurücksetzen"
+		}
+		
+		redirect(action: "list")
+	}
 
 	/**
 	 * List Migration requests
@@ -369,6 +393,7 @@ class QueueEntryController {
 				admin:adminAnzeige, user:user ]
 		}
 	}
+	
 	/**
 	 * Applies status and functionality to answer with yes on migration requests
 	 */

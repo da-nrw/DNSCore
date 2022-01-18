@@ -72,20 +72,34 @@
 	    					<g:if test="${params.searchQualityLevel == '5'}">Qualitätsstufe: 5</g:if>
 		    		</g:if> 
 		    		<div>
-						<g:if test="${params.searchDateType != null} "> 
-		   					<g:if test="${params.searchDateType == 'createdAt'}">Datumsbereich erstellt</g:if>
-		   					<g:if test="${params.searchDateType == 'modifiedAt'}">Datumsbereich geändert</g:if>
+						<g:if test="${params.searchDateType != null} ">
+						 <g:if test="${params.searchDateStart != null}"> 
+			   					<g:if test="${params.searchDateType == 'createdAt'}">Datumsbereich erstellt</g:if>
+			   					<g:if test="${params.searchDateType == 'modifiedAt'}">Datumsbereich geändert</g:if>
+		   					</g:if>
 			    		</g:if>   
 			    		<g:if test="${params.searchDateStart != null}">
-			    			<g:if test="${params.searchDateStart != '0'}">
-			    				<span style="margin-right: 25px"><i>Von Datum: ${params.searchDateStart}</i></span>
+							<g:if test="${!params.searchDateStart.equals("0")}" >
+								<g:if test="${!params.searchDateStart.equals(" ")}" >
+									<g:if  test="${!params.searchDateStart.equals("")}" >
+			    						<span style="margin-right: 25px">
+			    							<i>Von Datum: <g:formatDate format="dd.MM.yyyy" date="${params.searchDateStart}"/></i>
+			    						</span>
+			    					</g:if>
+			    				</g:if>
 			    			</g:if>
 			    		</g:if> 	
 			    		<g:if test="${params.searchDateEnd != null}">
-			    			<g:if test="${params.searchDateEnd != '0'}">
-			    				<span style="margin-right: 25px"><i>Bis Datum: ${params.searchDateEnd}</i></span>
+			    			<g:if test="${!params.searchDateEnd.equals("0")}" >
+								<g:if test="${!params.searchDateEnd.equals(" ")}" >
+									<g:if  test="${!params.searchDateEnd.equals("")}" >
+			    						<span style="margin-right: 25px">
+			    							<i>Bis Datum: <g:formatDate format="dd.MM.yyyy" date="${params.searchDateEnd}"/></i>
+			    						</span>
+			    					</g:if>
+			    				</g:if>
 			    			</g:if>
-			    		</g:if> 
+			    		</g:if>
 			    	</div>
 		    	</g:if> 
 		    </button>
@@ -108,39 +122,45 @@
 	            			<tr>
             				<td>Qualitätsstufe:</td>
             				<td>
-	            			<g:select id="qualityLevel" name="searchQualityLevel" from="${['Stufe 1','Stufe 2','Stufe 3','Stufe 4','Stufe 5']}" keys="${['1','2','3','4','5']}" value="${params.searchQualityLevel}" noSelection="[null:'Bitte auswählen']" />
+	            			<g:select id="qualityLevel" name="searchQualityLevel" from="${['Stufe 1','Stufe 2','Stufe 3','Stufe 4','Stufe 5']}" keys="${['1','2','3','4','5']}" value="${params.searchQualityLevel}" noSelection="[null:'-Bitte auswählen-']" />
 	            			</td>
             			</tr>
-		            		<tr>
+		            	<tr>
 		            		<td>Datumsbereich:</td>
 		            		<td>
-		            			<g:select id="datetype" name="searchDateType" from="${['Datum erstellt','Datum geändert']}" keys="${['createdAt','modifiedAt']}" value="${params.searchDateType}" noSelection="[null:'Bitte auswählen']" />
+		            			<g:select id="datetype" name="searchDateType" from="${['Datum erstellt','Datum geändert']}" keys="${['createdAt','modifiedAt']}" value="${params.searchDateType}" noSelection="[null:'-Bitte auswählen-']" />
 		            		</td>
 						</tr>
+						
 	            		<tr>
 	            			<td>Von Datum: </td>
 	            			<td>
 	            				<g:if test="${params.search?.searchDateStart != null}" >
-	            					<g:datePicker name="searchDateStart" default="none" noSelection="['':'']" value="${params.search?.searchDateStart.date.format('TT.MM.JJJJ HH:mm')}"/>
+	            					<g:datePicker name="searchDateStart" default="none" noSelection="['':'']" precision="day" value="${params.searchDateStart}"/>
 	            				</g:if>
 	            				<g:else>
-	            					<g:datePicker name="searchDateStart" default="none" noSelection="['':'']" value="${params.search?.searchDateStart}"/>
+	            					<g:datePicker name="searchDateStart" default="none" noSelection="['':'']" precision="day" />
 	            				</g:else>
+	            				<% // fix for https://github.com/zoran119/grails-jquery-date-time-picker/issues/12 %>
+		            			<script type="text/javascript">
+			            			$(document).ready(function(){
+			            			$("#searchDateStart").val("${params.searchDateStart}")
+			            			 })
+		            			</script>
 	            			</td>
 	            		</tr>
 	            		<tr>
 	            			<td>Bis Datum: </td>
 	            			<td>	
 	            				<g:if test="${params.search?.searchDateEnd != null}" >
-	            					<g:datePicker name="searchDateEnd" default="none" noSelection="['':'']"  value="${params.search?.searchDateEnd.date.format('dd.MM.yyyy HH:mm')}"/>
+	            					<g:datePicker name="searchDateEnd" default="none" noSelection="['':'']" precision="day" value="${params.searchDateEnd}"/>
 	            				</g:if>
 	            				<g:else>
-	            					<g:datePicker name="searchDateEnd" default="none" noSelection="['':'']"  value="${params.search?.searchDateEnd}"/>
+	            					<g:datePicker name="searchDateEnd" default="none" noSelection="['':'']" precision="day" />
 	            				</g:else>
 	            				<% // fix for https://github.com/zoran119/grails-jquery-date-time-picker/issues/12 %>
 		            			<script type="text/javascript">
 			            			$(document).ready(function(){
-			            			$("#searchDateStart").val("${params.searchDateStart}")
 			            			$("#searchDateEnd").val("${params.searchDateEnd}")
 			            			 })
 		            			</script>
@@ -161,9 +181,6 @@
 				                                break;                      
 				                            case 'textarea':
 				                                $(this).val('');
-				                                break;
-				            			 	case 'hidden':
-				                                $(this).val('0');
 				                                break;
 				            				case 'select-one':
 					                            $(this).val(null);
@@ -197,7 +214,7 @@
 			</div>
 			
 			<div id="list-object" class="content scaffold-list" role="main">
-				<h3> Ihre ${objArt} DA-NRW Objekte(${objectInstanceList.size()} Treffer von ${totalObjs} insgesamt)</h3>
+				<h3> Ihre '${objArt}' DA-NRW Objekte (${objectInstanceList.size()} Treffer von ${totalObjs} insgesamt)</h3>
 				<g:if test="${flash.message}">
 					<div class="message" role="status">${flash.message}</div>
 				</g:if>
@@ -227,9 +244,6 @@
 								</th>
 								<th style="text-align: center">Entnahme			
 								</th>			
-<!-- 								<g:if test="${objArt=='sich in Bearbeitung befindlichen'}"> -->
-<!-- 									<g:sortableColumn property="status" title="${message(code: 'object.modified.label', default: 'Status')}" /> -->
-<!-- 								</g:if> -->
 							</tr>
 						</thead>
 						<tbody>
@@ -269,11 +283,12 @@
 								<g:else>
 									<td style="text-align: center">Objekt in der Verarbeitung</td>
 								</g:else>
+								
 								<td style="text-align: center">
 									<g:if test="${new File(baseFolder+ "/"+ objectInstance.identifier +".tar").exists()}">
-										 <g:link controller="outgoing" action="download" params="['filename':objectInstance.identifier +'.tar']">
-											<asset:image width="16px" height="16px" src="/icons/delivery.png"/>
-										</g:link>
+										<asset:image style="width: 16px; height: 16px" src="/icons/delivery.png" 
+										title="${new File(baseFolder+ "/"+ objectInstance.identifier +".tar")}" 
+										alt="${new File(baseFolder+ "/"+ objectInstance.identifier +".tar")}"/>
 									</g:if>
 								</td>
 
@@ -292,6 +307,13 @@
 							<g:paginate total="${objectInstanceTotal}" params="${searchParams}" />
 						</div>
 				 	</g:if>
+				 	<g:elseif test="${objectInstanceList.size() < 49} ">
+				 		<g:if test="${objectInstanceTotal  > 50} ">
+					 		<div class="pagination">
+								<g:paginate total="${objectInstanceTotal}" params="${searchParams}" />
+							</div>
+							</g:if>
+				 	</g:elseif>
 				</g:if>  
 			</div>
 		</div>

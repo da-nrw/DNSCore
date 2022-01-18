@@ -68,14 +68,14 @@
 	    		</div>
 	    	</g:if> <br>
 			<button class="accordion abstand-oben">Filter
-			  	<g:if test="${params.search}"><br>
+			  	<g:if test="${params.search}">
 		    		<g:if test="${!params.search?.status.isEmpty()}">
 		    		<span style="margin-right: 25px" ><i>Status: </i>${params.search?.status}</span>
 		    		</g:if> 
 		    		<g:if test="${!params.search?.obj?.origName.isEmpty()}">
 		    			<span style="margin-right: 25px"><i>Originalname: </i>${params.search?.obj?.origName}</span>
 		    		</g:if> 
-		    		<g:if test="${params.search?.urn}">
+		    		<g:if test="${params.search?.obj?.urn}">
 			    		<g:if test="${!params.search?.obj?.urn.isEmpty()}">
 			    			 <span style="margin-right: 25px"><i>URN: </i>${params.search?.obj?.urn}</span>
 			    		</g:if> 
@@ -83,12 +83,21 @@
 		    		<g:if test="${!params.search?.obj?.identifier.isEmpty()}">
 		    			<span style="margin-right: 25px"><i>Identifier: </i>${params.search?.obj?.identifier}</span>
 		    		</g:if> 
-		    		<g:if test="${params.search?.user != 'null'}">
-		    			<span style="margin-right: 25px"><i>Contractor: </i>${params.search?.user}</span>
+		    		<g:if test="${params.search?.user != null}">
+		    			<g:if test="${!params.search?.user.isEmpty()}">
+			    			<g:if test="${!params.search?.user.equals('null')}">
+			    				<span style="margin-right: 25px"><i>Contractor: </i>${params.search?.user}</span>
+		    				</g:if>
+		    			</g:if>
 		    		</g:if> 
-		    		<g:if test="${params.search?.initialNode != 'null'}">
-		    			<span style="margin-right: 25px"><i>Zuständiger Knoten: </i>${params.search?.initialNode}</span>
-		    		</g:if> 
+		    		
+		    		<g:if test="${params.search?.initialNode != null}">
+		    			<g:if test="${!params.search?.initialNode.isEmpty() }">
+		    				<g:if test="${!params.search?.initialNode.equals('null')}">
+		    					<span style="margin-right: 25px"><i>Zuständiger Knoten: </i>${params.search?.initialNode}</span>
+		    				</g:if>
+		    			</g:if>	
+		    		</g:if>
 		    	</g:if> 
 			</button>
 			<div class="panel abstand-oben">
@@ -114,22 +123,22 @@
 	           			<tr>
 	            			<td>Contractor:</td>
 	            			<td>
-	            				<g:if test="${params.search?.user == null}" >
-	            					<g:select id="user" name="search.user" from="${contractorList}" optionKey="shortName" noSelection="[null:'Alle auswählen']" required="" value="${objectInstance?.contractorList?.shortName}" class="many-to-one"/>
+	            				<g:if test="${params.search?.user == null || params.search?.user.isEmpty()}" >
+	            					<g:select id="user" name="search.user" from="${contractorList}" optionKey="shortName" noSelection="[null:'-Bitte wählen-']" value="${objectInstance?.contractorList?.shortName}" class="many-to-one"/>
 	            				</g:if>
 	            				<g:if test="${params.search?.user != null && !params.search?.user.isEmpty()}" >
-	            					<g:select id="user" name="search.user" from="${contractorList}" optionKey="shortName" noSelection="[null:'Alle auswählen']" required="" value="${params.search?.user}" class="many-to-one"/>
+	            					<g:select id="user" name="search.user" from="${contractorList}" optionKey="shortName" noSelection="[null:'-Bitte wählen-']" value="${params.search?.user}" class="many-to-one"/>
 	            				</g:if>
 	            			</td>
 	            		</tr>
 	           			<tr>
 	            			<td>Zuständiger Knoten:</td>
 	            			<td>
-	            				<g:if test="${params.search?.initialNode == null}" >
-	            					<g:select id="initialNode" name="search.initialNode"  optionKey="name" from="${cbNodeList}" noSelection="[null:'Alle auswählen']" required="" value="${objectInstance?.cbNodeList?.name}" class="many-to-one"/>
+	            				<g:if test="${params.search?.initialNode == null || params.search?.initialNode .isEmpty()}" >
+	            					<g:select id="initialNode" name="search.initialNode"  optionKey="name" from="${cbNodeList}" noSelection="[null:'-Bitte wählen-']" value="${objectInstance?.cbNodeList?.name}" class="many-to-one"/>
 	            				</g:if>
 	            				<g:if test="${params.search?.initialNode != null && !params.search?.initialNode.isEmpty()}" >
-	            					<g:select id="initialNode" name="search.initialNode"  optionKey="name" from="${cbNodeList}" noSelection="[null:'Alle auswählen']" required="" value="${params.search?.initialNode}" class="many-to-one"/>
+	            					<g:select id="initialNode" name="search.initialNode"  optionKey="name" from="${cbNodeList}" noSelection="[null:'-Bitte wählen-']" value="${params.search?.initialNode}" class="many-to-one"/>
 	            				</g:if>
 	            			</td>
 	            		</tr>
@@ -141,7 +150,7 @@
 		           			</td>
 		           			<g:javascript>
 	           					$(document).ready(function(){
-		           				 	$("#loeschen").click(function() {                				 
+		           				 	$("#loeschen").click(function() {       
 				            			$('#searchForm').find(':input').each(function() {
 				            	            switch(this.type) {
 				                            case 'text':
@@ -151,7 +160,7 @@
 				                                $(this).val('');
 				                                break;
 				                            case 'select-one':
-					                            $(this).val(null);
+					                            $(this).val('');
 					                            break;
 				            			 	case 'hidden':
 				                                $(this).val('0');
