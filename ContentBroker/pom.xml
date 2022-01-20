@@ -479,7 +479,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>4.3.18.RELEASE</version><!-- 4.0.0.RELEASE --> <!-- 4.3.17.RELEASE -->
+			<version>4.3.21.RELEASE</version><!-- 4.0.0.RELEASE --> <!-- 4.3.17.RELEASE -->
 		</dependency>
 		
 		<dependency>
@@ -534,13 +534,14 @@
 		</dependency>
 		<dependency>
 			<groupId>org.elasticsearch</groupId>
-			<artifactId>elasticsearch</artifactId>
-			<version>0.90.3</version>
+            <artifactId>elasticsearch</artifactId>
+            <version>0.90.3</version>
+
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.3.6</version>
+			<version>4.5.13</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.jsonld-java</groupId>
