@@ -19,7 +19,7 @@ public class NavigationPage extends Page {
 		linkEntscheidungsuebersicht { $("a",text: "Entscheidungsübersicht") }
 		linkEingelieferteObjecte { $("a",text: "Eingelieferte Objekte (AIP)") }
 		linkVerarbeitungSipStarten { $("a",text: "Verarbeitung für abgelieferte SIP starten") }
-		linkObjecteEntnehmen { $("a",text: "Objekt entnehmen (DIP)") }
+		linkObjecteEntnehmen { $("a",text: "Angeforderte Objekte (DIP)") }
 		linkAnsteuerungExterneSysteme { $("a",text: "Hinweise zur Ansteuerung über externe Systeme") }
 		linkKonfigurierteKonversionen { $("a",text: "Konfigurierte Konversionen") }
 		linkAbfragenVerarbeiten { $("a",text: "Abfragen verarbeiten") }

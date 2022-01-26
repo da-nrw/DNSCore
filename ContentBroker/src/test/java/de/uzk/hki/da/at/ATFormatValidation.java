@@ -48,12 +48,15 @@ import de.uzk.hki.da.utils.XMLUtils;
  */
 public class ATFormatValidation extends PREMISBase{
 	
-	static class IdentifiedFormat{
+	public static class IdentifiedFormat{
 		String puid="";
 		String fileName="";
 		String reportingModule="";
 		String format ="";
 		String status="";
+		public IdentifiedFormat() {
+			super();
+		}
 		public IdentifiedFormat(String puid, String fileName, String reportingModule, String format, String status) {
 			super();
 			this.puid = puid;
@@ -89,7 +92,7 @@ public class ATFormatValidation extends PREMISBase{
 	private static final File unpackedDIP = new File("/tmp/ATUseCaseIngestTestFormats");
 	private Object object = null;
 	
-	private HashMap<String,IdentifiedFormat> identifiedFiles=new HashMap<String,IdentifiedFormat> (){{
+	public  HashMap<String,IdentifiedFormat> identifiedFiles=new HashMap<String,IdentifiedFormat> (){{
 		//activated xml validation
 		/*
 		put("waveFile.wav",new IdentifiedFormat("fmt/141","waveFile.wav","WAVE-hul","WAVE","Well-Formed and valid"));

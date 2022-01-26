@@ -38,11 +38,11 @@ Ihr angefordertes Objekt mit dem Namen "2-20150415425545" wurde unter
 Ihrem Outgoing Ordner unter TEST/outgoing/ abgelegt und steht jetzt zum Retrieval bereit!
 ``` 
 
-5\. Es taucht ein weiterer Button "Entnahme" auf. Per Klick auf den Button kann das DIP zu dem Objekt gedownloadet werden.
+5\. Es taucht ein Icon "Entnahme" auf. Sobald dieses Icon angezeigt wird steht das Paket zur Entname im Verzeichnis des Contractors zu Entnahme bereit. 
 
 ![](retrieval4.png)
 
-Das Objekt kann ebenfalls über die DAWeb Maske "Objekt entnehmen (DIP)" gedownloadet werden (per Klick auf das Paket, welches den entsprechenden Identifier trägt.
+Der Speicherplatz des Objektes kann ebenfalls über die DAWeb Maske "Angeforderte Objekte (DIP)" angesehen werden.
 
 ![](retrieval5.png)
 
