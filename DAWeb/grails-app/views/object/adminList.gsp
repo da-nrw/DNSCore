@@ -98,7 +98,7 @@
 					<g:if test="${params.searchDateType != null } ">
 						<g:if test="${params.searchDateType == 'createdAt'}">Datumsbereich erstellt</g:if>
 						<g:if test="${params.searchDateType == 'modifiedAt'}">Datumsbereich geändert</g:if>
-					</g:if>grails-app/views/object/list.gsp
+					</g:if>
 					<g:if test="${params.searchDateStart != null}">
 						<g:if test="${!params.searchDateStart.equals("0")}" >
 							<g:if test="${!params.searchDateStart.equals(" ")}" >
