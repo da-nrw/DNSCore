@@ -493,6 +493,9 @@ public class IrodsCommandLineConnector {
 	}
 	
 	/**
+	 * Repl-Command works differeent way after update 4.2.07 to 4.2.11. 
+	 * It does not allow -a Option more.
+	 * 
 	 * repl to resource name 
 	 * @author Jens Peters
 	 * @param rule
@@ -500,7 +503,7 @@ public class IrodsCommandLineConnector {
 	 */
 	public String repl(String dao, String resourceName) {
 		String commandAsArray[] = new String[]{
-				"irepl","-aBR",resourceName,dao
+				"irepl","-BR",resourceName,dao
 		};	
 		return executeIcommand(commandAsArray);
 	}	
