@@ -179,11 +179,22 @@ class ObjectController {
 			}
 			
 			def c1 = Object.createCriteria()
-			def objectsTotalForCount = c1.list() {
-				eq("user.id", user.id)
-				between("objectState", 50,200)
+			def objectsTotalForCount 
+			 
+			if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+				objectsTotalForCount = c1.list() {
+					between("objectState", 50,200)
+				}
+			} else {
+				objectsTotalForCount = c1.list() {
+					eq("user.id", user.id)
+					between("objectState", 50,200)
+				}
 			}
 			def totalObjs = objectsTotalForCount.size();
+			
+			
+			
 			def c = Object.createCriteria()
 			log.debug(params.toString())
 			def objects = c.list(max: params.max, offset: params.offset ?: 0) {
@@ -341,6 +352,7 @@ class ObjectController {
 					paramsList: paramsList,
 					paginate: true,
 					admin: admin,
+					totalObjs: totalObjs,
 					baseFolder: baseFolder,
 					contractorList: contractorList,
 					user: user ,
@@ -673,7 +685,7 @@ class ObjectController {
 			objArt = ARCHIVIERTE_OBJECTE
 		} else if (status == 55){
 			objArt = FEHLERHAFTE_OBJECTE
-			status = 50
+ 			status = 50
 		}
 
 		def baseFolder = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
@@ -704,7 +716,7 @@ class ObjectController {
 		}
 
 		def totalArchivedObjects = objectsArchivedForCount.size();
-
+if (objArt == )
 
 		def c = Object.createCriteria()
 		log.debug(params.toString())
@@ -876,12 +888,13 @@ class ObjectController {
 		
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			render(view:"adminList", model:[	objectInstanceList: objects,
-				objectInstanceTotal: objects.size(),
+				objectInstanceTotal: objects.getTotalCount(),
 				searchParams: params.search,
 				filterOn: filterOn,
 				paramsList: paramsList,
 				paginate: true,
 				admin: admin,
+				totalObjs: totalArchivedObjects,
 				baseFolder: baseFolder,
 				contractorList: contractorList,
 				user: user,
