@@ -160,6 +160,10 @@ public class IrodsCommandLineConnector {
 	 * @return
 	 */
 	public boolean remove(String dest) {
+		if (!exists(dest)) {
+			return false;
+		}
+		
 		String commandAsArray[] = new String[]{
 				"irm", "-rf" , dest 
 		}; 
@@ -201,12 +205,17 @@ public class IrodsCommandLineConnector {
 	public boolean existsWithChecksum(String dest, String md5sum) {
 		if (md5sum.equals(null)) throw new RuntimeException("md5sum not given");
 		if (md5sum.equals("")) throw new RuntimeException("md5sum not given");
-		String data_name = FilenameUtils.getName(dest);
-		String commandAsArray[] = new String[]{
-				"ils","-L", dest 
-		}; 
-		String out = executeIcommand(commandAsArray);
-		if (out.indexOf(data_name)>=0 && out.indexOf(md5sum)>0) return true;
+		try {
+			String data_name = FilenameUtils.getName(dest);
+			String commandAsArray[] = new String[] { "ils", "-L", dest };
+			String out = executeIcommand(commandAsArray);
+			commandAsArray = new String[] { "ichksum", "-K", "--no-compute", dest };
+			executeIcommand(commandAsArray);
+			if (out.indexOf(data_name) >= 0 && out.indexOf(md5sum) > 0) {
+				return true;
+			}
+		} catch (RuntimeException e) {
+		}
 		return false;
 	}
 	
@@ -221,6 +230,14 @@ public class IrodsCommandLineConnector {
 				"nice","-n","10","ichksum","-fa",destDao
 		};	
 		executeIcommand(commandAsArray);
+		commandAsArray = new String[]{
+				"nice","-n","10","ichksum","-K", "--no-compute",destDao
+		};	
+		try {
+			executeIcommand(commandAsArray);
+		} catch (RuntimeException e) {
+			return "";
+		}
 		return getChecksum(destDao);
 	}
 	
@@ -233,7 +250,17 @@ public class IrodsCommandLineConnector {
 	public String getChecksum(String destDao) {
 		//int spacingBeforeCehcksum=25; //old irods Version 38
 		String ret = "";
+
 		String commandAsArray[] = new String[]{
+				"ichksum",destDao
+		};
+		try {
+			executeIcommand(commandAsArray);
+		} catch (RuntimeException e) {
+			return ret;
+		}
+
+		commandAsArray = new String[]{
 				"ichksum",destDao
 		};	
 		String out = executeIcommand(commandAsArray);
@@ -493,9 +520,6 @@ public class IrodsCommandLineConnector {
 	}
 	
 	/**
-	 * Repl-Command works differeent way after update 4.2.07 to 4.2.11. 
-	 * It does not allow -a Option more.
-	 * 
 	 * repl to resource name 
 	 * @author Jens Peters
 	 * @param rule

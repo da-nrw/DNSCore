@@ -20,7 +20,6 @@ package de.uzk.hki.da.at;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -29,10 +28,10 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
-
 
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.GridFacade;
@@ -50,9 +49,6 @@ import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.PropertiesUtils;
-import gov.loc.repository.bagit.domain.Bag;
-import gov.loc.repository.bagit.reader.BagReader;
-import gov.loc.repository.bagit.verify.BagVerifier;
 
 /**
  * @author Daniel M. de Oliveira
@@ -280,6 +276,13 @@ public class AcceptanceTest {
 			clearDB();
 			deactivateLicenseValidation();
 	}
+
+	@Before
+	public void before() throws IOException {
+		System.out.println("----------------------- tests completed: " + testsCompleted++);
+	}
+	
+	static long testsCompleted = 0; 
 	
 	public static void setLicenseInPreservationSystem(PreservationSystem preservationSystem ,int lflag){
 			Session session = HibernateUtil.openSession();
@@ -338,7 +341,6 @@ public class AcceptanceTest {
 	}
 	
 	
-
 	@AfterClass
 	public static void tearDownAcceptanceTest() throws IOException{
 //		new CommandLineConnector().runCmdSynchronously(new String[] {"src/main/bash/rebuildIndex.sh"});
@@ -352,7 +354,6 @@ public class AcceptanceTest {
 			TESTHelper.dirtyClearDB();
 		}
 	}
-	
 
 	private static void cleanStorage(){
 		System.out.println("cleanStorage()");
