@@ -60,6 +60,8 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + WorkArea.AIP + address_dest;
 		String destCollection = FilenameUtils.getFullPath(gridPath);
 		
+		
+		
 		if (!iclc.exists(destCollection)) {
 			logger.debug("creating Coll " + destCollection);
 			iclc.mkCollection(destCollection);
