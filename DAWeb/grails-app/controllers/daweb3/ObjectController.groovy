@@ -799,6 +799,10 @@ class ObjectController {
 				}
 			}
 
+			if (admin==0) {
+				eq("user.id", user.id)
+			}
+			
 			if (admin==1) {
 				if (params.searchContractorName!=null) {
 					if	( !params.searchContractorName.isEmpty() || params.searchContractorName != "") {
