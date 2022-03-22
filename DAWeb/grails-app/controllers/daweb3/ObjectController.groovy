@@ -1,6 +1,4 @@
 package daweb3
-import org.hibernate.criterion.Restrictions
-
 /*
  DA-NRW Software Suite | ContentBroker
  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
@@ -185,18 +183,14 @@ class ObjectController {
 			}
 			
 			def c1 = Object.createCriteria()
-			
-			
 			def objectsTotalForCount = c1.list() {
 				if (admin == 0){
 					eq("user.id", user.id)
 				}
 				between("objectState", 50,200)
 			}
-			
-			
 			def totalObjs = objectsTotalForCount.size();
-		
+			
 			def c = Object.createCriteria()
 			log.debug(params.toString())
 			def objects = c.list(max: params.max, offset: params.offset ?: 0) {
@@ -283,10 +277,6 @@ class ObjectController {
 						//between("quality_flag", params.searchQualityLevel,params.searchQualityLevel+1)
 					}
 				}
-//
-//				if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
-//					admin = 1;
-//				}
 
 				if (admin==0) {
 
@@ -344,7 +334,7 @@ class ObjectController {
 				
 				paramsList.putAt("searchQualityLevel", params?.searchQualityLevel);
 			}
-			
+
 	 
 			if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 				render(view:"adminList", model:[	objectInstanceList: objects,
@@ -687,7 +677,7 @@ class ObjectController {
 			objArt = ARCHIVIERTE_OBJECTE
 		} else if (status == 55){
 			objArt = FEHLERHAFTE_OBJECTE
-			status = 50
+ 			status = 50
 		}
 
 		def baseFolder = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
@@ -716,7 +706,7 @@ class ObjectController {
 				eq("objectState", status)
 			}
 		}
-		
+
 		def totalArchivedObjects = objectsArchivedForCount.size();
 		def List<Object> listObject
 		log.debug(params.toString())
@@ -733,14 +723,12 @@ class ObjectController {
 			listObject= cStatus.list(){
 				eq("user.id", user.id)
 				eq("objectState", status)
-				 
 			};
-			
+
 		}
+
 		
 		List<String> queueList = new ArrayList()
-		
-		def c = Object.createCriteria()
 		List<Object> objects = c.list(max: params.max, offset: params.offset ?: 0) {
 
 			if (params.search) {
@@ -850,6 +838,7 @@ class ObjectController {
 
 		}
 
+		
 		if (status == 50) {
 			for ( int i= 0; i < objects.size(); i++) {
 				int id =  objects.getAt(i).id;
@@ -866,7 +855,7 @@ class ObjectController {
 				/* um die Liste der sich in Bearbeitung befindlichen Pakete zu erstellen, müssen aus der Liste der Objecte
 				 * diejenigen entfernt werden, welche nicht im Status auf 0 oder 2 enden.
 				 * Dies sind die fehlerhaften Pakete ;
-				 * Dieswe Unterscheidung gilt aber nur bei der Admiin Ansicht
+				 * Diese Unterscheidung gilt aber nur bei der Admiin Ansicht
 				 */
 				if (admin == 1) {
 					if (statusQueue.isEmpty() && objArt.equals(IN_BEARBEITUNG)) {
@@ -919,7 +908,7 @@ class ObjectController {
 		
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			render(view:"adminList", model:[	objectInstanceList: objects,
-				objectInstanceTotal: objects.getTotalCount(), //objects.size(),
+				objectInstanceTotal: objects.getTotalCount(),
 				searchParams: params.search,
 				filterOn: filterOn,
 				paramsList: paramsList,
@@ -934,7 +923,7 @@ class ObjectController {
 				queueList: queueList
 			]);
 		} else render(view:"list", model:[	objectInstanceList: objects,
-				objectInstanceTotal:  objects.getTotalCount(), //objects.size(), //objects.getTotalCount(),
+				objectInstanceTotal: objects.getTotalCount(),
 				searchParams: params.search,
 				filterOn: filterOn,
 				paramsList: paramsList,
