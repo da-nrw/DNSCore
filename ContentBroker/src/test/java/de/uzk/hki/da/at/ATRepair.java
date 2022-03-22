@@ -3,12 +3,9 @@ package de.uzk.hki.da.at;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.RandomAccessFile;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,7 +17,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.uzk.hki.da.grid.IrodsCommandLineConnector;
 import de.uzk.hki.da.model.Copy;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.WorkArea;
@@ -39,8 +35,38 @@ public class ATRepair extends AcceptanceTest {
 	public void tearDown(){
 	}
 
+	public void writeOnFile(String fileName, boolean append) {
+		try {
+
+			File file = Path.makeFile(fileName);
+			RandomAccessFile ranAcc = null;
+			try {
+				ranAcc = new RandomAccessFile(file, "rw");
+				if (append) {
+					ranAcc.seek(file.length());
+				} else {
+					ranAcc.seek(222);
+				}
+				System.out.println("Write to: " + fileName + " append: " + append);
+				ranAcc.writeBytes("Kaputnik");
+			} catch (Exception ex) {
+				fail("writing to file " + file + " failed" + "\n" + ex.getMessage() + "\n" + ex.toString());
+			} finally {
+				try {
+					if (ranAcc != null)
+						ranAcc.close();
+				} catch (Exception ex) {
+					fail(ex.getMessage() + "\n" + ex.toString());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage() + "\n" + e.toString());
+		}
+	}
+
 	@Test
-	public void localCopyModifiedTest() {
+	public void testLocal() {
 		try {
 			Object object = null;
 
@@ -50,35 +76,58 @@ public class ATRepair extends AcceptanceTest {
 			ath.awaitObjectState(ORIGINAL_NAME, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 			object = ath.getObject(ORIGINAL_NAME);
 
-			Path archiveStoragePath = Path.make(getCI_ARCHIVE_STORAGE());
-
-			String indy =object.getIdentifier();
-			File file = Path.makeFile(archiveStoragePath, indy, indy+".pack_1.tar");
-
-			Writer writer = null;
-			try {
-				System.out.println("Try to modify: "+file +" file is exists: "+file.exists());
-				writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "utf-8"));
-				writer.write("Kaputnik");
-			} catch (Exception ex) {
-				fail("writing to file " + file + " failed"+ "\n" +
-						ex.getMessage() + "\n" + ex.toString());
-			} finally {
-				try {
-					if(writer!=null)
-						writer.close();
-				} catch (Exception ex) {
-					fail(ex.getMessage() + "\n" + ex.toString());
-				}
-			}
-
+			String fileName = getLocalFileName(object);
+			writeOnFile(fileName, true);
+			this.waitLocalRepair(object);
 			
-			Session session = HibernateUtil.openSession();
+			fileName = getLocalFileName(object);
+			writeOnFile(fileName, false);
+			this.waitLocalRepair(object);
+			
+			this.localRemove(object);
+			this.waitLocalRepair(object);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage() + "\n" + e.toString());
+		}
+	}
 
+	String getLocalFileName(Object object) {
+		Path archiveStoragePath = Path.make(getCI_ARCHIVE_STORAGE());
+
+		String indy = object.getIdentifier();
+
+		String storeName = indy + "/" + indy + ".pack_";
+		String packName = object.getLatestPackage().getName();
+		String fileName = archiveStoragePath + "/" + storeName + packName + ".tar";
+		return fileName;
+	}	
+	
+	public void localRemove(Object object ) {
+		try {
+			String fileName = this.getLocalFileName(object);
+			File file = Path.makeFile(fileName);
+			System.out.println("Try to delete: " + file + " file is exists: " + file.exists());
+			file.delete();
+			System.out.println("Deleted: " + file + " file is exists: " + file.exists());
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage() + "\n" + e.toString());
+		}
+	}
+	
+	public void waitLocalRepair(Object object) {
+		try {
+			Session session = HibernateUtil.openSession();
 			try {
 				session.refresh(object);
 				de.uzk.hki.da.model.Package pack = object.getPackages().get(0);
 
+				int oldRepair = 0;
+				if (pack.getRepair() != null) {
+					oldRepair = pack.getRepair();
+				}
+				
 				Calendar daysAgo = Calendar.getInstance();
 				daysAgo.add(Calendar.DATE, -405);
 				Transaction tx = session.beginTransaction();
@@ -88,34 +137,38 @@ public class ATRepair extends AcceptanceTest {
 				tx.commit();
 
 				int knockOut = 0;
-				Integer repair = 0;
+				int newRepair = 0;
 				do {
-					System.out.println("Wait local package be repaired. " + knockOut+ " "+DATE_FORM.format(new Date()));
+					System.out.println(
+							"Wait local package be repaired. " + knockOut + " " + DATE_FORM.format(new Date()));
 					Thread.sleep(2000);
 					session.refresh(pack);
-					repair = pack.getRepair();
+					if (pack.getRepair() != null) {
+						newRepair = pack.getRepair();
+					}
 					knockOut++;
 					if (knockOut > MAX_RETRY) {
-						String msg = "Local package not repaired. Failed: " + file;
+						String msg = "Local package not repaired. Failed: " + object.getIdentifier();
 						System.out.println(msg);
 						fail(msg);
 					}
 
-				} while (repair == null);
-				System.out.println("Local package repaired!");
+				} while (newRepair != oldRepair + 1);
+				String fileName = getLocalFileName(object);
+				assertTrue(new File(fileName).exists());
+				System.out.println("Local package " + fileName + " " + newRepair + " times repaired!");
 			} finally {
 				session.close();
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
-			fail(e.getMessage()+"\n"+e.toString());
+			fail(e.getMessage() + "\n" + e.toString());
 		}
 	}
-
 	
 	@Test
-	public void remoteCopyDeletedTest() {
+	public void remoteTest() {
 		try {
 			Object object = null;
 
@@ -124,84 +177,116 @@ public class ATRepair extends AcceptanceTest {
 			ath.putSIPtoIngestArea(ORIGINAL_NAME, "tgz", ORIGINAL_NAME);
 			ath.awaitObjectState(ORIGINAL_NAME, Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 			object = ath.getObject(ORIGINAL_NAME);
-
 			Session session = HibernateUtil.openSession();
+			session.refresh(object);
+			List<Copy> copyList = object.getLatestPackage().getCopies();
+			if (copyList.size() < 1) {
+				return;
+			}
 
-			try {
-				Transaction tx = session.beginTransaction();
-				session.refresh(object);
+			Copy copy = copyList.get(0);
+			this.remoteRemove(object, copy);
+			this.waitRemoteRepair(session, object, copy);
 
-				List<Copy> copyList = object.getLatestPackage().getCopies();
-				if (copyList.size() < 1) {
-					return;
+			String fileName = this.getRemoteFileName(object, copy);
+			writeOnFile(fileName, true);
+			this.waitRemoteRepair(session, object, copy);
+			
+			fileName = this.getRemoteFileName(object, copy);
+			writeOnFile(fileName, false);
+			this.waitRemoteRepair(session, object, copy);
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage() + "\n" + e.toString());
+		}
+	}
+
+	public void remoteRemove(Object object, Copy copy) {
+		try {
+			String fileName = getRemoteFileName(object, copy);
+			File file = new File(fileName);
+			System.out.println("Try to delete: " + file + " file is exists: " + file.exists());
+			file.delete();
+			System.out.println("Deleted: " + file + " file is exists: " + file.exists());
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage() + "\n" + e.toString());
+		}
+	}
+
+	public String getRemoteFileName(Object object, Copy copy) {
+		String indy = object.getIdentifier();
+		String federated = "/ci/archiveStorage/CN/federated/" + localNode.getIdentifier() + "/" + WorkArea.AIP + "/"
+				+ object.getContractor().getShort_name();
+		String tarName = indy + "/" + indy + ".pack_" + copy.getPackName() + ".tar";
+		String fileName = federated + "/" + tarName;
+		return fileName;
+	}
+	
+	public void waitRemoteRepair(Session session, Object object, Copy copy) {
+		try {
+			Calendar daysAgo = Calendar.getInstance();
+			daysAgo.add(Calendar.DATE, -405);
+
+			Transaction tx = session.beginTransaction();
+			String oldCS = copy.getChecksum();
+			copy.setChecksumDate(daysAgo.getTime());
+			session.save(copy);
+			tx.commit();
+
+			String newCS;
+
+			int knockOut = 0;
+			do {
+				System.out.println("Wait Recomputing of Checksum. " + knockOut + " " + DATE_FORM.format(new Date()));
+				Thread.sleep(2000);
+				session.refresh(copy);
+				newCS = copy.getChecksum();
+				knockOut++;
+				if (knockOut > MAX_RETRY) {
+					String msg = "Recomputing of Checksum not performed. Failed: " + object.getIdentifier();
+					System.out.println(msg);
+					fail(msg);
 				}
 
-				Copy copy = copyList.get(0);
-				String oldCS = copy.getChecksum();
+			} while (oldCS.equals(newCS));
+			System.out.println("Checksum recomputed!");
 
-				String daoBase = WorkArea.AIP + "/" + object.getContractor().getShort_name() + "/" + object.getIdentifier() + "/" + object.getIdentifier() + ".pack_";
+			tx = session.beginTransaction();
+			object.setLast_checked(daysAgo.getTime());
+			session.save(object);
+			tx.commit();
 
-				String foreignName = "/" + copy.getNode().getIdentifier() + "/federated" 
-									+ "/" + localNode.getIdentifier() + "/" 
-									+ daoBase + copy.getPackName() + ".tar";;
-
-				System.out.println("Will destroy: " + foreignName);
-
-				IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
-				iclc.remove(foreignName);
-
-				Calendar daysAgo = Calendar.getInstance();
-				daysAgo.add(Calendar.DATE, -405);
-
-				copy.setChecksumDate(daysAgo.getTime());
-				session.save(copy);
-				tx.commit();
-
-				String newCS;
-				
-				int knockOut = 0; 
-				do {
-					System.out.println("Wait Recomputing of Checksum. " + knockOut+" "+DATE_FORM.format(new Date()));
-					Thread.sleep(2000);
-					session.refresh(copy);
-					newCS = copy.getChecksum();
-					knockOut++;
-					if (knockOut > MAX_RETRY){
-						String msg = "Recomputing of Checksum not performed. Failed: " + foreignName;
-						System.out.println(msg);
-						fail(msg);
-					}
-						
-				} while (oldCS.equals(newCS));
-				System.out.println("Checksum recomputed!");
-
-				tx = session.beginTransaction();
-				object.setLast_checked(daysAgo.getTime());
-				session.save(object);
-				tx.commit();
-				
-				knockOut = 0;
-				do {
-					System.out.println("Wait remote package to be repaired. " + knockOut+" "+DATE_FORM.format(new Date()));
-					Thread.sleep(2000);
-					session.refresh(copy);
-					newCS = copy.getChecksum();
-					knockOut++;
-					if (knockOut > MAX_RETRY){
-						String msg = "Foreign package not repaired. Failed: " + foreignName;
-						System.out.println(msg);
-						fail(msg);
-					}
-						
-				} while (!oldCS.equals(newCS));
-				System.out.println("Remote package repaired!");
-
-			} finally {
-				session.close();
+			int oldRepair = 0;
+			if (copy.getRepair() != null) {
+				oldRepair = copy.getRepair();
 			}
-			} catch (Exception e) {
+			
+			knockOut = 0;
+			int newRepair = 0;
+			do {
+				System.out.println(
+						"Wait remote package to be repaired. " + knockOut + " " + DATE_FORM.format(new Date()));
+				Thread.sleep(2000);
+				session.refresh(copy);
+				if (copy.getRepair() != null) {
+					newRepair = copy.getRepair();
+				}
+				knockOut++;
+				if (knockOut > MAX_RETRY) {
+					String msg = "Foreign package not repaired. Failed: " + object.getIdentifier();
+					System.out.println(msg);
+					fail(msg);
+				}
+			} while (newRepair != oldRepair + 1);
+			String fileName = this.getRemoteFileName(object, copy);
+			assertTrue(new File(fileName).exists());
+			System.out.println("Remote package " + fileName + " " + newRepair + " times repaired!");
+
+		} catch (Exception e) {
 			e.printStackTrace();
-			fail(e.getMessage()+"\n"+e.toString());
+			fail(e.getMessage() + "\n" + e.toString());
 		}
 	}
 

@@ -1,8 +1,6 @@
 DNSCore         
-========
- 
+======== 
 
-  
 [Dokumentation der DA-NRW Software Suite (DNS)](ContentBroker/src/main/markdown/documentation.de.md)
 
  
@@ -13,6 +11,7 @@ DNSCore
 [SIP-Builder HERUNTERLADEN](https://github.com/da-nrw/DNSCore/releases/download/2145release/SipBuilder-b2145.zip)
 
 Please download the SIP-Builder [here](https://github.com/da-nrw/DNSCore/releases/download/2145release/SipBuilder-b2145.zip)
+
 
 The Core System of the DA-NRW Software Suite.
    
