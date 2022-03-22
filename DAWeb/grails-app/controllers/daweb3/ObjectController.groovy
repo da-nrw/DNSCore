@@ -729,6 +729,8 @@ class ObjectController {
 
 		
 		List<String> queueList = new ArrayList()
+		
+		def c = Object.createCriteria()
 		List<Object> objects = c.list(max: params.max, offset: params.offset ?: 0) {
 
 			if (params.search) {
@@ -923,7 +925,7 @@ class ObjectController {
 				queueList: queueList
 			]);
 		} else render(view:"list", model:[	objectInstanceList: objects,
-				objectInstanceTotal: objects.getTotalCount(),
+				objectInstanceTotal: objects.getTotalCount(), 
 				searchParams: params.search,
 				filterOn: filterOn,
 				paramsList: paramsList,
