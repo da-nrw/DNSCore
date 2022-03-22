@@ -295,7 +295,7 @@
 		</div>
 		<div id="list-object" class="content scaffold-list" role="main">
 			<h3>Ihre ${objArt} DA-NRW Objekte (${objectInstanceList.size()}
-				Treffer)</h3>
+				Treffer von insgesamt ${totalObjs})</h3>
 			<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 			</g:if>
