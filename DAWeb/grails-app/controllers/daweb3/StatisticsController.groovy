@@ -3,6 +3,7 @@ package daweb3
 
 
 import java.awt.font.GraphicAttribute
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 
 import javax.swing.JFileChooser
@@ -31,6 +32,7 @@ import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
 import com.itextpdf.text.pdf.draw.LineSeparator
 
+import de.uzk.hki.da.utils.MapFormats
 import groovy.util.ObservableList.ElementAddedEvent
 import grails.converters.JSON
 
@@ -105,17 +107,18 @@ class StatisticsController {
 		// bisher belegter Speicher
 		// du -sh ./
 		// usedStorage
-		 runCommandGetStorage();
-		 println ("usedStorage Ende: " + usedStorage)
+		runCommandGetStorage();
 
 		def countFormats = 0
-		objectsAll = Object.findAllByUser(user);
+		HashMap<String, String> extListSipGemappt = [:]
 		
+		objectsAll = Object.findAllByUser(user);
+
 		for (int i= 0; i<  objectsAll.size(); i++) {
 			// Speicherbelegung
 			aipSizeGesamt = aipSizeGesamt + objectsAll[i].aipSize
 
-			
+
 			// Anzahl archivierter Dateien
 			if (objectsAll[i].objectState == 100) {
 				archived = archived + 1
@@ -130,6 +133,7 @@ class StatisticsController {
 
 			// Auswertung SIP ueber PUID
 			def originalFormat = objectsAll[i].original_formats
+			
 			if (originalFormat != null &&  !originalFormat.equals("")) {
 				if (formatSIPArray != null ) {
 					formatSIPArray = formatSIPArray + (String[]) originalFormat.split(",")
@@ -152,17 +156,23 @@ class StatisticsController {
 
 		}
 
-		aipSizeGesamt = aipSizeGesamt / GIGABYTE
+
+		DecimalFormat df = new DecimalFormat("0.00");
+		aipSizeGesamt = df.format(aipSizeGesamt / GIGABYTE)
+		//		aipSizeGesamt = df.format(aipSizeGesamt)
 
 		// Qualitaetsangaben
 		findQualityLevel()
 
 		// Auswertung SIP ueber PUID
-		extListSIP = getFormatsAndCountThem(formatSIPArray)
-
+		
+		MapFormats mf = new MapFormats()
+		String  extListS = mf.formatMappingStatistik(formatSIPArray);
+		extListSIP = getFormatsAndCountThem(extListS)
+		
 		// Auswertung DIP ueber PUID
-		extListDIP = getFormatsAndCountThem(formatDIPArray)
-
+		String  extListD = mf.formatMappingStatistik(formatDIPArray);
+		extListDIP = getFormatsAndCountThem(extListD)
 
 		render(view:'index', model:[qualityLevels: qualityList,
 			aipSizeGesamt: aipSizeGesamt,
@@ -179,10 +189,10 @@ class StatisticsController {
 	private runCommandGetStorage() {
 		User user = springSecurityService.currentUser
 
-		String aipDir ="/ci/archiveStorage/aip/TEST/" 
+		String aipDir ="/ci/archiveStorage/aip/TEST/"
 		// grailsApplication.config.getProperty('localNode.userAreaRootPath')+ "/" + user.getShortName()
 		String cmd = "du -sh "  + aipDir
-		
+
 		try {
 			Runtime run = Runtime.getRuntime();
 			Process proc =  run.exec(cmd);
@@ -190,35 +200,39 @@ class StatisticsController {
 			BufferedReader buf = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 			String line = "";
 			while (true) {
-				 line = buf.readLine()
-				 if (line == null) { break; }
+				line = buf.readLine()
+				if (line == null) { break; }
 				String tmp = line.substring(0, line.indexOf("/")).trim()
 				if (tmp.contains("M")) {
-					tmp = tmp.replaceFirst("M", " Megabyte")
+					tmp = tmp.replaceFirst("M", "  Megabyte")
 				}  else if (tmp.contains("G")) {
-					tmp = tmp.replace("G", "Gigabyte")
+					tmp = tmp.replace("G", " Gigabyte")
 				}
- 				usedStorage =  tmp
+				usedStorage =  tmp
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace()
 		}
-		
+
 	}
 
 	/**
 	 * getFormatsAndCountThem: zählt die bisher verwendeten Formate
-	 * @param formatArray: StringArray der verwendeten Formate
+	 * @param formatString: String der verwendeten Formate
 	 * @return extList: eingehende Liste erweitert um die Anzahl der jeweiligen Formate
 	 */
-	private Map<String, String> getFormatsAndCountThem(String[] formatArray) {
-
+	private Map<String, String> getFormatsAndCountThem(String formatString) {
+		
 		Map<String, String> extList = [:]
+		String [] formlist = ""
 		int counter = 0
 		def format = null
-		while (formatArray.size() > counter ) {
+		formlist = (String[]) formatString.split(",")
+		println ("formlist: " + formlist.size())
+		
+		while (formlist.size() > counter ) {
 			if (format != null) {
-				if (formatArray[counter-1].toString().equals(format)) {
+				if (formlist[counter-1].toString().equals(format)) {
 					int  getAtPos = 0
 					if (extList.getAt(format) != null ) {
 						getAtPos = extList.getAt(format)
@@ -226,16 +240,16 @@ class StatisticsController {
 					extList.remove(format)
 					extList.put(format, getAtPos + 1)
 				} else {
-					format = formatArray[counter]
+					format = formlist[counter]
 				}
 			} else {
-				format = formatArray[counter];
+				format = formlist[counter];
 				extList.put(format, 1)
 			}
 			// and at last increment the counter
 			counter ++
 		}
-
+println ("extList: " + extList)
 		return extList
 	}
 
@@ -271,25 +285,18 @@ class StatisticsController {
 		sb.append(" Auswertung SIP")
 		sb.append(";")
 		sb.append(" Auswertung DIP")
-		sb.append("\n")
 
-
-		println ("aipSizeGesamt: " + aipSizeGesamt + " -- archived: " + archived + "  -- qualityList: " + qualityList
-				+ "  -- extListSIP: " + extListSIP + "  --- extListDIP: " + extListDIP)
 		def speicher = aipSizeGesamt
 		def pakete = archived
 		def quality = ['qualityList']
 		def sipList = ['extListSIP']
-		def dipList =  ['extListDIP']
-
-		println(" speicher: " + speicher + "  -- pakete: " + pakete + "  -- quality: " + quality +
-				" -- sipList: " + sipList + "  --dipList: " + dipList)
+		def dipList = ['extListDIP']
 
 		try {
-
-
+			char delimiter = ';'
+			CSVFormat csvFmt = CSVFormat.EXCEL.withDelimiter(delimiter)
 			new File(saveFile).withWriter{ fileWriter ->
-				def csvFilePrinter = new CSVPrinter(fileWriter, CSVFormat.DEFAULT)
+				def csvFilePrinter = new CSVPrinter(fileWriter, csvFmt)
 
 				csvFilePrinter.printRecord(sb.toString())
 				speicher.each { s ->
@@ -429,13 +436,12 @@ class StatisticsController {
 		addEmptyLine(paragraph, 1)
 
 		Paragraph aipSize = new Paragraph("AIP-Size aller bisher eingelieferten Pakete: " +
-				aipSizeGesamt + " in TeraByte",	 NORMAL_FONT)
+				aipSizeGesamt + " in GigaByte",	 NORMAL_FONT)
 
 		paragraph.add(aipSize)
 		addEmptyLine(paragraph, 1)
 
-		Paragraph belegterSpeicher = new Paragraph ("bisher belgter Speicher: " +
-				" XXX  in GigaByte", NORMAL_FONT)
+		Paragraph belegterSpeicher = new Paragraph ("bisher belgter Speicher: " + usedStorage, NORMAL_FONT)
 		paragraph.add(belegterSpeicher)
 		addEmptyLine(paragraph, 1)
 
@@ -469,7 +475,6 @@ class StatisticsController {
 
 		Paragraph puidSip = new Paragraph("Dateiformate im SIP", NORMAL_FONT)
 
-		println(" extListSIP 2: " + extListSIP)
 		createTablePuid(puidSip, extListSIP)
 		paragraph.add(puidSip)
 		addEmptyLine(paragraph, 1)
