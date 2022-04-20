@@ -1,4 +1,7 @@
 package daweb3
+
+import java.text.SimpleDateFormat
+
 /*
  DA-NRW Software Suite | ContentBroker
  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung

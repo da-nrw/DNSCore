@@ -62,7 +62,7 @@ import grails.converters.JSON
 class StatisticsController {
 
 	def springSecurityService
-	def qualityList
+	ArrayList qualityList
 	def aipSizeGesamt
 	def archived
 	def pipArchived
@@ -110,7 +110,6 @@ class StatisticsController {
 		runCommandGetStorage();
 
 		def countFormats = 0
-		HashMap<String, String> extListSipGemappt = [:]
 		
 		objectsAll = Object.findAllByUser(user);
 
@@ -173,7 +172,9 @@ class StatisticsController {
 		// Auswertung DIP ueber PUID
 		String  extListD = mf.formatMappingStatistik(formatDIPArray);
 		extListDIP = getFormatsAndCountThem(extListD)
-
+for (int i = 0; i< qualityList.size(); i++) {
+	println ("ql: " + qualityList.get(i))
+}
 		render(view:'index', model:[qualityLevels: qualityList,
 			aipSizeGesamt: aipSizeGesamt,
 			archived: archived,
@@ -228,7 +229,6 @@ class StatisticsController {
 		int counter = 0
 		def format = null
 		formlist = (String[]) formatString.split(",")
-		println ("formlist: " + formlist.size())
 		
 		while (formlist.size() > counter ) {
 			if (format != null) {
@@ -249,7 +249,6 @@ class StatisticsController {
 			// and at last increment the counter
 			counter ++
 		}
-println ("extList: " + extList)
 		return extList
 	}
 
@@ -261,7 +260,7 @@ println ("extList: " + extList)
 
 	private String getDateTime() {
 		String dateTime = "";
-		SimpleDateFormat sdf =  new SimpleDateFormat("dd-MM-yyyy_HH:mm:ss");
+		SimpleDateFormat sdf =  new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss");
 		dateTime = sdf.format(new Date())
 		return dateTime;
 	}
@@ -278,30 +277,33 @@ println ("extList: " + extList)
 		StringBuilder sb = new StringBuilder();
 		sb.append("Speicher")
 		sb.append(";")
-		sb.append(" Pakete")
+		sb.append("Pakete")
 		sb.append(";")
-		sb.append(" Qualitaetslevel")
+		sb.append("Qualitaetslevel")
 		sb.append(";")
-		sb.append(" Auswertung SIP")
+		sb.append("Auswertung SIP")
 		sb.append(";")
-		sb.append(" Auswertung DIP")
-
+		sb.append("Auswertung DIP")
+		
 		def speicher = aipSizeGesamt
 		def pakete = archived
-		def quality = ['qualityList']
-		def sipList = ['extListSIP']
-		def dipList = ['extListDIP']
+		List<Object> quality =  qualityList 
+//		def sipList = ['extListSIP']
+//		def dipList = ['extListDIP']
 
 		try {
 			char delimiter = ';'
 			CSVFormat csvFmt = CSVFormat.EXCEL.withDelimiter(delimiter)
+			for (int i = 0; quality.size(); i++) {
+				println ("ql: " + quality.get(i))
+			}
 			new File(saveFile).withWriter{ fileWriter ->
 				def csvFilePrinter = new CSVPrinter(fileWriter, csvFmt)
 
 				csvFilePrinter.printRecord(sb.toString())
 				speicher.each { s ->
 					pakete.each { p ->
-						quality.each { q ->
+						qualityList.each { q ->
 							extListSIP.each { sip ->
 								extListDIP.each { dip ->
 									csvFilePrinter.printRecord([s, p, q, sip, dip])
