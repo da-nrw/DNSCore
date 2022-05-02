@@ -167,7 +167,6 @@ public class IngestAreaScannerWorker extends Worker{
 		try {
 			
 			Session session = HibernateUtil.openSession();
-
 			Node node = (Node) session.get(Node.class, Integer.parseInt(this.localNodeId));
 			String nodeName = node.getName();
 
