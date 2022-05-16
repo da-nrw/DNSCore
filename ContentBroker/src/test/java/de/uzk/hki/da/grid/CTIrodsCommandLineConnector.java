@@ -91,30 +91,8 @@ public class CTIrodsCommandLineConnector {
 				FilenameUtils.getFullPathNoEndSeparator(dao3);
 		iclc.mkCollection(destColl2);
 		md5sum = MD5Checksum.getMD5checksumForLocalFile(file);
-		if(iclc.exists(dao))
-			iclc.remove(dao);
 		assertTrue(iclc.put(file, dao, archiveStorage ));
 	}
-	
-	@After
-	public void remove() {
-		iclc.remove(dao);
-		iclc.remove(dao2);
-		iclc.remove(dao3);
-		iclc.remove(daolong);
-		iclc.remove("/" + zone + "/aip/connector");
-		iclc.remove("/" + zone + "/aip/connector2");
-
-		new File(testCollPhysicalPathOnLTA+"/urn.tar").delete();
-		}
-	
-	@AfterClass
-	public static void cleanup () throws IOException {
-		FolderUtils.deleteDirectorySafe(new File(tmpDir));
-		FolderUtils.deleteQuietlySafe(new File(workingRescPhysicalPath + "/aip/connector/urn3.tar"));
-	}
-	
-	
 	@Test
 	public void testPut() throws IOException {
 
@@ -148,7 +126,23 @@ public class CTIrodsCommandLineConnector {
 		assertEquals(iclc.computeChecksumForce(dao),md5sum);
 	}
 	
+	@After
+	public void remove() {
+		iclc.remove(dao);
+		iclc.remove(dao2);
+		iclc.remove(dao3);
+		iclc.remove(daolong);
+		iclc.remove("/" + zone + "/aip/connector");
+		iclc.remove("/" + zone + "/aip/connector2");
 
+		new File(testCollPhysicalPathOnLTA+"/urn.tar").delete();
+		}
+	
+	@AfterClass
+	public static void cleanup () throws IOException {
+		FolderUtils.deleteDirectorySafe(new File(tmpDir));
+		FolderUtils.deleteQuietlySafe(new File(workingRescPhysicalPath + "/aip/connector/urn3.tar"));
+	}
 
 	@Test
 	public void testGetChecksum() {
@@ -170,6 +164,7 @@ public class CTIrodsCommandLineConnector {
 	
 		destroyTestFileOnLongTermStorage();
 		assertFalse(iclc.isValid(dao));
+		assertTrue(iclc.existsWithChecksum(dao, md5sum));
 		iclc.computeChecksumForce(dao);
 		assertFalse(iclc.existsWithChecksum(dao, md5sum));
 		
@@ -222,11 +217,11 @@ public class CTIrodsCommandLineConnector {
 	public void testItrim() {
 		iclc.repl(dao, workingResc);
 		assertTrue(new File(workingRescPhysicalPath + "/aip/connector/urn.tar").exists());	
-		iclc.itrim(dao, workingResc, 1);
+		iclc.itrim(dao, workingResc, 1, 1);
 		assertFalse(new File(workingRescPhysicalPath + "/aip/connector/urn.tar").exists());
 		
 	}
-
+	
 	@Test
 	public void testIReg() throws IOException {
 		String destColl = new File(dao3).getParentFile().getAbsolutePath();
@@ -245,7 +240,16 @@ public class CTIrodsCommandLineConnector {
 	}
 	
 	//-----------------------------------------------
-
+	
+	private File createTestFile() throws IOException {
+		new File(tmpDir).mkdir();
+		File temp = new File(tmpDir + "urn.tar");
+		FileWriter writer = new FileWriter(temp ,false);
+		writer.write("Hallo Wie gehts?");
+		writer.close();
+		return temp;
+	}
+	
 	private void destroyTestFileOnLongTermStorage() throws IOException {
 		File testFile = new File(testCollPhysicalPathOnLTA+"/urn.tar");
 		FileWriter writer = new FileWriter(testFile ,false);
@@ -266,20 +270,6 @@ public class CTIrodsCommandLineConnector {
 		
 		return testFile;
 	}
-	
-	
-	
-	
-	
-	private File createTestFile() throws IOException {
-		new File(tmpDir).mkdir();
-		File temp = new File(tmpDir + "urn.tar");
-		FileWriter writer = new FileWriter(temp ,false);
-		writer.write("Hallo Wie gehts?");
-		writer.close();
-		return temp;
-	}
-	
 	private static Properties readProperties() throws IOException {
 		
 		Properties properties = null;
@@ -292,7 +282,6 @@ public class CTIrodsCommandLineConnector {
 		}
 		return properties;
 	}
-	
 	
 
 }
