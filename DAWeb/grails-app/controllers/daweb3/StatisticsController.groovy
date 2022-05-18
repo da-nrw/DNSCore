@@ -110,7 +110,7 @@ class StatisticsController {
 		runCommandGetStorage();
 
 		def countFormats = 0
-		
+
 		objectsAll = Object.findAllByUser(user);
 
 		for (int i= 0; i<  objectsAll.size(); i++) {
@@ -132,14 +132,14 @@ class StatisticsController {
 
 			// Auswertung SIP ueber PUID
 			def originalFormat = objectsAll[i].original_formats
-			
+
 			if (originalFormat != null &&  !originalFormat.equals("")) {
 				if (formatSIPArray != null ) {
 					formatSIPArray = formatSIPArray + (String[]) originalFormat.split(",")
 				} else {
 					formatSIPArray = (String[]) originalFormat.split(",")
 				}
-				
+
 			}
 
 			// Auswertung PIP ueber PUID
@@ -164,17 +164,17 @@ class StatisticsController {
 		findQualityLevel()
 
 		// Auswertung SIP ueber PUID
-		
+
 		MapFormats mf = new MapFormats()
 		String  extListS = mf.formatMappingStatistik(formatSIPArray);
 		extListSIP = getFormatsAndCountThem(extListS)
-		
+
 		// Auswertung DIP ueber PUID
 		String  extListD = mf.formatMappingStatistik(formatDIPArray);
 		extListDIP = getFormatsAndCountThem(extListD)
-for (int i = 0; i< qualityList.size(); i++) {
-	println ("index: ql1: " + qualityList.get(i))
-}
+		for (int i = 0; i< qualityList.size(); i++) {
+			println ("index: ql1: " + qualityList.get(i))
+		}
 		render(view:'index', model:[qualityLevels: qualityList,
 			aipSizeGesamt: aipSizeGesamt,
 			archived: archived,
@@ -223,13 +223,13 @@ for (int i = 0; i< qualityList.size(); i++) {
 	 * @return extList: eingehende Liste erweitert um die Anzahl der jeweiligen Formate
 	 */
 	private Map<String, String> getFormatsAndCountThem(String formatString) {
-		
+
 		Map<String, String> extList = [:]
 		String [] formlist = ""
 		int counter = 0
 		def format = null
 		formlist = (String[]) formatString.split(",")
-		
+
 		while (formlist.size() > counter ) {
 			if (format != null) {
 				if (formlist[counter-1].toString().equals(format)) {
@@ -274,10 +274,9 @@ for (int i = 0; i< qualityList.size(); i++) {
 
 		def saveFile = getOutgoingDir() + "statistik_" + getDateTime() + ".csv";
 
-	
+
 		def speicher = aipSizeGesamt
 		def pakete = archived
-//		ArrayList<Object> quality =  qualityList 
 		List qLevel = new ArrayList()
 		List qAnzahl= new ArrayList()
 
@@ -289,54 +288,52 @@ for (int i = 0; i< qualityList.size(); i++) {
 				qLevel.add( ql.get(i).getAt(1).toString())
 			}
 		}
-		println ("anzahl: " + qAnzahl)
-		println ("level: " + qLevel)
-		
+
 		List sipList = new ArrayList()
 		List slAnzahl= new ArrayList()
 		for(String puid : extListSIP.keySet())
-			{
-				sipList.add(puid)
-				slAnzahl.add(extListSIP.get(puid).toString())	
-			}
-			println ("sipList: " + sipList)
-			println ("slAnzahl: " + slAnzahl)
-			
-		
+		{
+			sipList.add(puid)
+			slAnzahl.add(extListSIP.get(puid).toString())
+		}
+
+		List pipList = new ArrayList()
+		List plAnzahl= new ArrayList()
+		for(String puid : extListDIP.keySet())
+		{
+			pipList.add(puid)
+			plAnzahl.add(extListDIP.get(puid).toString())
+		}
+
 		try {
 			char delimiter = ';'
 			CSVFormat csvFmt = CSVFormat.EXCEL.withDelimiter(delimiter)
 			new File(saveFile).withWriter{ fileWriter ->
 				def csvFilePrinter = new CSVPrinter(fileWriter, csvFmt)
 
-				csvFilePrinter.printRecord("Speicher", "Pakete", 
-					"Qualitaetslevel") //), "Anzahl", "Auswertung SIP","Anzahl",
-//					"Auswertung PIP", "Anzahl")
-//				csvFilePrinter.printRecord(
-//					qLevel.each { l-> 
-//						csvFilePrinter.printRecord([speicher,pakete , l])
-//					}
-//				 
-//				)				
 				 
-				csvFilePrinter.printRecord("Speicher", "Pakete", 
-					"Qualitaetslevel" , "Anzahl", "Auswertung SIP","Anzahl",
-					"Auswertung PIP", "Anzahl")
+				csvFilePrinter.printRecord("Speicher", "Pakete",
+						"Qualitaetslevel" , "Anzahl", "Auswertung SIP","Anzahl",
+						"Auswertung PIP", "Anzahl")
 				speicher.each { s ->
 					pakete.each { p ->
-						qLevel.each { l -> 
+						qLevel.each { l ->
 							qAnzahl.each{ a ->
 								sipList.each { sip ->
 									slAnzahl.each {sla ->
-										extListDIP.each { dip ->
-											csvFilePrinter.printRecord([s, p, l, a, sip, sla, dip])
+										pipList.each { pip ->
+											plAnzahl.each {pla ->
+												csvFilePrinter.printRecord([s, p, l, a, sip, sla, pip, pla])
+											}
 										}
 									}
-								} 
+								}
 							}
 						}
 					}
 				}
+				csvFilePrinter.flush();
+				csvFilePrinter.close();
 			}
 			result.msg= "Die Erzeugung der csv-Datei ${saveFile} wurde erfolgreich abgeschlossen."
 			result.success = true
@@ -345,7 +342,7 @@ for (int i = 0; i< qualityList.size(); i++) {
 			e.printStackTrace()
 			result.msg =" Ups, hier ist etwas schiefgelaufen. Es konnte keine csv-Datei erstellt werden. "
 		}
- 		render result as JSON 
+		render result as JSON
 	}
 
 	/**
