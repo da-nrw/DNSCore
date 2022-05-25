@@ -2,20 +2,16 @@ package daweb3
 
 
 
-import java.awt.font.GraphicAttribute
+import java.nio.file.Paths
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
-
-import javax.swing.JFileChooser
 
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVPrinter
 import org.dom4j.DocumentException
 
-import com.itextpdf.text.Anchor
 import com.itextpdf.text.BadElementException
 import com.itextpdf.text.BaseColor
-import com.itextpdf.text.Chapter
 import com.itextpdf.text.Chunk
 import com.itextpdf.text.Document
 import com.itextpdf.text.Element
@@ -23,17 +19,12 @@ import com.itextpdf.text.Font
 import com.itextpdf.text.Image
 import com.itextpdf.text.Paragraph
 import com.itextpdf.text.Phrase
-import com.itextpdf.text.Section
-import com.itextpdf.text.pdf.BaseFont
-import com.itextpdf.text.pdf.PRAcroForm
-import com.itextpdf.text.pdf.PdfContentByte
 import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
 import com.itextpdf.text.pdf.draw.LineSeparator
 
 import de.uzk.hki.da.utils.MapFormats
-import groovy.util.ObservableList.ElementAddedEvent
 import grails.converters.JSON
 
 /*
@@ -172,9 +163,9 @@ class StatisticsController {
 		// Auswertung DIP ueber PUID
 		String  extListD = mf.formatMappingStatistik(formatDIPArray);
 		extListDIP = getFormatsAndCountThem(extListD)
-		for (int i = 0; i< qualityList.size(); i++) {
-			println ("index: ql1: " + qualityList.get(i))
-		}
+//		for (int i = 0; i< qualityList.size(); i++) {
+//			println ("index: ql1: " + qualityList.get(i))
+//		}
 		render(view:'index', model:[qualityLevels: qualityList,
 			aipSizeGesamt: aipSizeGesamt,
 			archived: archived,
@@ -277,33 +268,6 @@ class StatisticsController {
 
 		def speicher = aipSizeGesamt
 		def pakete = archived
-		List qLevel = new ArrayList()
-		List qAnzahl= new ArrayList()
-
-		if (qualityList instanceof ArrayList ) {
-
-			ArrayList ql = (ArrayList) qualityList
-			for (int i = 0; i < ql.size(); i++ ) {
-				qAnzahl.add(ql.get(i).getAt(0).toString())
-				qLevel.add( ql.get(i).getAt(1).toString())
-			}
-		}
-
-		List sipList = new ArrayList()
-		List slAnzahl= new ArrayList()
-		for(String puid : extListSIP.keySet())
-		{
-			sipList.add(puid)
-			slAnzahl.add(extListSIP.get(puid).toString())
-		}
-
-		List pipList = new ArrayList()
-		List plAnzahl= new ArrayList()
-		for(String puid : extListDIP.keySet())
-		{
-			pipList.add(puid)
-			plAnzahl.add(extListDIP.get(puid).toString())
-		}
 
 		try {
 			char delimiter = ';'
@@ -311,33 +275,52 @@ class StatisticsController {
 			new File(saveFile).withWriter{ fileWriter ->
 				def csvFilePrinter = new CSVPrinter(fileWriter, csvFmt)
 
-				 
 				csvFilePrinter.printRecord("Speicher", "Pakete",
-						"Qualitaetslevel" , "Anzahl", "Auswertung SIP","Anzahl",
-						"Auswertung PIP", "Anzahl")
-				speicher.each { s ->
-					pakete.each { p ->
-						qLevel.each { l ->
-							qAnzahl.each{ a ->
-								sipList.each { sip ->
-									slAnzahl.each {sla ->
-										pipList.each { pip ->
-											plAnzahl.each {pla ->
-												csvFilePrinter.printRecord([s, p, l, a, sip, sla, pip, pla])
-											}
-										}
-									}
-								}
-							}
-						}
+								"Qualitaetslevel" , "Anzahl" , "Auswertung SIP","Anzahl" ,
+								"Auswertung PIP", "Anzahl")
+
+				List <String> values = new ArrayList<String>(); 
+				values.add(speicher)
+				values.add(pakete)
+				csvFilePrinter.printRecord(values)
+				values = new ArrayList<>();
+				values.add("")
+				values.add("")
+				if (qualityList instanceof ArrayList ) {
+					ArrayList ql = (ArrayList) qualityList
+					for (int i = 0; i < ql.size(); i++ ) {
+						values.add(ql.get(i).getAt(1).toString())
+						values.add(ql.get(i).getAt(0).toString())
+						csvFilePrinter.printRecord(values)
+						values.remove(ql.get(i).getAt(1).toString())
+						values.remove(ql.get(i).getAt(0).toString())
 					}
 				}
+				values.add("")
+				values.add("") 
+				for(String puid : extListSIP.keySet()){
+						values.add(puid)
+						values.add(extListSIP.get(puid).toString())
+						csvFilePrinter.printRecord(values)
+						values.remove(puid)
+						values.remove(extListSIP.get(puid).toString())
+				}
+				values.add("")
+				values.add("")
+				for(String puid : extListDIP.keySet()){
+						values.add(puid)
+						values.add(extListDIP.get(puid).toString())
+						csvFilePrinter.printRecord(values)
+						values.remove(puid)
+						values.remove(extListDIP.get(puid).toString())
+					}
+					
 				csvFilePrinter.flush();
 				csvFilePrinter.close();
 			}
 			result.msg= "Die Erzeugung der csv-Datei ${saveFile} wurde erfolgreich abgeschlossen."
 			result.success = true
-		}
+		} 
 		catch(Exception e) {
 			e.printStackTrace()
 			result.msg =" Ups, hier ist etwas schiefgelaufen. Es konnte keine csv-Datei erstellt werden. "
