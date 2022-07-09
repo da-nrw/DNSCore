@@ -165,6 +165,10 @@ class ObjectController {
 
 			def baseFolder = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
 			params.max = Math.min(params.max ? params.int('max') : 50, 200)
+			
+			if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+				admin = 1;
+			}
 
 			if (params.searchContractorName){
 				if(params.searchContractorName=="null"){
@@ -180,10 +184,13 @@ class ObjectController {
 			
 			def c1 = Object.createCriteria()
 			def objectsTotalForCount = c1.list() {
-				eq("user.id", user.id)
+				if (admin == 0){
+					eq("user.id", user.id)
+				}
 				between("objectState", 50,200)
 			}
 			def totalObjs = objectsTotalForCount.size();
+			
 			def c = Object.createCriteria()
 			log.debug(params.toString())
 			def objects = c.list(max: params.max, offset: params.offset ?: 0) {
@@ -271,10 +278,6 @@ class ObjectController {
 					}
 				}
 
-				if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
-					admin = 1;
-				}
-
 				if (admin==0) {
 
 					eq("user.id", user.id)
@@ -341,6 +344,7 @@ class ObjectController {
 					paramsList: paramsList,
 					paginate: true,
 					admin: admin,
+					totalObjs: totalObjs,
 					baseFolder: baseFolder,
 					contractorList: contractorList,
 					user: user ,
@@ -673,7 +677,7 @@ class ObjectController {
 			objArt = ARCHIVIERTE_OBJECTE
 		} else if (status == 55){
 			objArt = FEHLERHAFTE_OBJECTE
-			status = 50
+ 			status = 50
 		}
 
 		def baseFolder = grailsApplication.config.getProperty('localNode.userAreaRootPath') + "/" + relativeDir
@@ -704,9 +708,7 @@ class ObjectController {
 		}
 
 		def totalArchivedObjects = objectsArchivedForCount.size();
-
-
-		def c = Object.createCriteria()
+		def List<Object> listObject
 		log.debug(params.toString())
 		if (status == 50) {
 			if ( params.search != null) {
@@ -718,7 +720,7 @@ class ObjectController {
 			}
 
 			def cStatus = Object.createCriteria()
-			List<Object> listObject= cStatus.list(){
+			listObject= cStatus.list(){
 				eq("user.id", user.id)
 				eq("objectState", status)
 			};
@@ -727,6 +729,8 @@ class ObjectController {
 
 		
 		List<String> queueList = new ArrayList()
+		
+		def c = Object.createCriteria()
 		List<Object> objects = c.list(max: params.max, offset: params.offset ?: 0) {
 
 			if (params.search) {
@@ -767,7 +771,14 @@ class ObjectController {
 				if (!searchDateStart.equals("0") && !searchDateEnd.equals("0")) {
 					filterOn=1
 					log.debug("Objects between " + searchDateStart + " and " + searchDateEnd)
-					between(st, searchDateStart, searchDateEnd)
+					if (searchDateStart instanceof String) {
+						searchDateStart = Object.convertStringIntoDate(searchDateStart)
+					}
+					
+					if (searchDateEnd instanceof String) {
+						searchDateEnd = Object.convertStringIntoDate(searchDateEnd)
+					}
+					between(searchDateType, searchDateStart, searchDateEnd)
 				}
 			}
 
@@ -776,7 +787,7 @@ class ObjectController {
 				if (!searchDateStart.equals("0") && searchDateEnd.equals("0")) {
 					filterOn=1
 					log.debug("Objects greater than " + searchDateStart)
-					gt(st,searchDateStart)
+					gt(searchDateType,searchDateStart)
 				}
 			}
 
@@ -785,7 +796,7 @@ class ObjectController {
 				if (searchDateStart.equals("0") || !searchDateEnd.equals("0")) {
 					filterOn=1
 					log.debug("Objects lower than " + searchDateEnd)
-					lt(st,searchDateEnd)
+					lt(searchDateType,searchDateEnd)
 				}
 			}
 
@@ -799,6 +810,10 @@ class ObjectController {
 				}
 			}
 
+			if (admin==0) {
+				eq("user.id", user.id)
+			}
+			
 			if (admin==1) {
 				if (params.searchContractorName!=null) {
 					if	( !params.searchContractorName.isEmpty() || params.searchContractorName != "") {
@@ -816,7 +831,11 @@ class ObjectController {
 				}
 			}
 			
-			eq("objectState", status)
+			if ((objArt.equals(IN_BEARBEITUNG))&& admin == 0) {
+				ne ("objectState", 100)
+			} else {
+			 	eq("objectState", status)
+			}
 			order(params.sort ?: "id", params.order ?: "desc")
 
 		}
@@ -837,19 +856,22 @@ class ObjectController {
 				} 
 				/* um die Liste der sich in Bearbeitung befindlichen Pakete zu erstellen, müssen aus der Liste der Objecte
 				 * diejenigen entfernt werden, welche nicht im Status auf 0 oder 2 enden.
-				 * Dies sind die fehlerhaften Pakete  
+				 * Dies sind die fehlerhaften Pakete ;
+				 * Diese Unterscheidung gilt aber nur bei der Admiin Ansicht
 				 */
-				if (statusQueue.isEmpty() && objArt.equals(IN_BEARBEITUNG)) {
-					objects.remove(i);
-					i--;
-				}
-				/*
-				 * Wenn es sich um fehlerhaft Pakete handelt, so muss der Status
-				 * aus der queue geholt werden
-				 */
-				if (objArt.equals(FEHLERHAFTE_OBJECTE) && statusQueue.isEmpty()) {
-					def queue = QueueEntry.findAll("from QueueEntry as q where q.obj.id = :data_pk", [data_pk: id]);
-					queueList.add(queue)
+				if (admin == 1) {
+					if (statusQueue.isEmpty() && objArt.equals(IN_BEARBEITUNG)) {
+						objects.remove(i);
+						i--;
+					}
+					/*
+					 * Wenn es sich um fehlerhaft Pakete handelt, so muss der Status
+					 * aus der queue geholt werden
+					 */
+					if (objArt.equals(FEHLERHAFTE_OBJECTE) && statusQueue.isEmpty()) {
+						def queue = QueueEntry.findAll("from QueueEntry as q where q.obj.id = :data_pk", [data_pk: id]);
+						queueList.add(queue)
+					}
 				}
 			}
 		}
@@ -868,20 +890,33 @@ class ObjectController {
 
 		if (paramsList != null) {
 			paramsList.putAt("searchDateType", params?.searchDateType);
-			paramsList.putAt("searchDateStart", params?.searchDateStart);
-			paramsList.putAt("searchDateEnd", params?.searchDateEnd);
+			
+			if (params?.searchDateStart instanceof String ) {
+				paramsList.putAt("searchDateStart", Object.convertStringIntoDatString(params?.searchDateStart));
+				params.putAt("searchDateStart", Object.convertStringIntoDate(params?.searchDateStart));
+			} else {
+				paramsList.putAt("searchDateStart", params?.searchDateStart);
+			}
+			if (params?.searchDateEnd  instanceof String) {
+				paramsList.putAt("searchDateEnd", Object.convertStringIntoDatString(params?.searchDateEnd));
+				params.putAt("searchDateEnd", Object.convertStringIntoDate(params?.searchDateEnd));
+			} else {
+				paramsList.putAt("searchDateEnd", params?.searchDateEnd);
+			}
+			
 			paramsList.putAt("searchQualityLevel", params?.searchQualityLevel);
 		}
 
 		
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			render(view:"adminList", model:[	objectInstanceList: objects,
-				objectInstanceTotal: objects.size(),
+				objectInstanceTotal: objects.getTotalCount(),
 				searchParams: params.search,
 				filterOn: filterOn,
 				paramsList: paramsList,
 				paginate: true,
 				admin: admin,
+				totalObjs: totalArchivedObjects,
 				baseFolder: baseFolder,
 				contractorList: contractorList,
 				user: user,
@@ -890,13 +925,13 @@ class ObjectController {
 				queueList: queueList
 			]);
 		} else render(view:"list", model:[	objectInstanceList: objects,
-				objectInstanceTotal: objects.getTotalCount(),
+				objectInstanceTotal: objects.getTotalCount(), 
 				searchParams: params.search,
 				filterOn: filterOn,
 				paramsList: paramsList,
 				paginate: true,
 				admin: 0,
-				totalObjs: objects.size(), //otalArchivedObjects,
+				totalObjs: totalArchivedObjects,//objects.size(),
 				baseFolder: baseFolder,
 				contractorList: contractorList,
 				user: user,
