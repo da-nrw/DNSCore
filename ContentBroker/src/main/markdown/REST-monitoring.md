@@ -1,17 +1,17 @@
-DNS Monitoring via REST             
-========      
+#DNS Monitoring via REST             
 
 Zum Monitoring des DNS dient ein per HTTP ansprechbares API.
 Die Anforderungsparameter werden in der URL übergeben. Wichtig ist die Angabe auf welchen Knoten sich die Anfrage bezieht.
-# Aufruf
+
+## Aufruf
 Die URL lautet:
 
 	<Daweburl>/status/monitor?node=<Knotenname>
 
 z.B.
-https://da-nrw.lvr.de/daweb3/status/monitor?node=lvr
+	https://da-nrw.lvr.de/daweb3/status/monitor?node=lvr
 
-# Rückgabe
+## Rückgabe
 Rückgabe ist eine JASON-Struktur mit folgendem Aufbau:
 
 * requestStatus:          Status, ob die Anfrage erfolgreich verarbeitet wurde, Klartext "OK" oder „Failed“
