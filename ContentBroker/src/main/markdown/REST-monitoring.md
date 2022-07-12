@@ -1,4 +1,4 @@
-#DNS Monitoring via REST             
+# DNS Monitoring via REST             
 
 Zum Monitoring des DNS dient ein per HTTP ansprechbares API.
 Die Anforderungsparameter werden in der URL übergeben. Wichtig ist die Angabe auf welchen Knoten sich die Anfrage bezieht.
