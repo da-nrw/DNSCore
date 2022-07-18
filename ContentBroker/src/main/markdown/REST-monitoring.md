@@ -12,7 +12,7 @@ z.B.
 	https://da-nrw.lvr.de/daweb3/status/monitor?node=lvr
 
 ## Rückgabe
-Rückgabe ist eine JASON-Struktur mit folgendem Aufbau:
+Rückgabe ist eine JSON-Struktur mit folgendem Aufbau:
 
 * requestStatus:          Status, ob die Anfrage erfolgreich verarbeitet wurde, Klartext "OK" oder „Failed“
 * Message:                Eine Fehlermeldung im Klartext
