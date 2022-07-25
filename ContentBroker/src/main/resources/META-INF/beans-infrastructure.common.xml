@@ -61,7 +61,7 @@
     <bean id="ingestAreaScannerWorker" class="de.uzk.hki.da.core.IngestAreaScannerWorker" init-method="init">
         <property name="ingestAreaRootPath" value="${localNode.ingestAreaRootPath}" />
         <property name="localNodeId" value="${localNode.id}" />
-        <property name="maxQueueCount" value="500" />
+        <property name="maxQueueCount" value="300" />
         <property name="minAge" value="2000" />
         <property name="registerObjectService" ref="registerObjectService" />
     </bean>
