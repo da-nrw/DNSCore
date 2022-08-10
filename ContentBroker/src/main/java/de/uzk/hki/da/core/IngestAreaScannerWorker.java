@@ -177,6 +177,7 @@ public class IngestAreaScannerWorker extends Worker{
 			@SuppressWarnings("unchecked")
 			List<Long> countyList = query.list();
 			Long county = countyList.get(0);
+			session.close();
 			
 			if (county >= this.maxQueueCount) {
 				logger.info("Found " + county + " jobs in queue. Limit is " + this.maxQueueCount + ". Wait for decrease.");
@@ -184,7 +185,7 @@ public class IngestAreaScannerWorker extends Worker{
 			}
 			
 			long freeEntries = this.maxQueueCount - county; 
-			session.close();
+			
 			// ----------------------------------------------------
 
 			List<UserChild> toIngest = new ArrayList<UserChild>();
