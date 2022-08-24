@@ -37,6 +37,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 
+import org.elasticsearch.common.base.Objects;
 import org.jdom.JDOMException;
 import org.xml.sax.SAXException;
 
@@ -148,7 +149,8 @@ public class CreateEDMAction extends AbstractAction {
 				} else if(packageType.equals("LIDO")) {
 					ms = new LidoMetadataStructure(wa.pipFolder(WorkArea.PUBLIC),metadataFile, documents);
 				}
-				ms.toEDM(ms.getIndexInfo(o.getIdentifier()), edm, preservationSystem, o.getIdentifier(), o.getUrn());
+				String edmUrn = this.edmUrn(ms);
+				ms.toEDM(ms.getIndexInfo(o.getIdentifier()), edm, preservationSystem, o.getIdentifier(), edmUrn);
 			} else if(packageType.equals("XMP")) {
 				edm = generateEdmUsingXslt(xsltTransformationFile, metadataFile, EDM_FOR_ES_INDEX_METADATA_STREAM_ID);
 			} else {
@@ -160,6 +162,18 @@ public class CreateEDMAction extends AbstractAction {
 		}
 	}
 	
+	protected String edmUrn(MetadataStructure ms) {
+		if (ms instanceof MetsMetadataStructure) {
+			if (o.getContractor().isUseMetsUrn()) {
+				MetsMetadataStructure mm = (MetsMetadataStructure) ms;
+				String metsUrn = mm.getUrn(o.getOrig_name());
+				if (Objects.equal(metsUrn, o.getUrn())) {
+					return null;
+				}
+			}
+		}
+		return o.getUrn();
+	}	
 	
 	private void putToRepository(File file) throws RepositoryException, IOException {
 		repositoryFacade.ingestFile(o.getIdentifier(), preservationSystem.getOpenCollectionName(), 
