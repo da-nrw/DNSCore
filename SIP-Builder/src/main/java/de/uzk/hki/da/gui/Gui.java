@@ -23,7 +23,10 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,6 +36,8 @@ import java.io.File;
 import java.net.URI;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -40,6 +45,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -54,12 +60,18 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.toedter.calendar.JDateChooser;
 
 import de.uzk.hki.da.main.SIPBuilder;
 import de.uzk.hki.da.metadata.ContractRights;
@@ -81,7 +93,9 @@ import de.uzk.hki.da.utils.Utilities;
  * @author Thomas Kleinke
  * @author Martin Fischer
  * @author Polina Gubaidullina
+ * @author Josef Hammer
  */
+
 public class Gui extends JFrame {
 
 	private static Logger logger = LogManager.getLogger(Gui.class);
@@ -95,23 +109,27 @@ public class Gui extends JFrame {
 	PremisXmlWriter premisWriter = new PremisXmlWriter();
 	GuiMessageWriter messageWriter = new GuiMessageWriter();
 
-	JFileChooser sourcePathChooser = new JFileChooser(new File("."));
-	JFileChooser destinationPathChooser = new JFileChooser(new File("."));
-	JFileChooser workingPathChooser = new JFileChooser(new File("."));
-	JFileChooser contractFileLoadPathChooser = new JFileChooser(new File("."));
-	JFileChooser contractFileSavePathChooser = new JFileChooser(new File("."));
+	JFileChooser sourcePathChooser;
+	
+	JFileChooser destinationPathChooser;
+	JFileChooser workingPathChooser;
+	JFileChooser contractFileLoadPathChooser;
+	JFileChooser contractFileSavePathChooser;
 
 	ClassLoader classloader = Gui.class.getClassLoader();
 
 	Font standardFont, boldFont;
-
+	Font standardFont12;
+	
+	Color veryLightGrey = new Color(235,235,235);
+	
 	String confFolderPath, dataFolderPath;
 
-	int startPanelWidth = 760; //750
-	int startPanelHeight = 526;
+	int startPanelWidth = 760;
+	int startPanelHeight = 566;
 
 	// GUI Elements
-
+	
 	// Panels
 	JPanel startPanel;
 	JPanel loadStandardPanel;
@@ -314,10 +332,12 @@ public class Gui extends JFrame {
 	JTextField workingPathTextField;
 	JTextField licenseTextField;
 	JTextField collectionNameTextField;
-	JTextField institutionTempStartDateTextField;
+//	JTextField institutionTempStartDateTextField;
+	JDateChooser institutionTempStartDateChooserField;
 	JTextField institutionRestrictionTextPagesTextField;
 	JTextField institutionRestrictionImageTextField;
-	JTextField publicTempStartDateTextField;
+//	JTextField publicTempStartDateTextField;
+	JDateChooser publicTempStartDateChooserField;
 	JTextField publicRestrictionTextPagesTextField;
 	JTextField publicRestrictionImageTextField;
 
@@ -348,25 +368,34 @@ public class Gui extends JFrame {
 	int oldTabPublic = -1;
 	int oldTabInstitution = -1;
 
+	public class ScrollBarCustomUI extends BasicScrollBarUI {
+		@Override
+		protected void installComponents() {
+			// TODO Auto-generated method stub
+			super.installComponents();
+		}
+		
+		@Override
+		protected JButton createDecreaseButton(int orientation) {
+			// TODO Auto-generated method stub
+			return super.createDecreaseButton(orientation);
+		}
+
+		@Override
+	    protected void paintThumb(Graphics graphics, JComponent c, Rectangle thumbBounds) {
+            Graphics2D g2g = (Graphics2D) graphics;
+            g2g.dispose();
+            g2g.drawLine(thumbBounds.x, thumbBounds.y, thumbBounds.width, thumbBounds.height);
+            super.paintThumb(g2g, c, thumbBounds);
+	    }
+	}
+
 	public Gui(String confFolderPath, String dataFolderPath) {
-
-		this.confFolderPath = confFolderPath;
-		this.dataFolderPath = dataFolderPath;
-		if (!new File(dataFolderPath).exists())
-			new File(dataFolderPath).mkdir();
-
-		URL icon = classloader.getResource("images/sipBuilderIcon.png");
-		URL logo = classloader.getResource(SIPBuilder.getProperties().getProperty("LOGO_FILE"));
-		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		Image iconImage = toolkit.createImage(icon);
-		Image logoImage = toolkit.createImage(logo);
-		this.setIconImage(iconImage);
-
-		messageWriter.setGui(this);
-		messageWriter.setIconImage(logoImage);
 
 		try {
 			standardFont = Font.createFont(Font.TRUETYPE_FONT, classloader.getResourceAsStream("fonts/DejaVuSans.ttf"));
+			standardFont12 = standardFont.deriveFont(12.0f);
+			
 			boldFont = Font.createFont(Font.TRUETYPE_FONT,
 					classloader.getResourceAsStream("fonts/DejaVuSans-Bold.ttf"));
 		} catch (Exception e) {
@@ -374,6 +403,80 @@ public class Gui extends JFrame {
 			messageWriter.showMessage("Schriftart konnte nicht gefunden werden!\n" + e.getMessage(),
 					JOptionPane.PLAIN_MESSAGE);
 		}
+		
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+
+		// remove baroque relics from the metal
+		UIManager.put("Button.background", veryLightGrey);
+		UIManager.put("Button.darkShadow", Color.CYAN); // testPurpose only
+//		UIManager.put("Button.focus", Color.BLUE); // testPurpose only
+		UIManager.put("Button.highlight", Color.RED); // testPurpose only
+		UIManager.put("Button.light", Color.MAGENTA); // testPurpose only
+//		UIManager.put("Button.select", new Color(255, 128, 200)); // testPurpose only
+		UIManager.put("Button.shadow", new Color(128, 0, 255)); // testPurpose only
+		UIManager.put("Button.toolBarBorderBackground", new Color(128, 0, 255)); // testPurpose only
+		
+		LineBorder border1 = new LineBorder(Color.black);
+		EmptyBorder border2 = new EmptyBorder(2,8,2,8);
+		Border butBorder = BorderFactory.createCompoundBorder(border1, border2);
+		
+		UIManager.put("Button.border", butBorder);
+//		UIManager.put("ToggleButton.select", new Color(255, 100, 192));
+		UIManager.put("ToggleButton.background", veryLightGrey);
+
+		UIManager.put("TextField.border", BorderFactory.createLineBorder(Color.black));
+		
+		UIManager.put("Label.disabledForeground", Color.gray);
+
+		UIManager.put("RadioButton.disabledText", Color.gray);
+		UIManager.put("CheckBox.disabledText", Color.gray);
+		UIManager.put("CheckBox.border", BorderFactory.createLineBorder(Color.red));
+
+		UIManager.put("ComboBox.background", Color.white);
+		UIManager.put("ComboBox.buttonBackground", new Color(128,255,99));
+		UIManager.put("ComboBox.buttonDarkShadow", new Color(128,255,99));
+		UIManager.put("ComboBox.buttonHighlight", new Color(128,255,99));
+		UIManager.put("ComboBox.buttonShadow", new Color(128,255,99));
+		UIManager.put("ComboBox.border", BorderFactory.createLineBorder(Color.black));
+		UIManager.put("ComboBox.disabledForeground", Color.gray);
+		UIManager.put("ComboBox.disabledBackground", Color.white);
+//		UIManager.put("ComboBox.selectionBackground", new Color(128,255,99));
+		
+		UIManager.put("ScrollBarUI", ScrollBarCustomUI.class.getName());
+		
+		UIManager.put("List.font", standardFont12);
+//		UIManager.put("ScrollBar.background", Color.CYAN); // testPurpose only
+//		UIManager.put("ScrollBar.thumbColor", Color.BLACK); 
+		UIManager.put("ScrollBar.thumb", Color.white); 
+//		
+		UIManager.put("ScrollBar.foreground", Color.red);
+		UIManager.put("ScrollBar.trackHighlight", Color.LIGHT_GRAY);
+		UIManager.put("ScrollBar.thumbHighlight", Color.LIGHT_GRAY);
+		UIManager.put("ScrollBar.thumbDarkShadow", Color.black);
+		UIManager.put("ScrollBar.thumbShadow", Color.LIGHT_GRAY);
+		UIManager.put("ScrollBar.track", Color.LIGHT_GRAY);
+		UIManager.put("ScrollBar.background", Color.RED); // testPurpose only
+//		UIManager.put("ScrollBar.trackHighlight", Color.YELLOW);		// testPurpose only
+		
+		sourcePathChooser = new JFileChooser(new File("."));
+		destinationPathChooser = new JFileChooser(new File("."));
+		workingPathChooser = new JFileChooser(new File("."));
+		contractFileLoadPathChooser = new JFileChooser(new File("."));
+		contractFileSavePathChooser = new JFileChooser(new File("."));
+		
+		this.confFolderPath = confFolderPath;
+		this.dataFolderPath = dataFolderPath;
+		if (!new File(dataFolderPath).exists())
+			new File(dataFolderPath).mkdir();
+
+		URL icon = classloader.getResource("images/sipBuilderIcon.png");
+		URL logo = classloader.getResource(SIPBuilder.getProperties().getProperty("LOGO_FILE"));
+		Image iconImage = toolkit.createImage(icon);
+		Image logoImage = toolkit.createImage(logo);
+		this.setIconImage(iconImage);
+
+		messageWriter.setGui(this);
+		messageWriter.setIconImage(logoImage);
 
 		try {
 			contractSettings = new ContractSettings(confFolderPath);
@@ -396,6 +499,8 @@ public class Gui extends JFrame {
 	 */
 	public void initialize() {
 
+		UIManager.put("Button.background", this.veryLightGrey);
+		
 		initializePanels();
 		initializeImageLabels();
 		initializeTextLabels();
@@ -409,6 +514,8 @@ public class Gui extends JFrame {
 		progressBar = new JProgressBar();
 		progressBar.setStringPainted(true);
 		progressBar.setVisible(false);
+		progressBar.setBackground(Color.white);
+		progressBar.setForeground(new Color(16,95,133));
 
 		defineElementPositions();
 		addElementsToContentPane();
@@ -424,8 +531,18 @@ public class Gui extends JFrame {
 	 */
 	private void initializePanels() {
 
+		UIManager.put("TabbedPane.contentBorderInsets", Color.BLUE); // testPurpose only
+		UIManager.put("TabbedPane.contentAreaColor", Color.white);
+		UIManager.put("TabbedPane.focus", veryLightGrey);
+		UIManager.put("TabbedPane.darkShadow", Color.BLACK);
+		UIManager.put("TabbedPane.borderHightlightColor", Color.BLACK);
+		UIManager.put("TabbedPane.light", Color.WHITE);
+		UIManager.put("TabbedPane.tabAreaBackground", Color.CYAN); // testPurpose only
+		
+		UIManager.put("TabbedPane.selected", veryLightGrey);
+
 		institutionTabbedPane = new JTabbedPane();
-		UIManager.put("TabbedPane.borderHightlightColor", Color.gray);
+		
 		institutionTabbedPane.updateUI();
 		institutionTextPanel = new JPanel();
 		institutionTextPanel.setOpaque(true);
@@ -439,10 +556,13 @@ public class Gui extends JFrame {
 		institutionVideoPanel = new JPanel();
 		institutionVideoPanel.setOpaque(true);
 		institutionTabbedPane.addTab("Video", institutionVideoPanel);
+		institutionTabbedPane.setBackgroundAt(0, Color.WHITE);
+		institutionTabbedPane.setBackgroundAt(1, Color.WHITE);
+		institutionTabbedPane.setBackgroundAt(2, Color.WHITE);
+		institutionTabbedPane.setBackgroundAt(3, Color.WHITE);
 
 		publicTabbedPane = new JTabbedPane();
-		UIManager.put("TabbedPane.borderHightlightColor", Color.gray);
-		publicTabbedPane.updateUI();
+
 		publicTextPanel = new JPanel();
 		publicTextPanel.setOpaque(true);
 		publicTabbedPane.addTab("Text", publicTextPanel);
@@ -455,9 +575,17 @@ public class Gui extends JFrame {
 		publicVideoPanel = new JPanel();
 		publicVideoPanel.setOpaque(true);
 		publicTabbedPane.addTab("Video", publicVideoPanel);
+		publicTabbedPane.setBackgroundAt(0, Color.WHITE);
+		publicTabbedPane.setBackgroundAt(1, Color.WHITE);
+		publicTabbedPane.setBackgroundAt(2, Color.WHITE);
+		publicTabbedPane.setBackgroundAt(3, Color.WHITE);
+
+		publicTabbedPane.setBackground(Color.WHITE);
+		publicTabbedPane.updateUI();
 
 		startPanel = new JPanel();
 		startPanel.setVisible(true);
+	
 		loadStandardPanel = new JPanel();
 		loadStandardPanel.setVisible(false);
 		institutionPanel = new JPanel();
@@ -831,6 +959,7 @@ public class Gui extends JFrame {
 		loadIconButton.setVisible(true);
 		loadIconButton.setBorder(null);
 		loadIconButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		loadIconButton.setRolloverEnabled(true);
 		licenseActivatedIconButton = new JButton(new ImageIcon(licenseActivatedIconImage));
 		licenseActivatedIconButton.setVisible(false);
 		licenseActivatedIconButton.setBorder(null);
@@ -938,13 +1067,15 @@ public class Gui extends JFrame {
 				+ "einliefern wollen.\n\n" + "Geben Sie dann den Pfad zum Zielordner "
 				+ "an, in dem die SIPs gespeichert werden sollen.\n\n"
 				+ "Optional können Sie ein zur Zwischenspeicherung benutztes " + "Arbeitsverzeichnis angeben.");
-
+		welcomeArea.setForeground(Color.BLACK);
+		
 		rightsAreaOne = new JTextArea();
 		rightsAreaOne.setEditable(false);
 		rightsAreaOne.setOpaque(false);
 		rightsAreaOne.setLineWrap(true);
 		rightsAreaOne.setWrapStyleWord(true);
 		rightsAreaOne.setFocusable(false);
+		rightsAreaOne.setDisabledTextColor(Color.GRAY);
 		rightsAreaOne.setFont(standardFont.deriveFont(12.0f));
 		rightsAreaOne.setText("In den folgenden Schritten können Sie die Publikations- und Migrationsrechte für "
 				+ "Ihre SIPs festlegen.\n\n" + "Falls Sie diese Einstellungen schon einmal vorgenommen und gespeichert "
@@ -956,6 +1087,7 @@ public class Gui extends JFrame {
 		licenseAreaOne.setLineWrap(true);
 		licenseAreaOne.setWrapStyleWord(true);
 		licenseAreaOne.setFocusable(false);
+		licenseAreaOne.setDisabledTextColor(Color.GRAY);
 		licenseAreaOne.setFont(standardFont.deriveFont(12.0f));
 		licenseAreaOne.setText("In den folgenden Schritten können Sie die Lizenzrechte für "
 				+ "Ihre SIPs festlegen. Die Lizenzangabe gilt für die Veröffentlichungsportale.\n\n"
@@ -969,6 +1101,7 @@ public class Gui extends JFrame {
 		rightsAreaTwo.setLineWrap(true);
 		rightsAreaTwo.setWrapStyleWord(true);
 		rightsAreaTwo.setFocusable(false);
+		rightsAreaTwo.setDisabledTextColor(Color.GRAY);
 		rightsAreaTwo.setFont(standardFont.deriveFont(12.0f));
 		rightsAreaTwo.setText("Alternativ können Sie die Standard-Einstellungen wählen:");
 
@@ -978,6 +1111,7 @@ public class Gui extends JFrame {
 		rightsAreaThree.setLineWrap(true);
 		rightsAreaThree.setWrapStyleWord(true);
 		rightsAreaThree.setFocusable(false);
+		rightsAreaThree.setDisabledTextColor(Color.GRAY);
 		rightsAreaThree.setFont(standardFont.deriveFont(12.0f));
 		rightsAreaThree.setText("Sie haben im Folgenden die Möglichkeit, die Einstellungen\n"
 				+ "anzupassen bzw. komplett neu zu wählen. Wenn Sie dabei\n"
@@ -990,6 +1124,7 @@ public class Gui extends JFrame {
 		institutionArea.setLineWrap(true);
 		institutionArea.setWrapStyleWord(true);
 		institutionArea.setFocusable(false);
+		institutionArea.setDisabledTextColor(Color.GRAY);
 		institutionArea.setFont(standardFont.deriveFont(12.0f));
 		institutionArea.setText(
 				"Möchten Sie - unabhängig von den Einstellungen für die Öffentlichkeit - zusätzliche Präsentationsdaten "
@@ -1002,6 +1137,7 @@ public class Gui extends JFrame {
 		institutionRestrictionArea.setLineWrap(true);
 		institutionRestrictionArea.setWrapStyleWord(true);
 		institutionRestrictionArea.setFocusable(false);
+		institutionRestrictionArea.setDisabledTextColor(Color.GRAY);
 		institutionRestrictionArea.setFont(standardFont.deriveFont(12.0f));
 		institutionRestrictionArea
 				.setText("Bitte wählen Sie die Vorschaurestriktionen für die verschiedenen " + "Medientypen.");
@@ -1012,7 +1148,7 @@ public class Gui extends JFrame {
 		institutionRestrictionTextArea.setLineWrap(true);
 		institutionRestrictionTextArea.setWrapStyleWord(true);
 		institutionRestrictionTextArea.setFocusable(false);
-		institutionRestrictionTextArea.setDisabledTextColor(Color.LIGHT_GRAY);
+		institutionRestrictionTextArea.setDisabledTextColor(Color.GRAY);
 		institutionRestrictionTextArea.setFont(standardFont.deriveFont(12.0f));
 		institutionRestrictionTextArea
 				.setText("Geben Sie die gewünschten Seitenzahlen durch Kommas voneinander getrennt an. "
@@ -1028,7 +1164,7 @@ public class Gui extends JFrame {
 		institutionRestrictionImageArea.setLineWrap(true);
 		institutionRestrictionImageArea.setWrapStyleWord(true);
 		institutionRestrictionImageArea.setFocusable(false);
-		institutionRestrictionImageArea.setDisabledTextColor(Color.LIGHT_GRAY);
+		institutionRestrictionImageArea.setDisabledTextColor(Color.GRAY);
 		institutionRestrictionImageArea.setFont(standardFont.deriveFont(12.0f));
 		institutionRestrictionImageArea
 				.setText("Geben Sie die Bildqualität absolut oder im Verhältnis " + "zum Original an.");
@@ -1049,7 +1185,7 @@ public class Gui extends JFrame {
 		publicDDBArea.setLineWrap(true);
 		publicDDBArea.setWrapStyleWord(true);
 		publicDDBArea.setFocusable(false);
-		publicDDBArea.setDisabledTextColor(Color.LIGHT_GRAY);
+		publicDDBArea.setDisabledTextColor(Color.GRAY);
 		publicDDBArea.setFont(standardFont.deriveFont(12.0f));
 		publicDDBArea.setText("Im Regelfall werden veröffentlichte Daten automatisch der Deutschen Digitalen "
 				+ "Bibliothek zur Verfügung gestellt. Wünschen Sie dies nicht, können Sie diesen Prozess durch Deaktivieren "
@@ -1061,6 +1197,7 @@ public class Gui extends JFrame {
 		publicRestrictionArea.setLineWrap(true);
 		publicRestrictionArea.setWrapStyleWord(true);
 		publicRestrictionArea.setFocusable(false);
+		publicRestrictionArea.setDisabledTextColor(Color.GRAY);
 		publicRestrictionArea.setFont(standardFont.deriveFont(12.0f));
 		publicRestrictionArea
 				.setText("Bitte wählen Sie die Vorschaurestriktionen für die verschiedenen " + "Medientypen.");
@@ -1071,7 +1208,7 @@ public class Gui extends JFrame {
 		publicRestrictionTextArea.setLineWrap(true);
 		publicRestrictionTextArea.setWrapStyleWord(true);
 		publicRestrictionTextArea.setFocusable(false);
-		publicRestrictionTextArea.setDisabledTextColor(Color.LIGHT_GRAY);
+		publicRestrictionTextArea.setDisabledTextColor(Color.GRAY);
 		publicRestrictionTextArea.setFont(standardFont.deriveFont(12.0f));
 		publicRestrictionTextArea
 				.setText("Geben Sie die gewünschten Seitenzahlen durch Kommas voneinander getrennt an. "
@@ -1087,7 +1224,7 @@ public class Gui extends JFrame {
 		publicRestrictionImageArea.setLineWrap(true);
 		publicRestrictionImageArea.setWrapStyleWord(true);
 		publicRestrictionImageArea.setFocusable(false);
-		publicRestrictionImageArea.setDisabledTextColor(Color.LIGHT_GRAY);
+		publicRestrictionImageArea.setDisabledTextColor(Color.GRAY);
 		publicRestrictionImageArea.setFont(standardFont.deriveFont(12.0f));
 		publicRestrictionImageArea
 				.setText("Geben Sie die Bildqualität absolut oder im Verhältnis " + "zum Original an.");
@@ -1099,6 +1236,7 @@ public class Gui extends JFrame {
 		migrationArea.setLineWrap(true);
 		migrationArea.setWrapStyleWord(true);
 		migrationArea.setFocusable(false);
+		migrationArea.setDisabledTextColor(Color.GRAY);
 		migrationArea.setFont(standardFont.deriveFont(12.0f));
 		migrationArea.setText(
 				"Bei der Einlieferung Ihrer Daten findet im Regelfall eine Erstkonversion in Dateiformate statt, die "
@@ -1113,6 +1251,7 @@ public class Gui extends JFrame {
 		settingsOverviewInfoArea.setLineWrap(true);
 		settingsOverviewInfoArea.setWrapStyleWord(true);
 		settingsOverviewInfoArea.setFocusable(false);
+		settingsOverviewInfoArea.setDisabledTextColor(Color.GRAY);
 		settingsOverviewInfoArea.setFont(standardFont.deriveFont(12.0f));
 		settingsOverviewInfoArea.setText("Sie haben folgende Rechteeinstellungen gewählt:");
 
@@ -1122,6 +1261,7 @@ public class Gui extends JFrame {
 		settingsOverviewTextArea.setLineWrap(true);
 		settingsOverviewTextArea.setWrapStyleWord(true);
 		settingsOverviewTextArea.setFocusable(false);
+		settingsOverviewTextArea.setDisabledTextColor(Color.GRAY);
 		settingsOverviewTextArea.setFont(standardFont.deriveFont(12.0f));
 		settingsOverviewArea = new JScrollPane(settingsOverviewTextArea);
 		settingsOverviewArea.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -1133,6 +1273,7 @@ public class Gui extends JFrame {
 		saveArea.setLineWrap(true);
 		saveArea.setWrapStyleWord(true);
 		saveArea.setFocusable(false);
+		saveArea.setDisabledTextColor(Color.GRAY);
 		saveArea.setFont(standardFont.deriveFont(12.0f));
 		saveArea.setText("Falls Sie Ihre Rechteeinstellungen später für weitere SIP-Generierungen "
 				+ "wiederverwenden möchten, können Sie diese nun sichern:");
@@ -1143,6 +1284,7 @@ public class Gui extends JFrame {
 		createArea.setLineWrap(true);
 		createArea.setWrapStyleWord(true);
 		createArea.setFocusable(false);
+		createArea.setDisabledTextColor(Color.GRAY);
 		createArea.setFont(standardFont.deriveFont(12.0f));
 		createArea.setText("Wenn Sie mit den vorgenommenen Einstellungen zufrieden sind, können Sie "
 				+ "die SIP-Generierung starten, indem Sie den Button \"Erstellen\" betätigen.\n\n"
@@ -1242,6 +1384,7 @@ public class Gui extends JFrame {
 
 		publicDDBCheckBox = new JCheckBox("DDB-Harvesting erlauben", true);
 		publicDDBCheckBox.setOpaque(false);
+		publicDDBCheckBox.setBorder(BorderFactory.createLineBorder(Color.red));
 		publicDDBCheckBox.setFont(standardFont.deriveFont(12.0f));
 		ButtonGroup licenseRadioButtonGroup = new ButtonGroup();
 		metadataLicenseRadioButton = new JRadioButton("Lizenz aus Metadaten übernehmen.");
@@ -1285,15 +1428,15 @@ public class Gui extends JFrame {
 
 		sourcePathTextField = new JTextField();
 		sourcePathTextField.setEditable(true);
-		sourcePathTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
+		sourcePathTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
 
 		destinationPathTextField = new JTextField();
 		destinationPathTextField.setEditable(true);
-		destinationPathTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
+		destinationPathTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
 
 		workingPathTextField = new JTextField();
 		workingPathTextField.setEditable(true);
-		workingPathTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
+		workingPathTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
 
 		licenseTextField = new JTextField();
 		licenseTextField.setEditable(true);
@@ -1304,29 +1447,30 @@ public class Gui extends JFrame {
 		collectionNameTextField = new JTextField();
 		collectionNameTextField.setEditable(false);
 		collectionNameTextField.setEnabled(false);
-		collectionNameTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
-		institutionTempStartDateTextField = new JTextField();
-		institutionTempStartDateTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
-		institutionTempStartDateTextField.setEditable(false);
-		institutionTempStartDateTextField.setEnabled(false);
+		collectionNameTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
+
+		institutionTempStartDateChooserField = new JDateChooser();
+		institutionTempStartDateChooserField.setLocale(Locale.GERMANY);
+		institutionTempStartDateChooserField.setEnabled(false);
+
 		institutionRestrictionTextPagesTextField = new JTextField();
 		institutionRestrictionTextPagesTextField.setEditable(false);
-		institutionRestrictionTextPagesTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
+		institutionRestrictionTextPagesTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
 		institutionRestrictionTextPagesTextField.setEnabled(false);
 		institutionRestrictionImageTextField = new JTextField();
-		institutionRestrictionImageTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
+		institutionRestrictionImageTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
 		institutionRestrictionImageTextField.setEnabled(false);
 		institutionRestrictionImageTextField.setEditable(false);
-		publicTempStartDateTextField = new JTextField();
-		publicTempStartDateTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
-		publicTempStartDateTextField.setEditable(false);
-		publicTempStartDateTextField.setEnabled(false);
+
+		publicTempStartDateChooserField = new JDateChooser();
+		publicTempStartDateChooserField.setLocale(Locale.GERMANY);
+
 		publicRestrictionTextPagesTextField = new JTextField();
 		publicRestrictionTextPagesTextField.setEditable(false);
-		publicRestrictionTextPagesTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
+		publicRestrictionTextPagesTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
 		publicRestrictionTextPagesTextField.setEnabled(false);
 		publicRestrictionImageTextField = new JTextField();
-		publicRestrictionImageTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
+		publicRestrictionImageTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
 		publicRestrictionImageTextField.setEnabled(false);
 		publicRestrictionImageTextField.setEditable(false);
 	}
@@ -1341,7 +1485,7 @@ public class Gui extends JFrame {
 		kindOfSIPBuildingDropDown.addItem(C.KIND_OF_SIPBUILDING_SINGLE);
 		kindOfSIPBuildingDropDown.addItem(C.KIND_OF_SIPBUILDING_MULTIPLE);
 		kindOfSIPBuildingDropDown.addItem(C.KIND_OF_SIPBUILDING_NESTED);
-
+		
 		licenseDropDown = new JComboBox<CCLicense>();
 		licenseDropDown.setFont(standardFont.deriveFont(11.0f));
 		for (ContractRights.CCLicense tmp : ContractRights.CCLicense.values()) {
@@ -1495,119 +1639,126 @@ public class Gui extends JFrame {
 	private void defineElementPositions() {
 
 		// overall elements
-		versionInfoLabel.setBounds(0, 472, 750, 20);
-		startActivatedIconButton.setBounds(10, 70, 171, 20);
-		startIconButton.setBounds(10, 70, 171, 20);
-		loadActivatedIconButton.setBounds(10, 95, 171, 20);
-		loadIconButton.setBounds(10, 95, 171, 20);
+		
+		versionInfoLabel.setBounds(0, 532, 750, 20);
 
-		publicationActivatedIconButton.setBounds(10, 120, 171, 20);
-		publicationIconButton.setBounds(10, 120, 171, 20);
-		publicActivatedIconButton.setBounds(10, 140, 171, 20);
-		publicIconButton.setBounds(10, 140, 171, 20);
+		int tabBookY = 50;
+		startActivatedIconButton.setBounds(10, 60 + tabBookY, 192, 26);
+		startIconButton.setBounds(10, 60 + tabBookY, 192, 26);
+		loadActivatedIconButton.setBounds(10, 86 + tabBookY, 192, 26);
+		loadIconButton.setBounds(10, 86 + tabBookY, 192, 26);
 
-		licenseActivatedIconButton.setBounds(10, 160, 171, 20);
-		licenseIconButton.setBounds(10, 160, 171, 20);
+		publicationActivatedIconButton.setBounds(10, 112 + tabBookY, 192, 26);
+		publicationIconButton.setBounds(10, 112 + tabBookY, 192, 26);
+		publicActivatedIconButton.setBounds(10, 138 + tabBookY, 192, 26);
+		publicIconButton.setBounds(10, 138 + tabBookY, 192, 26);
 
-		publicTempActivatedIconButton.setBounds(10, 180, 171, 20);
-		publicTempIconButton.setBounds(10, 180, 171, 20);
-		publicRestrictionActivatedIconButton.setBounds(10, 200, 171, 20);
-		publicRestrictionIconButton.setBounds(10, 200, 171, 20);
-		institutionActivatedIconButton.setBounds(10, 225, 171, 20);
-		institutionIconButton.setBounds(10, 225, 171, 20);
-		institutionTempActivatedIconButton.setBounds(10, 245, 171, 20);
-		institutionTempIconButton.setBounds(10, 245, 171, 20);
-		institutionRestrictionActivatedIconButton.setBounds(10, 265, 171, 20);
-		institutionRestrictionIconButton.setBounds(10, 265, 171, 20);
-		migrationActivatedIconButton.setBounds(10, 290, 171, 20);
-		migrationIconButton.setBounds(10, 290, 171, 20);
-		saveActivatedIconButton.setBounds(10, 315, 171, 20);
-		saveIconButton.setBounds(10, 315, 171, 20);
-		createActivatedIconButton.setBounds(10, 340, 171, 20);
-		createIconButton.setBounds(10, 340, 171, 20);
-		helpIconButton.setBounds(709, 15, 20, 22);
+		licenseActivatedIconButton.setBounds(10, 164 + tabBookY, 192, 26);
+		licenseIconButton.setBounds(10, 164 + tabBookY, 192, 26);
 
+		publicTempActivatedIconButton.setBounds(10, 190 + tabBookY, 192, 26);
+		publicTempIconButton.setBounds(10, 190 + tabBookY, 192, 26);
+		publicRestrictionActivatedIconButton.setBounds(10, 216 + tabBookY, 192, 26);
+		publicRestrictionIconButton.setBounds(10, 216 + tabBookY, 192, 26);
+
+		institutionActivatedIconButton.setBounds(10, 242 + tabBookY, 192, 26);
+		institutionIconButton.setBounds(10, 242 + tabBookY, 192, 26);
+		institutionTempActivatedIconButton.setBounds(10, 268 + tabBookY, 192, 26);
+		institutionTempIconButton.setBounds(10, 268 + tabBookY, 192, 26);
+		institutionRestrictionActivatedIconButton.setBounds(10, 294 + tabBookY, 192, 26);
+		institutionRestrictionIconButton.setBounds(10, 294 + tabBookY, 192, 26);
+		migrationActivatedIconButton.setBounds(10, 320 + tabBookY, 192, 26);
+		migrationIconButton.setBounds(10, 320 + tabBookY, 192, 26);
+		saveActivatedIconButton.setBounds(10, 346 + tabBookY, 192, 26);
+		saveIconButton.setBounds(10, 346 + tabBookY, 192, 26);
+		createActivatedIconButton.setBounds(10, 372 + tabBookY, 192, 26);
+		createIconButton.setBounds(10, 372 + tabBookY, 192, 26);
+		helpIconButton.setBounds(709, 120, 20, 22);
+
+		int jhOffsetY = 40;
 		// startPanel
 		startPanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 		backgroundStartImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
-		welcomeLabel.setBounds(255, 70, 300, 40);
-		welcomeArea.setBounds(255, 100, 420, 120);
+		welcomeLabel.setBounds(255, 70 + jhOffsetY, 300, 40);
+		welcomeArea.setBounds(255, 100 + jhOffsetY, 420, 120);
 
-		sourceLabel.setBounds(255, 245, 70, 20);
-		sourcePathTextField.setBounds(335, 245, 260, 20);
-		sourceChooserButton.setBounds(600, 245, 45, 20);
+		sourceLabel.setBounds(255, 245 + jhOffsetY, 70, 20);
+		sourcePathTextField.setBounds(335, 245 + jhOffsetY, 260, 20);
+		sourceChooserButton.setBounds(600, 245 + jhOffsetY, 45, 20);
 
-		destinationLabel.setBounds(255, 270, 70, 20);
-		destinationPathTextField.setBounds(335, 270, 260, 20);
-		destinationChooserButton.setBounds(600, 270, 45, 20);
+		destinationLabel.setBounds(255, 270 + jhOffsetY, 70, 20);
+		destinationPathTextField.setBounds(335, 270 + jhOffsetY, 260, 20);
+		destinationChooserButton.setBounds(600, 270 + jhOffsetY, 45, 20);
 
-		workingLabel.setBounds(255, 295, 70, 20);
-		workingPathTextField.setBounds(335, 295, 260, 20);
-		workingChooserButton.setBounds(600, 295, 45, 20);
+		workingLabel.setBounds(255, 295 + jhOffsetY, 70, 20);
+		workingPathTextField.setBounds(335, 295 + jhOffsetY, 260, 20);
+		workingChooserButton.setBounds(600, 295 + jhOffsetY, 45, 20);
 
-		kindOfSIPBuildingDropDown.setBounds(255, 320, 390, 20);
+		kindOfSIPBuildingDropDown.setBounds(255, 320 + jhOffsetY, 390, 20);
 
-		goToLoadStandardButton.setBounds(575, 445, 90, 20);
+		goToLoadStandardButton.setBounds(575, 445 + jhOffsetY, 90, 20);
 
 		// loadStandardPanel
 		loadStandardPanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
-		rightsLabel.setBounds(255, 70, 300, 20);
-		rightsAreaOne.setBounds(255, 100, 430, 85);
-		loadContractButton.setBounds(350, 189, 90, 20);
-		rightsAreaTwo.setBounds(255, 223, 430, 20);
-		standardContractButton.setBounds(350, 250, 90, 20);
-		rightsAreaThree.setBounds(255, 283, 430, 100);
-		goBackToStartButton.setBounds(450, 445, 90, 20);
-		goToPublicButton.setBounds(575, 445, 90, 20);
+		rightsLabel.setBounds           (255,  70 + jhOffsetY, 300, 20);
+		rightsAreaOne.setBounds         (255, 100 + jhOffsetY, 430, 85);
+		loadContractButton.setBounds    (350, 189 + jhOffsetY, 90, 20);
+		rightsAreaTwo.setBounds         (255, 223 + jhOffsetY, 430, 20);
+		standardContractButton.setBounds(350, 250 + jhOffsetY, 90, 20);
+		rightsAreaThree.setBounds       (255, 283 + jhOffsetY, 430, 100);
+		goBackToStartButton.setBounds   (450, 445 + jhOffsetY, 90, 20);
+		goToPublicButton.setBounds      (575, 445 + jhOffsetY, 90, 20);
 		backgroundLoadStandardImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 
 		// publicPanel
 		publicPanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
-		publicLabel.setBounds(255, 70, 300, 20);
-		publicArea.setBounds(255, 100, 400, 40);
-		publicAllowRadioButton.setBounds(251, 150, 40, 20);
-		publicDenyRadioButton.setBounds(251, 175, 60, 20);
-		publicDDBArea.setBounds(255, 215, 400, 60);
-		publicDDBCheckBox.setBounds(251, 285, 190, 20);
-		goBackToLoadStandardButton.setBounds(450, 445, 90, 20);
-		goToLicenseButton.setBounds(575, 445, 90, 20);
+		publicLabel.setBounds               (255,  70 + jhOffsetY, 300, 20);
+		publicArea.setBounds                (255, 100 + jhOffsetY, 400, 40);
+		publicAllowRadioButton.setBounds    (251, 150 + jhOffsetY, 40, 20);
+		publicDenyRadioButton.setBounds     (251, 175 + jhOffsetY, 60, 20);
+		publicDDBArea.setBounds             (255, 215 + jhOffsetY, 400, 60);
+		publicDDBCheckBox.setBounds         (251, 285 + jhOffsetY, 190, 20);
+		goBackToLoadStandardButton.setBounds(450, 445 + jhOffsetY, 90, 20);
+		goToLicenseButton.setBounds         (575, 445 + jhOffsetY, 90, 20);
 		backgroundPublicImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 
 		// publicLicensePanel
 		publicLicensePanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
-		licenseLabel.setBounds(255, 70, 300, 20);
 		licenseDropDown.setEditable(false);
 		licenseDropDown.setEnabled(false);
 		licenseTextField.setEditable(false);
-		licenseAreaOne.setBounds(255, 100, 430, 115);
-		metadataLicenseRadioButton.setBounds(255, 220, 430, 20);
-		premisLicenseRadioButton.setBounds(255, 245, 430, 20);
-		licenseDropDown.setBounds(275, 270, 230, 20);
-		licenseTextField.setBounds(275, 295, 430, 20);
-		goBackToPublicButton.setBounds(450, 445, 90, 20);
-		goToPublicTempButton.setBounds(575, 445, 90, 20);
+		licenseLabel.setBounds              (255,  70 + jhOffsetY, 300, 20);
+		licenseAreaOne.setBounds            (255, 100 + jhOffsetY, 430, 115);
+		metadataLicenseRadioButton.setBounds(255, 220 + jhOffsetY, 430, 20);
+		premisLicenseRadioButton.setBounds  (255, 245 + jhOffsetY, 430, 20);
+		licenseDropDown.setBounds           (275, 270 + jhOffsetY, 230, 20);
+		licenseTextField.setBounds          (275, 295 + jhOffsetY, 430, 20);
+		goBackToPublicButton.setBounds      (450, 445 + jhOffsetY, 90, 20);
+		goToPublicTempButton.setBounds      (575, 445 + jhOffsetY, 90, 20);
 		backgroundLicenseImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 
 		// publicTempPanel
 		publicTempPanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
-		publicStartLabel.setBounds(255, 70, 300, 20);
-		publicNoTempRestrictionRadioButton.setBounds(251, 100, 215, 20);
-		publicTempRadioButton.setBounds(251, 125, 215, 20);
-		publicTempStartDateLabel.setBounds(255, 147, 280, 20);
-		publicTempStartDateTextField.setBounds(255, 172, 310, 20);
-		publicLawRadioButton.setBounds(251, 202, 275, 20);
-		publicLawIdDropDown.setBounds(255, 232, 310, 20);
-		goBackToLicenseOrInstitutionButton.setBounds(450, 445, 90, 20);
-		goToPublicRestrictionButton.setBounds(575, 445, 90, 20);
+		publicStartLabel.setBounds                  (255,  70 + jhOffsetY, 300, 20);
+		publicNoTempRestrictionRadioButton.setBounds(251, 100 + jhOffsetY, 215, 20);
+		publicTempRadioButton.setBounds             (251, 125 + jhOffsetY, 215, 20);
+		publicTempStartDateLabel.setBounds          (255, 147 + jhOffsetY, 280, 20);
+
+		publicTempStartDateChooserField.setBounds   (255, 172 + jhOffsetY, 310, 20);
+
+		publicLawRadioButton.setBounds              (251, 202 + jhOffsetY, 275, 20);
+		publicLawIdDropDown.setBounds               (255, 232 + jhOffsetY, 310, 20);
+		goBackToLicenseOrInstitutionButton.setBounds(450, 445 + jhOffsetY, 90, 20);
+		goToPublicRestrictionButton.setBounds       (575, 445 + jhOffsetY, 90, 20);
 		backgroundPublicTempImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 
 		// publicRestrictionPanel
 		publicRestrictionPanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
-		publicRestrictionHeadlineLabel.setBounds(255, 70, 350, 20);
-		publicRestrictionArea.setBounds(255, 100, 360, 40);
-		publicTabbedPane.setBounds(255, 140, 380, 295);
-		goBackToPublicTempButton.setBounds(450, 445, 90, 20);
-		goToInstitutionButton.setBounds(575, 445, 90, 20);
+		publicRestrictionHeadlineLabel.setBounds(255,  70 + jhOffsetY, 350, 20);
+		publicRestrictionArea.setBounds         (255, 100 + jhOffsetY, 360, 40);
+		publicTabbedPane.setBounds              (255, 140 + jhOffsetY, 380, 295);
+		goBackToPublicTempButton.setBounds      (450, 445 + jhOffsetY, 90, 20);
+		goToInstitutionButton.setBounds         (575, 445 + jhOffsetY, 90, 20);
 
 		backgroundPublicRestrictionImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 
@@ -1646,34 +1797,34 @@ public class Gui extends JFrame {
 
 		// institutionPanel
 		institutionPanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
-		institutionLabel.setBounds(255, 70, 300, 20);
-		institutionArea.setBounds(255, 100, 400, 90);
-		institutionAllowRadioButton.setBounds(251, 210, 40, 20);
-		institutionDenyRadioButton.setBounds(251, 235, 60, 20);
-		goBackToPublicRestrictionOrPublicButton.setBounds(450, 445, 90, 20);
-		goToInstitutionTempButton.setBounds(575, 445, 90, 20);
+		institutionLabel.setBounds                       (255,  70 + jhOffsetY, 300, 20);
+		institutionArea.setBounds                        (255, 100 + jhOffsetY, 400, 90);
+		institutionAllowRadioButton.setBounds            (251, 210 + jhOffsetY, 40, 20);
+		institutionDenyRadioButton.setBounds             (251, 235 + jhOffsetY, 60, 20);
+		goBackToPublicRestrictionOrPublicButton.setBounds(450, 445 + jhOffsetY, 90, 20);
+		goToInstitutionTempButton.setBounds              (575, 445 + jhOffsetY, 90, 20);
 		backgroundInstitutionImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 
 		// institutionTempPanel
 		institutionTempPanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
-		institutionStartLabel.setBounds(255, 70, 300, 20);
-		institutionNoTempRestrictionRadioButton.setBounds(251, 100, 215, 20);
-		institutionTempRadioButton.setBounds(251, 125, 215, 20);
-		institutionTempStartDateLabel.setBounds(255, 147, 280, 20);
-		institutionTempStartDateTextField.setBounds(255, 172, 310, 20);
-		institutionLawRadioButton.setBounds(251, 202, 275, 20);
-		institutionLawIdDropDown.setBounds(255, 232, 310, 20);
-		goBackToInstitutionButton.setBounds(450, 445, 90, 20);
-		goToInstitutionRestrictionOrPublicButton.setBounds(575, 445, 90, 20);
+		institutionStartLabel.setBounds                   (255,  70 + jhOffsetY, 300, 20);
+		institutionNoTempRestrictionRadioButton.setBounds (251, 100 + jhOffsetY, 215, 20);
+		institutionTempRadioButton.setBounds              (251, 125 + jhOffsetY, 215, 20);
+		institutionTempStartDateLabel.setBounds           (255, 147 + jhOffsetY, 280, 20);
+		institutionTempStartDateChooserField.setBounds    (255, 172 + jhOffsetY, 310, 20);
+		institutionLawRadioButton.setBounds               (251, 202 + jhOffsetY, 275, 20);
+		institutionLawIdDropDown.setBounds                (255, 232 + jhOffsetY, 310, 20);
+		goBackToInstitutionButton.setBounds               (450, 445 + jhOffsetY, 90, 20);
+		goToInstitutionRestrictionOrPublicButton.setBounds(575, 445 + jhOffsetY, 90, 20);
 		backgroundInstitutionTempImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 
 		// institutionRestrictionPanel
 		institutionRestrictionPanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
-		institutionRestrictionHeadlineLabel.setBounds(255, 70, 350, 20);
-		institutionRestrictionArea.setBounds(255, 100, 360, 40);
-		institutionTabbedPane.setBounds(255, 140, 380, 295);
-		goBackToInstitutionTempButton.setBounds(450, 445, 90, 20);
-		goToMigrationButton.setBounds(575, 445, 90, 20);
+		institutionRestrictionHeadlineLabel.setBounds(255,  70 + jhOffsetY, 350, 20);
+		institutionRestrictionArea.setBounds         (255, 100 + jhOffsetY, 360, 40);
+		institutionTabbedPane.setBounds              (255, 140 + jhOffsetY, 380, 295);
+		goBackToInstitutionTempButton.setBounds      (450, 445 + jhOffsetY, 90, 20);
+		goToMigrationButton.setBounds                (575, 445 + jhOffsetY, 90, 20);
 		backgroundInstitutionRestrictionImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 
 		// institutionRestrictionTextPanel
@@ -1711,37 +1862,37 @@ public class Gui extends JFrame {
 
 		// migrationPanel
 		migrationPanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
-		migrationConversionLabel.setBounds(255, 70, 330, 20);
-		migrationArea.setBounds(255, 100, 450, 125);
-		migrationConditionLabel.setBounds(255, 225, 115, 20);
-		migrationDropDown.setBounds(370, 227, 240, 20);
-		goBackToInstitutionRestrictionOrTempButton.setBounds(450, 445, 90, 20);
-		goToSaveButton.setBounds(575, 445, 90, 20);
+		migrationConversionLabel.setBounds                  (255,  70 + jhOffsetY, 330, 20);
+		migrationArea.setBounds                             (255, 100 + jhOffsetY, 450, 125);
+		migrationConditionLabel.setBounds                   (255, 225 + jhOffsetY, 115, 20);
+		migrationDropDown.setBounds                         (370, 227 + jhOffsetY, 240, 20);
+		goBackToInstitutionRestrictionOrTempButton.setBounds(450, 445 + jhOffsetY, 90, 20);
+		goToSaveButton.setBounds                            (575, 445 + jhOffsetY, 90, 20);
 		backgroundMigrationImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 
 		// savePanel
 		savePanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
-		saveLabel.setBounds(255, 70, 300, 20);
-		settingsOverviewInfoArea.setBounds(255, 100, 450, 25);
-		settingsOverviewArea.setBounds(255, 130, 450, 205);
-		saveArea.setBounds(255, 350, 460, 30);
-		saveButton.setBounds(400, 390, 90, 20);
-		goBackToMigrationButton.setBounds(450, 445, 90, 20);
-		goToCreateButton.setBounds(575, 445, 90, 20);
+		saveLabel.setBounds               (255,  70 + jhOffsetY, 300, 20);
+		settingsOverviewInfoArea.setBounds(255, 100 + jhOffsetY, 450, 25);
+		settingsOverviewArea.setBounds    (255, 130 + jhOffsetY, 450, 205);
+		saveArea.setBounds                (255, 350 + jhOffsetY, 460, 30);
+		saveButton.setBounds              (400, 390 + jhOffsetY, 90, 20);
+		goBackToMigrationButton.setBounds (450, 445 + jhOffsetY, 90, 20);
+		goToCreateButton.setBounds        (575, 445 + jhOffsetY, 90, 20);
 		backgroundSaveImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 
 		// createPanel
 		createPanel.setBounds(0, 0, startPanelWidth, startPanelHeight);
-		createLabel.setBounds(255, 70, 350, 20);
-		createArea.setBounds(255, 100, 400, 110);
-		compressionCheckBox.setBounds(251, 220, 175, 20);
-		progressBar.setBounds(255, 260, 350, 20);
-		sipProgressDisplayLabel.setBounds(240, 285, 380, 20);
-		sipProgressStepLabel.setBounds(255, 310, 350, 20);
-		goBackToSaveButton.setBounds(450, 445, 90, 20);
-		createButton.setBounds(575, 445, 90, 20);
-		abortButton.setBounds(575, 445, 90, 20);
-		quitButton.setBounds(575, 445, 90, 20);
+		createLabel.setBounds            (255,  70 + jhOffsetY, 350, 20);
+		createArea.setBounds             (255, 100 + jhOffsetY, 400, 110);
+		compressionCheckBox.setBounds    (251, 220 + jhOffsetY, 175, 20);
+		progressBar.setBounds            (255, 260 + jhOffsetY, 350, 20);
+		sipProgressDisplayLabel.setBounds(240, 285 + jhOffsetY, 380, 20);
+		sipProgressStepLabel.setBounds   (255, 310 + jhOffsetY, 350, 20);
+		goBackToSaveButton.setBounds     (450, 445 + jhOffsetY, 90, 20);
+		createButton.setBounds           (575, 445 + jhOffsetY, 90, 20);
+		abortButton.setBounds            (575, 445 + jhOffsetY, 90, 20);
+		quitButton.setBounds             (575, 445 + jhOffsetY, 90, 20);
 		backgroundCreateImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 	}
 
@@ -1841,7 +1992,9 @@ public class Gui extends JFrame {
 		publicTempPanel.add(publicNoTempRestrictionRadioButton);
 		publicTempPanel.add(publicTempRadioButton);
 		publicTempPanel.add(publicTempStartDateLabel);
-		publicTempPanel.add(publicTempStartDateTextField);
+
+		publicTempPanel.add(publicTempStartDateChooserField);
+
 		publicTempPanel.add(publicLawIdDropDown);
 		publicTempPanel.add(publicLawRadioButton);
 		publicTempPanel.add(goBackToLicenseOrInstitutionButton);
@@ -1906,7 +2059,9 @@ public class Gui extends JFrame {
 		institutionTempPanel.add(institutionNoTempRestrictionRadioButton);
 		institutionTempPanel.add(institutionTempRadioButton);
 		institutionTempPanel.add(institutionTempStartDateLabel);
-		institutionTempPanel.add(institutionTempStartDateTextField);
+
+		institutionTempPanel.add(institutionTempStartDateChooserField);
+
 		institutionTempPanel.add(institutionLawRadioButton);
 		institutionTempPanel.add(institutionLawIdDropDown);
 		institutionTempPanel.add(goBackToInstitutionButton);
@@ -2502,8 +2657,8 @@ public class Gui extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (institutionNoTempRestrictionRadioButton.isSelected()) {
 					institutionTempStartDateLabel.setEnabled(false);
-					institutionTempStartDateTextField.setEditable(false);
-					institutionTempStartDateTextField.setEnabled(false);
+					institutionTempStartDateChooserField.setEnabled(false);
+
 					institutionLawIdDropDown.setEnabled(false);
 				}
 			}
@@ -2514,13 +2669,12 @@ public class Gui extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (institutionTempRadioButton.isSelected()) {
 					institutionTempStartDateLabel.setEnabled(true);
-					institutionTempStartDateTextField.setEditable(true);
-					institutionTempStartDateTextField.setEnabled(true);
+
+					institutionTempStartDateChooserField.setEnabled(true);
 					institutionLawIdDropDown.setEnabled(false);
 				} else {
 					institutionTempStartDateLabel.setEnabled(false);
-					institutionTempStartDateTextField.setEditable(false);
-					institutionTempStartDateTextField.setEnabled(false);
+					institutionTempStartDateChooserField.setEnabled(false);
 				}
 			}
 		});
@@ -2531,8 +2685,8 @@ public class Gui extends JFrame {
 				if (institutionLawRadioButton.isSelected()) {
 					institutionLawIdDropDown.setEnabled(true);
 					institutionTempStartDateLabel.setEnabled(false);
-					institutionTempStartDateTextField.setEditable(false);
-					institutionTempStartDateTextField.setEnabled(false);
+					
+					institutionTempStartDateChooserField.setEnabled(false);
 				} else
 					institutionLawIdDropDown.setEnabled(false);
 			}
@@ -2663,8 +2817,7 @@ public class Gui extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (publicNoTempRestrictionRadioButton.isSelected()) {
 					publicTempStartDateLabel.setEnabled(false);
-					publicTempStartDateTextField.setEditable(false);
-					publicTempStartDateTextField.setEnabled(false);
+					publicTempStartDateChooserField.setEnabled(false);
 					publicLawIdDropDown.setEnabled(false);
 				}
 			}
@@ -2675,13 +2828,11 @@ public class Gui extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (publicTempRadioButton.isSelected()) {
 					publicTempStartDateLabel.setEnabled(true);
-					publicTempStartDateTextField.setEditable(true);
-					publicTempStartDateTextField.setEnabled(true);
+					publicTempStartDateChooserField.setEnabled(true);
 					publicLawIdDropDown.setEnabled(false);
 				} else {
 					publicTempStartDateLabel.setEnabled(false);
-					publicTempStartDateTextField.setEditable(false);
-					publicTempStartDateTextField.setEnabled(false);
+					publicTempStartDateChooserField.setEnabled(false);
 				}
 			}
 		});
@@ -2692,8 +2843,7 @@ public class Gui extends JFrame {
 				if (publicLawRadioButton.isSelected()) {
 					publicLawIdDropDown.setEnabled(true);
 					publicTempStartDateLabel.setEnabled(false);
-					publicTempStartDateTextField.setEditable(false);
-					publicTempStartDateTextField.setEnabled(false);
+					publicTempStartDateChooserField.setEnabled(false);
 				} else
 					publicLawIdDropDown.setEnabled(false);
 			}
@@ -3347,8 +3497,10 @@ public class Gui extends JFrame {
 		if (institutionTempPanel.isVisible()) {
 
 			if (institutionTempRadioButton.isSelected()) {
-				UserInputValidator.Feedback feedback = UserInputValidator
-						.checkDate(institutionTempStartDateTextField.getText());
+				JComponent jComp = institutionTempStartDateChooserField.getDateEditor().getUiComponent();
+				JTextField textField =  (JTextField)jComp;
+				String probablyDateStr = textField.getText(); 
+				UserInputValidator.Feedback feedback = UserInputValidator.checkDate(probablyDateStr);
 
 				switch (feedback) {
 
@@ -3370,11 +3522,38 @@ public class Gui extends JFrame {
 			}
 		}
 
-		if (publicTempPanel.isVisible()) {
+//		if (publicTempPanel.isVisible()) {
+//
+//			if (publicTempRadioButton.isSelected()) {
+//				UserInputValidator.Feedback feedback = UserInputValidator
+//						.checkDate(publicTempStartDateTextField.getText());
+//
+//				switch (feedback) {
+//
+//				case NO_DATE:
+//					messageWriter.showMessage("Bitte geben Sie ein Startdatum für die Publikation an.",
+//							JOptionPane.ERROR_MESSAGE);
+//					return false;
+//
+//				case INVALID_DATE:
+//					messageWriter.showMessage("Das von Ihnen angegebene Startdatum für die Publikation\n"
+//							+ "existiert nicht oder ist nicht korrekt formuliert.\n\n"
+//							+ "Bitte geben Sie das Datum in der Form [Tag].[Monat].[Jahr] an.\n"
+//							+ "(Beispiel: 14.07.2020)", JOptionPane.ERROR_MESSAGE);
+//					return false;
+//
+//				default:
+//					break;
+//				}
+//			}
+//		}
 
+		if (publicTempPanel.isVisible()) {
 			if (publicTempRadioButton.isSelected()) {
-				UserInputValidator.Feedback feedback = UserInputValidator
-						.checkDate(publicTempStartDateTextField.getText());
+				JComponent jComp = publicTempStartDateChooserField.getDateEditor().getUiComponent();
+				JTextField textField =  (JTextField)jComp;
+				String probablyDateStr = textField.getText(); 
+				UserInputValidator.Feedback feedback = UserInputValidator.checkDate(probablyDateStr);
 
 				switch (feedback) {
 
@@ -3826,7 +4005,16 @@ public class Gui extends JFrame {
 		institutionRights.setAllowPublication(institutionAllowRadioButton.isSelected());
 		institutionRights.setTempPublication(institutionTempRadioButton.isSelected());
 		institutionRights.setLawPublication(institutionLawRadioButton.isSelected());
-		institutionRights.setStartDate(institutionTempStartDateTextField.getText());
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+		Date instDate = institutionTempStartDateChooserField.getDate();
+		if (instDate != null) {
+			String dateStr = dateFormat.format(instDate);
+			institutionRights.setStartDate(dateStr);
+		} else {
+			institutionRights.setStartDate("");
+		}			
+		
 		institutionRights.setLaw(Utilities.translateLaw((String) institutionLawIdDropDown.getSelectedItem()));
 		institutionRights.setTextRestriction(institutionTextRestrictionCheckBox.isSelected());
 		institutionRights.setImageRestriction(institutionImageRestrictionCheckBox.isSelected());
@@ -3852,7 +4040,15 @@ public class Gui extends JFrame {
 		publicRights.setAllowPublication(publicAllowRadioButton.isSelected());
 		publicRights.setTempPublication(publicTempRadioButton.isSelected());
 		publicRights.setLawPublication(publicLawRadioButton.isSelected());
-		publicRights.setStartDate(publicTempStartDateTextField.getText());
+	
+		Date publDate = publicTempStartDateChooserField.getDate();
+		if (publDate != null) {
+			String dateStr = dateFormat.format(publDate);
+			publicRights.setStartDate(dateStr);
+		} else {
+			publicRights.setStartDate("");
+		}			
+		
 		publicRights.setLaw(Utilities.translateLaw((String) publicLawIdDropDown.getSelectedItem()));
 		publicRights.setTextRestriction(publicTextRestrictionCheckBox.isSelected());
 		publicRights.setImageRestriction(publicImageRestrictionCheckBox.isSelected());
@@ -3889,7 +4085,6 @@ public class Gui extends JFrame {
 		ContractRights contractRights = sipFactory.getContractRights();
 		PublicationRights institutionRights = contractRights.getInstitutionRights();
 		PublicationRights publicRights = contractRights.getPublicRights();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
 		int widthImageIndex = contractSettings.getWidthImageIndex(institutionRights.getImageWidth());
 		int heightImageIndex = contractSettings.getHeightImageIndex(institutionRights.getImageHeight());
@@ -3934,12 +4129,12 @@ public class Gui extends JFrame {
 
 		if (institutionRights.getTempPublication()) {
 			institutionTempStartDateLabel.setEnabled(true);
-			institutionTempStartDateTextField.setEditable(true);
-			institutionTempStartDateTextField.setEnabled(true);
+			
+			institutionTempStartDateChooserField.setEnabled(true);
 		} else {
 			institutionTempStartDateLabel.setEnabled(false);
-			institutionTempStartDateTextField.setEditable(false);
-			institutionTempStartDateTextField.setEnabled(false);
+
+			institutionTempStartDateChooserField.setEnabled(false);
 		}
 
 		if (institutionRights.getLawPublication())
@@ -4020,10 +4215,8 @@ public class Gui extends JFrame {
 		institutionNoTempRestrictionRadioButton.setSelected(true);
 		institutionTempRadioButton.setSelected(institutionRights.getTempPublication());
 		institutionLawRadioButton.setSelected(institutionRights.getLawPublication());
-		if (institutionRights.getStartDate() != null)
-			institutionTempStartDateTextField.setText(dateFormat.format(institutionRights.getStartDate()));
-		else
-			institutionTempStartDateTextField.setText("");
+
+		institutionTempStartDateChooserField.setDate(institutionRights.getStartDate());
 		institutionLawIdDropDown.setSelectedItem(Utilities.translateLaw(institutionRights.getLaw()));
 
 		institutionTextRestrictionCheckBox.setSelected(institutionRights.getTextRestriction());
@@ -4069,12 +4262,10 @@ public class Gui extends JFrame {
 
 		if (publicRights.getTempPublication()) {
 			publicTempStartDateLabel.setEnabled(true);
-			publicTempStartDateTextField.setEditable(true);
-			publicTempStartDateTextField.setEnabled(true);
+			publicTempStartDateChooserField.setEnabled(true);
 		} else {
 			publicTempStartDateLabel.setEnabled(false);
-			publicTempStartDateTextField.setEditable(false);
-			publicTempStartDateTextField.setEnabled(false);
+			publicTempStartDateChooserField.setEnabled(false);
 		}
 
 		if (publicRights.getLawPublication())
@@ -4164,10 +4355,8 @@ public class Gui extends JFrame {
 		publicNoTempRestrictionRadioButton.setSelected(true);
 		publicTempRadioButton.setSelected(publicRights.getTempPublication());
 		publicLawRadioButton.setSelected(publicRights.getLawPublication());
-		if (publicRights.getStartDate() != null)
-			publicTempStartDateTextField.setText(dateFormat.format(publicRights.getStartDate()));
-		else
-			publicTempStartDateTextField.setText("");
+
+		publicTempStartDateChooserField.setDate(publicRights.getStartDate());
 		publicLawIdDropDown.setSelectedItem(Utilities.translateLaw(publicRights.getLaw()));
 
 		publicTextRestrictionCheckBox.setSelected(publicRights.getTextRestriction());

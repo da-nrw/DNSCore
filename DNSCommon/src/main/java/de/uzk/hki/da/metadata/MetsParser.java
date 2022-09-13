@@ -248,6 +248,12 @@ public class MetsParser{
 					break;
 				}
 			}
+			if ("TEASER".equals(usi)) {
+				files = fileGrp.getChildren("file", METS_NS);
+				if (files != null) {
+					break;
+				}
+			}
 		}
 		if (files == null){
 			return ret;

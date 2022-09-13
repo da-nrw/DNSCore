@@ -156,7 +156,7 @@ public class ATMetadataUpdatesMetsMods extends AcceptanceTest{
 					hbzIdnExists = true;
 				} 
 			}
-			if(urnCount==2) {
+			if(urnCount==1) {
 				metsUrnExists = true;
 			}
 			assertTrue(objIdExists);

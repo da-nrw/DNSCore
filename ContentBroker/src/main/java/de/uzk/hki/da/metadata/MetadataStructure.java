@@ -108,14 +108,18 @@ public abstract class MetadataStructure {
 					indexInfo.get(id).put(C.EDM_HAS_TYPE, root);
 				}
 				
-				if(indexInfo.get(id).get(C.EDM_IDENTIFIER)==null) {
+				if (indexInfo.get(id).get(C.EDM_IDENTIFIER) == null) {
 					List<String> IDs = new ArrayList<String>();
 					IDs.add(objectID);
-					IDs.add(urn);
+					if (urn != null) {
+						IDs.add(urn);
+					}
 					indexInfo.get(id).put(C.EDM_IDENTIFIER, IDs);
 				} else {
 					indexInfo.get(id).get(C.EDM_IDENTIFIER).add(objectID);
-					indexInfo.get(id).get(C.EDM_IDENTIFIER).add(urn);
+					if (urn != null) {
+						indexInfo.get(id).get(C.EDM_IDENTIFIER).add(urn);
+					}
 				}
 				
 				for(String elementName : indexInfo.get(id).keySet()) {

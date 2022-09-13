@@ -112,6 +112,7 @@ public class IngestAreaScannerWorker extends Worker{
 	/** The contractor short names. */
 	private List<User> contractors = new ArrayList<User>();
 
+	protected boolean isQueueFull;
 	/**
 	 * @return The contractors whose ingest folder will get scanned for files. 
 	 */
@@ -180,9 +181,13 @@ public class IngestAreaScannerWorker extends Worker{
 			session.close();
 			
 			if (county >= this.maxQueueCount) {
-				logger.info("Found " + county + " jobs in queue. Limit is " + this.maxQueueCount + ". Wait for decrease.");
+				if (!isQueueFull) {
+					isQueueFull = true;
+					logger.info("Found " + county + " jobs in queue. Limit is " + this.maxQueueCount + ". Wait for decrease.");
+				}
 				return;
 			}
+			isQueueFull = false;
 			
 			long freeEntries = this.maxQueueCount - county; 
 			
@@ -196,7 +201,6 @@ public class IngestAreaScannerWorker extends Worker{
 
 				for (String child:scanContractorFolderForReadySips(contractor.getShort_name(), currentTimeStamp)){
 					
-					logger.info("Found file \""+child+"\" in ingest Area. Creating job for \""+contractor.getShort_name()+"\"");
 					UserChild userChild = new UserChild();
 					userChild.contractor = contractor;
 					userChild.child = child;
@@ -359,7 +363,6 @@ public class IngestAreaScannerWorker extends Worker{
 				Job job = getJob( convertMaskedSlashes(FilenameUtils.removeExtension(sipname)),
 						csn);
 				if ( job == null) { // consider only containers for which there is not already a job in queue since it is possible that the CB has stopped and now resumes work.
-					logger.debug("New file found, making timestamp for: "+sipname);
 					sipsForIngestForCSN.get(csn).put(sipname, currentTimeStamp);
 				} else {
 //					USER EMAIL 
@@ -368,10 +371,7 @@ public class IngestAreaScannerWorker extends Worker{
 			else
 			{
 				long diff = currentTimeStamp - sipsForIngestForCSN.get(csn).get(sipname);
-				logger.debug("Old file found, lets look how their timestamps differ: "+ sipname+" diff: "+diff);
-				
 				if (diff>minAge){
-					logger.debug("File "+sipname+" which has lasted "+minAge+" miliseconds is ready.");
 					sipsForIngestForCSN.get(csn).remove(sipname);
 					childrenWhichAreReady.add(sipname);
 				}
@@ -402,8 +402,6 @@ public class IngestAreaScannerWorker extends Worker{
 		try {
 			return l.get(0);
 		} catch (IndexOutOfBoundsException e) {
-			logger.debug("search for a job with orig_name " + orig_name + " for user " +
-						 csn + " returns null!");
 			return null;
 		}
 	}
