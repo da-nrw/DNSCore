@@ -102,7 +102,12 @@ class StatisticsController {
 
 		def countFormats = 0
 
-		objectsAll = Object.findAllByUser(user);
+		if (admin == 0) {
+			objectsAll = Object.findAllByUser(user);
+		} else {
+			objectsAll = Object.findAll();
+		} 
+			
 
 		for (int i= 0; i<  objectsAll.size(); i++) {
 			// Speicherbelegung
@@ -152,17 +157,23 @@ class StatisticsController {
 		//		aipSizeGesamt = df.format(aipSizeGesamt)
 
 		// Qualitaetsangaben
-		findQualityLevel()
+		findQualityLevel(user, admin)
 
-		// Auswertung SIP ueber PUID
-
+		
 		MapFormats mf = new MapFormats()
-		String  extListS = mf.formatMappingStatistik(formatSIPArray);
-		extListSIP = getFormatsAndCountThem(extListS)
+		
+		// Auswertung SIP ueber PUID
+		if (formatSIPArray != null) {
+			String  extListS = mf.formatMappingStatistik(formatSIPArray);
+			extListSIP = getFormatsAndCountThem(extListS)
+		}
 
 		// Auswertung DIP ueber PUID
+		if (formatDIPArray != null) {
 		String  extListD = mf.formatMappingStatistik(formatDIPArray);
-		extListDIP = getFormatsAndCountThem(extListD)
+			extListDIP = getFormatsAndCountThem(extListD)
+		}
+		
 //		for (int i = 0; i< qualityList.size(); i++) {
 //			println ("index: ql1: " + qualityList.get(i))
 //		}
@@ -172,7 +183,8 @@ class StatisticsController {
 			formatsSIP: extListSIP,
 			formatsDIP: extListDIP,
 			pipArchived: pipArchived ,
-			usedStorage: usedStorage]
+			usedStorage: usedStorage,
+			user: user, admin: admin]
 		);
 	}
 
@@ -487,7 +499,7 @@ class StatisticsController {
 		addEmptyLine(paragraph, 1)
 
 
-		Paragraph puidDip = new Paragraph("Dateiformate im DIP", NORMAL_FONT)
+		Paragraph puidDip = new Paragraph("Dateiformate im PIP", NORMAL_FONT)
 		createTablePuid(puidDip, extListDIP)
 		paragraph.add(puidDip)
 
@@ -570,13 +582,18 @@ class StatisticsController {
 	 * Contractor erzeugten Qualitätsstufen und zählt diese je Qualitätsstufe durch
 	 * @return qualityList
 	 */
-	def findQualityLevel() {
-		User user = springSecurityService.currentUser
+	def findQualityLevel(user, admin) {
+		
+		//User user = springSecurityService.currentUser
+		if (admin ==0) {
 		qualityList = Object.executeQuery(" select count (o.quality_flag), o.quality_flag "  +
 				"from Object o , User u " +
 				"where  u.id = (select id from User where short_name = :shortName) " +
 				"group by o.quality_flag",
 				[shortName: user.toString()])
-
+		} else {
+			qualityList = Object.executeQuery(" select count (o.quality_flag), o.quality_flag "  +
+				" from Object o group by o.quality_flag ")
+		}
 	}
 }

@@ -22,7 +22,6 @@
 		
 	</head>
 	<body>
-	
 		<div class="page-body">
 			<div class="blue-box"></div>
 			<h2 id="page-header">Statistik über die eingelieferten Objekte</h2> 
@@ -30,22 +29,22 @@
 			<a href="#index-statistics" class="skip" tabindex="-1">
 				<g:message code="default.link.skip.label" default="Skip to content&hellip;"/>
 			</a>
-			
-			<div id="index-statistics" class="content scaffold-list" role="main">
-	              <fieldset class="abstand-oben-imp buttons ">                     
-							<g:actionSubmit class="pdf" action="pdfCreate" onClick="jQuery.ajax({type:'POST',data:jQuery(this).serialize(),url:'/statistics/pdfCreate', 
-								success:function(data,textStatus){created(data);},
-								error:function(XMLHttpRequest,textStatus,errorThrown){}});return false"
-								value="${message(code: 'default.button.pdf.label', default: 'generate pdf')}"/>
-						
-							<g:actionSubmit class="csv" action="csvCreate" onClick="jQuery.ajax({type:'POST',data:jQuery(this).serialize(),url:'/statistics/csvCreate', 
-								success:function(data,textStatus){created(data);},
-								error:function(XMLHttpRequest,textStatus,errorThrown){}});
-								return false" 
-								value="${message(code: 'default.button.csv.label', default: 'generate csv')}"/>
-					 </fieldset>
-			</div>
+			<g:if test="${admin==0}">
+				<div id="index-statistics" class="content scaffold-list" role="main">
+		              <fieldset class="abstand-oben-imp buttons ">                     
+								<g:actionSubmit class="pdf" action="pdfCreate" onClick="jQuery.ajax({type:'POST',data:jQuery(this).serialize(),url:'/statistics/pdfCreate', 
+									success:function(data,textStatus){created(data);},
+									error:function(XMLHttpRequest,textStatus,errorThrown){}});return false"
+									value="${message(code: 'default.button.pdf.label', default: 'generate pdf')}"/>
 							
+								<!--<g:actionSubmit class="csv" action="csvCreate" onClick="jQuery.ajax({type:'POST',data:jQuery(this).serialize(),url:'/statistics/csvCreate', 
+									success:function(data,textStatus){created(data);},
+									error:function(XMLHttpRequest,textStatus,errorThrown){}});
+									return false" 
+									value="${message(code: 'default.button.csv.label', default: 'generate csv')}"/>-->
+						 </fieldset>
+				</div>
+			</g:if>		
 			<g:form controller="statistics" >
 			  <h3>Speicherbelegung</h3>
 				
