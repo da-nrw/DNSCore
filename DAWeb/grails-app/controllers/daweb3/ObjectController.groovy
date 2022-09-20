@@ -1,4 +1,6 @@
 package daweb3
+import de.uzk.hki.da.utils.MapFormats
+
 /*
  DA-NRW Software Suite | ContentBroker
  Copyright (C) 2013 Historisch-Kulturwissenschaftliche Informationsverarbeitung
@@ -401,6 +403,7 @@ class ObjectController {
 		 */
 
 		Map<String, String> extListSip = [:]
+		MapFormats mf = new MapFormats()
 		if (objectInstance != []&& objectInstance.original_formats != null) {
 			/*
 			 * To get the right format for the mapping, there must be a splitting of
@@ -409,7 +412,7 @@ class ObjectController {
 			for (item in objectInstance){
 				String[] formatArray = (String[]) item.original_formats.split(",")
 
-				extListSip = formatMapping(formatArray, extListSip);
+				extListSip = mf.formatMapping(formatArray, extListSip);
 
 			} // end of object - list
 		}
@@ -423,7 +426,7 @@ class ObjectController {
 			for (item in objectInstance){
 				String[] formatArray = (String[]) item.most_recent_formats.split(",")
 
-				extListDip = formatMapping(formatArray, extListDip);
+				extListDip = mf.formatMapping(formatArray, extListDip);
 
 			} // end of object - list
 		}
@@ -436,34 +439,6 @@ class ObjectController {
 			user: user, admin: admin
 		]
 
-	}
-
-	/**
-	 * @param formatArray
-	 * @param extList
-	 * @return
-	 */
-	private Map<String, String> formatMapping(String[] formatArray, Map<String, String> extList) {
-		FormatMapping fm = new FormatMapping()
-		def mappings = null;
-		String extension = ""
-		int counter = 0;
-		def format
-
-		while (formatArray.size() > counter ) {
-			format = formatArray[counter];
-
-			/*
-			 * now you can read the table format_mapping
-			 */
-
-			mappings = fm.findAll("from FormatMapping where puid = :puid", [puid : format])
-
-			// and at last increment the counter
-			counter = counter + 1;
-			extList.put(format, mappings.extension)
-		} // end of format - list
-		return	extList
 	}
 
 	/**

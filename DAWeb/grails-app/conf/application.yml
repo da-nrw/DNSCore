@@ -66,6 +66,8 @@ grails:
               - {pattern: '/cbNode/**', access: ['ROLE_PSADMIN']}
               - {pattern: '/report/**', access: ['ROLE_CONTRACTOR']}
               - {pattern: '/systemEvent/**', access: ['ROLE_CONTRACTOR']}
+              - {pattern: '/statistics/**', access: ['ROLE_CONTRACTOR']}
+            
                
 ---
 # nur für den Start aus der IDE #
