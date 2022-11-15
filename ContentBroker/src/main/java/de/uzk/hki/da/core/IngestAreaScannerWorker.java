@@ -22,6 +22,7 @@ package de.uzk.hki.da.core;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -30,6 +31,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.FilenameUtils;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.slf4j.MDC;
 
@@ -92,6 +94,8 @@ public class IngestAreaScannerWorker extends Worker{
 		}
 	}
 	/** The min age. */
+	private long maxQueueCount;
+
 	private int minAge; // required minimum age in milliseconds
 	
 	private Path ingestAreaRootPath;
@@ -108,6 +112,7 @@ public class IngestAreaScannerWorker extends Worker{
 	/** The contractor short names. */
 	private List<User> contractors = new ArrayList<User>();
 
+	protected boolean isQueueFull;
 	/**
 	 * @return The contractors whose ingest folder will get scanned for files. 
 	 */
@@ -153,32 +158,76 @@ public class IngestAreaScannerWorker extends Worker{
 	 */
 	@Override
 	public void scheduleTaskImplementation(){
-		
+
+		class UserChild{
+			public User contractor;
+			public String child;
+			;}
+
+		//----------------------------------------------------
 		try {
+			
+			Session session = HibernateUtil.openSession();
+			Node node = (Node) session.get(Node.class, Integer.parseInt(this.localNodeId));
+			String nodeName = node.getName();
+
+			Query query = session.createQuery("select count(*) from Job j where " 
+					+ "j.responsibleNodeName=:responsibleNodeName and status < :maxStatus");
+			query.setParameter("responsibleNodeName", nodeName);
+			query.setParameter("maxStatus", "950");
+			@SuppressWarnings("unchecked")
+			List<Long> countyList = query.list();
+			Long county = countyList.get(0);
+			session.close();
+			
+			if (county >= this.maxQueueCount) {
+				if (!isQueueFull) {
+					isQueueFull = true;
+					logger.info("Found " + county + " jobs in queue. Limit is " + this.maxQueueCount + ". Wait for decrease.");
+				}
+				return;
+			}
+			isQueueFull = false;
+			
+			long freeEntries = this.maxQueueCount - county; 
+			
+			// ----------------------------------------------------
+
+			List<UserChild> toIngest = new ArrayList<UserChild>();
 		
 			long currentTimeStamp = System.currentTimeMillis();
-			
+	
 			for (User contractor:contractors){
 
 				for (String child:scanContractorFolderForReadySips(contractor.getShort_name(), currentTimeStamp)){
 					
-					logger.info("Found file \""+child+"\" in ingest Area. Creating job for \""+contractor.getShort_name()+"\"");
-					
-					Object object=null;
-					try {
-						object = registerObjectService.registerObject( child, contractor);	
-					}
-					catch (UserException e) {
-						logger.error("cannot register object "+child+" for contractor "+contractor+". Skip creating job for object.",e);
-						continue;
-					}
-					
-					Job job = insertJobIntoQueueAndSetWorkFlowState(
-							contractor, 
-							convertMaskedSlashes(FilenameUtils.removeExtension(child)),
-							localNodeId,
-							object);
-					logger.debug("Created new Object "+object+ ":::: Created job: "+job);
+					UserChild userChild = new UserChild();
+					userChild.contractor = contractor;
+					userChild.child = child;
+					toIngest.add(userChild);
+				}
+			}
+
+			Collections.shuffle(toIngest);
+			for (UserChild userChild : toIngest) {
+				User contractor = userChild.contractor;
+				String child = userChild.child;
+
+				Object object = null;
+				try {
+					object = registerObjectService.registerObject(child, contractor);
+				} catch (UserException e) {
+					logger.error("cannot register object " + child + " for contractor " + contractor
+							+ ". Skip creating job for object.", e);
+					continue;
+				}
+
+				String origName = convertMaskedSlashes(FilenameUtils.removeExtension(child));
+				Job job = insertJobIntoQueueAndSetWorkFlowState(contractor, origName, localNodeId, object);
+				logger.debug("Created new Object " + object + ":::: Created job: " + job);
+				--freeEntries;
+				if (freeEntries <= 0L) {
+					break;
 				}
 			}
 		}
@@ -314,7 +363,6 @@ public class IngestAreaScannerWorker extends Worker{
 				Job job = getJob( convertMaskedSlashes(FilenameUtils.removeExtension(sipname)),
 						csn);
 				if ( job == null) { // consider only containers for which there is not already a job in queue since it is possible that the CB has stopped and now resumes work.
-					logger.debug("New file found, making timestamp for: "+sipname);
 					sipsForIngestForCSN.get(csn).put(sipname, currentTimeStamp);
 				} else {
 //					USER EMAIL 
@@ -323,10 +371,7 @@ public class IngestAreaScannerWorker extends Worker{
 			else
 			{
 				long diff = currentTimeStamp - sipsForIngestForCSN.get(csn).get(sipname);
-				logger.debug("Old file found, lets look how their timestamps differ: "+ sipname+" diff: "+diff);
-				
 				if (diff>minAge){
-					logger.debug("File "+sipname+" which has lasted "+minAge+" miliseconds is ready.");
 					sipsForIngestForCSN.get(csn).remove(sipname);
 					childrenWhichAreReady.add(sipname);
 				}
@@ -357,14 +402,10 @@ public class IngestAreaScannerWorker extends Worker{
 		try {
 			return l.get(0);
 		} catch (IndexOutOfBoundsException e) {
-			logger.debug("search for a job with orig_name " + orig_name + " for user " +
-						 csn + " returns null!");
 			return null;
 		}
 	}
 	
-	
-
 	// TODO factor out
 	/**
 	 * Replaces %2F inside a string to /.
@@ -376,70 +417,43 @@ public class IngestAreaScannerWorker extends Worker{
 		return input.replaceAll("%2F", "/");
 	} 
 	
-	/**
-	 */
 	public Path getIngestAreaRootPath() {
 		return ingestAreaRootPath;
 	}
 
-	/**
-	 */
 	public void setIngestAreaRootPath(Path ingestAreaRootPath) {
 		this.ingestAreaRootPath = ingestAreaRootPath;
 	}
 	
-	/**
-	 * Sets the min age.
-	 *
-	 * @param minAge the new min age
-	 */
+	public long getMaxQueueCount() {
+		return maxQueueCount;
+	}
+
+	public void setMaxQueueCount(long maxQueueCount) {
+		this.maxQueueCount = maxQueueCount;
+	}
+
 	public void setMinAge(int minAge){
 		this.minAge = minAge;
 	}
 	
-	/**
-	 * Gets the min age.
-	 *
-	 * @return the min age
-	 */
 	public int getMinAge(){
 		return minAge;
 	}
 
-	/**
-	 * Gets the local node name.
-	 *
-	 * @return the local node name
-	 */
 	public String getLocalNodeId() {
 		return localNodeId;
 	}
 
-	/**
-	 * Sets the local node name.
-	 *
-	 * @param localNodeName the new local node name
-	 */
 	public void setLocalNodeId(String localNodeId) {
 		this.localNodeId = localNodeId;
 	}
 
-	/**
-	 * Gets the register object service.
-	 *
-	 * @return the register object service
-	 */
 	public RegisterObjectService getRegisterObjectService() {
 		return registerObjectService;
 	}
 
-	/**
-	 * Sets the register object service.
-	 *
-	 * @param registerObjectService the new register object service
-	 */
 	public void setRegisterObjectService(RegisterObjectService registerObjectService) {
 		this.registerObjectService = registerObjectService;
 	}
-
 }

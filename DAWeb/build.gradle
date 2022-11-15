@@ -85,6 +85,13 @@ dependencies {
     compile group: 'org.codehaus.groovy', name: 'groovy-all', version:'2.4.13'
 	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.18'
 	
+	// https://mvnrepository.com/artifact/com.itextpdf/itextpdf
+	compile group: 'com.itextpdf', name: 'itextpdf', version: '5.5.13'
+	// https://mvnrepository.com/artifact/org.apache.commons/commons-csv
+	compile group: 'org.apache.commons', name: 'commons-csv', version: '1.9.0'
+	
+	
+	
 	// Externes Config File
 	compile group: 'org.grails.plugins', name: 'external-config', version: '1.1.2'
 	runtime group: 'org.grails.plugins', name: 'external-config', version: '1.1.2'
