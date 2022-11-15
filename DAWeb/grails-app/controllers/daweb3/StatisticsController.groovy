@@ -583,12 +583,10 @@ class StatisticsController {
 	 * @return qualityList
 	 */
 	def findQualityLevel(user, admin) {
-		
-		//User user = springSecurityService.currentUser
 		if (admin ==0) {
 		qualityList = Object.executeQuery(" select count (o.quality_flag), o.quality_flag "  +
-				"from Object o , User u " +
-				"where  u.id = (select id from User where short_name = :shortName) " +
+				"from Object o " +
+				"where  o.user.id = (select u.id from User u where u.shortName = :shortName) " +
 				"group by o.quality_flag",
 				[shortName: user.toString()])
 		} else {
