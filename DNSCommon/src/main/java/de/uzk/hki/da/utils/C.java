@@ -96,6 +96,7 @@ public class C {
 	public static final String ERROR_MSG_ROLLBACK_NOT_IMPLEMENTED = "rollback not implemented yet.";
 	public static final String ERROR_MSG_NOTCONFIGURED = " not configured properly.";
 	public static final String ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION = "Error during file format identification";
+	public static final String ERROR_MSG_ENDING_METADATA= "not xml - ending";
 
 	//
 	public static final String TEST_USER_SHORT_NAME = "TEST";
