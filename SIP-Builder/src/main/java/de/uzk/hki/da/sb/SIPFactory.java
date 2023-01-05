@@ -1044,7 +1044,7 @@ public class SIPFactory {
 							// DANRW-1739: Prüfung Endung Metadaten = xml
 							String endung = file.toString().substring(file.toString().lastIndexOf("."));
 							strFile = file.toString().substring(file.toString().lastIndexOf(C.FS_SEPARATOR ) + 1);
-							 if (!endung.equals(C.FILE_EXTENSION_XML)) {
+							 if (!endung.equalsIgnoreCase(C.FILE_EXTENSION_XML)) {
 								throw new Error(C.ERROR_MSG_ENDING_METADATA);
 							 }
 							metadataType = metadataFileWithType.get(file);
