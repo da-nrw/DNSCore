@@ -210,7 +210,7 @@ edm:hasView
 </sub></td>
 <td><sub>Wird nur befüllt, wenn das Objekt mehrere Referenzen auf Digitalisate enthält.</sub></td>
 <td><sub>Thumbnail</sub></td>
-<td><sub>Build: 1856</sub></td>
+  <td><sub><span style="text-decoration-line:line-through;"> Build: 1856</span> Nein, fehlt in EDM</sub></td>
 </tr>
 
 </tbody></table>
@@ -261,29 +261,29 @@ mods.accessCondition[type="use and reproduction"].attr('xlink:href') </sub></td>
 <td><sub>edm.ProvidedCHO.dc.description</sub></td>
 <td><sub></sub></td>
 <td><sub></sub></td>
-<td><sub></sub></td>
+<td><sub>wahlfrei wenn dc.title, dann nicht verpflichtend</sub></td>
 </tr><tr>
 <td><sub>
 mods.language.mods.languageTerm[authority=iso639-2b]\[type=code] </sub></td>
 <td><sub>edm.ProvidedCHO.dc.language</sub></td>
 <td><sub></sub></td>
 <td><sub></sub></td>
-<td><sub></sub></td>
+<td><sub>NEIN</sub></td>
 </tr>
 <tr>
 <td><sub>
 "Digitales Archiv NRW" </sub></td>
 <td><sub> edm.provider</sub></td>
+  <td><sub><em>mandatory</em></sub></td>
 <td><sub></sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
+<td><sub>NEIN</sub></td>
 </tr><tr>
 <td><sub>
 mods.genre[authority=marcg] </sub></td>
 <td><sub> edm.ProvidedCHO.dc.type</sub></td>
+<td><sub><em>mandatory</em></sub></td>
 <td><sub></sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
+<td><sub>NEIN</sub></td>
 </tr>
 <tr>
 <td><sub>
@@ -292,9 +292,9 @@ mods.typeOfResource == "text"  <br>
 <b>dann:</b> $1="TEXT"<br>
 </sub></td>
 <td><sub>edm.ProvidedCHO.dc.type =$1 <br> edm.ProvidedCHO.edm.type =$1</sub></td>
+<td><sub><em>mandatory</em></sub></td>
 <td><sub></sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
+<td><sub>NEIN</sub></td>
 </tr>
 <tr>
 <td><sub>
@@ -303,9 +303,9 @@ mods.typeOfResource == "still image"  <br>
 <b>dann:</b> $1="IMAGE"<br>
 </sub></td>
 <td><sub>edm.ProvidedCHO.dc.type =$1 <br> edm.ProvidedCHO.edm.type =$1</sub></td>
+<td><sub><em>mandatory</em></sub></td>
 <td><sub></sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
+<td><sub>NEIN</sub></td>
 </tr>
 <tr>
 <td><sub>
@@ -314,9 +314,9 @@ mods.typeOfResource == "moving image"  <br>
 <b>dann:</b> $1="VIDEO"<br>
 </sub></td>
 <td><sub>edm.ProvidedCHO.dc.type =$1 <br> edm.ProvidedCHO.edm.type =$1</sub></td>
+<td><sub><em>mandatory</em></sub></td>
 <td><sub></sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
+<td><sub>NEIN</sub></td>
 </tr>
 <tr>
 <td><sub>
@@ -325,9 +325,9 @@ mods.typeOfResource == "sound recording"  <br>
 <b>dann:</b> $1="SOUND"<br>
 </sub></td>
 <td><sub>edm.ProvidedCHO.dc.type =$1 <br> edm.ProvidedCHO.edm.type =$1</sub></td>
+<td><sub><em>mandatory</em></sub></td>
 <td><sub></sub></td>
-<td><sub></sub></td>
-<td><sub></sub></td>
+  <td><sub><span style="color:red;">NEIN</span></sub></td>
 </tr>
 <tr>
 <td><sub>
