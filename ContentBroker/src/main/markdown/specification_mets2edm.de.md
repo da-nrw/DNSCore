@@ -1,6 +1,7 @@
 # Mapping von METS / Mods zu EDM
 
-Da auch Elternelemente in den XML-basierten Metadatenschemata relevant sein können, werden die Mappings werden in der Punktnotation bzw. in Form von jQuery/CSS-Selektoren dargestellt
+Da auch Elternelemente in den XML-basierten Metadatenschemata relevant sein können, werden die Mappings werden in der Punktnotation bzw. in Form von jQuery/CSS-Selektoren dargestellt. Die Zweischeninhalte werden in Variablenschreibweise zwischengespeichert und teilweise mit Operatoren zum neuen Inhalt formiert.
+Der '^'-Operator funktioniert wie XOR, d.h. entweder es wird der linke Operand genommen oder der rechte. Falls beide Vorhanden sind, so wird der linke bevorzugt, falls keiner der Operanden einen Wert besitzt, besitzt auch das Resultat der Operation keinen Wert.
 
 Die Spalte "Quelle" gibt an, aus welchem Namensraum und Feldern aus dem Mets die relevante Daten für das Mapping bezogen werden können.
 $1 bis $n können als Platzhalter für die Merging-Regeln verwendet werden.
@@ -29,7 +30,7 @@ Die Spalte "Umgesetzt" beschreibt den Umsetzungssstatus mögliche Ausprägungen 
 -mods.titleInfo.subTitle $4</sub></td>
 <td><sub>dc.title</sub></td>
 <td><sub>
-  je nach dem welche Attribute vorhanden sind <br>
+  je nachdem welche Attribute vorhanden sind <br>
   -dc:title = $1  <br>
   -dc:title = $2  <br>
   -dc:title = $3  <br>
@@ -40,6 +41,29 @@ Die Spalte "Umgesetzt" beschreibt den Umsetzungssstatus mögliche Ausprägungen 
   -dc:title = $3 + " " + $1 + " : " + $4  <br></sub></td>
 <td><sub>Titel</sub></td>
 <td><sub>Build 1856</sub></td>
+</tr>
+  
+  <tr>
+<td><sub>   fals kein mods.titleInfo vorhanden ist <br>
+  -mods.relatedItem(@type=host).titleInfo.title $1<br><br>
+  -mods.part.detail(@type='volume').number $VN  <br>
+  -mods.part.detail(@type='volume').caption $VC  <br>
+  -mods.part.detail(@type='issue').number $IN  <br> 
+  -mods.part.detail(@type='issue').caption $IC  <br>
+   
+</sub></td>
+<td><sub>dc.title</sub></td>
+<td><sub>
+   varVolume = $VN ^ $VC  <br>
+   varIssue = $IN ^ $IC  <br>
+    je nachdem welche Variablem definiert sind: <br> <br>
+  -dc:title = $1+", "+$varVolume+", "+$varIssue  <br>
+  -dc:title = $1+", "+$varVolume  <br>
+  -dc:title = $1+", "+$varIssue  <br>
+  -dc:title = $1<br>
+  </sub></td>
+<td><sub>Titel</sub></td>
+<td><sub>Vorschlag</sub></td>
 </tr></tbody></table>
 
 
