@@ -24,13 +24,14 @@ Die Spalte "Umgesetzt" beschreibt den Umsetzungssstatus mögliche Ausprägungen 
 <th><sub>Portal</sub></th>
 <th><sub>Umgesetzt</sub></th>
 </tr></thead><tbody><tr>
-<td><sub> -mods.titleInfo.title $1<br>
+<td><sub>  <b>fals mods.titleInfo vorhanden ist:</b> <br> <br>
+ -mods.titleInfo.title $1<br>
 -mods.titleInfo.displayLabel $2<br>
 -mods.titleInfo.nonSort $3<br>
 -mods.titleInfo.subTitle $4</sub></td>
 <td><sub>dc.title</sub></td>
 <td><sub>
-  je nachdem welche Attribute vorhanden sind <br>
+  je nachdem welche Attribute vorhanden sind: <br> 
   -dc:title = $1  <br>
   -dc:title = $2  <br>
   -dc:title = $3  <br>
@@ -44,7 +45,7 @@ Die Spalte "Umgesetzt" beschreibt den Umsetzungssstatus mögliche Ausprägungen 
 </tr>
   
   <tr>
-<td><sub>   fals kein mods.titleInfo vorhanden ist <br>
+<td><sub>   <b>fals kein mods.titleInfo vorhanden ist:</b> <br> <br>
   -mods.relatedItem(@type=host).titleInfo.title $1<br><br>
   -mods.part.detail(@type='volume').number $VN  <br>
   -mods.part.detail(@type='volume').caption $VC  <br>
@@ -56,7 +57,7 @@ Die Spalte "Umgesetzt" beschreibt den Umsetzungssstatus mögliche Ausprägungen 
 <td><sub>
    varVolume = $VN ^ $VC  <br>
    varIssue = $IN ^ $IC  <br>
-    je nachdem welche Variablem definiert sind: <br> <br>
+    je nachdem welche Zwischenvariablen definiert sind: <br> <br>
   -dc:title = $1+", "+$varVolume+", "+$varIssue  <br>
   -dc:title = $1+", "+$varVolume  <br>
   -dc:title = $1+", "+$varIssue  <br>
@@ -288,11 +289,11 @@ mods.accessCondition[type="use and reproduction"].attr('xlink:href') </sub></td>
 <td><sub>wahlfrei wenn dc.title, dann nicht verpflichtend</sub></td>
 </tr><tr>
 <td><sub>
-mods.language.mods.languageTerm[authority=iso639-2b]\[type=code] </sub></td>
+mods.language.mods.languageTerm[authority=iso639-2b][type=code] </sub></td>
 <td><sub>edm.ProvidedCHO.dc.language</sub></td>
+<td><sub>Falls kein Language vorhanden ist, sollte 'zxx' als Code verwendet werden. </sub></td>
 <td><sub></sub></td>
-<td><sub></sub></td>
-<td><sub>NEIN</sub></td>
+<td><sub>Vorschlag</sub></td>
 </tr>
 <tr>
 <td><sub>
@@ -300,59 +301,72 @@ mods.language.mods.languageTerm[authority=iso639-2b]\[type=code] </sub></td>
 <td><sub> edm.provider</sub></td>
   <td><sub><em>mandatory</em></sub></td>
 <td><sub></sub></td>
-<td><sub>NEIN</sub></td>
+<td><sub>Vorschlag</sub></td>
 </tr><tr>
 <td><sub>
 mods.genre[authority=marcg] </sub></td>
 <td><sub> edm.ProvidedCHO.dc.type</sub></td>
 <td><sub><em>mandatory</em></sub></td>
 <td><sub></sub></td>
-<td><sub>NEIN</sub></td>
+<td><sub></sub></td>
 </tr>
 <tr>
 <td><sub>
-<b>wenn:</b>
-mods.typeOfResource == "text"  <br>
+<b>wenn:</b> mods.typeOfResource == "text"  <br>
+<b>oder:</b> mods.typeOfResource == "notated music"  <br>
+<b>oder:</b> mods.typeOfResource == "mixed material"  <br>
 <b>dann:</b> $1="TEXT"<br>
 </sub></td>
 <td><sub>edm.ProvidedCHO.dc.type =$1 <br> edm.ProvidedCHO.edm.type =$1</sub></td>
 <td><sub><em>mandatory</em></sub></td>
 <td><sub></sub></td>
-<td><sub>NEIN</sub></td>
+<td><sub>Vorschlag</sub></td>
 </tr>
 <tr>
 <td><sub>
-<b>wenn:</b>
-mods.typeOfResource == "still image"  <br>
+<b>wenn:</b>mods.typeOfResource == "still image"  <br>
+<b>oder:</b> mods.typeOfResource == "cartographic"  <br>
 <b>dann:</b> $1="IMAGE"<br>
 </sub></td>
 <td><sub>edm.ProvidedCHO.dc.type =$1 <br> edm.ProvidedCHO.edm.type =$1</sub></td>
 <td><sub><em>mandatory</em></sub></td>
 <td><sub></sub></td>
-<td><sub>NEIN</sub></td>
+<td><sub>Vorschlag</sub></td>
 </tr>
 <tr>
 <td><sub>
-<b>wenn:</b>
-mods.typeOfResource == "moving image"  <br>
+<b>wenn:</b> mods.typeOfResource == "moving image"  <br>
 <b>dann:</b> $1="VIDEO"<br>
 </sub></td>
 <td><sub>edm.ProvidedCHO.dc.type =$1 <br> edm.ProvidedCHO.edm.type =$1</sub></td>
 <td><sub><em>mandatory</em></sub></td>
 <td><sub></sub></td>
-<td><sub>NEIN</sub></td>
+<td><sub>Vorschlag</sub></td>
 </tr>
 <tr>
 <td><sub>
-<b>wenn:</b>
-mods.typeOfResource == "sound recording"  <br>
-<b>dann:</b> $1="SOUND"<br>
+  <b>wenn:</b>mods.typeOfResource == "sound recording"  <br>
+  <b>dann:</b> $1="SOUND"<br>
 </sub></td>
 <td><sub>edm.ProvidedCHO.dc.type =$1 <br> edm.ProvidedCHO.edm.type =$1</sub></td>
 <td><sub><em>mandatory</em></sub></td>
 <td><sub></sub></td>
-  <td><sub><span style="color:red;">NEIN</span></sub></td>
+  <td><sub>Vorschlag</sub></td>
 </tr>
+  
+  
+<tr>
+<td><sub>
+  <b>wenn:</b>mods.typeOfResource == "three dimensional object"  <br>
+  <b>dann:</b> $1="3D"<br>
+</sub></td>
+<td><sub>edm.ProvidedCHO.dc.type =$1 <br> edm.ProvidedCHO.edm.type =$1</sub></td>
+<td><sub><em>mandatory</em></sub></td>
+<td><sub></sub></td>
+  <td><sub>Vorschlag</sub></td>
+</tr>
+  
+  
 <tr>
 <td><sub>
 mods.accessCondition[type="use and reproduction"].attr('xlink:href') </sub></td>
