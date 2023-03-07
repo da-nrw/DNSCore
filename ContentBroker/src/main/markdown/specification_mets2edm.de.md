@@ -291,7 +291,7 @@ mods.accessCondition[type="use and reproduction"].attr('xlink:href') </sub></td>
 <td><sub>
 mods.language.mods.languageTerm[authority=iso639-2b][type=code] </sub></td>
 <td><sub>edm.ProvidedCHO.dc.language</sub></td>
-<td><sub>Falls kein Language vorhanden ist, sollte 'zxx' als Code verwendet werden. </sub></td>
+<td><sub>Falls kein Language vorhanden ist, sollte 'zxx' als Code verwendet werden. <br> Bei mods.typeOfResource == "text" muss language vorhanden sein. </sub></td>
 <td><sub></sub></td>
 <td><sub>Vorschlag</sub></td>
 </tr>
@@ -315,6 +315,7 @@ mods.genre[authority=marcg] </sub></td>
 <b>wenn:</b> mods.typeOfResource == "text"  <br>
 <b>oder:</b> mods.typeOfResource == "notated music"  <br>
 <b>oder:</b> mods.typeOfResource == "mixed material"  <br>
+<b>oder:</b> mods.typeOfResource == UNBEKANNT  <br>
 <b>dann:</b> $1="TEXT"<br>
 </sub></td>
 <td><sub>edm.ProvidedCHO.dc.type =$1 <br> edm.ProvidedCHO.edm.type =$1</sub></td>
