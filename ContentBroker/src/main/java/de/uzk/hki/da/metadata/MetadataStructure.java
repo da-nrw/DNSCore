@@ -183,12 +183,13 @@ public abstract class MetadataStructure {
 		Attr rdfAbout = edmDoc.createAttribute("rdf:about");
 		rdfAbout.setValue(cho_identifier);
 		providedCHO.setAttributeNode(rdfAbout);
+		
 		rootElement.appendChild(providedCHO);
 		
 		return providedCHO;
 	}
-	
-	private void addEdmProviderToEdm(PreservationSystem preservationSystem, Document edmDoc, Element aggregation) {
+
+	private void addEdmProviderToEdm(Document edmDoc, Element aggregation) {
 		Element provider = edmDoc.createElement(C.EDM_PROVIDER);
 		provider.setTextContent(C.EDM_PROVIDER_VALUE);
 		aggregation.appendChild(provider);
@@ -208,7 +209,7 @@ public abstract class MetadataStructure {
 		aggregatedCHO.setAttributeNode(rdfAboutACho);
 		aggregation.appendChild(aggregatedCHO);
 		
-		addEdmProviderToEdm(preservationSystem, edmDoc, aggregation);
+		addEdmProviderToEdm(edmDoc, aggregation);
 		
 		return aggregation;
 	}
