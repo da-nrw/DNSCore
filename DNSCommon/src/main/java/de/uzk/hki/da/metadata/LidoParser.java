@@ -291,7 +291,7 @@ public class LidoParser {
 
 	private List<String> getEdmProvider(Element lidoElement) {
 		List<String> ret = new ArrayList<String>(); 
-		ret.add("Digitales Archiv NRW");
+		ret.add(C.EDM_PROVIDER_VALUE);
 		return ret;
 	}
 	
@@ -372,7 +372,7 @@ public class LidoParser {
 
 				lidoElementInfo.put(C.DC_RIGHTS_HOLDER, getDcRightsHolder(lidoElement));
 				lidoElementInfo.put(C.EDM_DATA_PROVIDER, getEdmDataProvider(lidoElement));
-				lidoElementInfo.put(C.EDM_PROVIDER, getEdmProvider(lidoElement));
+				//lidoElementInfo.put(C.EDM_PROVIDER, getEdmProvider(lidoElement));
 				lidoElementInfo.put(C.DC_RIGHTS, getDcRights(lidoElement));
 				lidoElementInfo.put(C.EDM_RIGHTS, getDcRights(lidoElement));
 
