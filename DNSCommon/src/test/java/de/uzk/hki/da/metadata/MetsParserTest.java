@@ -30,10 +30,12 @@ public class MetsParserTest {
 	private static final Path WORK_AREA_ROOT_PATH = new RelativePath("src/test/resources/metadata/");
 	private static String lavMets = "MetsLav.xml";
 	private static String ulbsMets = "MetsUlbms.xml";
+	private static String ulbsMetsPartTitle = "MetsUlbmsPartTitle.xml";
 	private static String licenseMets = "MetsLicense.xml";
 	private static String noLicenseMets = "MetsNoLicense.xml";
 	private static File lavMetsFile = Path.makeFile(WORK_AREA_ROOT_PATH, lavMets);
 	private static File ulbMetsFile = Path.makeFile(WORK_AREA_ROOT_PATH, ulbsMets);
+	private static File ulbMetsFilePartTitle = Path.makeFile(WORK_AREA_ROOT_PATH, ulbsMetsPartTitle);
 
 	private static File licenseMetsFile = Path.makeFile(WORK_AREA_ROOT_PATH, licenseMets);
 	private static File differentLicenseMultiMetsFile = Path.makeFile(WORK_AREA_ROOT_PATH, "MetsMultiLevelDifferentLicense.xml");
@@ -88,6 +90,36 @@ public class MetsParserTest {
 		
 		assertEquals(elements.get(C.EDM_TITLE).get(0), "nonSortText"+" "+"Text// mahels///Titel"+" : "+"Untertitel");
 		
+		assertTrue(elements.get(C.EDM_PUBLISHER).size()==2);
+		assertTrue(elements.get(C.EDM_PUBLISHER).contains("Grimm] ([Augsburg)")
+				&& elements.get(C.EDM_PUBLISHER).contains("ULB (Stadt)"));
+		
+		assertTrue(elements.get(C.EDM_IDENTIFIER).contains("id42")
+				&& elements.get(C.EDM_IDENTIFIER).contains("urn:nbn:de:hbz:42"));
+		
+		assertTrue(elements.get(C.EDM_CREATOR).contains("Nachname, Vorname"));
+		
+		assertTrue(elements.get(C.EDM_DATA_PROVIDER).contains("ULB"));
+		
+		assertTrue(elements.get(C.EDM_OBJECT).contains("image/801622.bmp"));
+		
+		System.out.println();
+	}
+	
+	@Test
+	public void testGetIndexInfoFromUlbMetsPartTitle() throws JDOMException, IOException {
+		
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
+		FileReader fr1 = new FileReader(ulbMetsFilePartTitle);
+		Document lavMets = builder.build(fr1);
+		MetsParser mp = new MetsParser(lavMets);
+		
+		HashMap<String, HashMap<String, List<String>>> indexInfo = mp.getIndexInfo("danrw801613");
+		assertTrue(indexInfo.entrySet().size()==1);
+		HashMap<String, List<String>> elements = indexInfo.get("danrw801613-md801613");
+		System.out.println("##### title: " +elements.get(C.EDM_TITLE).get(0));
+		assertEquals(elements.get(C.EDM_TITLE).get(0), "2019," + " " + "Nr." + " " + "05");
+				
 		assertTrue(elements.get(C.EDM_PUBLISHER).size()==2);
 		assertTrue(elements.get(C.EDM_PUBLISHER).contains("Grimm] ([Augsburg)")
 				&& elements.get(C.EDM_PUBLISHER).contains("ULB (Stadt)"));
