@@ -148,6 +148,7 @@ public class C {
 	public static final String EDM_DATE_CREATED = "dcterms:created";
 	public static final String EDM_PUBLISHER = "dc:publisher";
 	public static final String EDM_SPATIAL = "dcterms:spatial";
+	public static final String EDM_TEMPORAL = "dcterms:temporal";
 	public static final String EDM_IS_PART_OF = "dcterms:isPartOf";
 	public static final String EDM_HAS_PART = "dcterms:hasPart";
 	public static final String EDM_TITLE = "dc:title";
@@ -173,6 +174,12 @@ public class C {
 	public static final String OAI_DANRW_DE = "oai:danrw.de:";
 	
 	public static final String EDM_PROVIDER_VALUE = "Digitales Archiv NRW";
+	
+	public static final String EDM_TYPE_TEXT = "TEXT";
+	public static final String EDM_TYPE_IMAGE = "IMAGE";
+	public static final String EDM_TYPE_SOUND = "SOUND";
+	public static final String EDM_TYPE_VIDEO = "VIDEO";
+	public static final String EDM_TYPE_3D = "3D";
 	
 	//
 	public static final String ENCODING_UTF_8 = "UTF-8";

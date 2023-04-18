@@ -674,6 +674,8 @@ public class MetsParser{
 		String subTitleValue = "";
 		String MainTitleValue = "";
 		
+		String caption = "";
+		
 		try {
 			Element titleInfo = modsXmlData.getChild("titleInfo", C.MODS_NS);
 			
@@ -710,17 +712,47 @@ public class MetsParser{
 			else if(!nonSortValue.equals("")) {
 				MainTitleValue = nonSortValue;
 			}
-			else {
+			else if (!displayLabelValue.equals("")){
 				MainTitleValue = displayLabelValue;
+			} else {	
+				
+				// Neu Mapping für DDB 04.04.2023 
+				try {
+					
+					Element part = modsXmlData.getChild("part", C.MODS_NS);
+					@SuppressWarnings("unchecked")
+					List<Element> detailList = part.getChildren("detail", C.MODS_NS);
+					
+					
+					for(Element detail : detailList) {
+						System.out.println("type: " + detail.getAttributeValue("type"));
+						if (detail.getAttributeValue("type").equals("volume")) {
+							if (caption.equals("")){
+								caption = detail.getChild("caption", C.MODS_NS).getText();
+							} else {
+								caption = detail.getChild("caption", C.MODS_NS).getText() + caption;
+							}
+						} 
+						if (detail.getAttributeValue("type").equals("issue")) {
+							caption = caption + ", " + detail.getChild("caption", C.MODS_NS).getText();
+						}
+					}
+				} catch (Exception ex) {
+					logger.error("Element part.detail.caption does not exist !!!");
+				}
 			}
 		} catch(Exception e) {
-			logger.error("Element titleInfo does not exist!!!");
+			logger.error("Element titleInfo does not exist. Try to find part.detail.caption!!!");
 		}
 		
-		if(!subTitleValue.equals("")) {
-			title.add(MainTitleValue+titleSparator+ subTitleValue);
-		}else{
-			title.add(MainTitleValue);
+		if (!MainTitleValue.equals("")) {
+			if(!subTitleValue.equals("")) {
+				title.add(MainTitleValue+titleSparator+ subTitleValue);
+			}else{
+				title.add(MainTitleValue);
+			}
+		} else {
+			title.add(caption);
 		}
 		return title;
 	}

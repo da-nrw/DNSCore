@@ -159,7 +159,6 @@ public abstract class MetadataStructure {
 	
 	private void addNewElementToParent(PreservationSystem preservationSystem, String id, String elementName, String elementValue, Element parent, Document edmDoc) {
 		Element eName = edmDoc.createElement(elementName);
-		System.out.println(" ############# ElementName: "+ elementName );
 		if(elementName.equals(C.EDM_HAS_VIEW) || elementName.equals(C.EDM_IS_PART_OF) || elementName.equals(C.EDM_HAS_PART) 
 				|| elementName.equals(C.EDM_IS_SHOWN_BY) || elementName.equals(C.EDM_OBJECT)
 				|| elementName.equals(C.EDM_RIGHTS) || elementName.equals(C.EDM_PROVIDER)) {
@@ -183,12 +182,13 @@ public abstract class MetadataStructure {
 		Attr rdfAbout = edmDoc.createAttribute("rdf:about");
 		rdfAbout.setValue(cho_identifier);
 		providedCHO.setAttributeNode(rdfAbout);
+		
 		rootElement.appendChild(providedCHO);
 		
 		return providedCHO;
 	}
-	
-	private void addEdmProviderToEdm(PreservationSystem preservationSystem, Document edmDoc, Element aggregation) {
+
+	private void addEdmProviderToEdm(Document edmDoc, Element aggregation) {
 		Element provider = edmDoc.createElement(C.EDM_PROVIDER);
 		provider.setTextContent(C.EDM_PROVIDER_VALUE);
 		aggregation.appendChild(provider);
@@ -208,7 +208,7 @@ public abstract class MetadataStructure {
 		aggregatedCHO.setAttributeNode(rdfAboutACho);
 		aggregation.appendChild(aggregatedCHO);
 		
-		addEdmProviderToEdm(preservationSystem, edmDoc, aggregation);
+		addEdmProviderToEdm(edmDoc, aggregation);
 		
 		return aggregation;
 	}
