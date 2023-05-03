@@ -3,6 +3,7 @@ package de.uzk.hki.da.metadata;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import org.jdom.Document;
@@ -470,26 +471,35 @@ public class MetsParser{
 		return physIds;
 	}
 		
-	private List<String> getDataProvider() {
-		List<String> dataProvider = new ArrayList<String>();
+	List<String> getDataProvider(String amdId) {
+		HashSet<String> dataProvider = new HashSet<String>(); //nur ungleichnahmige abspeichern
+		String gefundeneAmdSec="";
 		try {
 			@SuppressWarnings("unchecked")
 			List<Element> amdSections = metsDoc.getRootElement().getChildren("amdSec", C.METS_NS);
 			for(Element amdSec : amdSections) {
+				if( ! amdId.equals(getIdFromElem(amdSec))) //amdSec
+					continue;
+				gefundeneAmdSec=getIdFromElem(amdSec);
 				if(amdSec.getChild("rightsMD", C.METS_NS).getChild("mdWrap", C.METS_NS).getAttribute("OTHERMDTYPE").getValue().equals("DVRIGHTS")) {
-					dataProvider.add(amdSec
+					String rightsOwner=amdSec
 							.getChild("rightsMD", C.METS_NS)
 							.getChild("mdWrap", C.METS_NS)
 							.getChild("xmlData", C.METS_NS)
 							.getChild("rights", C.DV)
 							.getChild("owner", C.DV)
-							.getValue());
+							.getValue();
+					dataProvider.add(rightsOwner);
 				}
 			}
 		} catch (Exception e) {
 			logger.debug("No amd section found!");
 		}
-		return dataProvider;
+		
+		//es sollte zu jedem dmdsec eine amdsec exisitieren
+		if(gefundeneAmdSec.isBlank())
+			throw new RuntimeException("No matching amd-section found for data provider! "+amdId); 
+		return new ArrayList(dataProvider);
 	}
 	
 	private String getPublisher(Element origInfo) {
@@ -735,7 +745,7 @@ public class MetsParser{
 		List<Element> dmdSections =getDMDSections();
 		for(Element e : dmdSections) {
 			String id = "";
-			id = objectId+"-"+e.getAttribute("ID").getValue();
+			id = objectId+"-"+getIdFromElem(e);
 			IDtoSecElement.put(id, e);
 		}
 		return IDtoSecElement;
@@ -886,7 +896,7 @@ public class MetsParser{
 			} 
 			
 //			dataProvider
-			dmdSecInfo.put(C.EDM_DATA_PROVIDER, getDataProvider());
+			dmdSecInfo.put(C.EDM_DATA_PROVIDER, getDataProvider(dmdIdtoAmdId(getIdFromElem(e))));
 			
 //			hasPart
 			ArrayList<String> childrenDmdIds = getChildrenDmdIds(id, ObjectId);
@@ -904,7 +914,17 @@ public class MetsParser{
 		}
 		return indexInfo;
 	}
-
+	
+	
+	String getIdFromElem(Element e) {
+		return e.getAttribute("ID").getValue();
+	}
+	
+	
+	String dmdIdtoAmdId(String dmdSec) {
+		return dmdSec.replace("md", "amd");
+		
+	}
 	
 	public  List<String> getAccessConditions(Element dmdSec) {
 		List<String> retList = new ArrayList<String>();
