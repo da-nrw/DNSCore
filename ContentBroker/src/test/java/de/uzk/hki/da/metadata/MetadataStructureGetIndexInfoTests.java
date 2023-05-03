@@ -8,12 +8,14 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.junit.AfterClass;
@@ -53,6 +55,9 @@ public class MetadataStructureGetIndexInfoTests {
 		pSystem.setUrisCho("http://data.danrw.de/cho");
 		pSystem.setUrisAggr("http://data.danrw.de/aggregation");
 	}
+	
+	
+	// unklar wieso die Stelle bei LidoParser::getIndexInfo() auskommentiert worden ist
 	/*
 	@Test
 	public void testLIDO() throws FileNotFoundException, JDOMException, IOException {
@@ -86,6 +91,7 @@ public class MetadataStructureGetIndexInfoTests {
 		}
 		lms.toEDM(indexInfo, Path.makeFile(basePath, "target", "lidoToEdm.xml"), pSystem, objectID, urn);
 	}
+	*/
 	
 	@Test
 	public void testMETS() throws FileNotFoundException, JDOMException, IOException {
@@ -95,7 +101,7 @@ public class MetadataStructureGetIndexInfoTests {
 		List<Document> docs = new ArrayList<Document>();
 		MetsMetadataStructure mms = new MetsMetadataStructure(Path.make(basePath),metsFile, docs);
 		
-		assertTrue(mms.getUrn().equals("urn:nbn:de:hbz:6:1-3602"));
+		assertTrue(mms.getUrn("urn+nbn+de+hbz+6+1-3602").equals("urn:nbn:de:hbz:6:1-3602"));
 		
 		indexInfo = mms.getIndexInfo(objectID);
 		
@@ -127,7 +133,7 @@ public class MetadataStructureGetIndexInfoTests {
 		MetsMetadataStructure mms = new MetsMetadataStructure(Path.make(basePath),metsFile, docs);
 		indexInfo = mms.getIndexInfo(objectID);
 		
-		assertTrue(mms.getUrn().equals("urn:nbn:de:hbz:6:1-65526"));
+		assertTrue(mms.getUrn("urn+nbn+de+hbz+6+1-65526").equals("urn:nbn:de:hbz:6:1-65526"));
 		
 		content = indexInfo.get(objectID+"-md1617166");
 		
@@ -147,7 +153,7 @@ public class MetadataStructureGetIndexInfoTests {
 		
 		mms.toEDM(indexInfo, Path.makeFile(basePath, "target", "multilevelMetsToEdm.xml"), pSystem, objectID, urn);
 	}
-	*/
+	
 	@Test
 	public void testMultilevelMETSappendAccessCondition() throws FileNotFoundException, JDOMException, IOException {
 		MetsLicense testLicense=new MetsLicense("use and reproduction","https://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
@@ -176,9 +182,25 @@ public class MetadataStructureGetIndexInfoTests {
 		}finally{
 			FileUtils.deleteQuietly(metsTMPFullPath);
 		}
-
 	}
+	
+	@Test
+	public void testDataProvider() throws FileNotFoundException, JDOMException, IOException {
+		File metsFile = Path.make(Path.make(basePath),"202305SuperiorMets.xml").toFile();
 
+		try{
+			SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
+			FileReader fr1 = new FileReader(metsFile);
+			org.jdom.Document metsDoc = builder.build(fr1);
+			MetsParser mp = new MetsParser(metsDoc);
+			
+			assertEquals(1,mp.getDataProvider("amd2083410").size());
+			assertEquals("Universitäts- und Landesbibliothek Düsseldorf",mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md2083410").get(C.EDM_DATA_PROVIDER).get(0));
+			//md2083410   md2083068   md2089438  md2089038	
+		}finally{
+			
+		}
+	}
 	
 	@Test
 	public void testSimpleMETSappendAccessCondition() throws FileNotFoundException, JDOMException, IOException {
@@ -208,7 +230,7 @@ public class MetadataStructureGetIndexInfoTests {
 
 	}
 	
-/*
+
 		
 	@Test
 	public void testEAD() throws FileNotFoundException, JDOMException, IOException, ParserConfigurationException, SAXException {
@@ -286,7 +308,9 @@ public class MetadataStructureGetIndexInfoTests {
 		assertTrue(parentID1_Bestandsname.equals(parentID2_Bestandsname) && parentID2_Bestandsname.equals(parentID3_Bestandsname));
 		ems.toEDM(indexInfo, Path.makeFile(basePath, "target", "new_ddb_ead_to_edm.xml"), pSystem, objectID, urn);
 	}
-	*/
+	
+	
+	
 	@AfterClass 
 	public static void tearDown(){
 		Path.makeFile(basePath, "target", "eadToEdm.xml").delete();
