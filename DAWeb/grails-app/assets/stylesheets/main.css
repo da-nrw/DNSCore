@@ -10,7 +10,7 @@ h1, h2, h3, h4, h5, h6 {;
 
 /* BASE LAYOUT */
 
-html {
+html {c
 	background-color: #ddd;
 	background-image: -moz-linear-gradient(center top, #aaa, #ddd);
 	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #aaa), color-stop(1, #ddd));
@@ -425,6 +425,9 @@ h2 {
 	margin-top: 10px;
 }
 
+.abstand-oben-imp {
+	margin-top: 10px !important
+}
 .abstand-unten {
 	margin-bottom: 10px;
 }
@@ -1207,7 +1210,7 @@ th:hover, tr:hover {
 	text-decoration: underline;
 }
 
-.buttons .delete, .buttons .edit, .buttons .save, .buttons .cancel, .buttons .anmelden {
+.buttons .delete, .buttons .edit, .buttons .save, .buttons .cancel, .buttons .anmelden, .buttons .pdf {
 	background-position: 0.7em center;
 	background-repeat: no-repeat;
 	text-indent: 25px;
@@ -1229,6 +1232,19 @@ th:hover, tr:hover {
 .buttons .cancel {
 	background-image: url(../images/skin/database_cancel.png);
 }
+
+.buttons .pdf {
+	background-image: url(../images/skin/icons8-pdf-48.png);
+	background-position: 0px;
+	color: #ffffff !important;
+    background-color: #105F85;
+    border-color: #04546B;
+    padding: 5px 10px 5px 25px;
+    text-decoration: none;
+    font-size: 16px;
+	
+}
+
 
 a.skip {
 	position: absolute;

@@ -45,7 +45,7 @@
 					<div class="message" role="status">${msg}</div>
 				</g:if>
 				<g:uploadForm controller="report" method="POST" action="save" enctype="multipart/form-data">
-					<div style="float:left; margin-right: 10px"" >
+					<div style="float:left; margin-right: 10px" >
 						<input type="file" name="file" />
 					</div>
 					<div style="float:center"> 

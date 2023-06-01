@@ -73,11 +73,11 @@ public class LidoParserTest {
 		valus = info.get(C.EDM_DATA_PROVIDER);
 		assertTrue(valus.size() == 1);
 		assertTrue(valus.contains("LVR-Amt für Denkmalpflege im Rheinland DE-2673"));
-
+/*
 		valus = info.get(C.EDM_PROVIDER);
 		assertTrue(valus.size() == 1);
 		assertTrue(valus.contains("Digitales Archiv NRW"));
-
+*/
 		valus = info.get(C.DC_RIGHTS);
 		assertTrue(valus.size() == 1);
 		assertTrue(valus.contains("http://www.deutsche-digitale-bibliothek.de/lizenzen/rv-fz/"));

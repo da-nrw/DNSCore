@@ -1035,11 +1035,18 @@ public class SIPFactory {
 						.clone();
 				for (File f : folderListWithNames.keySet()) {
 					String metadataType = "";
+					String strFile = "";
 					try {
 						TreeMap<File, String> metadataFileWithType = new FormatDetectionService(
 								f).getMetadataFileWithType();
 						if (!metadataFileWithType.isEmpty()) {
 							File file = metadataFileWithType.firstKey();
+							// DANRW-1739: Prüfung Endung Metadaten = xml
+							String endung = file.toString().substring(file.toString().lastIndexOf("."));
+							strFile = file.toString().substring(file.toString().lastIndexOf(C.FS_SEPARATOR ) + 1);
+							 if (!endung.equalsIgnoreCase(C.FILE_EXTENSION_XML)) {
+								throw new Error(C.ERROR_MSG_ENDING_METADATA);
+							 }
 							metadataType = metadataFileWithType.get(file);
 							if (!duplicateFileNames(f,	tmpFolderListWithNames)) {
 								Utilities.validateFileReferencesInMetadata(file, metadataType);
@@ -1048,7 +1055,15 @@ public class SIPFactory {
 							duplicateFileNames(f, tmpFolderListWithNames);
 						}
 					} catch (Error e) {
-						if (metadataType.equals(C.CB_PACKAGETYPE_EAD)) {
+						if (e.getMessage().equals(C.ERROR_MSG_ENDING_METADATA)) {
+							String msg = "Die Metadatendatei "+ strFile + " endet nicht auf xml. "
+									+"\nDas SIP kann nicht erstellt werden.";
+							messageWriter.showLongErrorMessage(msg);
+							returnCode = Feedback.INVALID_METADATA;
+							abortSipBuilding();
+							return;
+						} else 
+							if (metadataType.equals(C.CB_PACKAGETYPE_EAD)) {
 							String msg = "Aus dem Verzeichnis " + f
 									+ " wird kein SIP erstellt. \n"
 									+ e.getMessage();

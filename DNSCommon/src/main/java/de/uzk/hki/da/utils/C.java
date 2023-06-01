@@ -96,7 +96,7 @@ public class C {
 	public static final String ERROR_MSG_ROLLBACK_NOT_IMPLEMENTED = "rollback not implemented yet.";
 	public static final String ERROR_MSG_NOTCONFIGURED = " not configured properly.";
 	public static final String ERROR_MSG_DURING_FILE_FORMAT_IDENTIFICATION = "Error during file format identification";
-
+	public static final String ERROR_MSG_ENDING_METADATA = " ending not xml";
 	//
 	public static final String TEST_USER_SHORT_NAME = "TEST";
 
@@ -148,6 +148,7 @@ public class C {
 	public static final String EDM_DATE_CREATED = "dcterms:created";
 	public static final String EDM_PUBLISHER = "dc:publisher";
 	public static final String EDM_SPATIAL = "dcterms:spatial";
+	public static final String EDM_TEMPORAL = "dcterms:temporal";
 	public static final String EDM_IS_PART_OF = "dcterms:isPartOf";
 	public static final String EDM_HAS_PART = "dcterms:hasPart";
 	public static final String EDM_TITLE = "dc:title";
@@ -171,6 +172,14 @@ public class C {
 	public static final String LOCAL_NODE_BEAN_NAME = "localNode";
 	public static final File BASIC_TEST_PACKAGE = Path.makeFile(CONF,"basic_test_package.tgz");
 	public static final String OAI_DANRW_DE = "oai:danrw.de:";
+	
+	public static final String EDM_PROVIDER_VALUE = "Digitales Archiv NRW";
+	
+	public static final String EDM_TYPE_TEXT = "TEXT";
+	public static final String EDM_TYPE_IMAGE = "IMAGE";
+	public static final String EDM_TYPE_SOUND = "SOUND";
+	public static final String EDM_TYPE_VIDEO = "VIDEO";
+	public static final String EDM_TYPE_3D = "3D";
 	
 	//
 	public static final String ENCODING_UTF_8 = "UTF-8";
@@ -215,7 +224,6 @@ public class C {
 	public static final int LICENSEFLAG_LIDO = 4;
 	public static final int PRESERVATIONSYS_LICENSE_VALIDATION_YES = 1;
 	public static final int PRESERVATIONSYS_LICENSE_VALIDATION_NO = 0;
-
 	
 	public static final String ORE_AGGREGATION = "ore:Aggregation";
 	
