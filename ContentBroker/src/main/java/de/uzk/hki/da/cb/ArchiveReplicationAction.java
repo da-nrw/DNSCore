@@ -90,7 +90,7 @@ public class ArchiveReplicationAction extends AbstractAction {
 			
 			new File(aipFilePath.toString()).delete();
 		} catch (IOException e) {
-			throw new RuntimeException("Put to IRODS Datagrid failed! " + e.getMessage());
+			throw new RuntimeException("Put to IRODS Datagrid failed! " + e.getMessage(),e);
 		}
 		return true;
 	}

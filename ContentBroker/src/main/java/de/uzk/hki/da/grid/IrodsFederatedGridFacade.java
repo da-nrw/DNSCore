@@ -115,7 +115,7 @@ public class IrodsFederatedGridFacade extends IrodsGridFacade {
 				if (!checksumAfterPut.equals(checksum)) {
 					logger.error("Given Checksum of Package has to be " + checksum);
 					logger.error("Checksum is " + checksumAfterPut);
-					throw new IOException("Checksum not correct on put!");
+					throw new IOException("Checksum not correct on put to ReplDir!");
 				}
 			}
 			return true;

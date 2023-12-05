@@ -90,7 +90,7 @@ public class PublishAudioConversionStrategy extends PublishConversionStrategyBas
 			try {
 				pi = cliConnector.runCmdSynchronously((String[]) ArrayUtils.addAll(cmdPUBLIC,getDurationRestrictionsForAudience(audience)));
 			} catch (IOException e1) {
-				throw new RuntimeException("command not succeeded, not found!");
+				throw new RuntimeException("command not succeeded, not found!",e1);
 			}
 			if (pi.getExitValue()!=0)
 				throw new RuntimeException("command not succeeded");

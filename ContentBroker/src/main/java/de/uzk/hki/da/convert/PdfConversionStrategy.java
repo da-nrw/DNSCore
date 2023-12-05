@@ -104,7 +104,7 @@ public class PdfConversionStrategy implements ConversionStrategy {
 		try {
 			pi = cliConnector.runCmdSynchronously(commandAsArray);
 		} catch (IOException e1) {
-			throw new RuntimeException("GS command not succeeded, not found");
+			throw new RuntimeException("GS command not succeeded, not found",e1);
 		}
 		if (pi.getExitValue()!=0) throw new RuntimeException("GS command not succeeded");
 

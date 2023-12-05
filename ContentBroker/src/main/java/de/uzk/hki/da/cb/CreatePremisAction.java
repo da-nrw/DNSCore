@@ -333,7 +333,7 @@ public class CreatePremisAction extends AbstractAction {
 		try {
 			FolderUtils.deleteDirectorySafe(tempFolder);
 		} catch (IOException e) {
-			throw new RuntimeException("Failed to delete directory " + tempFolder);
+			throw new RuntimeException("Failed to delete directory " + tempFolder,e);
 		}
 	}
 		

@@ -58,6 +58,7 @@ public class IrodsCommandLineConnector {
 	 * @return
 	 */
 	public String executeIcommand(String[] commandAsArray) {
+		logger.debug ("executeIcommand: "+Arrays.deepToString(commandAsArray));
 		ProcessInformation pi = null;
 		try {
 			pi = clc.runCmdSynchronously(commandAsArray,0);
@@ -269,15 +270,25 @@ public class IrodsCommandLineConnector {
 		if (out.indexOf("ERROR")>=0) throw new RuntimeException(" Get Checksum of " + destDao + " failed !" );
 		Scanner scanner = new Scanner(out);
 		String data_name = FilenameUtils.getName(destDao);
+		if(data_name.length()>30) {
+			logger.info("substring  "+data_name);
+			data_name=data_name.substring(0,30);
+			logger.info("after substring  "+data_name);
+		}
 		//if (data_name.length()>30) data_name = data_name.substring(0, 30);
 		while (scanner.hasNextLine()) {
 		  String line = scanner.nextLine();
+		  logger.info("getChecksum read "+data_name+" "+data_name.length()+" from line: "+"|" +line);
 		  if (line.contains(data_name)) {
 			  line=line.trim();
-			  line=line.substring(data_name.length(), line.length());
+			  String linearr[]=line.split("\\s+");
+			  logger.info("getChecksum read linearr: "+linearr.length+" " +Arrays.toString(linearr));
+			  line=linearr[linearr.length-1];
 			  ret = line.trim();
+			  logger.info("getChecksum read line: " +line);
 		  }
 		}
+		logger.info("getChecksum end checksum: " +ret);
 		scanner.close();
 		return ret;
 	}
