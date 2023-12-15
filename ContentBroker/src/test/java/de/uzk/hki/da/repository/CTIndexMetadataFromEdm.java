@@ -93,7 +93,8 @@ public class CTIndexMetadataFromEdm {
 	public void testLidoEdm() throws FileNotFoundException, IOException {
 		
 		String lidoEdmContent = IOUtils.toString(new FileInputStream(lidoEdm), C.ENCODING_UTF_8);
-	
+		System.out.println(new File(lidoEdmContent).getAbsolutePath());
+		System.out.println("To index metadata "+lidoEdmContent);
 		try {
 			esmi.prepareAndIndexMetadata(INDEX_NAME, "2-123456789","MuseumTest", lidoEdmContent);
 		} catch (RepositoryException e) {

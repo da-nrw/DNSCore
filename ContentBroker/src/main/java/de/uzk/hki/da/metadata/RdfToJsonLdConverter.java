@@ -73,6 +73,9 @@ public class RdfToJsonLdConverter {
 	@SuppressWarnings("unchecked")
 	public Map<String,Object> convert(String content) throws JSONLDProcessingError,Exception {
 		Object json=null;
+		
+		System.out.println("RDF Convert Content: ");
+		System.out.println(content);
 		ByteArrayInputStream bais = new ByteArrayInputStream(content.getBytes());
 		final Model modelResult = ModelFactory.createDefaultModel().read(bais, "", "RDF/XML");
 		final JenaRDFParser parser = new JenaRDFParser();
