@@ -69,7 +69,16 @@ public class IrodsCommandLineConnector {
 			logger.error("Icommand did not succeed: " + Arrays.toString(commandAsArray) + " returned " +pi.getStdErr() );
 			throw new RuntimeException("Icommand did not succeed" + Arrays.toString(commandAsArray) + pi.getStdErr());
 		}
-		logger.debug (pi.getStdOut().trim());
+		String outString=pi.getStdOut();
+		if (pi.getExitValue()==0 && (outString.contains("ERROR: "))) {
+			logger.error("Icommand did not succeed, it has ERROR-OUT: " + Arrays.toString(commandAsArray) + " returned " +outString+"  "+pi.getStdErr() );
+			throw new RuntimeException("Icommand did not succeed, it has ERROR-OUT: " + Arrays.toString(commandAsArray) + " returned " +outString+"  "+pi.getStdErr() );
+			
+		}
+        logger.debug ("ICommand Out("+commandAsArray[0]+")");
+        logger.debug (pi.getStdOut().trim());
+        logger.debug (pi.getStdErr().trim());
+
 		return pi.getStdOut();
 	}
 
