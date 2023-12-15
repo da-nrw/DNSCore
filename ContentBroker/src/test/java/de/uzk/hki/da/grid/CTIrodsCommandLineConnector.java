@@ -247,6 +247,7 @@ public class CTIrodsCommandLineConnector {
 	//-----------------------------------------------
 
 	private void destroyTestFileOnLongTermStorage() throws IOException {
+		System.out.println("destroyTestFileOnLongTermStorage ");
 		File testFile = new File(testCollPhysicalPathOnLTA+"/urn.tar");
 		FileWriter writer = new FileWriter(testFile ,false);
 		writer.write("Hallo Wie gehts? DESTROYED");
