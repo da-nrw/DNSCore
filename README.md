@@ -22,8 +22,8 @@ Please download the SIP-Builder [here](https://github.com/da-nrw/DNSCore/release
 
 
 
-
 The Core System of the DA-NRW Software Suite.
+
    
 The DNS software relies 
 exclusively on existing open source software components to implement a
