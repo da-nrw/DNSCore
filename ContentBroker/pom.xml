@@ -45,6 +45,11 @@
 
 
 	<repositories>
+		<repository>
+	        <id>RedHat</id>
+	        <name>RedHat repository</name>
+	        <url>https://maven.repository.redhat.com/earlyaccess/all</url>
+   		</repository>
 	  <repository>
 	    <id>HTTPRep</id>
 	    <name>HTTP repository</name>
@@ -55,7 +60,7 @@
 	      <id>central</id>
 	      <name>Maven Repository Switchboard</name>
 	      <layout>default</layout>
-	      <url>http://repo1.maven.org/maven2</url>
+	      <url>https://repo1.maven.org/maven2</url>
 	      <snapshots>
 	        <enabled>false</enabled>
 	      </snapshots>
@@ -359,12 +364,12 @@
 	</build>
 
 	<dependencies>
+				
 		<dependency>
 			<groupId>de.uzk.hki.da</groupId>
 			<artifactId>DNSCommon</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
-	
 	
 		<dependency>
 			<groupId>org.apache.qpid</groupId>
