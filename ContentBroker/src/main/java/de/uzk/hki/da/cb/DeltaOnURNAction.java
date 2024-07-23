@@ -20,6 +20,7 @@ import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.format.FileFormatException;
 import de.uzk.hki.da.format.FileFormatFacade;
 import de.uzk.hki.da.format.FileWithFileFormat;
@@ -67,6 +68,13 @@ public class DeltaOnURNAction extends AbstractAction {
 		}
 		
 		if (o.isDelta()) {
+			// DANRW-1756: Delta-Einlieferung
+			if (o.getPublished_flag() == C.PUBLISHEDFLAG_PUBLIC) {
+				if (!checkPublished(o)) {
+					 throw new UserException(UserExceptionId.DELTA_NOT_PUBLIC,
+								"Die Veröffentlichung eines Pakets kann nicht durch eine Delta-Einlieferung rückgängig gemacht werden!");
+				}
+			}
 			logger.debug("Object is allready Delta");
 			return true;
 		}
@@ -86,6 +94,37 @@ public class DeltaOnURNAction extends AbstractAction {
 		}
 		return ret;
 	};
+
+	/**
+	 * 
+	 * @param o: das Object aus der DB
+	 * @return
+	 */
+	private boolean checkPublished(Object o) {
+		
+		// Prüfen, ob das Delta auch publiziert werden darf
+		
+		File premisFile = premisFile();
+		Object premisObject = null;
+		try {
+			premisObject = new ObjectPremisXmlReader().deserialize(premisFile);
+			if (premisObject == null)
+				throw new Exception("Premis object must not be null after deserialization.");
+		} catch (Exception e) {
+			// Deserializing the PREMIS file is already checked in
+			// unpack-action, where a
+			// user error gets thrown. So we consider this here a
+			// merely technical error.
+			throw new RuntimeException("Couldn't deserialize: " + premisFile, e);
+		}
+		 if ( premisObject.getPublished_flag() != C.PUBLISHEDFLAG_PUBLIC) {
+			 return false;
+		 }
+		 
+		 
+		
+		return true;
+	}
 
 	public boolean deltaOnUrn(Session session, String newUrn) throws FileNotFoundException, IOException, UserException, RepositoryException, JDOMException, ParserConfigurationException,
 			SAXException, SubsystemNotAvailableException {
@@ -108,12 +147,19 @@ public class DeltaOnURNAction extends AbstractAction {
 		if (obbis.size() > 1) {
 			throw new RuntimeException("More than one Object with same urn found.");
 		}
+		
+		
 
 		Object oldObject = obbis.get(0);
 		logger.debug("Object '" + oldObject.getOrig_name()  + "' :" + oldObject.getIdentifier()
 				+ " with same URN '"+ oldObject.getUrn() + "' found");
-
-		while(oldObject.getObject_state() != Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow)
+		
+		if (!checkPublished(oldObject)) {
+			throw new UserException(UserExceptionId.DELTA_NOT_PUBLIC,
+					"Die Veröffentlichung eines Pakets kann nicht durch eine Delta-Einlieferung rückgängig gemacht werden!");
+		}
+		
+			while(oldObject.getObject_state() != Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow)
 		{
 			logger.debug("Waiting for '" + oldObject.getOrig_name() + "' :" + oldObject.getIdentifier() 
 					+ " getting in archived state");
