@@ -28,8 +28,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Transient;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 
@@ -53,6 +51,7 @@ import de.uzk.hki.da.model.KnownError;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.repository.RepositoryException;
 import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.util.DeltaUtils;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.CommandLineConnector;
 import de.uzk.hki.da.utils.FolderUtils;
@@ -130,10 +129,22 @@ public class RestructureAction extends AbstractAction{
 		
 		listAllFiles();
 		
+		if(o.isDelta()) {
+			
+			if (o.getPublished_flag() == C.PUBLISHEDFLAG_NO_PUBLICATION) { 
+			
+				if (! DeltaUtils.checkPublished(o, Path.make(wa.dataPath(), C.PREMIS_XML).toFile())) {
+					throw new UserException(UserExceptionId.DELTA_NOT_PUBLIC,
+							"Die Veröffentlichung eines Pakets kann nicht durch eine Delta-Einlieferung rückgängig gemacht werden!");
+				}
+			}
+		}
+		
 		RetrievePackagesHelper retrievePackagesHelper = new RetrievePackagesHelper(getGridRoot(),wa);
 		if (o.isDelta()
 				&&(! checkIfOnWorkAreaIsSpaceAvailabeForDeltaPackages(retrievePackagesHelper)))
 			return false;
+		
 		
 		listAllFiles();
 		

@@ -33,7 +33,7 @@ public class UserExceptionManager {
 	public void readConfigFile() throws IOException {
 		
 		XMLReader xmlReader = null;
-		SAXParserFactory spf = SAXParserFactory.newInstance();
+//		SAXParserFactory spf = SAXParserFactory.newInstance();
 		try {
 			//xmlReader = spf.newSAXParser().getXMLReader();
 			xmlReader=XMLUtils.createValidatingSaxParser().getXMLReader();

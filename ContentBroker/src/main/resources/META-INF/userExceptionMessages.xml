@@ -92,4 +92,9 @@
 		mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert
 		werden.\n\nGrund: Zeitüberschreitung bei der Konversion.
 	</userExceptionMessage>
+	<userExceptionMessage id="DELTA_NOT_PUBLIC">Ihr eingeliefertes Paket
+		mit dem Namen %CONTAINER_NAME konnte im DA NRW nicht archiviert
+		werden.\n\nGrund: Das zuletzt eingelieferte Paket des Deltas war unveröffentlicht. 
+		Das eingelieferte Delta soll aber veröffentlicht werden. Dies ist nicht möglich.
+	</userExceptionMessage>
 </userExceptionMessages>

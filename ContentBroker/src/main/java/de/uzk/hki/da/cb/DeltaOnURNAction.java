@@ -31,6 +31,7 @@ import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectPremisXmlReader;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.repository.RepositoryException;
+import de.uzk.hki.da.util.DeltaUtils;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
@@ -69,8 +70,8 @@ public class DeltaOnURNAction extends AbstractAction {
 		
 		if (o.isDelta()) {
 			// DANRW-1756: Delta-Einlieferung
-			if (o.getPublished_flag() == C.PUBLISHEDFLAG_PUBLIC) {
-				if (!checkPublished(o)) {
+			if (o.getPublished_flag() == C.PUBLISHEDFLAG_NO_PUBLICATION) {
+				if (! DeltaUtils.checkPublished(o, premisFile())) {
 					 throw new UserException(UserExceptionId.DELTA_NOT_PUBLIC,
 								"Die Veröffentlichung eines Pakets kann nicht durch eine Delta-Einlieferung rückgängig gemacht werden!");
 				}
@@ -95,36 +96,7 @@ public class DeltaOnURNAction extends AbstractAction {
 		return ret;
 	};
 
-	/**
-	 * 
-	 * @param o: das Object aus der DB
-	 * @return
-	 */
-	private boolean checkPublished(Object o) {
-		
-		// Prüfen, ob das Delta auch publiziert werden darf
-		
-		File premisFile = premisFile();
-		Object premisObject = null;
-		try {
-			premisObject = new ObjectPremisXmlReader().deserialize(premisFile);
-			if (premisObject == null)
-				throw new Exception("Premis object must not be null after deserialization.");
-		} catch (Exception e) {
-			// Deserializing the PREMIS file is already checked in
-			// unpack-action, where a
-			// user error gets thrown. So we consider this here a
-			// merely technical error.
-			throw new RuntimeException("Couldn't deserialize: " + premisFile, e);
-		}
-		 if ( premisObject.getPublished_flag() != C.PUBLISHEDFLAG_PUBLIC) {
-			 return false;
-		 }
-		 
-		 
-		
-		return true;
-	}
+	
 
 	public boolean deltaOnUrn(Session session, String newUrn) throws FileNotFoundException, IOException, UserException, RepositoryException, JDOMException, ParserConfigurationException,
 			SAXException, SubsystemNotAvailableException {
@@ -154,7 +126,7 @@ public class DeltaOnURNAction extends AbstractAction {
 		logger.debug("Object '" + oldObject.getOrig_name()  + "' :" + oldObject.getIdentifier()
 				+ " with same URN '"+ oldObject.getUrn() + "' found");
 		
-		if (!checkPublished(oldObject)) {
+		if (! DeltaUtils.checkPublished(oldObject, premisFile())) {
 			throw new UserException(UserExceptionId.DELTA_NOT_PUBLIC,
 					"Die Veröffentlichung eines Pakets kann nicht durch eine Delta-Einlieferung rückgängig gemacht werden!");
 		}
