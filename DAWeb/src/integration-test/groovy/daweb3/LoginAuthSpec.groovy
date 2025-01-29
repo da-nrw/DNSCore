@@ -51,7 +51,7 @@ class LoginAuthSpec extends GebSpec {
 	   loginButton.click()
 	   then:
 	   at WelcomePage
-	   $().text().contains("Willkommen TEST")
+	   $().text().contains("WillkommenTEST")
 	}
 
 }

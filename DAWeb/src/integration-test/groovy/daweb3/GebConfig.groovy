@@ -15,10 +15,12 @@ import org.openqa.selenium.remote.DesiredCapabilities
 
 // default driver ...
 driver = { 
-//	System.setProperty('webdriver.phantomjs.bin', '/bin/phantomjs')
-//	driver =  new PhantomJSDriver()
-	System.setProperty('webdriver.firefox.bin', '/home/gabender/Programme/firefox/firefox');
-	driver = new FirefoxDriver()
+
+	//System.setProperty('webdriver.firefox.bin', '/usr/bin/firefox');
+		//driver = new FirefoxDriver()
+	System.setProperty('webdriver.chrome.bin', '/usr/bin/google-chrome');
+	System.setProperty('webdriver.chrome.driver', '/opt/google/chromedriver-linux64/chromedriver');
+	driver = new ChromeDriver() 
 }
 
 environments {
@@ -32,8 +34,8 @@ environments {
 		}
 	
 		firefox {
-			
-			driver = { new FirefoxDriver() }
+
+		     driver = { new FirefoxDriver() }
 		}
 //	
 //		phantomJs {
@@ -53,25 +55,3 @@ environments {
 		timeout = 30
 		retryInterval = 1.0
 	}
-	
-//driver = {
-//	
-//	// headless:
-//	
-//    def d = new PhantomJSDriver(new DesiredCapabilities())   
-//	d.manage().window().setSize(new Dimension(1028, 768))  
-//	d
-//	
-//	//LIVE running only with browser firefox 26 !!
-//	//System.setProperty('webdriver.firefox.bin', '/home/jens/firefox/firefox')
-//	//driver = new FirefoxDriver();
-//} 
-//
-//baseNavigatorWaiting = true 
-//
-//atCheckWaiting = true 
-//
-//waiting {
-//	timeout = 30
-//	retryInterval = 1.0
-//}
