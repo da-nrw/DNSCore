@@ -352,6 +352,7 @@ public class ValidateMetadataAction extends AbstractAction {
 			throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"Mehr als eine Metadatendatei vorhanden vom Typ: EAD");
 		} else if (metaFiles.size() == 1){
 			detectedMetadataFile=metaFiles.get(0);
+			System.out.println("detectedMetadataFile: "+     detectedMetadataFile);
 			detectedPackageType=C.CB_PACKAGETYPE_EAD;
 			ptypeCount++;
 		} else {
@@ -367,11 +368,12 @@ public class ValidateMetadataAction extends AbstractAction {
 					}
 				}
 			}
-			
 			if (metaFiles.size() > 1) {
 				throw new UserException(UserExceptionId.DUPLICATE_METADATA_FILE,"Mehr als eine Metadatendatei vorhanden vom Typ: METS");
 			}  else if (metaFiles.size() == 1) {
 				detectedMetadataFile=metaFiles.get(0);
+
+				System.out.println("detectedMetadataFile: "+     detectedMetadataFile);
 				detectedPackageType=C.CB_PACKAGETYPE_METS;
 				ptypeCount++;
 			}  
@@ -395,13 +397,21 @@ public class ValidateMetadataAction extends AbstractAction {
 	 * @return
 	 */
 	private List<DAFile> getFilesOfMetadataType(String metadataFormatIdentifier){
+	
 		List<DAFile> result = new ArrayList<DAFile>();
 		for (DAFile f:o.getNewestFilesFromAllRepresentations(XMP_SIDECAR)){
-			if (f.getRelative_path().contains(C.FS_SEPARATOR)) continue;
+			if (f.getRelative_path().contains(C.FS_SEPARATOR)) {continue;}
+			 String daFile  = f.toString();
+			 String sub = daFile.substring( daFile.lastIndexOf("."), daFile.lastIndexOf("]"));
 			
-			if (metadataFormatIdentifier.equals(f.getSubformatIdentifier()))
+			if (metadataFormatIdentifier.equals(f.getSubformatIdentifier())) {
+				 if (!sub.equals(C.FILE_EXTENSION_XML)) {
+					 throw new UserException(UserExceptionId.INVALID_METADATA_FILE,"Die Metadatendatei endet nicht auf .xml");
+				 }
 				result.add(f);
+			}
 		}
+		
 		return result;
 	}
 	
