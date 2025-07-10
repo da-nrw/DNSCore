@@ -38,7 +38,7 @@ public class FFmpegSubformatIdentifier implements FormatIdentifier, Connector{
 
 	private Logger logger = LoggerFactory.getLogger( FFmpegSubformatIdentifier.class );
 	
-	private String[] supportedVersions = new String[] {"2.8.15","2.6.8","2.2.10","0.6.5","0.6.7","0.6.6","0.10.3","2.2.1", "3.4.13","4.2.9"}; 
+	private String[] supportedVersions = new String[] {"2.8.15","2.6.8","2.2.10","0.6.5","0.6.7","0.6.6","0.10.3","2.2.1", "3.4.13","4.2."}; 
 	
 	@Override
 	public String identify(File f,boolean pruneExceptions) throws IOException {
