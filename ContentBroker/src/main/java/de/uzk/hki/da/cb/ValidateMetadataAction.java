@@ -405,7 +405,7 @@ public class ValidateMetadataAction extends AbstractAction {
 			 String sub = daFile.substring( daFile.lastIndexOf("."), daFile.lastIndexOf("]"));
 			
 			if (metadataFormatIdentifier.equals(f.getSubformatIdentifier())) {
-				 if (!sub.equals(C.FILE_EXTENSION_XML)) {
+				 if (!sub.equalsIgnoreCase(C.FILE_EXTENSION_XML)) {
 					 throw new UserException(UserExceptionId.INVALID_METADATA_FILE,"Die Metadatendatei endet nicht auf .xml");
 				 }
 				result.add(f);
