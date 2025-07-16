@@ -4,7 +4,6 @@ DNSCore
 
 
 
-
 [Dokumentation der DA-NRW Software Suite (DNS)](ContentBroker/src/main/markdown/documentation.de.md)
 
 
