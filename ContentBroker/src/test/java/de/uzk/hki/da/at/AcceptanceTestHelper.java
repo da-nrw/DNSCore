@@ -228,7 +228,8 @@ public class AcceptanceTestHelper {
 				if (isInErrorState(job)) {
 					try {
 						// just sleep for a while if state persists
-						Thread.sleep(3000);
+						// Thread.sleep(3000);
+                        Thread.sleep(4000);
 						job = getJob(originalName);
 					} catch (InterruptedException e1) {}
 					if (isInErrorState(job))
