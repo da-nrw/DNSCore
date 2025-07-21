@@ -402,6 +402,7 @@ public class ValidateMetadataAction extends AbstractAction {
 		for (DAFile f:o.getNewestFilesFromAllRepresentations(XMP_SIDECAR)){
 			if (f.getRelative_path().contains(C.FS_SEPARATOR)) {continue;}
 			 String daFile  = f.toString();
+             logger.debug("getFilesOfMetadataType - current DAFile: " + daFile);
 			 String sub = daFile.substring( daFile.lastIndexOf("."), daFile.lastIndexOf("]"));
 			
 			if (metadataFormatIdentifier.equals(f.getSubformatIdentifier())) {
