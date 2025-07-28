@@ -400,10 +400,16 @@ public class ValidateMetadataAction extends AbstractAction {
 	
 		List<DAFile> result = new ArrayList<DAFile>();
 		for (DAFile f:o.getNewestFilesFromAllRepresentations(XMP_SIDECAR)){
-			if (f.getRelative_path().contains(C.FS_SEPARATOR)) {continue;}
-			 String daFile  = f.toString();
-             logger.debug("getFilesOfMetadataType - current DAFile: " + daFile);
-			 String sub = daFile.substring( daFile.lastIndexOf("."), daFile.lastIndexOf("]"));
+			if (f.getRelative_path().contains(C.FS_SEPARATOR)) {
+              continue;
+            }
+			String daFile  = f.toString();
+            logger.debug("getFilesOfMetadataType - current DAFile: " + daFile);
+            if(!daFile.contains(".")) {
+              continue;
+            }
+             
+			String sub = daFile.substring( daFile.lastIndexOf("."), daFile.lastIndexOf("]"));
 			
 			if (metadataFormatIdentifier.equals(f.getSubformatIdentifier())) {
 				 if (!sub.equalsIgnoreCase(C.FILE_EXTENSION_XML)) {
