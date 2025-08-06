@@ -130,7 +130,7 @@ public class RestructureAction extends AbstractAction{
 		listAllFiles();
 		
 		if(o.isDelta()) {
-			
+			logger.debug("Ist es bereits veröffentlicht: " + o.getPublished_flag());
 			if (o.getPublished_flag() == C.PUBLISHEDFLAG_NO_PUBLICATION) { 
 			
 				if (! DeltaUtils.checkPublished(o, Path.make(wa.dataPath(), C.PREMIS_XML).toFile())) {
@@ -139,6 +139,8 @@ public class RestructureAction extends AbstractAction{
 				}
 			}
 		}
+		
+		listAllFiles();
 		
 		RetrievePackagesHelper retrievePackagesHelper = new RetrievePackagesHelper(getGridRoot(),wa);
 		if (o.isDelta()

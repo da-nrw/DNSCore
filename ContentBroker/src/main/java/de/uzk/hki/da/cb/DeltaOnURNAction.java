@@ -69,6 +69,7 @@ public class DeltaOnURNAction extends AbstractAction {
 		}
 		
 		if (o.isDelta()) {
+			
 			// DANRW-1756: Delta-Einlieferung
 			if (o.getPublished_flag() == C.PUBLISHEDFLAG_NO_PUBLICATION) {
 				if (! DeltaUtils.checkPublished(o, premisFile())) {
@@ -95,9 +96,7 @@ public class DeltaOnURNAction extends AbstractAction {
 		}
 		return ret;
 	};
-
 	
-
 	public boolean deltaOnUrn(Session session, String newUrn) throws FileNotFoundException, IOException, UserException, RepositoryException, JDOMException, ParserConfigurationException,
 			SAXException, SubsystemNotAvailableException {
 		String queryStr = "select o from Object o where o.urn = ?1 and user_id = ?2";
@@ -125,11 +124,6 @@ public class DeltaOnURNAction extends AbstractAction {
 		Object oldObject = obbis.get(0);
 		logger.debug("Object '" + oldObject.getOrig_name()  + "' :" + oldObject.getIdentifier()
 				+ " with same URN '"+ oldObject.getUrn() + "' found");
-		
-		if (! DeltaUtils.checkPublished(oldObject, premisFile())) {
-			throw new UserException(UserExceptionId.DELTA_NOT_PUBLIC,
-					"Die Veröffentlichung eines Pakets kann nicht durch eine Delta-Einlieferung rückgängig gemacht werden!");
-		}
 		
 			while(oldObject.getObject_state() != Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow)
 		{
