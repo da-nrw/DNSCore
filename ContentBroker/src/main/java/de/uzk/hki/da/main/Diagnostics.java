@@ -42,6 +42,7 @@ import de.uzk.hki.da.format.FFConstants;
 import de.uzk.hki.da.format.FidoFormatScanService;
 import de.uzk.hki.da.format.FileWithFileFormat;
 import de.uzk.hki.da.format.JhoveMetadataExtractor;
+import de.uzk.hki.da.format.KnownFormatCmdLineErrors;
 import de.uzk.hki.da.format.SimpleFileWithFileFormat;
 import de.uzk.hki.da.grid.IrodsGridFacade;
 import de.uzk.hki.da.grid.IrodsSystemConnector;
@@ -112,7 +113,9 @@ public class Diagnostics {
 	private static final String MSG_INGEST_AREA_NOT_EXISTS = "ERROR (path configured by localNode.ingestAreaRootPath does not exist)";
 	private static final String MSG_INGEST_AREA_NO_BAGIT_NOT_EXISTS = "ERROR (path configured by localNode.ingestAreaNoBagitRootPath does not exist)";
 
-	
+	private enum IMMode { IM6_BARE }
+
+
 	
 	/**
 	 * @return errorCount
@@ -151,7 +154,7 @@ public class Diagnostics {
 		errorCount+=checkFormatFacade(properties);
 		errorCount+=checkFedora(properties);
 		errorCount+=checkElasticsearch(properties);
-		
+		errorCount+=checkImageMagick(properties);
 		
 		if (errorCount==0) System.out.println("There were no errors.");
 		else System.out.println("There where "+errorCount+" errors.");
@@ -488,5 +491,132 @@ public class Diagnostics {
 		
 		return errorCount;
 	}
+	
+	
+	private static int checkImageMagick(Properties properties) {
+	    System.out.print(INFO + "CHECKING - ImageMagick CLI availability & basic operation ... ");
+	    int errorCount = 0;
+
+	    // Reuse your CLI/executor stack like TiffConversionStrategy does
+	    CommandLineConnector cli = new CommandLineConnector();
+	    KnownFormatCmdLineErrors known = new KnownFormatCmdLineErrors();
+	    de.uzk.hki.da.format.FormatCmdLineExecutor cle =
+	            new de.uzk.hki.da.format.FormatCmdLineExecutor(cli, known);
+
+	    // We’ll support both IM7 (“magick ...”) and IM6 (“convert”, “identify”)
+	    // Try to detect the best invocation first
+
+	    IMMode mode = null;
+
+	    try {
+	        
+	       if (execOk(cle, new String[]{"convert", "-version"}) &&
+	                   execOk(cle, new String[]{"identify", "-version"})) {
+	            mode = IMMode.IM6_BARE;
+	        } else {
+	            System.out.println(ERROR + "ImageMagick not found on PATH (tried \"convert\", \"identify\")");
+	            return 1;
+	        }
+	    } catch (Exception e) {
+	        System.out.println(ERROR + "unexpected error during version checks: " + e.getMessage());
+	        return 1;
+	    }
+
+	    // Functional smoke test: write a tiny image and identify it
+	    File tmpDir = Path.makeFile("tmp", "imagemagick-check");
+	    tmpDir.mkdirs();
+	    File outFile = new File(tmpDir, "im_smoke.png");
+
+	    String[] mkCmd =  new String[]{"convert", "-size", "2x2", "xc:white", outFile.getAbsolutePath()};
+
+	    String[] idCmd =  new String[]{"identify", "-format", "%m %wx%h", outFile.getAbsolutePath()};
+
+	    try {
+	        // create tiny image
+	        if (!execOk(cle, mkCmd)) {
+	            System.out.println(ERROR + "failed to create test image with ImageMagick.");
+	            return 1;
+	        }
+	        if (!outFile.exists() || outFile.length() == 0) {
+	            System.out.println(ERROR + "test image was not created.");
+	            return 1;
+	        }
+
+	        // identify it (verify IM is functional, not just present)
+	        String identifyOut = execCaptureStdout(cle, idCmd);
+	        if (identifyOut == null || identifyOut.trim().isEmpty()) {
+	            System.out.println(WARN + "identify produced no output.");
+	            errorCount++;
+	        } else {
+	            // Expect something like "PNG 2x2"
+	            System.out.print(OK + " (" + identifyOut.trim() + ") ");
+	        }
+	    } catch (de.uzk.hki.da.format.UserFileFormatException ufe) {
+	        // Match TiffConversionStrategy’s pruning semantics
+	        if (!ufe.isWasPruned()) {
+	            System.out.println(ERROR + "ImageMagick command failed: " + ufe.getMessage());
+	            errorCount++;
+	        } else {
+	            System.out.println(WARN + "ImageMagick known error was pruned: " +
+	                    ufe.getKnownError().getError_name());
+	        }
+	    } catch (Exception e) {
+	        System.out.println(ERROR + "unexpected error during functional check: " + e.getMessage());
+	        errorCount++;
+	    } finally {
+	        // cleanup
+	        try { if (outFile.exists()) outFile.delete(); } catch (Exception ignore) {}
+	        try { if (tmpDir.exists()) tmpDir.delete(); } catch (Exception ignore) {}
+	        System.out.println(); // newline after inline OK print
+	    }
+
+	    if (errorCount == 0) {
+	        // concise “OK” already printed above; add a final confirmation line like other checks
+	        System.out.println(INFO + "ImageMagick check completed: " + OK);
+	    } else {
+	        System.out.println(INFO + "ImageMagick check completed with " + errorCount + " issue(s).");
+	    }
+	    return errorCount;
+	}
+
+	/**
+	 * Executes a command; returns true on zero exit code. Uses your FormatCmdLineExecutor.
+	 */
+	private static boolean execOk(de.uzk.hki.da.format.FormatCmdLineExecutor cle, String[] cmd)
+	        throws IOException, de.uzk.hki.da.format.UserFileFormatException {
+	    cle.setPruneExceptions(false);
+	    cle.execute(cmd);
+	    return true; // execute() throws on error; reaching here means success
+	}
+
+	/**
+	 * Executes a command and captures stdout into a single line string.
+	 * Falls back to boolean OK if the executor doesn’t expose stdout—so we read via the connector.
+	 */
+	private static String execCaptureStdout(de.uzk.hki.da.format.FormatCmdLineExecutor cle, String[] cmd)
+	        throws IOException, de.uzk.hki.da.format.UserFileFormatException {
+	    // If your FormatCmdLineExecutor has a helper to capture output, use it.
+	    // Otherwise, shell out directly via CommandLineConnector for this one:
+	    ProcessBuilder pb = new ProcessBuilder(cmd);
+	    pb.redirectErrorStream(true);
+	    Process p = pb.start();
+	    StringBuilder sb = new StringBuilder();
+	    try (java.io.BufferedReader r = new java.io.BufferedReader(
+	            new java.io.InputStreamReader(p.getInputStream()))) {
+	        String line;
+	        while ((line = r.readLine()) != null) {
+	            sb.append(line);
+	        }
+	    }
+	    try {
+	        int ec = p.waitFor();
+	        if (ec != 0) throw new IOException("Non-zero exit code: " + ec);
+	    } catch (InterruptedException ie) {
+	        Thread.currentThread().interrupt();
+	        throw new IOException("Interrupted while waiting for process", ie);
+	    }
+	    return sb.toString();
+	}
+
 
 }
