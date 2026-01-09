@@ -1,5 +1,5 @@
 /*
-  DA-NRW Software Suite | ContentBroker
+ll  DA-NRW Software Suite | ContentBroker
   Copyright (C) 2014 LVRInfoKom
   Landschaftsverband Rheinland
 

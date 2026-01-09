@@ -74,6 +74,7 @@
 		<entry key="RetrievalAction" value="3" />
 		<entry key="PostRetrievalAction" value="3" />
 		<entry key="AuditAction" value="3" />
+		<entry key="QualityLevelRecheckAction" value="3" />
 		<entry key="IngestBuildAIPAction" value="3" />
 		<entry key="PIPGenPrepareSendToPresenterAction" value="3" />
 		<entry key="PIPGenUpdateMetadataAction" value="3" />
@@ -113,6 +114,7 @@
 		<value>RetrievalObjectToWorkAreaAction</value>
 		<value>RetrievalAction</value>
 		<value>AuditAction</value>
+		<value>QualityLevelRecheckAction</value>
 		<value>PIPGenCleanWorkAreaAction</value>
 		<value>PIPGenPrepareSendToPresenterAction</value>
 		<value>PIPGenUpdateMetadataAction</value>

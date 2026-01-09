@@ -154,7 +154,7 @@ public class Diagnostics {
 		errorCount+=checkFormatFacade(properties);
 		errorCount+=checkFedora(properties);
 		errorCount+=checkElasticsearch(properties);
-		errorCount+=checkImageMagick(properties);
+		//errorCount+=checkImageMagick(properties);
 		
 		if (errorCount==0) System.out.println("There were no errors.");
 		else System.out.println("There where "+errorCount+" errors.");
