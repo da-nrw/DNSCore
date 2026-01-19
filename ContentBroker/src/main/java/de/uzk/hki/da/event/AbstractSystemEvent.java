@@ -43,7 +43,7 @@ public abstract class AbstractSystemEvent implements Runnable {
 
 	protected Node node;
 	
-	protected RegisterObjectService registerObjectService;
+	
 	private SystemEvent storedEvent;
 	
 	public abstract boolean implementation();
@@ -104,13 +104,7 @@ public abstract class AbstractSystemEvent implements Runnable {
 		this.storedEvent = storedEvent;
 	}
 	
-	public void setRegisterObjectService(RegisterObjectService registerObjectService) {
-		this.registerObjectService = registerObjectService;
-	}
-	
-	public RegisterObjectService getRegisterObjectService() {
-		return registerObjectService;
-	}
+
 	
 
 	

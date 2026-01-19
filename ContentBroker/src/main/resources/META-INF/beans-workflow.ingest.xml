@@ -157,5 +157,6 @@
 		<property name="endStatus" value="110" />
 		<property name="name" value="QualityLevelRecheckAction" />
 		<property name="gridRoot" ref="${cb.implementation.grid:fakeGridFacade}"/>
+		<property name="registerObjectService" ref="registerObjectService" />
 	</bean>
 </beans>

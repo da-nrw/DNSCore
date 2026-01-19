@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -55,7 +56,6 @@ import de.uzk.hki.da.model.PublicationRight.Audience;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.FriendlyFilesUtils;
 
-
 /**
  * The Class DNS Object.
  *
@@ -63,164 +63,158 @@ import de.uzk.hki.da.utils.FriendlyFilesUtils;
  * @author Daniel M. de Oliveira
  */
 @Entity
-@Table(name="objects")
+@Table(name = "objects")
 public class Object {
-	
+
 	public static class ObjectStatus {
 		public static final Integer InitState = 0;
-		public static final String  InitStateText = "Im Workflow (Bearbeitung noch nicht gestartet)";
-		
+		public static final String InitStateText = "Im Workflow (Bearbeitung noch nicht gestartet)";
+
 		public static final Integer UnderAudit = 60;
 		public static final String UnderAuditText = "In Überprüfung";
-		
+
 		public static final Integer InWorkflow = 50;
 		public static final String InWorkflowText = "Im Workflow (Bearbeitung)";
-		
+
 		public static final Integer Error = 51;
 		public static final String ErrorText = "AIP im fehlerhaften Zustand";
-		
+
 		public static final Integer ArchivedAndValidAndNotInWorkflow = 100;
 		public static final String ArchivedAndValidAndNotInWorkflowText = "Objekt archiviert und in keiner Verarbeitung";
-		
+
 		public static final String NotKnownText = "Objekt unbekannt";
-		
+
 	}
-	
 
 	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory.getLogger(Package.class);
-	
-	/** The object_state. */ 
+
+	/** The object_state. */
 	private int object_state;
 
-	
-	
-	
 	public static final String REPRESENTATION_FILTER = "^.*[+][ab]";
 	
-	
-	
-	
-	
+	public static final String VALID_A_REP ="^\\d{4}_\\d{2}_\\d{2}\\+\\d{2}_\\d{2}_\\d{2}\\+a$";
+
 	/** The data_pk. */
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int data_pk;
 
-	/** 
-	 * The identifier. In javadoc comments throughout the source code base often refered to as oid.
-	 * */
-	@Column(unique=true, columnDefinition="varchar(60)")
+	/**
+	 * The identifier. In javadoc comments throughout the source code base often
+	 * refered to as oid.
+	 */
+	@Column(unique = true, columnDefinition = "varchar(60)")
 	private String identifier;
-	
+
 	/** The urn. */
 	private String urn;
-	
+
 	/** The initial_node. */
-	@Column(columnDefinition="varchar(150)")
+	@Column(columnDefinition = "varchar(150)")
 	private String initial_node;
-	
+
 	/** The orig_name. */
 	private String orig_name;
-	
+
 	/** The date_created. */
-	@Column(name="created_at")
+	@Column(name = "created_at")
 	private Date createdAt;
-	
+
 	/** The date_modified. */
-	@Column(name="modified_at")
+	@Column(name = "modified_at")
 	private Date modifiedAt;
-	
-	@Column(columnDefinition="varchar(50)")
+
+	@Column(columnDefinition = "varchar(50)")
 	private String package_type;
-	
-	@Column(columnDefinition="varchar(120)")
+
+	@Column(columnDefinition = "varchar(120)")
 	private String metadata_file;
 
 	@Transient
-	private String DIP_PUBLIC_REPNAME = WorkArea.TMP_PIPS+"/public";
+	private String DIP_PUBLIC_REPNAME = WorkArea.TMP_PIPS + "/public";
 	@Transient
-	private String DIP_INSTITUTION_REPNAME = WorkArea.TMP_PIPS+"/institution";
-	
+	private String DIP_INSTITUTION_REPNAME = WorkArea.TMP_PIPS + "/institution";
+
 	/** The published_flag. */
-	private int published_flag=C.PUBLISHEDFLAG_UNDEFINED;
-	
-	@Column(name="quality_flag", columnDefinition="INTEGER DEFAULT "+C.QUALITYFLAG_DEFAULT)
-	private int quality_flag=C.QUALITYFLAG_DEFAULT;
-	
-	
+	private int published_flag = C.PUBLISHEDFLAG_UNDEFINED;
+
+	@Column(name = "quality_flag", columnDefinition = "INTEGER DEFAULT " + C.QUALITYFLAG_DEFAULT)
+	private int quality_flag = C.QUALITYFLAG_DEFAULT;
+
 	/** The last_checked. */
 	private Date last_checked;
-	
+
 	/** The static_nondisclosure_limit. */
 	private Date static_nondisclosure_limit;
-	
+
 	/** The dynamic_nondisclosure_limit. */
 	private String dynamic_nondisclosure_limit;
-	
+
 	private Date static_nondisclosure_limit_institution;
-	
+
 	private String dynamic_nondisclosure_limit_institution;
-	
+
 	/**
-	 * Should be a member of rightsstatement. Also in PREMIS we serialize it that way.
-	 * But here we wanted to transport the right through the db without adding tables for rightsstatement.
+	 * Should be a member of rightsstatement. Also in PREMIS we serialize it that
+	 * way. But here we wanted to transport the right through the db without adding
+	 * tables for rightsstatement.
 	 */
-	@Column(name="ddb_exclusion")
+	@Column(name = "ddb_exclusion")
 	private Boolean ddbExclusion = false;
-	
-	
+
 	/** The original_formats. */
-	@Column(name="original_formats")
+	@Column(name = "original_formats")
 	private String originalFormats;
-	
+
 	/** The most_recent_formats. */
-	@Column(name="most_recent_formats")
+	@Column(name = "most_recent_formats")
 	private String mostRecentFormats;
-	
+
 	/** The most_recent_secondary_attributes. */
-	@Column(name="most_recent_secondary_attributes", columnDefinition="varchar(2048)")
+	@Column(name = "most_recent_secondary_attributes", columnDefinition = "varchar(2048)")
 	private String mostRecentSecondaryAttributes = "";
-	
+
 	/** last publication try (time based) */
-	@Column(name="last_publication_try")
+	@Column(name = "last_publication_try")
 	private Date lastPublicationTry;
-	
-	@Column(name="license_flag")
-	private int license_flag=C.LICENSEFLAG_UNDEFINED;
-	
-	@Column(name="aip_size")
-	private long aip_size=C.UNKNOWN_FILESIZE; //as ByteCount
+
+	@Column(name = "license_flag")
+	private int license_flag = C.LICENSEFLAG_UNDEFINED;
+
+	@Column(name = "aip_size")
+	private long aip_size = C.UNKNOWN_FILESIZE; // as ByteCount
 
 	/** The rights. */
 	@Transient
 	private RightsStatement rights = new RightsStatement();
-	
+
 	/** The agents. */
 	@Transient
 	private Set<Agent> agents = new HashSet<Agent>();
-	
+
 	@Transient
-	private int minimalIngestQLevel=-1;
-	
+	private int minimalIngestQLevel = -1;
+
 	/** The contractor. */
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
-	 
+
 	/** The packages. */
-	@OneToMany(targetEntity=Package.class, fetch=FetchType.EAGER)
+	@OneToMany(targetEntity = Package.class, fetch = FetchType.EAGER)
 	@Cascade(CascadeType.ALL)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Package> packages = new ArrayList<Package>();
 
 	/** The documents. */
-	@OneToMany(orphanRemoval=true, targetEntity=Document.class, fetch=FetchType.EAGER)
-	@JoinColumn(name="object_id")
+	@OneToMany(orphanRemoval = true, targetEntity = Document.class, fetch = FetchType.EAGER)
+	@JoinColumn(name = "object_id")
 	@Cascade(CascadeType.ALL)
 //	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Document> documents = new ArrayList<Document>();
-	
+
 	/**
 	 * Sets the data_pk.
 	 *
@@ -229,7 +223,7 @@ public class Object {
 	public void setData_pk(int data_pk) {
 		this.data_pk = data_pk;
 	}
-	
+
 	/**
 	 * Gets the data_pk.
 	 *
@@ -237,8 +231,8 @@ public class Object {
 	 */
 	public int getData_pk() {
 		return data_pk;
-	}	
-	
+	}
+
 	/**
 	 * Sets the packages.
 	 *
@@ -246,8 +240,8 @@ public class Object {
 	 */
 	public void setPackages(List<Package> packages) {
 		this.packages = packages;
-	}	
-	
+	}
+
 	/**
 	 * Gets the packages.
 	 *
@@ -255,8 +249,8 @@ public class Object {
 	 */
 	public List<Package> getPackages() {
 		return this.packages;
-	}	
-	
+	}
+
 	/**
 	 * Sets the documents.
 	 *
@@ -264,8 +258,8 @@ public class Object {
 	 */
 	public void setDocuments(List<Document> documents) {
 		this.documents = documents;
-	}	
-	
+	}
+
 	/**
 	 * Adds the documents.
 	 *
@@ -273,8 +267,8 @@ public class Object {
 	 */
 	public void addDocument(Document doc) {
 		this.getDocuments().add(doc);
-	}	
-	
+	}
+
 	/**
 	 * Gets the documents.
 	 *
@@ -283,8 +277,7 @@ public class Object {
 	public List<Document> getDocuments() {
 		return this.documents;
 	}
-	
-	
+
 	/**
 	 * Gets the document.
 	 *
@@ -292,9 +285,9 @@ public class Object {
 	 */
 	public Document getDocument(String docname) {
 		Document document = null;
-		if(!this.documents.isEmpty()) {
-			for(Document doc : this.documents) {
-				if(doc.getName().equals(docname)) {
+		if (!this.documents.isEmpty()) {
+			for (Document doc : this.documents) {
+				if (doc.getName().equals(docname)) {
 					document = new Document();
 					document = doc;
 				}
@@ -304,7 +297,7 @@ public class Object {
 		}
 		return document;
 	}
-	
+
 	/**
 	 * Sets the identifier.
 	 *
@@ -313,7 +306,7 @@ public class Object {
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
 	}
-	
+
 	/**
 	 * Gets the identifier.
 	 *
@@ -322,7 +315,7 @@ public class Object {
 	public String getIdentifier() {
 		return identifier;
 	}
-	
+
 	/**
 	 * Gets the urn.
 	 *
@@ -331,7 +324,7 @@ public class Object {
 	public String getUrn() {
 		return urn;
 	}
-	
+
 	/**
 	 * Sets the urn.
 	 *
@@ -340,7 +333,7 @@ public class Object {
 	public void setUrn(String urn) {
 		this.urn = urn;
 	}
-	
+
 	/**
 	 * Sets the orig_name.
 	 *
@@ -349,7 +342,7 @@ public class Object {
 	public void setOrig_name(String orig_name) {
 		this.orig_name = orig_name;
 	}
-	
+
 	/**
 	 * Gets the orig_name.
 	 *
@@ -358,7 +351,7 @@ public class Object {
 	public String getOrig_name() {
 		return orig_name;
 	}
-	
+
 	/**
 	 * Sets the initial_node.
 	 *
@@ -367,7 +360,7 @@ public class Object {
 	public void setInitial_node(String initial_node) {
 		this.initial_node = initial_node;
 	}
-	
+
 	/**
 	 * Gets the initial_node.
 	 *
@@ -376,19 +369,19 @@ public class Object {
 	public String getInitial_node() {
 		return initial_node;
 	}
-	
+
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
-	
+
 	public Date getCreatedAt() {
 		return createdAt;
 	}
-	
+
 	public void setModifiedAt(Date modifiedAt) {
 		this.modifiedAt = modifiedAt;
 	}
-	
+
 	public Date getModifiedAt() {
 		return modifiedAt;
 	}
@@ -397,30 +390,25 @@ public class Object {
 	 * @return the path to the newest b representation.
 	 * @throws IllegalStateException if no dafiles present in object.
 	 */
-	public String getNameOfLatestBRep(){
-		if (getReps().isEmpty()) throw new IllegalStateException("no files present. reps could not get determined from dafiles.");
-		
-		String newestRep = getReps().get(getReps().size()-1);
+	public String getNameOfLatestBRep() {
+		if (getReps().isEmpty())
+			throw new IllegalStateException("no files present. reps could not get determined from dafiles.");
+
+		String newestRep = getReps().get(getReps().size() - 1);
 		return newestRep.replace("+a", "+b");
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
-	@Override 
-	public String toString(){
-		
-		
-		return 
-				"Object["
-		+ identifier + "," + urn + "," + "," + orig_name + "," +
-		user.getShort_name() +
-						"]";
+	@Override
+	public String toString() {
+
+		return "Object[" + identifier + "," + urn + "," + "," + orig_name + "," + user.getShort_name() + "]";
 	}
-	
-	
-	
-	
+
 	/**
 	 * Sets the published_flag.
 	 *
@@ -429,7 +417,7 @@ public class Object {
 	public void setPublished_flag(int published_flag) {
 		this.published_flag = published_flag;
 	}
-	
+
 	/**
 	 * Gets the published_flag.
 	 *
@@ -438,7 +426,7 @@ public class Object {
 	public int getPublished_flag() {
 		return published_flag;
 	}
-	
+
 	/**
 	 * Sets the contractor.
 	 *
@@ -447,8 +435,7 @@ public class Object {
 	public void setContractor(User contractor) {
 		this.user = contractor;
 	}
-	
-	
+
 	/**
 	 * Gets the contractor.
 	 *
@@ -457,7 +444,7 @@ public class Object {
 	public User getContractor() {
 		return user;
 	}
-	
+
 	/**
 	 * Sets the object_state.
 	 *
@@ -466,7 +453,7 @@ public class Object {
 	public void setObject_state(int object_state) {
 		this.object_state = object_state;
 	}
-	
+
 	/**
 	 * Gets the object_state.
 	 *
@@ -475,7 +462,7 @@ public class Object {
 	public int getObject_state() {
 		return object_state;
 	}
-	
+
 	/**
 	 * Sets the last_checked.
 	 *
@@ -484,7 +471,7 @@ public class Object {
 	public void setLast_checked(Date last_checked) {
 		this.last_checked = last_checked;
 	}
-	
+
 	/**
 	 * Gets the last_checked.
 	 *
@@ -493,7 +480,7 @@ public class Object {
 	public Date getLast_checked() {
 		return last_checked;
 	}
-	
+
 	/**
 	 * Sets the static_nondisclosure_limit.
 	 *
@@ -502,7 +489,7 @@ public class Object {
 	public void setStatic_nondisclosure_limit(Date static_nondisclosure_limit) {
 		this.static_nondisclosure_limit = static_nondisclosure_limit;
 	}
-	
+
 	/**
 	 * Gets the static_nondisclosure_limit.
 	 *
@@ -511,7 +498,7 @@ public class Object {
 	public Date getStatic_nondisclosure_limit() {
 		return static_nondisclosure_limit;
 	}
-	
+
 	/**
 	 * Sets the dynamic_nondisclosure_limit.
 	 *
@@ -520,7 +507,7 @@ public class Object {
 	public void setDynamic_nondisclosure_limit(String dynamic_nondisclosure_limit) {
 		this.dynamic_nondisclosure_limit = dynamic_nondisclosure_limit;
 	}
-	
+
 	/**
 	 * Gets the dynamic_nondisclosure_limit.
 	 *
@@ -529,13 +516,12 @@ public class Object {
 	public String getDynamic_nondisclosure_limit() {
 		return dynamic_nondisclosure_limit;
 	}
-	
+
 	public Date getStatic_nondisclosure_limit_institution() {
 		return static_nondisclosure_limit_institution;
 	}
 
-	public void setStatic_nondisclosure_limit_institution(
-			Date static_nondisclosure_limit_institution) {
+	public void setStatic_nondisclosure_limit_institution(Date static_nondisclosure_limit_institution) {
 		this.static_nondisclosure_limit_institution = static_nondisclosure_limit_institution;
 	}
 
@@ -543,8 +529,7 @@ public class Object {
 		return dynamic_nondisclosure_limit_institution;
 	}
 
-	public void setDynamic_nondisclosure_limit_institution(
-			String dynamic_nondisclosure_limit_institution) {
+	public void setDynamic_nondisclosure_limit_institution(String dynamic_nondisclosure_limit_institution) {
 		this.dynamic_nondisclosure_limit_institution = dynamic_nondisclosure_limit_institution;
 	}
 
@@ -556,7 +541,7 @@ public class Object {
 	public void setOriginal_formats(String original_formats) {
 		this.originalFormats = original_formats;
 	}
-	
+
 	/**
 	 * Gets the original_formats.
 	 *
@@ -565,7 +550,7 @@ public class Object {
 	public String getOriginal_formats() {
 		return originalFormats;
 	}
-	
+
 	/**
 	 * Sets the most_recent_formats.
 	 *
@@ -574,7 +559,7 @@ public class Object {
 	public void setMost_recent_formats(String most_recent_formats) {
 		this.mostRecentFormats = most_recent_formats;
 	}
-	
+
 	/**
 	 * Gets the most_recent_formats.
 	 *
@@ -583,71 +568,67 @@ public class Object {
 	public String getMost_recent_formats() {
 		return mostRecentFormats;
 	}
-	
+
 	/**
 	 * Gets the rights.
+	 * 
 	 * @return the rights
 	 */
-	public RightsStatement getRights(){
-		
+	public RightsStatement getRights() {
+
 		return rights;
 	}
-	
+
 	/**
 	 * Sets the rights.
+	 * 
 	 * @param rights the new rights
 	 */
-	public void setRights(RightsStatement rights){
-		
+	public void setRights(RightsStatement rights) {
+
 		this.rights = rights;
 	}
-	
+
 	/**
 	 * Gets the agents.
 	 *
 	 * @return the agents
 	 */
 	public Set<Agent> getAgents() {
-		
+
 		return agents;
 	}
-	
+
 	/**
 	 * Sets the agents.
 	 *
 	 * @param agents the new agents
 	 */
 	public void setAgents(Set<Agent> agents) {
-		
+
 		this.agents = agents;
 	}
-	
-	
-	
-	
-	
+
 	/**
 	 * Grants right.
 	 *
 	 * @param eventType EventType specifies the type of action to be checked
 	 * @return boolean true if right is granted, false if not
-	 * @author Sebastian Cuy
-	 * Checks if metadata contains a RightsStatement which grants
-	 * the right to perform a given type of action.
+	 * @author Sebastian Cuy Checks if metadata contains a RightsStatement which
+	 *         grants the right to perform a given type of action.
 	 */
 	public boolean grantsRight(String eventType) {
-			
-		if (eventType.equals("PUBLICATION")
-				&& rights.getPublicationRights() != null
+
+		if (eventType.equals("PUBLICATION") && rights.getPublicationRights() != null
 				&& !rights.getPublicationRights().isEmpty()) {
 			return true;
 		} else if (eventType.equals("MIGRATION") && rights.getMigrationRight() != null) {
-			if (!rights.getMigrationRight().getCondition().equals(MigrationRight.Condition.CONFIRM)) return true;
+			if (!rights.getMigrationRight().getCondition().equals(MigrationRight.Condition.CONFIRM))
+				return true;
 		}
 		return false;
 	}
-	
-	
+
 	/**
 	 * 
 	 * @author Thomas Kleinke
@@ -656,102 +637,123 @@ public class Object {
 	public boolean isDelta() {
 		return (packages.size() > 1);
 	}
-	
-	
+
 	/**
 	 * Grants publication right.
 	 *
 	 * @param audience Audience specifies the type of audience to be checked
 	 * @return boolean true if right is granted, false if not
-	 * @author Sebastian Cuy
-	 * Checks if metadata contains a RightsStatement which grants
-	 * the right to publish the package for the given type of audience.
+	 * @author Sebastian Cuy Checks if metadata contains a RightsStatement which
+	 *         grants the right to publish the package for the given type of
+	 *         audience.
 	 */
 	public boolean grantsPublicationRight(Audience audience) {
-			
-		for (PublicationRight publRight : rights.getPublicationRights()) {
-			if (! publRight.getAudience().equals(audience)) continue;
 
-			logger.debug("comparing rights for audience "+audience);
-			logger.debug("date now: "+new Date());
-			if (publRight.getStartDate()!=null) 
-			{ 
-				logger.debug("date from rights: "+publRight.getStartDate());
-				logger.debug("publright date before now "+publRight.getStartDate().before(new Date()));
+		for (PublicationRight publRight : rights.getPublicationRights()) {
+			if (!publRight.getAudience().equals(audience))
+				continue;
+
+			logger.debug("comparing rights for audience " + audience);
+			logger.debug("date now: " + new Date());
+			if (publRight.getStartDate() != null) {
+				logger.debug("date from rights: " + publRight.getStartDate());
+				logger.debug("publright date before now " + publRight.getStartDate().before(new Date()));
 			}
-			
+
 			if (publRight.getLawID() == null
-				&& (publRight.getStartDate() == null ||
-				publRight.getStartDate().before(new Date()))
-				) {
-				
+					&& (publRight.getStartDate() == null || publRight.getStartDate().before(new Date()))) {
+
 				return true;
 			}
 		}
 		return false;
 	}
-	
-	
-	
+
 	/**
-	 * @author Daniel M. de Oliveira 
+	 * @author Daniel M. de Oliveira
 	 * @return
 	 */
-	private Collection<DAFile> getFilesFromRepresentation(String rep){
+	private Collection<DAFile> getFilesFromRepresentation(String rep) {
 
 		ArrayList<DAFile> list = new ArrayList<DAFile>();
-		
-		for (Package pkg:getPackages()){
-			for (DAFile f:pkg.getFiles()){
-				if (f.getRep_name().equals(rep)) list.add(f);
+
+		for (Package pkg : getPackages()) {
+			for (DAFile f : pkg.getFiles()) {
+				if (f.getRep_name().equals(rep))
+					list.add(f);
 			}
 		}
-		
+
 		return list;
 	}
- 	
-	
+
 	/**
 	 * Gets the newest files from all representations.
 	 *
-	 * @param sidecarExtensions Files with the given extensions are considered sidecar files. Sidecar files are treated differently from other files
-	 *  (see <a href="https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/dip_specification.md#sidecar-files">documentation</a> for details)
-	 * @return newest DAFile of each Document.  
+	 * @param sidecarExtensions Files with the given extensions are considered
+	 *                          sidecar files. Sidecar files are treated differently
+	 *                          from other files (see <a href=
+	 *                          "https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/dip_specification.md#sidecar-files">documentation</a>
+	 *                          for details)
+	 * @return newest DAFile of each Document.
 	 * @author Thomas Kleinke
 	 * @author Daniel M. de Oliveira
-	 * @throws RuntimeException if it finds a file on the file system to which it cannot find a corresponding attached instance of
-	 * DAFile in this object.
+	 * @throws RuntimeException if it finds a file on the file system to which it
+	 *                          cannot find a corresponding attached instance of
+	 *                          DAFile in this object.
 	 */
-	
+
 	// TODO make it a set
-	public List<DAFile> getNewestFilesFromAllRepresentations(String sidecarExts)
-	{
+	public List<DAFile> getNewestFilesFromAllRepresentations(String sidecarExts) {
 		// document name to newest file instance
 		Map<String, DAFile> documentMap = new HashMap<String, DAFile>();
-		
+
 		for (String rep : getReps())
-			for (DAFile f: getFilesFromRepresentation(rep)){
-				if (FriendlyFilesUtils.isFriendlyFileExtension(f.getRelative_path(),sidecarExts))
+			for (DAFile f : getFilesFromRepresentation(rep)) {
+				if (FriendlyFilesUtils.isFriendlyFileExtension(f.getRelative_path(), sidecarExts))
 					documentMap.put(f.getRelative_path(), f);
 				else
 					documentMap.put(FilenameUtils.removeExtension(f.getRelative_path()), f);
 			}
-			
+
 		return new ArrayList<DAFile>(documentMap.values());
 	}
-	
-	
+
+	// TODO make it a set
+	public List<DAFile> getNewestFilesFromARepresentations(String sidecarExts) {
+		// document name to newest file instance from all A-representations
+		Map<String, DAFile> documentMap = new HashMap<String, DAFile>();
+		Pattern validARepPattern = Pattern.compile(VALID_A_REP);
+		for (String rep : getReps()) {
+			// skip reps not ending with +a
+	        if (!validARepPattern.matcher(rep).matches()) {
+	            continue;
+	        }
+
+			for (DAFile f : getFilesFromRepresentation(rep)) {
+				if (FriendlyFilesUtils.isFriendlyFileExtension(f.getRelative_path(), sidecarExts))
+					documentMap.put(f.getRelative_path(), f);
+				else
+					documentMap.put(FilenameUtils.removeExtension(f.getRelative_path()), f);
+			}
+		}
+
+		return new ArrayList<DAFile>(documentMap.values());
+	}
+
 	/**
-	 * Gets the representations based on the existing folders in the objects folder on the file system.
+	 * Gets the representations based on the existing folders in the objects folder
+	 * on the file system.
+	 * 
 	 * @author Daniel M. de Oliveira
 	 * @return representations as sorted array
 	 */
 	private List<String> getReps() {
 		List<String> representations = new ArrayList<String>();
-		for (Package p:this.getPackages()) {
-			for (DAFile f:p.getFiles()) {
+		for (Package p : this.getPackages()) {
+			for (DAFile f : p.getFiles()) {
 				String repName = f.getRep_name();
-				if(!repName.equals(DIP_PUBLIC_REPNAME) && !repName.equals(DIP_INSTITUTION_REPNAME)) {
+				if (!repName.equals(DIP_PUBLIC_REPNAME) && !repName.equals(DIP_INSTITUTION_REPNAME)) {
 					representations.add(f.getRep_name());
 				}
 			}
@@ -759,62 +761,58 @@ public class Object {
 		Collections.sort(representations);
 		return representations;
 	}
-	
 
-	
-	
-	
 	/**
-	 * Gets the latest version of a file in a package.
-	 * Currently works only for files directly beneath the rep folders.
+	 * Gets the latest version of a file in a package. Currently works only for
+	 * files directly beneath the rep folders.
 	 *
 	 * @param filename the filename
 	 * @return the latest
 	 * @author Daniel M. de Oliveira
-	 * @throws IllegalStateException if it finds a file without an associated dafile instance.
+	 * @throws IllegalStateException if it finds a file without an associated dafile
+	 *                               instance.
 	 */
 	public DAFile getLatest(String filename) {
-		
+
 		DAFile result = null;
 		for (String rep : getReps()) {
-			
+
 			Collection<DAFile> filesFromRep = getFilesOfRepresentation(rep);
-			for (DAFile f:filesFromRep) {
-				if (f.getRelative_path().endsWith(filename)) result = f;
-				
+			for (DAFile f : filesFromRep) {
+				if (f.getRelative_path().endsWith(filename))
+					result = f;
+
 			}
 		}
-		
+
 		return result;
 	}
-	
-	
+
 	/**
 	 * Gets the latest package.
 	 *
 	 * @return the newest package which is attached to the object.
-	 * @throws IllegalStateException if there are no packages associated to the object.
+	 * @throws IllegalStateException if there are no packages associated to the
+	 *                               object.
 	 * 
 	 * @author Daniel M. de Oliveira
 	 */
-	public Package getLatestPackage(){
-		if (getPackages().size()==0) throw new IllegalStateException("no packages associated");
+	public Package getLatestPackage() {
+		if (getPackages().size() == 0)
+			throw new IllegalStateException("no packages associated");
 
 		Package max = null;
-		int maxDelta=0;
-		
-		for (Package pack : getPackages()){
-			if (pack.getDelta() > maxDelta){
+		int maxDelta = 0;
+
+		for (Package pack : getPackages()) {
+			if (pack.getDelta() > maxDelta) {
 				maxDelta = pack.getDelta();
 				max = pack;
 			}
 		}
 		return max;
 	}
-	
-	
-	
-	
+
 	/**
 	 * Gets the most_recent_secondary_attributes.
 	 *
@@ -823,19 +821,17 @@ public class Object {
 	public String getMostRecentSecondaryAttributes() {
 		return mostRecentSecondaryAttributes;
 	}
-	
+
 	/**
 	 * Sets the most_recent_secondary_attributes.
 	 *
-	 * @param most_recent_secondary_attributes the new most_recent_secondary_attributes
+	 * @param most_recent_secondary_attributes the new
+	 *                                         most_recent_secondary_attributes
 	 */
-	public void setMostRecentSecondaryAttributes(
-			String most_recent_secondary_attributes) {
+	public void setMostRecentSecondaryAttributes(String most_recent_secondary_attributes) {
 		this.mostRecentSecondaryAttributes = most_recent_secondary_attributes;
 	}
 
-
-	
 	public int getLicense_flag() {
 		return license_flag;
 	}
@@ -867,7 +863,7 @@ public class Object {
 	public void setMetadata_file(String metadata_file) {
 		this.metadata_file = metadata_file;
 	}
-	
+
 	public Date getLastPublicationTry() {
 		return lastPublicationTry;
 	}
@@ -877,34 +873,35 @@ public class Object {
 	}
 
 	public String getFriendlyFileExtensions() {
-		if (this.getContractor() == null){
+		if (this.getContractor() == null) {
 			return "";
 		}
 		String ret = this.getContractor().getFriendlyFileExtensions();
-		if (ret == null){
+		if (ret == null) {
 			return "";
 		}
 		return ret;
 	}
+
 	/**
-	 * Gets the files of a representation based on the information stored
-	 * in the object tree. 
+	 * Gets the files of a representation based on the information stored in the
+	 * object tree.
 	 * 
 	 * @author Daniel M. de Oliveira
 	 * @param repName
 	 * @return
 	 */
-	private Collection<DAFile> getFilesOfRepresentation(String repName){
-		
+	private Collection<DAFile> getFilesOfRepresentation(String repName) {
+
 		Collection<DAFile> files = new ArrayList<DAFile>();
-		
-		for (Package pkg:this.getPackages()){
-			for (DAFile f:pkg.getFiles()){
+
+		for (Package pkg : this.getPackages()) {
+			for (DAFile f : pkg.getFiles()) {
 				if (f.getRep_name().equals(repName))
 					files.add(f);
 			}
 		}
-		
+
 		return files;
 	}
 
@@ -930,11 +927,11 @@ public class Object {
 
 	/**
 	 * Expect Byte count
+	 * 
 	 * @param aip_size
 	 */
 	public void setAip_size(long aip_size) {
 		this.aip_size = aip_size;
 	}
 
-	
 }

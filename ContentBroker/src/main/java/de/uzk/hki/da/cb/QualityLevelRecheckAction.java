@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.util.stream.Stream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.jdom.JDOMException;
 import org.xml.sax.SAXException;
 
@@ -29,6 +32,9 @@ import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.DAFile;
+import de.uzk.hki.da.model.DocumentsGenService;
+import de.uzk.hki.da.model.Job;
+import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.WorkArea;
@@ -36,6 +42,7 @@ import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
 import de.uzk.hki.da.pkg.BagitUtils;
 import de.uzk.hki.da.repository.RepositoryException;
+import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.util.ConfigurationException;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.FolderUtils;
@@ -47,7 +54,8 @@ import java.io.File;
 
 public class QualityLevelRecheckAction extends AbstractAction {
 	private GridFacade gridRoot;
-	
+	private RegisterObjectService registerObjectService;
+	private DocumentsGenService dgs = new DocumentsGenService();
 	public QualityLevelRecheckAction() {
 		SUPPRESS_OBJECT_CONSISTENCY_CHECK = true;
 	}
@@ -73,86 +81,57 @@ public class QualityLevelRecheckAction extends AbstractAction {
 	public boolean implementation() throws FileNotFoundException, IOException, UserException, RepositoryException,
 			JDOMException, ParserConfigurationException, SAXException, SubsystemNotAvailableException {
 		logger.debug("QUALITY LEVEL RECHECK STARTED.");
-		// newTar =
-		// Path.make(n.getWorkAreaRootPath(),o.getContractor().getShort_name(),o.getIdentifier()
-		// + FILE_EXTENSION_TAR);
-		/*
-		 * Path tempFolder = createTmpFolder();
-		 * 
-		 * 
-		 * if (j.getQuestion()==null||j.getQuestion().isEmpty()){
-		 * stdRetrieval(tempFolder); } else if
-		 * (j.getQuestion().startsWith("RETRIEVE:")){ specialRetrieval(tempFolder); }
-		 * 
-		 * 
-		 * bagitAndTarit(tempFolder);
-		 * 
-		 * cleanupFS();
-		 */
-		o.setObject_state(50);
 		
 		clearNonpersistentObjectProperties(o);
-		String filename = o.getIdentifier() + ".pack_" + o.getLatestPackage().getName() + ".tar";
-		String targetFilename = o.getIdentifier() + ".tar";
-		String aipFilePath = o.getContractor().getShort_name() + File.separator + o.getIdentifier() + File.separator
-				+ filename;
-		// Path targetFilePath = Path.make(n.getWorkAreaRootPath(), "work",
-		// o.getContractor().getShort_name(), filename);
+		String targetFilename = o.getIdentifier();
 		Path targetFilePath = Path.make(n.getWorkAreaRootPath(), "work", o.getContractor().getShort_name(),
 				targetFilename);
-
+		Path tempFilePath = Path.make(n.getWorkAreaRootPath(), "work", o.getContractor().getShort_name(),
+				"temp",targetFilename);
+		Path tempFolder = Path.make(n.getWorkAreaRootPath(), "work", o.getContractor().getShort_name(),
+				"temp");
 		if (!(new File(targetFilePath.toString()).exists())) {
 			logger.debug(targetFilePath + " already exists. iget can be skipped.");
 			// return true;
 		}
-		gridRoot.get(new File(targetFilePath.toString()), aipFilePath);
-
-		de.uzk.hki.da.model.Package latestPackage = o.getLatestPackage();
-		//RetrievePackagesHelper helper = new RetrievePackagesHelper(gridRoot, wa);
-		//helper.loadPackages(o,false);
-		File container = new File(targetFilePath.toString());
-		File unpackedContainer = new File(
-				Path.make(n.getWorkAreaRootPath(), "work", o.getContractor().getShort_name(), "temp").toString());
-		String unpackedFilePath = unpackedContainer.getAbsolutePath() + File.separator
-				+ getFilenameWithoutExtension(aipFilePath);
-		File unpackedFile = new File(unpackedFilePath);
-		File unpackedFileData = new File(unpackedFilePath + File.separator + "data");
-		unpackedContainer.mkdirs();
+		RetrievePackagesHelper helper = new RetrievePackagesHelper(gridRoot, wa);
 		try {
-			ArchiveBuilder builder = ArchiveBuilderFactory.getArchiveBuilderForFile(container);
-			builder.unarchiveFolder(container, unpackedContainer);
-		} catch (Exception e) {
-			throw new IOException(
-					"Existing AIP \"" + container + "\" couldn't be unpacked to folder " + unpackedContainer, e);
+			helper.loadPackages(o, true);
+		} catch (IOException e) {
+			throw new RuntimeException("error while trying to get existing packages from lza area",e);
 		}
-		Optional<File> newestAFolder = findNewestA(unpackedFileData);
-
-		java.nio.file.Path newestASourcePath = newestAFolder
-				.orElseThrow(() -> new IllegalStateException("No +a folder found")).toPath().toAbsolutePath();
-
-		java.nio.file.Path newestATargetPath = Paths.get(n.getWorkAreaRootPath() + File.separator + "work"
-				+ File.separator + o.getContractor().getShort_name() + File.separator + o.getIdentifier());
-		copyData(newestATargetPath, newestASourcePath);
-		java.nio.file.Path tempFolderToDelete = Paths.get(unpackedContainer.getAbsolutePath());
-		java.nio.file.Path tarFileToDelete = Paths.get(container.getAbsolutePath());
-		deleteTarAndTempFolder(tarFileToDelete, tempFolderToDelete);
-		java.nio.file.Path renamedATargetPath = Paths.get(n.getWorkAreaRootPath() + File.separator + "work"
-				+ File.separator + o.getContractor().getShort_name() + File.separator + o.getOrig_name());
-		Files.move(newestATargetPath, renamedATargetPath, StandardCopyOption.ATOMIC_MOVE);
-
-		BagitUtils.buildBagit(renamedATargetPath.toAbsolutePath().toString());
-		File unarchivedATargetPath = renamedATargetPath.toAbsolutePath().toFile();
-		File ingestArchviedATargetPath = Paths.get(n.getIngestAreaRootPath() + File.separator
+		//deleteFolder(Paths.get(targetFilePath.toString()));
+		dgs.addDocumentsToObject(o);
+		copyARepresentationToWorkArea(tempFilePath);
+		deleteFolder(Paths.get(targetFilePath.toString()));
+		File unarchivedATargetFile = tempFilePath.toFile();
+		File ingestArchviedATargetFile = Paths.get(n.getIngestAreaRootPath() + File.separator
 				+ o.getContractor().getShort_name() + File.separator + o.getOrig_name() + ".tgz").toFile();
+		BagitUtils.buildBagit(unarchivedATargetFile.toString());
 		try {
-			ArchiveBuilder builder = ArchiveBuilderFactory.getArchiveBuilderForFile(ingestArchviedATargetPath);
-			builder.archiveFolder(unarchivedATargetPath, ingestArchviedATargetPath, true);
+			ArchiveBuilder builder = ArchiveBuilderFactory.getArchiveBuilderForFile(ingestArchviedATargetFile);
+			builder.archiveFolder(unarchivedATargetFile, ingestArchviedATargetFile, true);
 		} catch (Exception e) {
 			throw new IOException(
-					"Existing AIP \"" + container + "\" couldn't be unpacked to folder " + unpackedContainer, e);
+					"Existing AIP couldn't be unpacked to folder ", e);
 		}
-		deleteFolder(unarchivedATargetPath.toPath());
-		deleteFolder(newestATargetPath);
+		deleteFolder(Paths.get(tempFolder.toString()));
+		String origName = o.getOrig_name();
+		User contractor = o.getContractor();
+		Session session = HibernateUtil.openSession();
+		Transaction tx = session.beginTransaction();
+		try {
+			o.setObject_state(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+			session.saveOrUpdate(o);
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			tx.rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+		
+		registerObjectService.registerObject(origName, contractor);
 		return true;
 	}
 
@@ -170,10 +149,7 @@ public class QualityLevelRecheckAction extends AbstractAction {
 		this.gridRoot = gridRoot;
 	}
 
-	private void stdRetrieval(Path tempFolder) throws IOException {
-		moveNewestPremisToDIP(tempFolder);
-		copySurfaceRepresentation(tempFolder);
-	}
+
 
 	private void specialRetrieval(Path tempFolder) throws IOException {
 
@@ -242,17 +218,14 @@ public class QualityLevelRecheckAction extends AbstractAction {
 	 * @throws RuntimeException
 	 * @throws IOException
 	 */
-	private void copySurfaceRepresentation(Path tempFolder) throws RuntimeException, IOException {
+	private void copyARepresentationToWorkArea(Path tempFolder) throws RuntimeException, IOException {
 
 		String sce = "";
 		if (o.getFriendlyFileExtensions() != null)
 			sce = o.getFriendlyFileExtensions();
 
-		List<DAFile> files = o.getNewestFilesFromAllRepresentations(sce);
+		List<DAFile> files = o.getNewestFilesFromARepresentations(sce);
 		for (DAFile f : files) {
-			if (wa.toFile(f).getName().equals(C.PREMIS_XML))
-				continue;
-
 			File dest = Path.makeFile(tempFolder, WorkArea.DATA, f.getRelative_path());
 			logger.info("file will be part of pip: " + dest.getAbsolutePath());
 			String destFolder = dest.getAbsolutePath().substring(0, dest.getAbsolutePath().lastIndexOf("/"));
@@ -403,6 +376,12 @@ public class QualityLevelRecheckAction extends AbstractAction {
 			});
 		}
 	}
-
+	public void setRegisterObjectService(RegisterObjectService registerObjectService) {
+		this.registerObjectService = registerObjectService;
+	}
+	
+	public RegisterObjectService getRegisterObjectService() {
+		return registerObjectService;
+	}
 
 }

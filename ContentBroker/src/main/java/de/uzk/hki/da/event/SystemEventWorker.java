@@ -38,7 +38,6 @@ public class SystemEventWorker extends Worker{
 
 
 	private Node node;
-	private RegisterObjectService registerObjectService;
 	public Node getLocalNode() {
 		return node;
 	}
@@ -47,9 +46,6 @@ public class SystemEventWorker extends Worker{
 		this.node = node;
 	}
 
-	public void setRegisterObjectService(RegisterObjectService registerObjectService) {
-	    this.registerObjectService = registerObjectService;
-	}
 
 	public void init(){
 		
@@ -65,7 +61,6 @@ public class SystemEventWorker extends Worker{
 	@Override
 	public void scheduleTaskImplementation(){
 		SystemEventFactory se = new SystemEventFactory();
-		se.setRegisterObjectService(registerObjectService);
 		se.setLocalNode(node);
 		se.buildStoredEvents();
 	}

@@ -43,7 +43,6 @@ public class SystemEventFactory  {
 	
 	private String eventsPackage = "de.uzk.hki.da.event.";
 	
-	private RegisterObjectService registerObjectService;
 	
 	public void buildStoredEvents() {
 		List<SystemEvent> ses = getEventsPerNode();
@@ -68,7 +67,7 @@ public class SystemEventFactory  {
 		ase.setNode(localNode);
 		ase.setOwner(se.getOwner());
 		ase.setStoredEvent(se);
-		ase.setRegisterObjectService(registerObjectService);
+		
 	}
 
 	@SuppressWarnings("unchecked")
@@ -105,12 +104,6 @@ public class SystemEventFactory  {
 		this.localNode = localNode;
 	}
 	
-	public void setRegisterObjectService(RegisterObjectService registerObjectService) {
-		this.registerObjectService = registerObjectService;
-	}
-	
-	public RegisterObjectService getRegisterObjectService() {
-		return this.registerObjectService;
-	}
+
 	
 }
