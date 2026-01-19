@@ -93,6 +93,7 @@ public class passwordEncryptor {
 		}
 		
 		String encryptedPassword = "";
+
 		if (args[0].equals("-cb"))
 			encryptedPassword = encryptPasswordForContentBroker(args[1]);
 		else if (args[0].equals("-ms"))

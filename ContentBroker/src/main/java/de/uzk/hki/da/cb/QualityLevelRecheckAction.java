@@ -24,11 +24,13 @@ import org.xml.sax.SAXException;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.MailContents;
+import de.uzk.hki.da.core.RegisterObjectService;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.Package;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
@@ -45,7 +47,7 @@ import java.io.File;
 
 public class QualityLevelRecheckAction extends AbstractAction {
 	private GridFacade gridRoot;
-
+	
 	public QualityLevelRecheckAction() {
 		SUPPRESS_OBJECT_CONSISTENCY_CHECK = true;
 	}
@@ -88,7 +90,7 @@ public class QualityLevelRecheckAction extends AbstractAction {
 		 * cleanupFS();
 		 */
 		o.setObject_state(50);
-
+		
 		clearNonpersistentObjectProperties(o);
 		String filename = o.getIdentifier() + ".pack_" + o.getLatestPackage().getName() + ".tar";
 		String targetFilename = o.getIdentifier() + ".tar";
@@ -106,8 +108,8 @@ public class QualityLevelRecheckAction extends AbstractAction {
 		gridRoot.get(new File(targetFilePath.toString()), aipFilePath);
 
 		de.uzk.hki.da.model.Package latestPackage = o.getLatestPackage();
-		RetrievePackagesHelper helper = new RetrievePackagesHelper(gridRoot, wa);
-		// helper.loadPackages(o,true);
+		//RetrievePackagesHelper helper = new RetrievePackagesHelper(gridRoot, wa);
+		//helper.loadPackages(o,false);
 		File container = new File(targetFilePath.toString());
 		File unpackedContainer = new File(
 				Path.make(n.getWorkAreaRootPath(), "work", o.getContractor().getShort_name(), "temp").toString());
@@ -124,15 +126,33 @@ public class QualityLevelRecheckAction extends AbstractAction {
 					"Existing AIP \"" + container + "\" couldn't be unpacked to folder " + unpackedContainer, e);
 		}
 		Optional<File> newestAFolder = findNewestA(unpackedFileData);
-		java.nio.file.Path metadataSourcePath = Paths.get(unpackedFile.getAbsolutePath());
+
 		java.nio.file.Path newestASourcePath = newestAFolder
 				.orElseThrow(() -> new IllegalStateException("No +a folder found")).toPath().toAbsolutePath();
+
 		java.nio.file.Path newestATargetPath = Paths.get(n.getWorkAreaRootPath() + File.separator + "work"
 				+ File.separator + o.getContractor().getShort_name() + File.separator + o.getIdentifier());
-		copyMetadataAndData(metadataSourcePath, newestATargetPath,newestASourcePath );
+		copyData(newestATargetPath, newestASourcePath);
 		java.nio.file.Path tempFolderToDelete = Paths.get(unpackedContainer.getAbsolutePath());
 		java.nio.file.Path tarFileToDelete = Paths.get(container.getAbsolutePath());
-		deleteTarAndTempFolder(tarFileToDelete,tempFolderToDelete);
+		deleteTarAndTempFolder(tarFileToDelete, tempFolderToDelete);
+		java.nio.file.Path renamedATargetPath = Paths.get(n.getWorkAreaRootPath() + File.separator + "work"
+				+ File.separator + o.getContractor().getShort_name() + File.separator + o.getOrig_name());
+		Files.move(newestATargetPath, renamedATargetPath, StandardCopyOption.ATOMIC_MOVE);
+
+		BagitUtils.buildBagit(renamedATargetPath.toAbsolutePath().toString());
+		File unarchivedATargetPath = renamedATargetPath.toAbsolutePath().toFile();
+		File ingestArchviedATargetPath = Paths.get(n.getIngestAreaRootPath() + File.separator
+				+ o.getContractor().getShort_name() + File.separator + o.getOrig_name() + ".tgz").toFile();
+		try {
+			ArchiveBuilder builder = ArchiveBuilderFactory.getArchiveBuilderForFile(ingestArchviedATargetPath);
+			builder.archiveFolder(unarchivedATargetPath, ingestArchviedATargetPath, true);
+		} catch (Exception e) {
+			throw new IOException(
+					"Existing AIP \"" + container + "\" couldn't be unpacked to folder " + unpackedContainer, e);
+		}
+		deleteFolder(unarchivedATargetPath.toPath());
+		deleteFolder(newestATargetPath);
 		return true;
 	}
 
@@ -276,8 +296,8 @@ public class QualityLevelRecheckAction extends AbstractAction {
 		return (dotIndex == -1) ? filename : filename.substring(0, dotIndex);
 	}
 
-	public static void copyMetadataAndData(java.nio.file.Path metadataSourceDir, java.nio.file.Path targetDir, java.nio.file.Path dataSourceDir)
-			throws IOException {
+	public static void copyMetadataAndData(java.nio.file.Path metadataSourceDir, java.nio.file.Path targetDir,
+			java.nio.file.Path dataSourceDir) throws IOException {
 
 		if (metadataSourceDir == null || targetDir == null || dataSourceDir == null) {
 			throw new IllegalArgumentException("Paths must not be null.");
@@ -316,42 +336,73 @@ public class QualityLevelRecheckAction extends AbstractAction {
 			}
 		}
 	}
-	public static void deleteTarAndTempFolder(java.nio.file.Path tarFile, java.nio.file.Path tempFolder) throws IOException {
 
-        // 1) Delete tar file
-        if (tarFile != null && Files.exists(tarFile)) {
-            if (!Files.isRegularFile(tarFile)) {
-                throw new IOException("Not a file: " + tarFile);
-            }
-            Files.delete(tarFile);
-        }
+	public static void copyData(java.nio.file.Path targetDir, java.nio.file.Path dataSourceDir) throws IOException {
 
-        // 2) Delete temp folder recursively
-        if (tempFolder != null && Files.exists(tempFolder)) {
-            if (!Files.isDirectory(tempFolder)) {
-                throw new IOException("Not a directory: " + tempFolder);
-            }
+		if (!Files.isDirectory(dataSourceDir)) {
+			throw new IllegalArgumentException("dataSourceDir is not a directory: " + dataSourceDir);
+		}
 
-            Files.walkFileTree(tempFolder, new SimpleFileVisitor<java.nio.file.Path>() {
+// Ensure target exists
+		Files.createDirectories(targetDir);
 
-                @Override
-                public FileVisitResult visitFile(java.nio.file.Path file, BasicFileAttributes attrs)
-                        throws IOException {
-                    Files.delete(file);
-                    return FileVisitResult.CONTINUE;
-                }
+// 1) Create data folder in targetDir
+		java.nio.file.Path dataTargetDir = targetDir.resolve("data");
+		Files.createDirectories(dataTargetDir);
 
-                @Override
-                public FileVisitResult postVisitDirectory(java.nio.file.Path dir, IOException exc)
-                        throws IOException {
-                    if (exc != null) {
-                        throw exc;
-                    }
-                    Files.delete(dir);
-                    return FileVisitResult.CONTINUE;
-                }
-            });
-        }
-    }
+// 2) Copy data files (non-recursive) into targetDir/data
+		try (DirectoryStream<java.nio.file.Path> stream = Files.newDirectoryStream(dataSourceDir)) {
+			for (java.nio.file.Path p : stream) {
+				if (Files.isRegularFile(p)) {
+					Files.copy(p, dataTargetDir.resolve(p.getFileName()), StandardCopyOption.REPLACE_EXISTING,
+							StandardCopyOption.COPY_ATTRIBUTES);
+				}
+			}
+		}
+	}
+
+	public static void deleteTarAndTempFolder(java.nio.file.Path tarFile, java.nio.file.Path tempFolder)
+			throws IOException {
+
+		// 1) Delete tar file
+		if (tarFile != null && Files.exists(tarFile)) {
+			if (!Files.isRegularFile(tarFile)) {
+				throw new IOException("Not a file: " + tarFile);
+			}
+			Files.delete(tarFile);
+		}
+
+		// 2) Delete temp folder recursively
+		deleteFolder(tempFolder);
+	}
+
+	public static void deleteFolder(java.nio.file.Path tempFolder) throws IOException {
+
+		if (tempFolder != null && Files.exists(tempFolder)) {
+			if (!Files.isDirectory(tempFolder)) {
+				throw new IOException("Not a directory: " + tempFolder);
+			}
+
+			Files.walkFileTree(tempFolder, new SimpleFileVisitor<java.nio.file.Path>() {
+
+				@Override
+				public FileVisitResult visitFile(java.nio.file.Path file, BasicFileAttributes attrs)
+						throws IOException {
+					Files.delete(file);
+					return FileVisitResult.CONTINUE;
+				}
+
+				@Override
+				public FileVisitResult postVisitDirectory(java.nio.file.Path dir, IOException exc) throws IOException {
+					if (exc != null) {
+						throw exc;
+					}
+					Files.delete(dir);
+					return FileVisitResult.CONTINUE;
+				}
+			});
+		}
+	}
+
 
 }

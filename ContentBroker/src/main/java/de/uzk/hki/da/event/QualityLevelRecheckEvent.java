@@ -5,9 +5,12 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import de.uzk.hki.da.cb.RetrievePackagesHelper;
+import de.uzk.hki.da.core.RegisterObjectService;
 import de.uzk.hki.da.model.Job;
+import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.PreservationSystem;
+import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.C;
 import java.io.File;
@@ -21,47 +24,61 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 public class QualityLevelRecheckEvent extends AbstractSystemEvent {
 	private static final String WORKFLOW_STATUS_START__QUALITY_LEVEL_RECHECK_ACTION = "8000";
+	/** The register object service. */
+
 	@Override
 	public boolean implementation() {
-		Session session = HibernateUtil.openSession();
-		
-		Transaction tx = session.beginTransaction();
+	    String nodeName = getPressNodeName();
+	    int objectId = 3036; // TODO: parametrisieren
+	    
+	    Session session = HibernateUtil.openSession();
+	    Transaction tx = session.beginTransaction();
+	    try {
+	        Object obj = (Object) session.get(Object.class, objectId);
+	        User contractor = obj.getContractor();
+	        String origName = obj.getOrig_name();
+	        // DAS MUSS IN DIE ACTION DA SONST ZU FRÜH DIE PAKETNUMMER HOCHGEZÄHLT WIRD
+	        obj = registerObjectService.registerObject(origName, contractor);
+	        if (obj == null) return false;
+	        	
+	        // optional: wenn du harte Zustände willst
+	        if (obj.getObject_state() != Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow) {
+	            logger.info("Object {} not eligible for recheck, state={}", obj.getIdentifier(), obj.getObject_state());
+	            tx.commit();
+	            return false;
+	        }
 
-		de.uzk.hki.da.model.Object obj = (Object) session.get(de.uzk.hki.da.model.Object.class, 355); // data_pk
-		
-		tx.commit();
-		String nodeName = getPressNodeName();
-		createQualityLevelRecheckJob(obj, nodeName);
-		return true;
+	        insertJobIntoQueueAndSetWorkFlowState(nodeName,obj);
 
+	        tx.commit();
+	        return true;
+	    } catch (Exception e) {
+	        tx.rollback();
+	        throw e;
+	    } finally {
+	        session.close();
+	    }
 	}
+
 	
-	private boolean createQualityLevelRecheckJob(Object object, String nodeName) { //, String pressNodeName) {
+	private Job insertJobIntoQueueAndSetWorkFlowState(String nodeName,Object object){
+
+		object.setObject_state(Object.ObjectStatus.InWorkflow);
 		Session session = HibernateUtil.openSession();
 		session.beginTransaction();
-		session.refresh(object);
-		if (object.getObject_state() != Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow) {
-			logger.info(" Object " + object.getIdentifier()	+ " is again in workflow, maybe caused by delta, reindex action can not be initialized! ");
-			session.close();
-			return false;
-		} else {
-			logger.info(" Object " + object.getIdentifier()	+ " put in workflow, and reindex action is initialized! ");
-			object.setObject_state(Object.ObjectStatus.InWorkflow);
-			session.saveOrUpdate(object);
+		session.saveOrUpdate(object);
 
-			Job job = new Job();
-			job.setObject(object);
-
-			job.setStatus(WORKFLOW_STATUS_START__QUALITY_LEVEL_RECHECK_ACTION);
-			job.setResponsibleNodeName(nodeName);
-			job.setCreatedAt(new Date());
-			job.setModifiedAt(new Date());
-
-			session.save(job);
-		}
+        Job job = new Job();
+        job.setObject(object);
+        job.setStatus(WORKFLOW_STATUS_START__QUALITY_LEVEL_RECHECK_ACTION);
+        job.setResponsibleNodeName(nodeName);
+        job.setCreatedAt(new Date());
+        job.setModifiedAt(new Date());
+        session.save(job);
 		session.getTransaction().commit();
 		session.close();
-		return true;
+
+		return job;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -87,6 +104,14 @@ public class QualityLevelRecheckEvent extends AbstractSystemEvent {
 		}
 		return presslist.get(0).getPresServer();
 	}
+	public RegisterObjectService getRegisterObjectService() {
+	    return registerObjectService;
+	}
+
+	public void setRegisterObjectService(RegisterObjectService registerObjectService) {
+	    this.registerObjectService = registerObjectService;
+	}
+
 
 	
 

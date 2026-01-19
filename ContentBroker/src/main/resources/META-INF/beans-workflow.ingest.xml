@@ -154,7 +154,7 @@
 	</bean>
 	<bean id="QualityLevelRecheckAction" class="de.uzk.hki.da.cb.QualityLevelRecheckAction" scope="prototype">
 		<property name="startStatus" value="8000" />
-		<property name="endStatus" value="120" />
+		<property name="endStatus" value="110" />
 		<property name="name" value="QualityLevelRecheckAction" />
 		<property name="gridRoot" ref="${cb.implementation.grid:fakeGridFacade}"/>
 	</bean>

@@ -30,6 +30,7 @@ import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.core.RegisterObjectService;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.SystemEvent;
 import de.uzk.hki.da.service.HibernateUtil;
@@ -41,6 +42,8 @@ public class SystemEventFactory  {
 	private Node localNode;
 	
 	private String eventsPackage = "de.uzk.hki.da.event.";
+	
+	private RegisterObjectService registerObjectService;
 	
 	public void buildStoredEvents() {
 		List<SystemEvent> ses = getEventsPerNode();
@@ -65,6 +68,7 @@ public class SystemEventFactory  {
 		ase.setNode(localNode);
 		ase.setOwner(se.getOwner());
 		ase.setStoredEvent(se);
+		ase.setRegisterObjectService(registerObjectService);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -99,6 +103,14 @@ public class SystemEventFactory  {
 
 	public void setLocalNode(Node localNode) {
 		this.localNode = localNode;
-	}	
+	}
+	
+	public void setRegisterObjectService(RegisterObjectService registerObjectService) {
+		this.registerObjectService = registerObjectService;
+	}
+	
+	public RegisterObjectService getRegisterObjectService() {
+		return this.registerObjectService;
+	}
 	
 }

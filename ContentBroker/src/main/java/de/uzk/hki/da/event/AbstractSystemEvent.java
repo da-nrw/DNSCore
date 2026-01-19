@@ -27,6 +27,7 @@ import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.uzk.hki.da.core.RegisterObjectService;
 import de.uzk.hki.da.model.Node;
 import de.uzk.hki.da.model.SystemEvent;
 import de.uzk.hki.da.model.User;
@@ -41,7 +42,8 @@ public abstract class AbstractSystemEvent implements Runnable {
 	protected User owner;
 
 	protected Node node;
-
+	
+	protected RegisterObjectService registerObjectService;
 	private SystemEvent storedEvent;
 	
 	public abstract boolean implementation();
@@ -101,4 +103,15 @@ public abstract class AbstractSystemEvent implements Runnable {
 	public void setStoredEvent(SystemEvent storedEvent) {
 		this.storedEvent = storedEvent;
 	}
+	
+	public void setRegisterObjectService(RegisterObjectService registerObjectService) {
+		this.registerObjectService = registerObjectService;
+	}
+	
+	public RegisterObjectService getRegisterObjectService() {
+		return registerObjectService;
+	}
+	
+
+	
 }
