@@ -60,7 +60,6 @@ public class QualityLevelRecheckAction extends AbstractAction {
 		SUPPRESS_OBJECT_CONSISTENCY_CHECK = true;
 	}
 
-	private Path newTar;
 
 	@Override
 	public void checkConfiguration() {
@@ -181,37 +180,7 @@ public class QualityLevelRecheckAction extends AbstractAction {
 		return packagesToRetrieve;
 	}
 
-	private void moveNewestPremisToDIP(Path tempFolder) throws IOException {
-		File dest = Path.makeFile(tempFolder, WorkArea.DATA, C.PREMIS_XML);
-		FileUtils.copyFile(wa.toFile(o.getLatest(C.PREMIS_XML)), dest);
-	}
-
-	private Path createTmpFolder() {
-		Path tmpFolder = Path.make(n.getWorkAreaRootPath(), WorkArea.WORK, o.getContractor().getShort_name(),
-				o.getIdentifier(), o.getIdentifier());
-		tmpFolder.toFile().mkdir();
-		return tmpFolder;
-	}
-
-	private void bagitAndTarit(Path tempFolder) {
-
-		BagitUtils.buildBagit(tempFolder.toString());
-
-		logger.debug("Building tar at " + newTar);
-		try {
-			ArchiveBuilder builder = ArchiveBuilderFactory.getArchiveBuilderForFile(new File(FILE_EXTENSION_TAR));
-			builder.archiveFolder(tempFolder.toFile(), newTar.toFile(), true);
-		} catch (Exception e) {
-			throw new RuntimeException("Tar couldn't be packed", e);
-		}
-	}
-
-	private void cleanupFS() throws IOException {
-
-		// cleanup
-
-		FolderUtils.deleteDirectorySafe(wa.objectPath().toFile());
-	}
+	
 
 	/**
 	 * @param tempFolder

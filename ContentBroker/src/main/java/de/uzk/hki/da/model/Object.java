@@ -214,6 +214,9 @@ public class Object {
 	@Cascade(CascadeType.ALL)
 //	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Document> documents = new ArrayList<Document>();
+	
+	@Column(name = "quality_level_recheck", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+	private boolean qualityLevelRecheck_flag = false;
 
 	/**
 	 * Sets the data_pk.
@@ -933,5 +936,14 @@ public class Object {
 	public void setAip_size(long aip_size) {
 		this.aip_size = aip_size;
 	}
+	
+	public boolean getQualityLevelRecheck_flag() {
+		return qualityLevelRecheck_flag;
+	}
+	
+	public void setQualityLevelRecheck_flag(boolean qualityLevelRecheck_flag) {
+		this.qualityLevelRecheck_flag = qualityLevelRecheck_flag;
+	}
+	
 
 }
