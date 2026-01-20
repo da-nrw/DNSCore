@@ -131,7 +131,7 @@ public class QualityLevelRecheckAction extends AbstractAction {
 			session.close();
 		}
 		
-		registerObjectService.registerObject(origName, contractor);
+		o = registerObjectService.registerObject(origName + ".tgz", contractor);
 		return true;
 	}
 
