@@ -73,6 +73,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.toedter.calendar.JDateChooser;
 
+import de.uzk.hki.da.gui.panels.HistoriePanel;
+import de.uzk.hki.da.gui.panels.UebertragenPanel;
 import de.uzk.hki.da.main.SIPBuilder;
 import de.uzk.hki.da.metadata.ContractRights;
 import de.uzk.hki.da.metadata.ContractRights.CCLicense;
@@ -123,7 +125,7 @@ public class Gui extends JFrame {
 	
 	Color veryLightGrey = new Color(235,235,235);
 	
-	String confFolderPath, dataFolderPath;
+	String confFolderPath, dataFolderPath, scriptFolderPath;
 
 	int startPanelWidth = 760;
 	int startPanelHeight = 566;
@@ -143,6 +145,9 @@ public class Gui extends JFrame {
 	JPanel migrationPanel;
 	JPanel savePanel;
 	JPanel createPanel;
+	
+	UebertragenPanel uebertragenPanel;
+	HistoriePanel historiePanel; 
 
 	JTabbedPane institutionTabbedPane;
 	JPanel institutionTextPanel;
@@ -169,6 +174,8 @@ public class Gui extends JFrame {
 	JLabel backgroundMigrationImageLabel;
 	JLabel backgroundSaveImageLabel;
 	JLabel backgroundCreateImageLabel;
+	JLabel backgroundUebertragenImageLabel;
+	JLabel backgroundHistorieImageLabel;
 
 	JLabel versionInfoLabel;
 	JLabel welcomeLabel;
@@ -290,6 +297,11 @@ public class Gui extends JFrame {
 	JButton saveIconButton;
 	JButton createActivatedIconButton;
 	JButton createIconButton;
+	JButton uebertragenIconButton;
+	JButton uebertragenActivatedIconButton;
+	JButton historieIconButton;
+	JButton historieActivatedIconButton;
+	
 
 	// Radiobuttons
 	ButtonGroup institutionAllowDenyGroup;
@@ -367,6 +379,10 @@ public class Gui extends JFrame {
 
 	int oldTabPublic = -1;
 	int oldTabInstitution = -1;
+	
+	//Steuerung, damit keine Prüfung auf ie Eingabefelder gemacht wird
+	// Benötigt für Übertragung und History
+	boolean uebertragenHistory = false;
 
 	public class ScrollBarCustomUI extends BasicScrollBarUI {
 		@Override
@@ -390,7 +406,7 @@ public class Gui extends JFrame {
 	    }
 	}
 
-	public Gui(String confFolderPath, String dataFolderPath) {
+	public Gui(String confFolderPath, String dataFolderPath, String scriptFolderPath) {
 
 		try {
 			standardFont = Font.createFont(Font.TRUETYPE_FONT, classloader.getResourceAsStream("fonts/DejaVuSans.ttf"));
@@ -466,6 +482,7 @@ public class Gui extends JFrame {
 		
 		this.confFolderPath = confFolderPath;
 		this.dataFolderPath = dataFolderPath;
+		this.scriptFolderPath = scriptFolderPath;
 		if (!new File(dataFolderPath).exists())
 			new File(dataFolderPath).mkdir();
 
@@ -608,6 +625,10 @@ public class Gui extends JFrame {
 		savePanel.setVisible(false);
 		createPanel = new JPanel();
 		createPanel.setVisible(false);
+		
+		uebertragenPanel = new UebertragenPanel(this, dataFolderPath, scriptFolderPath, false, classloader, standardFont, boldFont);
+		historiePanel = new HistoriePanel(false, classloader); 
+		 
 	}
 
 	/**
@@ -629,6 +650,8 @@ public class Gui extends JFrame {
 		backgroundMigrationImageLabel = new JLabel(new ImageIcon(backgroundImage));
 		backgroundSaveImageLabel = new JLabel(new ImageIcon(backgroundImage));
 		backgroundCreateImageLabel = new JLabel(new ImageIcon(backgroundImage));
+		backgroundUebertragenImageLabel = new JLabel(new ImageIcon(backgroundImage));
+		backgroundHistorieImageLabel = new JLabel(new ImageIcon(backgroundImage));
 	}
 
 	/**
@@ -942,6 +965,12 @@ public class Gui extends JFrame {
 		URL saveIconImage = classloader.getResource("images/save.png");
 		URL createActivatedIconImage = classloader.getResource("images/createActivated.png");
 		URL createIconImage = classloader.getResource("images/create.png");
+		
+		// Erweiterung SIP Übertragung und Historie gbe 12082025
+		URL uebertragenActivatedIconImage = classloader.getResource("images/uebertragenActivated.png");
+		URL uebertragenIconImage = classloader.getResource("images/uebertragen.png");
+		URL historyIconActivatedImage = classloader.getResource("images/historieActivated.png");
+		URL historyIconImage = classloader.getResource("images/historie.png");
 
 		startActivatedIconButton = new JButton(new ImageIcon(startActivatedIconImage));
 		startActivatedIconButton.setVisible(true);
@@ -1049,6 +1078,28 @@ public class Gui extends JFrame {
 		createIconButton.setVisible(true);
 		createIconButton.setBorder(null);
 		createIconButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		
+		// Ergänzung Übertragen und Historie
+		uebertragenActivatedIconButton = new JButton(new ImageIcon(uebertragenActivatedIconImage));
+		uebertragenActivatedIconButton.setVisible(false);
+		uebertragenActivatedIconButton.setBorder(null);
+		uebertragenActivatedIconButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		
+		uebertragenIconButton = new JButton(new ImageIcon(uebertragenIconImage));
+		uebertragenIconButton.setVisible(true);
+		uebertragenIconButton.setBorder(null);
+		uebertragenIconButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		
+		historieActivatedIconButton = new JButton(new ImageIcon(historyIconActivatedImage));
+		historieActivatedIconButton.setVisible(false);
+		historieActivatedIconButton.setBorder(null);
+		historieActivatedIconButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		
+		historieIconButton = new JButton(new ImageIcon(historyIconImage));
+		historieIconButton.setVisible(true);
+		historieIconButton.setBorder(null);
+		historieIconButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		
 	}
 
 	/**
@@ -1674,6 +1725,12 @@ public class Gui extends JFrame {
 		createActivatedIconButton.setBounds(10, 372 + tabBookY, 192, 26);
 		createIconButton.setBounds(10, 372 + tabBookY, 192, 26);
 		helpIconButton.setBounds(709, 120, 20, 22);
+		
+		uebertragenIconButton.setBounds(10, 398 + tabBookY, 192, 26);
+		uebertragenActivatedIconButton.setBounds(10, 398 + tabBookY, 192, 26);
+		historieIconButton.setBounds(10, 424 + tabBookY, 192, 26);
+		historieActivatedIconButton.setBounds(10, 424 + tabBookY, 192, 26);
+		
 
 		int jhOffsetY = 40;
 		// startPanel
@@ -1894,6 +1951,12 @@ public class Gui extends JFrame {
 		abortButton.setBounds            (575, 445 + jhOffsetY, 90, 20);
 		quitButton.setBounds             (575, 445 + jhOffsetY, 90, 20);
 		backgroundCreateImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
+		
+		// uebertragenPanel 
+		uebertragenPanel.defineElementsPosition(startPanelWidth, startPanelHeight, backgroundUebertragenImageLabel);
+		
+		// historiePanel
+		historiePanel.defineElementsPosition(startPanelWidth, startPanelHeight, jhOffsetY, backgroundHistorieImageLabel);
 	}
 
 	/**
@@ -1929,6 +1992,11 @@ public class Gui extends JFrame {
 		getContentPane().add(createIconButton);
 		getContentPane().add(helpIconButton);
 		getContentPane().add(versionInfoLabel);
+		
+		getContentPane().add(uebertragenActivatedIconButton);
+		getContentPane().add(uebertragenIconButton);
+		getContentPane().add(historieActivatedIconButton);
+		getContentPane().add(historieIconButton);
 
 		getContentPane().add(startPanel);
 		startPanel.add(welcomeLabel);
@@ -2145,6 +2213,9 @@ public class Gui extends JFrame {
 		createPanel.add(goBackToSaveButton);
 		createPanel.add(backgroundCreateImageLabel);
 		createPanel.setLayout(null);
+		
+		getContentPane().add(uebertragenPanel.addElementsToContent()); //TODO
+		getContentPane().add(historiePanel); //TODO
 
 		getContentPane().setLayout(null);
 	}
@@ -2489,6 +2560,11 @@ public class Gui extends JFrame {
 				saveIconButton.setEnabled(false);
 				createActivatedIconButton.setEnabled(false);
 				createIconButton.setEnabled(false);
+				
+				uebertragenActivatedIconButton.setEnabled(false);
+				uebertragenIconButton.setEnabled(false);
+				historieActivatedIconButton.setEnabled(false);
+				historieIconButton.setEnabled(false);
 
 				progressBar.setVisible(true);
 				sipProgressDisplayLabel.setVisible(true);
@@ -2635,6 +2711,43 @@ public class Gui extends JFrame {
 				enterCreateSection();
 			}
 		});
+		
+		uebertragenIconButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				enterUebertragenSection();
+			}
+		});
+		
+		uebertragenActivatedIconButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				enterUebertragenSection();
+			}
+		});
+
+		historieIconButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				enterHistorieSection();
+			}
+		});
+		
+		historieActivatedIconButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				enterHistorieSection();
+			}
+		});
+		
+		
+		publicationActivatedIconButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				enterPublicationPublicSection();
+			}
+		});
+		
 
 		publicAllowRadioButton.addActionListener(new ActionListener() {
 
@@ -3143,6 +3256,11 @@ public class Gui extends JFrame {
 					saveIconButton.setEnabled(true);
 					createActivatedIconButton.setEnabled(true);
 					createIconButton.setEnabled(true);
+					
+					uebertragenActivatedIconButton.setEnabled(true);
+					uebertragenIconButton.setEnabled(true);
+					historieActivatedIconButton.setEnabled(true);
+					historieIconButton.setEnabled(true);
 				}
 			}
 
@@ -3420,7 +3538,7 @@ public class Gui extends JFrame {
 	 */
 	private boolean leaveSection() {
 
-		if (startPanel.isVisible()) {
+		if (startPanel.isVisible() && !uebertragenHistory) {
 
 			UserInputValidator.Feedback feedback = UserInputValidator.checkPaths(sourcePathTextField.getText(),
 					destinationPathTextField.getText(),
@@ -3695,7 +3813,14 @@ public class Gui extends JFrame {
 			createButton.setEnabled(true);
 			createButton.setVisible(true);
 		}
+		
+		if (uebertragenPanel.isVisible()) {
+			uebertragenHistory = false;
+		}
 
+		if (historiePanel.isVisible()) {
+			uebertragenHistory = false;
+		}
 		startActivatedIconButton.setVisible(false);
 		startIconButton.setVisible(true);
 		loadActivatedIconButton.setVisible(false);
@@ -3722,6 +3847,11 @@ public class Gui extends JFrame {
 		saveIconButton.setVisible(true);
 		createActivatedIconButton.setVisible(false);
 		createIconButton.setVisible(true);
+		
+		uebertragenActivatedIconButton.setVisible(false);
+		uebertragenIconButton.setVisible(true);
+		historieActivatedIconButton.setVisible(false);
+		historieIconButton.setVisible(true);
 
 		startPanel.setVisible(false);
 		loadStandardPanel.setVisible(false);
@@ -3736,6 +3866,9 @@ public class Gui extends JFrame {
 		migrationPanel.setVisible(false);
 		savePanel.setVisible(false);
 		createPanel.setVisible(false);
+		
+		uebertragenPanel.setVisible(false);
+		historiePanel.setVisible(false);
 
 		return true;
 	}
@@ -3756,7 +3889,6 @@ public class Gui extends JFrame {
 	 * Shows the load panel
 	 */
 	private void enterLoadSection() {
-
 		if (!loadStandardPanel.isVisible() && leaveSection()) {
 			loadStandardPanel.setVisible(true);
 			loadActivatedIconButton.setVisible(true);
@@ -3937,6 +4069,30 @@ public class Gui extends JFrame {
 		}
 	}
 
+	private void enterUebertragenSection() {
+		
+		uebertragenHistory = true;
+		
+ 		if (!uebertragenPanel.isVisible() && leaveSection() &&
+ 				uebertragenPanel.leaveSection(uebertragenActivatedIconButton, uebertragenIconButton)) {
+ 			uebertragenPanel.setVisible(true);
+ 		    uebertragenActivatedIconButton.setVisible(true);
+ 		    uebertragenIconButton.setVisible(false);
+ 		} 
+
+	}
+	
+	private void enterHistorieSection() {
+		//TODO
+		uebertragenHistory = true;
+		
+		if (!historiePanel.isVisible() &&  leaveSection()) {
+			historiePanel.setVisible(true);
+ 		    historieActivatedIconButton.setVisible(true);
+ 		    historieIconButton.setVisible(false);
+		}
+	}
+	
 	/**
 	 * Shows the create panel
 	 */
@@ -4503,7 +4659,7 @@ public class Gui extends JFrame {
 	 *            The file chooser object used to display the file dialog
 	 * @return The path to the folder chosen by the user
 	 */
-	private String searchFolder(JFileChooser fileChooser) {
+	public String searchFolder(JFileChooser fileChooser) {
 
 		File selectedFile = null;
 

@@ -22,7 +22,6 @@ package de.uzk.hki.da.main;
 import java.awt.Color;
 import java.io.File;
 import java.io.FileDescriptor;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -37,17 +36,8 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 
 import org.apache.commons.lang.SystemUtils;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.appender.ConsoleAppender;
-import org.apache.logging.log4j.core.config.Configuration;
-import org.apache.logging.log4j.core.config.ConfigurationFactory;
-import org.apache.logging.log4j.core.config.ConfigurationSource;
-import org.apache.logging.log4j.core.config.LoggerConfig;
-import org.apache.logging.log4j.core.config.xml.XmlConfigurationFactory;
-import org.apache.logging.log4j.core.layout.PatternLayout;
 
 import de.uzk.hki.da.cli.Cli;
 import de.uzk.hki.da.gui.Gui;
@@ -87,18 +77,20 @@ public class SIPBuilder {
 		}
     
 	    String mainFolderPath = SIPBuilder.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-	    String confFolderPath, dataFolderPath;
+	    String confFolderPath, dataFolderPath, scriptFolderPath;
 	    try {
 	    	mainFolderPath = URLDecoder.decode(mainFolderPath, "UTF-8");
 			confFolderPath = new File(mainFolderPath).getParent() + File.separator + "conf";
 			dataFolderPath = new File(mainFolderPath).getParent() + File.separator + "data";
+			scriptFolderPath = new File(mainFolderPath).getParent() + File.separator + "scripts";
 		} catch (UnsupportedEncodingException e) {
 			confFolderPath = "conf";
 			dataFolderPath = "data";
+			scriptFolderPath = "scripts";
 		}
 	    logger.info("ConfFolderPath:"+confFolderPath);
 	    if (args.length == 0)
-	    	startGUIMode(confFolderPath, dataFolderPath);
+	    	startGUIMode(confFolderPath, dataFolderPath, scriptFolderPath);
 	    else
 		    startCLIMode(confFolderPath, dataFolderPath, args);
     }
@@ -110,7 +102,7 @@ public class SIPBuilder {
      * @param confFolderPath Path to conf folder
      * @param dataFolderPath Path to data folder
      */
-    private static void startGUIMode(String confFolderPath, String dataFolderPath) {
+    private static void startGUIMode(String confFolderPath, String dataFolderPath, String scriptFolderPath) {
     	
     	try {
     		UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
@@ -122,7 +114,7 @@ public class SIPBuilder {
     	UIManager.put("ComboBox.disabledForeground", Color.LIGHT_GRAY);
     	UIManager.put("CheckBox.disabledText", Color.LIGHT_GRAY);
 
-    	Gui gui = new Gui(confFolderPath, dataFolderPath);
+    	Gui gui = new Gui(confFolderPath, dataFolderPath, scriptFolderPath);
     	gui.setBounds(100, 100, 760, 586);
     	gui.setResizable(false);
     	gui.setVisible(true);
