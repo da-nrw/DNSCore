@@ -22,6 +22,8 @@ package de.uzk.hki.da.cb;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -684,4 +686,6 @@ public class UpdateMetadataAction extends AbstractAction {
 			repNames = new String[]{ o.getNameOfLatestBRep() };
 		}
 	}
+	
+	
 }

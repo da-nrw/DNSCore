@@ -15,6 +15,7 @@ import java.util.Set;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.text.ParseException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.util.stream.Stream;
@@ -35,6 +36,7 @@ import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.DocumentsGenService;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.model.ObjectPremisXmlReader;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.WorkArea;
@@ -56,6 +58,7 @@ public class QualityLevelRecheckAction extends AbstractAction {
 	private GridFacade gridRoot;
 	private RegisterObjectService registerObjectService;
 	private DocumentsGenService dgs = new DocumentsGenService();
+	private static final String PREMIS = "premis.xml";
 	public QualityLevelRecheckAction() {
 		SUPPRESS_OBJECT_CONSISTENCY_CHECK = true;
 	}
@@ -102,6 +105,9 @@ public class QualityLevelRecheckAction extends AbstractAction {
 		//deleteFolder(Paths.get(targetFilePath.toString()));
 		dgs.addDocumentsToObject(o);
 		copyARepresentationToWorkArea(tempFilePath);
+		Object sipPREMISObject = parsePremisFile(
+				new File(Path.make(wa.dataPath(),o.getNameOfLatestBRep(),PREMIS).toString().replace("+b", "+a")));
+		//addQualityLevelRecheckEventToPremis(new File(Path.make(wa.dataPath(),o.getNameOfLatestBRep(),"premis.xml").toString().replace("+b", "+a")));
 		deleteFolder(Paths.get(targetFilePath.toString()));
 		File unarchivedATargetFile = tempFilePath.toFile();
 		File ingestArchviedATargetFile = Paths.get(n.getIngestAreaRootPath() + File.separator
@@ -131,6 +137,7 @@ public class QualityLevelRecheckAction extends AbstractAction {
 		}
 		
 		o = registerObjectService.registerObject(origName + ".tgz", contractor);
+		o.getLatestPackage().setQualityLevelRecheck_flag(true);
 		return true;
 	}
 
@@ -317,7 +324,24 @@ public class QualityLevelRecheckAction extends AbstractAction {
 		// 2) Delete temp folder recursively
 		deleteFolder(tempFolder);
 	}
-
+	public static Object parsePremisFile(File premisFile) {
+		
+		Object premisData;
+		
+		ObjectPremisXmlReader reader = new ObjectPremisXmlReader();
+		try {
+			premisData = reader.deserialize(premisFile);
+		} catch (IOException e) {
+			throw new RuntimeException("Couldn't read file " + premisFile.getAbsolutePath(), e);
+		} catch (ParseException pe){
+			throw new RuntimeException("Error while parsing premis file", pe);
+		}
+		return premisData;
+	}
+	public static void addQualityLevelRecheckEventToPremis(File premisFile)throws IOException {
+		Object sipPREMISObject = parsePremisFile(premisFile);
+		System.out.println("DEBUG");
+	}
 	public static void deleteFolder(java.nio.file.Path tempFolder) throws IOException {
 
 		if (tempFolder != null && Files.exists(tempFolder)) {

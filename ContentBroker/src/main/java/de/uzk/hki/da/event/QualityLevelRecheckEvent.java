@@ -31,22 +31,49 @@ public class QualityLevelRecheckEvent extends AbstractSystemEvent {
 
 	@Override
 	public boolean implementation() {
-	    String nodeName = getPressNodeName();
-	    int objectId = 4861; // TODO: parametrisieren
+		String nodeName = getPressNodeName();
+		
+		List<Object> qualityLevelRecheckedObjects = getAllQualityLevelRecheckedObjects();
+		if(qualityLevelRecheckedObjects==null) {
+			return true;
+		}
+		// 2) For each flagged object, enqueue job + change workflow state
+	    boolean anyQueued = false;
+	    for (Object obj : qualityLevelRecheckedObjects) {
+	        boolean queued = insertJobIntoQueueAndSetWorkFlowState(nodeName, obj.getData_pk());
+	        anyQueued = anyQueued || queued;
+	    }
 	    
-	    
-	    
-	   
-	        //obj = registerObjectService.registerObject(origName, contractor);
-	        
-	        	
-	        // optional: wenn du harte Zustände willst
-	        
+	    return anyQueued;
+		
 
-	    return insertJobIntoQueueAndSetWorkFlowState(nodeName,objectId);
+	}
 
-	        
-	        
+	public List<Object> getAllQualityLevelRecheckedObjects() {
+
+		@SuppressWarnings("unchecked")
+		List<Object> flaggedObjects;
+
+		Session session = HibernateUtil.openSession();
+		Transaction tx = session.beginTransaction();
+		try {
+		    flaggedObjects = session.createQuery(
+		            "FROM Object o WHERE o.qualityLevelRecheck_flag = true"
+		    ).setReadOnly(true).list();
+
+		    tx.commit();
+		} catch (Exception e) {
+		    tx.rollback();
+		    throw e;
+		} finally {
+		    session.close();
+		}
+		if (flaggedObjects.isEmpty()) {
+	        logger.info("No objects found with myFlag=true");
+	        return null;
+	    }
+		return flaggedObjects;
+
 	}
 
 	private boolean insertJobIntoQueueAndSetWorkFlowState(String nodeName, int objectId) {
@@ -80,7 +107,7 @@ public class QualityLevelRecheckEvent extends AbstractSystemEvent {
 		} finally {
 			session.close();
 		}
-		
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -105,7 +132,5 @@ public class QualityLevelRecheckEvent extends AbstractSystemEvent {
 		}
 		return presslist.get(0).getPresServer();
 	}
-
-
 
 }

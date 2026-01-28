@@ -23,6 +23,8 @@ package de.uzk.hki.da.cb;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +42,9 @@ import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectPremisXmlReader;
 import de.uzk.hki.da.model.RightsStatement;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.util.ConfigurationException;
+import de.uzk.hki.da.utils.Path;
 
 
 
@@ -98,6 +102,10 @@ public class ConvertAction extends AbstractAction {
 		listFiles(o);
 		extendObject(o,events);
 		j.getConversion_instructions().clear();
+		if (o.getQualityLevelRecheck_flag()) {
+			emptyLatestARepresentation(wa.objectPath(), j.getRep_name());
+			emptyLatestARepresentationInDb(o, j.getRep_name());
+		}
 		return true;
 	}
 
@@ -233,6 +241,59 @@ public class ConvertAction extends AbstractAction {
 		this.knownFormatCmdLineErrors = knownFormatCmdLineErrors;
 	}
 	
-	
+	static void emptyLatestARepresentationInDb(de.uzk.hki.da.model.Object o, String repName) {
+	    if (o == null) return;
+
+	    final String rep = repName + "a";
+
+	    de.uzk.hki.da.model.Package pkg = o.getLatestPackage();
+	    if (pkg == null || pkg.getFiles() == null) return;
+
+	    // 1) IDs sammeln, die gelöscht werden sollen (nur rep+a, nicht .xml)
+	    java.util.Set<Integer> removedIds = new java.util.HashSet<>();
+	    for (DAFile f : pkg.getFiles()) {
+	        if (f == null) continue;
+	        if (!rep.equals(f.getRep_name())) continue;
+	        String rel = f.getRelative_path();
+	        if (rel == null) continue;
+	        if (!rel.toLowerCase().endsWith(".xml")) {
+	            removedIds.add(f.getId());
+	        }
+	    }
+	    if (removedIds.isEmpty()) return;
+
+	    // 2) Events bereinigen, die auf zu löschende DAFile(s) zeigen
+	    //    (sonst bleibt Referenz auf deleted object im Graph)
+	    if (pkg.getEvents() != null) {
+	        pkg.getEvents().removeIf(ev -> {
+	            if (ev == null) return false;
+	            DAFile src = ev.getSource_file();
+	            DAFile tgt = ev.getTarget_file();
+	            return (src != null && removedIds.contains(src.getId()))
+	                || (tgt != null && removedIds.contains(tgt.getId()));
+	        });
+	    }
+
+	    // 3) Jetzt die DAFile(s) aus dem Package entfernen (orphanRemoval => delete)
+	    pkg.getFiles().removeIf(f -> f != null && removedIds.contains(f.getId()));
+
+	    
+	}
+	static void emptyLatestARepresentation(Path objectPath, String repName) {
+	    File aReprDataPath = Path.make(objectPath, WorkArea.DATA, repName + "a").toFile();
+	    java.nio.file.Path dir = aReprDataPath.toPath();
+
+	    DirectoryStream.Filter<java.nio.file.Path> filter = p ->
+	            Files.isRegularFile(p) &&
+	            !p.getFileName().toString().endsWith(".xml");
+
+	    try (DirectoryStream<java.nio.file.Path> stream = Files.newDirectoryStream(dir, filter)) {
+	        for (java.nio.file.Path file : stream) {
+	            Files.delete(file);
+	        }
+	    } catch (IOException e) {
+	        throw new RuntimeException("Couldn't empty newest A-Repr folder " + repName + "a", e);
+	    }
+	}
 	
 }

@@ -87,7 +87,7 @@ public class Package {
 	private Node node; 
 	
 	/** The files. */
-	@OneToMany(orphanRemoval=true)
+	@OneToMany//(orphanRemoval=true) commented out for quality Level Recheck
 	@JoinColumn(name="pkg_id")
 	@Cascade({CascadeType.SAVE_UPDATE,CascadeType.DELETE})
 	private List<DAFile> files = new ArrayList<DAFile>();
@@ -104,7 +104,13 @@ public class Package {
 	@Cascade({CascadeType.SAVE_UPDATE,CascadeType.DELETE})
 	private List<Copy> copies = new ArrayList<Copy>();
 	
+	@Column(name = "is_quality_level_recheck", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+	private boolean isQualityLevelRecheck_flag = false; 
 	
+
+
+
+
 	private Boolean pruneExceptions = false;
 	
 	private String container_name; 
@@ -162,7 +168,14 @@ public class Package {
 	public int getId() {
 		return id;
 	}
-	
+	public boolean isQualityLevelRecheck_flag() {
+		return isQualityLevelRecheck_flag;
+	}
+
+
+	public void setQualityLevelRecheck_flag(boolean isQualityLevelRecheck_flag) {
+		this.isQualityLevelRecheck_flag = isQualityLevelRecheck_flag;
+	}
 	public Integer getDelta() {
 		return delta;
 	}
