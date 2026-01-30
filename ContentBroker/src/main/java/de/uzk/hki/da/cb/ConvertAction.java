@@ -105,6 +105,7 @@ public class ConvertAction extends AbstractAction {
 		if (o.getQualityLevelRecheck_flag()) {
 			emptyLatestARepresentation(wa.objectPath(), j.getRep_name());
 			emptyLatestARepresentationInDb(o, j.getRep_name());
+			o.setQualityLevelRecheck_flag(false);
 		}
 		return true;
 	}

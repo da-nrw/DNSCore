@@ -1,23 +1,34 @@
 package de.uzk.hki.da.cb;
 
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TimeZone;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
+
 import java.util.stream.Stream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -32,11 +43,14 @@ import de.uzk.hki.da.core.RegisterObjectService;
 import de.uzk.hki.da.core.SubsystemNotAvailableException;
 import de.uzk.hki.da.core.UserException;
 import de.uzk.hki.da.grid.GridFacade;
+import de.uzk.hki.da.model.Agent;
 import de.uzk.hki.da.model.DAFile;
 import de.uzk.hki.da.model.DocumentsGenService;
+import de.uzk.hki.da.model.Event;
 import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
 import de.uzk.hki.da.model.ObjectPremisXmlReader;
+import de.uzk.hki.da.model.ObjectPremisXmlWriter;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.WorkArea;
@@ -53,6 +67,7 @@ import de.uzk.hki.da.utils.Path;
 import static de.uzk.hki.da.utils.C.FILE_EXTENSION_TAR;
 
 import java.io.File;
+import java.io.FileInputStream;
 
 public class QualityLevelRecheckAction extends AbstractAction {
 	private GridFacade gridRoot;
@@ -105,9 +120,21 @@ public class QualityLevelRecheckAction extends AbstractAction {
 		//deleteFolder(Paths.get(targetFilePath.toString()));
 		dgs.addDocumentsToObject(o);
 		copyARepresentationToWorkArea(tempFilePath);
-		Object sipPREMISObject = parsePremisFile(
-				new File(Path.make(wa.dataPath(),o.getNameOfLatestBRep(),PREMIS).toString().replace("+b", "+a")));
-		//addQualityLevelRecheckEventToPremis(new File(Path.make(wa.dataPath(),o.getNameOfLatestBRep(),"premis.xml").toString().replace("+b", "+a")));
+		File oldSipPREMISFile = new File(Path.make(wa.dataPath(),o.getNameOfLatestBRep(),PREMIS).toString().replace("+b", "+a"));
+		File newSipPREMISFile = new File(Path.make(wa.dataPath(),o.getNameOfLatestBRep(),PREMIS+".tmp").toString().replace("+b", "+a"));
+		writeQualityLevelRecheckPremisXml(
+				newSipPREMISFile,
+			    o.getOrig_name(),
+			    new Date(),
+			    oldSipPREMISFile        // nur lesen
+			);
+		// atomarer Replace
+		Files.move(
+			newSipPREMISFile.toPath(),
+		    oldSipPREMISFile.toPath(),
+		    StandardCopyOption.REPLACE_EXISTING,
+		    StandardCopyOption.ATOMIC_MOVE
+		);
 		deleteFolder(Paths.get(targetFilePath.toString()));
 		File unarchivedATargetFile = tempFilePath.toFile();
 		File ingestArchviedATargetFile = Paths.get(n.getIngestAreaRootPath() + File.separator
@@ -137,7 +164,6 @@ public class QualityLevelRecheckAction extends AbstractAction {
 		}
 		
 		o = registerObjectService.registerObject(origName + ".tgz", contractor);
-		o.getLatestPackage().setQualityLevelRecheck_flag(true);
 		return true;
 	}
 
@@ -376,5 +402,295 @@ public class QualityLevelRecheckAction extends AbstractAction {
 	public RegisterObjectService getRegisterObjectService() {
 		return registerObjectService;
 	}
+	public static void writeQualityLevelRecheckPremisXml(
+            File targetPremisFile,
+            String packageName,
+            Date eventDate,
+            File rightsSourcePremis
+    ) throws IOException {
+
+        Date ts = (eventDate != null) ? eventDate : new Date();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"));
+        String tsString = formatDateLikeSipBuilder(ts, dateFormat);
+
+        XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
+        try (FileOutputStream out = new FileOutputStream(targetPremisFile)) {
+
+            XMLStreamWriter w;
+            try {
+                w = outputFactory.createXMLStreamWriter(out, "UTF-8");
+            } catch (XMLStreamException e) {
+                throw new IOException("Failed to create XMLStreamWriter", e);
+            }
+
+            try {
+                w.writeStartDocument("UTF-8", "1.0");
+                w.setPrefix("xsi", C.XSI_NS_URI);
+
+                // <premis ...>
+                w.writeDTD("\n");
+                w.writeStartElement("premis");
+                w.writeAttribute("xmlns", "info:lc/xmlns/premis-v2");
+                w.writeAttribute("xmlns:premis", "info:lc/xmlns/premis-v2");
+                w.writeAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+                w.writeAttribute(C.XSI_NS_URI, "schemaLocation",
+                        "info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-2.xsd");
+                w.writeAttribute("version", "2.2");
+
+                // object
+                writeObjectRepresentation(w, packageName);
+
+                // event (QUALITY_LEVEL_RECHECK)
+                writeQualityLevelRecheckEvent(w, packageName, tsString);
+
+                // agent (APPLICATION)
+                writeQualityLevelRecheckAgent(w);
+
+                // rights: copy or stub
+                if (rightsSourcePremis != null) {
+                    copyRightsElementFromPremisFile(w, rightsSourcePremis);
+                } else {
+                    writeMinimalRightsStub(w, tsString);
+                }
+
+                // </premis>
+                w.writeDTD("\n");
+                w.writeEndElement();
+
+                w.writeDTD("\n");
+                w.writeEndDocument();
+                w.close();
+
+            } catch (XMLStreamException e) {
+                throw new IOException("Failed to write premis.xml", e);
+            }
+        }
+    }
+
+    // ---------- helpers (private static) ----------
+
+    private static void writeObjectRepresentation(XMLStreamWriter w, String packageName) throws XMLStreamException {
+        w.writeDTD("\n    ");
+        w.writeStartElement("object");
+        w.writeAttribute(C.XSI_NS_URI, "type", "representation");
+
+        w.writeDTD("\n        ");
+        w.writeStartElement("objectIdentifier");
+
+        writeSimpleText(w, 3, "objectIdentifierType", "PACKAGE_NAME");
+        writeSimpleText(w, 3, "objectIdentifierValue", packageName);
+
+        w.writeDTD("\n        ");
+        w.writeEndElement(); // objectIdentifier
+
+        w.writeDTD("\n    ");
+        w.writeEndElement(); // object
+        w.writeDTD("\n");
+    }
+
+    private static void writeQualityLevelRecheckEvent(XMLStreamWriter w, String packageName, String tsString)
+            throws XMLStreamException {
+
+        w.writeDTD("\n    ");
+        w.writeStartElement("event");
+
+        w.writeDTD("\n        ");
+        w.writeStartElement("eventIdentifier");
+
+        writeSimpleText(w, 3, "eventIdentifierType", "QUALITY_LEVEL_RECHECK_ID");
+        writeSimpleText(w, 3, "eventIdentifierValue", "Quality_Level_Recheck_" + tsString);
+
+        w.writeDTD("\n        ");
+        w.writeEndElement(); // eventIdentifier
+
+        writeSimpleText(w, 2, "eventType", "QUALITY_LEVEL_RECHECK");
+        writeSimpleText(w, 2, "eventDateTime", tsString);
+
+        w.writeDTD("\n        ");
+        w.writeStartElement("linkingAgentIdentifier");
+        writeSimpleText(w, 3, "linkingAgentIdentifierType", "APPLICATION_NAME");
+        writeSimpleText(w, 3, "linkingAgentIdentifierValue", "DA NRW Quality-Level-Recheck");
+        w.writeDTD("\n        ");
+        w.writeEndElement(); // linkingAgentIdentifier
+
+        w.writeDTD("\n        ");
+        w.writeStartElement("linkingObjectIdentifier");
+        writeSimpleText(w, 3, "linkingObjectIdentifierType", "PACKAGE_NAME");
+        writeSimpleText(w, 3, "linkingObjectIdentifierValue", packageName);
+        w.writeDTD("\n        ");
+        w.writeEndElement(); // linkingObjectIdentifier
+
+        w.writeDTD("\n    ");
+        w.writeEndElement(); // event
+        w.writeDTD("\n");
+    }
+
+    private static void writeQualityLevelRecheckAgent(XMLStreamWriter w) throws XMLStreamException {
+        w.writeDTD("\n    ");
+        w.writeStartElement("agent");
+
+        w.writeDTD("\n        ");
+        w.writeStartElement("agentIdentifier");
+        writeSimpleText(w, 3, "agentIdentifierType", "APPLICATION_NAME");
+        writeSimpleText(w, 3, "agentIdentifierValue", "DA NRW Quality-Level-Recheck");
+        w.writeDTD("\n        ");
+        w.writeEndElement(); // agentIdentifier
+
+        writeSimpleText(w, 2, "agentType", "APPLICATION");
+
+        w.writeDTD("\n    ");
+        w.writeEndElement(); // agent
+        w.writeDTD("\n");
+    }
+
+    private static void writeMinimalRightsStub(XMLStreamWriter w, String tsString) throws XMLStreamException {
+        // Intentionally minimal fallback. Prefer copying from existing premis.xml.
+        String startOfDay = tsString.substring(0, 10) + "T00:00:00.000+01:00";
+
+        w.writeDTD("\n    ");
+        w.writeStartElement("rights");
+
+        w.writeDTD("\n        ");
+        w.writeStartElement("rightsStatement");
+
+        w.writeDTD("\n            ");
+        w.writeStartElement("rightsStatementIdentifier");
+        writeSimpleText(w, 4, "rightsStatementIdentifierType", "rightsid");
+        writeSimpleText(w, 4, "rightsStatementIdentifierValue", "");
+        w.writeDTD("\n            ");
+        w.writeEndElement(); // rightsStatementIdentifier
+
+        writeSimpleText(w, 3, "rightsBasis", "license");
+
+        w.writeDTD("\n            ");
+        w.writeStartElement("rightsGranted");
+        writeSimpleText(w, 4, "act", "MIGRATION");
+        writeSimpleText(w, 4, "restriction", "see rightsExtension");
+        w.writeDTD("\n                ");
+        w.writeStartElement("termOfGrant");
+        writeSimpleText(w, 5, "startDate", startOfDay);
+        w.writeDTD("\n                ");
+        w.writeEndElement(); // termOfGrant
+        w.writeDTD("\n            ");
+        w.writeEndElement(); // rightsGranted
+
+        w.writeDTD("\n        ");
+        w.writeEndElement(); // rightsStatement
+
+        w.writeDTD("\n    ");
+        w.writeEndElement(); // rights
+        w.writeDTD("\n");
+    }
+
+    /**
+     * Copies the entire <rights>...</rights> element from an existing premis.xml into the current writer.
+     */
+    private static void copyRightsElementFromPremisFile(XMLStreamWriter w, File rightsSourcePremis)
+            throws XMLStreamException, IOException {
+
+        try (FileInputStream in = new FileInputStream(rightsSourcePremis)) {
+            XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+            XMLStreamReader r = inputFactory.createXMLStreamReader(in);
+
+            boolean inRights = false;
+            int depth = 0;
+
+            while (r.hasNext()) {
+                int ev = r.next();
+
+                if (ev == XMLStreamConstants.START_ELEMENT) {
+                    String local = r.getLocalName();
+
+                    if (!inRights && "rights".equals(local)) {
+                        inRights = true;
+                        depth = 1;
+
+                        // start <rights>
+                        w.writeDTD("\n    ");
+                        w.writeStartElement("rights");
+                        continue;
+                    }
+
+                    if (inRights) {
+                        depth++;
+                        w.writeDTD("\n" + indent(Math.min(depth + 1, 20)));
+                        w.writeStartElement(local);
+
+                        // copy namespaces
+                        for (int i = 0; i < r.getNamespaceCount(); i++) {
+                            String nsPrefix = r.getNamespacePrefix(i);
+                            String nsUri = r.getNamespaceURI(i);
+                            if (nsPrefix == null) nsPrefix = "";
+                            w.writeNamespace(nsPrefix, nsUri);
+                        }
+
+                        // copy attributes (important for rightsExtension subtree)
+                        for (int i = 0; i < r.getAttributeCount(); i++) {
+                            String aPrefix = r.getAttributePrefix(i);
+                            String aNs = r.getAttributeNamespace(i);
+                            String aLocal = r.getAttributeLocalName(i);
+                            String aVal = r.getAttributeValue(i);
+
+                            if (aPrefix != null && !aPrefix.isEmpty()) {
+                                w.writeAttribute(aPrefix, aNs, aLocal, aVal);
+                            } else if (aNs != null && !aNs.isEmpty()) {
+                                w.writeAttribute(aNs, aLocal, aVal);
+                            } else {
+                                w.writeAttribute(aLocal, aVal);
+                            }
+                        }
+                    }
+                } else if (ev == XMLStreamConstants.CHARACTERS) {
+                    if (inRights && !r.isWhiteSpace()) {
+                        w.writeCharacters(r.getText());
+                    }
+                } else if (ev == XMLStreamConstants.END_ELEMENT) {
+                    String local = r.getLocalName();
+
+                    if (inRights) {
+                        if ("rights".equals(local)) {
+                            w.writeDTD("\n    ");
+                            w.writeEndElement(); // </rights>
+                            inRights = false;
+                            continue;
+                        }
+                        depth--;
+                        w.writeEndElement();
+                    }
+                }
+            }
+
+            r.close();
+        }
+    }
+
+    private static void writeSimpleText(XMLStreamWriter w, int indentLevel, String name, String text)
+            throws XMLStreamException {
+    	w.writeDTD("\n" + indent(indentLevel));
+        w.writeStartElement(name);
+        w.writeCharacters(text != null ? text : "");
+        w.writeEndElement();
+    }
+
+    private static String formatDateLikeSipBuilder(Date date, SimpleDateFormat format) {
+        String dateString = format.format(date);
+        // "...+0100" -> "...+01:00"
+        if (dateString.endsWith("00") && !dateString.endsWith(":00")) {
+            dateString = dateString.substring(0, dateString.length() - 2) + ":00";
+        }
+        return dateString;
+    }
+
+    private static String indent(int level) {
+        StringBuilder sb = new StringBuilder(level * 4);
+        for (int i = 0; i < level; i++) {
+            sb.append("    ");
+        }
+        return sb.toString();
+    }
+
+
 
 }

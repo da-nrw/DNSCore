@@ -179,6 +179,9 @@ public class ObjectPremisXmlWriter {
 					e.getType().toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_5)) {
 				logger.debug("Serializing convert event: "+e);
 				createQualityLevelEventElement(object,pkg.getName(), e);
+			} else if (e.getType().toUpperCase().equals(C.EVENT_TYPE_QUALITY_LEVEL_RECHECK)) {
+				logger.debug("Serializing quality level recheck event: "+e);
+				createQualityLevelRecheckElement(object,pkg, e);
 			} else {
 				logger.debug("Serializing package event:"+e);
 				createPackageEventElement(object, pkg, e);
@@ -414,7 +417,78 @@ public class ObjectPremisXmlWriter {
 		
 		createCloseElement(1);
 	}
-	
+	private void createQualityLevelRecheckElement(Object object, Package pkg, Event e) throws XMLStreamException {
+
+	    // --- event root
+	    createOpenElement("event", 1);
+
+	    // --- eventIdentifier
+	    createOpenElement("eventIdentifier", 2);
+
+	    // Use IdType if you have it, otherwise write literal
+	    // (your sample wants QUALITY_LEVEL_RECHECK_ID)
+	    createTextElement("eventIdentifierType", IdType.QUALITY_LEVEL_RECHECK_ID.toString(), 3);
+
+	    // eventIdentifierValue: "Quality_Level_Recheck_<timestamp>"
+	    // If your Event already has an identifier you can use it directly.
+	    // Otherwise generate it from date like in your example.
+	    String eventIdValue;
+	    if (e.getIdentifier() != null && !e.getIdentifier().isEmpty()) {
+	        eventIdValue = e.getIdentifier();
+	    } else if (e.getDate() != null) {
+	        eventIdValue = "Quality_Level_Recheck_" + formatDate(e.getDate());
+	    } else {
+	        // fallback: still produce something stable-ish
+	        eventIdValue = "Quality_Level_Recheck_" + formatDate(new Date());
+	    }
+	    createTextElement("eventIdentifierValue", eventIdValue, 3);
+
+	    createCloseElement(2);
+
+	    // --- eventType + datetime
+	    createTextElement("eventType", C.EVENT_TYPE_QUALITY_LEVEL_RECHECK, 2);
+	    if (e.getDate() != null) {
+	        createTextElement("eventDateTime", formatDate(e.getDate()), 2);
+	    }
+
+	    // optional: detail/outcome (only if you want them in PREMIS)
+	    if (e.getDetail() != null) {
+	        createTextElement("eventDetail", e.getDetail(), 2);
+	    }
+	    if (e.getOutcome() != null) {
+	        createOpenElement("eventOutcomeInformation", 2);
+	        createTextElement("eventOutcome", e.getOutcome(), 3);
+	        createCloseElement(2);
+	    }
+
+	    // --- Agent: your example uses a fixed application name
+	    Agent a = new Agent();
+	    a.setType("APPLICATION");
+	    a.setName("DA NRW Quality-Level-Recheck");
+	    agents.add(a);
+
+	    createOpenElement("linkingAgentIdentifier", 2);
+	    createTextElement("linkingAgentIdentifierType", a.getIdentifierType(), 3); // should become APPLICATION_NAME
+	    createTextElement("linkingAgentIdentifierValue", a.getName(), 3);
+	    createCloseElement(2);
+
+	    // --- linkingObjectIdentifier: your example links to PACKAGE_NAME FuggerzeitungMets
+	    // In your writer, PACKAGE objects are identified like: objectId + ".pack_" + pkg.getName() + ".tar"
+	    // But your sample wants the "logical" package name. Use pkg.getName() or pkg.getContainerName() depending on your domain meaning.
+	    createOpenElement("linkingObjectIdentifier", 2);
+	    createTextElement("linkingObjectIdentifierType", "PACKAGE_NAME", 3);
+
+	    // Option A (matches your sample more closely):
+	    createTextElement("linkingObjectIdentifierValue", pkg.getName(), 3);
+
+	    // Option B (matches other parts of this writer, comment A and uncomment B if you prefer consistency):
+	    // createTextElement("linkingObjectIdentifierValue", object.getIdentifier()+".pack_"+pkg.getName()+".tar", 3);
+
+	    createCloseElement(2);
+
+	    // close event
+	    createCloseElement(1);
+	}
 	/**
 	 * Creates the convert event element.
 	 *

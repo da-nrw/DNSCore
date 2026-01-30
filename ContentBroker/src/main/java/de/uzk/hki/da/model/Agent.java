@@ -42,6 +42,10 @@ public class Agent {
 	/** The type. */
 	private String type;
 	
+	public void setIdentifierType(String identifierType) {
+		this.identifierType = identifierType;
+	}
+	
 	/**
 	 * Gets the identifier type.
 	 *

@@ -89,7 +89,9 @@ public class C {
 	public static final String  EVENT_TYPE_QUALITY_FAULT_VALIDATION="QUALITY_FAULT_VALIDATION";
 	public static final String  EVENT_TYPE_QUALITY_FAULT_CONVERSION="QUALITY_FAULT_CONVERSION";
 	public static final String  EVENT_TYPE_QUALITY_FAULT_IDENTIFICATION="QUALITY_FAULT_IDENTIFICATION";
-
+	
+	
+	public static final String EVENT_TYPE_QUALITY_LEVEL_RECHECK="QUALITY_LEVEL_RECHECK";
 	public static final String AGENT_TYPE_NODE = "NODE";
 	
 	// Error messages
