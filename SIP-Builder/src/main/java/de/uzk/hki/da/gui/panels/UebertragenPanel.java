@@ -36,15 +36,22 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
 import java.util.Properties;
 
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -52,6 +59,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileFilter;
@@ -86,12 +94,21 @@ public class UebertragenPanel extends JPanel {
 	private JLabel winScpLabel;
 	private JLabel responseLabel;
 	private JLabel hostNameLabel;
+	private JLabel proxyHostNameLabel;
+	private JLabel proxyPortLabel;
+	private JLabel proxyUserNameLabel;
+	private JLabel proxyPasswordLabel;
 
+	
 	// Eingabefelder
 	private JTextField userNameTextField;
 	private JTextField sipPathTextField;
 	private JTextField winScpPathTextField;
 	private JTextField responsePathTextField;
+
+	private JTextField proxyHostNameTextField;
+	private JTextField proxyPortTextField;
+	private JTextField proxyUserTextField;
 
 	// Combobox
 	private static final String TEST_SYSTEM_TXT = "Testsystem";
@@ -107,6 +124,7 @@ public class UebertragenPanel extends JPanel {
 	// Passwort-Feld
 	private final SecureRandom rng = new SecureRandom();
 	private JPasswordField passwordTextField;
+	private JPasswordField proxyPasswordTextField;
 
 	// Buttons
 	// 3 Punkte
@@ -115,6 +133,8 @@ public class UebertragenPanel extends JPanel {
 	// Sip-auswählen
 	private JButton sipPathChooserButton;
 	private JFileChooser sipPathChooser;
+	
+	private JCheckBox proxyIsUsed; 
 
 	// Pfad zu Winscp
 	private JButton winScpPathChooserButton;
@@ -132,6 +152,7 @@ public class UebertragenPanel extends JPanel {
 	// Uebertragen
 	private JButton uebertragenButton;
 	private String pwdEncrypted = "";
+	private String proxyPwdEncrypted = "";
 
 	private Font standardFont;
 	private Font boldFont;
@@ -158,7 +179,8 @@ public class UebertragenPanel extends JPanel {
 
 		this.gui = guiIn;
 		this.dataFolderPath = dataFolderPathIn;
-		this.scriptFolderPath = scriptFolderPathIn;
+		// this.scriptFolderPath = scriptFolderPathIn;
+		this.scriptFolderPath = "D:\\workspace\\ci\\DNSCore\\SIP-Builder\\src\\main\\scripts";
 		this.defineContent();
 		createListeners();
 
@@ -244,55 +266,114 @@ public class UebertragenPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				// encrypt the password if it is filled
 				char[] password = passwordTextField.getPassword();
+				char[] proxyPassword = proxyPasswordTextField.getPassword();
+				String keyBase64 = "";
+                String passwordContractorEnc = "";
+                String passwordProxyUserEnc = "";
+                
 				if (password.length == 0) {
-					messageWriter.showMessage("Bitte geben Sie ein Passwort ein.", JOptionPane.ERROR_MESSAGE);
+					messageWriter.showMessage("Bitte geben Sie ein Passwort für den Contractor ein.", JOptionPane.ERROR_MESSAGE);
+					return;
+				} else if (proxyIsUsed.isSelected() && proxyPassword.length == 0) {
+					messageWriter.showMessage("Bitte geben Sie ein Passwort für den Proxy-USer ein.", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				try {
-
-					byte[] salt = new byte[16];
-					rng.nextBytes(salt);
-					// PBKDF2 mit HMAC-SHA-256 (Iterationszahl je nach Policy erhöhen)
-					byte[] hash = hashPassword(password, salt, 150_000, 256);
-					// typischerweise: Base64(salt | hash) senden/speichern
-					String payload = Base64.getEncoder()
-							.encodeToString(ByteBuffer.allocate(salt.length + hash.length).put(salt).put(hash).array());
-					pwdEncrypted = payload.substring(0, Math.min(60, payload.length()));
-//					JOptionPane.showMessageDialog(UebertragenPanel.this,
-//							"Zu sendender Hash (Demo):\n" + payload.substring(0, Math.min(60, payload.length())) + "…");
-
+					SecretKey aesKey = generateAesKey();
+	                 keyBase64 = Base64.getEncoder().encodeToString(aesKey.getEncoded());
+	                 passwordContractorEnc = encryptPassword(password, aesKey);
+	                 passwordProxyUserEnc = encryptPassword(proxyPassword, aesKey);
+	                
+//					byte[] salt = new byte[16];
+//					rng.nextBytes(salt);
+//					// PBKDF2 mit HMAC-SHA-256 (Iterationszahl je nach Policy erhöhen)
+//					byte[] hashPwd = hashPassword(password, salt, 150_000, 256);
+//					// typischerweise: Base64(salt | hash) senden/speichern
+//					String base64EncPwd = Base64.getEncoder()
+//							.encodeToString(ByteBuffer.allocate(salt.length + hashPwd.length).put(salt).put(hashPwd).array());
+//					pwdEncrypted = base64EncPwd.substring(0, Math.min(60, base64EncPwd.length()));
+////					JOptionPane.showMessageDialog(UebertragenPanel.this,
+////							"Zu sendender Hash (Demo):\n" + payload.substring(0, Math.min(60, payload.length())) + "…");
+//					 if (proxyIsUsed.isSelected()) {
+//						 byte[] hashProxyPwd = hashPassword(proxyPassword, salt, 150_000, 256);
+//							// typischerweise: Base64(salt | hash) senden/speichern
+//							String base64EncProxyPwd = Base64.getEncoder()
+//									.encodeToString(ByteBuffer.allocate(salt.length + hashProxyPwd.length).put(salt).put(hashProxyPwd).array());
+//							proxyPwdEncrypted = base64EncProxyPwd.substring(0, Math.min(60, base64EncProxyPwd.length()));
+//					}
 				} catch (Exception ex) {
 					ex.printStackTrace();
 					JOptionPane.showMessageDialog(UebertragenPanel.this, "Fehler: " + ex.getMessage());
 				} finally {
 					// delete the password
 					Arrays.fill(password, '\0');
+					Arrays.fill(proxyPassword, '\0');
 				}
 
 				// check if the input Fields are filled
 				checkInputFields();
 
-				// execute powershell script
-				ProcessBuilder processBuilder = new ProcessBuilder("pwsh", "-File", scriptFolderPath);
-				processBuilder.inheritIO(); // gibt die Ausgabe direkt auf der Konsole aus
-				Process process;
-				try {
-					process = processBuilder.start();
-					process.waitFor();
-				} catch (Exception ex) {
-					// TODO Auto-generated catch block
-					ex.printStackTrace();
+				// check the operating system
+				String os = System.getProperty("os.name").toLowerCase();
+				System.out.println(" os:  " + os);
+
+				boolean isWindow = os.contains("win");
+				String shell = "";
+				if (isWindow) {
+					shell = "powershell.exe";
+				} else {
+					shell = "pwsh";
 				}
+
+				if (!scriptFolderPath.endsWith(".ps1")) {
+					scriptFolderPath = scriptFolderPath + "\\createAndTransfer.ps1";
+				}
+				System.out.println(" scriptFolderPath : " + scriptFolderPath);
+
+				List<String> scriptParams = new ArrayList<String>();
+				scriptParams.add(shell);
+				scriptParams.add("-NoProfile");
+				scriptParams.add("-ExecutionPolicy");
+				scriptParams.add("Bypass");
+				scriptParams.add("-File");
+				scriptParams.add(scriptFolderPath);
+
+				// params for the powershell script
+				scriptParams.add(sipPathTextField.getText().trim());
+				scriptParams.add(winScpPathTextField.getText().trim());
+				scriptParams.add(hostnameUebertragen);
+				scriptParams.add(userNameTextField.getText().trim());
+				//scriptParams.add(passwordTextField.getPassword().toString());
+				scriptParams.add(passwordContractorEnc);
+				scriptParams.add(responsePathTextField.getText().trim());
+				scriptParams.add(proxyHostNameTextField.getText().trim());
+				scriptParams.add(proxyPortTextField.getText().trim());
+				scriptParams.add(proxyUserTextField.getText().trim());
+				//scriptParams.add(proxyPasswordTextField.getPassword().toString());
+				scriptParams.add(passwordProxyUserEnc);
+				scriptParams.add(keyBase64);
+
+				ProcessBuilder processBuilder = new ProcessBuilder(scriptParams);
+				processBuilder.redirectErrorStream(true); // stderr in stdout mergen
+
+				ScriptOutputDialog dlg = new ScriptOutputDialog(SwingUtilities.getWindowAncestor(uebertragenButton),
+						"PowerShell Output");
+
+				dlg.setVisible(true);
+				dlg.appendLine("Starte Script: " + scriptFolderPath);
+				dlg.runProcess(processBuilder);
 
 			}
 
-		});
+			
 
+		});
+		
 		ladenButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String filename = saveFile(FILENAME);
+				String filename = savePropertiesFile(FILENAME);
 				File file = new File(filename);
 
 				try {
@@ -300,15 +381,18 @@ public class UebertragenPanel extends JPanel {
 						JOptionPane.showMessageDialog(UebertragenPanel.this, "Keine Datei gefunden: " + filename);
 						return;
 					}
-					Properties p = loadFromXmlFile(file);
+					Properties p = loadPropertiesFromXmlFile(file);
 					userNameTextField.setText(p.getProperty("user", ""));
 					sipPathTextField.setText(p.getProperty("sip", ""));
 					winScpPathTextField.setText(p.getProperty("winScp", ""));
 					responsePathTextField.setText(p.getProperty("reponse", ""));
-					
+					proxyHostNameTextField.setText(p.getProperty("proxyHostName", ""));
+					proxyPortTextField.setText(p.getProperty("proxyPort", ""));
+					proxyUserTextField.setText(p.getProperty("proxyUser", ""));
+
 				} catch (IOException ex) {
-					JOptionPane.showMessageDialog(UebertragenPanel.this, "Fehler beim Laden: " + ex.getMessage(), "Fehler",
-							JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(UebertragenPanel.this, "Fehler beim Laden: " + ex.getMessage(),
+							"Fehler", JOptionPane.ERROR_MESSAGE);
 				}
 
 			}
@@ -319,11 +403,13 @@ public class UebertragenPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				String filename = saveFile(FILENAME);
+				String filename = savePropertiesFile(FILENAME);
 				File file = new File(filename);
 				try {
-					saveToXmlFile(file, userNameTextField.getText(), sipPathTextField.getText(),
-							winScpPathTextField.getText(), responsePathTextField.getText());
+					savePropertiesToXmlFile(file, userNameTextField.getText(), sipPathTextField.getText(),
+							winScpPathTextField.getText(), responsePathTextField.getText(),
+							proxyHostNameTextField.getText(), proxyPortTextField.getText(),
+							proxyUserTextField.getText());
 
 					JOptionPane.showMessageDialog(UebertragenPanel.this, "Gespeichert: " + filename, "Info",
 							JOptionPane.INFORMATION_MESSAGE);
@@ -337,7 +423,42 @@ public class UebertragenPanel extends JPanel {
 
 	}
 
-	private Properties loadFromXmlFile(File file) throws IOException {
+	private static String encryptPassword(char[] password, SecretKey key) throws Exception {
+        byte[] plainBytes = new String(password).getBytes(StandardCharsets.UTF_8);
+
+        try {
+            byte[] iv = new byte[16];
+            SecureRandom random = new SecureRandom();
+            random.nextBytes(iv);
+
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, key, new javax.crypto.spec.IvParameterSpec(iv));
+
+            byte[] cipherBytes = cipher.doFinal(plainBytes);
+
+            byte[] combined = new byte[iv.length + cipherBytes.length];
+            System.arraycopy(iv, 0, combined, 0, iv.length);
+            System.arraycopy(cipherBytes, 0, combined, iv.length, cipherBytes.length);
+
+            return Base64.getEncoder().encodeToString(combined);
+        } finally {
+            Arrays.fill(plainBytes, (byte) 0);
+        }
+    }
+	private static SecretKey generateAesKey() throws Exception {
+        KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+        keyGen.init(256);
+        return keyGen.generateKey();
+	}
+	
+	/**
+	 * load the data from the properties file
+	 * 
+	 * @param file
+	 * @return
+	 * @throws IOException
+	 */
+	private Properties loadPropertiesFromXmlFile(File file) throws IOException {
 		Properties p = new Properties();
 		try (InputStream is = new FileInputStream(file)) {
 			p.loadFromXML(is);
@@ -345,14 +466,30 @@ public class UebertragenPanel extends JPanel {
 		return p;
 	}
 
-	private void saveToXmlFile(File file, String userName, String sipPath, String winScpPath, String responsePath)
-			throws IOException {
+	/**
+	 * save the properties for load again
+	 * 
+	 * @param file
+	 * @param userName
+	 * @param sipPath
+	 * @param winScpPath
+	 * @param responsePath
+	 * @param string3
+	 * @param string2
+	 * @param string
+	 * @throws IOException
+	 */
+	private void savePropertiesToXmlFile(File file, String userName, String sipPath, String winScpPath,
+			String responsePath, String proxyHost, String proxyPort, String proxyUser) throws IOException {
 
 		Properties p = new Properties();
 		p.setProperty("user", safe(userName));
 		p.setProperty("sip", safe(sipPath));
 		p.setProperty("winScp", safe(winScpPath));
 		p.setProperty("reponse", safe(responsePath));
+		p.setProperty("proxyHostName", safe(proxyHost));
+		p.setProperty("proxyPort", safe(proxyPort));
+		p.setProperty("proxyUser", safe(proxyUser));
 
 		try (OutputStream os = new FileOutputStream(file)) {
 			// storeToXML schreibt XML; encoding wird im XML-Header gesetzt
@@ -360,11 +497,22 @@ public class UebertragenPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * 
+	 * @param s
+	 * @return
+	 */
 	private static String safe(String s) {
 		return s == null ? "" : s;
 	}
 
-	private String saveFile(String defaultFileName) {
+	/**
+	 * Save the properties file
+	 * 
+	 * @param defaultFileName
+	 * @return
+	 */
+	private String savePropertiesFile(String defaultFileName) {
 
 		File selectedFile = null;
 
@@ -423,8 +571,7 @@ public class UebertragenPanel extends JPanel {
 		}
 		String responsePathTxt = responsePathTextField.getText();
 		if (responsePathTxt == null || responsePathTxt.equals("")) {
-			messageWriter.showMessage("Bitte geben Sie den Pfad zu Ihrem Response-Ordner an.",
-					JOptionPane.ERROR_MESSAGE);
+			messageWriter.showMessage("Bitte geben Sie den Pfad zu Ihrem Response-Ordner an.",JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
@@ -433,8 +580,35 @@ public class UebertragenPanel extends JPanel {
 			messageWriter.showMessage("Bitte wählen Sie das Zielsystem aus.", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
+        
+		if (proxyIsUsed.isSelected()) {
+			String proxyPortString = proxyPortTextField.getText();
+			try {
+				int port = Integer.parseInt(proxyPortString);
+	
+				if (port < 1 || port > 65535) {
+					messageWriter.showMessage("Ungültiger Port!", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			} catch (NumberFormatException nfe) {
+				messageWriter.showMessage("Ungültiger Port!", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+	
+
 	}
 
+	/**
+	 * Encrypt the password
+	 * 
+	 * @param password
+	 * @param salt
+	 * @param iterations
+	 * @param keyLenBits
+	 * @return
+	 * @throws Exception
+	 */
 	private static byte[] hashPassword(char[] password, byte[] salt, int iterations, int keyLenBits) throws Exception {
 		PBEKeySpec spec = new PBEKeySpec(password, salt, iterations, keyLenBits);
 		SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
@@ -461,6 +635,15 @@ public class UebertragenPanel extends JPanel {
 		hostNameLabel = new JLabel("Zielsystem");
 		hostNameLabel.setFont(boldFont.deriveFont(10.0f));
 
+		proxyHostNameLabel = new JLabel("Proxy Host Name");
+		proxyHostNameLabel.setFont(boldFont.deriveFont(10.0f));
+		proxyPortLabel = new JLabel("Proxy Port Name");
+		proxyPortLabel.setFont(boldFont.deriveFont(10.0f));
+		proxyUserNameLabel = new JLabel("Proxy User Name");
+		proxyUserNameLabel.setFont(boldFont.deriveFont(10.0f));
+		proxyPasswordLabel = new JLabel("Proxy Password Name");
+		proxyPasswordLabel.setFont(boldFont.deriveFont(10.0f));
+
 		// Textfields
 		userNameTextField = new JTextField();
 		userNameTextField.setEditable(true);
@@ -482,12 +665,24 @@ public class UebertragenPanel extends JPanel {
 		responsePathTextField.setEditable(true);
 		responsePathTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
 
-		// nur zum Testen !!!!!!!!!!!!!!!!!!!
-//		userNameTextField.setText("LVR-Test");
-//		passwordTextField.setText("gigaset55a");
-//		sipPathTextField.setText("/home/gbender/SIPBuilderNeu/In");
-//		responsePathTextField.setText("/home/gbender/SIPBuilderNeu/response");
-//		winScpPathTextField.setText("/home/gbender/Programme/winscp/");
+		proxyIsUsed = new JCheckBox("Proxy Einstlelungen", false);
+		proxyIsUsed.setOpaque(false);
+		proxyIsUsed.setFont(standardFont.deriveFont(12.0f));
+		proxyHostNameTextField = new JTextField();
+		proxyHostNameTextField.setEditable(true);
+		proxyHostNameTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
+
+		proxyPortTextField = new JTextField();
+		proxyPortTextField.setEditable(true);
+		proxyPortTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
+
+		proxyUserTextField = new JTextField();
+		proxyUserTextField.setEditable(true);
+		proxyUserTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
+
+		proxyPasswordTextField = new JPasswordField();
+		proxyPasswordTextField.setEditable(true);
+		proxyPasswordTextField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
 
 		// Combobobx
 		hostnameCombo = new JComboBox<String>(hostnames);
@@ -518,12 +713,14 @@ public class UebertragenPanel extends JPanel {
 
 		// Übertragen - Button
 		uebertragenButton = initializeButton(uebertragenButton, "Übertragen");
-
-
 	}
 
 	/**
+	 * initialize the buttons
 	 * 
+	 * @param button
+	 * @param text
+	 * @return
 	 */
 	private JButton initializeButton(JButton button, String text) {
 		button = new JButton();
@@ -540,7 +737,12 @@ public class UebertragenPanel extends JPanel {
 
 	/**
 	 * Defines the position of the elements inside the panel
+	 * 
+	 * @param startPanelWidth
+	 * @param startPanelHeight
+	 * @param backgroundUebertragenImageLabel
 	 */
+
 	public void defineElementsPosition(int startPanelWidth, int startPanelHeight,
 			JLabel backgroundUebertragenImageLabel) {
 
@@ -551,36 +753,47 @@ public class UebertragenPanel extends JPanel {
 		this.setBounds(0, 0, startPanelWidth, startPanelHeight);
 		backgroundImageLabel.setBounds(0, 0, startPanelWidth, startPanelHeight);
 
-		userNameLabel.setBounds(255, 145 + jhOffsetY, 170, 20);
-		userNameTextField.setBounds(420, 145 + jhOffsetY, 260, 20);
+		userNameLabel.setBounds(255, 45 + jhOffsetY, 170, 20);
+		userNameTextField.setBounds(420, 45 + jhOffsetY, 260, 20);
 
-		passwordLabel.setBounds(255, 170 + jhOffsetY, 170, 20);
-		passwordTextField.setBounds(420, 170 + jhOffsetY, 260, 20);
+		passwordLabel.setBounds(255, 70 + jhOffsetY, 170, 20);
+		passwordTextField.setBounds(420, 70 + jhOffsetY, 260, 20);
 
-		sipPathLabel.setBounds(255, 195 + jhOffsetY, 300, 20);
-		sipPathTextField.setBounds(420, 195 + jhOffsetY, 260, 20);
-		sipPathChooserButton.setBounds(690, 195 + jhOffsetY, 45, 20);
+		sipPathLabel.setBounds(255, 95 + jhOffsetY, 300, 20);
+		sipPathTextField.setBounds(420, 95 + jhOffsetY, 260, 20);
+		sipPathChooserButton.setBounds(690, 95 + jhOffsetY, 45, 20);
 
-		winScpLabel.setBounds(255, 220 + jhOffsetY, 430, 20);
-		winScpPathTextField.setBounds(420, 220 + jhOffsetY, 260, 20);
-		winScpPathChooserButton.setBounds(690, 220 + jhOffsetY, 45, 20);
+		winScpLabel.setBounds(255, 120 + jhOffsetY, 430, 20);
+		winScpPathTextField.setBounds(420, 120 + jhOffsetY, 260, 20);
+		winScpPathChooserButton.setBounds(690, 120 + jhOffsetY, 45, 20);
 
-		responseLabel.setBounds(255, 245 + jhOffsetY, 650, 20);
-		responsePathTextField.setBounds(420, 245 + jhOffsetY, 260, 20);
-		responsePathChooserButton.setBounds(690, 245 + jhOffsetY, 45, 20);
+		responseLabel.setBounds(255, 145 + jhOffsetY, 650, 20);
+		responsePathTextField.setBounds(420, 145 + jhOffsetY, 260, 20);
+		responsePathChooserButton.setBounds(690, 145 + jhOffsetY, 45, 20);
 
-		hostNameLabel.setBounds(255, 270 + jhOffsetY, 780, 20);
-		hostnameCombo.setBounds(420, 270 + jhOffsetY, 260, 20);
+		hostNameLabel.setBounds(255, 170 + jhOffsetY, 780, 20);
+		hostnameCombo.setBounds(420, 170 + jhOffsetY, 260, 20);
 
-		buttonSpeichernLadenPanel.setBounds(255, 330 + jhOffsetY, 300, 50);
+		proxyHostNameLabel.setBounds(255, 195 + jhOffsetY, 910, 20);
+		proxyHostNameTextField.setBounds(420, 195 + jhOffsetY, 260, 20);
 
-//		uebertragenButton.setBounds(400, 390 + jhOffsetY, 90, 20);
-		uebertragenButton.setBounds(400, 400 + jhOffsetY, 90, 20);
+		proxyPortLabel.setBounds(255, 220 + jhOffsetY, 1040, 20);
+		proxyPortTextField.setBounds(420, 220 + jhOffsetY, 260, 20);
+
+		proxyUserNameLabel.setBounds(255, 245 + jhOffsetY, 1170, 20);
+		proxyUserTextField.setBounds(420, 245 + jhOffsetY, 260, 20);
+
+		proxyPasswordLabel.setBounds(255, 270 + jhOffsetY, 1170, 20);
+		proxyPasswordTextField.setBounds(420, 270 + jhOffsetY, 260, 20);
+
+		buttonSpeichernLadenPanel.setBounds(255, 310 + jhOffsetY, 300, 50);
+
+		uebertragenButton.setBounds(400, 440 + jhOffsetY, 90, 20);
 
 	}
 
 	/**
-	 * dem Panel die Elemente hinzufügen
+	 * add the elements to the panel
 	 * 
 	 * @return JPanel: das gefüllte Panel
 	 */
@@ -603,6 +816,15 @@ public class UebertragenPanel extends JPanel {
 		this.add(responsePathChooserButton);
 		this.add(hostNameLabel);
 		this.add(hostnameCombo);
+		this.add(proxyHostNameLabel);
+		this.add(proxyHostNameTextField);
+		this.add(proxyPortLabel);
+		this.add(proxyPortTextField);
+		this.add(proxyPasswordTextField);
+		this.add(proxyUserNameLabel);
+		this.add(proxyUserTextField);
+		this.add(proxyPasswordLabel);
+		this.add(proxyPasswordTextField);
 		this.add(buttonSpeichernLadenPanel);
 
 		this.add(uebertragenButton);
