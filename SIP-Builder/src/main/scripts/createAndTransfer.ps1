@@ -7,30 +7,19 @@ param([Parameter(Mandatory = $true)] [String] $sipFolder,
   [Parameter(Mandatory = $false)] [String] $proxyHost,
   [Parameter(Mandatory = $false)] [String] $proxyPort,
   [Parameter(Mandatory = $false)] [String] $proxyUser,
-  [Parameter(Mandatory = $false)] [String] $asswordProxyEnc,
+  [Parameter(Mandatory = $false)] [String] $passwordProxyEnc,
   [Parameter(Mandatory = $false)] [String] $keyBase64);
     
-#$sipFolder="D:\DANRW\SIP-Builder-Erweiterung\SIP\"
-#$installPathWinSCP="D:\workspace\ci\DNSCore\SIP-Builder\src\main\winscp\WinSCP-6.5.5-Automation\"
-#$HostName="da-nrw-q.lvr.de"
-#$User="LVR-Test"
-#$password="gigaset55a"
-#$destResponse="D:\DANRW\SIP-Builder-Erweiterung\response\"
-#$proxyHost="fproxy.lvrintern.lvr.de"
-#$proxyPort="8080"
-#$proxyUser="SVCPXYZ1334006CI"
-#$proxyPassword="z2z25NoL0a6qBbaWlUh!yI%25NI0V"
-#$logDir = "D:\workspace\ci\DNSCore\SIP-Builder\src\main\winscp\log\"
-$logDir= $installPathWinSCP
 
-$passwordPlain = ConvertTo-SecureString $password -AsPlainText -Force
-#$securePassword2 = ConvertTo-SecureString $plainPassword2 -AsPlainText -Force
+$logDir= "$installPathWinSCP\log"
 
 if (!(Test-Path $logDir)) {
     New-Item -ItemType Directory -Path $logDir | Out-Null
 }
 
 $logFile = Join-Path $logDir ("winscp_" + (Get-Date -Format "yyyy-MM-dd") + ".log")
+
+Write-Host " Start:  $installPathWinSCP"
 
 function Write-Log {
 
@@ -91,6 +80,7 @@ function Unprotect-AesString {
     }
 }
 
+
 #-- Needed Params
 $installPath = "\target\scripts" 
 
@@ -99,27 +89,17 @@ $responseRemotePath = "/outgoing/"
 
 # SecureString -> Klartext nur für das Erzeugen des Session-URLs im RAM
 $plainContractorPwd = Unprotect-AesString -CipherTextBase64 $passwordContractorEnc -KeyBase64 $KeyBase64
-$plainProxyPwd =  Unprotect-AesString -CipherTextBase64 $asswordProxyEnc -KeyBase64 $KeyBase64
 
 
-# Beispielausgabe nur zur Kontrolle
-Write-Host "plainContractorPwd: $plainContractorPwd"
-Write-Host "plainProxyPwd Länge: $plainProxyPwd"
-
-
-$securePasswordContractor = ConvertTo-SecureString $plainContractorPwd -AsPlainText -Force
-$securePasswordProxy = ConvertTo-SecureString $plainProxyPwd -AsPlainText -Force
-Write-Host "securePasswordContractor: $securePasswordContractor"
-Write-Host "securePasswordProxy: $securePasswordProxy" 
-	    
-#Optional Params
-#-----------------------------------------------------------------
-
+#$securePasswordContractor = ConvertTo-SecureString $plainContractorPwd -AsPlainText -Force
+# $securePasswordProxy = ConvertTo-SecureString $plainProxyPwd -AsPlainText -Force
+#
 
 #$destResponse = $installPath + "response"
 
-Get-ChildItem "D:\workspace\ci\DNSCore\SIP-Builder\src\main\winscp\WinSCP-6.5.5-Automation\" -Recurse | Unblock-File
-Add-Type -Path "D:\workspace\ci\DNSCore\SIP-Builder\src\main\winscp\WinSCP-6.5.5-Automation\WinSCPnet.dll"
+
+Get-ChildItem  $installPathWinSCP -Recurse | Unblock-File
+Add-Type -Path "$installPathWinSCP\WinSCPnet.dll"
 
 $s="{0:yyyy-MM-dd HH:mm.ss}" -f (get-date)
 
@@ -127,25 +107,33 @@ $s="{0:yyyy-MM-dd HH:mm.ss}" -f (get-date)
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 $sessionOptions = New-Object WinSCP.SessionOptions -Property @{
-
     Protocol =  [WinSCP.Protocol]::Ftp
     HostName = $HostName
-    PortNumber = 21
+  #  PortNumber = 21
     UserName = $User
     Password = $plainContractorPwd
-}
+}  
 
-$sessionOptions.AddRawSettings("ProxyMethod", "3");
-$sessionOptions.AddRawSettings("ProxyHost", $proxyHost);
-$sessionOptions.AddRawSettings("ProxyPort", $proxyPort);
-$sessionOptions.AddRawSettings("ProxyUsername", $proxyUser);
-$sessionOptions.AddRawSettings("ProxyPassword", $plainProxyPwd);
+if (-not [string]::IsNullOrWhiteSpace($proxyHost)) {
+  $plainProxyPwd =  Unprotect-AesString -CipherTextBase64 $passwordProxyEnc -KeyBase64 $KeyBase64
+    $plainProxyPwd =  Unprotect-AesString -CipherTextBase64 $passwordProxyEnc -KeyBase64 $KeyBase64
+    $plainProxyPwd = $plainProxyPwd.Trim()
+
+    $sessionOptions.AddRawSettings("ProxyMethod", "3");
+    $sessionOptions.AddRawSettings("ProxyHost", $proxyHost);
+    $sessionOptions.AddRawSettings("ProxyPort", $proxyPort);
+    $sessionOptions.AddRawSettings("ProxyUsername", $proxyUser);
+    $sessionOptions.AddRawSettings("ProxyPassword", $plainProxyPwd);
+}
 
 $session = New-Object WinSCP.Session
 $session.SessionLogPath = $logFile
-    try
+
+try
     {
-    Write-Log "Verbinde mit $HostName" 
+
+    Write-Log "Verbinde mit $HostName "
+
     $session.Open($sessionOptions)
 
     Write-Log "Verbindung erfolgreich." 
@@ -170,7 +158,6 @@ $session.SessionLogPath = $logFile
         Write-Host "Ziel Datei: $zielDatei"
 
         if (Test-Path $zielDatei) {
-            Write-Host "Datei existiert bereits im Ziel: $zielDatei" 
             Write-Log "Datei existiert bereits im Ziel: $zielDatei" "WARNING"
             continue
         }
@@ -181,7 +168,7 @@ $session.SessionLogPath = $logFile
         $transferResult.Check()
     }
     Write-Log "Upload erfolgreich abgeschlossen."
-
+    
 }
 catch {
     Write-Log "FEHLER:" "ERROR"
