@@ -128,10 +128,12 @@ public class QualityLevelRecheckAction extends AbstractAction {
 			    new Date(),
 			    oldSipPREMISFile        // nur lesen
 			);
+		java.nio.file.Path targetPremisPath =
+			    Paths.get(tempFilePath.toString(), "data",PREMIS);
 		// atomarer Replace
 		Files.move(
 			newSipPREMISFile.toPath(),
-		    oldSipPREMISFile.toPath(),
+			targetPremisPath,
 		    StandardCopyOption.REPLACE_EXISTING,
 		    StandardCopyOption.ATOMIC_MOVE
 		);

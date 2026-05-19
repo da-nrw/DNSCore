@@ -117,6 +117,7 @@ public class PremisXmlValidator {
 			throws IOException, SAXException {
 		Reader reader = new FileReader(premisFile);
 		boolean sipCreationEventExists = false;
+		boolean qualityLevelRecheckEventExists = false;
 		boolean rightsPartExists = false;
 
 		NodeFactory nodeFactory = new PremisXmlReaderNodeFactory();
@@ -159,6 +160,8 @@ public class PremisXmlValidator {
 				nu.xom.Node eventTypeNode = eventType.get(0).getChild(0);
 				if (eventTypeNode.getValue().equals("SIP_CREATION")) {
 					sipCreationEventExists = true;
+				} else if (eventTypeNode.getValue().equals("QUALITY_LEVEL_RECHECK")) {
+					qualityLevelRecheckEventExists = true;
 				}
 
 			}
@@ -173,10 +176,10 @@ public class PremisXmlValidator {
 		finally {
 			reader.close();
 		}
-		if(!sipCreationEventExists)
-			logger.error(premisFile+"doesn't contain SIP_CREATION-event");
+		if(!sipCreationEventExists && !qualityLevelRecheckEventExists)
+			logger.error(premisFile+"doesn't contain SIP_CREATION-event or QUALITY_LEVEL_RECHECK-event.");
 		
-		return rightsPartExists & sipCreationEventExists;
+		return rightsPartExists & (sipCreationEventExists || qualityLevelRecheckEventExists);
 	}
 
 	/**

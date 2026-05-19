@@ -100,9 +100,9 @@ public class CreatePremisAction extends AbstractAction {
 	@Override
 	public boolean implementation() throws IOException	{
 		logger.debug("Listing all files attached to all packages of the object:");
-		 for (Package pkg : o.getPackages()) 
-		   		for (DAFile fi : pkg.getFiles())
-			   		logger.debug(fi.toString());
+		for (Package pkg : o.getPackages()) 
+			for (DAFile fi : pkg.getFiles())
+			   	logger.debug(fi.toString());
 		 
 		determineSizeForAllFiles();
 		 
@@ -137,8 +137,12 @@ public class CreatePremisAction extends AbstractAction {
 		if (o.isDelta()){
 			deserializeOldPremisFile(newPREMISObject);
 		}
-				
-		checkConvertEvents(newPREMISObject);
+		if (!o.getQualityLevelRecheck_flag()) {
+			checkConvertEvents(newPREMISObject);o.setQualityLevelRecheck_flag(false);
+		} else {
+			o.setQualityLevelRecheck_flag(false);
+		}
+		
 	
 		File newPREMISXml = Path.make(wa.dataPath(), 
 				o.getNameOfLatestBRep(),PREMIS).toFile();

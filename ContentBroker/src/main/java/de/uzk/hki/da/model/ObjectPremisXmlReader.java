@@ -341,7 +341,7 @@ public class ObjectPremisXmlReader{
 		if (!eventAdded) {
 			if (eventType.toUpperCase().equals("SIP_CREATION")
 					// DANRW-1452: Virus-Scan result must be print in the premis-file
-					|| eventType.toUpperCase().equals(C.EVENT_TYPE_VIRUS_SCAN)
+					|| eventType.toUpperCase().equals(C.EVENT_TYPE_VIRUS_SCAN) || eventType.toUpperCase().equals("QUALITY_LEVEL_RECHECK")
 					)
 				object.getPackages().get(0).getEvents().add(event);
 			else

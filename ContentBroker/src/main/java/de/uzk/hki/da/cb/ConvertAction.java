@@ -102,11 +102,11 @@ public class ConvertAction extends AbstractAction {
 		listFiles(o);
 		extendObject(o,events);
 		j.getConversion_instructions().clear();
-		if (o.getQualityLevelRecheck_flag()) {
+		/*if (o.getQualityLevelRecheck_flag()) {
 			emptyLatestARepresentation(wa.objectPath(), j.getRep_name());
 			emptyLatestARepresentationInDb(o, j.getRep_name());
-			o.setQualityLevelRecheck_flag(false);
-		}
+			//o.setQualityLevelRecheck_flag(false);
+		}*/
 		return true;
 	}
 

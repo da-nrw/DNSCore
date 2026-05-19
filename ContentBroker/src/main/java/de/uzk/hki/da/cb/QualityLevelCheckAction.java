@@ -204,7 +204,11 @@ public class QualityLevelCheckAction extends AbstractAction {
 				throw new UserException(UserExceptionId.QUALITY_BELOW_REQUIRED, "Current QualityLevel("+qualityLevel+") is below required "+requiredIngestQualityPremis +" in Premis");
 		}else if(qualityLevel< this.o.getContractor().getMinimalIngestQualityLevel())
 			throw new UserException(UserExceptionId.QUALITY_BELOW_REQUIRED, "Current QualityLevel("+qualityLevel+") is below required "+this.o.getContractor().getMinimalIngestQualityLevel() +" ");
-		
+		if (o.getQualityLevelRecheck_flag()) {
+			ConvertAction.emptyLatestARepresentation(wa.objectPath(), j.getRep_name());
+			ConvertAction.emptyLatestARepresentationInDb(o, j.getRep_name());
+			//o.setQualityLevelRecheck_flag(false);
+		}
 		return true;
 	}
 	
