@@ -160,7 +160,7 @@
 					<dependency>
 						<groupId>com.jcraft</groupId>
 						<artifactId>jsch</artifactId>
-						<version>0.1.44</version>
+						<version>0.1.54</version>
 					</dependency>
 				</dependencies>
 			</plugin>
@@ -171,7 +171,7 @@
 				</goals> </execution> </executions> <dependencies> <dependency> <groupId>org.apache.ant</groupId> 
 				<artifactId>ant-jsch</artifactId> <version>1.8.2</version> </dependency> 
 				<dependency> <groupId>com.jcraft</groupId> <artifactId>jsch</artifactId> 
-				<version>0.1.44</version> </dependency> </dependencies> </plugin> -->
+				<version>0.1.54</version> </dependency> </dependencies> </plugin> -->
 		   <plugin>
 		        <groupId>org.apache.maven.plugins</groupId>
 		        <artifactId>maven-enforcer-plugin</artifactId>
