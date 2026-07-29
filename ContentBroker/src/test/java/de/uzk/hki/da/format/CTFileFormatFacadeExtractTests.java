@@ -37,7 +37,9 @@ import de.uzk.hki.da.model.FormatMapping;
 import de.uzk.hki.da.model.JHoveParameterMapping;
 import de.uzk.hki.da.test.CTTestHelper;
 import de.uzk.hki.da.test.TC;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.CommandLineConnector;
+import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -100,6 +102,7 @@ public class CTFileFormatFacadeExtractTests {
 	@AfterClass
 	public static void tearDownAfterClass() throws IOException {
 		CTTestHelper.cleanUpWhiteBoxTest();
+		FolderUtils.deleteQuietlySafe(Path.makeFile(testRoot,"vda3.XML.output"));
 	}
 	
 	@Test
@@ -111,7 +114,7 @@ public class CTFileFormatFacadeExtractTests {
 		} catch (ConnectionException e) {
 			fail();
 		} catch (Exception e) {
-			fail();
+			fail(e.getClass()+"\n"+e.getStackTrace()[0]+"\n"+e.getMessage());
 		}
 	}
 

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="main"/>
-    <asset:link rel="icon" href="favicon.ico" type="image/x-ico" />
+    <asset:link rel="icon" href="/icons/favicon.ico" type="image/x-ico" />
     <asset:stylesheet src="main.css"/>
     
     <title>Willkommen bei der DA-NRW Weboberfläche</title>

@@ -154,7 +154,7 @@ public class UpdateMetadataActionEADTests extends ConcreteActionUnitTest{
 		
 		action.implementation();
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		Document doc = builder.build(new FileReader(Path.make(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_TEMP_PIP_REP_PUBLIC,"mets_2_99.xml").toFile()));
 
 		assertEquals("http://data.danrw.de/file/identifier/renamed067.tif", getURL(doc));
@@ -165,7 +165,7 @@ public class UpdateMetadataActionEADTests extends ConcreteActionUnitTest{
 	@Test
 	public void checkReplacementsInEad() throws FileNotFoundException, JDOMException, IOException, ParserConfigurationException, SAXException {
 		action.implementation();
-		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder eadSaxBuilder = XMLUtils.createValidatingSaxBuilder();
 		Document eadDoc = eadSaxBuilder.build(new FileReader(Path.make(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_TEMP_PIP_REP_PUBLIC,"EAD.xml").toFile()));
 
 		List<String> eadRefs = getMetsRefsInEad(eadDoc);

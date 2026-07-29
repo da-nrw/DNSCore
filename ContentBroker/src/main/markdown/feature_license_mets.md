@@ -1,8 +1,8 @@
 # Leistungsmerkmal: Lizenzverarbeitung für METS-SIP
 
-Ausgehend von einer NRW-Regelung müssen alle mit Publikationsabsicht eingeliefrten SIP's eine gültige Veröffentlichungslizenz beinhalten.
+Ausgehend von einer NRW-Regelung (EGOV-G) müssen alle mit Publikationsabsicht eingeliefrten SIP's eine gültige Veröffentlichungslizenz beinhalten.
 
-Die Lizenz kann in den METS-Datei(accessCondition-Element) stehen, oder in der PREMIS-Datei(publicationLicense-Element) enthalten sein, jedoch nicht an beiden Stellen gleichzeitig. Lizenzangabe aus der PREMIS-Datei wird in die METS-Datei des PIP übernommen.
+Die Lizenz kann in den METS-Datei(accessCondition-Element, type="use and reproduction") stehen, oder in der PREMIS-Datei(publicationLicense-Element) enthalten sein, jedoch nicht an beiden Stellen gleichzeitig. Lizenzangabe aus der PREMIS-Datei wird in die METS-Datei des PIP übernommen.
 Anschließend wird die angegebene Lizenz ins EDM übernommen und bis zum Portal weitergereicht.
 
 

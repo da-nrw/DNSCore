@@ -100,10 +100,10 @@ class CbtalkController {
 		}
 		log.debug(message)
 		try {
-		jmsService.send(queue:queue, message)
+			jmsService.send(queue: queue, message, "standard", null)
 		} catch (Exception e) {
 			flash.message= "Fehler in der Sendekommunikation mit dem ActiveMQ Broker! " + e.getCause()
-//			log.error(e);
+			//log.error(e);
 		}
 		redirect(action: "index")
 		

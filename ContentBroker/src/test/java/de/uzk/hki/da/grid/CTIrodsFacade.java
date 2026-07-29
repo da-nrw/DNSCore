@@ -115,6 +115,8 @@ public class CTIrodsFacade {
 	@Before
 	public void setUp() throws Exception {
 		temp = createTestFile();
+		if (!isc.collectionExists(testCollLogicalPath))
+		isc.createCollection(testCollLogicalPath);
 		md5sum = MD5Checksum.getMD5checksumForLocalFile(temp);
 	}
 	

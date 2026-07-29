@@ -37,6 +37,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import de.uzk.hki.da.utils.C;
+
 
 
 
@@ -108,6 +110,8 @@ public class User{
 	@Cascade({CascadeType.SAVE_UPDATE,CascadeType.DELETE})
 	private List<Message> messages = new ArrayList<Message>();
 	
+	@Column(name="minimal_ingest_quality_level", columnDefinition="INTEGER DEFAULT "+C.QUALITYFLAG_DEFAULT)
+	private int minimalIngestQualityLevel;
 	
 	
 	/**
@@ -229,7 +233,15 @@ public class User{
 	public void setUsePublicMets(Boolean usePublicMets) {
 		this.usePublicMets = usePublicMets;
 	}
-	
+
+	public int getMinimalIngestQualityLevel() {
+		return minimalIngestQualityLevel;
+	}
+
+	public void setMinimalIngestQualityLevel(int minimalIngestQualityLevel) {
+		this.minimalIngestQualityLevel = minimalIngestQualityLevel;
+	}
+
 	public boolean isUseVirusScan() {
 		return useVirusScan;
 	}

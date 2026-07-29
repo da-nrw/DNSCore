@@ -89,7 +89,7 @@ public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 			}
 		}
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		String LidoFileName = "LIDO-Testexport2014-07-04-FML-Auswahl.xml";
 		Document doc = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, LidoFileName).toFile()));
@@ -117,7 +117,7 @@ public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 	public void testPres() throws FileNotFoundException, JDOMException, IOException{
 		
 		FileReader frLido = new FileReader(ath.loadFileFromPip(object.getIdentifier(), "LIDO.xml"));
-		SAXBuilder lidoSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder lidoSaxBuilder = XMLUtils.createValidatingSaxBuilder();
 		Document doc = lidoSaxBuilder.build(frLido);
 		
 		List<String> lidoUrls =  mh.getLIDOURL(doc);
@@ -136,7 +136,7 @@ public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 	public void testEdmAndIndex() throws FileNotFoundException, JDOMException, IOException {
 		
 		FileReader frLido = new FileReader(ath.loadFileFromPip(object.getIdentifier(), "EDM.xml"));
-		SAXBuilder lidoSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder lidoSaxBuilder = XMLUtils.createValidatingSaxBuilder();
 		Document doc = lidoSaxBuilder.build(frLido);
 	
 		List<Element> providetCho = doc.getRootElement().getChildren("ProvidedCHO", C.EDM_NS);
@@ -146,12 +146,12 @@ public class ATMetadataUpdatesLIDO extends AcceptanceTest{
 			if(pcho.getAttributeValue("about", C.RDF_NS).contains(object.getIdentifier()+"-ISIL/lido/Inventarnummer-1")) {
 				testProvidetCho1Exists = true;
 				assertTrue(pcho.getChild("title", C.DC_NS).getValue().equals("Nudelmaschine in Originalverpackung"));
-				assertTrue(pcho.getChild("issued", C.DCTERMS_NS).getValue().equals("01.01.1970-31.12.1989"));
+				assertTrue(pcho.getChild("date", C.DC_NS).getValue().equals("01.01.1970-31.12.1989"));
 				assertTrue(pcho.getChild("hasType", C.EDM_NS).getValue().equals("is root element"));
 			} else if(pcho.getAttributeValue("about", C.RDF_NS).contains(object.getIdentifier()+"-ISIL/lido/Inventarnummer-2")){
 				testProvidetCho2Exists = true;
 				assertTrue(pcho.getChild("title", C.DC_NS).getValue().equals("Küchenmaschine"));
-				String issuedDate=pcho.getChild("issued", C.DCTERMS_NS).getValue();
+				String issuedDate=pcho.getChild("date", C.DC_NS).getValue();
 				assertTrue(issuedDate.equals("01.01.1950-31.12.1959")||issuedDate.equals("01.01.1950-31.12.1969"));
 				assertTrue(pcho.getChild("hasType", C.EDM_NS).getValue().equals("is root element"));
 			}

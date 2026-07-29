@@ -85,7 +85,7 @@ public class RegisterURNActionTest extends ConcreteActionUnitTest {
 		FileUtils.copyFile(Path.makeFile(WORK_AREA_ROOT_PATH,"premis.xml.urn"), wa.toFile(premis));
 		
 		Package pkg = new Package();
-		pkg.setName("2");
+		pkg.setDelta(2);
 		o.getPackages().add(pkg);
 		String prv_urn = "previous_urn";
 		o.setUrn(prv_urn);
@@ -98,7 +98,7 @@ public class RegisterURNActionTest extends ConcreteActionUnitTest {
 	@Test
 	public void dontOverrideURNWhenDelta() {
 		Package pkg = new Package();
-		pkg.setName("2");
+		pkg.setDelta(2);
 		o.getPackages().add(pkg);
 		String prv_urn = "previous_urn";
 		o.setUrn(prv_urn);
@@ -121,7 +121,7 @@ public class RegisterURNActionTest extends ConcreteActionUnitTest {
 	public void rollbackWhenDelta() {
 		
 		Package pkg = new Package();
-		pkg.setName("2");
+		pkg.setDelta(2);
 		o.getPackages().add(pkg);
 		
 		String prv_urn = "previous_urn";

@@ -61,7 +61,7 @@ public class ATMetsGenTest extends AcceptanceTest{
 			}
 		}
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		String metsFileName = "mets.xml";
 		Document doc = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, metsFileName).toFile()));
@@ -85,7 +85,7 @@ public class ATMetsGenTest extends AcceptanceTest{
 		
 		assertEquals(C.CB_PACKAGETYPE_METS,object.getPackage_type());
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		Document pipMets = builder.build(new FileReader(ath.loadDefaultMetsFileFromPip(object.getIdentifier())));
 		List<Element> fileElements = mh.getMetsFileElements(pipMets);
 		Boolean _3b91a3c29a50f62d23bd395e5fa3103c_exists = false;

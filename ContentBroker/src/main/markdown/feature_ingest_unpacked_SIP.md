@@ -13,7 +13,7 @@ in Form eines "Move" auf dem gleichen Filesystem zu bewerkstelligen, wie es bei 
 
 #### Testordner:
 
-* [ATIngestUnpackedSIP](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATIngestUnpackedSIP
+* [ATIngestUnpackedSIP](../../test/resources/at/ATIngestUnpackedSIP)
 
 #### Vorbedingungen:
 

@@ -67,9 +67,13 @@ public class Package {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 
-	/** The name. */
-	@Column(columnDefinition="varchar(200)")
-	private String name;
+	/** The delta version. */
+	@Column(columnDefinition="int")
+	private Integer delta;
+	
+	/** The repair version. */
+	@Column(columnDefinition="int")
+	private Integer repair;
 	
 	/** The status. */
 	@Column(columnDefinition="varchar(100)")
@@ -123,33 +127,22 @@ public class Package {
 	}
 	
 	
-	
-	
 	/**
 	 * Instantiates a new package.
 	 *
 	 * @param name the name
 	 */
-	public Package(String name) {
-		this.name = name;
+	public Package(int delta) {
+		this.delta = delta;
 	}
 
-	/**
-	 * Sets the name.
-	 *
-	 * @param name the new name
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * Gets the name.
-	 *
-	 * @return the name
-	 */
+	@Transient
 	public String getName() {
-		return name;
+		if (this.repair == null || this.repair == 0){
+			return this.delta.toString();
+		} else {
+			return this.delta.toString() + '_' + this.repair;
+		}
 	}
 
 	/**
@@ -170,6 +163,26 @@ public class Package {
 		return id;
 	}
 	
+	public Integer getDelta() {
+		return delta;
+	}
+
+
+	public void setDelta(Integer delta) {
+		this.delta = delta;
+	}
+
+
+	public Integer getRepair() {
+		return repair;
+	}
+
+
+	public void setRepair(Integer repair) {
+		this.repair = repair;
+	}
+
+
 	/**
 	 * Sets the status.
 	 *

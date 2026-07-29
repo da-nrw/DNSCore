@@ -101,26 +101,33 @@ public abstract class MetadataStructure {
 				logger.debug("Index information about "+id+": "+indexInfo.get(id));
 				Element providedCHO = addEdmProvidedCHOtoEdm(preservationSystem, id, edmDoc, rootElement);
 				Element aggregation = addOreAggregationToEdm(preservationSystem, id, edmDoc, rootElement);
-				
+								
 				if(indexInfo.get(id).get(C.EDM_IS_PART_OF)==null) {
 					List<String> root = new ArrayList<String>();
 					root.add("is root element");
 					indexInfo.get(id).put(C.EDM_HAS_TYPE, root);
 				}
 				
-				if(indexInfo.get(id).get(C.EDM_IDENTIFIER)==null) {
+				if (indexInfo.get(id).get(C.EDM_IDENTIFIER) == null) {
 					List<String> IDs = new ArrayList<String>();
 					IDs.add(objectID);
-					IDs.add(urn);
+					if (urn != null) {
+						IDs.add(urn);
+					}
 					indexInfo.get(id).put(C.EDM_IDENTIFIER, IDs);
 				} else {
 					indexInfo.get(id).get(C.EDM_IDENTIFIER).add(objectID);
-					indexInfo.get(id).get(C.EDM_IDENTIFIER).add(urn);
+					if (urn != null) {
+						indexInfo.get(id).get(C.EDM_IDENTIFIER).add(urn);
+					}
 				}
+				
+				
 				
 				for(String elementName : indexInfo.get(id).keySet()) {
 					Element parentNode = null;
-					if(elementName.startsWith("dc:") || elementName.startsWith("dcterms:") || elementName.equals(C.EDM_HAS_TYPE)) {
+					if(elementName.startsWith("dc:") || elementName.startsWith("dcterms:") 
+							|| elementName.equals(C.EDM_HAS_TYPE) || elementName.equals(C.EDM_TYPE) ) {
 						parentNode = providedCHO;
 					} else if(elementName.startsWith("edm:")) {
 						parentNode = aggregation;
@@ -153,16 +160,19 @@ public abstract class MetadataStructure {
 	private void addNewElementToParent(PreservationSystem preservationSystem, String id, String elementName, String elementValue, Element parent, Document edmDoc) {
 		Element eName = edmDoc.createElement(elementName);
 		if(elementName.equals(C.EDM_HAS_VIEW) || elementName.equals(C.EDM_IS_PART_OF) || elementName.equals(C.EDM_HAS_PART) 
-				|| elementName.equals(C.EDM_IS_SHOWN_BY) || elementName.equals(C.EDM_OBJECT)) {
+				|| elementName.equals(C.EDM_IS_SHOWN_BY) || elementName.equals(C.EDM_OBJECT)
+				|| elementName.equals(C.EDM_RIGHTS) || elementName.equals(C.EDM_PROVIDER)) {
 			if(elementName.equals(C.EDM_IS_PART_OF) || elementName.equals(C.EDM_HAS_PART)) {
 				elementValue = preservationSystem.getUrisCho()+"/"+elementValue;
 			}
+
 			Attr rdfResource = edmDoc.createAttribute("rdf:resource");
 			rdfResource.setValue(elementValue);
 			eName.setAttributeNode(rdfResource);
 		} else {
 			eName.appendChild(edmDoc.createTextNode(elementValue));
 		}
+		
 		parent.appendChild(eName);
 	}
 	
@@ -172,9 +182,16 @@ public abstract class MetadataStructure {
 		Attr rdfAbout = edmDoc.createAttribute("rdf:about");
 		rdfAbout.setValue(cho_identifier);
 		providedCHO.setAttributeNode(rdfAbout);
+		
 		rootElement.appendChild(providedCHO);
 		
 		return providedCHO;
+	}
+
+	private void addEdmProviderToEdm(Document edmDoc, Element aggregation) {
+		Element provider = edmDoc.createElement(C.EDM_PROVIDER);
+		provider.setTextContent(C.EDM_PROVIDER_VALUE);
+		aggregation.appendChild(provider);
 	}
 	
 	private Element addOreAggregationToEdm(PreservationSystem preservationSystem, String id, Document edmDoc, Element rootElement) {
@@ -190,6 +207,8 @@ public abstract class MetadataStructure {
 		rdfAboutACho.setValue(preservationSystem.getUrisCho()+"/"+id);
 		aggregatedCHO.setAttributeNode(rdfAboutACho);
 		aggregation.appendChild(aggregatedCHO);
+		
+		addEdmProviderToEdm(edmDoc, aggregation);
 		
 		return aggregation;
 	}

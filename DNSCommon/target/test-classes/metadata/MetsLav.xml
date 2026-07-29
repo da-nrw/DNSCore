@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mets:mets xmlns:mets="http://www.loc.gov/METS/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mods="http://www.loc.gov/mods/v3" xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/mets.xsd http://www.w3.org/1999/xlink http://www.loc.gov/standards/xlink/xlink.xsd http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">
+  <mets:dmdSec ID="dmd00016">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:titleInfo>
+            <mods:title>Nr. 1111</mods:title>
+          </mods:titleInfo>
+          <mods:identifier type="VERA dockey">1111</mods:identifier>
+          <mods:identifier type="urn">urn:nbn:de:danrw:de111-11111-1111-11111-1111-1111</mods:identifier>
+          <mods:note type="RestoreFolderPath">Path</mods:note>
+          <mods:relatedItem>
+            <mods:identifier>Best gsdgsdhs</mods:identifier>
+          </mods:relatedItem>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:amdSec ID="amd00016">
+    <mets:rightsMD ID="rights00016">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+        <mets:xmlData>
+          <dv:rights xmlns:dv="http://dfg-viewer.de/">
+            <dv:owner>Landesarchiv NRW</dv:owner>
+            <dv:ownerContact>mailto:poststelle@lav.nrw.de</dv:ownerContact>
+            <dv:ownerLogo>http://www.test.de/images/logo_dfg_viewer.png</dv:ownerLogo>
+            <dv:ownerSiteURL>http://www.archive.nrw.de/test/</dv:ownerSiteURL>
+          </dv:rights>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:rightsMD>
+    <mets:digiprovMD ID="digiprov00016">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+        <mets:xmlData>
+          <dv:links xmlns:dv="http://dfg-viewer.de/" />
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:digiprovMD>
+  </mets:amdSec>
+  <mets:fileSec>
+    <mets:fileGrp ID="mets-fgrp-00001" USE="DEFAULT">
+      <mets:file ID="FID_0000000001_DEF" MIMETYPE="image/jpeg" SIZE="26220584">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://data.danrw.de/file/1-2015110919/_6d8889c54cd506f75be230bd630cd70d.jpg" />
+      </mets:file>
+      <mets:file ID="FID_0000000002_DEF" MIMETYPE="image/jpeg" SIZE="22215716">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://data.danrw.de/file/1-2015110919/_03a62f462ff81be6d6db280be6a8e4c6.jpg" />
+      </mets:file>
+      <mets:file ID="FID_0000000003_DEF" MIMETYPE="image/jpeg" SIZE="22838409">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://data.danrw.de/file/1-2015110919/_3ec9179445a0860d44fd6c847e20006f.jpg" />
+      </mets:file>
+      <mets:file ID="FID_0000000004_DEF" MIMETYPE="image/jpeg" SIZE="14230462">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://data.danrw.de/file/1-2015110919/_f1b9c8446da0b8b14c10061a3a81949c.jpg" />
+      </mets:file>
+      <mets:file ID="FID_0000000005_DEF" MIMETYPE="image/jpeg" SIZE="8962930">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://data.danrw.de/file/1-2015110919/_d88477ff445fe329a2dac01d3fddc7a8.jpg" />
+      </mets:file>
+      <mets:file ID="FID_0000000006_DEF" MIMETYPE="image/jpeg" SIZE="19180539">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://data.danrw.de/file/1-2015110919/_2fee28672e542ff0a12556552d059cc6.jpg" />
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp ID="mets-fgrp-00002" USE="TEXT">
+      <mets:file ID="FID_0000000007_TXT" MIMETYPE="text/plain" SIZE="646">
+        <mets:FLocat LOCTYPE="URL" xlink:href="_MD5hashes.txt" />
+      </mets:file>
+      <mets:file ID="FID_0000000008_TXT" MIMETYPE="application/xml" SIZE="6856">
+        <mets:FLocat LOCTYPE="URL" xlink:href="_ggsg_0001.xml" />
+      </mets:file>
+    </mets:fileGrp>
+  </mets:fileSec>
+  <mets:structMap ID="mets-struct-00001" TYPE="LOGICAL">
+    <mets:div DMDID="dmd00016" ADMID="amd00016" ID="LOG" TYPE="File" />
+  </mets:structMap>
+  <mets:structMap ID="mets-struct-00002" TYPE="PHYSICAL">
+    <mets:div ID="physSequence" TYPE="physSequence" DMDID="dmd00016">
+      <mets:div ID="ID_0000000001" ORDER="1" TYPE="page">
+        <mets:fptr FILEID="FID_0000000001_DEF" />
+      </mets:div>
+      <mets:div ID="ID_0000000002" ORDER="2" TYPE="page">
+        <mets:fptr FILEID="FID_0000000002_DEF" />
+      </mets:div>
+      <mets:div ID="ID_0000000003" ORDER="3" TYPE="page">
+        <mets:fptr FILEID="FID_0000000003_DEF" />
+      </mets:div>
+      <mets:div ID="ID_0000000004" ORDER="4" TYPE="page">
+        <mets:fptr FILEID="FID_0000000004_DEF" />
+      </mets:div>
+      <mets:div ID="ID_0000000005" ORDER="5" TYPE="page">
+        <mets:fptr FILEID="FID_0000000005_DEF" />
+      </mets:div>
+      <mets:div ID="ID_0000000006" ORDER="6" TYPE="page">
+        <mets:fptr FILEID="FID_0000000006_DEF" />
+      </mets:div>
+      <mets:div ID="ID_0000000007" ORDER="7" TYPE="page">
+        <mets:fptr FILEID="FID_0000000007_TXT" />
+      </mets:div>
+      <mets:div ID="ID_0000000008" ORDER="8" TYPE="page">
+        <mets:fptr FILEID="FID_0000000008_TXT" />
+      </mets:div>
+    </mets:div>
+  </mets:structMap>
+</mets:mets>
+

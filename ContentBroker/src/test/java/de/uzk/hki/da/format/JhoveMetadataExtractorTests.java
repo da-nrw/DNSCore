@@ -33,6 +33,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -198,7 +199,7 @@ public class JhoveMetadataExtractorTests {
 				 fail(e.getMessage());
 			}*/
 		catch (ConnectionException e) { fail(e.getMessage()); }
-		catch (Exception e) { fail(e.getMessage()); } 
+		catch (Exception e) { fail(e.getClass()+" "+e.getMessage()+" "+Arrays.deepToString(e.getStackTrace())); } 
 	}
 	
 	

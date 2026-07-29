@@ -216,39 +216,6 @@ public abstract class IrodsGridFacadeBase implements GridFacade {
 	 * @throws IOException on error
 	 * @author jpeters
 	 */
-	@Override
-	public void get(File destination, String gridFileAdress) throws IOException  { 
-		getFile(irodsSystemConnector.getZone(),destination,gridFileAdress);
-	}
-	
-	@Override
-	public void getFederated(String federatedZone, File destination, String gridFileAdress) throws IOException  { 
-		getFile(irodsSystemConnector.getZone()+ "/" + WorkArea.FEDERATED+ "/"+federatedZone,destination,gridFileAdress);
-	}
-	
-	
-	private void getFile(String zone, File destination, String gridFileAdress) throws IOException  { 
-		
-		String prefixedGridFileAdress = "/" + zone+ "/" + WorkArea.AIP + "/" + gridFileAdress;
-		irodsSystemConnector.establishConnect();
-		try {
-			
-//			if (!isValid(gridFileAdress))  throw new java.io.IOException("File has corrupt replicas, please check first! File: " + gridFileAdress);
-			irodsSystemConnector.get(prefixedGridFileAdress, destination);
-		} catch (Exception e) {
-			// TODO should throw gridexception
-			throw new java.io.IOException("Error in retrieving file: " + prefixedGridFileAdress, e);
-		}
-		
-		if (!MD5Checksum.getMD5checksumForLocalFile(destination).equals(irodsSystemConnector.getChecksum(prefixedGridFileAdress))){
-			throw new java.io.IOException("The unloaded file differs from the Grid's file! Local:"
-					+MD5Checksum.getMD5checksumForLocalFile(destination)+" vs Remote:"+irodsSystemConnector.getChecksum(prefixedGridFileAdress));
-		}
-		
-		if (!destination.exists()) throw new java.io.IOException("The destination file has " + destination + " not been created!");
-		
-		irodsSystemConnector.logoff();
-	}
 	
 	
 	/* (non-Javadoc)

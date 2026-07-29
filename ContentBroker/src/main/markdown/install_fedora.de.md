@@ -16,7 +16,7 @@ https://github.com/da-nrw/DNSCore/tree/master/ContentBroker/src/main/python
 
 #### Tomcat
 
-Tomcat 6 oder 7
+Tomcat 7 oder höher
 
 Sicherstellen, dass Tomcat genügend Speicher allozieren kann, z.B. indem in der Datei `CATALINA_BASE/bin/sentenv.sh` (anlegen, wenn Sie nicht existiert) folgendes eingetragen wird:
 

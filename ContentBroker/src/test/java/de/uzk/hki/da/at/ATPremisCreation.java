@@ -37,11 +37,10 @@ import org.junit.After;
 import org.junit.Test;
 
 import de.uzk.hki.da.model.Object;
+import de.uzk.hki.da.pkg.BagitUtils;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.XMLUtils;
-import gov.loc.repository.bagit.Bag;
-import gov.loc.repository.bagit.BagFactory;
 
 
 /**
@@ -81,7 +80,7 @@ public class ATPremisCreation extends PREMISBase{
 		verifyAIPContainsExpectedFiles(unpackedObjectPath, repAName, repBName);
 		verifyPREMISContainsSpecifiedElements(unpackedObjectPath,object,repAName,repBName,localNode.getName());
 
-		assertTrue(bagIsValid(unpackedObjectPath));
+		assertTrue(BagitUtils.bagIsValid(unpackedObjectPath));
 	}
 	
 	
@@ -105,7 +104,7 @@ public class ATPremisCreation extends PREMISBase{
 		assertTrue(new File(unpackedObjectPath + "data/" +  repBName + "/premis.xml").exists());
 		String objectIdentifier = object.getIdentifier();
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		Document doc;
 		try {
 			doc = builder.build(new File(unpackedObjectPath +  "data/" + repBName + "/premis.xml"));
@@ -227,19 +226,6 @@ public class ATPremisCreation extends PREMISBase{
 		assertTrue(new File(dataFolder+repBName +"/"+"premis.xml").exists());
 
 	}
-	
-	
-	private boolean bagIsValid(String unpackedObjectPath) throws IOException{
-		BagFactory bagFactory = new BagFactory();
-		Bag bag = bagFactory.createBag(new File(unpackedObjectPath));
-		if(!bag.verifyValid().isSuccess()){
-			bag.close();
-			return false;
-		}
-		bag.close();
-		return true;
-	}
-	
 	
 	
 }

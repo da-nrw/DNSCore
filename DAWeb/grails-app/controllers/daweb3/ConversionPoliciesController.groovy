@@ -72,7 +72,12 @@ class ConversionPoliciesController {
 
 	@Secured(['ROLE_PSADMIN'])
     def create() {
-        [conversionPoliciesInstance: new ConversionPolicies(params)]
+		def user =  springSecurityService.currentUser
+		def admin = 0
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
+        [conversionPoliciesInstance: new ConversionPolicies(params), admin: admin, user: user]
 	}
 
 	@Secured(['ROLE_PSADMIN'])
@@ -102,15 +107,18 @@ class ConversionPoliciesController {
     def show(Long id) {
 		def user = springSecurityService.currentUser
 		def admin = 0;
-		if (user.authorities.any { it.authority == "ROLE_PSADMIN"
-		}) {
-		admin = 1;
-			}
+		def adminAnzeige = 0;
+		if (user.authorities.any { it.authority == "ROLE_PSADMIN"}) {
+			admin = 1;
+		}
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			adminAnzeige = 1;
+		}
         def conversionPoliciesInstance = ConversionPolicies.get(id)
 				
         if (!conversionPoliciesInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'conversionPolicies.label', default: 'ConversionPolicies'), id])
-            redirect(action: "list")
+            redirect(action: "list", model:[user:user, admin:adminAnzeige])
             return
         } 
 		
@@ -124,22 +132,26 @@ class ConversionPoliciesController {
 		mapping = fm.findAll("from FormatMapping where puid = :puid", [puid : conversionPoliciesInstance.source_format])
 		ext = mapping.extension
 		
-        [conversionPoliciesInstance: conversionPoliciesInstance, admin: admin, 
+        [conversionPoliciesInstance: conversionPoliciesInstance, adminAllg: admin, admin: adminAnzeige, user: user,
 			extension : ext.replace("[", "").replace("]","")]
     }
 
 	
 	@Secured(['ROLE_PSADMIN'])
     def edit(Long id) {
-      
+		def user =  springSecurityService.currentUser
+        def admin = 0
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			admin = 1;
+		}
 		def conversionPoliciesInstance = ConversionPolicies.get(id)
-        if (!conversionPoliciesInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'conversionPolicies.label', default: 'ConversionPolicies'), id])
-            redirect(action: "list")
-            return
-        }
+	    if (!conversionPoliciesInstance) {
+	        flash.message = message(code: 'default.not.found.message', args: [message(code: 'conversionPolicies.label', default: 'ConversionPolicies'), id])
+	        redirect(action: "list", model:[admin: admin, user: user])
+	        return
+	    }
 
-        [conversionPoliciesInstance: conversionPoliciesInstance]
+        [conversionPoliciesInstance: conversionPoliciesInstance, admin: admin, user: user]
     } 
 
 	@Secured(['ROLE_PSADMIN'])

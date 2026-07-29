@@ -20,6 +20,7 @@ package daweb3
 
 import org.apache.commons.logging.LogFactory
 
+
 /**
  * Create a queue entry in dedicated state
  * @author Jens Peters, Sebastian Cuy
@@ -50,8 +51,7 @@ class QueueUtils {
 		
 		if (object == null) throw new IllegalArgumentException ( "Object is not valid" )
 		if (responsibleNodeName == null) throw new IllegalArgumentException("responsibleNodeName must not be null")
-		object.setObject_state(50)
-
+		object.setObjectState(50)
 		LOG.debug("Create job object.user.shortName: " + object.user.shortName)
 	
 		def list = QueueEntry.findByObj(object)
@@ -60,7 +60,7 @@ class QueueUtils {
 		def job = new QueueEntry()
 		job.setStatus(status)
 		job.setObj(object);
-		if (additionalQuestion!=null || additionalQuestion!= "")
+		if (additionalQuestion!=null && !additionalQuestion.equals(""))
 			job.setQuestion(additionalQuestion)
 			
 		job.setCreatedAt(new Date())
@@ -68,24 +68,23 @@ class QueueUtils {
 		
 		job.setInitialNode(responsibleNodeName)
 		
-					
+					 
 		def errorMsg = ""
-		if( !object.save() ) {	
+		if( !object.save(flush: true) ) {	
 			object.errors.each { errorMsg += it }
 			LOG.error "Saving object failed " + errorMsg
 			throw new Exception(errorMsg)
 		}
 		errorMsg = ""
-		if( !job.save()  ) {
+		if( !job.save(flush: true)  ) {
 			job.errors.each { errorMsg += it }
 			LOG.error "Saving job failed " + errorMsg
 			throw new Exception(errorMsg)
 		}
-		
 	}
+	
 	String createJob( daweb3.Object object, status, responsibleNodeName) {
-		return createJob(object,status,responsibleNodeName, "" )
-		
+		return createJob(object,status,responsibleNodeName, "" )	
 	}
 	/**
 	 * Modifies a job and sets it to new Workflow state
@@ -109,7 +108,7 @@ class QueueUtils {
 				}
 				throw new Exception(errorMsg)
 			}
-			return "Paket "+ id +"  in Status: " + newStatus + " " + additionalAnswer 
+			return "Paket "+ id  + " (Identifier: " +  queueEntryInstance.obj.identifier + ")" +"  in Status: " + newStatus + " " + additionalAnswer 
 		} else return "Paket nicht gefunden!"
 	}
 	/**

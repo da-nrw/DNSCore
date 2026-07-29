@@ -28,7 +28,7 @@ The documentation will be restructured to match the several users need. Please s
 
 ### Basic configuration 
 * [Controlling](administration-services.de.md) the application. Description of the non gui interfaces to the application.
-* config.properties - reference documentation (english](administration_config_properties_reference.de.md)).
+* config.properties - reference documentation (english) []administration_config_properties_reference.de.md)).
 * beans.xml - reference documentation ([english](administration-beans.md))
 * Processing stages - reference documentation ([english](processing_stages.md))
 * The DNSCore installer script ([english](administration-the-installer.md)|[deutsch](administration-the-installer.de.md))
@@ -46,7 +46,7 @@ The documentation will be restructured to match the several users need. Please s
 * [click here](installation_open_ports.md) for a list of ports your firewall has to allow connections to.
 * How to how to setup DNSCore for iRODS [PAM](using_iRODS_PAM_auth.md) Authentication
 * How to extend the minimal installation to work with [iRODS](installation_irods_cb.md).
-* How to connect DNSCore and [Fedora](install_fedora.md).
+* How to connect DNSCore and [Fedora](install_fedora.de.md).
 * [How to setup iRODS for Presentation Repository](installation_setup_irods.md)
 
 
@@ -55,11 +55,11 @@ The documentation will be restructured to match the several users need. Please s
 ### Enhancing the functions of DNSCore
 
 * Building and testing DNSCore ([english](development_deploy.md))
-* Build and Deploy DAWeb ([english](../../../../DAWeb/doc/setup.md))
+* Build and Deploy DAWeb ([english](daweb_setup.md))
 * Setting up Continuous Integration for DNSCore builds ([english](development_setting_up_ci.md))
 * System components overview ([english](components_connectors.md))
 * 3rd party modules ([english](3rdPartyTools.md))
-* Metadata Workflow - Overview (english](metadata_workflow.md))
+* Metadata Workflow - Overview ([english](metadata_workflow.md))
 
 ### Java API documentation
 
@@ -78,11 +78,7 @@ General overview you'll find it under:
 
      ContentBroker/src/main/markdown/
 
-For more information on DA-Web User Interface refer to:
-
-    DAWeb/doc
-
-All the links below refer to documentation stored in one of these places.
+All the links below refer to documentation stored in this place.
 
 **Note** that under the abovementioned links you'll always find the documentation attached to the master (e.g. snapshot) version. In most cases this should be what you need. In rare cases however, you want a documentation artifact that matches the exact state of implementation. In these cases you can go to
 the releases page, follow the source code link for the corresponding version and then search for the document you're after in this special repository snapshot.

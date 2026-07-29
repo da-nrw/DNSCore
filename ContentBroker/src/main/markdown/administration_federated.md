@@ -31,7 +31,7 @@ mode, you could decide to run DNSCore and iRODS in the so called "federated mode
 forming a releativley loosley coupled Federation in terms of iRODS Servers, with all the advantages and disadvantages this may impose to you. 
 
 In this topology your nodes admins should be able to administer iRODS Master servers and the federation itself
-(See iRODS documentation about this: https://irods.sdsc.edu/index.php/Federation_Administration). 
+(See iRODS documentation about this: https://docs.irods.org/4.2.3/system_overview/federation). 
 
 Most of the effort has to be done once during setup. The daily maintenance is quite easy and does not differ by scales from the single zone administration effort at the nodes.
 
@@ -54,7 +54,7 @@ As needed by iRODs Installation you will need PostgreSQL Database support at eac
 1. Running iRODS Server > 3.2 at zoneA ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/installation_irods_cb.md))
 1. Running iRODS Server > 3.2 at zoneB
 1. Running ContentBroker 
-1. Running Federation between zoneA and zoneB https://irods.sdsc.edu/index.php/Federation_Administration) 
+1. Running Federation between zoneA and zoneB https://docs.irods.org/4.2.3/system_overview/federation) 
 1. Federated RuleSet dns.re from ([here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/rules/irodsFederatedGridFacade/dns.re)) activated 
 in server.config. 
 

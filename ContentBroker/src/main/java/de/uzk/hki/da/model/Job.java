@@ -92,10 +92,14 @@ public class Job {
 	private Date static_nondisclosure_limit_institution;
 	
 	private String dynamic_nondisclosure_limit_institution;
-	
+
+	@Column(name="error_text", columnDefinition="varchar(2040)")
+	private String errorText;
+
 	@Column(columnDefinition="varchar(50)")
 	private String container_extension;
 	
+
 	/** The contractor. */
 //	@ManyToOne
 //	@PrimaryKeyJoinColumn( name = "user_id" )
@@ -423,5 +427,13 @@ public class Job {
 
 	public void setAction_name(String actionName) {
 		this.action_name = actionName;
+	}
+
+	public String getErrorText() {
+		return errorText;
+	}
+
+	public void setErrorText(String errorText) {
+		this.errorText = errorText;
 	}
 }

@@ -31,7 +31,8 @@ import java.util.List;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -48,6 +49,7 @@ import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.SimpleLicenseAppender;
 import de.uzk.hki.da.utils.StringUtilities;
 import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.XMLUtils;
 import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Element;
@@ -61,7 +63,7 @@ import nu.xom.Elements;
  */
 public class Cli {
 	
-	private static Logger logger = Logger.getLogger( Cli.class );
+	private static Logger logger = LogManager.getLogger(Cli.class);
 
 	private String confFolderPath;
 	private String[] args;
@@ -660,7 +662,8 @@ public class Cli {
     	XMLReader xmlReader = null;
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		try {
-			xmlReader = spf.newSAXParser().getXMLReader();
+			//xmlReader = spf.newSAXParser().getXMLReader();
+			xmlReader=XMLUtils.createValidatingSaxParser().getXMLReader();
 		} catch (Exception e) {
 			logger.error("Failed to create SAX parser", e);
 			System.out.println("Fehler beim Einlesen der SIP-Liste: SAX-Parser konnte nicht erstellt werden.");
@@ -800,7 +803,8 @@ public class Cli {
 		System.out.println("   -destination=\"[Pfad]\"     Angabe des Zielordners, in dem die SIPs erstellt werden sollen");
 		System.out.println("");
 		System.out.println("   -default                  Standardrechte verwenden (Standard)");
-		System.out.println("   -premis=\"[Pfad]\"          Angabe der Contract Rights durch eine Premis-Datei");
+/*Vorläufige deaktivierung der -premis Option. kollidiert momentan stark mit der -rights option */ 
+		//System.out.println("   -premis=\"[Pfad]\"          Angabe der Contract Rights durch eine Premis-Datei");
 		System.out.println("   -rights=\"[Pfad]\"          Angabe der Contract Rights durch eine vormals per SIP-Builder erstellte Rechte-Datei");
 		System.out.println("");
 		System.out.println("   -multiple                 "+C.KIND_OF_SIPBUILDING_MULTIPLE);

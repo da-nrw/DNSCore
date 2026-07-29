@@ -9,9 +9,9 @@ more $LASTLOG | grep '>>>TestFailure' | cut -d ':' -f 2 | sort > LastFailureList
 echo "--------------------------------------------------"
 echo " "
 
-#grep -vf ExpectedFuilureList.txt LastFailureList.txt || echo 'Last Regression-Test OK'
+#grep -vf ExpectedFailureList.txt LastFailureList.txt || echo 'Last Regression-Test OK'
 
-newErrors=`grep -vf ExpectedFuilureList.txt LastFailureList.txt`
+newErrors=`grep -vf ExpectedFailureList.txt LastFailureList.txt`
 
 if [ "$newErrors" != "" ] ; then 
 	echo "Unexpected Fails: "; 

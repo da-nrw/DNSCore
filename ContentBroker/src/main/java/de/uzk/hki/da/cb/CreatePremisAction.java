@@ -50,6 +50,7 @@ import de.uzk.hki.da.model.ObjectPremisXmlWriter;
 import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.model.PremisXmlValidator;
 import de.uzk.hki.da.model.PublicationRight;
+import de.uzk.hki.da.model.WorkArea;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 
@@ -113,7 +114,7 @@ public class CreatePremisAction extends AbstractAction {
 		newPREMISObject.setContractor(o.getContractor());
 		newPREMISObject.setDdbExclusion(o.ddbExcluded());
 		newPREMISObject.setLicense_flag(o.getLicense_flag());
-		
+		newPREMISObject.setMinimalIngestQLevel(o.getMinimalIngestQLevel());
 	
 		Object sipPREMISObject = parsePremisFile(
 				new File(Path.make(wa.dataPath(),o.getNameOfLatestBRep(),PREMIS).toString().replace("+b", "+a")));
@@ -142,14 +143,23 @@ public class CreatePremisAction extends AbstractAction {
 		File newPREMISXml = Path.make(wa.dataPath(), 
 				o.getNameOfLatestBRep(),PREMIS).toFile();
 		logger.trace("trying to write new Premis file at " + newPREMISXml.getAbsolutePath());
-		new ObjectPremisXmlWriter().serialize(newPREMISObject, newPREMISXml,Path.make(wa.dataPath(),"jhove_temp"));
+		new ObjectPremisXmlWriter().serialize(newPREMISObject, newPREMISXml,Path.make(wa.dataPath(),WorkArea.TMP_JHOVE));
 		
 		try {
 			if (!PremisXmlValidator.validatePremisFile(newPREMISXml))
 				throw new RuntimeException("PREMIS that has recently been created is not valid");
 		} catch (SAXException e) {
 			logger.error(e.getMessage());
-			throw new RuntimeException("PREMIS that has recently been created is not valid: "+e.getMessage());
+			/*
+			 * https://github.com/openpreserve/jhove/issues/111
+			 * AES doent provide XSD for the defintion AES X098B ( url for the namespace: http://www.aes.org/tcf). 
+			 * It is not an error of jhove but it is not really solveable until XSD is publicly available.
+			 * */
+			if(e.getMessage().contains("Cannot resolve 'tcf:ntscFilmFramingType' to a type definition for element 'tcf:filmFraming'")) {
+				logger.error("Exception will be eaten: "+e.getMessage());
+			}else {
+				throw new RuntimeException("PREMIS that has recently been created is not valid: "+e.getMessage());
+			}
 		}
 		logger.trace("Successfully created premis file");
 		o.getLatestPackage().getFiles().add(new DAFile(j.getRep_name()+"b",PREMIS));
@@ -180,7 +190,8 @@ public class CreatePremisAction extends AbstractAction {
 			
 			Package newPREMISPackage = new Package();
 			newPREMISPackage.setId(o.getLatestPackage().getId());
-			newPREMISPackage.setName(mainPREMISPackage.getName());
+			newPREMISPackage.setDelta(mainPREMISPackage.getDelta());
+			newPREMISPackage.setRepair(mainPREMISPackage.getRepair());
 			newPREMISPackage.setContainerName(mainPREMISPackage.getContainerName());
 			newPREMISPackage.setFiles(mainPREMISPackage.getFiles());
 			newPREMISPackage.setEvents(mainPREMISPackage.getEvents());
@@ -261,7 +272,7 @@ public class CreatePremisAction extends AbstractAction {
 		return ingestEventElement;		
 	}
 	
-	private Object parsePremisFile(File premisFile) {
+	public static Object parsePremisFile(File premisFile) {
 		
 		Object premisData;
 		
@@ -322,7 +333,7 @@ public class CreatePremisAction extends AbstractAction {
 		try {
 			FolderUtils.deleteDirectorySafe(tempFolder);
 		} catch (IOException e) {
-			throw new RuntimeException("Failed to delete directory " + tempFolder);
+			throw new RuntimeException("Failed to delete directory " + tempFolder,e);
 		}
 	}
 		

@@ -19,16 +19,17 @@
 
 package de.uzk.hki.da.pkg;
 
-import gov.loc.repository.bagit.Bag;
-import gov.loc.repository.bagit.BagFactory;
-import gov.loc.repository.bagit.utilities.SimpleResult;
-
-import java.io.File;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import gov.loc.repository.bagit.domain.Bag;
+import gov.loc.repository.bagit.reader.BagReader;
+import gov.loc.repository.bagit.verify.BagVerifier;
 
 
 
@@ -62,18 +63,21 @@ public class BagitConsistencyChecker implements ConsistencyChecker {
 	public boolean checkPackage() {
 		
 		logger.debug("Starting BagIt consistency check.");
-		
-		BagFactory bagFactory = new BagFactory();
-		Bag bag = bagFactory.createBag(new File(packagePath));
-		SimpleResult result = bag.verifyValid();
-		messages = result.getMessages();
-		
-		logger.debug("verifyPayloadManifest returned: " + bag.verifyPayloadManifests().isSuccess());
-		logger.debug("verifyComplete returned: " + bag.verifyComplete().isSuccess());
-		logger.debug("verifyTagManifests returned: " + bag.verifyTagManifests().isSuccess());
-		logger.debug("verifyValid returned: " + bag.verifyValid().isSuccess());
-		
-		return result.isSuccess();
+		BagVerifier sut = new BagVerifier();
+		BagReader reader = new BagReader();
+		Bag bagVer;
+		try {
+			bagVer = reader.read(Paths.get(packagePath));
+			sut.isValid(bagVer, false);
+			//sut.isComplete(bagVer, false); isValid do it already
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			messages = Arrays.asList(e.getMessage());
+			logger.debug("BagIt verification failed: " + e.toString());
+			return false;
+		}
+		return true;
 	}
 
 	/* (non-Javadoc)

@@ -61,6 +61,7 @@
     <bean id="ingestAreaScannerWorker" class="de.uzk.hki.da.core.IngestAreaScannerWorker" init-method="init">
         <property name="ingestAreaRootPath" value="${localNode.ingestAreaRootPath}" />
         <property name="localNodeId" value="${localNode.id}" />
+        <property name="maxQueueCount" value="300" />
         <property name="minAge" value="2000" />
         <property name="registerObjectService" ref="registerObjectService" />
     </bean>
@@ -91,9 +92,14 @@
         <property name="localNodeId" value="${localNode.id}" />
         <property name="gridFacade" ref="${cb.implementation.grid:fakeGridFacade}" />
      </bean>
+	<bean id="repairWorker" class="de.uzk.hki.da.core.RepairWorker" init-method="init">
+		<property name="localNodeId" value="${localNode.id}" />
+		<property name="zoneName" value="${irods.zone}" />
+		<property name="replDestinations" value="${localNode.replDestinations}" />
+	</bean>
     <bean id="checksumWorker" class="de.uzk.hki.da.core.ChecksumWorker" init-method="init">
-        <property name="localNodeId" value="${localNode.id}" />
-        <property name="secondaryCopyPrefix" value="federated" />
+        <property name="localNodeId" value="${checksumNode.id:${localNode.id}}" />
+        <property name="secondaryCopyPrefix" value="${checksumNode.secondaryCopyPrefix:federated}" />
         <property name="gridFacade" ref="${cb.implementation.grid:fakeGridFacade}" />
         <property name="trustChecksumForDays" value="${checksumWorker.trustChecksumForDays}" />
         <property name="allowedNumOfCopyjobs" value="${checksumWorker.allowedNumOfCopyjobs}" />

@@ -158,7 +158,7 @@ public class UnpackNoBagitAction extends AbstractAction {
 				try {
 					FolderUtils.deleteDirectorySafe(files[0]);
 				} catch (IOException e) {
-					throw new RuntimeException("couldn't delete folder " + files[0].getAbsolutePath());
+					throw new RuntimeException("couldn't delete folder " + files[0].getAbsolutePath(),e);
 				}
 			}		
 		 

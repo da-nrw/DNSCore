@@ -6,7 +6,7 @@ install DNSCore on CentOS 6:
     Imagemagick 6.7.8-10
     postgres-client min. 9
     unzip
-    tomcat 6
+    tomcat 7
     apache2
     identify
     apache-mod-ssl
@@ -14,7 +14,7 @@ install DNSCore on CentOS 6:
     apache-mod-proxy
     gcc
     gcc-c++
-    java 1.6 JDK 
+    java 1.8 JDK 
     jar
     Ghostscript 9.07
     python 2.7

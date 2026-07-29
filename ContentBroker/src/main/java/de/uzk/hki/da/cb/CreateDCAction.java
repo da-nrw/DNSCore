@@ -154,7 +154,7 @@ public class CreateDCAction extends AbstractAction {
 			in=new FileInputStream(
 				wa.pipMetadataFile(audience,METADATA_STREAM_ID_DC));
 			
-			SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+			SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 			Document doc = null;
 			doc=builder.build(in);
 			doc.getRootElement().addContent(

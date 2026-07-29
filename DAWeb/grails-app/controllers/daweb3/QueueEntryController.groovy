@@ -41,6 +41,10 @@ class QueueEntryController {
         redirect(action: "list", params: params)
     }
 
+	def cancel() {
+		redirect(action: "list")
+	}
+	
     def list() {
 		def contractorList
 		def cbNodeList = CbNode.list()
@@ -298,7 +302,7 @@ class QueueEntryController {
 		
 		try {
 			def res = que.modifyJob(params.id, "800")
-			flash.message = "Paket zur Löschung vorgesehen! " + res
+			flash.message = "Paket zur Löschung vorgesehen! " + res 
 		} catch (Exception e) {
 			log.error("Löschung aus Workflow fehlgeschlagen für " + params.id + " " + e.printStackTrace())
 			print("Löschung aus Workflow fehlgeschlagen für " + params.id + " " + e.printStackTrace())
@@ -320,7 +324,7 @@ class QueueEntryController {
 					def msg = ""
 					modifyIds.each {
 						que.modifyJob(it, "800")
-					}
+					}params
 					flash.message = " (" +modifyIds.size() + ") Pakete zur Löschung vorgesehen! "
 			
 		} catch (Exception e) {
@@ -328,6 +332,30 @@ class QueueEntryController {
 			flash.message = "Löschungen aus Workflow fehlgeschlagen!"
 		}
 		params.remove("modifyIds")
+		redirect(action: "list")
+	}
+	
+	
+	/**
+	 * queueRecover563: if a package is in state 563 it can be set back to state 550
+	 * @author gabender
+	 * @return
+	 */
+	@Secured(['ROLE_NODEADMIN'])
+	def queueRecover563() {
+		
+		println (" ###### start of queueRecover563 ####")
+		
+		print("QueEntryController: queueRecover563")
+		
+		try {
+			def res = que.modifyJob(params.id, "550")
+			flash.message = "Paket zurückgesetzt auf 550! " + res
+		} catch (Exception e) {
+				log.error("Recovery failed for " + params.id + " " + e.printStackTrace())
+				flash.message = "Ein Fehler trat auf beim Zurücksetzen"
+		}
+		
 		redirect(action: "list")
 	}
 
@@ -341,12 +369,18 @@ class QueueEntryController {
 		User user = springSecurityService.currentUser
 		def queueEntries
 		def admin = 0;
+		def adminAnzeige = 0;
 		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
 			admin = 1;
 		} 
 		if (user.authorities.any { it.authority == "ROLE_PSADMIN"}) {
 			admin = 1;
 		} 
+		
+		if (user.authorities.any { it.authority == "ROLE_NODEADMIN" }) {
+			adminAnzeige = 1;
+		}
+		
 		if (params.search==null){
 			if (admin != 1) {
 				queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn and q.question is not null and q.question !='' and (q.status like '%5' OR q.status like '%4')",
@@ -356,9 +390,10 @@ class QueueEntryController {
 				
 			}
 			[queueEntryInstanceList: queueEntries,
-				admin:admin, user:user ]
+				admin:adminAnzeige, user:user ]
 		}
 	}
+	
 	/**
 	 * Applies status and functionality to answer with yes on migration requests
 	 */
@@ -389,6 +424,31 @@ class QueueEntryController {
 		}
 		redirect(action: "listRequests")
 		return
+	}
+
+	
+	def deleteSip() {
+		User us = springSecurityService.currentUser
+		def queueEntries = null
+		
+		log.info("fehlerhafte SIP's des Contractors "  + us.getShortName()) +  " werden gelöscht.";
+		def contractorList = User.list()
+			try {
+			   queueEntries = QueueEntry.findAll("from QueueEntry as q where q.obj.user.shortName=:csn" + 
+				   " and q.status < '400' and ( q.status like ('%1') or q.status like ('%3') " + 
+				   " or  q.status like ('%4') or q.status like ('%6')) ", 
+             [csn: us.getShortName()]
+			 )
+			 flash.message = " (" + queueEntries.size() + ") Pakete zur Löschung vorgesehen! "
+			queueEntries.each {
+				que.modifyJob(it.id.toString(), "800")
+			}			
+		} catch (Exception e) {
+			log.error("Löschungen aus Workflow fehlgeschlagen" + e.printStackTrace())
+			flash.message = "Löschungen aus Workflow fehlgeschlagen!"
+		}
+		
+		redirect(action: "list")
 	}
 
 }

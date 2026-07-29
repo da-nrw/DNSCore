@@ -28,6 +28,7 @@ import org.hibernate.sql.JoinType
 
 class QueueEntry {
 	
+	private static final String WORKFLOW_STATUS_DIGIT_WAITING_FOR_DECISION="645";  
 	private static final String WORKFLOW_STATUS_DIGIT_USER_ERROR="4";
 	private static final String WORKFLOW_STATUS_DIGIT_WAITING="0";
 	private static final String WORKFLOW_STATUS_DIGIT_WORKING="2";
@@ -37,6 +38,8 @@ class QueueEntry {
 	private static final String WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET = "6";
 	private static final String WORKFLOW_STATUS_DIGIT_ERROR_BAD_CONFIGURATION = "7";
 	private static final String WORKFLOW_STATUS_DIGIT_UP_TO_ROLLBACK = "8";
+	// DANRW-1655 28.12.2020
+	private static final String WORKFLOW_STATUS_DIGIT_ERROR_563 = "563";
 	
 	int id
 	String status
@@ -46,6 +49,7 @@ class QueueEntry {
 	Object obj
 	String question
 	String answer
+	String errorText
 
     static constraints = {
 		status(nullable:false)
@@ -53,6 +57,7 @@ class QueueEntry {
 		modifiedAt(nullable:true)
 		question(nullable:true)
 		answer(nullable:true)
+		errorText(nullable:true)
 	}
 	
 	static mapping = {
@@ -63,13 +68,13 @@ class QueueEntry {
 		// necessary because dateCreated and dateModified seem to be reserved by grails
 		createdAt column: 'created_at'
 		modifiedAt column: 'modified_at'
+		errorText column: 'error_text'
 	}
-	
 	
 	static List getAllQueueEntriesForShortNameAndUrn(String shortName, String urn) {
 		return createCriteria().list  {
 			createAlias('obj', 'o', JoinType.INNER_JOIN.getJoinTypeValue()) //CriteriaSpecification.INNER_JOIN)
-			createAlias('o.user', 'user', JoinType.INNER_JOIN.getJoinTypeValue) // CriteriaSpecification.INNER_JOIN)
+			createAlias('o.user', 'user', JoinType.INNER_JOIN) // CriteriaSpecification.INNER_JOIN)
 			eq("user.shortName", shortName)
 			eq("o.urn", urn)
 		}
@@ -116,6 +121,19 @@ class QueueEntry {
 		if (checkfor.contains(ch)) return true;
 		return false;
 	}
+
+	/**
+	 * 	
+	 * @return
+	 */
+	boolean showTrafficLightYellow() {
+		def checkfor = [
+			WORKFLOW_STATUS_DIGIT_WAITING_FOR_DECISION]
+		def ch = status
+		if (checkfor.contains(ch)) return true;
+		return false;
+	}
+
 	
 	/**
 	 * 
@@ -158,6 +176,7 @@ class QueueEntry {
 	
 	boolean showRecoverButton() {
 		def checkfor = [
+			WORKFLOW_STATUS_DIGIT_ERROR_PROPERLY_HANDLED,   // DANRW-1614
 			WORKFLOW_STATUS_DIGIT_ERROR_BAD_ROLLBACK,
 			WORKFLOW_STATUS_DIGIT_ERROR_MODEL_INCONSISTENT,
 			WORKFLOW_STATUS_DIGIT_ERROR_PRECONDITIONS_NOT_MET]
@@ -183,6 +202,21 @@ class QueueEntry {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * @author gabender
+	 * Show RetryButton if state is 563
+	 * @return
+	 */
+	boolean showRecoverButton563() {
+		def checkfor = [
+			WORKFLOW_STATUS_DIGIT_ERROR_563]
+		def ch = status
+		if (checkfor.contains(ch)) {
+			if (getStatusAsInteger() == 563) return true;
+		}
+		return false; 
 	}
 	
 	String getIdAsString(){

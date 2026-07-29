@@ -11,7 +11,8 @@ import java.util.List;
 import java.util.TreeMap;
 
 import org.apache.commons.io.input.BOMInputStream;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
@@ -28,7 +29,7 @@ import de.uzk.hki.da.utils.FormatDetectionService;
 
 public class NestedContentStructure {
 	
-	private Logger logger = Logger.getLogger(NestedContentStructure.class);
+	private Logger logger = LogManager.getLogger(NestedContentStructure.class);
 	
 	public File rootFile;
 	public HashMap<File, String> sipCandidatesWithUrns = new HashMap<File, String>();
@@ -123,7 +124,7 @@ public class NestedContentStructure {
 	}
 	
 	private Document getDocumentFromFile(File file) throws IOException, JDOMException {
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();		
 		FileInputStream fileInputStream = new FileInputStream(file);
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
 		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");

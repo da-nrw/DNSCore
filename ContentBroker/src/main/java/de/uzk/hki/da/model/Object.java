@@ -145,6 +145,9 @@ public class Object {
 	/** The published_flag. */
 	private int published_flag=C.PUBLISHEDFLAG_UNDEFINED;
 	
+	@Column(name="quality_flag", columnDefinition="INTEGER DEFAULT "+C.QUALITYFLAG_DEFAULT)
+	private int quality_flag=C.QUALITYFLAG_DEFAULT;
+	
 	
 	/** The last_checked. */
 	private Date last_checked;
@@ -185,6 +188,9 @@ public class Object {
 	
 	@Column(name="license_flag")
 	private int license_flag=C.LICENSEFLAG_UNDEFINED;
+	
+	@Column(name="aip_size")
+	private long aip_size=C.UNKNOWN_FILESIZE; //as ByteCount
 
 	/** The rights. */
 	@Transient
@@ -193,6 +199,9 @@ public class Object {
 	/** The agents. */
 	@Transient
 	private Set<Agent> agents = new HashSet<Agent>();
+	
+	@Transient
+	private int minimalIngestQLevel=-1;
 	
 	/** The contractor. */
 	@ManyToOne
@@ -792,12 +801,12 @@ public class Object {
 		if (getPackages().size()==0) throw new IllegalStateException("no packages associated");
 
 		Package max = null;
-		int maxnumber=0;
+		int maxDelta=0;
 		
-		for (Package p:getPackages()){
-			if (Integer.parseInt(p.getName())>maxnumber){
-				maxnumber = Integer.parseInt(p.getName());
-				max = p;
+		for (Package pack : getPackages()){
+			if (pack.getDelta() > maxDelta){
+				maxDelta = pack.getDelta();
+				max = pack;
 			}
 		}
 		return max;
@@ -898,9 +907,34 @@ public class Object {
 		
 		return files;
 	}
-	
-	
-	
-	
+
+	public int getQuality_flag() {
+		return quality_flag;
+	}
+
+	public void setQuality_flag(int quality_flag) {
+		this.quality_flag = quality_flag;
+	}
+
+	public int getMinimalIngestQLevel() {
+		return minimalIngestQLevel;
+	}
+
+	public void setMinimalIngestQLevel(int minimalIngestQLevel) {
+		this.minimalIngestQLevel = minimalIngestQLevel;
+	}
+
+	public long getAip_size() {
+		return aip_size;
+	}
+
+	/**
+	 * Expect Byte count
+	 * @param aip_size
+	 */
+	public void setAip_size(long aip_size) {
+		this.aip_size = aip_size;
+	}
+
 	
 }

@@ -58,6 +58,7 @@ import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.FriendlyFilesUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.RelativePath;
+import de.uzk.hki.da.utils.StringUtilities;
 import de.uzk.hki.da.utils.XMLUtils;
 
 /**
@@ -106,6 +107,10 @@ public class UpdateMetadataAction extends AbstractAction {
 		logger.debug("UpdateMetadataAction ...");
 		
 		if (this.presMode) {
+			if (!StringUtilities.isSet(preservationSystem.getPresServer())){
+				return true;
+			}
+
 			if (Boolean.TRUE.equals(o.getContractor().isUsePublicMets())) {
 				DAFile srcMetadataFile = o.getLatest(C.PUBLIC_METS);
 				if (srcMetadataFile == null){

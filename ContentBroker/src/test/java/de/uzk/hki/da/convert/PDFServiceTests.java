@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPageTree;
 import org.junit.After;
 import org.junit.Test;
 
@@ -31,7 +32,8 @@ public class PDFServiceTests {
 		
 		service.reduceToCertainPages("5", ""); // src doc only has one page
 		PDDocument trgt = PDDocument.load(new File(BASE_DIR+"/trgt.pdf"));
-		assertThat(trgt.getDocumentCatalog().getAllPages().size()).isEqualTo(1);
+//		assertThat(trgt.getDocumentCatalog().getAllPages().size()).isEqualTo(1);
+		assertThat(trgt.getPages().getCount()).isEqualTo(1);
 	}
 	
 	
@@ -42,7 +44,8 @@ public class PDFServiceTests {
 		
 		service.reduceToCertainPages("", "1 3 5"); // src doc only has one page
 		PDDocument trgt = PDDocument.load(new File(BASE_DIR+"/trgt.pdf"));
-		assertThat(trgt.getDocumentCatalog().getAllPages().size()).isEqualTo(1);
+//		assertThat(trgt.getDocumentCatalog().getAllPages().size()).isEqualTo(1);
+		assertThat(trgt.getPages().getCount()).isEqualTo(1);
 	}
 	@Test
 	public void testCertainPagesGivenNullValues() throws IOException{
@@ -51,7 +54,8 @@ public class PDFServiceTests {
 		
 		service.reduceToCertainPages(null, null); // src doc only has one page
 		PDDocument trgt = PDDocument.load(new File(BASE_DIR+"/trgt.pdf"));
-		assertThat(trgt.getDocumentCatalog().getAllPages().size()).isEqualTo(1);
+//		assertThat(trgt.getDocumentCatalog().getAllPages().size()).isEqualTo(1);
+		assertThat(trgt.getPages().getCount()).isEqualTo(1);
 	}
 
 }

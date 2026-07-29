@@ -76,7 +76,7 @@ public class ATMetadataWithRelativeReferencesEad extends AcceptanceTest {
 			}
 		}
 		
-		SAXBuilder builder1 = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder1 = XMLUtils.createValidatingSaxBuilder();
 		
 		Document doc0 = builder1.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, "EAD_Export.XML").toFile()));
@@ -85,7 +85,7 @@ public class ATMetadataWithRelativeReferencesEad extends AcceptanceTest {
 			assertTrue(metsRef.contains("./mets_361/mets_2_3204"));
 		}
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		
 		Document doc1 = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, "mets_361", "mets_2_32044.xml").toFile()));
@@ -117,13 +117,13 @@ public class ATMetadataWithRelativeReferencesEad extends AcceptanceTest {
 	@Test
 	public void testPres() throws FileNotFoundException, JDOMException, IOException {
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		Document doc = builder.build(new FileReader(ath.loadFileFromPip(o.getIdentifier(), "mets_361/mets_2_32044.xml")));
 		assertTrue(getMetsURL(doc).contains(preservationSystem.getUrisFile()));
 		assertEquals(URL, getLoctype(doc));
 		assertEquals(C.MIMETYPE_IMAGE_JPEG, getMetsMimetype(doc));
 		
-		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder eadSaxBuilder = XMLUtils.createValidatingSaxBuilder();
 		Document eadDoc = eadSaxBuilder.build(new FileReader(ath.loadFileFromPip(o.getIdentifier(), EAD_XML)));
 		List<String> metsReferences = getMetsRefsInEad(eadDoc);
 		assertTrue(metsReferences.size()==5);

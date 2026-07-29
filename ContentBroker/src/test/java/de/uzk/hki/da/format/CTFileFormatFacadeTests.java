@@ -21,8 +21,11 @@ package de.uzk.hki.da.format;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +37,7 @@ import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.test.CTTestHelper;
 import de.uzk.hki.da.test.TC;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.IOTimeoutException;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -154,5 +158,61 @@ public class CTFileFormatFacadeTests {
 		sfff.identify(testPath,files,false);
 		assertTrue(files.get(0).getSubformatIdentifier().equals("Group4"));
 
+	}
+	
+	/**
+	 * Test ist zum Testen des Timeouts C.JHOVE_FIDO_TIMEOUT.
+	 * Da es normallerweise zu lange dauert ist der Test deaktiviert, 
+	 * zum Aktivieren muss die Variable activeTest=true sein;
+	 * 
+	 * @throws IOException
+	 */
+	@Test
+	public void pronomFormatIdentificationNoTimeOut() throws IOException{
+		
+		FormatScanService oldFSS=sfff.getFormatScanService();
+		long timeBefore=0;
+		long timeAfter=0;
+		boolean timeoutExceptiopnRaised=false;
+		/**
+		 * Set to true for active Timeout testing, 
+		 */
+		boolean activeTest=false;
+		try {
+			FormatScanService newFSS=new FidoFormatScanService();
+			Field field = FidoFormatScanService.class.getDeclaredField("pronom");
+			field.setAccessible(true); // Force to access the field
+			File waitScript=new File(testPath+"/timeOutFido.sh");
+			System.out.println(waitScript.getAbsolutePath());
+			field.set(newFSS, new ScriptWrappedPronomFormatIdentifier(waitScript));
+			// Get value
+			//Object value = field.get(yourClassInstance);
+			
+			sfff.setFormatScanService(newFSS);
+			
+			files.add(new SimpleFileWithFileFormat(Path.makeFile("health check.tif")));
+			timeBefore=System.currentTimeMillis();
+			if(activeTest)
+				sfff.identify(testPath,files,false);
+			timeAfter=System.currentTimeMillis();
+			
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+			fail("Fail to Test Timeout by Fido: "+e.getMessage());
+			
+		}catch(IOTimeoutException e){
+			//erwartetes verhalten, sofern die Zeit nicht abweicht
+			timeAfter=System.currentTimeMillis();
+			timeoutExceptiopnRaised=true;
+			double timeError=Math.abs(1.0-C.JHOVE_FIDO_TIMEOUT*1.0/(timeAfter-timeBefore));
+			if(timeError>0.02)//Falls die Abweichung grösser als 2% ist.
+				fail("Timeout-Test is Fail: Time="+(timeAfter-timeBefore)/1000.0+" Time Error="+timeError);
+			
+		}finally {
+			sfff.setFormatScanService(oldFSS);
+		}
+		if(activeTest&& !timeoutExceptiopnRaised)
+			fail("Fail to Test Timeout, No Exception raised: "+(timeAfter-timeBefore)/1000.0);
+		
 	}
 }

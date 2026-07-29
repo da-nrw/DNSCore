@@ -42,6 +42,7 @@ import org.xml.sax.XMLReader;
 
 import de.uzk.hki.da.metadata.PremisXmlReaderNodeFactory;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.XMLUtils;
 import nu.xom.Attribute;
 import nu.xom.Builder;
 import nu.xom.Document;
@@ -121,7 +122,8 @@ public class ObjectPremisXmlReader{
 		XMLReader xmlReader = null;
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		try {
-			xmlReader = spf.newSAXParser().getXMLReader();
+			//xmlReader = spf.newSAXParser().getXMLReader();
+			xmlReader=XMLUtils.createValidatingSaxParser().getXMLReader();
 		} catch (Exception e) {
 			reader.close();
 			throw new IOException("Error creating SAX parser", e);
@@ -229,7 +231,9 @@ public class ObjectPremisXmlReader{
 		
 		event.setDate(readDate(el.getFirstChildElement("eventDateTime", PREMIS_NS).getValue()));
 		
-		if (eventType.equals("CONVERT"))
+		/*if (eventType.equals("CONVERT"))
+			event.setDetail(el.getFirstChildElement("eventDetail", PREMIS_NS).getValue());*/
+		if (el.getFirstChildElement("eventDetail", PREMIS_NS)!=null && el.getFirstChildElement("eventDetail", PREMIS_NS).getValue()!=null)
 			event.setDetail(el.getFirstChildElement("eventDetail", PREMIS_NS).getValue());
 		
 		event.setAgent_type(Agent.getTypeForIdType(el.getFirstChildElement("linkingAgentIdentifier", PREMIS_NS)
@@ -268,7 +272,17 @@ public class ObjectPremisXmlReader{
 		if (eventType.toUpperCase().equals(C.EVENT_TYPE_CONVERT)
 				|| eventType.toUpperCase().equals(C.EVENT_TYPE_COPY)
 				|| eventType.toUpperCase().equals(C.EVENT_TYPE_CREATE)
+
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_CONVERSION)
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_VALIDATION)	
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_IDENTIFICATION)
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1)
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2)
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_3)
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4)
+				|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_5)
 				|| eventType.toUpperCase().equals(C.EVENT_TYPE_CONVERSION_SUPRESSED)) {
+
 			for (Package pkg : object.getPackages()) {
 				for (DAFile f : pkg.getFiles()) {
 					if (sourceFile.equals("") && outcomeFile.equals("")
@@ -281,7 +295,14 @@ public class ObjectPremisXmlReader{
 					
 					if (sourceFile.equals(f.getRep_name() + "/" + f.getRelative_path())) {
 						event.setSource_file(f);
-						if (event.getTarget_file() != null) {
+						if (event.getTarget_file() != null || eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_CONVERSION)
+								|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_VALIDATION)
+								|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_FAULT_IDENTIFICATION)
+								|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_1)
+								|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_2)
+								|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_3)
+								|| eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_4)
+								||eventType.toUpperCase().equals(C.EVENT_TYPE_QUALITY_CHECK_LEVEL_5)) {
 							pkg.getEvents().add(event);
 							eventAdded = true;
 							break;
@@ -320,7 +341,8 @@ public class ObjectPremisXmlReader{
 		if (!eventAdded) {
 			if (eventType.toUpperCase().equals("SIP_CREATION")
 					// DANRW-1452: Virus-Scan result must be print in the premis-file
-					|| eventType.toUpperCase().equals(C.EVENT_TYPE_VIRUS_SCAN))
+					|| eventType.toUpperCase().equals(C.EVENT_TYPE_VIRUS_SCAN)
+					)
 				object.getPackages().get(0).getEvents().add(event);
 			else
 				throw new RuntimeException("Premis file is not consistent: couldn't find object(s) referenced by event "
@@ -380,6 +402,18 @@ public class ObjectPremisXmlReader{
 			
 			Element ddbExclusionEl = rightsExtEl.getFirstChildElement("DDBexclusion", C.CONTRACT_NS);
 			object.setDdbExclusion(ddbExclusionEl != null);
+			
+			Element minimalIngestQualityLevelEl = rightsExtEl.getFirstChildElement("minimalIngestQualityLevel", C.CONTRACT_NS);
+			if(minimalIngestQualityLevelEl!=null){
+				int minimalLevel=Integer.parseInt(minimalIngestQualityLevelEl.getValue());
+				if(minimalLevel>=0){
+					logger.debug("Set Recognized MinimalIngestQLevel: " + minimalLevel);
+					object.setMinimalIngestQLevel(minimalLevel);
+				}else{
+					logger.debug("Recognized Invalid MinimalIngestQLevel: " + minimalLevel);
+				}
+			}
+			
 			
 			Element licenseEl = rightsExtEl.getFirstChildElement("publicationLicense", C.CONTRACT_NS);
 			if(licenseEl!=null){
@@ -586,15 +620,26 @@ public class ObjectPremisXmlReader{
 									 .getFirstChildElement("objectIdentifierValue", PREMIS_NS)
 									 .getValue();
 		int index1 = packageId.indexOf('_');
-		int index2 = packageId.indexOf(".tar");
-		String packageName;
-		if (index1 < 0 || index2 < 0)
-			packageName = packageId;
-		else
-			packageName = packageId.substring(index1 + 1, index2);
+		int index3 = packageId.indexOf(".tar");
+		Integer delta=0;
+		Integer repair;
 		
 		Package pkg = new Package();
-		pkg.setName(packageName);
+		if (index1 >= 0 && index3 > 0)	{
+			String deltaString = packageId.substring(index1 + 1, index3);
+			int index2 = deltaString.indexOf('_'); 
+			if (index2 < 0){
+				delta = Integer.parseInt(deltaString);
+			}else{
+				deltaString = packageId.substring(index1 + 1, index2);
+				delta = Integer.parseInt(deltaString);
+				deltaString = packageId.substring(index2 + 1, index3);
+				repair = Integer.parseInt(deltaString);
+				pkg.setRepair(repair);
+			}
+		}
+		
+		pkg.setDelta(delta);
 		
 		Element originalNameEl = objectEl.getFirstChildElement("originalName", PREMIS_NS);
 		if (originalNameEl != null)

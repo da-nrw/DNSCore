@@ -33,7 +33,7 @@
 		<task:scheduled ref="contentBrokerWorker" method="scheduleTask" fixed-delay="500" />
 		<task:scheduled ref="ingestAreaScannerWorker" method="scheduleTask" fixed-delay="1000" />
 		<task:scheduled ref="ingestAreaNoBagitScannerWorker" method="scheduleTask" fixed-delay="1000" />
-		<task:scheduled ref="integrityWorker" method="scheduleTask" fixed-delay="20000" />
+		<task:scheduled ref="repairWorker" method="scheduleTask" fixed-delay="20000" />
 		<task:scheduled ref="checksumWorker" method="scheduleTask" fixed-delay="20000" />
 		<task:scheduled ref="distributionWorker" method="scheduleTask" fixed-delay="20000" />
 		<task:scheduled ref="systemEventWorker" method="scheduleTask" fixed-delay="20000" />
@@ -57,6 +57,7 @@
 		<entry key="IngestValidateMetadataAction" value="3" />
 		<entry key="IngestConvertAction" value="3" />
 		<entry key="IngestCreatePremisAction" value="3" />
+		<entry key="IngestQualityLevelCheckAction" value="3" />
 		<entry key="IngestCheckFormatsAction" value="1" /> <!-- Workaround DANRW-1164 -->
 		<entry key="IngestScanAction" value="3" />
 		<entry key="IngestRegisterURNAction" value="3" />
@@ -97,6 +98,7 @@
 		<value>IngestConvertForPresentationAction</value>
 		<value>IngestScanForPresentationAction</value>
 		<value>IngestCreatePremisAction</value>
+		<value>IngestQualityLevelCheckAction</value>
 		<value>IngestCheckFormatsAction</value>
 		<value>IngestUpdateMetadataAction</value>
 		<value>IngestConvertAction</value>

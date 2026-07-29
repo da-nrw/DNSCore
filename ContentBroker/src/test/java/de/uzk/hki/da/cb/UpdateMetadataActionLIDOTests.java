@@ -121,7 +121,7 @@ public class UpdateMetadataActionLIDOTests extends ConcreteActionUnitTest{
 	public void test() throws IOException, JDOMException, ParserConfigurationException, SAXException {
 		action.implementation();
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		Document doc = builder.build(new FileReader(Path.make(WORK_AREA_ROOT_PATH,"work/TEST/identifier/data",_TEMP_PIP_REP_PUBLIC,"LIDO.xml").toFile()));
 		assertEquals("http://data.danrw.de/file/identifier/renamed0000050177.tif", getLIDOURL(doc));
 		

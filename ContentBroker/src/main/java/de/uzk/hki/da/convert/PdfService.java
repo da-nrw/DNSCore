@@ -22,12 +22,12 @@ package de.uzk.hki.da.convert;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 
 import javax.activation.FileDataSource;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageTree;
 import org.apache.pdfbox.preflight.PreflightDocument;
 import org.apache.pdfbox.preflight.ValidationResult;
 import org.apache.pdfbox.preflight.ValidationResult.ValidationError;
@@ -101,20 +101,21 @@ public class PdfService {
 		srcPdf = PDDocument.load(srcPdfFile);
 		targetPdf = new PDDocument();
 
-		@SuppressWarnings("rawtypes")
-		List srcPages = srcPdf.getDocumentCatalog().getAllPages();
+//		@SuppressWarnings("rawtypes")
+//		List srcPages = srcPdf.getDocumentCatalog().getAllPages();
+		PDPageTree srcPages = srcPdf.getPages();
 
 		int numberOfPages = 0;
 		
 		
 		if (numberOfPagesText != null && !numberOfPagesText.isEmpty()) {
 			numberOfPages = Integer.parseInt(numberOfPagesText);
-			for (int i = 0; i < Math.min(numberOfPages,srcPages.size()); i++) 
+			for (int i = 0; i < Math.min(numberOfPages,srcPages.getCount()); i++) 
 				targetPdf.addPage((PDPage) srcPages.get(i));
 		}
 		
 		if (StringUtilities.isNotSet(numberOfPagesText) && StringUtilities.isNotSet(certainPagesText)) {
-			for (int i = 0; i < srcPages.size(); i++) 
+			for (int i = 0; i < srcPages.getCount(); i++) 
 				targetPdf.addPage((PDPage) srcPages.get(i));
 		}
 		
@@ -127,7 +128,7 @@ public class PdfService {
 			Arrays.sort(certainPages);
 			for (int i = 0; i < certainPages.length; i++) {
 				if (certainPages[i] > numberOfPages
-						&& srcPages.size() > certainPages[i] - 1)
+						&& srcPages.getCount() > certainPages[i] - 1)
 					targetPdf.addPage((PDPage) srcPages
 							.get(certainPages[i] - 1));
 			}

@@ -13,7 +13,7 @@ in Form eines "Move" auf dem gleichen Filesystem zu bewerkstelligen, wie es bei 
 
 #### Testordner:
 
-* [ATIngestUnpackedSIPNoBagit](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATIngestUnpackedSIPNoBagit
+* [ATIngestUnpackedSIPNoBagit](../../test/resources/at/ATIngestUnpackedSIPNoBagit)
 
 #### Vorbedingungen:
 

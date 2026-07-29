@@ -77,7 +77,7 @@ public class TarActionTests extends ConcreteActionUnitTest {
 		n.setWorkAreaRootPath(new RelativePath(workAreaRootPath));
 		
 		Package pkg = new Package();
-		pkg.setName("2");
+		pkg.setDelta(2);
 		o.getPackages().add(pkg);
 		
 		job.setRep_name(repName);

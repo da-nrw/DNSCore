@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.model.KnownError;
+import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.Path;
 
 /**
@@ -53,16 +54,22 @@ public class SubformatScanService implements FormatScanService, Connector {
 	public List<FileWithFileFormat> identify(Path workPath,List<FileWithFileFormat> files,boolean pruneExceptions) throws IOException{
 	
 		for (FileWithFileFormat f:files){
-			if (f.getFormatPUID()==null||f.getFormatPUID().isEmpty())
-				throw new IllegalArgumentException(f+" has no puid");
+			if (f.getFormatPUID()==null||f.getFormatPUID().isEmpty()||f.getFormatPUID().equals(C.UNRECOGNIZED_PUID)){
+				continue;
+				//throw new IllegalArgumentException(f+" has no puid");
+			}
 			String sf ="";
 			try {
 				sf = identifySubformat(Path.makeFile(workPath,f.getPath()),f.getFormatPUID(),pruneExceptions);
 				f.setSubformatIdentifier(sf);
 			} catch (UserFileFormatException ufe){
+				logger.debug("Add UserFileFormatException to DAFIle("+f.getPath()+"): "+ufe.getMessage());
 				List <KnownError> ke = f.getKnownErrors();
 				ke.add(ufe.getKnownError());
 				f.setKnownErrors(ke);
+			}catch (RuntimeException ex) {
+				logger.debug("Add RuntimeException to DAFIle("+f.getPath()+"): "+ex.getMessage());
+				f.getUnknownIdentificationErrorList().add(ex);
 			}
 		}
 		return files;

@@ -247,7 +247,7 @@ public class AcceptanceTestHelper {
 
 	
 	void waitForDefinedPublishedState(String origName) {
-		waitForObjectPublishedState(origName, -1);
+		waitForObjectPublishedState(origName, 3);
 	}
 
 	void waitForObjectPublishedState(String origName,int publishedFlag) {
@@ -260,11 +260,11 @@ public class AcceptanceTestHelper {
 				System.out.println("Object not found (yet). ");
 				continue;
 			}
-			System.out.println("Awaiting object to be published. Identifier: "+o.getIdentifier()+
+			System.out.println("Awaiting object to be published("+publishedFlag+"). Identifier: "+o.getIdentifier()+
 					". Orig name: "+o.getOrig_name()+". Published flag: "+o.getPublished_flag()+". ");
 			
 			if (publishedFlag==0 && o.getPublished_flag()==0) break;
-			else
+			else if(o.getPublished_flag() !=-1)
 				if ((o.getPublished_flag() & publishedFlag) >0) break; // Binary and operator!!!
 		}
 	}
@@ -469,15 +469,14 @@ public class AcceptanceTestHelper {
 			String packageType,
 			String metadataFile) throws IOException{
 		
-		String PACKAGE_NAME = "1";
 		int timeout = 2000;
 		
 		if (createddate==null) createddate = new Date();
 		String urn =   URN_NBN_DE_DANRW+identifier;
-		gridFacade.put(Path.makeFile(TC.TEST_ROOT_AT,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR), 
-				new RelativePath(testContractor.getUsername(),identifier,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR).toString(), sp, null);
+		gridFacade.put(Path.makeFile(TC.TEST_ROOT_AT,identifier+".pack_1" + C.FILE_EXTENSION_TAR), 
+				new RelativePath(testContractor.getUsername(),identifier,identifier+".pack_1" + C.FILE_EXTENSION_TAR).toString(), sp, null);
 		int i = 0;
-		while (!gridFacade.storagePolicyAchieved(new RelativePath(testContractor.getUsername(),identifier,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR).toString(), sp, null, null)) {
+		while (!gridFacade.storagePolicyAchieved(new RelativePath(testContractor.getUsername(),identifier,identifier+".pack_1" + C.FILE_EXTENSION_TAR).toString(), sp, null, null)) {
 			try {
 				Thread.sleep(timeout);
 			} catch (InterruptedException e) {} // no problem
@@ -498,11 +497,11 @@ public class AcceptanceTestHelper {
 		object.setLast_checked(createddate);
 		object.setOrig_name(originalName);
 		Package pkg = new Package();
-		pkg.setName(PACKAGE_NAME);
+		pkg.setDelta(1);
 		pkg.setContainerName(originalName+"."+C.FILE_EXTENSION_TGZ);
 		
 		Copy copy = new Copy();
-		String md5=MD5Checksum.getMD5checksumForLocalFile(Path.makeFile(TC.TEST_ROOT_AT,identifier+".pack_"+PACKAGE_NAME+C.FILE_EXTENSION_TAR));
+		String md5=MD5Checksum.getMD5checksumForLocalFile(Path.makeFile(TC.TEST_ROOT_AT,identifier+".pack_1"+ C.FILE_EXTENSION_TAR));
 		pkg.setChecksum(md5);
 		copy.setChecksum(md5);
 		copy.setChecksumDate(new Date());

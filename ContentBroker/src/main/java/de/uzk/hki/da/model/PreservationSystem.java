@@ -42,6 +42,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.format.FileWithFileFormat;
+import de.uzk.hki.da.utils.C;
 
 /**
  * Represents the preservation system.
@@ -210,9 +211,13 @@ public class PreservationSystem {
 	public List<ConversionPolicy> getApplicablePolicies(FileWithFileFormat file,Boolean presentation) throws IllegalStateException {
 		if (file==null) throw new IllegalStateException("DAFile file is null!");
 		if (file.getFormatPUID()==null) throw new IllegalStateException("Format PUID is null!");
-		if (file.getFormatPUID().isEmpty())throw new IllegalStateException("Format PUID is empty!");
-				
 		List<ConversionPolicy> result = new ArrayList<ConversionPolicy>();
+
+		if (file.getFormatPUID().isEmpty() || file.getFormatPUID().equals(C.UNRECOGNIZED_PUID)) {
+			//throw new IllegalStateException("Format PUID is empty!");
+			return result;
+		}
+		
 		for (ConversionPolicy p:conversion_policies){
 			if ((p.getSource_format().equals(file.getFormatPUID()))&&(presentation.equals(p.isPresentation()))){
 				result.add(p);

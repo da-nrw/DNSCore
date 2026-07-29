@@ -3,6 +3,14 @@ import grails.util.Environment
 import org.springframework.boot.logging.logback.ColorConverter
 import org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter
 
+//import ch.qos.logback.core.*;
+import ch.qos.logback.core.encoder.*;
+import ch.qos.logback.core.read.*;
+import ch.qos.logback.core.rolling.*;
+import ch.qos.logback.core.status.*;
+import ch.qos.logback.classic.net.*;
+import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
+
 import java.nio.charset.Charset
 
 conversionRule 'clr', ColorConverter
@@ -31,8 +39,22 @@ if (Environment.isDevelopmentMode() && targetDir != null) {
             pattern = "%level %logger - %msg%n"
         }
     }
-    logger("StackTrace", ERROR, ['FULL_STACKTRACE'], false)
+    logger("StackTrace", INFO, ['FULL_STACKTRACE'], false)
 }
+
+def logDir = "${System.getProperty('user.home')}/.grails/"
+if (!Environment.isDevelopmentMode() && logDir != null) {
+	appender("FULL_STACKTRACE", FileAppender) {
+		file = "${logDir}/daweb-stacktrace.log"
+		append = true
+		encoder(PatternLayoutEncoder) {
+			pattern = "%level %logger - %msg%n"
+		}
+	}
+	logger("StackTrace", INFO, ['FULL_STACKTRACE'], false)
+}
+
 root(ERROR, ['STDOUT'])
 
 logger 'grails.plugin.springsecurity.web.filter.DebugFilter', INFO, ['STDOUT'], false
+

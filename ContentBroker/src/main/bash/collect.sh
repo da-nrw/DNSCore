@@ -17,6 +17,8 @@ mkdir $1/conf
 mkdir $1/documentation
 cp src/main/resources/healthCheck.avi $1/conf
 cp src/main/resources/healthCheck.tif $1/conf
+rm -rf $1/fido
+rm -rf $1/jhove
 cp -r ../3rdParty/fido/fido $1/
 cp -r ../3rdParty/jhove $1/
 cp src/main/sh/jhove $1/jhove
@@ -30,7 +32,7 @@ cp -r src/main/markdown/* $1/documentation
 cp -r src/main/xslt $1/conf
 cp src/main/xsd/premis.xsd $1/conf
 cp src/main/xsd/xlink.xsd $1/conf
-cp src/main/xsd/v1/danrw-contract-v1-01.xsd $1/conf
+cp src/main/xsd/v1/danrw-contract-v1-02.xsd $1/conf
 cp src/main/resources/frame.jsonld $1/conf
 cp src/main/conf/PDFA_def.ps $1/conf
 mkdir $1/activemq-data

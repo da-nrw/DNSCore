@@ -19,10 +19,10 @@ The **"dev" mode** somewhat lightweight compared to the "ci" mode. The internal 
 
 Wheter in the dev or ci environment, to build DNS Core successfully you'll need a machine with
 
-* JAVA 1.6
+* JAVA 1.8
 * MAVEN
 * GIT
-* Grails 2.3.8
+* Grails  3.2.11
 * Imagemagick 6.7.8-10 (with jasper, to use jpg2000, with tiff)
 
 Please ensure, the shells (bash and sh) of your workstation run in UTF-8 mode:
@@ -33,7 +33,7 @@ Please ensure, the shells (bash and sh) of your workstation run in UTF-8 mode:
   
 ### ci - prerequisites.
   
-How to set up a node for continuous integration is part of [this](installation_ci.md) tutorial.
+How to set up a node for continuous integration is part of [this](development_setting_up_ci.md) tutorial.
 
 ### dev - Getting the source code.
     

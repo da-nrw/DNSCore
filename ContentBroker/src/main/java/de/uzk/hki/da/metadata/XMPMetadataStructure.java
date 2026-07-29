@@ -71,7 +71,7 @@ public class XMPMetadataStructure extends MetadataStructure{
 		xmpFile = metadataFile;
 		currentDocuments = documents;
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();		
 		FileInputStream fileInputStream = new FileInputStream(Path.makeFile(workPath,xmpFile.getPath()));
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
 		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");

@@ -37,7 +37,7 @@ import de.uzk.hki.da.sb.MessageWriter;
  * @author Thomas Kleinke
  * @author Polina Gubaidullina
  */
-class GuiMessageWriter extends MessageWriter {
+public class GuiMessageWriter extends MessageWriter {
 
 	private Component gui;
 	private Image iconImage;

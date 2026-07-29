@@ -16,11 +16,14 @@ import org.junit.Test;
 
 import de.uzk.hki.da.pkg.ArchiveBuilder;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
+import de.uzk.hki.da.pkg.BagitUtils;
 import de.uzk.hki.da.utils.FolderUtils;
 
 public class ATWorkingDirectory {
 	public static final File CONTRACT_RIGHT_LICENSED = new File("target/installation/conf" + File.separator + "standardRightsLicense.xml"); //standardRightsLicense.xml   standardRights.xml
 	public static final File CONTRACT_RIGHT_NON_LICENSED = new File("target/installation/conf" + File.separator + "standardRightsNonLicense.xml"); //standardRightsLicense.xml   standardRights.xml
+	public static final File CONTRACT_RIGHT_LICENSED_ONLY_INST_PUB = new File("target/installation/conf" + File.separator + "standardRightsLicenseInstPub.xml"); //standardRightsLicense.xml   standardRights.xml
+	
 	
 	private static String sip1 = "ATWorkingDirectory.tgz";
 	
@@ -90,10 +93,7 @@ public class ATWorkingDirectory {
 			throw new RuntimeException("couldn't unpack archive", e);
 		}
 
-	    assertTrue(new File(unpackedSip1, "bag-info.txt").exists());
-		assertTrue(new File(unpackedSip1, "bagit.txt").exists());
-		assertTrue(new File(unpackedSip1, "manifest-md5.txt").exists());
-		assertTrue(new File(unpackedSip1, "tagmanifest-md5.txt").exists());
+	    assertTrue(BagitUtils.isBagItStyle(unpackedSip1));
 		assertTrue(new File(unpackedSip1, "data/export_mets.xml").exists());
 		assertTrue(new File(unpackedSip1, "data/image").exists() && new File(unpackedSip1, "data/image").isDirectory());
 		assertTrue(new File(unpackedSip1, "data/premis.xml").exists());
@@ -186,10 +186,7 @@ public class ATWorkingDirectory {
 			throw new RuntimeException("couldn't unpack archive", e);
 		}
 
-	    assertTrue(new File(unpackedSip1, "bag-info.txt").exists());
-		assertTrue(new File(unpackedSip1, "bagit.txt").exists());
-		assertTrue(new File(unpackedSip1, "manifest-md5.txt").exists());
-		assertTrue(new File(unpackedSip1, "tagmanifest-md5.txt").exists());
+	    assertTrue(BagitUtils.isBagItStyle(unpackedSip1));
 		assertTrue(new File(unpackedSip1, "data/export_mets.xml").exists());
 		assertTrue(new File(unpackedSip1, "data/image").exists() && new File(unpackedSip1, "data/image").isDirectory());
 		assertTrue(new File(unpackedSip1, "data/premis.xml").exists());

@@ -75,13 +75,13 @@ public class ATMetadataUpdatesRheinlaender extends AcceptanceTest{
 	@Test
 	public void testReferencesInPip() throws FileNotFoundException, JDOMException, IOException, RepositoryException{
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		Document doc = builder.build(new FileReader(ath.loadFileFromPip(object.getIdentifier(), "mets_2_32044.xml")));
 		assertTrue(getURL(doc).contains(preservationSystem.getUrisFile()));
 		assertEquals(URL, getLoctype(doc));
 		assertEquals(C.MIMETYPE_IMAGE_JPEG, getMimetype(doc));
 		
-		SAXBuilder eadSaxBuilder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder eadSaxBuilder = XMLUtils.createValidatingSaxBuilder();
 		Document eadDoc = eadSaxBuilder.build(new FileReader(ath.loadFileFromPip(object.getIdentifier(), EAD_XML)));
 		
 		List<String> metsReferences = getMetsRefsInEad(eadDoc);

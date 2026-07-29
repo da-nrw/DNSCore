@@ -85,6 +85,9 @@ public class ArchiveReplicationCheckAction extends AbstractAction{
 				aipPath().toString(), 
 				sp, o.getLatestPackage().getChecksum(), n.getCooperatingNodes()));
 		
+		//im Hitergrund wird eine iquest-Abfrage ausgeführt: iquest "select sum(DATA_SIZE) where COLL_NAME like '/ci1/aip/TEST/1-20180925209'"
+		o.setAip_size(gridRoot.getFileSize(new RelativePath(o.getContractor().getShort_name(), o.getIdentifier()).toString()+"/"));
+		
 		if (StringUtilities.isSet(preservationSystem.getPresServer())) {
 				toCreate=createPublicationJob(j,o,preservationSystem.getPresServer());
 				setObjectArchived(Object.ObjectStatus.InWorkflow);

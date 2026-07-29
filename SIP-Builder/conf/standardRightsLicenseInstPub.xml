@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contractRights>
+    <institutionRights>
+        <allowed>false</allowed>
+        <tempPublication>false</tempPublication>
+        <lawPublication>false</lawPublication>
+        <law>EPFLICHT</law>
+        <restrictions>
+            <textRestriction>false</textRestriction>
+            <imageRestriction>false</imageRestriction>
+            <imageRestrictionText>false</imageRestrictionText>
+            <audioRestriction>false</audioRestriction>
+            <videoRestriction>false</videoRestriction>
+            <videoDurationRestriction>false</videoDurationRestriction>
+            <imageWidth>480</imageWidth>
+            <imageHeight>360</imageHeight>
+            <imageTextType>footer</imageTextType>
+            <watermarkOpacity>5</watermarkOpacity>
+            <watermarkSize>10</watermarkSize>
+            <audioDuration>5</audioDuration>
+            <videoSize>360</videoSize>
+            <videoDuration>5</videoDuration>
+        </restrictions>
+    </institutionRights>
+    <conversionRights>
+        <condition>NONE</condition>
+    </conversionRights>
+    <ddbExclusion>false</ddbExclusion>
+    <publicationLicense  href="https://creativecommons.org/licenses/by-nc-nd/4.0/" displayLabel="CC-BY-NC-ND-Lizenz (v4.0)">CC v4.0 International Lizenz: Namensnennung - Nicht kommerziell - Keine Bearbeitungen</publicationLicense >
+</contractRights>

@@ -21,6 +21,7 @@ public class ATSipBuilderLicenseSIP {
 	private static File sourceDir = new File("src/test/resources/at/");
 	private static String sipMetsLicense = "ATLicenseInMets";
 	private static String sipNoMetsLicense = "ATNoLicenseInMets";
+	private static String ATNoPresMetadata = "ATSipBuilderNoTar";
 	private static Process p;
 	
 	@Before
@@ -284,6 +285,45 @@ public class ATSipBuilderLicenseSIP {
 	    }
 	    
 	    assertTrue(new File("target/atTargetDir/"+sipNoMetsLicense+".tgz").exists());
+	}
+	
+	
+	@Test
+	public void testPremisLicensePublicationWithoutPressMetadata() throws IOException {
+		File source = new File(sourceDir, ATNoPresMetadata);
+		
+		String cmd = "./SipBuilder-Unix.sh -rights=\""+ATWorkingDirectory.CONTRACT_RIGHT_LICENSED.getAbsolutePath()+"\" -source=\""+source.getAbsolutePath()+"/\" -destination=\""+targetDir.getAbsolutePath()+"/\" -single -alwaysOverwrite ";
+		p=Runtime.getRuntime().exec(cmd, null, new File("target/installation"));
+		
+		BufferedReader stdInput = new BufferedReader(new
+        InputStreamReader(p.getInputStream()));
+
+		BufferedReader stdError = new BufferedReader(new
+        InputStreamReader(p.getErrorStream()));
+		 
+		String s = "";
+		// read the output from the command
+	    System.out.println("Here is the standard output of the command:\n");
+	    boolean errorMSG=false;
+	    boolean breakMSG=false;
+	    //boolean errMsg=false;
+	    while ((s = stdInput.readLine()) != null) {
+	         System.out.println(s);
+	         if(s.contains("portalrelevante Metadaten (z.B. METS,LIDO) zwingend erforderlich"))
+	        	 errorMSG=true;
+	         if(s.contains("SIP-Erstellungsvorgang abgebrochen"))
+		    	   breakMSG=true;
+	    }
+	    System.out.println("breakMSG: "+breakMSG+" errorMSG: "+errorMSG);
+	    assertTrue(breakMSG && errorMSG);
+
+
+	    System.out.println("Here is the standard error of the command (if any):\n");
+	    while ((s = stdError.readLine()) != null) {
+	        System.out.println(s);
+	    }
+	    
+	    assertFalse(new File("target/atTargetDir/"+ATNoPresMetadata+".tgz").exists());
 	}
 	
 }

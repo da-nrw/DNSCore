@@ -119,6 +119,31 @@ Die Response bezeichnet das Objekt als "transient" und den Queue Entry als "pack
 das Object als "Object in transient state"
 
 ```json
-{"result":[{"type":"QueueEntry","urn":null,"contractor":"LVR-Test","origName":"AT-V-001_ATDuplicateDocumentName_2015-03-16","identifier":"2-20150316407197","status":"package in progress error : (114)"},
-{"type":"Object","status":"Object is in transient state","urn":null,"contractor":"LVR-Test","origName":"AT-V-001_ATDuplicateDocumentName_2015-03-16","identifier":"2-20150316407197","packages":["1"]}]}
+{"result":
+    [
+        {
+             "type":"QueueEntry",
+             "urn":null,
+             "contractor":"TEST",
+             "origName":"MultimediaTestSip-NOK",
+             "identifier":"1-202002041185",
+             "status":"package in progress error: (114) ",
+             "statusInt":114,
+             "statusLongDescription":["package in progress error: (114) ",
+                    "Inkonsistentes Paket![(error) Payload manifest manifest-md5.txt contains invalid file(s): [data/export_mets.xml]]"
+             ]
+        },
+        {
+            "type":"Object",
+            "status":"Object is in transient state",
+            "statusInt":50,
+            "statusLongDescription":"Object is in transient state",
+            "urn":null,
+            "contractor":"TEST",
+            "origName":"MultimediaTestSip-NOK",
+            "identifier":"1-202002041185",
+            "packages":[1]
+        }
+    ]
+}
 ```

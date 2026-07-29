@@ -74,7 +74,7 @@ Der Contractor will die Archivierung trotz des Hinweises in der Email auf die Pr
 
 #### Testpaket:
 
-[ATInvalidTiffTagsInBigTiff.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATInvalidTiffTagsInBigTiff.tgz) 
+[ATInvalidTiffTagsInBigTiff.tgz](../../test/resources/at/ATInvalidTiffTagsInBigTiff.tgz) 
 
 #### Vorbedingungen:
 
@@ -106,7 +106,7 @@ Der Contractor will die Archivierung trotz des Hinweises in der Email auf die Pr
 
 #### Testpaket:
 
-[ATInvalidTiffTagsInBigTiff.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATInvalidTiffTagsInBigTiff.tgz)
+[ATInvalidTiffTagsInBigTiff.tgz](../../test/resources/at/ATInvalidTiffTagsInBigTiff.tgz)
 
 #### Vorbedingungen:
 
@@ -138,7 +138,7 @@ wie AT-TIFFT-1
 
 #### Testpaket:
 
-[ATInvalidTiffTagsInBigTiff.tgz](https://cdn.rawgit.com/da-nrw/DNSCore/master/ContentBroker/src/test/resources/at/ATInvalidTiffTagsInBigTiff.tgz)
+[ATInvalidTiffTagsInBigTiff.tgz](../../test/resources/at/ATInvalidTiffTagsInBigTiff.tgz)
 
 #### Vorbedingungen:
 

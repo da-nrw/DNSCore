@@ -158,7 +158,7 @@ public abstract class AbstractAction implements Runnable {
 		} catch (Exception e) {
 			logger.error( "Exception: ",e);
 			resetModifiers();
-			execAndPostProcessRollback(o, j);
+			execAndPostProcessRollback(o, j, e.getMessage());
 			try {
 				upateObjectAndJob(n, o, j, DELETEOBJECT, kILLATEXIT, getToCreate());
 			} catch (Exception e1) {
@@ -170,6 +170,8 @@ public abstract class AbstractAction implements Runnable {
 
 	
 	private void executeConcreteAction() {
+		String errorText = null;
+		
 		try {
 			
 			if (!rOLLBACKONLY) {
@@ -181,34 +183,35 @@ public abstract class AbstractAction implements Runnable {
 			j.setQuestion(e.getKnownError().getQuestion());
 			new MailContents(preservationSystem,n).informUserAboutPendingDecision(o,e.getMessage());
 			
-			updateStatus(C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
+			updateStatus(C.WORKFLOW_STATUS_DIGIT_USER_ERROR, e.getMessage());
 			resetModifiers();
 			return;	
 		 } catch (UserException e) {
 			reportUserError(e);
-			updateStatus(C.WORKFLOW_STATUS_DIGIT_USER_ERROR);
+			updateStatus(C.WORKFLOW_STATUS_DIGIT_USER_ERROR, e.getMessage());
 			resetModifiers();
 			return;
 			
 		}catch (SubsystemNotAvailableException e) {
-			
+			errorText = e.getMessage();
 			actionFactory.setOnHalt(true,e.getMessage());
 			reportTechnicalError(e);
 		
-		} catch (Exception e) {
+		} catch (Throwable e) {
+			errorText = e.getMessage();
 			reportTechnicalError(e);
-
 		} finally {
 			logger.info(ch.qos.logback.classic.ClassicConstants.FINALIZE_SESSION_MARKER, "Finalize logger session.");
 		}
 
 		resetModifiers();
-		execAndPostProcessRollback(o,j);
+		execAndPostProcessRollback(o,j, errorText);
 	}
 	
 	
-	private void updateStatus(String endDigit) {
+	private void updateStatus(String endDigit, String errorText) {
 		j.setModifiedAt(new Date());
+		j.setErrorText(errorText);
 		j.setStatus(getStartStatus().substring(0, getStartStatus().length() - 1) + endDigit);
 	}
 	
@@ -254,7 +257,7 @@ public abstract class AbstractAction implements Runnable {
 	
 	
 	
-	private void execAndPostProcessRollback(Object object,Job job) {
+	private void execAndPostProcessRollback(Object object,Job job, String errorText) {
 		
 		String errorStatusEndDigit=C.WORKFLOW_STATUS_DIGIT_ERROR_PROPERLY_HANDLED;
 		if (rOLLBACKONLY) 
@@ -270,7 +273,7 @@ public abstract class AbstractAction implements Runnable {
 			logger.error(this.getClass().getName()+": couldn't get rollbacked to previous state. Exception in action.rollback(): ",e);
 			errorStatusEndDigit = C.WORKFLOW_STATUS_DIGIT_ERROR_BAD_ROLLBACK;
 		}
-		updateStatus(errorStatusEndDigit);
+		updateStatus(errorStatusEndDigit, errorText);
 	}
 
 	
@@ -306,7 +309,12 @@ public abstract class AbstractAction implements Runnable {
 				count++;
 				baseLogger.error(this.getClass().getName()+": Exception while committing changes to database after action: ",sqlException);
 				baseLogger.error(count+". try");
-				session.getTransaction().rollback();
+				try {
+					session.getTransaction().rollback();
+				}
+				catch (Exception rollbackXtc) {
+					baseLogger.error("rollback failed, could be normal");
+				}
 				session.close();
 				if(count==maxPermittedTryCount) {
 					reportTechnicalError(sqlException);
@@ -337,18 +345,13 @@ public abstract class AbstractAction implements Runnable {
 				Copy copy = cn.getCopyToSave();
 				logger.debug("Try to save copy with path "+copy.getPath());
 				
+				copy.setNode(cn);
+				copy.setPack(object.getLatestPackage());
+				copy.setChecksum(object.getLatestPackage().getChecksum());
+				copy.setChecksumDate(new Date());
+				
 				session.save(copy);
 				session.flush();
-				
-				baseLogger.info("Added copy for objects ("+object.getIdentifier()+") last package. Copy path: "+copy.getPath()+". Copy is on node with name: "+cn.getName()+" and has id "+copy.getId()+".");
-				
-				int updatesNodeId=session.createSQLQuery(
-						"UPDATE copies SET node_id="+cn.getId()+", "
-								+ "pkg_id="+object.getLatestPackage().getId()+", "
-								+ "checksum='" + object.getLatestPackage().getChecksum()+ "', "
-								+ "checksumDate = now() WHERE id = "+copy.getId()).executeUpdate();
-				if (updatesNodeId!=1) throw new RuntimeException("could not execute update of node_id");
-
 			} catch (Exception e) {
 				logger.error("Unable to save copy!");
 			} finally {
@@ -391,11 +394,6 @@ public abstract class AbstractAction implements Runnable {
 		session.getTransaction().commit();
 	}
 	
-	
-	
-	
-	
-	
 	private void reportUserError(UserException e) {
 		logger.error(this.getClass().getName()+": UserException in action: ",e);
 		new MailContents(preservationSystem,n).userExceptionCreateUserReport(userExceptionManager,e,o);
@@ -404,7 +402,8 @@ public abstract class AbstractAction implements Runnable {
 		sendJMSException(e);
 	}
 
-	protected void reportTechnicalError(Exception e){
+	protected void reportTechnicalError(Throwable e){
+		j.setErrorText(e.getMessage());
 		logger.error(this.getClass().getName()+": Exception in action: ",e);
 		new MailContents(preservationSystem,n).abstractActionCreateAdminReport(e, o, this);
 		sendJMSException(e);
@@ -416,7 +415,7 @@ public abstract class AbstractAction implements Runnable {
 	 * @author Jens Peters
 	 * @param e
 	 */
-	private void sendJMSException(Exception e) {
+	private void sendJMSException(Throwable e) {
 	
 		String txt =  e.getMessage(); 
 		if (StringUtilities.isSet(txt)) {
@@ -568,7 +567,10 @@ public abstract class AbstractAction implements Runnable {
 	public boolean canIgnoreLicenseValidation(){
 		boolean ignoreForAll=preservationSystem.getLicenseValidationFlag()==C.PRESERVATIONSYS_LICENSE_VALIDATION_NO ;
 		boolean ignoreForTestUser=  preservationSystem.getLicenseValidationTestCSNFlag()==C.PRESERVATIONSYS_LICENSE_VALIDATION_NO;
-		return ignoreForAll || (testContractors.contains(o.getContractor().getShort_name()) && ignoreForTestUser);
+
+		boolean isTestCont = (testContractors.contains(o.getContractor().getShort_name()) && ignoreForTestUser);
+		
+		return ignoreForAll || isTestCont;
 			
 	}
 	

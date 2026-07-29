@@ -72,7 +72,7 @@ public class ATMetadataUpdatesDeltaLIDO extends AcceptanceTest{
 			}
 		}
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		String LidoFileName = "LIDO-Testexport2014-07-04-FML-Auswahl.xml";
 		Document doc = builder.build
 				(new FileReader(Path.make(tmpObjectDirPath, bRep, LidoFileName).toFile()));
@@ -98,7 +98,7 @@ public class ATMetadataUpdatesDeltaLIDO extends AcceptanceTest{
 	@Test
 	public void testPres() throws FileNotFoundException, JDOMException, IOException{
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		Document doc = builder.build(new FileReader(ath.loadFileFromPip(object.getIdentifier(), "LIDO.xml")));
 		
 		List<String> lidoUrls =  mh.getLIDOURL(doc);

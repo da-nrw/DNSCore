@@ -30,9 +30,9 @@ fi
 ############################# 
 
 function createIrodsDirs(){
-	imkdir /c-i/aip/TEST                2>/dev/null
-	imkdir /c-i/pips/institution/TEST   2>/dev/null
-	imkdir /c-i/pips/public/TEST        2>/dev/null
+	imkdir /ci/aip/TEST                2>/dev/null
+	imkdir /ci/pips/institution/TEST   2>/dev/null
+	imkdir /ci/pips/public/TEST        2>/dev/null
 }
 
 function startContentBroker(){

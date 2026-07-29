@@ -7,6 +7,7 @@ validation and conversion of submitted content. Therefore the document does not 
 2. Third party tools in modified and unmodified version which are delivered as part of this git source code repository
 3. Third party tools which are not delivered as part of this git source code repository and are considered optional. 
 
+
 ## Table of relevant third party tools
 
 <table><thead>
@@ -17,13 +18,13 @@ validation and conversion of submitted content. Therefore the document does not 
 <th>License</th>
 <tr>
 <td>bagit</td>
-<td>4.8</td>
+<td>5.0.3</td>
 <td>SIP container format</td>
 <td><a href="https://github.com/LibraryOfCongress/bagit-java/blob/master/LICENSE.txt" >License for BAGIT Library (BIL)</a></td>
 </tr>
 <tr>
 <td>pdfbox</td>
-<td>1.8.2</td>
+<td>2.0.15</td>
 <td>PDF validation and conversion</td>
 <td>Apache License, Version 2.0</td>
 </tr>
@@ -43,7 +44,7 @@ validation and conversion of submitted content. Therefore the document does not 
 </tr>
 <tr>
 <td>FFmpeg</td>
-<td>0.6.5</td>
+<td>2.8.15</td>
 <td>Video codec extracion</td>
 <td>GNU Lesser General Public License (LGPL) version 2.1</td>
 </tr>
@@ -72,13 +73,13 @@ validation and conversion of submitted content. Therefore the document does not 
 </tr>
 <tr>
 <td>SoX</td>
-<td>v14.3.2</td>
+<td>v14.4.1</td>
 <td>Audio Codecs and conversion</td>
 <td>GNU Lesser General Public License</td>
 </tr>
 <tr>
 <td>Ghostscript</td>
-<td>9.04</td>
+<td>9.25</td>
 <td>PDF conversion</td>
 <td>GNU Affero General Public License</td>
 </tr>
@@ -96,14 +97,14 @@ validation and conversion of submitted content. Therefore the document does not 
 </tr>
 <tr>
 <td>Groovy</td>
-<td>2.3</td>
+<td>2.4.11</td>
 <td>DA-Web GUI</td>
 <td>Apache License, Version 2.0</td>
 </tr>
 <tr>
 <tr>
 <td>Grails</td>
-<td>2.3.8</td>
+<td>3.2.11</td>
 <td>DA-Web GUI</td>
 <td>Apache License, Version 2.0</td>
 </tr>

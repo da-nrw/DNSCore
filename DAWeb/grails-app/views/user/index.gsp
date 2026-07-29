@@ -4,26 +4,27 @@
 <html>
 	<head>
 		<meta name="layout" content="main">
-		<g:set var="entityName" value="${message(code: 'user.label', default: 'User')}" />
+		<g:set var="entityName" value="${message(code: 'user.label', default: 'Benutzer')}" />
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
 	</head>
 	<body>
-		<div id="page-body">
-			<a href="#list-user" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
+		<div class="page-body">
+			
+			<div id="list-user" class="content scaffold-list" role="main">
+				<div class="blue-box"></div>
+				<h2><g:message code="default.list.label" args="[entityName]" /></h2>
+				<a href="#list-user" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 			<div class="nav" role="navigation">
 				<ul>
-					<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
 					<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
 				</ul>
 			</div>
-			<div id="list-user" class="content scaffold-list" role="main">
-				<h1><g:message code="default.list.label" args="[entityName]" /></h1>
 				<g:if test="${flash.message}">
 					<div class="message" role="status">${flash.message}</div>
 				</g:if>
-			  	<div style="overflow:auto; height: 400px">
+			  	<div class="table-style">
 					<table>
-						<thead>
+						<thead class="thead-line">
 							<tr>
 							
 								<g:sortableColumn property="email_contact" title="${message(code: 'user.email_contact.label', default: 'Emailcontact')}" />
@@ -33,6 +34,8 @@
 								<g:sortableColumn property="username" title="${message(code: 'user.username.label', default: 'Username')}" />
 								
 								<g:sortableColumn property="provider_type" title="${message(code: 'user.provider_type.label', default: 'Provider Type')}" />
+							
+								<g:sortableColumn property="password" title="${message(code: 'user.minqualitylevel.label', default: 'Mindest-Qualitätsstufe')}" />
 							
 								<g:sortableColumn property="password" title="${message(code: 'user.password.label', default: 'Password')}" />
 							
@@ -53,6 +56,8 @@
 								<td>${fieldValue(bean: userInstance, field: "username")}</td>
 								
 								<td>${fieldValue(bean: userInstance, field: "provider_type")}</td>
+								
+								<td>${fieldValue(bean: userInstance, field: "minIngestQualityLevel")}</td>
 							
 								<td>${fieldValue(bean: userInstance, field: "password")}</td>
 								
@@ -65,9 +70,11 @@
 						</tbody>
 					</table>
 				</div>
-				<div class="pagination">
-					<g:paginate total="${userInstanceCount ?: 0}" />
-				</div>
+				<g:if test="${userInstanceList.size() > 9}">
+					<div class="pagination">
+						<g:paginate total="${userInstanceCount ?: 0}" />
+					</div>
+				</g:if>
 			</div>
 		</div>
 	</body>

@@ -24,6 +24,8 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
+import de.uzk.hki.da.action.AbstractAction;
+
 /**
  * @author Daniel M. de Oliveira
  */
@@ -46,6 +48,5 @@ public class FakeMetadataExtractor implements MetadataExtractor{
 	public boolean isConnectable() {
 		return true;
 	}
-
 
 }

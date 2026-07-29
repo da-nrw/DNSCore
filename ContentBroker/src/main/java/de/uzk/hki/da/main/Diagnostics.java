@@ -223,6 +223,9 @@ public class Diagnostics {
 			System.out.println(OK);
 		} catch (MetadataIndexException e) {
 			errorCount++;
+			System.out.println("ES UsedProperties: "+properties.getProperty("elasticsearch.index")+
+					" cluster: "+es.getCluster()+" Host:"+es.getHosts()[0]);
+			e.printStackTrace();
 			System.out.println(WARN+"connection to elasticsearch cannot be established: "+e);
 		}
 		

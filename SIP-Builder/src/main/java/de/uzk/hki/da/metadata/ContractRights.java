@@ -26,20 +26,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import javax.management.RuntimeErrorException;
 import javax.xml.parsers.SAXParserFactory;
 
-import nu.xom.Builder;
-import nu.xom.Document;
-import nu.xom.Element;
-
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 
 import de.uzk.hki.da.utils.Utilities;
+import de.uzk.hki.da.utils.XMLUtils;
+import nu.xom.Builder;
+import nu.xom.Document;
+import nu.xom.Element;
 
 
 
@@ -50,7 +50,7 @@ import de.uzk.hki.da.utils.Utilities;
  */
 public class ContractRights {
 	
-	private Logger logger = Logger.getLogger(ContractRights.class);
+	private Logger logger = LogManager.getLogger();
 	
 	private PublicationRights institutionRights = new PublicationRights();
 	private PublicationRights publicRights = new PublicationRights();
@@ -58,6 +58,7 @@ public class ContractRights {
 	private ConversionCondition conversionCondition;
 	boolean ddbExclusion;
 	private CCLicense cclincense;
+	private int minimalIngestQuality;
 
 
 	public enum ConversionCondition { NONE, NOTIFY, CONFIRM };
@@ -150,6 +151,8 @@ public class ContractRights {
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		try {
 			xmlReader = spf.newSAXParser().getXMLReader();
+			//xml persistence without schema-> validation without schema not possible
+			//xmlReader=XMLUtils.createValidatingSaxParser().getXMLReader();
 		} catch (Exception e) {
 			throw new IOException("Error creating SAX parser", e);
 		}
@@ -193,6 +196,12 @@ public class ContractRights {
 			ddbExclusion = Boolean.parseBoolean(ddbExclusionEl.getValue());
 		else
 			ddbExclusion = false;
+		
+		Element minimalIngestQualityEl = root.getFirstChildElement("minimalIngestQualityLevel");
+		if (minimalIngestQualityEl != null)
+			minimalIngestQuality = Integer.parseInt(minimalIngestQualityEl.getValue());
+		else
+			minimalIngestQuality = 0;
 		
 		Element publicationLicenseEl = root.getFirstChildElement("publicationLicense");
 		if(publicationLicenseEl!=null){
@@ -314,6 +323,14 @@ public class ContractRights {
 
 	public void setCclincense(CCLicense cclincense) {
 		this.cclincense = cclincense;
+	}
+
+	public int getMinimalIngestQuality() {
+		return minimalIngestQuality;
+	}
+
+	public void setMinimalIngestQuality(int minimalIngestQuality) {
+		this.minimalIngestQuality = minimalIngestQuality;
 	}
 	
 	

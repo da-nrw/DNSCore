@@ -82,7 +82,7 @@ public class BuildAIPActionTests {
 		
 		
 		Package pkg = new Package();
-		pkg.setName("2");
+		pkg.setDelta(2);
 		pkg.setId(95949);
 		
 		User contractor = new User();

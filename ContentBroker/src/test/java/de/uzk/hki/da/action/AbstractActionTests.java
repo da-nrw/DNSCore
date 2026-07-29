@@ -32,7 +32,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -83,7 +82,7 @@ public class AbstractActionTests {
 			String startStatus,String endStatus){
 		
 		Package pkg = new Package();
-		pkg.setName("1");
+		pkg.setDelta(1);
 		pkg.setContainerName("CONTAINER");
 		ams = mock (JmsMessageServiceHandler.class);
 		

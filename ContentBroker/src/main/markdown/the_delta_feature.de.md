@@ -39,7 +39,7 @@ Bitte beachten Sie unsere [Richtlinien für Delta-Einlieferungen](the_delta_feat
 
 ## Funktionsweise
 
-Bei Einlieferung eines Delta-[SIP](specification_sip.de.md) werden alle vorherigen Pakete des [Objekts](object_model.md#object) aus dem Langzeitspeicher kopiert und zusammen mit den neu eingelieferten Daten zu einem neuen [AIP](aip_specification.md) zusammengefasst. 
+Bei Einlieferung eines Delta-[SIP](specification_sip.de.md) werden alle vorherigen Pakete des [Objekts](object_model.md#object) aus dem Langzeitspeicher kopiert und zusammen mit den neu eingelieferten Daten zu einem neuen [AIP](specification_aip.md) zusammengefasst. 
 
 Dabei wird das Gesamtpaket ([Object](object_model.md#object)), d.h. Original mit n Deltas, auf seine Validität geprüft. 
 

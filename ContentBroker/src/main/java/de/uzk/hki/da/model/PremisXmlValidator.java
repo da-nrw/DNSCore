@@ -45,6 +45,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import de.uzk.hki.da.metadata.PremisXmlReaderNodeFactory;
 import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.utils.XMLUtils;
 import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Element;
@@ -123,7 +124,8 @@ public class PremisXmlValidator {
 		XMLReader xmlReader = null;
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		try {
-			xmlReader = spf.newSAXParser().getXMLReader();
+			//xmlReader = spf.newSAXParser().getXMLReader();
+			xmlReader=XMLUtils.createValidatingSaxParser().getXMLReader();
 		} catch (Exception e) {
 			reader.close();
 			throw new IOException("Error creating SAX parser", e);

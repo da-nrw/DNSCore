@@ -63,7 +63,7 @@ public class WorkAreaTests {
 		c.setShort_name(TEST_USER_SHORT_NAME);
 		o.setContractor(c);
 		Package pkg = new Package();
-		pkg.setName("1");
+		pkg.setDelta(1);
 		pkg.setContainerName(CONTAINER_NAME);
 		pkg.setId(1);
 		o.getPackages().add(pkg);

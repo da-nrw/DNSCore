@@ -98,13 +98,13 @@ public class PremisXmlWriter {
 	    
 	    try {	    
 		   	  writer.writeStartDocument("UTF-8", "1.0");
-		   	  writer.setPrefix("xsi", C.XSI_NS);
+		   	  writer.setPrefix("xsi", C.XSI_NS_URI);
 			  
 		   	  createOpenElement("premis", 0);
 		   	  		createAttribute("xmlns", "info:lc/xmlns/premis-v2");
 		   	  		createAttribute("xmlns:premis", "info:lc/xmlns/premis-v2");
 		   	  		createAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-		   	  		createAttribute(C.XSI_NS, "schemaLocation", "info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-2.xsd");
+		   	  		createAttribute(C.XSI_NS_URI, "schemaLocation", "info:lc/xmlns/premis-v2 http://www.loc.gov/standards/premis/v2/premis-v2-2.xsd");
 		   	  		createAttribute("version", "2.2");
 		   	  				   	
 		   	  		generateObjectElement(packageName);
@@ -162,6 +162,8 @@ public class PremisXmlWriter {
 				createTextElement("ddbExclusion", String.valueOf(contractRights.getDdbExclusion()), 1);
 				if(contractRights.getCclincense()!=null)
 					generatePublicationLicenseElement(contractRights.getCclincense(),1);
+				if(contractRights.getMinimalIngestQuality()>0)
+					createTextElement("minimalIngestQualityLevel", String.valueOf(contractRights.getMinimalIngestQuality()), 1);
 			createCloseElement(0);
 
 			writer.writeDTD("\n");
@@ -246,7 +248,7 @@ public class PremisXmlWriter {
 	private void generateObjectElement(String packageName) throws XMLStreamException {
 		
 		createOpenElement("object", 1);
-		createAttribute(C.XSI_NS, "type", "representation");
+		createAttribute(C.XSI_NS_URI, "type", "representation");
 			createOpenElement("objectIdentifier", 2);
 				createTextElement("objectIdentifierType", "PACKAGE_NAME", 3);
 				createTextElement("objectIdentifierValue", packageName, 3);
@@ -713,7 +715,13 @@ public class PremisXmlWriter {
 					// DDB exclusion option
 					if (publicRights.getAllowPublication() && contractRights.getDdbExclusion())
 						createEmptyElement("DDBexclusion", 4);
-					if(contractRights.getCclincense()!=null){
+
+					if (contractRights.getMinimalIngestQuality()>0){
+						createTextElement("minimalIngestQualityLevel",""+contractRights.getMinimalIngestQuality(), 4);
+					}
+
+					if(publicRights.getAllowPublication() && contractRights.getCclincense()!=null){
+
 						generatePublicationLicenseElement(contractRights.getCclincense(),4);
 					}
 			

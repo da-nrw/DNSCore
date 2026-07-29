@@ -197,7 +197,7 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 		String gridPath = "/" + irodsSystemConnector.getZone() + "/" + address_dest;
 		try {
 			// Trim down to LZA Copy
-			iclc.itrim(gridPath, "", 1, 0);
+			iclc.itrim(gridPath, "", 1);
 			return iclc.computeChecksumForce(gridPath);
 		} catch (Exception irex) {
 			logger.error("Failure getting Checksum for " + gridPath);
@@ -230,6 +230,23 @@ public class IrodsGridFacade extends IrodsGridFacadeBase {
 	public boolean remove(String dest) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void get(File destination, String gridFileAdress) throws IOException  { 
+		getFile(irodsSystemConnector.getZone(),destination,gridFileAdress);
+	}
+	
+	@Override
+	public void getFederated(String federatedZone, File destination, String gridFileAdress) throws IOException  { 
+		getFile(irodsSystemConnector.getZone()+ "/" + WorkArea.FEDERATED+ "/"+federatedZone,destination,gridFileAdress);
+	}
+	
+	
+	private void getFile(String zone, File destination, String gridFileAdress) throws IOException  { 
+		IrodsCommandLineConnector iclc = new IrodsCommandLineConnector();
+		String prefixedGridFileAdress = "/" + zone+ "/" + WorkArea.AIP + "/" + gridFileAdress;
+		iclc.get(destination, prefixedGridFileAdress);
 	}
 	
 

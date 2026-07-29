@@ -37,13 +37,14 @@ class Package {
 	}
 	
 	int id
-	String name
+	Integer delta
+	Integer repair 
 	Date last_checked
 	String checksum
 	String status
 	String container_name
 	
 	String toString() {
-		return "Paket Nr. " + name + "(ID: "+id+" : " + container_name + ")" ;
+		return "Paket Nr. " + delta + " (ID: "+id+" : " + container_name + ")" ;
 	}
 }

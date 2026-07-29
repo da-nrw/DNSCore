@@ -23,27 +23,18 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
 
 import org.apache.commons.io.FileUtils;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.uzk.hki.da.cb.PostRetrievalAction;
-import de.uzk.hki.da.model.Job;
 import de.uzk.hki.da.model.Object;
-import de.uzk.hki.da.model.Package;
 import de.uzk.hki.da.pkg.ArchiveBuilderFactory;
-import de.uzk.hki.da.service.HibernateUtil;
-import de.uzk.hki.da.utils.C;
+import de.uzk.hki.da.pkg.BagitUtils;
 import de.uzk.hki.da.utils.FolderUtils;
-import gov.loc.repository.bagit.Bag;
-import gov.loc.repository.bagit.BagFactory;
 
 /**
  * Relates to AK-T/05 RetrieveObject - Happy Path Scenario.
@@ -100,14 +91,9 @@ public class ATRetrieval extends AcceptanceTest{
 		if (!new File("/tmp/"+identifier+"/data/"+"image/713091.tif").exists()) fail();
 		if (!new File("/tmp/"+identifier+"/data/"+"premis.xml").exists()) fail();
 		
-		if (!bagIsValid(new File("/tmp/"+identifier))) fail();
+		if (!BagitUtils.bagIsValid(new File("/tmp/"+identifier))) fail();
 	}
 
-	private boolean bagIsValid(File file){
-		BagFactory bagFactory = new BagFactory();
-		Bag bag = bagFactory.createBag(file);
-		return bag.verifyValid().isSuccess();
-	}	
 
 	@Test
 	public void testTimebasedRemoveRetrievalAfter14DayBeforeTimeout() throws Exception {

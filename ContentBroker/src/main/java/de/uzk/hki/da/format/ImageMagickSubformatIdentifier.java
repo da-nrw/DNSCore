@@ -35,11 +35,11 @@ public class ImageMagickSubformatIdentifier implements FormatIdentifier, Connect
 		try {
 		cle.execute(cmd);
 		} catch (UserFileFormatException ufe) {
-			if (!ufe.isWasPruned()) {
+			if (!ufe.isWasPruned()) { //ufe.isWasPruned() == pruneExceptions
 				throw ufe;
 			}
-		}
-
+		} //
+		
 		String stdOut = cle.getStdOut();
 		String compression = "";
 

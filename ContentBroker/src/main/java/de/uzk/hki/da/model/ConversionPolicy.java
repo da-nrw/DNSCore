@@ -20,6 +20,8 @@
  package de.uzk.hki.da.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,9 +34,8 @@ import javax.persistence.Table;
 
 /**
  * Dieses Konstrukt dient dazu, gefundene Formate und entsprechende
- * Routinen, die diese verarbeiten können, zuzuordnen. Für jeden Contractor können
- * diese varieren. 
- * für contractorShortName= all gelten sie für alle.
+ * Routinen, die diese verarbeiten können, zuzuordnen. 
+ * 
  * @author daniel
  * 
  *
@@ -42,6 +43,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="conversion_policies")
 public class ConversionPolicy {
+	public static enum FormatType{LZA,NONLZA}
 
 	/** The id. */
 	@Id
@@ -58,6 +60,14 @@ public class ConversionPolicy {
 	/** The conversion_routine. */
 	@ManyToOne(targetEntity=ConversionRoutine.class)
 	private ConversionRoutine conversion_routine;
+	
+	/**
+	 * Marks a type as LZA-able. It means this type can be converted to LZA-format, or it is already LZA-format. 
+	 * This is important for Quality-Level decision in  {@link de.uzk.hki.da.cb.QualityLevelCheckAction}.
+	 */
+	@Column(name="format_type",columnDefinition="varchar(20)")
+	@Enumerated(EnumType.STRING)
+	private FormatType format_type;
 
 	
 	/**
@@ -155,4 +165,14 @@ public class ConversionPolicy {
 	public void setPresentation(boolean presentation) {
 		this.presentation = presentation;
 	}
+
+	public FormatType getFormat_type() {
+		return format_type;
+	}
+
+	public void setFormat_type(FormatType format_type) {
+		this.format_type = format_type;
+	}
+	
+	
 }

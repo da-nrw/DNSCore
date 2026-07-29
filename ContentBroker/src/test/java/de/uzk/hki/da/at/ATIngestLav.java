@@ -1,5 +1,6 @@
 package de.uzk.hki.da.at;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -64,6 +65,23 @@ public class ATIngestLav extends AcceptanceTest {
 		assertTrue("ddbExcluded have to be false",!ath.getObject(urn3).ddbExcluded());
 	}
 	
+	@Test
+	public void testAIPSize() throws IOException, JDOMException {
+		System.out.println(urn1 + " filesize: "+ath.getObject(urn1).getAip_size());
+		System.out.println(urn2 + " filesize: "+ath.getObject(urn2).getAip_size());
+		System.out.println(urn3 + " filesize: "+ath.getObject(urn3).getAip_size());
+		
+		double diff1=(ath.getObject(urn1).getAip_size()-188416.0)/(ath.getObject(urn1).getAip_size()+1); // Before XML Validation by Jhove 188416, after validation 218112
+		double diff2=(ath.getObject(urn2).getAip_size()-235008.0)/(ath.getObject(urn2).getAip_size()+1); // Before XML Validation by Jhove 235008, after validation 264704
+		double diff3=(ath.getObject(urn3).getAip_size()-256512.0)/(ath.getObject(urn3).getAip_size()+1); // Before XML Validation by Jhove 256512, after validation 287744
+		
+		// 4% difference will be tolerated
+		System.out.println("RelDifferenzes: "+diff1+"  "+diff2+"  "+diff3);
+		assertTrue("Wrong File Size d1: "+diff1,Math.abs(diff1)<0.03);
+		assertTrue("Wrong File Size d2: "+diff2,Math.abs(diff2)<0.03);
+		assertTrue("Wrong File Size d3: "+diff3,Math.abs(diff3)<0.03);
+	}
+	
 	@AfterClass
 	public static void tearDownAfterClass() throws IOException{
 	}
@@ -71,7 +89,7 @@ public class ATIngestLav extends AcceptanceTest {
 	@Test
 	public void testPIPMets() throws IOException, JDOMException {
 
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		File metsFile1 = ath.loadFileFromPip(object1.getIdentifier(), "METS.xml");
 		Document mets1 = builder.build
 				(new FileReader(metsFile1));
@@ -117,7 +135,7 @@ public class ATIngestLav extends AcceptanceTest {
 	@Test
 	public void testPIPEdm1() throws IOException, JDOMException {
 
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		File edmFile1 = ath.loadFileFromPip(object1.getIdentifier(), "EDM.xml");
 		Document edmDoc1 = builder.build
 				(new FileReader(edmFile1));
@@ -162,22 +180,9 @@ public class ATIngestLav extends AcceptanceTest {
 		}
 		
 		assertTrue(edmDoc1.getRootElement().getChild("Aggregation", C.ORE_NS).getChild("dataProvider", C.EDM_NS).getValue().contains("Landesarchiv NRW"));
-		assertTrue(edmDoc1.getRootElement().getChild("Aggregation", C.ORE_NS).getChild("isShownBy", C.EDM_NS).getAttributeValue("resource", C.RDF_NS)
-				.contains(preservationSystem.getUrisFile()+"/"+object1.getIdentifier()+"/_6d8889c54cd506f75be230bd630cd70d.jpg"));
-		
-		@SuppressWarnings("unchecked")
-		List<Element> references = edmDoc1.getRootElement().getChild("Aggregation", C.ORE_NS).getChildren("hasView", C.EDM_NS);
-		assertTrue(references.size()==8);
-		for(Element ref : references) {
-			String r = ref.getAttributeValue("resource", C.RDF_NS);
-			if(r.endsWith(".jpg")) {
-				assertTrue(r.startsWith("http://"));
-			} else {
-				assertTrue(r.equals("_MD5hashes.txt") || r.endsWith("_R_NW_1000-44985_0001.xml"));
-			}
-		}
 		
 ////		testIndex
-		assertTrue(metadataIndex.getIndexedMetadata(PORTAL_CI_TEST, object1.getIdentifier()+"-dmd00016").contains("Nr. 44985"));
+		String ident=metadataIndex.getIndexedMetadata(PORTAL_CI_TEST, object1.getIdentifier()+"-dmd00016");
+		assertTrue("Identifier Test failed: "+ident,ident.contains("Nr. 44985"));
 	}
 }

@@ -7,7 +7,7 @@
 		<title>DA-NRW Objekt</title>
 	</head>
 	<body>
-		<div id="page-body">
+		<div class="page-body">
 			<script type="text/javascript" >
 				function toggle(source) {
 					checkboxes = document.getElementsByName('currentPackages');
@@ -44,7 +44,8 @@
 			</script>
 		
 			<div id="show-object" class="content scaffold-show" role="main">
-				<h1>Objektdetail</h1>
+				<div class="blue-box"></div>
+				<h2>Objektdetail</h2>
 				<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 				</g:if>
@@ -82,16 +83,17 @@
 						</g:each>	<br>
 						<span class="property-value" >
 							<g:if test="${!objectInstance.isInWorkflowButton()}">
-								<g:actionSubmit value="Versioniertes Retrieval starten" controller="package" action="retrievePackages"/>
+								<g:actionSubmit class="style-btn-2 " value="Versioniertes Retrieval starten" controller="package" action="retrievePackages"/>
 							</g:if>
 						</span>
 					</g:if>
 					</g:form>
 					</li>
-					<g:if test="${objectInstance?.object_state}">
+					<g:if test="${objectInstance?.objectState}">
 					<g:set var="statusCode" value="${objectInstance.getStatusCode()}" />
 					<li class="fieldcontain">
 						<span id="packages-label" class="property-label">Status:</span>
+						<span class="property-value" aria-labelledby="packages-label">
 						<g:if test="${statusCode == 1}">
 							<asset:image width="16px" height="16px" src="/icons/warning32.png"/>
 						</g:if>
@@ -101,6 +103,7 @@
 						<g:elseif test="${statusCode == 0}">
 							<asset:image  width="16px" height="16px" src="/icons/check32.png"/>
 						</g:elseif>
+					</span>
 					</li>
 					</g:if>			
 					<g:if test="${objectInstance?.urn}">
@@ -118,12 +121,21 @@
 							<g:link url="${objectInstance.getInstPresLink() }" target="_blank"><span class="property-value" aria-labelledby="urn-label">Institutionelle Derivate (PIP)</span></g:link>
 						</g:if>
 						</li>
-					<li class="fieldcontain">
-						<span id="urn-label" class="property-label">Technischer Name:</span>
-						<span class="property-value" aria-labelledby="urn-label">${objectInstance?.identifier}</span>
-						
-					</li>
-					
+						<li class="fieldcontain">
+							<span id="urn-label" class="property-label">Technischer Name:</span>
+							<span class="property-value" aria-labelledby="urn-label">${objectInstance?.identifier}</span>
+						</li>
+						<li class="fieldcontain">
+							<span id="urn-label" class="property-label">Größe in Byte:</span>
+							<span class="property-value" aria-labelledby="urn-label">
+								<g:if test="${objectInstance?.aipSize<= 0}">
+									0
+								</g:if>
+								<g:else>
+									${objectInstance?.aipSize}
+								</g:else>
+							</span>
+						</li>
 					</g:if>
 					
 					
@@ -142,12 +154,18 @@
 							<span class="property-value" aria-labelledby="origName-label">${objectInstance.getFormattedModifiedDate()}</span>
 					</li>
 					</g:if>
-						<g:if test="${objectInstance?.static_nondisclosure_limit}">
+					<g:if test="${objectInstance.getFormattedQualityLevelNoZero()}">
 						<li class="fieldcontain">
-						<span id="origName-label" class="property-label">Startdatum einer Veröffentlichung</span>
-						
-							<span class="property-value" aria-labelledby="origName-label">${objectInstance.static_nondisclosure_limit}</span>
+						<span id="qualityFlag-label" class="property-label"><g:message code="object.modified.label" default="Qualitätsstufe" /></span>
+							<span class="property-value" aria-labelledby="qualityFlag-label">${objectInstance.getFormattedQualityLevelNoZero()}</span>
 					</li>
+					</g:if>
+				
+					<g:if test="${objectInstance?.static_nondisclosure_limit}">
+						<li class="fieldcontain">
+							<span id="origName-label" class="property-label">Startdatum einer Veröffentlichung</span>
+							<span class="property-value" aria-labelledby="origName-label">${objectInstance.static_nondisclosure_limit}</span>
+						</li>
 					</g:if>
 						<g:if test="${objectInstance?.dynamic_nondisclosure_limit}">
 						<li class="fieldcontain">
@@ -170,7 +188,7 @@
 								<span class="property-value" aria-labelledby="urn-label">
 							  		<g:each in="${extensionSip.keySet().toString().replace('[', '').replace(']','').split(",")}" var="keySIP">
 										<g:if test="${keySIP.trim() == it.trim()}">
-											${extensionSip.getAt(keySIP.trim()).toString().replace('[', '').replace(']','')} -- 
+											${extensionSip.getAt(keySIP.trim()).toString().replace('[', '').replace(']','')} : 
 										</g:if> 
 									</g:each>
 							  	 	<g:if test="${!it.startsWith("danrw")}">
@@ -182,7 +200,7 @@
 							   			<span class="property-value" aria-labelledby="urn-label">
 								   			<g:each in="${extensionSip.keySet().toString().replace('[', '').replace(']','').split(",")}" var="keySIP">
 												<g:if test="${keySIP.trim() == it.trim()}">
-													${extensionSip.getAt(keySIP.trim()).toString().replace('[', '').replace(']','')} -- 
+													${extensionSip.getAt(keySIP.trim()).toString().replace('[', '').replace(']','')} : 
 												</g:if> 
 											</g:each>	
 							   				${it}
@@ -199,7 +217,7 @@
 								<span class="property-value" aria-labelledby="urn-label">
 							  		<g:each in="${extensionDip.keySet().toString().replace('[', '').replace(']','').split(",")}" var="keyDIP">
 										<g:if test="${keyDIP.trim() == it.trim()}">
-											${extensionDip.getAt(keyDIP.trim()).toString().replace('[', '').replace(']','')} -- 
+											${extensionDip.getAt(keyDIP.trim()).toString().replace('[', '').replace(']','')} : 
 										</g:if> 
 									</g:each>
 									<g:if test="${!it.startsWith("danrw")}">
@@ -211,7 +229,7 @@
 								      <span class="property-value" aria-labelledby="urn-label">
 									 	 <g:each in="${extensionDip.keySet().toString().replace('[', '').replace(']','').split(",")}" var="keyDIP">
 									        <g:if test="${keyDIP.trim() == it.trim()}">
-											  ${extensionDip.getAt(keyDIP.trim()).toString().replace('[', '').replace(']','')} -- 
+											  ${extensionDip.getAt(keyDIP.trim()).toString().replace('[', '').replace(']','')} : 
 										    </g:if> 
 									  	</g:each>	
 								   		${it}
@@ -240,6 +258,7 @@
 				<g:form>
 					<fieldset class="buttons">
 						<g:hiddenField name="id" value="${objectInstance?.id}" />
+						<g:actionSubmit class="cancel" action="cancel" value="${message(code: 'default.button.cancel.label', default: 'Cancel')}" />
 					</fieldset>
 				</g:form>
 			</div>

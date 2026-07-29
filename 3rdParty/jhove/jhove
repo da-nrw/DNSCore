@@ -31,7 +31,8 @@
 # Configuration constants:
 
 #JHOVE_HOME=/users/gary/dev/jhove
-JHOVE_HOME=/data/danrw/ContentBroker/jhove
+#JHOVE_HOME=/data/danrw/ContentBroker/jhove
+JHOVE_HOME=/ci/Contentbroker/jhove
 
 JAVA_HOME=/usr/java      # Java JRE directory -- change to your local java home
 JAVA=$JAVA_HOME/bin/java # Java interpreter -- usually won't need change
@@ -55,4 +56,6 @@ done
 #{JAVA} -classpath $CP Jhove $ARGS -x org.apache.xerces.parsers.SAXParser
 #${JAVA} -classpath $CP Jhove $ARGS
 # New way, doesn't require you to use JAVA_HOME.
-java -classpath $CP Jhove $ARGS
+#java -classpath $CP Jhove $ARGS
+
+java $JAVA_OPTS -classpath $CP -jar ${JHOVE_HOME}/bin/JhoveApp.jar "$@"

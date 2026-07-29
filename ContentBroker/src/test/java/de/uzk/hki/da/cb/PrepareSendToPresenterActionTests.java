@@ -96,7 +96,7 @@ public class PrepareSendToPresenterActionTests extends ConcreteActionUnitTest{
 	@Test
 	public void publishNothing() throws IOException {
 		o.setIdentifier("identifier_2");
-		o.getLatestPackage().setName("2");
+		o.getLatestPackage().setDelta(2);
 		
 		action.implementation();
 		

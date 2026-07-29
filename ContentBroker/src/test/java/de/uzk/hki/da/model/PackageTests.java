@@ -75,7 +75,7 @@ public class PackageTests {
 		contractor.setShort_name("TEST");
 		Package pkg = new Package();
 		pkg.setId(1);
-		pkg.setName("1");
+		pkg.setDelta(1);
 		object.getPackages().add(pkg);
 		object.setContractor(contractor);
 		object.setIdentifier("1");

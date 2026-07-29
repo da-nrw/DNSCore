@@ -26,7 +26,7 @@ relate to each other in the context of the DNSCore software.
 
 ## Deltas
 
-Whenever a [SIP](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/sip_specification.md) is ingested into the DA-NRW, the resulting [AIP](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/aip_specification.md) is considered the first [package](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#package) of a newly created [object](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#object). It is possible to add more packages to the object, e. g. packages containing additional files, newer versions of files already ingested or an updated version of the contract rights. These packages are called *delta* packages. Delta packages can be built exactly like other SIPs and are processed by the ContentBroker like any other SIP (in terms of conversion, publication etc.), with one exception: No new identifier or URN will be created for the package; instead, the package is assigned to the already existing object it belongs to and inherits the corresponding identifier and URN.
+Whenever a [SIP](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/sip_specification.md) is ingested into the DA-NRW, the resulting [AIP](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_aip.md) is considered the first [package](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#package) of a newly created [object](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/object_model.md#object). It is possible to add more packages to the object, e. g. packages containing additional files, newer versions of files already ingested or an updated version of the contract rights. These packages are called *delta* packages. Delta packages can be built exactly like other SIPs and are processed by the ContentBroker like any other SIP (in terms of conversion, publication etc.), with one exception: No new identifier or URN will be created for the package; instead, the package is assigned to the already existing object it belongs to and inherits the corresponding identifier and URN.
 
 ## Ingest of delta packages
 
@@ -117,7 +117,7 @@ Example:
 				picture2.tif	(Package 2 version)
 				premis.xml
 
-If a delta package contains a file named like a file already existing in a previously delivered package, the older file is replaced logically by the newer file. Please note that the file extension is not considered part of the file name in this case: If two files have different file extensions while sharing the same base name (e. g. "document.pdf" and "document.doc"), these files are considered homonymous. Before planning to replace files using the delta feature, please read the paragraph about [substitution rules](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/dip_specification.md#substitution-rules-and-surface-view-of-an-object) carefully.
+If a delta package contains a file named like a file already existing in a previously delivered package, the older file is replaced logically by the newer file. Please note that the file extension is not considered part of the file name in this case: If two files have different file extensions while sharing the same base name (e. g. "document.pdf" and "document.doc"), these files are considered homonymous. Before planning to replace files using the delta feature, please read the paragraph about [substitution rules](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_dip.md#substitution-rules-and-surface-view-of-an-object) carefully.
 
 ### Replacing the contract
 
@@ -128,7 +128,7 @@ It is not necessary to add data files to a delta package if you just want to cha
 ## Deltas and metadata
 
 If the originally delivered package contains a metadata file, an updated version of the file needs to be contained in the delta package. Just like the premis.xml, the new metadata file has to apply to the whole object and not just the contents of the delta package (e. g. the *fileSec* element of a mets.xml file needs to reference the files of the original package *and* the delta package(s)).  
-However, this is not true for sidecar files (like [XMP files](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/sip_specification.md#xmp)): You only have to include sidecar files if the corresponding base files are also included in the delta package.
+However, this is not true for sidecar files (like [XMP files](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/specification_sip.md#xmp)): You only have to include sidecar files if the corresponding base files are also included in the delta package.
 
 ## Deltas and long term preservation
 

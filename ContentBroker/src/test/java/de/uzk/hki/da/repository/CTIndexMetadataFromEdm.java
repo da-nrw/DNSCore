@@ -93,9 +93,10 @@ public class CTIndexMetadataFromEdm {
 	public void testLidoEdm() throws FileNotFoundException, IOException {
 		
 		String lidoEdmContent = IOUtils.toString(new FileInputStream(lidoEdm), C.ENCODING_UTF_8);
-	
+		System.out.println(new File(lidoEdmContent).getAbsolutePath());
+		System.out.println("To index metadata "+lidoEdmContent);
 		try {
-			esmi.prepareAndIndexMetadata(INDEX_NAME, "2-123456789","BibliothekTest", lidoEdmContent);
+			esmi.prepareAndIndexMetadata(INDEX_NAME, "2-123456789","MuseumTest", lidoEdmContent);
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 			fail(e.getMessage());
@@ -109,7 +110,7 @@ public class CTIndexMetadataFromEdm {
 		assertTrue(esmi.getIndexedMetadata(INDEX_NAME, "2-123456789-f838082dc50949e8b57346d904efdd3d")
 				.contains("\"dc:title\":[\"Vier Mädchen auf einer Altane\",\"Mädchen auf Altane, Stadt im Hintergrund\"]"));
 		assertTrue(esmi.getIndexedMetadata(INDEX_NAME, "2-123456789-f838082dc50949e8b57346d904efdd3d").contains("\""+C.EDM_DATE_ISSUED+"\":[\"1913\"]"));
-		assertTrue(esmi.getIndexedMetadata(INDEX_NAME, "1-123456789").contains("\"@institutionType\":\"BibliothekTest\""));
+		assertTrue(esmi.getIndexedMetadata(INDEX_NAME, "2-123456789").contains("\"@institutionType\":\"MuseumTest\""));
 	}	
 	
 	
@@ -120,7 +121,7 @@ public class CTIndexMetadataFromEdm {
 		String eadEdmContent = IOUtils.toString(new FileInputStream(eadEdm), C.ENCODING_UTF_8);
 	
 		try {
-			esmi.prepareAndIndexMetadata(INDEX_NAME, "3-123456789","BibliothekTest", eadEdmContent);
+			esmi.prepareAndIndexMetadata(INDEX_NAME, "3-123456789","ArchivTest", eadEdmContent);
 		} catch (RepositoryException e) {
 			e.printStackTrace();
 			fail(e.getMessage());
@@ -135,7 +136,7 @@ public class CTIndexMetadataFromEdm {
 		assertTrue(esmi.getIndexedMetadata(INDEX_NAME, "3-123456789-457009589ee34cdcaa71ed56a2dad8a6").contains("\""+C.EDM_DATE_ISSUED+"\":[\"1937-01-01/1938-12-31\"]"));
 		assertTrue(esmi.getIndexedMetadata(INDEX_NAME, "3-123456789-457009589ee34cdcaa71ed56a2dad8a6").contains("\"dc:title\":[\"Volksdeutsches Rundfunkreferat\"]"));	
 		assertTrue(esmi.getIndexedMetadata(INDEX_NAME, "3-123456789-457009589ee34cdcaa71ed56a2dad8a6").contains("\"dcterms:isPartOf\""));
-		assertTrue(esmi.getIndexedMetadata(INDEX_NAME, "1-123456789").contains("\"@institutionType\":\"BibliothekTest\""));
+		assertTrue(esmi.getIndexedMetadata(INDEX_NAME, "3-123456789").contains("\"@institutionType\":\"ArchivTest\""));
 	}	
 
 }

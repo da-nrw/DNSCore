@@ -20,6 +20,7 @@ package de.uzk.hki.da.at;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -32,7 +33,7 @@ import org.junit.BeforeClass;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
-import de.uzk.hki.da.action.ActionFactory;
+
 import de.uzk.hki.da.grid.DistributedConversionAdapter;
 import de.uzk.hki.da.grid.GridFacade;
 import de.uzk.hki.da.grid.IrodsCommandLineConnector;
@@ -41,7 +42,6 @@ import de.uzk.hki.da.model.PreservationSystem;
 import de.uzk.hki.da.model.StoragePolicy;
 import de.uzk.hki.da.model.User;
 import de.uzk.hki.da.model.WorkArea;
-import de.uzk.hki.da.repository.ElasticsearchMetadataIndex;
 import de.uzk.hki.da.repository.MetadataIndex;
 import de.uzk.hki.da.repository.RepositoryFacade;
 import de.uzk.hki.da.service.HibernateUtil;
@@ -50,6 +50,9 @@ import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.Path;
 import de.uzk.hki.da.utils.PropertiesUtils;
+import gov.loc.repository.bagit.domain.Bag;
+import gov.loc.repository.bagit.reader.BagReader;
+import gov.loc.repository.bagit.verify.BagVerifier;
 
 /**
  * @author Daniel M. de Oliveira
@@ -188,7 +191,29 @@ public class AcceptanceTest {
 		return oldUsePublicMets;
 	}
 	
-	
+	/**
+	 * Modify the minimalQualityLevel in User-Table and return the old minimalQualityLevel.
+	 * 
+	 * @param minimalQuality
+	 * @return
+	 */
+	public static int setTestUserMinimalQualityLevel(int minimalQuality) {
+		Session session = HibernateUtil.openSession();
+		Transaction transaction = session.beginTransaction();
+		Query query = session
+				.createQuery("SELECT u FROM User u where username = '" + testContractor.getUsername() + "'");
+
+		@SuppressWarnings("unchecked")
+		List<User> users = query.list();
+		User testUser = users.get(0);
+		int oldQualityLevel = testUser.getMinimalIngestQualityLevel();
+		testUser.setMinimalIngestQualityLevel(minimalQuality);
+		session.save(testUser);
+		transaction.commit();
+		session.close();
+
+		return oldQualityLevel;
+	}
 	
 	@BeforeClass
 	public static void setUpAcceptanceTest() throws IOException{
@@ -353,6 +378,21 @@ public class AcceptanceTest {
 		icl.mkCollection("/"+localNode.getIdentifier() + "/pips/institution/"+testContractor.getUsername());
 		icl.mkCollection("/"+localNode.getIdentifier() + "/pips/public/"+testContractor.getUsername());
 		
+		//loeschen der pfade 
+		// /krz/federated/lvr/aip/TEST/
+		// /hbz/federated/lvr/aip/TEST/
+		for(Node n:localNode.getCooperatingNodes()) {
+			String fedPath="/"+n.getIdentifier() + "/federated/"+localNode.getIdentifier()+"/aip/"+testContractor.getUsername();
+			System.out.println("remove federated Path: "+fedPath);
+			icl.remove(fedPath);
+		}
+		for(Node n:localNode.getCooperatingNodes()) {
+			String fedPath="/"+n.getIdentifier() + "/federated/"+localNode.getIdentifier()+"/aip/"+testContractor.getUsername();
+			System.out.println("create federated Path: "+fedPath);
+			icl.mkCollection(fedPath);
+		}
+		
+		
 		/**distributedConversionAdapter.remove("work/TEST");
 		distributedConversionAdapter.remove("aip/TEST");
 		distributedConversionAdapter.remove("pips/institution/TEST");
@@ -374,7 +414,7 @@ public class AcceptanceTest {
 	
 	private static void clearDB() {
 		System.out.println("clearDB()");
-		TESTHelper.clearDBOnlyTestUser(testContractor);
+		TESTHelper.clearDBOnlyTestUser(testContractor,localNode);
 	}
 
 	public static String getTestIndex() {
@@ -387,8 +427,5 @@ public class AcceptanceTest {
 
 	public static String getCI_ARCHIVE_STORAGE() {
 		return CI_ARCHIVE_STORAGE;
-	}
-	
-	
-	
+	}	
 }

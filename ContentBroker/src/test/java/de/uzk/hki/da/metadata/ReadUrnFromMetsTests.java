@@ -60,7 +60,7 @@ public class ReadUrnFromMetsTests {
 	public void testReadXmlFromMetsFile() throws IOException, ParseException {
 		RightsSectionURNMetsXmlReader urnReader = new RightsSectionURNMetsXmlReader();
 		String urn = urnReader.readURN(new File(pathToTestFile));
-		assertEquals("urn:nbn:de:hbz:5:1-16152", urn);
+		assertEquals("urn:nbn:de:hbz:5:1-11", urn);
 	}
 	
 	@Test
@@ -68,6 +68,22 @@ public class ReadUrnFromMetsTests {
 		File metsFile = Path.make("mets_urn_xml_reader_test.xml").toFile();
 		List<Document> docs = new ArrayList<Document>();
 		MetsMetadataStructure mms = new MetsMetadataStructure(Path.make(basePath),metsFile, docs);
-		assertEquals("urn:nbn:de:hbz:5:1-16152", mms.getUrn());
+		String urn =  mms.getUrn("Dummy");
+		assertEquals("urn:nbn:de:hbz:5:1-11", urn);
+
+		urn =  mms.getUrn("urn+nbn+de+hbz+5+1-11");
+		assertEquals("urn:nbn:de:hbz:5:1-11", urn);
+
+		urn =  mms.getUrn("urn+nbn+de+hbz+5+1-13");
+		assertEquals("urn:nbn:de:hbz:5:1-11", urn);
+
+		urn =  mms.getUrn("urn+nbn+de+hbz+5+1-10");
+		assertEquals("urn:nbn:de:hbz:5:1-10", urn);
+
+		urn =  mms.getUrn("urn+nbn+de+hbz+5+1-20");
+		assertEquals("urn:nbn:de:hbz:5:1-20", urn);
+
+		urn =  mms.getUrn("urn+nbn+de+hbz+5+1-21");
+		assertEquals("urn:nbn:de:hbz:5:1-21", urn);
 	}
 }

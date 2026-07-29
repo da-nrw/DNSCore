@@ -13,10 +13,9 @@ class BootStrap {
     def init = { servletContext ->
 		
 		if ((Environment.current ==  Environment.DEVELOPMENT) || (Environment.current == Environment.TEST)) {	
-			println "BOOTSTRAPPED Environment activated on CI - log in with rods/rods TEST/TEST"
+			println "BOOTSTRAPPED Environment " + Environment.current + " activated on CI - log in with rods/rods TEST/TEST"
 		}
 		
-		println ("Environment: " + Environment.current);
     }
 	
     def destroy = {

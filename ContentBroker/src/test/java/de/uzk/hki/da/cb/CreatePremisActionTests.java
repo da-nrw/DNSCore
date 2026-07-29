@@ -104,12 +104,12 @@ public class CreatePremisActionTests {
 		
 		pkg = new Package();
 		pkg.setId(1234565);
-		pkg.setName("1");
+		pkg.setDelta(1);
 		pkg.setContainerName("testpackage.tgz");
 				
 		pkg2 = new Package();
 		pkg2.setId(1);
-		pkg2.setName("2");
+		pkg2.setDelta(2);
 		pkg2.setContainerName("testpackage.tgz");
 		
 		User contractor = new User();
@@ -277,7 +277,7 @@ public class CreatePremisActionTests {
 	@SuppressWarnings({ "unchecked" })
 	private void checkPremisFile(File premisFile) {
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		Document doc;
 		try {
 			doc = builder.build(premisFile);
@@ -486,7 +486,7 @@ public class CreatePremisActionTests {
 		Element objectCharTifBRoot;
 		Element objectCharPremisARoot;
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		Document doc;
 		try {
 			doc = builder.build(workAreaRootPath + "/work/TEST/identifier_deltas/data/2013_07_31+11_54+b/premis.xml");

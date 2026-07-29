@@ -67,7 +67,7 @@ public class ArchiveReplicationActionTests {
 		c.setEmailAddress("noreply");
 		object.setContractor(c);
 		node.setAdmin(c);
-		node.setIdentifier("c-i");
+		node.setIdentifier("ci");
 		ArchiveReplicationAction action = setUpAction(node);
 		action.implementation();
 	}
@@ -103,7 +103,7 @@ public class ArchiveReplicationActionTests {
 	private void setUpObject(){
 		object.setIdentifier("identifier");
 		Package pkg = new Package();
-		pkg.setName("1");
+		pkg.setDelta(1);
 		object.getPackages().add(pkg);
 	}
 	

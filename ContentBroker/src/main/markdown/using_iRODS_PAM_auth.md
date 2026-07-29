@@ -5,8 +5,7 @@ as part of the authentication process of iRODS users.
 While using normal operating system password, this needs to be encrypted with SSL. 
 
 In case you want to authenaticate via PAM, please refer to the documentation of iRODS how to Setup PAM and SSL for PAM auth:
-http://wiki.irods.org/index.php/PAM_Authentication
-http://wiki.irods.org/index.php/PAM_SSL_Setup
+https://docs.irods.org/4.2.7/plugins/pluggable_authentication/#pam-pluggable-authentication-module
 
 Please install the mentioned packages and certificates.
 

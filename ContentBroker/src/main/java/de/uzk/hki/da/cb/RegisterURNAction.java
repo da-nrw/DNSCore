@@ -24,6 +24,8 @@ package de.uzk.hki.da.cb;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import org.jdom.JDOMException;
@@ -32,6 +34,8 @@ import org.slf4j.LoggerFactory;
 
 import de.uzk.hki.da.action.AbstractAction;
 import de.uzk.hki.da.core.PreconditionsNotMetException;
+import de.uzk.hki.da.core.UserException;
+import de.uzk.hki.da.core.UserException.UserExceptionId;
 import de.uzk.hki.da.metadata.MetsMetadataStructure;
 import de.uzk.hki.da.model.Document;
 import de.uzk.hki.da.model.Object;
@@ -64,8 +68,24 @@ public class RegisterURNAction extends AbstractAction {
 	}
 	
 	
-	// TODO When implementing METS based URN Extraction, use METSRightSectionXMLReader.java as a starting point
+	protected void validateURN(String urn) {
+		try {
+			@SuppressWarnings("unused")
+			URI uri = new URI(urn);
+		} catch (URISyntaxException e) {
+			throw new UserException(UserExceptionId.INVALID_URN, 
+			"Invalid URN");
+		}
+		
+		int len = urn.length();
+		int index = urn.indexOf(':'); 
+		if (index < 1 || index >= len-1) {
+			throw new UserException(UserExceptionId.INVALID_URN, 
+					"Invalid URN");
+		}
+	}
 	
+	// TODO When implementing METS based URN Extraction, use METSRightSectionXMLReader.java as a starting point
 	@Override
 	public boolean implementation() {
 		
@@ -76,6 +96,7 @@ public class RegisterURNAction extends AbstractAction {
 		
 		String premisUrn = extractURNFromPremisFile(premisFile());
 		if (StringUtilities.isSet(premisUrn)) {
+			this.validateURN(premisUrn);
 			o.setUrn(premisUrn);
 			logger.info("New user-supplied object URN in premis");
 			return true;
@@ -87,6 +108,7 @@ public class RegisterURNAction extends AbstractAction {
 			File metsFile = Path.makeFile(o.getLatest(o.getMetadata_file()).getRelative_path());
 			metsUrn = extractURNFromMetsFile(metsFile);
 			if(StringUtilities.isSet(metsUrn)) {
+				this.validateURN(metsUrn);
 				o.setUrn(metsUrn);
 				logger.info("New user-supplied object URN in mets");
 				return true;
@@ -139,7 +161,7 @@ public class RegisterURNAction extends AbstractAction {
 		try {
 			Path path = Path.make(wa.dataPath(), o.getLatest(o.getMetadata_file()).getRep_name());
 			MetsMetadataStructure mms = new MetsMetadataStructure(path, metsFile, documents);
-			urn = mms.getUrn();
+			urn = mms.getUrn(o.getOrig_name());
 			logger.debug("Found urn in mets: "+urn);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

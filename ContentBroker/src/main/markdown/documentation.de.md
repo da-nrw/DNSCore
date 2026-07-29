@@ -14,7 +14,6 @@ Die gesamte Dokumentation (auch hier nicht explizit verlinkte Texte) findet sich
 
 [DNSCore/ContentBroker/src/main/markdown/](../markdown)
 
-[DNSCore/DAWeb/doc](../../../../DAWeb/doc).
 
 **Vorbemerkung zur Dokumentation**
 
@@ -32,6 +31,7 @@ Die Dokumentation ist Teil des Git-Repository der DNSCore und wird gemeinsam mit
 ## Für Administratoren
 
 * Fehleranalyse und Fehlerbehebung ([deutsch](administration-troubleshooting.de.md))
+* Monitoring ([deutsch](REST-monitoring.md))
 * Formatidentifikation mit DNSCore ([deutsch](operations_format_identification.de.md))
 * Formatkonversion mit DNSCore ([deutsch](operations_format_conversion.de.md))
 * Formatmodul ([englisch](format_module.md))
@@ -72,7 +72,7 @@ Die hier untergebrachten Dokumentationen setzen den Einsatz von DNSCore unter be
 Um DNSCore effektiv bauen, testen und ausliefern zu können, sollten die folgenden Dokus gelesen werden:
 
 * Bauen und Testen der DNSCore ([englisch](development_deploy.md))
-* Bauen und Ausliefern DAWeb ([english](../../../../DAWeb/doc/setup.md))
+* Bauen und Ausliefern DAWeb ([english](daweb_setup.md))
 * Aufsetzen von Continuous Integration für DNSCore builds ([englisch](development_setting_up_ci.md))
 * Systemkomponenten im Überblick ([english](components_connectors.md))
 * 3rd Party Module ([english](3rdPartyTools.md))

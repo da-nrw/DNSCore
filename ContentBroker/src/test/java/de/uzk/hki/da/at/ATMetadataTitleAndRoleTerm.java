@@ -61,7 +61,7 @@ public class ATMetadataTitleAndRoleTerm extends AcceptanceTest {
 	@Test
 	public void testPIPEdm1() throws IOException, JDOMException {
 
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		
 		File edmFile1 = ath.loadFileFromPip(object1.getIdentifier(), "EDM.xml");
 

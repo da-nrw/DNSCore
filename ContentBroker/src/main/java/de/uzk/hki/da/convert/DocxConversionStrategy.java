@@ -54,22 +54,20 @@ import de.uzk.hki.da.utils.SimplifiedCommandLineConnector;
 import de.uzk.hki.da.utils.StringUtilities;
 import de.uzk.hki.da.webservice.HttpFileTransmissionClient;
 
-
 /**
  * The Class DocxConversionStrategy.
  */
-public class DocxConversionStrategy  implements ConversionStrategy {
+public class DocxConversionStrategy implements ConversionStrategy {
 
 	/** The logger. */
-	private static Logger logger = 
-		LoggerFactory.getLogger(DocxConversionStrategy.class);
-	
+	private static Logger logger = LoggerFactory.getLogger(DocxConversionStrategy.class);
+
 	/** The cli connector. */
 	private SimplifiedCommandLineConnector cliConnector;
 
 	/** The pkg. */
 	Package pkg;
-	
+
 	/** The object. */
 	Object object;
 
@@ -99,16 +97,19 @@ public class DocxConversionStrategy  implements ConversionStrategy {
 	 * @see de.uzk.hki.da.convert.ConversionStrategy#convertFile(de.uzk.hki.da.model.ConversionInstruction)
 	 */
 	@Override
-	public List<Event> convertFile(WorkArea wa,ConversionInstruction ci)
-			throws FileNotFoundException {
+	public List<Event> convertFile(WorkArea wa, ConversionInstruction ci) throws FileNotFoundException {
 
-		if (ci.getConversion_routine()==null) throw new IllegalStateException("conversionRoutine not set");
-		if (ci.getConversion_routine().getTarget_suffix().isEmpty()) throw new IllegalStateException("target suffix in conversionRoutine not set");
-		if (ci.getConversion_routine().getParams()==null) throw new IllegalStateException("add params not set");
-		if (cliConnector==null) throw new IllegalStateException("Cli Connector is not set");
-				
-		File result = new File(generateTargetFilePath(wa,ci));
-		
+		if (ci.getConversion_routine() == null)
+			throw new IllegalStateException("conversionRoutine not set");
+		if (ci.getConversion_routine().getTarget_suffix().isEmpty())
+			throw new IllegalStateException("target suffix in conversionRoutine not set");
+		if (ci.getConversion_routine().getParams() == null)
+			throw new IllegalStateException("add params not set");
+		if (cliConnector == null)
+			throw new IllegalStateException("Cli Connector is not set");
+
+		File result = new File(generateTargetFilePath(wa, ci));
+
 		List<Event> results = new ArrayList<Event>();
 		
 		getHttpclient().setUrl(ci.getConversion_routine().getParams());
@@ -116,56 +117,70 @@ public class DocxConversionStrategy  implements ConversionStrategy {
 		getHttpclient().postFileAndReadResponse(wa.toFile(ci.getSource_file()), result);
 		
 		if (result.exists()) {
-		DAFile daf = new DAFile(object.getNameOfLatestBRep(),StringUtilities.slashize(ci.getTarget_folder())+result.getName());
-		logger.debug("new dafile:"+daf);
-							
-		// TODO Doing PDF/A Conversion with a temp file, due to recieve PDF 1.5 from MS instead of PDF/A . 
-		// This should be the same command for "normal" PDFs
-		// read it from Database? 
-		File tempFile = new File("/"+ FilenameUtils.getPath(wa.toFile(daf).getAbsolutePath()) + "_" + wa.toFile(daf).getName()); 
-		
-		String commandAsArray[] = new String[]{
-				"gs","-q", "-dPDFA", "-dPDFACompatibilityPolicy=1", "-dBATCH" ,"-dNOPAUSE" ,"-dNOOUTERSAVE",
-				"-dUseCIEColor","-sProcessColorModel=DeviceCMYK","-sDEVICE=pdfwrite", 
-				"-sOutputFile=" + tempFile.getAbsolutePath() 
-				,"conf/PDFA_def.ps",wa.toFile(daf).getAbsolutePath()};
-		if (!cliConnector.execute(commandAsArray)){
-			throw new RuntimeException("GS command not succeeded");
-		}
-		
-		try {
-			if (tempFile.exists()) {
-				result.delete();
-				FileUtils.moveFile(tempFile, wa.toFile(daf));
-			} else throw new RuntimeException("temp file "  + tempFile.getAbsolutePath() + " was not created!");
+			DAFile daf = new DAFile(object.getNameOfLatestBRep(),
+					StringUtilities.slashize(ci.getTarget_folder()) + result.getName());
+			logger.debug("new dafile:" + daf);
+
+			// TODO Doing PDF/A Conversion with a temp file, due to recieve PDF 1.5 from MS
+			// instead of PDF/A .
+			// This should be the same command for "normal" PDFs
+			// read it from Database?
+			File tempFile = new File(
+					"/" + FilenameUtils.getPath(wa.toFile(daf).getAbsolutePath()) + "_" + wa.toFile(daf).getName());
+
+//		String commandAsArray[] = new String[]{
+//				"gs","-q", "-dPDFA", "-dPDFACompatibilityPolicy=1", "-dBATCH" ,"-dNOPAUSE" ,"-dNOOUTERSAVE",
+//				"-dUseCIEColor","-sProcessColorModel=DeviceCMYK","-sDEVICE=pdfwrite", 
+//				"-sOutputFile=" + tempFile.getAbsolutePath() 
+//				,"conf/PDFA_def.ps",wa.toFile(daf).getAbsolutePath()};
+			/*
+			 * DANRW-1634: -dUseCIEColor wird nicht mehr unterstützt stattdessen
+			 * -sColorConversionStrategie=CMYK verwendet werden
+			 */
+			String commandAsArray[] = new String[] { "gs", "-q", "-dPDFA", "-dPDFACompatibilityPolicy=1", "-dBATCH",
+					"-dNOPAUSE", "-dNOOUTERSAVE", "-sColorConversionStrategie=CMYK", "-sProcessColorModel=DeviceCMYK",
+					"-sDEVICE=pdfwrite", "-sOutputFile=" + tempFile.getAbsolutePath(), "conf/PDFA_def.ps",
+					wa.toFile(daf).getAbsolutePath() };
+			if (!cliConnector.execute(commandAsArray)) {
+				throw new RuntimeException("GS command not succeeded");
+			}
+
+			try {
+				if (tempFile.exists()) {
+					result.delete();
+					FileUtils.moveFile(tempFile, wa.toFile(daf));
+				} else
+					throw new RuntimeException("temp file " + tempFile.getAbsolutePath() + " was not created!");
 			} catch (IOException e1) {
-			throw new RuntimeException("MV command not succeeded on temp file " +tempFile.getAbsolutePath(), e1);
-		}
-		
-		PdfService.validatePdfA(wa.toFile(daf));
-		
-		Event e = new Event();
-		e.setType("CONVERT");
-		e.setDetail("Webservice DOCX2PDF "+ ci.getConversion_routine().getParams() + " AND "+StringUtilities.createString(commandAsArray));
-		e.setSource_file(daf);
-		e.setTarget_file(daf);
-		e.setDate(new Date());	
-		results.add(e);
-		
-		} else throw new RuntimeException("Target File not found! " + result.getAbsolutePath());
+				throw new RuntimeException("MV command not succeeded on temp file " + tempFile.getAbsolutePath(), e1);
+			}
+
+			PdfService.validatePdfA(wa.toFile(daf));
+
+			Event e = new Event();
+			e.setType("CONVERT");
+			e.setDetail("Webservice DOCX2PDF " + ci.getConversion_routine().getParams() + " AND "
+					+ StringUtilities.createString(commandAsArray));
+			e.setSource_file(daf);
+			e.setTarget_file(daf);
+			e.setDate(new Date());
+			results.add(e);
+
+		} else
+			throw new RuntimeException("Target File not found! " + result.getAbsolutePath());
 		return results;
 	}
-	
+
 	/**
 	 * Generate target file path.
 	 *
 	 * @param ci the ci
 	 * @return the string
 	 */
-	public String generateTargetFilePath(WorkArea wa,ConversionInstruction ci) {
-		String input  = wa.toFile(ci.getSource_file()).getAbsolutePath();
-		return object.getNameOfLatestBRep()+"/"+StringUtilities.slashize(ci.getTarget_folder())
-				+ FilenameUtils.getBaseName(input)+"."+ci.getConversion_routine().getTarget_suffix();
+	public String generateTargetFilePath(WorkArea wa, ConversionInstruction ci) {
+		String input = wa.toFile(ci.getSource_file()).getAbsolutePath();
+		return object.getNameOfLatestBRep() + "/" + StringUtilities.slashize(ci.getTarget_folder())
+				+ FilenameUtils.getBaseName(input) + "." + ci.getConversion_routine().getTarget_suffix();
 	}
 
 	/* (non-Javadoc)

@@ -96,7 +96,8 @@ public class CTElasticSearchMetadataIndexTests {
 		try {
 			index.indexMetadata(portal, TEST_COLLECTION, TEST_OBJECT_1, data);
 		} catch (MetadataIndexException e) {
-			fail();
+			e.printStackTrace();
+			fail(e.getMessage());
 		}
 
 		JSONObject jsonObj = new JSONObject(getBody());

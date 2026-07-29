@@ -141,7 +141,7 @@ public class ActionFactory implements ApplicationContextAware {
 			for (Node cn:localNode.getCooperatingNodes()) cn.getId();
 //			for (Copy cp:localNode.getCopies());
 		} catch (Exception e) {
-			throw new RuntimeException("Unable to load cooperating nodes");
+			throw new RuntimeException("Unable to load cooperating nodes",e);
 		}
 		
 		for (SubformatIdentificationStrategyPuidMapping sfiP:getSecondStageScanPolicies(session)) {

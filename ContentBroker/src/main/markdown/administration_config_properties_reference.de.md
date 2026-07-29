@@ -190,7 +190,7 @@ Wenn eines der Subsysteme [gridFacade](#cbimplementationgrid) oder [distributedC
 
 #### irods.password
 
-Das hier einzutragende Passwort muss vorab verschlüsselt sein mit Hilfe des DNSCore-eigenen [PasswordEncryptor](../../../../../../tree/master/PasswordEncryptor).
+Das hier einzutragende Passwort muss vorab verschlüsselt sein mit Hilfe des DNSCore-eigenen [PasswordEncryptor](../../../../../DNSCore/tree/master/PasswordEncryptor).
 
 ## fedora
 
@@ -214,7 +214,7 @@ Der Fedora User, mit dem der ContentBroker auf dem Fedora arbeitet.
 
 #### fedora.password
     
-Das hier einzutragende Passwort muss vorab verschlüsselt sein mit Hilfe des DNSCore-eigenen [PasswordEncryptor](../../../../../../tree/master/PasswordEncryptor).
+Das hier einzutragende Passwort muss vorab verschlüsselt sein mit Hilfe des DNSCore-eigenen [PasswordEncryptor](../../../../../DNSCore/tree/master/PasswordEncryptor).
 
 ## elasticsearch
 

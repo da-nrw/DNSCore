@@ -22,7 +22,6 @@ package de.uzk.hki.da.metadata;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -35,8 +34,6 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
@@ -75,7 +72,7 @@ public class MetsMetadataStructure extends MetadataStructure {
 		metsFile = metadataFile;
 		currentDocuments = documents;
 		
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();		
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();		
 		FileInputStream fileInputStream = new FileInputStream(Path.makeFile(workPath,metsFile.getPath()));
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
 		Reader reader = new InputStreamReader(bomInputStream,"UTF-8");
@@ -105,8 +102,9 @@ public class MetsMetadataStructure extends MetadataStructure {
 		return metsParser.getHref(fileElement);
 	}
 	
-	public String getUrn() {
-		return metsParser.getUrn();
+	public String getUrn(String origName) {
+		String urn = metsParser.getUrn(origName);
+		return urn;
 	}
 
 	@Override
@@ -136,7 +134,7 @@ public class MetsMetadataStructure extends MetadataStructure {
 //	:::::::::::::::::::::::::::::::::::::::::::::::::::::::::  REPLACEMENTS  :::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 	public void makeReplacementsHrefInMetsFile(File targetMetsFile, String currentHref, String targetHref, String mimetype, String loctype) throws IOException, JDOMException {
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();	
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();	
 		logger.debug(":::"+workPath+":::"+targetMetsFile.getPath());
 		FileInputStream fileInputStream = new FileInputStream(Path.makeFile(workPath,targetMetsFile.getPath()));
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);
@@ -174,7 +172,7 @@ public class MetsMetadataStructure extends MetadataStructure {
 	 * @throws JDOMException
 	 */
 	public void appendAccessCondition(File targetMetsFile, String licenseHref, String displayLabel, String text) throws IOException, JDOMException {
-		SAXBuilder builder = XMLUtils.createNonvalidatingSaxBuilder();	
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();	
 		
 		FileInputStream fileInputStream = new FileInputStream(Path.makeFile(workPath,targetMetsFile.getPath()));
 		BOMInputStream bomInputStream = new BOMInputStream(fileInputStream);

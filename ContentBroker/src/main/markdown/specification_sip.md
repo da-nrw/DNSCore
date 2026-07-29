@@ -27,7 +27,7 @@ This document specifies how a SIP must be structured so that any node running DN
 
 However, there is a special tool called "SIP-Builder", which is also part of "DA-NRW" project on github. Its source code can be found [here](https://github.com/da-nrw/SIP-Builder). This tool helps users build SIPs providing a comfortable graphical user interface. Power users can also run the SIP builder in headless mode via command line. 
 
-Users can download the latest precomiled version of the SIP-Builder [here](http://www.danrw.de/?page_id=9).
+Users can download the latest precomiled version of the SIP-Builder [here](https://www.danrw.de/dns/software/SipBuilder.zip).
 
 ## SIP - General structure
 
@@ -66,7 +66,7 @@ are text files which are required by BagIt and then you have one data folder. Th
 
 Inside the data folder there must be at least one file which is the premis.xml.
 The premis.xml, which adheres to a standard described [here](http://www.loc.gov/standards/premis/v2/premis-2-2.pdf) contains some object specific rights settings which will control the publication settings
-for the object. A detailed specification of the expected PREMIS elements and the used vocabulary can be found [here](https://github.com/da-nrw/DNSCore/blob/master/ContentBroker/src/main/markdown/premis_specification.md).
+for the object. A detailed specification of the expected PREMIS elements and the used vocabulary can be found [here](specification_premis.md).
 
 ### Original Name
 
@@ -140,4 +140,4 @@ TODO
 In addition to the basic SIP format there are some metadata formats/structures which are
 supported in a special way, optimized for the publication feature of DNSCore.
 
-For a specification of the metadata formats accepted by DNSCore, have a look at [this](metadata_specification.md) document.
+For a specification of the metadata formats accepted by DNSCore, have a look at [this](specification_metadata.de.md) document.

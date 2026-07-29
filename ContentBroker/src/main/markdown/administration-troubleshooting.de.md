@@ -8,7 +8,7 @@ Achtung: Bitte löschen Sie nicht auf "eigene Faust" von der WorkArea, vor allem
 
 **Überlick gewinnen:**
 
-Einsicht in die [DA-Web Adminoberfläche](../../../../DAWeb/doc/contentBroker_administration.md), Anmeldung als Knotenadmin. Dort laufen alle Systemmeldungen auf.
+Einsicht in die [DA-Web Adminoberfläche](contentBroker_administration.md), Anmeldung als Knotenadmin. Dort laufen alle Systemmeldungen auf.
 
 ## Das ganze System "hängt" scheinbar
 
@@ -62,7 +62,7 @@ Die Zuordnung der Status zu den Actions kann jederzeit anhand der ersten beiden 
 |xx1|ERROR_PROPERLY_HANDLED| Jeder Status, der mit einer Eins endet, kennzeichnet einen Fehler in der Verarbeitung. Desweiteren bedeutet die Eins, dass das Objekt in einen konsistenten Zustand (xx1-1) zurückgeführt werden konnte. | Der Administrator kann das Objekt zurücksetzen mittels Klick auf den Button "Zurücksetzen" 
 |xx2 | WORKING| Die Zwei am Ende bedeutet, dass das Objekt gerade von der aktuell aktiven Action bearbeitet wird. Je nach Größe und Komplexität des Pakets kann dieser Prozess einige Zeit dauern. Ob die Action tatsächlich arbeitet, kann anhand fortlaufender Logmeldungen im Objekt-Log-File nachgesehen werden.| Sollten Pakete ungewöhnlich lange im Verarbeitungsstatus verbleiben ist eine Analyse sinnvoll|
 | xx3 | ERROR_BAD_ROLLBACK | Die drei am Ende bedeutet, dass ein Rollback nicht durchgeführt werden konnte, entweder, weil er nicht implementiert ist, oder weil ein Fehler während der Durchführung des Rollbacks aufgetreten ist. | Zwischen 123 und 323 kann der Administrator das Objekt per Button "Gesamten Workflow zurücksetzen"|
-| xx4 | USER_ERROR | Die Vier am Ende des Staus bedeutet einen Userfehler. Der User bekommt in diesem Fall eine Email mit der entsprechenden Exception aus dem Object-Logfile. Da dies bedeutet, dass die Eingangsdaten fehlerhaft sind und vom Einliefernden berichtigt und neu eingespielt werden müssen. Es wird kein Rollback durchgeführt. | Daher muss der Administrator zuvor das Objekt löschen. Dazu gibt es den "Objekt löschen"-Button.|
+| xx4 | USER_ERROR | Die Vier am Ende des Status bedeutet einen Userfehler. Der User bekommt in diesem Fall eine Email mit der entsprechenden Exception aus dem Object-Logfile. Da dies bedeutet, dass die Eingangsdaten fehlerhaft sind und vom Einliefernden berichtigt und neu eingespielt werden müssen. Es wird kein Rollback durchgeführt. | Daher muss der Administrator zuvor das Objekt löschen. Dazu gibt es den "Objekt löschen"-Button.|
 |xx5 | ERROR_MODEL_INCONSISTENT | Eine fünf am Ende bedeutet, dass ein kritischer Fehler bezüglich des Datenmodells aufgetreten ist. Dies kann mit der Verknüpfung zwischen Actions, Jobs, Usern und Objekten bzw. deren Eigenschaften zusammenhängen. Im Falle solcher Fehler bitten wir Nutzer der Software, sich direkt an die Entwickler zu wenden, da diese Kategorie von Fehlern vergleichsweise selten auftritt und genauster Analyse bedarf. | Entwcikler benachrichtigen. Im Normalfall kann die Inkonsistenz datenbankseitig bereinigt werden und per "Zurücksetzen"- bzw. "Gesamten Workflow zurücksetzen"- Button zurückgesetzt werden.|
 |xx6 | ERROR_PRECONDITIONS_NOT_MET | Eine sechs am Ende bedeutet, dass die Eingangsbedingungen für die Bearbeitung eines Paketes in einem bestimmten Status nicht gegeben sind. Dass heisst, dass die dem Status entsprechende Action das Paket nicht so vorfindet, wie sie es benötigt, um es ordnungsgemäß verarbeiten zu können. | Das Paket kann in  solch einem Fall lediglich gelöscht werden durch  Klick auf den "Objekt Löschen"-Button bzw. zurückgerollt durch den Button "Gesamten Workflow zurücksetzen." Solcherlei Fehler können z.B. durch fehlerhaft implementierte Rollbacks entstehen. Im Falle eines solchen Fehlers sollten die Entwickler kontaktiert werden.|
 |xx7 | ERROR_BAD_CONFIGURATION | Konfigurationsfehler. Sollte nur während der Entwicklung oder Einrichtungsphase eines Systems auftreten. Ein End-To-End Test eines Paketes auf einem Knoten während der Einrichtungsphase wird alle potentiellen 7er Status aufdecken.| Nach Behebung des Fehlers kann mittels des Zurücksetzen Buttons das Paket wieder aufnehmen.
@@ -81,14 +81,15 @@ Grundsätzlich sind Status <=400 immer im Gesamten rücksetzbar. Bei Status >440
 |Status| Aktion | Beschreibung |Fehlerbehandlung|
 |---|---|---|---|
 110 |IngestUnpackAction | Auspacken & Vollständigkeitstests | Rücksetzung auf 118 , Ggfs. bei Abbruch beim Auspacken: WorkArea des Jobs löschen |
-120 |IngestRestructureObjectAction |Objekt- oder Deltaerkennung, Typerkennung | Rücksetzung auf 128 |
-130 |IngestValidateMetadataAction |	Validierung der Metadaten | Rücksetzung auf 600, Löschung 800 |
-140 |IngestScanAction | Formaterkennung |  Rücksetzung auf 600, Löschung auf 800
-150 |RegisterURNAction | Register URN in DNS |	Rücksetzung auf 600, Löschung auf 800
+130 |IngestRestructureObjectAction |Objekt- oder Deltaerkennung, Typerkennung | Rücksetzung auf 128 |
+140 |IngestValidateMetadataAction |	Validierung der Metadaten | Rücksetzung auf 600, Löschung 800 |
+150 |IngestScanAction | Formaterkennung |  Rücksetzung auf 600, Löschung auf 800
+160 |RegisterURNAction | Register URN in DNS |	Rücksetzung auf 600, Löschung auf 800
 230 |IngestConvertAction | LZA Konvertierung | 	Rücksetzung auf 600, Löschung auf 800
 250 |IngestMetadataUpdateAction | Update der Metadaten in B Repräsentation für LZA | Rücksetzung auf 600, Löschung auf 800|
 260 |IngestCheckFormatAction|	Überprüfung der LZA Konvertierung| Rücksetzung auf 600, Löschung auf 800 |
-270 |IngestCreatePremisAction|	Bearbeitung der PREMIS-Datei| Rücksetzung auf 600, Löschung auf 800 |
+270 |IngestQualityLevelCheckAction|Ermittlung der Qualitätsstufe| Rücksetzung auf 600, Löschung auf 800 |
+290 |IngestCreatePremisAction|	Bearbeitung der PREMIS-Datei| Rücksetzung auf 600, Löschung auf 800 |
 310 |IngestScanForPresentationAction | Formaterkennung für Präsentation auf Basis der LZA Formate| Rücksetzung auf 600, Löschung auf 800
 320 |IngestConvertForPresentationAction| Bildung der PIPs (Präsentationsderivate) |  Rücksetzung auf 600, Löschung auf 800 |
 330 |IngestPreProcessForPresentationAction | Verschieben der PIPs | Rücksetzung auf 600, Löschung auf 800
@@ -97,13 +98,13 @@ Grundsätzlich sind Status <=400 immer im Gesamten rücksetzbar. Bei Status >440
 360 |IngestPrepareSendToPresenterAction |Anmeldung der PIP bei IRODS zur Übertragung ans Pres. Repository | Rücksetzung auf 600, Löschung auf 800
 370 |IngestBuildAIPAction |AIP Erstellung| Rücksetzung auf 370 oder 600 oder 800 (Löschung)
 380 |IngestTarAction|	AIP Erstellung als TAR-Archiv| Rücksetzung auf 380 oder 600 oder 800 (Löschung)
-400 |ArchiveReplicationAction |	Ablage auf LZA Medien und Replikation | Grid.log  object.log prüfen, iRODS/server/log/rodsLog **NICHT zurückstellen!** **NICHT löSCHEN**
- 440|ArchiveReplicationCheckAction | Prüfung der Replikationen |  Grid.log, object.log prüfen, ggfs. rodsLog Gefahrlos auf 440 zurückstellbar ,**NICHT auf 600 zurückstellen!** **NICHT löSCHEN**
-540|FetchPIPsAction|Replikation der PIP an den Presentation Repository Knoten| Bitte auf 540 zurückstellen **NICHT 600!** **NICHT löSCHEN**
-550|SendToPresenterAction|	Einspielung der PIP in das Presentation Repository | Bitte auf 550 zurückstellen **NICHT 600!** **NICHT löSCHEN**
-560|CreateEDMAction| EDM Metadaten-Erstellung| Bitte auf 550 zurückstellen **NICHT 600!** **NICHT löSCHEN**
-570|IndexESAction|Indizierung im Elasticsearch Suchindex | Bitte auf 550 zurückstellen **NICHT 600!** **NICHT löSCHEN**
-580|FriendshipConversionAction|	Konvertierung auf anderem Knoten | Bitte auf 580 zurückstellen **NICHT 600!** **NICHT löSCHEN**|
+400 |ArchiveReplicationAction |	Ablage auf LZA Medien und Replikation | Grid.log  object.log prüfen, iRODS/server/log/rodsLog **NICHT zurückstellen!** **NICHT LÖSCHEN**
+ 440|ArchiveReplicationCheckAction | Prüfung der Replikationen |  Grid.log, object.log prüfen, ggfs. rodsLog Gefahrlos auf 440 zurückstellbar ,**NICHT auf 600 zurückstellen!** **NICHT LÖSCHEN**
+540|FetchPIPsAction|Replikation der PIP an den Presentation Repository Knoten| Bitte auf 540 zurückstellen **NICHT 600!** **NICHT LÖSCHEN**
+550|SendToPresenterAction|	Einspielung der PIP in das Presentation Repository | Bitte auf 550 zurückstellen **NICHT 600!** **NICHT LÖSCHEN**
+560|CreateEDMAction| EDM Metadaten-Erstellung| Bitte auf 550 zurückstellen **NICHT 600!** **NICHT LÖSCHEN**
+570|IndexESAction|Indizierung im Elasticsearch Suchindex | Bitte auf 550 zurückstellen **NICHT 600!** **NICHT LÖSCHEN**
+580|FriendshipConversionAction|	Konvertierung auf anderem Knoten | Bitte auf 580 zurückstellen **NICHT 600!** **NICHT LÖSCHEN**|
 600|RestartIngestWorkflowAction| Zurücksetzung des Ingestworkflows | Bitte auf 600 zurückstellen| 
 700|PIPGenObjectToWorkareaAction| Übertragung von AIP an das Knotenarbeitsverzeichnis| Bitte auf 700 zurückstellen|
 710|PIPGenScanForPresentationAction | Scannen der Präsentationsformate| Bitte auf 710 zurückstellen  |

@@ -31,11 +31,14 @@ import nu.xom.Element;
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
+
+import de.uzk.hki.da.utils.XMLUtils;
 
 /**
  * Contains the selectable values for certain restriction settings shown in the drop down boxes in GUI mode
@@ -44,7 +47,7 @@ import org.xml.sax.XMLReader;
  */
 public class ContractSettings {
 
-	private Logger logger = Logger.getLogger(ContractSettings.class);
+	private static Logger logger = LogManager.getLogger(ContractSettings.class);
 	
 	private String[] duration = new String[4];
 	private String[] widthImage = new String[3];
@@ -81,6 +84,8 @@ public class ContractSettings {
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 		try {
 			xmlReader = spf.newSAXParser().getXMLReader();
+			//xml persistence without schema-> validation without schema not possible
+			//xmlReader=XMLUtils.createValidatingSaxParser().getXMLReader();
 		} catch (Exception e) {
 			throw new IOException("Error creating SAX parser", e);
 		}

@@ -80,7 +80,7 @@ public class ActionRegistryTests {
 	public void testReport(){
 		Object o = new Object();
 		Package p = new Package();
-		p.setName("1");
+		p.setDelta(1);
 		o.getPackages().add(p);
 		
 		

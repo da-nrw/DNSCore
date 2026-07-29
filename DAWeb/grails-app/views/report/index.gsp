@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Bericht verarbeiten</title>
+		<title>Abfragen verarbeiten</title>
 		<meta name="layout" content="main">
 		<r:require modules="periodicalupdater, jqueryui"/>
 		<g:javascript>
@@ -34,17 +34,26 @@
 		</g:javascript>
 	</head>
 	<body>
-		<div id="page-body">
-			<g:if test="${msg}">
-				<div class="message" role="status">${msg}</div>
-			</g:if>
-			<div id="items" >	
-				<h2>Bericht hochladen</h2>
+		<div class="page-body">
+			
+			<div id="items" style="margin-top: -8px;">	
+				<div>
+					<div class="blue-box" style="padding-top: 6px;"></div>
+					<h2>Bericht hochladen</h2>
+				</div>
+				<g:if test="${msg}">
+					<div class="message" role="status">${msg}</div>
+				</g:if>
 				<g:uploadForm controller="report" method="POST" action="save" enctype="multipart/form-data">
-					<input type="file" name="file" />
-		       		<input type="submit" value="Hochladen" />
+					<div style="float:left; margin-right: 10px" >
+						<input type="file" name="file" />
+					</div>
+					<div style="float:center"> 
+		       			<input type="submit" value="Hochladen" class="style-buttons" />
+		       		</div>
 				</g:uploadForm><br>
-				(Spaltenkopf: identifier;origName;statuscode;createddate;updateddate;erfolg;bemerkung; semikolongetrennt, EXCEL)	
+				
+				(<strong>Spaltenkopf:</strong> identifier;origName;statuscode;createddate;updateddate;erfolg;bemerkung; </br>semikolongetrennt, EXCEL)	
 				<script language="JavaScript">
 				function toggle(source) {
 					  checkboxes = document.getElementsByName('currentFiles');
@@ -52,18 +61,24 @@
 					    checkboxes[i].checked = source.checked;
 				}
 				</script>
-				<h2>Wartend auf Aktion</h2>	
+				<div>
+					<div class="blue-box" style="margin-top: 6px;"></div>
+					<h2>Wartend auf Aktion</h2>
+				</div>	
 				<form id="form2" action="decider" >
 					<!-- This div is updated through the periodical updater -->
-					<div class="list" id="entry-list1">
+					<div class="entry-list-report">
 						<g:include action="snippetIncoming" />
 					</div>
 					<g:select name="answer" from="${['start': 'Bericht generieren', 'retrieval': 'Retrieval']}" optionKey="key" optionValue="value"/>
-					<g:actionSubmit value="Starten" action="decider"/>
+					<g:actionSubmit value="Starten" action="decider" class="style-buttons"/>
 				</form>
-				<h2>Bereits erstellte Berichte:</h2>
+				<div>
+					<div class="blue-box" style="margin-top: 6px;"></div>
+					<h2>Bereits erstellte Berichte:</h2>
+				</div>
 				<!-- This div is updated through the periodical updater -->
-				<div class="list" id="entry-list2">
+				<div class="entry-list-report">
 					<g:include action="snippetOutgoing" />
 				</div>
 			</div>

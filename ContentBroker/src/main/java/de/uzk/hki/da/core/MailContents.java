@@ -237,7 +237,7 @@ public class MailContents {
 	 * Sends Email to the Admin
 	 * @author Jpeters
 	 */
-	public void abstractActionCreateAdminReport(Exception e,Object object,AbstractAction action) {
+	public void abstractActionCreateAdminReport(Throwable e,Object object,AbstractAction action) {
 
 		String errorStatus = action.getStartStatus().substring(0,action.getStartStatus().length()-1) + "1";
 		String email = localNode.getAdmin().getEmailAddress();
