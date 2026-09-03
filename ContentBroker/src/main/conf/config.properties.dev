@@ -1,3 +1,6 @@
+irods.zone=dev
+
+
 localNode.userAreaRootPath=CONTENTBROKER_ROOT/storage/UserArea
 localNode.ingestAreaRootPath=CONTENTBROKER_ROOT/storage/IngestArea
 localNode.ingestAreaNoBagitRootPath=CONTENTBROKER_ROOT/storage/IngestArea/noBagit

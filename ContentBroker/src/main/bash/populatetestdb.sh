@@ -94,7 +94,11 @@ do
 	fi
 	if [ "$2" = "dev" ]
 	then
-	    java -jar ../3rdParty/hsqldb/lib/sqltool.jar --autoCommit --sql "$i" xdb 
+	    java -jar ../3rdParty/hsqldb/lib/sqltool.jar \
+        	--rcFile ./sqltool.rc \
+        	--autoCommit \
+        	--sql "$i" \
+        	xdb
 	fi
 done
 

@@ -144,11 +144,13 @@ public class RegisterObjectService {
 
 	
 	private void updateExistingObject(Object obj,String containerName){
+		boolean qualityLevelRecheck =
+	            obj.getQualityLevelRecheck_flag();
 		Package newPkg = new Package();
 		int max = obj.getLatestPackage().getDelta();
 		newPkg.setDelta(max + 1);
 		newPkg.setContainerName(containerName);
-		if (obj.getObject_state()<100) throw new UserException(UserExceptionId.DELTA_RECIEVED_BEFORE_ARCHIVED, "Delta Record für ein nicht fertig archiviertes Objekt");
+		if (obj.getObject_state()<100 && !qualityLevelRecheck) throw new UserException(UserExceptionId.DELTA_RECIEVED_BEFORE_ARCHIVED, "Delta Record für ein nicht fertig archiviertes Objekt");
 		obj.getPackages().add(newPkg);
 	}
 	

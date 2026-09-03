@@ -155,7 +155,7 @@ public class QualityLevelRecheckAction extends AbstractAction {
 		Session session = HibernateUtil.openSession();
 		Transaction tx = session.beginTransaction();
 		try {
-			o.setObject_state(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
+			//o.setObject_state(Object.ObjectStatus.ArchivedAndValidAndNotInWorkflow);
 			session.saveOrUpdate(o);
 			session.getTransaction().commit();
 		} catch (Exception e) {

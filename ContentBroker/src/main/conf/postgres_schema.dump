@@ -222,6 +222,25 @@ CREATE TABLE packages (
 ALTER TABLE public.packages OWNER TO irods;
 
 --
+-- Name: pending_mail; Type: TABLE; Schema: public; Owner: irods; Tablespace:
+--
+
+CREATE TABLE pending_mail (
+    id integer NOT NULL,
+    from_address character varying(255),
+    to_address character varying(255),
+    subject character varying(255),
+    message text,
+    pooled boolean,
+    retries integer NOT NULL,
+    created timestamp without time zone,
+    last_try timestamp without time zone,
+    node_name character varying(255)
+);
+
+
+ALTER TABLE public.pending_mail OWNER TO irods;
+--
 -- Name: queue; Type: TABLE; Schema: public; Owner: irods; Tablespace: 
 --
 
@@ -351,6 +370,15 @@ COPY packages (id, checksum, container_name, last_checked, name, status) FROM st
 
 
 --
+-- Data for Name: pending_mail; Type: TABLE DATA; Schema: public; Owner: irods
+--
+
+COPY pending_mail (id, from_address, to_address, subject, message, pooled, retries, created, last_try, node_name) FROM stdin;
+
+\.
+
+
+--
 -- Data for Name: queue; Type: TABLE DATA; Schema: public; Owner: irods
 --
 
@@ -453,6 +481,13 @@ ALTER TABLE ONLY objects
 ALTER TABLE ONLY packages
     ADD CONSTRAINT packages_pkey PRIMARY KEY (id);
 
+
+--
+-- Name: pending_mails_pk; Type: CONSTRAINT; Schema: public; Owner: irods; Tablespace:
+--
+
+ALTER TABLE ONLY pending_mail
+    ADD CONSTRAINT pending_mails_pk PRIMARY KEY (id);
 
 --
 -- Name: queue_pkey; Type: CONSTRAINT; Schema: public; Owner: irods; Tablespace: 

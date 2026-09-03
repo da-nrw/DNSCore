@@ -40,9 +40,11 @@ function startContentBroker(){
 	
 	if [ "$2" = "dev" ]
 	then
-		./ContentBroker_start.sh.template suppress_diagnostics
+		DNSCORE_AT_IMAGEMAGICK_WRAPPERS=true \
+			./ContentBroker_start.sh.template suppress_diagnostics
 	else
-		./ContentBroker_start.sh.template 	
+		DNSCORE_AT_IMAGEMAGICK_WRAPPERS=true \
+			./ContentBroker_start.sh.template 	
 	fi
 
 	sleep 15

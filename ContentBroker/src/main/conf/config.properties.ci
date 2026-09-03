@@ -1,10 +1,10 @@
-fedora.url=http://localhost:8080/fedora
+fedora.url=http://localhost:8081/fedora
 fedora.user=fedoraAdmin
-fedora.password=BYi/MFjKDFd5Dpe52PSUoA==
+fedora.password=1PWJCH6tl+WzTY38fkzHWQ==
 
 irods.user=rods
-irods.password=WpXlLLg3a4/S/iYrs6UhtQ==
-irods.server=localhost.lvrintern.lvr.de
+irods.password=LLIWXLGygLBkBtcyUusPPA==
+irods.server=localhost
 irods.zone=ci
 irods.default_resc=ciWorkingResource
 irods.pam=false
@@ -48,4 +48,4 @@ checksumWorker.startTime=0
 checksumWorker.endTime=3
 
 timeBasedPublicationWorker.pollForCi=true
-mailWorker.smtpHost=mail.lvrintern.lvr.de
+mailWorker.smtpHost=localhost
