@@ -55,7 +55,7 @@
 	      <id>central</id>
 	      <name>Maven Repository Switchboard</name>
 	      <layout>default</layout>
-	      <url>http://repo1.maven.org/maven2</url>
+	      <url>https://repo1.maven.org/maven2</url>
 	      <snapshots>
 	        <enabled>false</enabled>
 	      </snapshots>
@@ -569,6 +569,13 @@
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-all</artifactId>
 			<version>5.8.0</version> <!-- 5.8.0--> <!-- 5.15.7-->
+
+			<exclusions>
+       	  		<exclusion>
+            		<groupId>org.apache.activemq</groupId>
+            		<artifactId>activemq-amqp</artifactId>
+        		</exclusion>
+    		</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.xbean</groupId>

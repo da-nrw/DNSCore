@@ -26,6 +26,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 /**
@@ -66,6 +68,8 @@ public class PropertiesUtils {
 	 * @author Daniel M. de Oliveira
 	 */
 	public static Properties read(File propertiesFile) throws IOException{
+	Path aktuellerPfad =  Paths.get("").toAbsolutePath();
+        System.out.println(aktuellerPfad);
 		if (!propertiesFile.exists()) throw new FileNotFoundException(propertiesFile+" does not exist");
 		InputStream in = new FileInputStream(propertiesFile);
 		Properties props = new Properties();

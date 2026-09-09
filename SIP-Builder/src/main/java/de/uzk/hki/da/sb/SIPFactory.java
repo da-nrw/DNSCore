@@ -41,6 +41,7 @@ import org.jdom.Document;
 import org.jdom.input.SAXBuilder;
 
 import de.uzk.hki.da.metadata.ContractRights;
+import de.uzk.hki.da.metadata.EadParser;
 import de.uzk.hki.da.metadata.FileExtensions;
 import de.uzk.hki.da.metadata.LidoLicense;
 import de.uzk.hki.da.metadata.LidoParser;
@@ -406,6 +407,7 @@ public class SIPFactory {
 		boolean premisLicenseBool=contractRights.getCclincense()!=null;
 		boolean metsLicenseBool=false;
 		boolean lidoLicenseBool=false;
+		boolean eadLicenseBool=false;
 		boolean hasPipMetadataBool=false;
 		boolean publicationBool=contractRights.getPublicRights().getAllowPublication();
 		boolean instPublicationBool=contractRights.getInstitutionRights().getAllowPublication();
@@ -416,7 +418,7 @@ public class SIPFactory {
 		//instPublicationBool=false;
 		//end
 		
-		//Nur bei publikationen Lizenzauswertungen vornehmen
+		//Nur bei Publikationen Lizenzauswertungen vornehmen
 		if(publicationBool || instPublicationBool){
 			TreeMap<File, String> metadataFileWithType;
 			try {
@@ -466,6 +468,23 @@ public class SIPFactory {
 					else
 						lidoLicenseBool = true;
 					hasPipMetadataBool=true;
+				} else if (metadataFileWithType.containsValue(C.CB_PACKAGETYPE_EAD)) {
+					ArrayList<File> eadFiles = new ArrayList<File>();
+
+					for (File f : metadataFileWithType.keySet())
+						if (metadataFileWithType.get(f).equals(C.CB_PACKAGETYPE_EAD))
+							eadFiles.add(f);
+					for (File f : eadFiles) {
+						SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
+						Document eadDoc = builder.build(f);
+						EadParser ep = new EadParser(eadDoc);
+						// keine zur Veroeffentlichung gueltige Lizenz in den
+						// EAD-Metadaten vorhanden (z.B. In Copyright)
+						if (!ep.isPublishable())
+							return Feedback.LICENSE_NOT_VALID_FOR_PUBLICATION;
+					}
+					eadLicenseBool = true;
+					hasPipMetadataBool=true;
 				}else {
 					hasPipMetadataBool=false;
 				}
@@ -475,17 +494,16 @@ public class SIPFactory {
 			}
 		}
 		//activate to be able to create non licensed test sips
-		//publicationBool=false;
 		//premisLicenseBool=false;
 		//publicationBool=false;
 
 		//end
 
-		if(publicationBool && premisLicenseBool && (metsLicenseBool || lidoLicenseBool)){
+		if(publicationBool && premisLicenseBool && (metsLicenseBool || lidoLicenseBool || eadLicenseBool)){
 			return Feedback.DUPLICATE_LICENSE_DATA;
 		}
 		
-		if(publicationBool && !premisLicenseBool && !metsLicenseBool&& !lidoLicenseBool){
+		if(publicationBool && !premisLicenseBool && !metsLicenseBool && !lidoLicenseBool && !eadLicenseBool){
 			return Feedback.PUBLICATION_NO_LICENSE;
 		}
 		
@@ -493,7 +511,7 @@ public class SIPFactory {
 			return Feedback.NO_METADATA_FOR_PIP;
 		}
 		
-		logger.info("License is satisfiable: Premis-License:"+premisLicenseBool+" Mets-License:"+metsLicenseBool+" Lido-License:"+lidoLicenseBool+ " Publication-Decision:"+publicationBool+" InstPublication-Decision:"+instPublicationBool);
+		logger.info("License is satisfiable: Premis-License:"+premisLicenseBool+" Mets-License:"+metsLicenseBool+" Lido-License:"+lidoLicenseBool+" EAD-License:"+eadLicenseBool+ " Publication-Decision:"+publicationBool+" InstPublication-Decision:"+instPublicationBool);
 		
 		
 		return Feedback.SUCCESS;
@@ -1211,6 +1229,15 @@ public class SIPFactory {
 									+ folder.getName()
 									+ "\" konnte der Lieferung nicht hinzugefügt werden.\n"+
 									"Die Lizenzangaben sind nicht vorhanden: Um publizieren zu können, muss eine gültige Lizenz angegeben werden.",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				case LICENSE_NOT_VALID_FOR_PUBLICATION:
+					messageWriter
+					.showMessage(
+							"Das SIP \""
+									+ folder.getName()
+									+ "\" konnte der Lieferung nicht hinzugefügt werden.\n"+
+									"Die EAD-Metadaten enthalten keine zur Veröffentlichung gültige Lizenz (z.B. In Copyright).",
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				case NO_METADATA_FOR_PIP:
