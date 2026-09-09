@@ -480,10 +480,14 @@ public class SIPFactory {
 						EadParser ep = new EadParser(eadDoc);
 						// keine zur Veroeffentlichung gueltige Lizenz in den
 						// EAD-Metadaten vorhanden (z.B. In Copyright)
-						if (!ep.isPublishable())
-							return Feedback.LICENSE_NOT_VALID_FOR_PUBLICATION;
+						if (!ep.isPublishable()) {
+							eadLicenseBool = false;
+							//return Feedback.LICENSE_NOT_VALID_FOR_PUBLICATION;
+						} else {
+							eadLicenseBool = true;
+						}
 					}
-					eadLicenseBool = true;
+					
 					hasPipMetadataBool=true;
 				}else {
 					hasPipMetadataBool=false;
