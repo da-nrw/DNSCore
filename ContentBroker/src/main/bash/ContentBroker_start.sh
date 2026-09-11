@@ -79,7 +79,18 @@ EOF
     echo "ContentBroker: convert=$(command -v convert)"
     echo "ContentBroker: identify=$(command -v identify)"
 fi
+: > log/stdout.log
+: > log/stderr.log
+
+{
+    echo "ContentBroker startup"
+    echo "JAVA_HOME=$JAVA_HOME"
+    echo "RESOLVED_JAVA=$(readlink -f "$JAVA_HOME/bin/java")"
+    "$JAVA_HOME/bin/java" -version 2>&1
+} >> log/stdout.log 2>&1
 
 touch /tmp/cb.running
-nohup $JAVA_HOME/bin/java $JAVA_OPTS -jar ContentBroker.jar $1 1>log/stdout.log 2>log/stderr.log &
+
+nohup "$JAVA_HOME/bin/java" $JAVA_OPTS -jar ContentBroker.jar "$1" \
+    >>log/stdout.log 2>>log/stderr.log &
 

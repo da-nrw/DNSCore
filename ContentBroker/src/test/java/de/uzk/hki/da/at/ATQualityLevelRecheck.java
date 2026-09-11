@@ -28,6 +28,9 @@ import de.uzk.hki.da.service.HibernateUtil;
 import de.uzk.hki.da.utils.C;
 import de.uzk.hki.da.utils.FolderUtils;
 import de.uzk.hki.da.utils.XMLUtils;
+import de.uzk.hki.da.model.ConversionPolicy;
+import de.uzk.hki.da.model.ConversionRoutine;
+import de.uzk.hki.da.model.DAFile;
 
 /**
  * Acceptance Tests fuer das QualityLevelRecheck-Feature.
@@ -86,10 +89,10 @@ public class ATQualityLevelRecheck extends AcceptanceTest {
 	/*
 	 * ===================================================================== 1.
 	 * Basisfaelle
-	 * =====================================================================
-	 * WORKS (REMINDER)
+	 * ===================================================================== WORKS
+	 * (REMINDER)
 	 */
-	@Ignore
+	
 	@Test
 	public void completeInitialWithImageMagickGetsGoodQualityLevel() throws Exception {
 
@@ -102,7 +105,8 @@ public class ATQualityLevelRecheck extends AcceptanceTest {
 		assertGoodQualityLevel(object);
 		assertPackageCount(object, 1);
 	}
-	@Ignore
+
+	
 	@Test
 	public void oneFileInitialWithoutImageMagickGetsBadQualityLevel() throws Exception {
 
@@ -121,7 +125,7 @@ public class ATQualityLevelRecheck extends AcceptanceTest {
 	 * Recheck direkt nach Erstingest
 	 * =====================================================================
 	 */
-	@Ignore
+	
 	@Test
 	public void badCompleteInitialThenGoodRecheckRecovers() throws Exception {
 
@@ -143,7 +147,8 @@ public class ATQualityLevelRecheck extends AcceptanceTest {
 
 		assertQualityLevelRecheckPackage(object, 2);
 	}
-	@Ignore
+
+	
 	@Test
 	public void goodOneFileInitialThenBadRecheckBecomesBad() throws Exception {
 
@@ -171,6 +176,7 @@ public class ATQualityLevelRecheck extends AcceptanceTest {
 	 * Delta zwischen Erstingest und Recheck
 	 * =====================================================================
 	 */
+	
 	@Test
 	public void goodCompleteThenBadNewTifDeltaThenGoodRecheckRecovers() throws Exception {
 
@@ -199,7 +205,8 @@ public class ATQualityLevelRecheck extends AcceptanceTest {
 
 		assertQualityLevelRecheckPackage(object, 3);
 	}
-	@Ignore
+
+	
 	@Test
 	public void badOneFileThenGoodCompleteDeltaThenGoodRecheck() throws Exception {
 
@@ -232,6 +239,7 @@ public class ATQualityLevelRecheck extends AcceptanceTest {
 	 * Mehrere Deltas vor dem Recheck
 	 * =====================================================================
 	 */
+	
 	@Test
 	public void multipleDifferentBadDeltasThenGoodRecheckRecovers() throws Exception {
 
@@ -270,6 +278,8 @@ public class ATQualityLevelRecheck extends AcceptanceTest {
 
 		assertQualityLevelRecheckPackage(object, 5);
 	}
+
+	
 	@Test
 	public void mixedGoodAndBadDeltaHistoryThenGoodRecheckEndsGood() throws Exception {
 
@@ -318,6 +328,7 @@ public class ATQualityLevelRecheck extends AcceptanceTest {
 	 * Recheck -> neues Delta -> weiterer Recheck
 	 * =====================================================================
 	 */
+	
 	@Test
 	public void recheckThenDifferentBadDeltasThenFurtherRechecksRecoverAgain() throws Exception {
 
@@ -374,7 +385,7 @@ public class ATQualityLevelRecheck extends AcceptanceTest {
 	 * Mehrere Rechecks ohne Delta
 	 * =====================================================================
 	 */
-	@Ignore
+	
 	@Test
 	public void repeatedRechecksCreatePackagesAndFollowImageMagickAvailability() throws Exception {
 
@@ -417,7 +428,7 @@ public class ATQualityLevelRecheck extends AcceptanceTest {
 	 * EMPTY-Sonderfaelle
 	 * =====================================================================
 	 */
-	@Ignore
+	
 	@Test
 	public void emptyDeltaBetweenBadHistoryAndGoodRecheckIsHandled() throws Exception {
 
@@ -448,7 +459,8 @@ public class ATQualityLevelRecheck extends AcceptanceTest {
 
 		assertQualityLevelRecheckPackage(object, 3);
 	}
-	@Ignore
+
+	
 	@Test
 	public void emptyInitialRecheckCreatesMetadataOnlyRepresentations() throws Exception {
 
@@ -485,6 +497,7 @@ public class ATQualityLevelRecheck extends AcceptanceTest {
 			FolderUtils.deleteDirectorySafe(unpackedPackage);
 		}
 	}
+
 	
 	@Test
 	public void badDeltaThenGoodDeltaThenBadRecheckThenBadDeltaThenGoodRecheck() throws Exception {
@@ -556,6 +569,7 @@ public class ATQualityLevelRecheck extends AcceptanceTest {
 
 		assertQualityLevelRecheckPackage(object, 6);
 	}
+
 	/*
 	 * ===================================================================== 8.
 	 * Expliziter Konvertierungspfad
@@ -604,6 +618,61 @@ public class ATQualityLevelRecheck extends AcceptanceTest {
 
 			FolderUtils.deleteDirectorySafe(unpackedPackage);
 		}
+	}
+
+	@Test
+	public void missingConverterThenRestoredConverterRecheckRecovers()
+			throws Exception {
+
+		String originalName =
+				uniqueName("MissingConverter_Restored_Recheck");
+
+		enableImageMagick();
+
+		Object object =
+				ingestInitial(
+						SOURCE_PACKAGE_NEWTIF,
+						originalName);
+
+		System.out.println(
+				"Initial Quality Level = "
+						+ object.getQuality_flag());
+
+		assertPackageCount(object, 1);
+
+		ConversionRoutineSnapshot snapshot =
+				breakConverterForTiff();
+
+		try {
+
+			object = recheck(originalName);
+
+			System.out.println(
+					"Quality Level with broken TIFF converter = "
+							+ object.getQuality_flag());
+
+			assertConversionFailureQualityLevel(object);
+
+			assertPackageCount(object, 2);
+
+			assertQualityLevelRecheckPackage(object, 2);
+
+		} finally {
+
+			restoreConverter(snapshot);
+		}
+
+		object = recheck(originalName);
+
+		System.out.println(
+				"Quality Level after restoring TIFF converter = "
+						+ object.getQuality_flag());
+
+		assertGoodQualityLevel(object);
+
+		assertPackageCount(object, 3);
+
+		assertQualityLevelRecheckPackage(object, 3);
 	}
 
 	/*
@@ -956,6 +1025,303 @@ public class ATQualityLevelRecheck extends AcceptanceTest {
 		if (!IMAGEMAGICK_DISABLED_FLAG.delete()) {
 
 			throw new IOException("ImageMagick-Flag konnte nicht entfernt werden: " + IMAGEMAGICK_DISABLED_FLAG);
+		}
+	}
+
+	private static final String BROKEN_CONVERTER_TYPE = "de.uzk.hki.da.convert.NonExistingConverterForAcceptanceTest";
+	private static final String TIFF_PUID = "fmt/353";
+	private static class ConversionRoutineSnapshot {
+
+		private final Integer routineId;
+		private final String originalType;
+		private final String sourceFormat;
+
+		private ConversionRoutineSnapshot(Integer routineId, String originalType, String sourceFormat) {
+
+			this.routineId = routineId;
+			this.originalType = originalType;
+			this.sourceFormat = sourceFormat;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private ConversionRoutineSnapshot breakConverterForTiff() {
+
+		Session session = HibernateUtil.openSession();
+		Transaction tx = session.beginTransaction();
+
+		try {
+
+			List<ConversionPolicy> policies = session.createQuery(
+					"FROM ConversionPolicy cp "
+					+ "WHERE cp.source_format = :puid "
+					+ "AND cp.presentation = false")
+					.setParameter("puid", TIFF_PUID)
+					.list();
+
+			assertEquals(
+					"Es wird genau eine LZA-ConversionPolicy fuer TIFF erwartet",
+					1,
+					policies.size());
+
+			ConversionPolicy policy = policies.get(0);
+
+			ConversionRoutine routine = policy.getConversion_routine();
+
+			assertNotNull(
+					"TIFF-ConversionPolicy besitzt keine ConversionRoutine",
+					routine);
+
+			Integer routineId = routine.getId();
+			String originalType = routine.getType();
+
+			assertNotNull(
+					"ConversionRoutine.type ist null",
+					originalType);
+
+			System.out.println(
+					"Breaking TIFF converter:"
+					+ " puid=" + TIFF_PUID
+					+ ", routine=" + routine.getName()
+					+ ", routineId=" + routineId
+					+ ", originalType=" + originalType);
+
+			int updated = session.createQuery(
+					"UPDATE ConversionRoutine r "
+					+ "SET r.type = :brokenType "
+					+ "WHERE r.id = :id")
+					.setParameter(
+							"brokenType",
+							BROKEN_CONVERTER_TYPE)
+					.setParameter(
+							"id",
+							routineId)
+					.executeUpdate();
+
+			assertEquals(
+					"Unerwartete Anzahl geaenderter ConversionRoutines",
+					1,
+					updated);
+
+			tx.commit();
+
+			return new ConversionRoutineSnapshot(
+					routineId,
+					originalType,
+					TIFF_PUID);
+
+		} catch (RuntimeException e) {
+
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+
+			throw e;
+
+		} catch (AssertionError e) {
+
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+
+			throw e;
+
+		} finally {
+
+			session.close();
+		}
+	}
+
+	private void restoreConverter(ConversionRoutineSnapshot snapshot) {
+
+		Session session = HibernateUtil.openSession();
+		Transaction tx = session.beginTransaction();
+
+		try {
+
+			System.out.println(
+					"Restoring converter for PUID " + snapshot.sourceFormat + ": type=" + snapshot.originalType);
+
+			int updated = session
+					.createQuery("UPDATE ConversionRoutine r " + "SET r.type = :originalType " + "WHERE r.id = :id")
+					.setParameter("originalType", snapshot.originalType).setParameter("id", snapshot.routineId)
+					.executeUpdate();
+
+			assertEquals("ConversionRoutine konnte nicht wiederhergestellt werden", 1, updated);
+
+			tx.commit();
+
+		} catch (RuntimeException e) {
+
+			tx.rollback();
+			throw e;
+
+		} finally {
+
+			session.close();
+		}
+	}
+	
+	private String findTiffPuid(Object managedObject) {
+
+		System.out.println("=== Files in latest package ===");
+
+		for (DAFile file : managedObject.getLatestPackage().getFiles()) {
+
+			String relativePath = file.getRelative_path();
+			String puid = file.getFormatPUID();
+
+			System.out.println(
+					"relativePath="
+							+ relativePath
+							+ ", puid="
+							+ puid);
+
+			if (relativePath == null) {
+				continue;
+			}
+
+			String lower = relativePath.toLowerCase();
+
+			if (lower.endsWith(".tif")
+					|| lower.endsWith(".tiff")) {
+
+				assertNotNull(
+						"TIFF-Datei besitzt keinen erkannten PUID: "
+								+ relativePath,
+						puid);
+
+				System.out.println(
+						"Using TIFF for converter test: "
+								+ relativePath
+								+ " -> "
+								+ puid);
+
+				return puid;
+			}
+		}
+
+		throw new AssertionError(
+				"Keine TIFF-Datei im NEWTIF-Testobjekt gefunden");
+	}
+	/*private String findTiffPuid(Object detachedObject) {
+
+		Session session = HibernateUtil.openSession();
+		Transaction tx = session.beginTransaction();
+
+		try {
+
+			Object managedObject = (Object) session.get(Object.class, detachedObject.getData_pk());
+
+			assertNotNull("Objekt konnte fuer TIFF-PUID-Suche nicht geladen werden", managedObject);
+
+			de.uzk.hki.da.model.Package latestPackage = managedObject.getLatestPackage();
+
+			assertNotNull("Latest Package fehlt beim Objekt " + managedObject.getIdentifier(), latestPackage);
+
+			List<DAFile> files = latestPackage.getFiles();
+
+			
+			for (DAFile file : files) {
+
+				String relativePath = file.getRelative_path();
+
+				if (relativePath == null) {
+					continue;
+				}
+
+				String lower = relativePath.toLowerCase();
+
+				if (lower.endsWith(".tif") || lower.endsWith(".tiff")) {
+
+					String puid = file.getFormatPUID();
+
+					assertNotNull("TIFF-Datei besitzt keinen erkannten PUID: " + relativePath, puid);
+
+					System.out.println("Using TIFF for converter test: " + relativePath + " -> " + puid);
+
+					tx.commit();
+
+					return puid;
+				}
+			}
+
+			tx.commit();
+
+			throw new AssertionError("Keine TIFF-Datei im NEWTIF-Testobjekt gefunden");
+
+		} catch (RuntimeException e) {
+
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+
+			throw e;
+
+		} catch (AssertionError e) {
+
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+
+			throw e;
+
+		} finally {
+
+			session.close();
+		}
+	}*/
+
+	private void assertConversionFailureQualityLevel(Object object) {
+
+		assertEquals(
+				"Defekter TIFF-Converter muss zu Quality Level 2 fuehren",
+				2,
+				object.getQuality_flag());
+	}
+	@SuppressWarnings("unchecked")
+	private void dumpConversionPolicies() {
+
+		Session session = HibernateUtil.openSession();
+		Transaction tx = session.beginTransaction();
+
+		try {
+
+			List<ConversionPolicy> policies =
+					session.createQuery(
+							"FROM ConversionPolicy cp")
+					.list();
+
+			System.out.println("=== ConversionPolicies ===");
+
+			for (ConversionPolicy policy : policies) {
+
+				ConversionRoutine routine =
+						policy.getConversion_routine();
+
+				System.out.println(
+						"id=" + policy.getId()
+						+ ", sourceFormat="
+						+ policy.getSource_format()
+						+ ", presentation="
+						+ policy.isPresentation()
+						+ ", formatType="
+						+ policy.getFormat_type()
+						+ ", routine="
+						+ (routine != null
+								? routine.getName()
+								: "null")
+						+ ", type="
+						+ (routine != null
+								? routine.getType()
+								: "null"));
+			}
+
+			tx.commit();
+
+		} finally {
+
+			session.close();
 		}
 	}
 }
