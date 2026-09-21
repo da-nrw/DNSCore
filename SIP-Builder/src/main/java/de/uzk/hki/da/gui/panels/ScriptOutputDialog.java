@@ -1,97 +1,101 @@
-/*
-  DA-NRW Software Suite | SIP-Builder
-  Copyright (C) 2014 Historisch-Kulturwissenschaftliche Informationsverarbeitung
-  Universität zu Köln
-
-  This program is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 package de.uzk.hki.da.gui.panels;
 
-
-import javax.swing.*;
-import java.awt.*;
-import java.io.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Window;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
+import javax.swing.border.EmptyBorder;
+
+import de.uzk.hki.da.gui.GuiTheme;
+import de.uzk.hki.da.gui.ThemeButton;
+
+/**
+ * Modernes Dialogfenster fuer die Anzeige von Script-Ausgaben.
+ * Zeigt PowerShell/Skript-Ausgaben in einem formatierten Bereich an.
+ */
 public class ScriptOutputDialog extends JDialog {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private final JTextArea textArea = new JTextArea(20, 80);
-    private final JButton closeButton = new JButton("Schließen");
+    private static final long serialVersionUID = 1L;
 
-    /**
-     * 
-     * @param owner
-     * @param title
-     */
+    private final JTextArea textArea;
+    private final JButton closeButton;
+
     public ScriptOutputDialog(Window owner, String title) {
         super(owner, title, ModalityType.MODELESS);
 
+        textArea = new JTextArea(20, 80);
         textArea.setEditable(false);
-        textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        textArea.setFont(GuiTheme.getFont(GuiTheme.FONT_SIZE_MD));
+        textArea.setBackground(new Color(30, 30, 30));
+        textArea.setForeground(new Color(200, 210, 200));
+        textArea.setCaretColor(new Color(200, 210, 200));
+        textArea.setBorder(new EmptyBorder(GuiTheme.PADDING_SM, GuiTheme.PADDING_SM,
+                GuiTheme.PADDING_SM, GuiTheme.PADDING_SM));
 
         JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setBorder(BorderFactory.createLineBorder(GuiTheme.BORDER_DEFAULT, 1));
 
-        closeButton.addActionListener(e -> dispose());
+        closeButton = new ThemeButton(ThemeButton.Style.PRIMARY, "Schliessen");
+        //closeButton.setRenderActiveWhenDisabled(true);
+        closeButton.setPreferredSize(GuiTheme.buttonSize());
+        closeButton.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                dispose();
+            }
+        });
 
-        JPanel bottom = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JPanel bottom = new JPanel(new FlowLayout(FlowLayout.RIGHT, GuiTheme.PADDING_MD, GuiTheme.PADDING_SM));
+        bottom.setBackground(GuiTheme.BG_FOOTER);
         bottom.add(closeButton);
 
-        setLayout(new BorderLayout(8, 8));
+        setLayout(new BorderLayout(GuiTheme.PADDING_SM, GuiTheme.PADDING_SM));
         add(scrollPane, BorderLayout.CENTER);
         add(bottom, BorderLayout.SOUTH);
 
+        setBackground(GuiTheme.BG_CARD);
         pack();
+        setMinimumSize(new Dimension(600, 450));
         setLocationRelativeTo(owner);
     }
 
-    /**
-     * 
-     * @param line
-     */
     public void appendLine(String line) {
         textArea.append(line + "\n");
-        textArea.setCaretPosition(textArea.getDocument().getLength()); // autoscroll
+        textArea.setCaretPosition(textArea.getDocument().getLength());
     }
 
-    /**
-     * 
-     * @param processBuilder
-     */
     public void runProcess(ProcessBuilder processBuilder) {
         closeButton.setEnabled(false);
 
         new SwingWorker<Integer, String>() {
             @Override
             protected Integer doInBackground() throws Exception {
-            	processBuilder.redirectErrorStream(true); // stderr+stdout zusammen
+                processBuilder.redirectErrorStream(true);
                 Process p = processBuilder.start();
-
-                try (BufferedReader br = new BufferedReader(
-                        new InputStreamReader(p.getInputStream(), StandardCharsets.UTF_8))) {
+                BufferedReader br = new BufferedReader(
+                        new InputStreamReader(p.getInputStream(), StandardCharsets.UTF_8));
+                try {
                     String line;
                     while ((line = br.readLine()) != null) {
-                        publish(line); // geht ins process() im EDT
+                        publish(line);
                     }
+                } finally {
+                    br.close();
                 }
-
                 return p.waitFor();
             }
 

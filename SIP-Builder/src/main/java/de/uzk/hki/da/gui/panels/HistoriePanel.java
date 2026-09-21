@@ -1,42 +1,33 @@
-/*
-  DA-NRW Software Suite | SIP-Builder
-  Copyright (C) 2014 Historisch-Kulturwissenschaftliche Informationsverarbeitung
-  Universität zu Köln
-
-  This program is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
 package de.uzk.hki.da.gui.panels;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+
+import de.uzk.hki.da.gui.GuiTheme;
 
 /**
- * HistoriePanel: Hier soll eine Historie der eingelieferten SIP's dargestellt
- * werden.
+ * HistoriePanel: Container fuer die Historie der eingelieferten SIPs.
+ * Der Inhalt wird von der Gui-Klasse aufgebaut (modernes Card-Layout).
  */
 public class HistoriePanel extends JPanel {
 
-	private static final long serialVersionUID = 2201673485393042516L;
+    private static final long serialVersionUID = 2201673485393042516L;
 
-	public HistoriePanel(boolean enabled, ClassLoader classloader) {
-		this.setEnabled(enabled);
+    public HistoriePanel(boolean enabled, ClassLoader classloader) {
+        this.setEnabled(enabled);
+        setBackground(GuiTheme.BG_MAIN);
+    }
 
-	}
-
-	public void defineElementsPosition(int startPanelWidth, int startPanelHeight, int jhOffsetY,
-			JLabel backgroundHistorieImageLabel) {
-
-	}
-
+    public void defineElementsPosition(int startPanelWidth, int startPanelHeight, int jhOffsetY,
+            JLabel backgroundHistorieImageLabel) {
+        // Modern layout handles positioning automatically
+    }
 }
