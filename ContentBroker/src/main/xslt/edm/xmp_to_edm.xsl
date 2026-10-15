@@ -74,10 +74,7 @@
         </edm:ProvidedCHO>
         
         <!-- Aggregation -->
-        <xsl:variable name="aggr-id">
-            <xsl:value-of select="$aggr-base-uri"/>-<xsl:value-of select="count(preceding-sibling::*) + 1"/>
-        </xsl:variable>
-        <ore:Aggregation rdf:about="{$aggr-id}">
+        <ore:Aggregation rdf:about="{$cho-id}">
             
             <edm:aggregatedCHO rdf:resource="{$cho-id}"/>
             

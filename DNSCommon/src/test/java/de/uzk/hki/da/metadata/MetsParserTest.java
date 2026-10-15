@@ -1,6 +1,7 @@
 package de.uzk.hki.da.metadata;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -32,12 +33,14 @@ public class MetsParserTest {
 	private static String ulbsMets = "MetsUlbms.xml";
 	private static String ulbsMetsPartTitle = "MetsUlbmsPartTitle.xml";
 	private static String licenseMets = "MetsLicense.xml";
+	private static String httpLicenseMets = "MetsLicenseHttp.xml";
 	private static String noLicenseMets = "MetsNoLicense.xml";
 	private static File lavMetsFile = Path.makeFile(WORK_AREA_ROOT_PATH, lavMets);
 	private static File ulbMetsFile = Path.makeFile(WORK_AREA_ROOT_PATH, ulbsMets);
 	private static File ulbMetsFilePartTitle = Path.makeFile(WORK_AREA_ROOT_PATH, ulbsMetsPartTitle);
 
 	private static File licenseMetsFile = Path.makeFile(WORK_AREA_ROOT_PATH, licenseMets);
+	private static File httpLicenseMetsFile = Path.makeFile(WORK_AREA_ROOT_PATH, httpLicenseMets);
 	private static File differentLicenseMultiMetsFile = Path.makeFile(WORK_AREA_ROOT_PATH, "MetsMultiLevelDifferentLicense.xml");
 	private static File sameLicenseMultiMetsFile = Path.makeFile(WORK_AREA_ROOT_PATH, "MetsMultiLevelSameLicense.xml");
 	private static File noLicenseMultiMetsFile = Path.makeFile(WORK_AREA_ROOT_PATH, "MetsMultiLevelNoLicense.xml");
@@ -88,14 +91,23 @@ public class MetsParserTest {
 		assertTrue(indexInfo.entrySet().size()==1);
 		HashMap<String, List<String>> elements = indexInfo.get("danrw801613-md801613");
 		
-		assertEquals(elements.get(C.EDM_TITLE).get(0), "nonSortText"+" "+"Text// mahels///Titel"+" : "+"Untertitel");
+		assertEquals(elements.get(C.EDM_TITLE).get(0), "nonSortText"+" "+"Text// mahels///Titel");
+		
+		assertTrue(elements.containsKey(C.EDM_ALTERNATIVE));
+		assertEquals(elements.get(C.EDM_ALTERNATIVE).get(0), "Untertitel");
+		
+		assertTrue(elements.containsKey(C.EDM_TYPE));
+		assertEquals(elements.get(C.EDM_TYPE).get(0), C.EDM_TYPE_TEXT);
+		assertTrue(elements.containsKey(C.EDM_LANGUAGE)
+				&& elements.get(C.EDM_LANGUAGE).contains("ger"));
 		
 		assertTrue(elements.get(C.EDM_PUBLISHER).size()==2);
-		assertTrue(elements.get(C.EDM_PUBLISHER).contains("Grimm] ([Augsburg)")
-				&& elements.get(C.EDM_PUBLISHER).contains("ULB (Stadt)"));
+		assertTrue(elements.get(C.EDM_PUBLISHER).contains("Grimm]")
+				&& elements.get(C.EDM_PUBLISHER).contains("ULB"));
 		
 		assertTrue(elements.get(C.EDM_IDENTIFIER).contains("id42")
-				&& elements.get(C.EDM_IDENTIFIER).contains("urn:nbn:de:hbz:42"));
+				&& elements.get(C.EDM_IDENTIFIER).contains("urn:nbn:de:hbz:42")
+				&& elements.get(C.EDM_IDENTIFIER).contains("urn:nbn:de:hbz:6:1-27094"));
 		
 		assertTrue(elements.get(C.EDM_CREATOR).contains("Nachname, Vorname"));
 		
@@ -121,11 +133,12 @@ public class MetsParserTest {
 		assertEquals(elements.get(C.EDM_TITLE).get(0), "2019," + " " + "Nr." + " " + "05");
 				
 		assertTrue(elements.get(C.EDM_PUBLISHER).size()==2);
-		assertTrue(elements.get(C.EDM_PUBLISHER).contains("Grimm] ([Augsburg)")
-				&& elements.get(C.EDM_PUBLISHER).contains("ULB (Stadt)"));
+		assertTrue(elements.get(C.EDM_PUBLISHER).contains("Grimm]")
+				&& elements.get(C.EDM_PUBLISHER).contains("ULB"));
 		
 		assertTrue(elements.get(C.EDM_IDENTIFIER).contains("id42")
-				&& elements.get(C.EDM_IDENTIFIER).contains("urn:nbn:de:hbz:42"));
+				&& elements.get(C.EDM_IDENTIFIER).contains("urn:nbn:de:hbz:42")
+				&& elements.get(C.EDM_IDENTIFIER).contains("urn:nbn:de:hbz:6:1-27094"));
 		
 		assertTrue(elements.get(C.EDM_CREATOR).contains("Nachname, Vorname"));
 		
@@ -157,8 +170,21 @@ public class MetsParserTest {
 		MetsParser mp = new MetsParser(lavMets);
 		
 		assertEquals(mLicense,mp.getLicensesForWholeMets().get(0));
-		assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1937630").get(C.EDM_RIGHTS).get(0));
-		assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1937630").get(C.DC_RIGHTS).get(0));
+		assertEquals(MetsParser.PDM_MARK_URI,mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1937630").get(C.EDM_RIGHTS).get(0));
+		assertEquals(mLicense.getDisplayLabel(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1937630").get(C.DC_RIGHTS).get(0));
+	}
+	
+	@Test
+	public void testReadHttpAccessConditionExists()throws JDOMException, IOException{
+		MetsLicense mLicense=new MetsLicense("use and reproduction","http://creativecommons.org/publicdomain/mark/1.0/","Public Domain Mark 1.0","pdm");
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
+		FileReader fr1 = new FileReader(httpLicenseMetsFile);
+		Document lavMets = builder.build(fr1);
+		MetsParser mp = new MetsParser(lavMets);
+		
+		assertEquals(mLicense,mp.getLicensesForWholeMets().get(0));
+		assertEquals(MetsParser.PDM_MARK_URI,mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1937630").get(C.EDM_RIGHTS).get(0));
+		assertEquals(mLicense.getDisplayLabel(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1937630").get(C.DC_RIGHTS).get(0));
 	}
 	
 	
@@ -178,10 +204,10 @@ public class MetsParserTest {
 				assertTrue(e.getMessage().contains(mLicense.toString()));
 			}
 
-			assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.EDM_RIGHTS).get(0));
-			assertTrue(mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1617166").get(C.EDM_RIGHTS).isEmpty());;
+assertEquals(MetsParser.PDM_MARK_URI,mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.EDM_RIGHTS).get(0));
+		assertTrue(mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1617166").get(C.EDM_RIGHTS).isEmpty());;
 			
-			assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.DC_RIGHTS).get(0));
+			assertEquals(mLicense.getDisplayLabel(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.DC_RIGHTS).get(0));
 			assertTrue(mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1617166").get(C.DC_RIGHTS).isEmpty());;
 		
 		}
@@ -212,10 +238,129 @@ public class MetsParserTest {
 		MetsParser mp = new MetsParser(lavMets);
 		
 		assertEquals(mLicense,mp.getLicensesForWholeMets().get(0));
-		assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.EDM_RIGHTS).get(0));
-		assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1617166").get(C.EDM_RIGHTS).get(0));
-		assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.DC_RIGHTS).get(0));
-		assertEquals(mLicense.getHref(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1617166").get(C.DC_RIGHTS).get(0));
+		assertEquals(MetsParser.PDM_MARK_URI,mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.EDM_RIGHTS).get(0));
+		assertEquals(MetsParser.PDM_MARK_URI,mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1617166").get(C.EDM_RIGHTS).get(0));
+		assertEquals(mLicense.getDisplayLabel(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1616184").get(C.DC_RIGHTS).get(0));
+		assertEquals(mLicense.getDisplayLabel(),mp.getIndexInfo("Test-Object-Id").get("Test-Object-Id-md1617166").get(C.DC_RIGHTS).get(0));
+	}
+
+	@Test
+	public void testSubOrderTitleFromStructMapLabel() throws JDOMException, IOException {
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
+		FileReader fr1 = new FileReader(Path.makeFile(WORK_AREA_ROOT_PATH, "MetsHierarchy.xml"));
+		Document metsDoc = builder.build(fr1);
+		MetsParser mp = new MetsParser(metsDoc);
+		
+		HashMap<String, HashMap<String, List<String>>> indexInfo = mp.getIndexInfo("obj");
+		// root div level: no CONTENTIDS, title comes from titleInfo
+		assertEquals("Haupttitel", indexInfo.get("obj-mdRoot").get(C.EDM_TITLE).get(0));
+		// sub order div level: identified via CONTENTIDS, title from div@LABEL
+		assertEquals("Kind-Titel", indexInfo.get("obj-mdSub").get(C.EDM_TITLE).get(0));
+	}
+
+	@Test
+	public void testImageTeaserAsIsShownBy() throws JDOMException, IOException {
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
+		FileReader fr1 = new FileReader(Path.makeFile(WORK_AREA_ROOT_PATH, "MetsImageTeaser.xml"));
+		Document metsDoc = builder.build(fr1);
+		MetsParser mp = new MetsParser(metsDoc);
+		
+		HashMap<String, HashMap<String, List<String>>> indexInfo = mp.getIndexInfo("obj");
+		// volume div (identified via DMDID, its CONTENTIDS differs from the root URN)
+		// -> isShownBy = IMG_TEASER href of its own teaser
+		assertTrue(indexInfo.get("obj-mdVolume").get(C.EDM_IS_SHOWN_BY).contains("http://example.org/webcache/304/11589950"));
+		// periodical div has its own IMG_TEASER fptr -> its own teaser is used
+		assertTrue(indexInfo.get("obj-mdPeriodical").get(C.EDM_IS_SHOWN_BY).contains("http://example.org/webcache/304/11545390"));
+	}
+
+	@Test
+	public void testImageTeaserMissingFptrOmitsIsShownBy() throws JDOMException, IOException {
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
+		FileReader fr1 = new FileReader(Path.makeFile(WORK_AREA_ROOT_PATH, "MetsImageTeaserNoTeaserFptr.xml"));
+		Document metsDoc = builder.build(fr1);
+		MetsParser mp = new MetsParser(metsDoc);
+		
+		HashMap<String, HashMap<String, List<String>>> indexInfo = mp.getIndexInfo("obj");
+		// volume div has no IMG_TEASER fptr although the METS uses IMG_TEASER files
+		// -> edm:isShownBy is omitted
+		assertTrue(indexInfo.get("obj-mdVolume").get(C.EDM_IS_SHOWN_BY) == null
+				|| indexInfo.get("obj-mdVolume").get(C.EDM_IS_SHOWN_BY).isEmpty());
+		// edm:object remains untouched (still the default first reference from the TEASER grp)
+		assertTrue(indexInfo.get("obj-mdVolume").get(C.EDM_OBJECT).contains("http://example.org/webcache/304/11589950"));
+	}
+
+	@Test
+	public void testIndexInfoFilteredByContentIdsUrn() throws JDOMException, IOException {
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
+		FileReader fr1 = new FileReader(Path.makeFile(WORK_AREA_ROOT_PATH, "MetsImageTeaser.xml"));
+		Document metsDoc = builder.build(fr1);
+		MetsParser mp = new MetsParser(metsDoc);
+		
+		// volume div identified via CONTENTIDS matching the urn -> only this section is exported
+		HashMap<String, HashMap<String, List<String>>> indexInfo = mp.getIndexInfo("obj", "urn:nbn:de:hbz:061:1-1024024");
+		assertEquals(1, indexInfo.size());
+		assertTrue(indexInfo.containsKey("obj-mdVolume"));
+		assertFalse(indexInfo.containsKey("obj-mdPeriodical"));
+	}
+
+	@Test
+	public void testIndexInfoWithoutMatchingContentIdsKeepsAllSections() throws JDOMException, IOException {
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
+		FileReader fr1 = new FileReader(Path.makeFile(WORK_AREA_ROOT_PATH, "MetsImageTeaser.xml"));
+		Document metsDoc = builder.build(fr1);
+		MetsParser mp = new MetsParser(metsDoc);
+		
+		// no div matches the urn -> previous behavior: all sections are kept
+		HashMap<String, HashMap<String, List<String>>> indexInfo = mp.getIndexInfo("obj", "urn:nbn:de:hbz:061:1-999999");
+		assertEquals(2, indexInfo.size());
+		assertTrue(indexInfo.containsKey("obj-mdVolume"));
+		assertTrue(indexInfo.containsKey("obj-mdPeriodical"));
+	}
+
+	@Test
+	public void testIndexInfoLanguageOfSubOrderWithoutModsLanguage() throws JDOMException, IOException {
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
+		FileReader fr1 = new FileReader(Path.makeFile(WORK_AREA_ROOT_PATH, "MetsImageTeaser.xml"));
+		Document metsDoc = builder.build(fr1);
+		MetsParser mp = new MetsParser(metsDoc);
+
+		HashMap<String, HashMap<String, List<String>>> indexInfo = mp.getIndexInfo("obj");
+		// sub order with edm:type=TEXT but no mods:language -> "und" (undetermined)
+		assertEquals("und", indexInfo.get("obj-mdVolume").get(C.EDM_LANGUAGE).get(0));
+		// root carries its own language from mods:language -> code
+		assertTrue(indexInfo.get("obj-mdPeriodical").get(C.EDM_LANGUAGE).contains("ger"));
+
+		// same rule applies when filtered by CONTENTIDS urn (the exported single section)
+		HashMap<String, HashMap<String, List<String>>> filtered = mp.getIndexInfo("obj", "urn:nbn:de:hbz:061:1-1024024");
+		assertEquals("und", filtered.get("obj-mdVolume").get(C.EDM_LANGUAGE).get(0));
+	}
+
+	@Test
+	public void testIndexInfoIsPartOfUsesSuperiorUrn() throws JDOMException, IOException {
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
+		FileReader fr1 = new FileReader(Path.makeFile(WORK_AREA_ROOT_PATH, "MetsImageTeaser.xml"));
+		Document metsDoc = builder.build(fr1);
+		MetsParser mp = new MetsParser(metsDoc);
+
+		HashMap<String, HashMap<String, List<String>>> indexInfo = mp.getIndexInfo("obj");
+		// sub order: dcterms:isPartOf = URN of superior dmdSec (via outermost enclosing div)
+		assertTrue(indexInfo.get("obj-mdVolume").get(C.EDM_IS_PART_OF).contains("urn:nbn:de:hbz:061:1-1012347"));
+		// root level: no enclosing div and no relatedItem series -> no isPartOf
+		assertTrue(indexInfo.get("obj-mdPeriodical").get(C.EDM_IS_PART_OF) == null);
+	}
+
+	@Test
+	public void testIndexInfoIsPartOfFromRelatedItemSeries() throws JDOMException, IOException {
+		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
+		FileReader fr1 = new FileReader(licenseMetsFile);
+		Document metsDoc = builder.build(fr1);
+		MetsParser mp = new MetsParser(metsDoc);
+
+		HashMap<String, HashMap<String, List<String>>> indexInfo = mp.getIndexInfo("obj");
+		// single div + relatedItem type=series without urn/uri identifier -> the series title
+		// is taken over as literal dcterms:isPartOf (see Anleitung 3.1.9 Abs. 4-5)
+		assertEquals(C.EDM_IS_PART_OF_LITERAL+"Kriegsbriefe",
+				indexInfo.get("obj-md1937630").get(C.EDM_IS_PART_OF).get(0));
 	}
 
 	

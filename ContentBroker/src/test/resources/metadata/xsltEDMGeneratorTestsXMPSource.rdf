@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:photoshop="http://ns.adobe.com/photoshop/1.0/">
+
+	<rdf:Description rdf:about="http://data.danrw.de/file/1-20111111-1.jpg">
+		<photoshop:Headline>Martinsfeuer</photoshop:Headline>
+		<photoshop:Credit>LVR-Institut für Landeskunde</photoshop:Credit>
+	</rdf:Description>
+
+	<rdf:Description rdf:about="http://data.danrw.de/file/1-20111111-2.jpg">
+		<photoshop:Headline>Ostersonntag</photoshop:Headline>
+	</rdf:Description>
+
+</rdf:RDF>

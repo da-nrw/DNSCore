@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mets:mets xmlns:mets="http://www.loc.gov/METS/" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mods="http://www.loc.gov/mods/v3" xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/mets.xsd http://www.w3.org/1999/xlink http://www.loc.gov/standards/xlink/xlink.xsd http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">
+  <mets:dmdSec ID="mdPeriodical">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:titleInfo>
+            <mods:title>Wiener Kinder-Mode</mods:title>
+          </mods:titleInfo>
+          <mods:typeOfResource>text</mods:typeOfResource>
+          <mods:language>
+            <mods:languageTerm type="code">ger</mods:languageTerm>
+          </mods:language>
+          <mods:identifier type="urn">urn:nbn:de:hbz:061:1-1012347</mods:identifier>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:dmdSec ID="mdVolume">
+    <mets:mdWrap MDTYPE="MODS">
+      <mets:xmlData>
+        <mods:mods>
+          <mods:titleInfo>
+            <mods:title>IX. Jahrgang 1902-1903</mods:title>
+          </mods:titleInfo>
+          <mods:typeOfResource>text</mods:typeOfResource>
+        </mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:amdSec ID="amdPeriodical">
+    <mets:rightsMD ID="rightsPeriodical">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+        <mets:xmlData>
+          <dv:rights xmlns:dv="http://dfg-viewer.de/">
+            <dv:owner>Test Institution</dv:owner>
+            <dv:ownerContact>mailto:test@example.de</dv:ownerContact>
+          </dv:rights>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:rightsMD>
+  </mets:amdSec>
+  <mets:amdSec ID="amdVolume">
+    <mets:rightsMD ID="rightsVolume">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+        <mets:xmlData>
+          <dv:rights xmlns:dv="http://dfg-viewer.de/">
+            <dv:owner>Test Institution</dv:owner>
+            <dv:ownerContact>mailto:test@example.de</dv:ownerContact>
+          </dv:rights>
+        </mets:xmlData>
+      </mets:mdWrap>
+    </mets:rightsMD>
+  </mets:amdSec>
+  <mets:fileSec>
+    <mets:fileGrp ID="mets-fgrp-teaser" USE="TEASER">
+      <mets:file ID="IMG_TEASER_11589950" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://example.org/webcache/304/11589950" />
+      </mets:file>
+    </mets:fileGrp>
+    <mets:fileGrp ID="mets-fgrp-default" USE="DEFAULT">
+      <mets:file ID="IMG001" MIMETYPE="image/jpeg">
+        <mets:FLocat LOCTYPE="URL" xlink:href="http://digital.ub.uni-duesseldorf.de/download/webcache/304/11545390" />
+      </mets:file>
+    </mets:fileGrp>
+  </mets:fileSec>
+  <mets:structMap TYPE="LOGICAL">
+    <mets:div ID="logRoot" DMDID="mdPeriodical" ADMID="amdPeriodical" TYPE="periodical" LABEL="Wiener Kinder-Mode" ORDER="1">
+      <mets:div ID="logVolume" DMDID="mdVolume" ADMID="amdVolume" TYPE="volume" LABEL="IX. Jahrgang 1902-1903" ORDER="1" CONTENTIDS="urn:nbn:de:hbz:061:1-1024024" />
+    </mets:div>
+  </mets:structMap>
+  <mets:structMap TYPE="PHYSICAL">
+    <mets:div TYPE="physSequence" ID="physroot">
+      <mets:div ID="phys001" TYPE="page" LABEL="001" ORDER="1">
+        <mets:fptr FILEID="IMG001" />
+      </mets:div>
+    </mets:div>
+  </mets:structMap>
+  <mets:structLink>
+    <mets:smLink xlink:from="logVolume" xlink:to="phys001" />
+  </mets:structLink>
+</mets:mets>

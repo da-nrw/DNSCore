@@ -186,7 +186,7 @@ Beispielhafte Struktur im PR
 			<dc:identifier>urn:nbn:de:danrw-1-20160922833</dc:identifier>
 			<dc:publisher>Bergisch Gladbach</dc:publisher>
 		</edm:ProvidedCHO>
-		<ore:Aggregation rdf:about="http://data.danrw.de/aggregation/1-20160922833-ISIL/lido/Inventarnummer">
+		<ore:Aggregation rdf:about="http://data.danrw.de/cho/1-20160922833-ISIL/lido/Inventarnummer">
 			<edm:aggregatedCHO rdf:resource="http://data.danrw.de/cho/1-20160922833-ISIL/lido/Inventarnummer"/>
 			<edm:isShownBy rdf:resource="http://data.danrw.de/file/1-20160922833/_c3836acf068a9b227834e0adda226ac2.jpg"/>
 			<edm:object rdf:resource="http://data.danrw.de/file/1-20160922833/_c3836acf068a9b227834e0adda226ac2.jpg"/>

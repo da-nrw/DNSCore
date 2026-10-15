@@ -112,6 +112,10 @@ public class MetsMetadataStructure extends MetadataStructure {
 		return metsParser.getIndexInfo(ObjectId);
 	}
 	
+	public HashMap<String, HashMap<String, List<String>>> getIndexInfo(String ObjectId, String urn) {
+		return metsParser.getIndexInfo(ObjectId, urn);
+	}
+	
 //	::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::  SETTER  ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	
 	private void setMimetype(Element fileElement, String mimetype) {

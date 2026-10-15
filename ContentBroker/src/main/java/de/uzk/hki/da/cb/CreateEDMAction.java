@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -150,7 +151,11 @@ public class CreateEDMAction extends AbstractAction {
 					ms = new LidoMetadataStructure(wa.pipFolder(WorkArea.PUBLIC),metadataFile, documents);
 				}
 				String edmUrn = this.edmUrn(ms);
-				ms.toEDM(ms.getIndexInfo(o.getIdentifier()), edm, preservationSystem, o.getIdentifier(), edmUrn);
+				HashMap<String, HashMap<String, List<String>>> indexInfo = ms.getIndexInfo(o.getIdentifier());
+				if (ms instanceof MetsMetadataStructure) {
+					indexInfo = ((MetsMetadataStructure) ms).getIndexInfo(o.getIdentifier(), o.getUrn());
+				}
+				ms.toEDM(indexInfo, edm, preservationSystem, o.getIdentifier(), edmUrn);
 			} else if(packageType.equals("XMP")) {
 				edm = generateEdmUsingXslt(xsltTransformationFile, metadataFile, EDM_FOR_ES_INDEX_METADATA_STREAM_ID);
 			} else {

@@ -320,7 +320,7 @@ public class ATIngestLicensedMetsSip extends AcceptanceTest {
 		
 	}
 
-	public void checkLicenseInMetadata(Object obj,MetsLicense license) throws IOException, JDOMException{
+public void checkLicenseInMetadata(Object obj,MetsLicense license) throws IOException, JDOMException{
 
 		SAXBuilder builder = XMLUtils.createValidatingSaxBuilder();
 		if(license!=null){
@@ -353,7 +353,7 @@ public class ATIngestLicensedMetsSip extends AcceptanceTest {
 		}
 		if(license!=null){
 			String	edmLicString=((Attribute)edmLicElem.getAttributes().get(0)).getValue();
-			assertTrue (edmLicString.equals(license.getHref()));
+			assertTrue (edmLicString.equals(expectedEdmRights(license.getHref())));
 		}
 		
 		////	testIndex
@@ -366,14 +366,24 @@ public class ATIngestLicensedMetsSip extends AcceptanceTest {
 		JSONObject jsonObjCHO = jsonObj.getJSONObject("edm:aggregatedCHO");
 		 try{
 			 assertTrue(jsonObjCHO.getJSONArray("dc:rights").get(0).toString().equals(license.getHref()));		
-		 }catch(JSONException e){ assertTrue(license==null);  }
+		}catch(JSONException e){ assertTrue(license==null);  }
 		 try{
 			 JSONObject esLicObj=jsonObj.getJSONArray("edm:rights").getJSONObject(0);
 			 String esLicStr= esLicObj.getString("@id");
-			 assertTrue(esLicStr.equals(license.getHref()));
-		 }catch(JSONException e){
+			 assertTrue(esLicStr.equals(expectedEdmRights(license.getHref())));
+		}catch(JSONException e){
 			 assertTrue(license==null);
          }
 
+	}
+	
+	/**
+	 * edm:rights is always mapped with https as prefix, the license in the Mets-File stays unchanged.
+	 */
+	private static String expectedEdmRights(String licenseHref){
+		if(licenseHref.startsWith("http://")){
+			return "https://" + licenseHref.substring("http://".length());
+		}
+		return licenseHref;
 	}
 }

@@ -116,9 +116,10 @@ public abstract class MetadataStructure {
 					}
 					indexInfo.get(id).put(C.EDM_IDENTIFIER, IDs);
 				} else {
-					indexInfo.get(id).get(C.EDM_IDENTIFIER).add(objectID);
-					if (urn != null) {
-						indexInfo.get(id).get(C.EDM_IDENTIFIER).add(urn);
+					List<String> IDs = indexInfo.get(id).get(C.EDM_IDENTIFIER);
+					IDs.add(objectID);
+					if (urn != null && !IDs.contains(urn)) {
+						IDs.add(urn);
 					}
 				}
 				
@@ -162,13 +163,18 @@ public abstract class MetadataStructure {
 		if(elementName.equals(C.EDM_HAS_VIEW) || elementName.equals(C.EDM_IS_PART_OF) || elementName.equals(C.EDM_HAS_PART) 
 				|| elementName.equals(C.EDM_IS_SHOWN_BY) || elementName.equals(C.EDM_OBJECT)
 				|| elementName.equals(C.EDM_RIGHTS) || elementName.equals(C.EDM_PROVIDER)) {
-			if(elementName.equals(C.EDM_IS_PART_OF) || elementName.equals(C.EDM_HAS_PART)) {
-				elementValue = preservationSystem.getUrisCho()+"/"+elementValue;
+			if(elementName.equals(C.EDM_IS_PART_OF) && elementValue.startsWith(C.EDM_IS_PART_OF_LITERAL)) {
+				eName.appendChild(edmDoc.createTextNode(elementValue.substring(C.EDM_IS_PART_OF_LITERAL.length())));
+			} else {
+				if(elementName.equals(C.EDM_IS_PART_OF) || elementName.equals(C.EDM_HAS_PART)) {
+					if(!elementValue.startsWith("urn:") && !elementValue.startsWith("http://") && !elementValue.startsWith("https://")) {
+						elementValue = preservationSystem.getUrisCho()+"/"+elementValue;
+					}
+				}
+				Attr rdfResource = edmDoc.createAttribute("rdf:resource");
+				rdfResource.setValue(elementValue);
+				eName.setAttributeNode(rdfResource);
 			}
-
-			Attr rdfResource = edmDoc.createAttribute("rdf:resource");
-			rdfResource.setValue(elementValue);
-			eName.setAttributeNode(rdfResource);
 		} else {
 			eName.appendChild(edmDoc.createTextNode(elementValue));
 		}
@@ -195,16 +201,16 @@ public abstract class MetadataStructure {
 	}
 	
 	private Element addOreAggregationToEdm(PreservationSystem preservationSystem, String id, Document edmDoc, Element rootElement) {
-		String aggr_identifier = preservationSystem.getUrisAggr()+"/"+id;
+		String cho_identifier = preservationSystem.getUrisCho()+"/"+id;
 		Element aggregation = edmDoc.createElement(C.EDM_ORE_AGGREGATION);
 		Attr rdfAbout = edmDoc.createAttribute("rdf:about");
-		rdfAbout.setValue(aggr_identifier);
+		rdfAbout.setValue(cho_identifier);
 		aggregation.setAttributeNode(rdfAbout);
 		rootElement.appendChild(aggregation);
 		
 		Element aggregatedCHO = edmDoc.createElement(C.EDM_AGGREGATED_CHO);
 		Attr rdfAboutACho = edmDoc.createAttribute("rdf:resource");
-		rdfAboutACho.setValue(preservationSystem.getUrisCho()+"/"+id);
+		rdfAboutACho.setValue(cho_identifier);
 		aggregatedCHO.setAttributeNode(rdfAboutACho);
 		aggregation.appendChild(aggregatedCHO);
 		

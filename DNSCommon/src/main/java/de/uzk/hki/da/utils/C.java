@@ -20,6 +20,9 @@
 package de.uzk.hki.da.utils;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.jdom.Namespace;
 
@@ -147,10 +150,12 @@ public class C {
 	public static final String EDM_DATE_ISSUED = "dcterms:issued";
 	public static final String EDM_DATE_CREATED = "dcterms:created";
 	public static final String EDM_PUBLISHER = "dc:publisher";
+	public static final String EDM_ALTERNATIVE = "dcterms:alternative";
 	public static final String EDM_SPATIAL = "dcterms:spatial";
 	public static final String EDM_TEMPORAL = "dcterms:temporal";
 	public static final String EDM_IS_PART_OF = "dcterms:isPartOf";
 	public static final String EDM_HAS_PART = "dcterms:hasPart";
+	public static final String EDM_IS_PART_OF_LITERAL = "DATANRW_LITERAL:";
 	public static final String EDM_TITLE = "dc:title";
 	public static final String EDM_IDENTIFIER = "dc:identifier";
 	public static final String EDM_HAS_VIEW = "edm:hasView";
@@ -167,6 +172,8 @@ public class C {
 	public static final String EDM_RIGHTS = "edm:rights";
 	public static final String EDM_EXTENT = "dcterms:extent";
 	public static final String EDM_PROVENANCE = "dcterms:provenance";
+	public static final String EDM_LANGUAGE = "dc:language";
+	public static final String DC_TYPE = "dc:type";
 	public static final String INDEX_INSTITUTION_TYPE ="@institutionType";
 	// Other
 	public static final String LOCAL_NODE_BEAN_NAME = "localNode";
@@ -180,6 +187,38 @@ public class C {
 	public static final String EDM_TYPE_SOUND = "SOUND";
 	public static final String EDM_TYPE_VIDEO = "VIDEO";
 	public static final String EDM_TYPE_3D = "3D";
+	
+	public static final Map<String, String> TYPE_OF_RESOURCE_TO_EDM_TYPE;
+	static {
+		Map<String, String> typeMapping = new HashMap<String, String>();
+		typeMapping.put("text", EDM_TYPE_TEXT);
+		typeMapping.put("collection", EDM_TYPE_TEXT);
+		typeMapping.put("dataset", EDM_TYPE_TEXT);
+		typeMapping.put("digital", EDM_TYPE_TEXT);
+		typeMapping.put("manuscript", EDM_TYPE_TEXT);
+		typeMapping.put("mixed material", EDM_TYPE_TEXT);
+		typeMapping.put("notated music", EDM_TYPE_TEXT);
+		typeMapping.put("Unspecified", EDM_TYPE_TEXT);
+		typeMapping.put("still image", EDM_TYPE_IMAGE);
+		typeMapping.put("cartographic", EDM_TYPE_IMAGE);
+		typeMapping.put("Audio", EDM_TYPE_SOUND);
+		typeMapping.put("moving image", EDM_TYPE_VIDEO);
+		typeMapping.put("multimedia", EDM_TYPE_VIDEO);
+		typeMapping.put("artifact 3D", EDM_TYPE_3D);
+		typeMapping.put("Tactile", EDM_TYPE_3D);
+		TYPE_OF_RESOURCE_TO_EDM_TYPE = Collections.unmodifiableMap(typeMapping);
+	}
+	
+	public static final Map<String, String> GENRE_TO_DC_TYPE;
+	static {
+		Map<String, String> genreMapping = new HashMap<String, String>();
+		genreMapping.put("text", "");
+		genreMapping.put("monograph", "book");
+		genreMapping.put("Zeitschrift", "journal");
+		genreMapping.put("periodical", "journal");
+		genreMapping.put("multivolume monograph", "multivolume book");
+		GENRE_TO_DC_TYPE = Collections.unmodifiableMap(genreMapping);
+	}
 	
 	//
 	public static final String ENCODING_UTF_8 = "UTF-8";

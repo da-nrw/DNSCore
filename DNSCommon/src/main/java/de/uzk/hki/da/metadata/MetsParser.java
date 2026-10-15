@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.jdom.Document;
@@ -37,6 +38,10 @@ public class MetsParser{
 	private final List<Element> fileElements;
 	public static final String titleSparator=" : ";
 	public static final String dateIssuedCreatedCondition="[Electronic ed.]";
+	public static final String PDM_MARK_URI="https://creativecommons.org/publicdomain/mark/1.0/";
+	public static final String PDM_MARK_URI_HTTP="http://creativecommons.org/publicdomain/mark/1.0/";
+	private static final String HTTP_PREFIX="http://";
+	private static final String HTTPS_PREFIX="https://";
 
 	public MetsParser(Document doc) throws JDOMException {
 		this.metsDoc = doc;
@@ -393,17 +398,165 @@ public class MetsParser{
 		return parentChildDmdId;
 	}
 	
-	private ArrayList<String> getParentDmdIds(String childDmdId, String ObjectId) {
-		ArrayList<String> parentDmdIds = new ArrayList<String>();
-		HashMap<String, ArrayList<String>> parentChildDmdIdRel = getParentChildInfoOfDmdIds(ObjectId);
-		for(String parentId : parentChildDmdIdRel.keySet()) {
-			for(String child : parentChildDmdIdRel.get(parentId)) {
-				if(child.equals(childDmdId)) {
-					parentDmdIds.add(ObjectId+"-"+parentId);
+	@SuppressWarnings("unchecked")
+	private Element findDivByDmdIdRecursive(Element div, String dmdId) {
+		if (dmdId.equals(div.getAttributeValue("DMDID"))) {
+			return div;
+		}
+		List<Element> childDivs = div.getChildren("div", METS_NS);
+		for (Element childDiv : childDivs) {
+			Element match = findDivByDmdIdRecursive(childDiv, dmdId);
+			if (match != null) {
+				return match;
+			}
+		}
+		return null;
+	}
+	
+	@SuppressWarnings({ "unchecked" })
+	private Element findDivInLogicalStructMap(String dmdId) {
+		try {
+			List<Element> structMaps = getStructMaps(metsDoc);
+			for (Element s : structMaps) {
+				if (STRUCTMAP_TYPE_LOGICAL.equals(s.getAttributeValue("TYPE"))) {
+					List<Element> metsDivElements = s.getChildren("div", METS_NS);
+					for (Element div : metsDivElements) {
+						Element match = findDivByDmdIdRecursive(div, dmdId);
+						if (match != null) {
+							return match;
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			logger.debug("Unable to find div for dmdId " + dmdId);
+		}
+		return null;
+	}
+	
+	private Element getOutermostEnclosingDiv(Element div) {
+		Element outermost = null;
+		Element current = div;
+		Element parent = current.getParentElement();
+		while (parent != null && "div".equals(parent.getName()) && METS_NS.equals(parent.getNamespace())) {
+			outermost = parent;
+			current = parent;
+			parent = current.getParentElement();
+		}
+		return outermost;
+	}
+	
+	@SuppressWarnings({ "unchecked" })
+	private String getUrnFromDmdId(String dmdId) {
+		if (dmdId == null || dmdId.isEmpty()) {
+			return "";
+		}
+		for (Element dmdSec : getDMDSections()) {
+			if (dmdId.equals(dmdSec.getAttributeValue("ID"))) {
+				Element mods = getModsXmlData(dmdSec);
+				if (mods == null) {
+					return "";
+				}
+				List<Element> identifiers = mods.getChildren("identifier", C.MODS_NS);
+				for (Element identifier : identifiers) {
+					if ("urn".equals(identifier.getAttributeValue("type"))) {
+						String value = identifier.getText();
+						if (value != null && !value.trim().isEmpty()) {
+							return value.trim();
+						}
+					}
 				}
 			}
 		}
-		return parentDmdIds;
+		return "";
+	}
+	
+	@SuppressWarnings({ "unchecked" })
+	private boolean hasRelatedItemSuperior(String dmdId) {
+		for (Element dmdSec : getDMDSections()) {
+			if (dmdId.equals(dmdSec.getAttributeValue("ID"))) {
+				Element mods = getModsXmlData(dmdSec);
+				if (mods == null) {
+					return false;
+				}
+				List<Element> relatedItems = mods.getChildren("relatedItem", C.MODS_NS);
+				for (Element relatedItem : relatedItems) {
+					String type = relatedItem.getAttributeValue("type");
+					if ("series".equals(type) || "host".equals(type)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	@SuppressWarnings({ "unchecked" })
+	private String getUrnFromRelatedItem(String dmdId) {
+		for (Element dmdSec : getDMDSections()) {
+			if (dmdId.equals(dmdSec.getAttributeValue("ID"))) {
+				Element mods = getModsXmlData(dmdSec);
+				if (mods == null) {
+					return "";
+				}
+				List<Element> relatedItems = mods.getChildren("relatedItem", C.MODS_NS);
+				for (Element relatedItem : relatedItems) {
+					String type = relatedItem.getAttributeValue("type");
+					if ("series".equals(type) || "host".equals(type)) {
+						List<Element> identifiers = relatedItem.getChildren("identifier", C.MODS_NS);
+						for (Element identifier : identifiers) {
+							if ("urn".equals(identifier.getAttributeValue("type"))) {
+								String value = identifier.getText();
+								if (value != null && !value.trim().isEmpty()) {
+									return value.trim();
+								}
+							}
+						}
+						for (Element identifier : identifiers) {
+							if ("uri".equals(identifier.getAttributeValue("type"))) {
+								String value = identifier.getText();
+								if (value != null && !value.trim().isEmpty()) {
+									return value.trim();
+								}
+							}
+						}
+						List<Element> titleInfos = relatedItem.getChildren("titleInfo", C.MODS_NS);
+						for (Element titleInfo : titleInfos) {
+							Element title = titleInfo.getChild("title", C.MODS_NS);
+							if (title != null) {
+								String value = title.getText();
+								if (value != null && !value.trim().isEmpty()) {
+									return C.EDM_IS_PART_OF_LITERAL + value.trim();
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return "";
+	}
+	
+	private boolean isSubOrder(String dmdId) {
+		Element div = findDivInLogicalStructMap(dmdId);
+		if (div != null && getOutermostEnclosingDiv(div) != null) {
+			return true;
+		}
+		return hasRelatedItemSuperior(dmdId);
+	}
+	
+	private String getSuperiorUrn(String dmdId) {
+		Element div = findDivInLogicalStructMap(dmdId);
+		if (div != null) {
+			Element outermost = getOutermostEnclosingDiv(div);
+			if (outermost != null) {
+				String urn = getUrnFromDmdId(outermost.getAttributeValue("DMDID"));
+				if (!urn.isEmpty()) {
+					return urn;
+				}
+			}
+		}
+		return getUrnFromRelatedItem(dmdId);
 	}
 	
 	private ArrayList<String> getChildrenDmdIds(String parentDmdId, String ObjectId) {
@@ -505,15 +658,15 @@ public class MetsParser{
 	private String getPublisher(Element origInfo) {
 		String publisher = "";
 		try {
-			String type = origInfo.getChild("place", C.MODS_NS).getChild("placeTerm", C.MODS_NS).getAttributeValue("type");
-			if(type.equals("text")) {
-				publisher = origInfo.getChild("place", C.MODS_NS).getChild("placeTerm", C.MODS_NS).getValue();
-			}
-			if(origInfo.getChild("publisher", C.MODS_NS)!=null) {
-				publisher = origInfo.getChild("publisher", C.MODS_NS).getValue()+" ("+publisher+")";
+			Element publisherElement = origInfo.getChild("publisher", C.MODS_NS);
+			if(publisherElement != null) {
+				String val = publisherElement.getValue();
+				if(val != null && !val.trim().isEmpty()) {
+					publisher = val;
+				}
 			}
 		} catch (Exception e) {
-			logger.debug("Element placeTerm does not exist!");
+			logger.debug("Element publisher does not exist!");
 		}
 		return publisher;
 	}
@@ -529,28 +682,92 @@ public class MetsParser{
 		return origInfoElements;
 	}
 	
-	private String getDateIssued(Element originInfo) {
+	private String getDateIssued(Element dmdSec) {
 		String date = "";
-			try {
-				Element edition=originInfo.getChild("edition", C.MODS_NS); 
-				if(edition==null||!edition.getValue().equals(dateIssuedCreatedCondition))
-					date = originInfo.getChild("dateIssued", C.MODS_NS).getValue(); 
-			} catch (Exception e) {
-				logger.debug("Element dateIssued does not exist! : "+e.toString());
+		List<Element> origInfoElements = getOrigInfoElements(dmdSec);
+		// 1. originInfo[@eventType='publication'], first dateIssued without attributes
+		boolean publicationExist = false;
+		for (Element originInfo : origInfoElements) {
+			if ("publication".equals(originInfo.getAttributeValue("eventType"))) {
+				publicationExist = true;
+				date = getDateIssuedWithoutAttributes(originInfo);
+				if (!date.isEmpty()) {
+					return date;
+				}
 			}
+		}
+		// 2. Fallback: no originInfo[@eventType='publication'] -> first originInfo without edition
+		if (!publicationExist) {
+			for (Element originInfo : origInfoElements) {
+				if (originInfo.getChild("edition", C.MODS_NS) == null) {
+					date = getFirstDateIssued(originInfo);
+					if (!date.isEmpty()) {
+						return date;
+					}
+				}
+			}
+		}
 		return date;
 	}
 	
-	private String getDateCreated(Element originInfo) {
-		String date = "";
-			try {
-				Element edition=originInfo.getChild("edition", C.MODS_NS); 
-				if(edition!=null&&edition.getValue().equals(dateIssuedCreatedCondition))
-					date = originInfo.getChild("dateIssued", C.MODS_NS).getValue(); 
-			} catch (Exception e) {
-				logger.debug("Element dateIssued does not exist! : "+e.toString());
+	private String getDateIssuedWithoutAttributes(Element originInfo) {
+		try {
+			@SuppressWarnings("unchecked")
+			List<Element> dateIssueds = originInfo.getChildren("dateIssued", C.MODS_NS);
+			for (Element dateIssued : dateIssueds) {
+				if (dateIssued.getAttributes().isEmpty()) {
+					String val = dateIssued.getValue();
+					if (val != null && !val.trim().isEmpty()) {
+						return val.trim();
+					}
+				}
 			}
+		} catch (Exception e) {
+			logger.debug("Element dateIssued does not exist! : "+e.toString());
+		}
+		return "";
+	}
+	
+	private String getFirstDateIssued(Element originInfo) {
+		try {
+			Element dateIssued = originInfo.getChild("dateIssued", C.MODS_NS);
+			if (dateIssued != null) {
+				String val = dateIssued.getValue();
+				if (val != null && !val.trim().isEmpty()) {
+					return val.trim();
+				}
+			}
+		} catch (Exception e) {
+			logger.debug("Element dateIssued does not exist! : "+e.toString());
+		}
+		return "";
+	}
+	
+	private String getDateCreated(Element dmdSec) {
+		String date = "";
+		List<Element> origInfoElements = getOrigInfoElements(dmdSec);
+		for (Element originInfo : origInfoElements) {
+			// originInfo without attributes, containing edition "Electronic ed."
+			if (originInfo.getAttributes().isEmpty()) {
+				Element edition = originInfo.getChild("edition", C.MODS_NS);
+				if (edition != null && isElectronicEdition(edition.getValue())) {
+					Element dateIssued = originInfo.getChild("dateIssued", C.MODS_NS);
+					if (dateIssued != null && dateIssued.getValue() != null) {
+						date = dateIssued.getValue();
+					}
+					break;
+				}
+			}
+		}
 		return date;
+	}
+	
+	private boolean isElectronicEdition(String edition) {
+		if (edition == null) {
+			return false;
+		}
+		String value = edition.trim();
+		return "Electronic ed.".equals(value) || "[Electronic ed.]".equals(value);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -668,12 +885,261 @@ public class MetsParser{
 		List<Element>  elements = modsXmlData.getChildren();
 		for(Element e : elements) {
 			if(e.getName().equals("identifier")) {
-				identifier.add(e.getValue());
+				String val = e.getValue();
+				if (val != null && val.startsWith("HBZ")) {
+					val = val.substring(3);
+				}
+				identifier.add(val);
 			}
 		}
 		return identifier;
 	}
 	
+	private String getContentIdsFromStructMap(String dmdId) {
+		try {
+			List<Element> structMaps = getStructMaps(metsDoc);
+			for (Element s : structMaps) {
+				if (s.getAttributeValue("TYPE").equals(STRUCTMAP_TYPE_LOGICAL)) {
+					@SuppressWarnings("unchecked")
+					List<Element> metsDivElements = s.getChildren("div", METS_NS);
+					for (Element div : metsDivElements) {
+						if (dmdId.equals(div.getAttributeValue("DMDID"))) {
+							String contentIds = div.getAttributeValue("CONTENTIDS");
+							if (contentIds != null && !contentIds.isEmpty()) {
+								return contentIds;
+							}
+						}
+						@SuppressWarnings("unchecked")
+						List<Element> childDivs = div.getChildren("div", METS_NS);
+						for (Element childDiv : childDivs) {
+							if (dmdId.equals(childDiv.getAttributeValue("DMDID"))) {
+								String contentIds = childDiv.getAttributeValue("CONTENTIDS");
+								if (contentIds != null && !contentIds.isEmpty()) {
+									return contentIds;
+								}
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			logger.debug("Unable to find CONTENTIDS for dmdId " + dmdId);
+		}
+		return null;
+	}
+	
+	private String getDmdIdOfContentIds(String contentIds) {
+		try {
+			List<Element> structMaps = getStructMaps(metsDoc);
+			for (Element s : structMaps) {
+				if (STRUCTMAP_TYPE_LOGICAL.equals(s.getAttributeValue("TYPE"))) {
+					@SuppressWarnings("unchecked")
+					List<Element> metsDivElements = s.getChildren("div", METS_NS);
+					for (Element div : metsDivElements) {
+						String dmdId = findDivByContentIdsRecursive(div, contentIds);
+						if (dmdId != null) {
+							return dmdId;
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			logger.debug("Unable to find CONTENTIDS for urn " + contentIds);
+		}
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private String findDivByContentIdsRecursive(Element div, String contentIds) {
+		if (contentIds.equals(div.getAttributeValue("CONTENTIDS"))) {
+			String dmdId = div.getAttributeValue("DMDID");
+			if (dmdId != null && !dmdId.isEmpty()) {
+				return dmdId;
+			}
+		}
+		List<Element> childDivs = div.getChildren("div", METS_NS);
+		for (Element childDiv : childDivs) {
+			String dmdId = findDivByContentIdsRecursive(childDiv, contentIds);
+			if (dmdId != null) {
+				return dmdId;
+			}
+		}
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private Element getUntypedTitleInfo(Element modsXmlData) {
+		List<Element> titleInfos = modsXmlData.getChildren("titleInfo", C.MODS_NS);
+		for (Element ti : titleInfos) {
+			if (ti.getAttribute("type") == null) {
+				return ti;
+			}
+		}
+		return null;
+	}
+	
+	private String getTypeOfResource(Element dmdSec) {
+		Element modsXmlData = getModsXmlData(dmdSec);
+		try {
+			@SuppressWarnings("unchecked")
+			List<Element> typeOfResources = modsXmlData.getChildren("typeOfResource", C.MODS_NS);
+			if (!typeOfResources.isEmpty() && typeOfResources.get(0).getValue() != null) {
+				return typeOfResources.get(0).getValue().trim();
+			}
+		} catch (Exception e) {
+			logger.debug("Element typeOfResource does not exist!");
+		}
+		return "";
+	}
+	
+	private List<String> getLanguage(Element dmdSec) {
+		List<String> languages = new ArrayList<String>();
+		Element modsXmlData = getModsXmlData(dmdSec);
+		try {
+			@SuppressWarnings("unchecked")
+			List<Element> languageElements = modsXmlData.getChildren("language", C.MODS_NS);
+			for (Element lang : languageElements) {
+				@SuppressWarnings("unchecked")
+				List<Element> languageTerms = lang.getChildren("languageTerm", C.MODS_NS);
+				for (Element lt : languageTerms) {
+					if ("code".equals(lt.getAttributeValue("type"))) {
+						String val = lt.getValue();
+						if (val != null && !val.trim().isEmpty()) {
+							languages.add(val);
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			logger.debug("Element language does not exist!");
+		}
+		return languages;
+	}
+	
+	private String getSubOrderTitleLabel(String dmdId) {
+		try {
+			Element rootElement = metsDoc.getRootElement();
+			@SuppressWarnings("unchecked")
+			List<Element> structMaps = rootElement.getChildren("structMap", METS_NS);
+			for (Element structMap : structMaps) {
+				if ("LOGICAL".equals(structMap.getAttributeValue("TYPE"))) {
+					@SuppressWarnings("unchecked")
+					List<Element> rootDivs = structMap.getChildren("div", METS_NS);
+					for (Element rootDiv : rootDivs) {
+						@SuppressWarnings("unchecked")
+						List<Element> childDivs = rootDiv.getChildren("div", METS_NS);
+						for (Element childDiv : childDivs) {
+							if (dmdId.equals(childDiv.getAttributeValue("DMDID"))
+									&& childDiv.getAttributeValue("CONTENTIDS") != null) {
+								String label = childDiv.getAttributeValue("LABEL");
+								if (label != null && !label.trim().isEmpty()) {
+									return label.trim();
+								}
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			logger.debug("Unable to find sub order title label in structMap!");
+		}
+		return "";
+	}
+
+	private List<String> getGenreTypes(Element dmdSec) {
+		List<String> genreTypes = new ArrayList<String>();
+		Element modsXmlData = getModsXmlData(dmdSec);
+		try {
+			@SuppressWarnings("unchecked")
+			List<Element> genreElements = modsXmlData.getChildren("genre", C.MODS_NS);
+			for (Element genre : genreElements) {
+				String val = genre.getValue();
+				if (val == null) {
+					continue;
+				}
+				String mapped = C.GENRE_TO_DC_TYPE.get(val.trim());
+				if (mapped == null) {
+					mapped = val.trim();
+				}
+				if (mapped.isEmpty()) {
+					continue;
+				}
+				if (!genreTypes.contains(mapped)) {
+					genreTypes.add(mapped);
+				}
+			}
+		} catch (Exception e) {
+			logger.debug("No genre element found!");
+		}
+		return genreTypes;
+	}
+	
+	private HashMap<String, String> getImageTeaserFiles() {
+		HashMap<String, String> teaserFiles = new HashMap<String, String>();
+		try {
+			@SuppressWarnings("unchecked")
+			List<Element> fileSecs = metsDoc.getRootElement().getChildren("fileSec", METS_NS);
+			for (Element fileSec : fileSecs) {
+				@SuppressWarnings("unchecked")
+				List<Element> fileGrps = fileSec.getChildren("fileGrp", METS_NS);
+				for (Element fileGrp : fileGrps) {
+					@SuppressWarnings("unchecked")
+					List<Element> files = fileGrp.getChildren("file", METS_NS);
+					for (Element file : files) {
+						String id = file.getAttributeValue("ID");
+						if (id != null && id.startsWith("IMG_TEASER_")) {
+							Element flocat = file.getChild("FLocat", METS_NS);
+							if (flocat != null) {
+								String href = flocat.getAttributeValue("href", XLINK_NS);
+								if (href != null && !href.trim().isEmpty()) {
+									teaserFiles.put(id, href);
+								}
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			logger.debug("Unable to find image teaser files!");
+		}
+		return teaserFiles;
+	}
+	
+	private String getImageTeaserHref(String dmdId, HashMap<String, String> teaserFiles) {
+		if (teaserFiles.isEmpty()) {
+			return "";
+		}
+		try {
+			// find the div of the current dmdSec in the LOGICAL structMap and
+			// look for an IMG_TEASER fptr directly inside that div
+			@SuppressWarnings("unchecked")
+			List<Element> structMaps = metsDoc.getRootElement().getChildren("structMap", METS_NS);
+			for (Element structMap : structMaps) {
+				if ("LOGICAL".equals(structMap.getAttributeValue("TYPE"))) {
+					@SuppressWarnings("unchecked")
+					List<Element> rootDivs = structMap.getChildren("div", METS_NS);
+					for (Element rootDiv : rootDivs) {
+						Element div = findDivByDmdIdRecursive(rootDiv, dmdId);
+						if (div == null) {
+							continue;
+						}
+						@SuppressWarnings("unchecked")
+						List<Element> fptrs = div.getChildren("fptr", METS_NS);
+						for (Element fptr : fptrs) {
+							String fileId = fptr.getAttributeValue("FILEID");
+							if (fileId != null && fileId.startsWith("IMG_TEASER_") && teaserFiles.containsKey(fileId)) {
+								return teaserFiles.get(fileId);
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			logger.debug("Unable to find image teaser!");
+		}
+		return "";
+	}
+
 	private List<String> getTitle(Element dmdSec) {
 		List<String> title = new ArrayList<String>();
 		Element modsXmlData = getModsXmlData(dmdSec);
@@ -681,36 +1147,31 @@ public class MetsParser{
 		String titleValue = "";
 		String displayLabelValue = "";
 		String nonSortValue = "";
-		String subTitleValue = "";
 		String MainTitleValue = "";
 		
 		String caption = "";
 		
 		try {
-			Element titleInfo = modsXmlData.getChild("titleInfo", C.MODS_NS);
+			Element titleInfo = getUntypedTitleInfo(modsXmlData);
 			
-			try {
-				nonSortValue = titleInfo.getChild("nonSort", C.MODS_NS).getText();
-			} catch (Exception e) {
-				logger.debug("Element nonSort does not exist!");
-			}
-			
-			try {
-				titleValue = titleInfo.getChild("title", C.MODS_NS).getText();
-			} catch (Exception e) {
-				logger.debug("Element title does not exist!");
-			}
-			
-			try {
-				displayLabelValue = titleInfo.getChild("displayLabel", C.MODS_NS).getText();
-			} catch (Exception e) {
-				logger.debug("Element displayLabel does not exist!");
-			}
-			
-			try {
-				subTitleValue = titleInfo.getChild("subTitle", C.MODS_NS).getText();
-			} catch (Exception e) {
-				logger.debug("Element subTitle does not exist!");
+			if (titleInfo != null) {
+				try {
+					nonSortValue = titleInfo.getChild("nonSort", C.MODS_NS).getText();
+				} catch (Exception e) {
+					logger.debug("Element nonSort does not exist!");
+				}
+				
+				try {
+					titleValue = titleInfo.getChild("title", C.MODS_NS).getText();
+				} catch (Exception e) {
+					logger.debug("Element title does not exist!");
+				}
+				
+				try {
+					displayLabelValue = titleInfo.getChild("displayLabel", C.MODS_NS).getText();
+				} catch (Exception e) {
+					logger.debug("Element displayLabel does not exist!");
+				}
 			}
 			
 			if(!titleValue.equals("")) {
@@ -756,15 +1217,32 @@ public class MetsParser{
 		}
 		
 		if (!MainTitleValue.equals("")) {
-			if(!subTitleValue.equals("")) {
-				title.add(MainTitleValue+titleSparator+ subTitleValue);
-			}else{
-				title.add(MainTitleValue);
-			}
+			title.add(MainTitleValue);
 		} else {
 			title.add(caption);
 		}
 		return title;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private List<String> getAlternativeTitle(Element dmdSec) {
+		List<String> alternative = new ArrayList<String>();
+		Element modsXmlData = getModsXmlData(dmdSec);
+		try {
+			Element titleInfo = getUntypedTitleInfo(modsXmlData);
+			if (titleInfo != null) {
+				List<Element> subTitles = titleInfo.getChildren("subTitle", C.MODS_NS);
+				for (Element st : subTitles) {
+					String val = st.getText();
+					if (val != null && !val.trim().isEmpty()) {
+						alternative.add(val);
+					}
+				}
+			}
+		} catch (Exception e) {
+			logger.debug("Element subTitle does not exist!");
+		}
+		return alternative;
 	}
 	
 	public List<Element> getDMDSections() {
@@ -836,20 +1314,70 @@ public class MetsParser{
 	}
 	
 	public HashMap<String, HashMap<String, List<String>>> getIndexInfo(String ObjectId) {
+		return getIndexInfo(ObjectId, null);
+	}
+	
+	public HashMap<String, HashMap<String, List<String>>> getIndexInfo(String ObjectId, String urn) {
 		HashMap<String, HashMap<String, List<String>>> indexInfo = new HashMap<String, HashMap<String,List<String>>>();
 		HashMap<String, Element> dmdSections = getSections(ObjectId);
+		String targetDmdId = (urn != null && !urn.isEmpty()) ? getDmdIdOfContentIds(urn) : null;
 		
 		for(String id : dmdSections.keySet()) {
 			Element e = dmdSections.get(id);
+			if (targetDmdId != null && !targetDmdId.equals(getIdFromElem(e))) {
+				continue;
+			}
 			HashMap<String, List<String>> dmdSecInfo = new HashMap<String, List<String>>();
 			
 //			Title
-			dmdSecInfo.put(C.EDM_TITLE, getTitle(e));
-			List<String> accessConditions= getAccessConditions(e);
-			dmdSecInfo.put(C.DC_RIGHTS,accessConditions);
+			String subOrderTitleLabel = getSubOrderTitleLabel(getIdFromElem(e));
+			if (!subOrderTitleLabel.isEmpty()) {
+				List<String> subOrderTitles = new ArrayList<String>();
+				subOrderTitles.add(subOrderTitleLabel);
+				dmdSecInfo.put(C.EDM_TITLE, subOrderTitles);
+			} else {
+				dmdSecInfo.put(C.EDM_TITLE, getTitle(e));
+			}
+			List<String> altTitles = getAlternativeTitle(e);
+			if (!altTitles.isEmpty()) {
+				dmdSecInfo.put(C.EDM_ALTERNATIVE, altTitles);
+			}
+			List<String> accessConditions= getEdmRights(getAccessConditions(e));
+			dmdSecInfo.put(C.DC_RIGHTS, getDcRights(e));
 			dmdSecInfo.put(C.EDM_RIGHTS,accessConditions);
 //			identifier
-			dmdSecInfo.put(C.EDM_IDENTIFIER, getIdentifier(e));
+			List<String> identifiers = getIdentifier(e);
+			String contentIds = getContentIdsFromStructMap(getIdFromElem(e));
+			if (contentIds != null && !contentIds.isEmpty()) {
+				identifiers.add(0, contentIds);
+			}
+			List<String> deduplicatedIdentifiers = new ArrayList<String>(new LinkedHashSet<String>(identifiers));
+			dmdSecInfo.put(C.EDM_IDENTIFIER, deduplicatedIdentifiers);
+			
+//			Type && Language
+			String typeOfResource = getTypeOfResource(e);
+			if (!typeOfResource.isEmpty()) {
+				String edmType = C.TYPE_OF_RESOURCE_TO_EDM_TYPE.get(typeOfResource);
+				if (edmType != null && !edmType.isEmpty()) {
+					List<String> typeList = new ArrayList<String>();
+					typeList.add(edmType);
+					dmdSecInfo.put(C.EDM_TYPE, typeList);
+if (C.EDM_TYPE_TEXT.equals(edmType)) {
+					List<String> languages = getLanguage(e);
+					if (!languages.isEmpty()) {
+						dmdSecInfo.put(C.EDM_LANGUAGE, languages);
+					} else if (isSubOrder(getIdFromElem(e))) {
+						List<String> undeterminedLanguage = new ArrayList<String>();
+						undeterminedLanguage.add("und");
+						dmdSecInfo.put(C.EDM_LANGUAGE, undeterminedLanguage);
+					}
+				}
+				}
+			}
+			List<String> genreTypes = getGenreTypes(e);
+			if (!genreTypes.isEmpty()) {
+				dmdSecInfo.put(C.DC_TYPE, genreTypes);
+			}
 			
 //			Names
 			List<String> creators = new ArrayList<String>();
@@ -871,16 +1399,16 @@ public class MetsParser{
 			List<String> datesIssued = new ArrayList<String>();
 			List<String> datesCreated = new ArrayList<String>();
 			List<String> publishers = new ArrayList<String>();
+			String dateIssued = getDateIssued(e);
+			String dateCreated = getDateCreated(e);
+			if(!dateIssued.equals("")) {
+				datesIssued.add(dateIssued);
+			}
+			if(!dateCreated.equals("")) {
+				datesCreated.add(dateCreated);
+			}
 			for(Element origInfo : getOrigInfoElements(e)) {
-				String dateIssued = getDateIssued(origInfo);
-				String dateCreated = getDateCreated(origInfo);
 				String publisher = getPublisher(origInfo);
-				if(!dateIssued.equals("")) {
-					datesIssued.add(dateIssued);
-				}
-				if(!dateCreated.equals("")) {
-					datesCreated.add(dateCreated);
-				}
 				if(!publisher.equals("")) {
 					publishers.add(publisher);
 				}
@@ -927,6 +1455,18 @@ public class MetsParser{
 				dmdSecInfo.put(C.EDM_HAS_VIEW, allReferences);
 			} 
 			
+//			IMG_TEASER thumbnail
+			HashMap<String, String> teaserFiles = getImageTeaserFiles();
+			String imageTeaser = getImageTeaserHref(getIdFromElem(e), teaserFiles);
+			if(!imageTeaser.isEmpty()) {
+				List<String> teaserList = new ArrayList<String>();
+				teaserList.add(imageTeaser);
+				dmdSecInfo.put(C.EDM_IS_SHOWN_BY, teaserList);
+			} else if(!teaserFiles.isEmpty()) {
+				// METS with IMG_TEASER files but no IMG_TEASER fptr for this div -> omit edm:isShownBy
+				dmdSecInfo.remove(C.EDM_IS_SHOWN_BY);
+			} 
+			
 //			dataProvider
 			dmdSecInfo.put(C.EDM_DATA_PROVIDER, getDataProvider(dmdIdtoAmdId(getIdFromElem(e))));
 			
@@ -937,9 +1477,11 @@ public class MetsParser{
 			}
 			
 //			isPartOf
-			ArrayList<String> parentsDmdIds = getParentDmdIds(id, ObjectId);
-			if(parentsDmdIds!=null && !parentsDmdIds.isEmpty()) {
-				dmdSecInfo.put(C.EDM_IS_PART_OF, parentsDmdIds);
+			String superiorUrn = getSuperiorUrn(getIdFromElem(e));
+			if(!superiorUrn.isEmpty()) {
+				List<String> parentUrns = new ArrayList<String>();
+				parentUrns.add(superiorUrn);
+				dmdSecInfo.put(C.EDM_IS_PART_OF, parentUrns);
 			}
 			
 			indexInfo.put(id, dmdSecInfo);
@@ -988,6 +1530,60 @@ public class MetsParser{
 			logger.error("Element accessCondition does not exist!!!");
 		}
 		return retList;
+	}
+	
+	private List<String> getEdmRights(List<String> accessConditions) {
+		List<String> edmRights = new ArrayList<String>();
+		for (String href : accessConditions) {
+			if (href.startsWith(HTTP_PREFIX)) {
+				edmRights.add(HTTPS_PREFIX + href.substring(HTTP_PREFIX.length()));
+			} else {
+				edmRights.add(href);
+			}
+		}
+		return edmRights;
+	}
+	
+	private List<String> getDcRights(Element dmdSec) {
+		List<String> dcRights = new ArrayList<String>();
+		try {
+			MetsLicense mLic = getLicense(dmdSec, false);
+			if (mLic != null && isPdmMark(mLic.getHref())
+					&& mLic.getDisplayLabel() != null && !mLic.getDisplayLabel().isEmpty()) {
+				dcRights.add(mLic.getDisplayLabel());
+			}
+		} catch(Exception e) {
+			logger.error("Element accessCondition does not exist!!!");
+		}
+		if (dcRights.isEmpty()) {
+			dcRights = getContentSource(dmdSec);
+		}
+		return dcRights;
+	}
+	
+	private boolean isPdmMark(String href) {
+		return PDM_MARK_URI.equals(href) || PDM_MARK_URI_HTTP.equals(href);
+	}
+	
+	private List<String> getContentSource(Element dmdSec) {
+		List<String> contentSources = new ArrayList<String>();
+		Element modsXmlData = getModsXmlData(dmdSec);
+		try {
+			Element recordInfo = modsXmlData.getChild("recordInfo", C.MODS_NS);
+			if (recordInfo != null) {
+				@SuppressWarnings("unchecked")
+				List<Element> contentSourceList = recordInfo.getChildren("contentSource", C.MODS_NS);
+				for (Element cs : contentSourceList) {
+					String val = cs.getValue();
+					if (val != null && !val.trim().isEmpty()) {
+						contentSources.add(val);
+					}
+				}
+			}
+		} catch(Exception e) {
+			logger.debug("Element contentSource does not exist!");
+		}
+		return contentSources;
 	}
 	
 	
